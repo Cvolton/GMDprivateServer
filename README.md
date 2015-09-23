@@ -1,0 +1,3 @@
+# GMDprivateServer
+## Geometry Dash Private Server
+A PHP server, which should react exactly, how RobTop's server could react...
