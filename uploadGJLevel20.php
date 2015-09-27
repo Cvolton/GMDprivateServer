@@ -1,4 +1,5 @@
 <?php
+error_reporting(0);
 include "connection.php";
 //here im getting all the data
 //NOTE: Finish updating levels l8r
@@ -24,10 +25,14 @@ $extraString = $_POST["extraString"];
 $levelString = $_POST["levelString"];
 $levelInfo = $_POST["levelInfo"];
 $secret = $_POST["secret"];
+$accountID = "";
+if($_POST["accountID"]!=""){
+	$accountID = $_POST["accountID"];
+}
 $uploadDate = time();
 
-$query = $db->prepare("INSERT INTO levels (levelName, gameVersion, binaryVersion, udid, userName, levelDesc, levelVersion, levelLength, audioTrack, auto, password, original, twoPlayer, songID, objects, coins, requestedStars, extraString, levelString, levelInfo, secret, uploadDate)
-VALUES ('$levelName','$gameVersion', '$binaryVersion', '$udid', '$userName', '$levelDesc', '$levelVersion', '$levelLength', '$audioTrack', '$auto', '$password', '$original', '$twoPlayer', '$songID', '$objects', '$coins', '$requestedStars', '$extraString', '$levelString', '$levelInfo', '$secret', '$uploadDate')");
+$query = $db->prepare("INSERT INTO levels (levelName, gameVersion, binaryVersion, udid, userName, levelDesc, levelVersion, levelLength, audioTrack, auto, password, original, twoPlayer, songID, objects, coins, requestedStars, extraString, levelString, levelInfo, secret, uploadDate, accountID)
+VALUES ('$levelName','$gameVersion', '$binaryVersion', '$udid', '$userName', '$levelDesc', '$levelVersion', '$levelLength', '$audioTrack', '$auto', '$password', '$original', '$twoPlayer', '$songID', '$objects', '$coins', '$requestedStars', '$extraString', '$levelString', '$levelInfo', '$secret', '$uploadDate','$accountID')");
 
 $query->execute();
 echo $db->lastInsertId();

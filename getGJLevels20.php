@@ -9,20 +9,55 @@ $songcolonmarker = 1337;
 $userid = 1337;
 if($type == 1 OR $type == 2 OR $type == 4 OR $type == 6 OR $type == 11){
 	$query = "";
+	$additional = "";
+	$additionalnowhere ="";
+	//ADDITIONAL PARAMETERS
+	if($_POST["featured"]==1){
+		$additional = "WHERE starFeatured = 1 ";
+		$additionalnowhere = "AND starFeatured = 1 ";
+	}
+	if($_POST["original"]==1){
+		if($additional = ""){
+			$additional = "WHERE original = 0 ";
+			$additionalnowhere = "AND original = 0 ";
+		}else{
+			$additional = $additional."AND original = 0 ";
+			$additionalnowhere = $additional."AND original = 0 ";
+		}
+	}
+	if($_POST["twoPlayer"]==1){
+		if($additional = ""){
+			$additional = "WHERE twoPlayer = 1 ";
+			$additionalnowhere = "AND twoPlayer = 1 ";
+		}else{
+			$additional = $additional."AND twoPlayer = 1 ";
+			$additionalnowhere = $additional."AND twoPlayer = 1 ";
+		}
+	}
+	if($_POST["star"]==1){
+		if($additional = ""){
+			$additional = "WHERE NOT starStars = 0 ";
+			$additionalnowhere = "AND NOT starStars = 0 ";
+		}else{
+			$additional = $additional."AND NOT starStars = 0 ";
+			$additionalnowhere = $additional."AND NOT starStars = 0 ";
+		}
+	}
+	//TYPE DETECTION
 	if($type==1){
-		$query = "SELECT * FROM levels ORDER BY downloads DESC";
+		$query = "SELECT * FROM levels ". $additional . " ORDER BY downloads DESC";
 	}
 	if($type==2){
-		$query = "SELECT * FROM levels ORDER BY likes DESC";
+		$query = "SELECT * FROM levels ". $additional . " ORDER BY likes DESC";
 	}
 	if($type==4){
-		$query = "SELECT * FROM levels ORDER BY uploadDate DESC";
+		$query = "SELECT * FROM levels ". $additional . " ORDER BY uploadDate DESC";
 	}
 	if($type==6){
-		$query = "SELECT * FROM levels WHERE starFeatured = 1 ORDER BY uploadDate DESC";
+		$query = "SELECT * FROM levels WHERE starFeatured = 1 ".$additionalnowhere." ORDER BY uploadDate DESC";
 	}
 	if($type==11){
-		$query = "SELECT * FROM levels WHERE NOT starStars = 0 ORDER BY uploadDate DESC";
+		$query = "SELECT * FROM levels WHERE NOT starStars = 0 ".$additionalnowhere." ORDER BY uploadDate DESC";
 	}
 	$query = $db->prepare($query);
 	$query->execute();
@@ -43,7 +78,7 @@ if($type == 1 OR $type == 2 OR $type == 4 OR $type == 6 OR $type == 11){
 					$songsstring = $songsstring . "1~|~".$result4["ID"]."~|~2~|~".$result4["name"]."~|~3~|~".$result4["authorID"]."~|~4~|~".$result4["authorName"]."~|~5~|~".$result4["size"]."~|~6~|~~|~10~|~".$result4["download"]."~|~7~|~~|~8~|~0";
 					$songcolonmarker = 1335;
 	}
-	$levelsstring = $levelsstring . $userid . ":" . $level1["userName"] . ":0";
+	$levelsstring = $levelsstring . $userid . ":" . $level1["userName"] . ":" . $level1["accountID"];
 	$userid = $userid + 1;
 	}
 	$level2 = $result[$lvlpage+1];
@@ -60,7 +95,7 @@ if($type == 1 OR $type == 2 OR $type == 4 OR $type == 6 OR $type == 11){
 					$songsstring = $songsstring . "1~|~".$result4["ID"]."~|~2~|~".$result4["name"]."~|~3~|~".$result4["authorID"]."~|~4~|~".$result4["authorName"]."~|~5~|~".$result4["size"]."~|~6~|~~|~10~|~".$result4["download"]."~|~7~|~~|~8~|~0";
 					$songcolonmarker = 1335;
 	}
-	$levelsstring = $levelsstring ."|" . $userid . ":" . $level1["userName"] . ":0";
+	$levelsstring = $levelsstring ."|" . $userid . ":" . $level2["userName"] . ":" . $level2["accountID"];
 	$userid = $userid + 1;
 	}
 	$level3 = $result[$lvlpage+2];
@@ -77,7 +112,7 @@ if($type == 1 OR $type == 2 OR $type == 4 OR $type == 6 OR $type == 11){
 					$songsstring = $songsstring . "1~|~".$result4["ID"]."~|~2~|~".$result4["name"]."~|~3~|~".$result4["authorID"]."~|~4~|~".$result4["authorName"]."~|~5~|~".$result4["size"]."~|~6~|~~|~10~|~".$result4["download"]."~|~7~|~~|~8~|~0";
 					$songcolonmarker = 1335;
 	}
-	$levelsstring = $levelsstring ."|" . $userid . ":" . $level1["userName"] . ":0";
+	$levelsstring = $levelsstring ."|" . $userid . ":" . $level3["userName"] . ":" . $level3["accountID"];
 	$userid = $userid + 1;
 	}
 	$level4 = $result[$lvlpage+3];
@@ -94,7 +129,7 @@ if($type == 1 OR $type == 2 OR $type == 4 OR $type == 6 OR $type == 11){
 					$songsstring = $songsstring . "1~|~".$result4["ID"]."~|~2~|~".$result4["name"]."~|~3~|~".$result4["authorID"]."~|~4~|~".$result4["authorName"]."~|~5~|~".$result4["size"]."~|~6~|~~|~10~|~".$result4["download"]."~|~7~|~~|~8~|~0";
 					$songcolonmarker = 1335;
 	}
-	$levelsstring = $levelsstring ."|" . $userid . ":" . $level1["userName"] . ":0";
+	$levelsstring = $levelsstring ."|" . $userid . ":" . $level4["userName"] . ":" . $level4["accountID"];
 	$userid = $userid + 1;
 	}
 	$level5 = $result[$lvlpage+4];
@@ -111,7 +146,7 @@ if($type == 1 OR $type == 2 OR $type == 4 OR $type == 6 OR $type == 11){
 					$songsstring = $songsstring . "1~|~".$result4["ID"]."~|~2~|~".$result4["name"]."~|~3~|~".$result4["authorID"]."~|~4~|~".$result4["authorName"]."~|~5~|~".$result4["size"]."~|~6~|~~|~10~|~".$result4["download"]."~|~7~|~~|~8~|~0";
 					$songcolonmarker = 1335;
 	}
-	$levelsstring = $levelsstring ."|" . $userid . ":" . $level1["userName"] . ":0";
+	$levelsstring = $levelsstring ."|" . $userid . ":" . $level5["userName"] . ":" . $level5["accountID"];
 	$userid = $userid + 1;
 	}
 	$level6 = $result[$lvlpage+5];
@@ -128,7 +163,7 @@ if($type == 1 OR $type == 2 OR $type == 4 OR $type == 6 OR $type == 11){
 					$songsstring = $songsstring . "1~|~".$result4["ID"]."~|~2~|~".$result4["name"]."~|~3~|~".$result4["authorID"]."~|~4~|~".$result4["authorName"]."~|~5~|~".$result4["size"]."~|~6~|~~|~10~|~".$result4["download"]."~|~7~|~~|~8~|~0";
 					$songcolonmarker = 1335;
 	}
-	$levelsstring = $levelsstring ."|" . $userid . ":" . $level1["userName"] . ":0";
+	$levelsstring = $levelsstring ."|" . $userid . ":" . $level6["userName"] . ":" . $level6["accountID"];
 	$userid = $userid + 1;
 	}
 	$level7 = $result[$lvlpage+6];
@@ -145,7 +180,7 @@ if($type == 1 OR $type == 2 OR $type == 4 OR $type == 6 OR $type == 11){
 					$songsstring = $songsstring . "1~|~".$result4["ID"]."~|~2~|~".$result4["name"]."~|~3~|~".$result4["authorID"]."~|~4~|~".$result4["authorName"]."~|~5~|~".$result4["size"]."~|~6~|~~|~10~|~".$result4["download"]."~|~7~|~~|~8~|~0";
 					$songcolonmarker = 1335;
 	}
-	$levelsstring = $levelsstring ."|" . $userid . ":" . $level1["userName"] . ":0";
+	$levelsstring = $levelsstring ."|" . $userid . ":" . $level7["userName"] . ":" . $level7["accountID"];
 	$userid = $userid + 1;
 	}
 	$level8 = $result[$lvlpage+7];
@@ -162,7 +197,7 @@ if($type == 1 OR $type == 2 OR $type == 4 OR $type == 6 OR $type == 11){
 					$songsstring = $songsstring . "1~|~".$result4["ID"]."~|~2~|~".$result4["name"]."~|~3~|~".$result4["authorID"]."~|~4~|~".$result4["authorName"]."~|~5~|~".$result4["size"]."~|~6~|~~|~10~|~".$result4["download"]."~|~7~|~~|~8~|~0";
 					$songcolonmarker = 1335;
 	}
-	$levelsstring = $levelsstring ."|" . $userid . ":" . $level1["userName"] . ":0";
+	$levelsstring = $levelsstring ."|" . $userid . ":" . $level8["userName"] . ":" . $level8["accountID"];
 	$userid = $userid + 1;
 	}
 	$level9 = $result[$lvlpage+8];
@@ -179,7 +214,7 @@ if($type == 1 OR $type == 2 OR $type == 4 OR $type == 6 OR $type == 11){
 					$songsstring = $songsstring . "1~|~".$result4["ID"]."~|~2~|~".$result4["name"]."~|~3~|~".$result4["authorID"]."~|~4~|~".$result4["authorName"]."~|~5~|~".$result4["size"]."~|~6~|~~|~10~|~".$result4["download"]."~|~7~|~~|~8~|~0";
 					$songcolonmarker = 1335;
 	}
-	$levelsstring = $levelsstring ."|" . $userid . ":" . $level1["userName"] . ":0";
+	$levelsstring = $levelsstring ."|" . $userid . ":" . $level9["userName"] . ":" . $level9["accountID"];
 	$userid = $userid + 1;
 	}
 	$level10 = $result[$lvlpage+9];
@@ -196,7 +231,7 @@ if($type == 1 OR $type == 2 OR $type == 4 OR $type == 6 OR $type == 11){
 					$songsstring = $songsstring . "1~|~".$result4["ID"]."~|~2~|~".$result4["name"]."~|~3~|~".$result4["authorID"]."~|~4~|~".$result4["authorName"]."~|~5~|~".$result4["size"]."~|~6~|~~|~10~|~".$result4["download"]."~|~7~|~~|~8~|~0";
 					$songcolonmarker = 1335;
 	}
-	$levelsstring = $levelsstring ."|" . $userid . ":" . $level1["userName"] . ":0";
+	$levelsstring = $levelsstring ."|" . $userid . ":" . $level10["userName"] . ":" . $level10["accountID"];
 	$userid = $userid + 1;
 	}
 	echo "#".$levelsstring;
@@ -220,7 +255,7 @@ if($type == 10){
 				if ($colonmarker != 1337){
 					$levelsstring = $levelsstring . "|";
 				}
-				$levelsstring = $levelsstring . $userid . ":" . $result["userName"] . ":0";
+				$levelsstring = $levelsstring . $userid . ":" . $result["userName"] . $result["accountID"];
 				if($result["songID"]!=0){
 					$query3=$db->prepare("select * from songs where ID = ".$result["songID"]);
 					$query3->execute();
