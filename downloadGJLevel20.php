@@ -1,7 +1,7 @@
 <?php
 include "connection.php";
-$levelID = $_POST["levelID"];
-$query=$db->prepare("select * from levels where levelID = ".$levelID);
+$levelID = htmlspecialchars($_POST["levelID"],ENT_QUOTES);
+$query=$db->prepare("select * from levels where levelID = '".$levelID."'");
 $query->execute();
 $result2 = $query->fetchAll();
 $result = $result2[0];

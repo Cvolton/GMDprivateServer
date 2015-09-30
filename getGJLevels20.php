@@ -3,7 +3,7 @@ error_reporting(0);
 include "connection.php";
 $levelsstring = "";
 $songsstring  = "";
-$type = $_POST["type"];
+$type = htmlspecialchars($_POST["type"],ENT_QUOTES);
 $colonmarker = 1337;
 $songcolonmarker = 1337;
 $userid = 1337;
@@ -61,7 +61,7 @@ if($type == 1 OR $type == 2 OR $type == 4 OR $type == 6 OR $type == 11){
 	}
 	$query = $db->prepare($query);
 	$query->execute();
-	$page = $_POST["page"];
+	$page = htmlspecialchars($_POST["page"],ENT_QUOTES);
 	$lvlpage = $page*10;
 	$result = $query->fetchAll();
 	$level1 = $result[$lvlpage];
@@ -239,12 +239,12 @@ if($type == 1 OR $type == 2 OR $type == 4 OR $type == 6 OR $type == 11){
 	echo "#9999:".$lvlpage.":10";
 }
 if($type == 10){
-	$arr = explode( ',', $_POST["str"] );
+	$arr = explode( ',', htmlspecialchars($_POST["str"],ENT_QUOTES) );
 	foreach ($arr as &$value) {
 		if ($colonmarker != 1337){
 			echo "|";
 		}
-		$query=$db->prepare("select * from levels where levelID = ".$value);
+		$query=$db->prepare("select * from levels where levelID = ".htmlspecialchars($value,ENT_QUOTES));
 		$query->execute();
 		$result2 = $query->fetchAll();
 		$result = $result2[0];
@@ -255,7 +255,7 @@ if($type == 10){
 				if ($colonmarker != 1337){
 					$levelsstring = $levelsstring . "|";
 				}
-				$levelsstring = $levelsstring . $userid . ":" . $result["userName"] . $result["accountID"];
+				$levelsstring = $levelsstring . $userid . ":" . $result["userName"] . ":" . $result["accountID"];
 				if($result["songID"]!=0){
 					$query3=$db->prepare("select * from songs where ID = ".$result["songID"]);
 					$query3->execute();
