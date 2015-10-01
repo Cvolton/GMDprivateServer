@@ -27,7 +27,7 @@ $levelInfo = htmlspecialchars($_POST["levelInfo"],ENT_QUOTES);
 $secret = htmlspecialchars($_POST["secret"],ENT_QUOTES);
 $accountID = "";
 if($_POST["accountID"]!=""){
-	$accountID = htmlspecialchars($_POST["accountID"];
+	$accountID = htmlspecialchars($_POST["accountID"],ENT_QUOTES);
 }
 $uploadDate = time();
 
