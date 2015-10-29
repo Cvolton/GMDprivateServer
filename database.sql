@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 27, 2015 at 02:43 PM
+-- Generation Time: Oct 29, 2015 at 07:08 PM
 -- Server version: 5.6.26
 -- PHP Version: 5.5.28
 
@@ -32,7 +32,9 @@ CREATE TABLE IF NOT EXISTS `accounts` (
   `email` varchar(255) NOT NULL,
   `secret` varchar(255) NOT NULL,
   `accountID` int(11) NOT NULL,
-  `saveData` text NOT NULL
+  `saveData` text NOT NULL,
+  `isAdmin` int(11) NOT NULL DEFAULT '0',
+  `userID` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -44,7 +46,6 @@ CREATE TABLE IF NOT EXISTS `accounts` (
 CREATE TABLE IF NOT EXISTS `levels` (
   `gameVersion` int(11) NOT NULL,
   `binaryVersion` int(11) NOT NULL,
-  `udid` text NOT NULL,
   `userName` text NOT NULL,
   `levelID` int(11) NOT NULL,
   `levelName` text NOT NULL,
@@ -61,7 +62,7 @@ CREATE TABLE IF NOT EXISTS `levels` (
   `coins` int(11) NOT NULL,
   `requestedStars` int(11) NOT NULL,
   `extraString` text NOT NULL,
-  `levelString` text NOT NULL,
+  `levelString` longtext NOT NULL,
   `levelInfo` text NOT NULL,
   `secret` text NOT NULL,
   `starDifficulty` int(11) NOT NULL DEFAULT '0' COMMENT '0=N/A 10=EASY 20=NORMAL 30=HARD 40=HARDER 50=INSANE 50=AUTO 50=DEMON',
@@ -73,7 +74,7 @@ CREATE TABLE IF NOT EXISTS `levels` (
   `uploadDate` varchar(1337) NOT NULL,
   `starCoins` int(11) NOT NULL,
   `starFeatured` int(11) NOT NULL DEFAULT '0',
-  `accountID` int(11) NOT NULL DEFAULT '0'
+  `userID` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -107,6 +108,18 @@ CREATE TABLE IF NOT EXISTS `songs` (
   `download` varchar(1337) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `users`
+--
+
+CREATE TABLE IF NOT EXISTS `users` (
+  `isRegistered` int(11) NOT NULL,
+  `userID` int(11) NOT NULL,
+  `extID` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
 --
 -- Indexes for dumped tables
 --
@@ -136,6 +149,12 @@ ALTER TABLE `songs`
   ADD PRIMARY KEY (`ID`);
 
 --
+-- Indexes for table `users`
+--
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`userID`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -159,6 +178,11 @@ ALTER TABLE `mappacks`
 --
 ALTER TABLE `songs`
   MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `users`
+--
+ALTER TABLE `users`
+  MODIFY `userID` int(11) NOT NULL AUTO_INCREMENT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
