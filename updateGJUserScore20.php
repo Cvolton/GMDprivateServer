@@ -48,7 +48,7 @@ $userID = $db->lastInsertId();
 }
 $uploadDate = time();
 
-$query = $db->prepare("UPDATE users userName='$userName', coins='$coins',  secret='$secret', stars='$stars', demons='$demons', icon='$icon', color1='$color1', color2='$color2', iconType='$iconType', userCoins='$userCoins', special='$special',
+$query = $db->prepare("UPDATE users SET userName='$userName', coins='$coins',  secret='$secret', stars='$stars', demons='$demons', icon='$icon', color1='$color1', color2='$color2', iconType='$iconType', userCoins='$userCoins', special='$special',
 accIcon='$accIcon', accShip='$accShip', accBall='$accBall', accBird='$accBird', accDart='$accDart', accRobot='$accRobot', accGlow='$accGlow' WHERE userID='$userID'");
 
 $query->execute();
