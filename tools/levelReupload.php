@@ -18,8 +18,8 @@ $result = file_get_contents($url, false, $context);
 $resultarray = explode(':', $result);
 //var_dump($resultarray);
 $uploadDate = time();
-$query = $db->prepare("INSERT INTO levels (levelName, gameVersion, binaryVersion, udid, userName, levelDesc, levelVersion, levelLength, audioTrack, auto, password, original, twoPlayer, songID, objects, coins, requestedStars, extraString, levelString, levelInfo, secret, uploadDate, accountID)
-VALUES ('$resultarray[3]','20', '27', '', 'ORS', '$resultarray[5]', '$resultarray[9]', '$resultarray[35]', '$resultarray[22]', '0', '1337666', '0', '$resultarray[39]', '$resultarray[45]', '0', '$resultarray[51]', '$resultarray[53]', '$resultarray[47]', '$resultarray[7]', '0', '0', '$uploadDate','6')");
+$query = $db->prepare("INSERT INTO levels (levelName, gameVersion, binaryVersion, userName, levelDesc, levelVersion, levelLength, audioTrack, auto, password, original, twoPlayer, songID, objects, coins, requestedStars, extraString, levelString, levelInfo, secret, uploadDate)
+VALUES ('$resultarray[3]','20', '27', 'ORS', '$resultarray[5]', '$resultarray[9]', '$resultarray[35]', '$resultarray[22]', '0', '1337666', '0', '$resultarray[39]', '$resultarray[45]', '0', '$resultarray[51]', '$resultarray[53]', '$resultarray[47]', '$resultarray[7]', '0', '0', '$uploadDate')");
 $query->execute();
 echo $db->lastInsertId();
 }else{

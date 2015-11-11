@@ -5,7 +5,6 @@ include "connection.php";
 //NOTE: Finish updating levels l8r
 $gameVersion = htmlspecialchars($_POST["gameVersion"],ENT_QUOTES);
 $binaryVersion = htmlspecialchars($_POST["binaryVersion"],ENT_QUOTES);
-$udid = htmlspecialchars($_POST["udid"],ENT_QUOTES);
 $userName = htmlspecialchars($_POST["userName"],ENT_QUOTES);
 $levelID = htmlspecialchars($_POST["levelID"],ENT_QUOTES);
 $levelName = htmlspecialchars($_POST["levelName"],ENT_QUOTES);
@@ -26,13 +25,30 @@ $levelString = htmlspecialchars($_POST["levelString"],ENT_QUOTES);
 $levelInfo = htmlspecialchars($_POST["levelInfo"],ENT_QUOTES);
 $secret = htmlspecialchars($_POST["secret"],ENT_QUOTES);
 $accountID = "";
+$id = htmlspecialchars($_POST["udid"],ENT_QUOTES);
 if($_POST["accountID"]!=""){
-	$accountID = htmlspecialchars($_POST["accountID"],ENT_QUOTES);
+	$id = htmlspecialchars($_POST["accountID"],ENT_QUOTES);
+	$register = 1;
+}else{
+	$register = 0;
+}
+$query2 = $db->prepare("SELECT * FROM users WHERE extID = '".$id."'");
+$query2->execute();
+$result = $query2->fetchAll();
+if ($query2->rowCount() > 0) {
+$userIDalmost = $result[0];
+$userID = $userIDalmost[1];
+} else {
+$query = $db->prepare("INSERT INTO users (isRegistered, extID)
+VALUES ('$register','$id')");
+
+$query->execute();
+$userID = $db->lastInsertId();
 }
 $uploadDate = time();
 
-$query = $db->prepare("INSERT INTO levels (levelName, gameVersion, binaryVersion, udid, userName, levelDesc, levelVersion, levelLength, audioTrack, auto, password, original, twoPlayer, songID, objects, coins, requestedStars, extraString, levelString, levelInfo, secret, uploadDate, accountID)
-VALUES ('$levelName','$gameVersion', '$binaryVersion', '$udid', '$userName', '$levelDesc', '$levelVersion', '$levelLength', '$audioTrack', '$auto', '$password', '$original', '$twoPlayer', '$songID', '$objects', '$coins', '$requestedStars', '$extraString', '$levelString', '$levelInfo', '$secret', '$uploadDate','$accountID')");
+$query = $db->prepare("INSERT INTO levels (levelName, gameVersion, binaryVersion, userName, levelDesc, levelVersion, levelLength, audioTrack, auto, password, original, twoPlayer, songID, objects, coins, requestedStars, extraString, levelString, levelInfo, secret, uploadDate, userID)
+VALUES ('$levelName','$gameVersion', '$binaryVersion', '$userName', '$levelDesc', '$levelVersion', '$levelLength', '$audioTrack', '$auto', '$password', '$original', '$twoPlayer', '$songID', '$objects', '$coins', '$requestedStars', '$extraString', '$levelString', '$levelInfo', '$secret', '$uploadDate','$userID')");
 
 $query->execute();
 echo $db->lastInsertId();
