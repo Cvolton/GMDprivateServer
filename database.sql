@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Nov 09, 2015 at 12:19 PM
+-- Generation Time: Nov 12, 2015 at 05:05 PM
 -- Server version: 5.5.32
 -- PHP Version: 5.4.17
 
@@ -23,6 +23,22 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `accComments`
+--
+
+CREATE TABLE IF NOT EXISTS `accComments` (
+  `userID` int(11) NOT NULL,
+  `userName` varchar(50) NOT NULL,
+  `comment` longtext NOT NULL,
+  `secret` varchar(10) NOT NULL,
+  `commentID` int(11) NOT NULL DEFAULT '0',
+  `timestamp` int(11) NOT NULL,
+  `likes` int(11) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `accounts`
 --
 
@@ -36,7 +52,7 @@ CREATE TABLE IF NOT EXISTS `accounts` (
   `isAdmin` int(11) NOT NULL DEFAULT '0',
   `userID` int(11) NOT NULL,
   PRIMARY KEY (`accountID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=79 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=87 ;
 
 -- --------------------------------------------------------
 
@@ -54,7 +70,7 @@ CREATE TABLE IF NOT EXISTS `comments` (
   `timestamp` int(11) NOT NULL,
   `likes` int(11) NOT NULL,
   PRIMARY KEY (`commentID`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=40 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=83 ;
 
 -- --------------------------------------------------------
 
@@ -95,7 +111,7 @@ CREATE TABLE IF NOT EXISTS `levels` (
   `starFeatured` int(11) NOT NULL DEFAULT '0',
   `userID` int(11) NOT NULL,
   PRIMARY KEY (`levelID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=140 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=198 ;
 
 -- --------------------------------------------------------
 
@@ -112,7 +128,7 @@ CREATE TABLE IF NOT EXISTS `mappacks` (
   `difficulty` int(11) NOT NULL,
   `rgbcolors` varchar(11) NOT NULL COMMENT 'entered as R,G,B',
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
 
 -- --------------------------------------------------------
 
@@ -160,7 +176,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `accRobot` int(11) NOT NULL,
   `accGlow` int(11) NOT NULL,
   PRIMARY KEY (`userID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=44 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=56 ;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

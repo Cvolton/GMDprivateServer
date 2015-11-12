@@ -7,7 +7,7 @@ $type = htmlspecialchars($_POST["type"],ENT_QUOTES);
 $colonmarker = 1337;
 $songcolonmarker = 1337;
 $userid = 1337;
-if($type == 0 OR $type == 1 OR $type == 2 OR $type == 4 OR $type == 6 OR $type == 11){
+if($type == 0 OR $type == 1 OR $type == 2 OR $type == 4 OR $type == 5 OR $type == 6 OR $type == 11){
 	$query = "";
 	$additional = "";
 	$additionalnowhere ="";
@@ -44,11 +44,12 @@ if($type == 0 OR $type == 1 OR $type == 2 OR $type == 4 OR $type == 6 OR $type =
 		}
 	}
 	//TYPE DETECTION
+        $str = htmlspecialchars($_POST["str"], ENT_QUOTES);
 	if($type==0){
 		if(is_numeric($_POST["str"])){
-			$query = "SELECT * FROM levels WHERE levelID = '".$_POST["str"]."' ". $additionalnowhere . " ORDER BY likes DESC";
+			$query = "SELECT * FROM levels WHERE levelID = '".$str."' ". $additionalnowhere . " ORDER BY likes DESC";
 		}else{
-			$query = "SELECT * FROM levels WHERE levelName LIKE '".$_POST["str"]."%' ". $additionalnowhere . " ORDER BY likes DESC";
+			$query = "SELECT * FROM levels WHERE levelName LIKE '".$str."%' ". $additionalnowhere . " ORDER BY likes DESC";
 		}
 		
 	}
@@ -60,6 +61,9 @@ if($type == 0 OR $type == 1 OR $type == 2 OR $type == 4 OR $type == 6 OR $type =
 	}
 	if($type==4){
 		$query = "SELECT * FROM levels ". $additional . " ORDER BY uploadDate DESC";
+	}
+        if($type==5){
+		$query = "SELECT * FROM levels WHERE userID = '".$str."'ORDER BY likes DESC";
 	}
 	if($type==6){
 		$query = "SELECT * FROM levels WHERE starFeatured = 1 ".$additionalnowhere." ORDER BY uploadDate DESC";
@@ -162,4 +166,4 @@ if($type == 10){
 	echo "#".$songsstring;
 	echo "#9999:0:10";
 }
-?>
+?>	

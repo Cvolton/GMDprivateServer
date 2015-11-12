@@ -3,7 +3,7 @@ error_reporting(0);
 include "../connection.php";
 if($_POST["levelid"]!=0){
 $levelid = $_POST["levelid"];
-$url = 'http://boomlings.com/database/downloadGJLevel20.php';
+$url = 'http://'.$_POST["server"].'/database/downloadGJLevel20.php';
 $data = array('levelID' => $levelid, 'secret' => 'Wmfd2893gb7');
 
 $options = array(
@@ -23,6 +23,6 @@ VALUES ('$resultarray[3]','20', '27', 'ORS', '$resultarray[5]', '$resultarray[9]
 $query->execute();
 echo $db->lastInsertId();
 }else{
-	echo '<form action="levelReupload.php" method="post">ID: <input type="text" name="levelid"><br><input type="submit" value="Reupload"></form>';
+	echo '<form action="levelReupload.php" method="post">ID: <input type="text" name="levelid"><br>Server: <input type="text" name="server" value="www.boomlings.com"><br><input type="submit" value="Reupload"></form>';
 }
 ?>

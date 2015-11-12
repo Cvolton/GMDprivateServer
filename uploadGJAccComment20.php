@@ -8,7 +8,6 @@ $binaryVersion = htmlspecialchars($_POST["binaryVersion"],ENT_QUOTES);
 $userName = htmlspecialchars($_POST["userName"],ENT_QUOTES);
 //some gj user score crap
 $comment = htmlspecialchars($_POST["comment"],ENT_QUOTES);
-$levelID = htmlspecialchars($_POST["levelID"],ENT_QUOTES);
 //continuing the accounts system
 $accountID = "";
 $id = htmlspecialchars($_POST["udid"],ENT_QUOTES);
@@ -33,8 +32,8 @@ $userID = $db->lastInsertId();
 }
 $uploadDate = time();
 
-$query = $db->prepare("INSERT INTO comments (userName, comment, levelID, userID, timeStamp)
-VALUES ('$userName', '$comment', '$levelID', '$userID', '$uploadDate')");
+$query = $db->prepare("INSERT INTO accComments (userName, comment, userID, timeStamp)
+VALUES ('$userName', '$comment', '$userID', '$uploadDate')");
 
 $query->execute();
 echo 1;

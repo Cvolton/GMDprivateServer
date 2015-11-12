@@ -3,7 +3,7 @@ error_reporting(0);
 include "../connection.php";
 if($_POST["songid"]!=0){
 $songid = $_POST["songid"];
-$url = 'http://boomlings.com/database/getGJSongInfo.php';
+$url = 'http://'.$_POST["server"].'/database/getGJSongInfo.php';
 $data = array('songID' => $songid, 'secret' => 'Wmfd2893gb7');
 
 $options = array(
@@ -24,6 +24,6 @@ VALUES ('$resultarray[1]','$resultarray[3]', '$resultarray[5]', '$resultarray[7]
 $query->execute();
 echo $db->lastInsertId();
 }else{
-	echo '<form action="songReupload.php" method="post">ID: <input type="text" name="songid"><br><input type="submit" value="Reupload"></form>';
+	echo '<form action="songReupload.php" method="post">ID: <input type="text" name="songid"><br>Server: <input type="text" name="server" value="www.boomlings.com"><br><input type="submit" value="Reupload"></form>';
 }
 ?>
