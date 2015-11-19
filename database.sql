@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Nov 12, 2015 at 05:05 PM
+-- Generation Time: Nov 19, 2015 at 04:19 PM
 -- Server version: 5.5.32
 -- PHP Version: 5.4.17
 
@@ -17,7 +17,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8 */;
 
 --
--- Database: `1044236`
+-- Database: `898455`
 --
 
 -- --------------------------------------------------------
@@ -48,11 +48,11 @@ CREATE TABLE IF NOT EXISTS `accounts` (
   `email` varchar(255) NOT NULL,
   `secret` varchar(255) NOT NULL,
   `accountID` int(11) NOT NULL AUTO_INCREMENT,
-  `saveData` text NOT NULL,
+  `saveData` longtext NOT NULL,
   `isAdmin` int(11) NOT NULL DEFAULT '0',
   `userID` int(11) NOT NULL,
   PRIMARY KEY (`accountID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=87 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=156 ;
 
 -- --------------------------------------------------------
 
@@ -70,7 +70,7 @@ CREATE TABLE IF NOT EXISTS `comments` (
   `timestamp` int(11) NOT NULL,
   `likes` int(11) NOT NULL,
   PRIMARY KEY (`commentID`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=83 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=549 ;
 
 -- --------------------------------------------------------
 
@@ -111,7 +111,7 @@ CREATE TABLE IF NOT EXISTS `levels` (
   `starFeatured` int(11) NOT NULL DEFAULT '0',
   `userID` int(11) NOT NULL,
   PRIMARY KEY (`levelID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=198 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=380 ;
 
 -- --------------------------------------------------------
 
@@ -128,7 +128,39 @@ CREATE TABLE IF NOT EXISTS `mappacks` (
   `difficulty` int(11) NOT NULL,
   `rgbcolors` varchar(11) NOT NULL COMMENT 'entered as R,G,B',
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `messages`
+--
+
+CREATE TABLE IF NOT EXISTS `messages` (
+  `userID` int(11) NOT NULL,
+  `userName` varchar(50) NOT NULL,
+  `body` longtext NOT NULL,
+  `subject` longtext NOT NULL,
+  `accID` int(11) NOT NULL,
+  `messageID` int(11) NOT NULL AUTO_INCREMENT,
+  `toAccountID` int(11) NOT NULL,
+  `timestamp` int(11) NOT NULL,
+  `secret` varchar(10) NOT NULL,
+  PRIMARY KEY (`messageID`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=46 ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `modIPs`
+--
+
+CREATE TABLE IF NOT EXISTS `modIPs` (
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
+  `IP` varchar(69) NOT NULL,
+  `isMod` int(11) NOT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
 
 -- --------------------------------------------------------
 
@@ -144,7 +176,7 @@ CREATE TABLE IF NOT EXISTS `songs` (
   `size` varchar(100) NOT NULL,
   `download` varchar(1337) NOT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1337676 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1337695 ;
 
 -- --------------------------------------------------------
 
@@ -175,8 +207,11 @@ CREATE TABLE IF NOT EXISTS `users` (
   `accDart` int(11) NOT NULL,
   `accRobot` int(11) NOT NULL,
   `accGlow` int(11) NOT NULL,
+  `creatorPoints` int(11) NOT NULL,
+  `IP` varchar(69) NOT NULL DEFAULT '127.0.0.1',
+  `lastPlayed` int(11) NOT NULL,
   PRIMARY KEY (`userID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=56 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=145 ;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

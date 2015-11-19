@@ -19,10 +19,10 @@ $resultarray = explode(':', $result);
 //var_dump($resultarray);
 $uploadDate = time();
 $query = $db->prepare("INSERT INTO levels (levelName, gameVersion, binaryVersion, userName, levelDesc, levelVersion, levelLength, audioTrack, auto, password, original, twoPlayer, songID, objects, coins, requestedStars, extraString, levelString, levelInfo, secret, uploadDate)
-VALUES ('$resultarray[3]','20', '27', 'ORS', '$resultarray[5]', '$resultarray[9]', '$resultarray[35]', '$resultarray[22]', '0', '1337666', '0', '$resultarray[39]', '$resultarray[45]', '0', '$resultarray[51]', '$resultarray[53]', '$resultarray[47]', '$resultarray[7]', '0', '0', '$uploadDate')");
+VALUES ('$resultarray[3]','20', '27', 'ORS', '$resultarray[5]', '$resultarray[9]', '$resultarray[35]', '$resultarray[19]', '0', '1337666', '0', '$resultarray[39]', '$resultarray[45]', '0', '$resultarray[51]', '$resultarray[53]', '$resultarray[47]', '$resultarray[7]', '0', '0', '$uploadDate')");
 $query->execute();
 echo $db->lastInsertId();
 }else{
-	echo '<form action="levelReupload.php" method="post">ID: <input type="text" name="levelid"><br>Server: <input type="text" name="server" value="www.boomlings.com"><br><input type="submit" value="Reupload"></form>';
+	echo '<form action="levelReupload.php" method="post">ID: <input type="text" name="levelid"><br>Server: <input type="text" name="server" value="www.boomlings.com"><br><input type="submit" value="Reupload"></form><br><a href="songReupload.php">pls use the song reupload tool too, danke schon</a>';
 }
 ?>

@@ -47,9 +47,10 @@ $query->execute();
 $userID = $db->lastInsertId();
 }
 $uploadDate = time();
+$hostname = gethostbyaddr($_SERVER['REMOTE_ADDR']);
 
 $query = $db->prepare("UPDATE users SET userName='$userName', coins='$coins',  secret='$secret', stars='$stars', demons='$demons', icon='$icon', color1='$color1', color2='$color2', iconType='$iconType', userCoins='$userCoins', special='$special',
-accIcon='$accIcon', accShip='$accShip', accBall='$accBall', accBird='$accBird', accDart='$accDart', accRobot='$accRobot', accGlow='$accGlow' WHERE userID='$userID'");
+accIcon='$accIcon', accShip='$accShip', accBall='$accBall', accBird='$accBird', accDart='$accDart', accRobot='$accRobot', accGlow='$accGlow', IP='$hostname', lastPlayed='$uploadDate' WHERE userID='$userID'");
 
 $query->execute();
 echo 1;

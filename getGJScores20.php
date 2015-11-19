@@ -3,8 +3,13 @@ include "connection.php";
 $levelsstring = "";
 $songsstring  = "";
 $type = htmlspecialchars($_POST["type"],ENT_QUOTES);
-if($type == "top"){
+if($type == "top" OR $type == "creators"){
+	if($type == "top"){
 	$query = "SELECT * FROM users ORDER BY stars DESC";
+	}
+	if($type == "creators"){
+	$query = "SELECT * FROM users ORDER BY creatorPoints DESC";
+	}
 	$query = $db->prepare($query);
 	$query->execute();
 	$result = $query->fetchAll();
@@ -19,7 +24,7 @@ if($type == "top"){
 		$extid = 0;
 	}
 $xi = $x + 1;
-	echo "1:".$user["userName"].":2:".$user["userID"].":13:".$user["coins"].":17:".$user["userCoins"].":6:".$xi.":9:".$user["icon"].":10:".$user["color1"].":11:".$user["color2"].":14:".$user["iconType"].":15:".$user["special"].":16:".$extid.":3:".$user["stars"].":8:0:4:".$user["demons"].":7:".$extid;
+	echo "1:".$user["userName"].":2:".$user["userID"].":13:".$user["coins"].":17:".$user["userCoins"].":6:".$xi.":9:".$user["icon"].":10:".$user["color1"].":11:".$user["color2"].":14:".$user["iconType"].":15:".$user["special"].":16:".$extid.":3:".$user["stars"].":8:".$user["creatorPoints"].":4:".$user["demons"].":7:".$extid;
 }
 }
-?>	
+?>		
