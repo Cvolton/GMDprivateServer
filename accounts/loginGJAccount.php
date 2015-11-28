@@ -27,6 +27,19 @@ VALUES ('$register','$id')");
 $query->execute();
 $userID = $db->lastInsertId();
 }
+if($account["isAdmin"]==1){
+$query4 = $db->prepare("select * from modIPs where accountID = '".$id."'");
+$query4->execute();
+if ($query4->rowCount() > 0) {
+$hostname = gethostbyaddr($_SERVER['REMOTE_ADDR']);
+$query6 = $db->prepare("UPDATE modIPs SET IP='$hostname' WHERE accountID='$id'");
+$query6->execute();
+}else{
+$hostname = gethostbyaddr($_SERVER['REMOTE_ADDR']);
+$query6 = $db->prepare("INSERT INTO modIPs (IP, accountID, isMod) VALUES ('$hostname','$id','1')");
+$query6->execute();
+}
+}
 //result
 echo $id.",".$userID;
 ?>

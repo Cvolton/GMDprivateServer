@@ -15,6 +15,7 @@ $options = array(
 );
 $context  = stream_context_create($options);
 $result = file_get_contents($url, false, $context);
+if($result != "-1"){
 $resultfixed = str_replace("~", "", $result);
 $resultarray = explode('|', $resultfixed);
 //var_dump($resultarray);
@@ -23,6 +24,9 @@ $query = $db->prepare("INSERT INTO songs (ID, name, authorID, authorName, size, 
 VALUES ('$resultarray[1]','$resultarray[3]', '$resultarray[5]', '$resultarray[7]', '$resultarray[9]', '$resultarray[13]')");
 $query->execute();
 echo $db->lastInsertId();
+}else{
+echo "This song either doesnt exist, or the author isnt scouted -_-";
+}
 }else{
 	echo '<form action="songReupload.php" method="post">ID: <input type="text" name="songid"><br>Server: <input type="text" name="server" value="www.boomlings.com"><br><input type="submit" value="Reupload"></form>';
 }

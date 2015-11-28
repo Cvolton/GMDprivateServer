@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Nov 19, 2015 at 04:19 PM
+-- Generation Time: Nov 27, 2015 at 04:16 PM
 -- Server version: 5.5.32
 -- PHP Version: 5.4.17
 
@@ -52,7 +52,7 @@ CREATE TABLE IF NOT EXISTS `accounts` (
   `isAdmin` int(11) NOT NULL DEFAULT '0',
   `userID` int(11) NOT NULL,
   PRIMARY KEY (`accountID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=156 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=248 ;
 
 -- --------------------------------------------------------
 
@@ -70,7 +70,7 @@ CREATE TABLE IF NOT EXISTS `comments` (
   `timestamp` int(11) NOT NULL,
   `likes` int(11) NOT NULL,
   PRIMARY KEY (`commentID`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=549 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1246 ;
 
 -- --------------------------------------------------------
 
@@ -111,7 +111,7 @@ CREATE TABLE IF NOT EXISTS `levels` (
   `starFeatured` int(11) NOT NULL DEFAULT '0',
   `userID` int(11) NOT NULL,
   PRIMARY KEY (`levelID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=380 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2630 ;
 
 -- --------------------------------------------------------
 
@@ -128,7 +128,7 @@ CREATE TABLE IF NOT EXISTS `mappacks` (
   `difficulty` int(11) NOT NULL,
   `rgbcolors` varchar(11) NOT NULL COMMENT 'entered as R,G,B',
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=7 ;
 
 -- --------------------------------------------------------
 
@@ -147,7 +147,7 @@ CREATE TABLE IF NOT EXISTS `messages` (
   `timestamp` int(11) NOT NULL,
   `secret` varchar(10) NOT NULL,
   PRIMARY KEY (`messageID`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=46 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=112 ;
 
 -- --------------------------------------------------------
 
@@ -159,8 +159,9 @@ CREATE TABLE IF NOT EXISTS `modIPs` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `IP` varchar(69) NOT NULL,
   `isMod` int(11) NOT NULL,
+  `accountID` int(11) NOT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=7 ;
 
 -- --------------------------------------------------------
 
@@ -176,7 +177,7 @@ CREATE TABLE IF NOT EXISTS `songs` (
   `size` varchar(100) NOT NULL,
   `download` varchar(1337) NOT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1337695 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1338539 ;
 
 -- --------------------------------------------------------
 
@@ -211,7 +212,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `IP` varchar(69) NOT NULL DEFAULT '127.0.0.1',
   `lastPlayed` int(11) NOT NULL,
   PRIMARY KEY (`userID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=145 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=341 ;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

@@ -53,5 +53,5 @@ $query = $db->prepare("UPDATE users SET userName='$userName', coins='$coins',  s
 accIcon='$accIcon', accShip='$accShip', accBall='$accBall', accBird='$accBird', accDart='$accDart', accRobot='$accRobot', accGlow='$accGlow', IP='$hostname', lastPlayed='$uploadDate' WHERE userID='$userID'");
 
 $query->execute();
-echo 1;
+echo $userID;
 ?>

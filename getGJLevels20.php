@@ -13,8 +13,8 @@ if($type == 0 OR $type == 1 OR $type == 2 OR $type == 4 OR $type == 5 OR $type =
 	$additionalnowhere ="";
 	//ADDITIONAL PARAMETERS
 	if($_POST["featured"]==1){
-		$additional = "WHERE starFeatured = 1 ";
-		$additionalnowhere = "AND starFeatured = 1 ";
+		$additional = "WHERE NOT starFeatured = 0 ";
+		$additionalnowhere = "AND NOT starFeatured = 0 ";
 	}
 	if($_POST["original"]==1){
 		if($additional = ""){
@@ -53,30 +53,32 @@ if($type == 0 OR $type == 1 OR $type == 2 OR $type == 4 OR $type == 5 OR $type =
 		}
 		
 	}
+	$page = htmlspecialchars($_POST["page"],ENT_QUOTES);
+	$lvlpagea = $page*10;
+	$lvlpageaend = $lvlpage +10;
 	if($type==1){
-		$query = "SELECT * FROM levels ". $additional . " ORDER BY downloads DESC";
+		$query = "SELECT * FROM levels ". $additional . " ORDER BY downloads DESC LIMIT ".$lvlpagea.",".$lvlpageaend."";
 	}
 	if($type==2){
-		$query = "SELECT * FROM levels ". $additional . " ORDER BY likes DESC";
+		$query = "SELECT * FROM levels ". $additional . " ORDER BY likes DESC LIMIT ".$lvlpagea.",".$lvlpageaend."";
 	}
 	if($type==4){
-		$query = "SELECT * FROM levels ". $additional . " ORDER BY uploadDate DESC";
+		$query = "SELECT * FROM levels ". $additional . " ORDER BY uploadDate DESC LIMIT ".$lvlpagea.",".$lvlpageaend."";
 	}
         if($type==5){
-		$query = "SELECT * FROM levels WHERE userID = '".$str."'ORDER BY likes DESC";
+		$query = "SELECT * FROM levels WHERE userID = '".$str."'ORDER BY likes DESC LIMIT ".$lvlpagea.",".$lvlpageaend."";
 	}
 	if($type==6){
-		$query = "SELECT * FROM levels WHERE starFeatured = 1 ".$additionalnowhere." ORDER BY uploadDate DESC";
+		$query = "SELECT * FROM levels WHERE NOT starFeatured = 0 ".$additionalnowhere." ORDER BY uploadDate DESC LIMIT ".$lvlpagea.",".$lvlpageaend."";
 	}
 	if($type==11){
-		$query = "SELECT * FROM levels WHERE NOT starStars = 0 ".$additionalnowhere." ORDER BY uploadDate DESC";
+		$query = "SELECT * FROM levels WHERE NOT starStars = 0 ".$additionalnowhere." ORDER BY uploadDate DESC LIMIT ".$lvlpagea.",".$lvlpageaend."";
 	}
 	$query = $db->prepare($query);
 	$query->execute();
 	$result = $query->fetchAll();
-	$page = htmlspecialchars($_POST["page"],ENT_QUOTES);
 	for ($x = 0; $x < 9; $x++) {
-	$lvlpage = $page*10;
+	$lvlpage = 0;
 	$level1 = $result[$lvlpage+$x];
 	if($level1["levelID"]!=""){
 		if($x != 0){
@@ -116,7 +118,7 @@ if(is_numeric($userID)){
 	}
 	echo "#".$levelsstring;
 	echo "#".$songsstring;
-	echo "#9999:".$lvlpage.":10";
+	echo "#9999:".$lvlpagea.":10";
 }
 if($type == 10){
 	$arr = explode( ',', htmlspecialchars($_POST["str"],ENT_QUOTES) );
