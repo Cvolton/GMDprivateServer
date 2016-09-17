@@ -79,7 +79,7 @@ $query = $db->prepare("UPDATE levels SET starFeatured='1' WHERE levelID='$levelI
 $query->execute();
 }
 }
-if(substr($decodecomment,0,11) == '!verifycoins'){
+if(substr($decodecomment,0,12) == '!verifycoins'){
 $hostname = gethostbyaddr($_SERVER['REMOTE_ADDR']);
 $query2 = $db->prepare("SELECT * FROM modIPs WHERE IP = '".$hostname."'");
 $query2->execute();
