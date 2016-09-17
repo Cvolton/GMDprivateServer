@@ -79,6 +79,16 @@ $query = $db->prepare("UPDATE levels SET starFeatured='1' WHERE levelID='$levelI
 $query->execute();
 }
 }
+if(substr($decodecomment,0,11) == '!verifycoins'){
+$hostname = gethostbyaddr($_SERVER['REMOTE_ADDR']);
+$query2 = $db->prepare("SELECT * FROM modIPs WHERE IP = '".$hostname."'");
+$query2->execute();
+$result = $query2->fetchAll();
+if ($query2->rowCount() > 0) {
+$query = $db->prepare("UPDATE levels SET starCoins='1' WHERE levelID='$levelID'");
+$query->execute();
+}
+}
 if(substr($decodecomment,0,7) == '!delete'){
 $hostname = gethostbyaddr($_SERVER['REMOTE_ADDR']);
 $query2 = $db->prepare("SELECT * FROM modIPs WHERE IP = '".$hostname."'");
