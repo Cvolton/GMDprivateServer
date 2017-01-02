@@ -55,7 +55,7 @@ if($type == 0 OR $type == 1 OR $type == 2 OR $type == 4 OR $type == 5 OR $type =
 	}
 	$page = htmlspecialchars($_POST["page"],ENT_QUOTES);
 	$lvlpagea = $page*10;
-	$lvlpageaend = $lvlpage +10;
+	$lvlpageaend = $lvlpagea +9;
 	if($type==1){
 		$query = "SELECT * FROM levels ". $additional . " ORDER BY downloads DESC LIMIT ".$lvlpagea.",".$lvlpageaend."";
 	}
@@ -78,7 +78,7 @@ if($type == 0 OR $type == 1 OR $type == 2 OR $type == 4 OR $type == 5 OR $type =
 	$query->execute();
 	$result = $query->fetchAll();
 	$levelcount = $query->rowCount();
-	for ($x = 0; $x < 10; $x++) {
+	for ($x = 0; $x < $levelcount; $x++) {
 	$lvlpage = 0;
 	$level1 = $result[$lvlpage+$x];
 	if($level1["levelID"]!=""){
@@ -119,7 +119,12 @@ if(is_numeric($userID)){
 	}
 	echo "#".$levelsstring;
 	echo "#".$songsstring;
-	echo "#".$levelcount.":".$lvlpagea.":10";
+	if (array_key_exists(8,$result)){
+		echo "#9999:".$lvlpagea.":10";
+	}else{
+		$totallvlcount = $lvlpagea+$levelcount;
+		echo "#".$totallvlcount.":".$lvlpagea.":10";
+	}
 }
 if($type == 10){
 	$arr = explode( ',', htmlspecialchars($_POST["str"],ENT_QUOTES) );
