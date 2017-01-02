@@ -77,7 +77,8 @@ if($type == 0 OR $type == 1 OR $type == 2 OR $type == 4 OR $type == 5 OR $type =
 	$query = $db->prepare($query);
 	$query->execute();
 	$result = $query->fetchAll();
-	for ($x = 0; $x < 9; $x++) {
+	$levelcount = $query->rowCount();
+	for ($x = 0; $x < 10; $x++) {
 	$lvlpage = 0;
 	$level1 = $result[$lvlpage+$x];
 	if($level1["levelID"]!=""){
@@ -118,7 +119,7 @@ if(is_numeric($userID)){
 	}
 	echo "#".$levelsstring;
 	echo "#".$songsstring;
-	echo "#9999:".$lvlpagea.":10";
+	echo "#".$levelcount.":".$lvlpagea.":10";
 }
 if($type == 10){
 	$arr = explode( ',', htmlspecialchars($_POST["str"],ENT_QUOTES) );
