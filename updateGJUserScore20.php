@@ -1,14 +1,12 @@
 <?php
-//error_reporting(0);
+error_reporting(0);
 include "connection.php";
 //here im getting all the data
-//NOTE: Finish updating levels l8r
 $gameVersion = htmlspecialchars($_POST["gameVersion"],ENT_QUOTES);
 $binaryVersion = htmlspecialchars($_POST["binaryVersion"],ENT_QUOTES);
 $userName = htmlspecialchars($_POST["userName"],ENT_QUOTES);
 $secret = htmlspecialchars($_POST["secret"],ENT_QUOTES);
 $coins = htmlspecialchars($_POST["coins"],ENT_QUOTES);
-//some gj user score crap
 $stars = htmlspecialchars($_POST["stars"],ENT_QUOTES);
 $demons = htmlspecialchars($_POST["demons"],ENT_QUOTES);
 $icon = htmlspecialchars($_POST["icon"],ENT_QUOTES);
