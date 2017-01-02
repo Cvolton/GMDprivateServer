@@ -35,7 +35,6 @@ $page = htmlspecialchars($_POST["page"],ENT_QUOTES);
 	}else{
 		$extid = 0;
 	}
-$xi = $x + 1;
 	echo "1:".$user["userName"].":2:".$user["userID"].":9:".$user["icon"].":10:".$user["color1"].":11:".$user["color2"].":14:".$user["iconType"].":15:".$user["special"].":16:".$extid.":32:".$request["ID"].":35:".$request["comment"].":41:1:37:".$uploadTime;
 
 }
