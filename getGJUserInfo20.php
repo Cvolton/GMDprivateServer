@@ -1,9 +1,9 @@
 <?php
 include "connection.php";
-	$me = 249;
-	$extid=249;
-	//$me = htmlspecialchars($_POST["accountID"],ENT_QUOTES);
-	//$extid = htmlspecialchars($_POST["targetAccountID"],ENT_QUOTES);
+	//$me = 249;
+	//$extid=249;
+	$me = htmlspecialchars($_POST["accountID"],ENT_QUOTES);
+	$extid = htmlspecialchars($_POST["targetAccountID"],ENT_QUOTES);
 	$query = "SELECT * FROM users WHERE extID = '".$extid."'";
 	$query = $db->prepare($query);
 	$query->execute();
