@@ -171,6 +171,6 @@ if($type == 10){
 	}
 	echo "#".$levelsstring;
 	echo "#".$songsstring;
-	echo "#9999:0:10";
+	echo "#1:0:10";
 }
-?>	
+?>
