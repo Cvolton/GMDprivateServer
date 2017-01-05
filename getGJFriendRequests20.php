@@ -27,8 +27,8 @@ $page = htmlspecialchars($_POST["page"],ENT_QUOTES);
 	$query = "SELECT * FROM users WHERE extID = '$requester'";
 	$query = $db->prepare($query);
 	$query->execute();
-	$result = $query->fetchAll();
-	$user = $result[0];
+	$result2 = $query->fetchAll();
+	$user = $result2[0];
 	$uploadTime = 0;
 	if(is_numeric($user["extID"])){
 		$extid = $user["extID"];
