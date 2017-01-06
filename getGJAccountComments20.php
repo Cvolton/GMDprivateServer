@@ -22,7 +22,7 @@ VALUES ('$register','$id')");
 $query->execute();
 $userID = $db->lastInsertId();
 }
-$query = "SELECT * FROM accComments WHERE userID = '".$userID."' ORDER BY timeStamp DESC";
+$query = "SELECT * FROM acccomments WHERE userID = '".$userID."' ORDER BY timeStamp DESC";
 $query = $db->prepare($query);
 $query->execute();
 $result = $query->fetchAll();

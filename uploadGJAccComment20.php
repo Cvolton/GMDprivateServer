@@ -23,7 +23,7 @@ $userID = $db->lastInsertId();
 }
 $uploadDate = time();
 
-$query = $db->prepare("INSERT INTO accComments (userName, comment, userID, timeStamp)
+$query = $db->prepare("INSERT INTO acccomments (userName, comment, userID, timeStamp)
 VALUES ('$userName', '$comment', '$userID', '$uploadDate')");
 
 if($id != "" AND $comment != ""){
