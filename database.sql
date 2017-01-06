@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Počítač: 127.0.0.1
--- Vytvořeno: Čtv 05. led 2017, 01:57
+-- Vytvořeno: Pát 06. led 2017, 01:56
 -- Verze serveru: 10.1.9-MariaDB
 -- Verze PHP: 5.6.15
 
@@ -31,7 +31,7 @@ CREATE TABLE `acccomments` (
   `userName` varchar(50) NOT NULL,
   `comment` longtext NOT NULL,
   `secret` varchar(10) NOT NULL,
-  `commentID` int(11) NOT NULL DEFAULT '0',
+  `commentID` int(11) NOT NULL,
   `timestamp` int(11) NOT NULL,
   `likes` int(11) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
@@ -226,6 +226,12 @@ CREATE TABLE `users` (
 --
 
 --
+-- Klíče pro tabulku `acccomments`
+--
+ALTER TABLE `acccomments`
+  ADD PRIMARY KEY (`commentID`);
+
+--
 -- Klíče pro tabulku `accounts`
 --
 ALTER TABLE `accounts`
@@ -284,6 +290,11 @@ ALTER TABLE `users`
 --
 
 --
+-- AUTO_INCREMENT pro tabulku `acccomments`
+--
+ALTER TABLE `acccomments`
+  MODIFY `commentID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+--
 -- AUTO_INCREMENT pro tabulku `accounts`
 --
 ALTER TABLE `accounts`
@@ -292,22 +303,22 @@ ALTER TABLE `accounts`
 -- AUTO_INCREMENT pro tabulku `comments`
 --
 ALTER TABLE `comments`
-  MODIFY `commentID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1246;
+  MODIFY `commentID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1250;
 --
 -- AUTO_INCREMENT pro tabulku `friendreqs`
 --
 ALTER TABLE `friendreqs`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT pro tabulku `levels`
 --
 ALTER TABLE `levels`
-  MODIFY `levelID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2647;
+  MODIFY `levelID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2650;
 --
 -- AUTO_INCREMENT pro tabulku `mappacks`
 --
 ALTER TABLE `mappacks`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 --
 -- AUTO_INCREMENT pro tabulku `messages`
 --
@@ -327,7 +338,7 @@ ALTER TABLE `songs`
 -- AUTO_INCREMENT pro tabulku `users`
 --
 ALTER TABLE `users`
-  MODIFY `userID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=347;
+  MODIFY `userID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=348;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
