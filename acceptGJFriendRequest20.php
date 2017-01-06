@@ -1,8 +1,12 @@
 <?php
 include "connection.php";
+$gjp = htmlspecialchars($_POST["gjp"],ENT_QUOTES);
 $requestID = htmlspecialchars($_POST["requestID"],ENT_QUOTES);
 $accountID = htmlspecialchars($_POST["accountID"],ENT_QUOTES);
 $targetAccountID = htmlspecialchars($_POST["targetAccountID"],ENT_QUOTES);
+$GJPCheck = new GJPCheck();
+$gjpresult = $GJPCheck->check($gjp,$accountID);
+if($gjpresult == 1){
 // ACCEPTING FOR USER 1
 $query = "SELECT * FROM accounts WHERE accountID = '$accountID'";
 $query = $db->prepare($query);
@@ -36,4 +40,7 @@ $query = $db->prepare("DELETE from friendreqs WHERE ID='$requestID' LIMIT 1");
 $query->execute();
 //RESPONSE SO IT DOESNT SAY "FAILED"
 echo "1";
+}
+else
+{echo "-1";}
 ?>

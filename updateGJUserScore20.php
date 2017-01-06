@@ -1,7 +1,9 @@
 <?php
 error_reporting(0);
 include "connection.php";
+require "incl/GJPCheck.php";
 //here im getting all the data
+$gjp = htmlspecialchars($_POST["gjp"],ENT_QUOTES);
 $gameVersion = htmlspecialchars($_POST["gameVersion"],ENT_QUOTES);
 $binaryVersion = htmlspecialchars($_POST["binaryVersion"],ENT_QUOTES);
 $userName = htmlspecialchars($_POST["userName"],ENT_QUOTES);
@@ -49,7 +51,15 @@ $hostname = gethostbyaddr($_SERVER['REMOTE_ADDR']);
 
 $query = $db->prepare("UPDATE users SET userName='$userName', coins='$coins',  secret='$secret', stars='$stars', demons='$demons', icon='$icon', color1='$color1', color2='$color2', iconType='$iconType', userCoins='$userCoins', special='$special',
 accIcon='$accIcon', accShip='$accShip', accBall='$accBall', accBird='$accBird', accDart='$accDart', accRobot='$accRobot', accGlow='$accGlow', IP='$hostname', lastPlayed='$uploadDate' WHERE userID='$userID'");
-
-$query->execute();
-echo $userID;
+$GJPCheck = new GJPCheck();
+$gjpresult = $GJPCheck->check($gjp,$id);
+if($register ==1){
+if($gjpresult == 1){
+	$query->execute();
+	echo $userID;
+}else{echo -1;}
+}else{
+	$query->execute();
+	echo $userID;
+}
 ?>

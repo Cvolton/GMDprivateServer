@@ -1,12 +1,11 @@
 <?php
 //error_reporting(0);
 include "connection.php";
-//here im getting all the data
-//NOTE: Finish updating levels l8r
+require "incl/GJPCheck.php";
+$gjp = htmlspecialchars($_POST["gjp"],ENT_QUOTES);
 $gameVersion = htmlspecialchars($_POST["gameVersion"],ENT_QUOTES);
 $binaryVersion = htmlspecialchars($_POST["binaryVersion"],ENT_QUOTES);
 $secret = htmlspecialchars($_POST["secret"],ENT_QUOTES);
-//some gj user score crap
 $subject = htmlspecialchars($_POST["subject"],ENT_QUOTES);
 $toAccountID = htmlspecialchars($_POST["toAccountID"],ENT_QUOTES);
 $body = htmlspecialchars($_POST["body"],ENT_QUOTES);
@@ -46,6 +45,10 @@ $uploadDate = time();
 $query = $db->prepare("INSERT INTO messages (subject, body, accID, userID, userName, toAccountID, secret)
 VALUES ('$subject', '$body', '$accID', '$userID', '$userName', '$toAccountID', '$secret')");
 
-$query->execute();
-echo 1;
+$GJPCheck = new GJPCheck();
+$gjpresult = $GJPCheck->check($gjp,$accID);
+if($gjpresult == 1){
+	$query->execute();
+	echo 1;
+}else{echo -1;}
 ?>

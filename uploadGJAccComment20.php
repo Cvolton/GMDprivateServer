@@ -1,22 +1,13 @@
 <?php
 //error_reporting(0);
 include "connection.php";
-//here im getting all the data
-//NOTE: Finish updating levels l8r
+require "incl/GJPCheck.php";
+$gjp = htmlspecialchars($_POST["gjp"],ENT_QUOTES);
 $gameVersion = htmlspecialchars($_POST["gameVersion"],ENT_QUOTES);
 $binaryVersion = htmlspecialchars($_POST["binaryVersion"],ENT_QUOTES);
 $userName = htmlspecialchars($_POST["userName"],ENT_QUOTES);
-//some gj user score crap
 $comment = htmlspecialchars($_POST["comment"],ENT_QUOTES);
-//continuing the accounts system
-$accountID = "";
-$id = htmlspecialchars($_POST["udid"],ENT_QUOTES);
-if($_POST["accountID"]!=""){
-	$id = htmlspecialchars($_POST["accountID"],ENT_QUOTES);
-	$register = 1;
-}else{
-	$register = 0;
-}
+$id = htmlspecialchars($_POST["accountID"],ENT_QUOTES);
 $query2 = $db->prepare("SELECT * FROM users WHERE extID = '".$id."'");
 $query2->execute();
 $result = $query2->fetchAll();
@@ -35,6 +26,12 @@ $uploadDate = time();
 $query = $db->prepare("INSERT INTO accComments (userName, comment, userID, timeStamp)
 VALUES ('$userName', '$comment', '$userID', '$uploadDate')");
 
-$query->execute();
-echo 1;
+if($id != "" AND $comment != ""){
+	$GJPCheck = new GJPCheck();
+	$gjpresult = $GJPCheck->check($gjp,$id);
+	if($gjpresult == 1){
+		$query->execute();
+		echo 1;
+	}else{echo -1;}
+}else{echo -1;}
 ?>

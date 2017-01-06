@@ -1,4 +1,5 @@
 <?php
+error_reporting(0);
 include "connection.php";
 $accountID = htmlspecialchars($_POST["accountID"],ENT_QUOTES);
 $type = htmlspecialchars($_POST["type"],ENT_QUOTES);

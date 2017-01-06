@@ -8,3 +8,24 @@ Supported version of Geometry Dash: 2.00 (not 2.01)
 Private Messaging system by someguy28 (even though he needed a ton of help from me... and by a ton I mean A TON)
 
 Used this for XOR encryption - https://github.com/sathoro/php-xor-cipher - (incl/XORCipher.php)
+
+### To-do list
+* GJP Check
+	* Updating Levels
+	* Blocking Users
+	* Moderator system revise
+* Searching levels
+	* Difficulty Filter
+	* The other filters
+* Accounts
+	* Account settings
+* 2.01 and 2.1 features (future)
+	* !!!!!!! THE HASH !!!!!!!!!
+	* The new mod system
+	* Entirely new 2.1 features
+	* Friends
+		* Levels Leaderboard
+	* Quests
+	* Daily features
+	* Gauntlets
+	* Hall of Fame

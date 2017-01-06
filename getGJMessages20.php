@@ -1,6 +1,7 @@
 <?php
 error_reporting(0);
 include "connection.php";
+require "incl/GJPCheck.php";
 $levelsstring = "";
 $songsstring  = "";
 $type = htmlspecialchars($_POST["type"],ENT_QUOTES);
@@ -9,7 +10,14 @@ $songcolonmarker = 1337;
 $userid = 1337;
 //code begins
 $toAccountID = htmlspecialchars($_POST["accountID"],ENT_QUOTES);
-$query = "SELECT * FROM messages WHERE toAccountID = '".$toAccountID."' ORDER BY messageID DESC";
+$gjp = htmlspecialchars($_POST["gjp"],ENT_QUOTES);
+$GJPCheck = new GJPCheck();
+$gjpresult = $GJPCheck->check($gjp,$toAccountID);
+if($gjpresult == 1){
+	$query = "SELECT * FROM messages WHERE toAccountID = '".$toAccountID."' ORDER BY messageID DESC";
+}else{
+	$query = "SELECT * FROM messages WHERE toAccountID = '-1' ORDER BY messageID DESC";
+}
 $query = $db->prepare($query);
 $query->execute();
 $result = $query->fetchAll();

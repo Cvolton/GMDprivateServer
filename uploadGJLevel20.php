@@ -1,8 +1,10 @@
 <?php
 error_reporting(0);
 include "connection.php";
+require "incl/GJPCheck.php";
 //here im getting all the data
 //NOTE: Finish updating levels l8r
+$gjp = htmlspecialchars($_POST["gjp"],ENT_QUOTES);
 $gameVersion = str_replace(":", "", htmlspecialchars($_POST["gameVersion"],ENT_QUOTES));
 $binaryVersion = str_replace(":", "", htmlspecialchars($_POST["binaryVersion"],ENT_QUOTES));
 $userName = str_replace(":", "", htmlspecialchars($_POST["userName"],ENT_QUOTES));
@@ -50,6 +52,21 @@ $uploadDate = time();
 $query = $db->prepare("INSERT INTO levels (levelName, gameVersion, binaryVersion, userName, levelDesc, levelVersion, levelLength, audioTrack, auto, password, original, twoPlayer, songID, objects, coins, requestedStars, extraString, levelString, levelInfo, secret, uploadDate, userID)
 VALUES ('$levelName','$gameVersion', '$binaryVersion', '$userName', '$levelDesc', '$levelVersion', '$levelLength', '$audioTrack', '$auto', '$password', '$original', '$twoPlayer', '$songID', '$objects', '$coins', '$requestedStars', '$extraString', '$levelString', '$levelInfo', '$secret', '$uploadDate','$userID')");
 
-$query->execute();
-echo $db->lastInsertId();
+if($levelString != "" AND $levelName != ""){
+	$GJPCheck = new GJPCheck();
+	$gjpresult = $GJPCheck->check($gjp,$id);
+	if($register ==1){
+	if($gjpresult == 1){
+		$query->execute();
+		echo $db->lastInsertId();
+	}else{
+		echo -1;
+	}
+	}else{
+		$query->execute();
+		echo $db->lastInsertId();
+	}
+}else{
+	echo -1;
+}
 ?>
