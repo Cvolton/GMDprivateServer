@@ -3,7 +3,7 @@
 include "../connection.php";
 if($_POST["levelid"]!=0){
 $levelid = $_POST["levelid"];
-$url = 'http://'.$_POST["server"].'/database/downloadGJLevel20.php';
+$url = 'http://'.$_POST["server"].'/database/downloadGJLevel21.php';
 $data = array('levelID' => $levelid, 'secret' => 'Wmfd2893gb7');
 
 $options = array(
