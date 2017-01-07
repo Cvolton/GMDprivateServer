@@ -1,7 +1,7 @@
 <?php
 error_reporting(0);
 include "connection.php";
-require "incl/GJPCheck.php";
+require_once "incl/GJPCheck.php";
 $levelsstring = "";
 $songsstring  = "";
 $type = htmlspecialchars($_POST["type"],ENT_QUOTES);

@@ -1,7 +1,7 @@
 <?php
 //error_reporting(0);
 include "connection.php";
-require "incl/GJPCheck.php";
+require_once "incl/GJPCheck.php";
 //here im getting all the data
 $accountID = htmlspecialchars($_POST["accountID"],ENT_QUOTES);
 $gjp = htmlspecialchars($_POST["gjp"],ENT_QUOTES);

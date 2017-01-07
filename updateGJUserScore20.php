@@ -1,7 +1,7 @@
 <?php
 error_reporting(0);
 include "connection.php";
-require "incl/GJPCheck.php";
+require_once "incl/GJPCheck.php";
 //here im getting all the data
 $gjp = htmlspecialchars($_POST["gjp"],ENT_QUOTES);
 $gameVersion = htmlspecialchars($_POST["gameVersion"],ENT_QUOTES);

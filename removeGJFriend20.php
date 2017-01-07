@@ -1,6 +1,6 @@
 <?php
 include "connection.php";
-require "incl/GJPCheck.php";
+require_once "incl/GJPCheck.php";
 $accountID = htmlspecialchars($_POST["accountID"],ENT_QUOTES);
 $gjp = htmlspecialchars($_POST["gjp"],ENT_QUOTES);
 $targetAccountID = htmlspecialchars($_POST["targetAccountID"],ENT_QUOTES);
