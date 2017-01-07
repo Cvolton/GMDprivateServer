@@ -1,7 +1,7 @@
 <?php
 include "connection.php";
 require_once "incl/GJPCheck.php";
-$gjp = htmlspecialchars($_POST["accountID"],ENT_QUOTES);
+$accountID = htmlspecialchars($_POST["accountID"],ENT_QUOTES);
 $gjp = htmlspecialchars($_POST["gjp"],ENT_QUOTES);
 $messageID = htmlspecialchars($_POST["messageID"],ENT_QUOTES);
 $query=$db->prepare("select * from messages where messageID = '".$messageID."'");
