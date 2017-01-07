@@ -4,7 +4,7 @@ include "connection.php";
 $page = $_POST["page"];
 $packpage = $page*10;
 $packpageend = $packpage + 9;
-$query = $db->prepare("SELECT * FROM mappacks LIMIT $packpage,$packpageend");
+$query = $db->prepare("SELECT * FROM `mappacks` ORDER BY `ID` ASC LIMIT $packpage,$packpageend");
 $query->execute();
 $result = $query->fetchAll();
 $packcount = $query->rowCount();
