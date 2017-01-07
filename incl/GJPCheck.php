@@ -1,7 +1,7 @@
 <?php
 class GJPCheck {
 	public function check($gjp, $accountID) {
-		require "XORCipher.php";
+		require_once "XORCipher.php";
 		include "connection.php";
 		$xor = new XORCipher();
 		$gjpdecode = $xor->cipher(base64_decode($gjp),37526);
