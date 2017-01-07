@@ -2,12 +2,12 @@
 //error_reporting(0);
 include "connection.php";
 require "incl/GJPCheck.php";
-$gjp = htmlspecialchars($_POST["gjp"],ENT_QUOTES);
-$gameVersion = htmlspecialchars($_POST["gameVersion"],ENT_QUOTES);
-$binaryVersion = htmlspecialchars($_POST["binaryVersion"],ENT_QUOTES);
-$userName = htmlspecialchars($_POST["userName"],ENT_QUOTES);
-$comment = htmlspecialchars($_POST["comment"],ENT_QUOTES);
-$levelID = htmlspecialchars($_POST["levelID"],ENT_QUOTES);
+$gjp = explode("|", explode("~", htmlspecialchars($_POST["gjp"],ENT_QUOTES))[0])[0];
+$gameVersion = explode("|", explode("~", htmlspecialchars($_POST["gameVersion"],ENT_QUOTES))[0])[0];
+$binaryVersion = explode("|", explode("~", htmlspecialchars($_POST["binaryVersion"],ENT_QUOTES))[0])[0];
+$userName = explode("|", explode("~", htmlspecialchars($_POST["userName"],ENT_QUOTES))[0])[0];
+$comment = explode("|", explode("~", htmlspecialchars($_POST["comment"],ENT_QUOTES))[0])[0];
+$levelID = explode("|", explode("~", htmlspecialchars($_POST["levelID"],ENT_QUOTES))[0])[0];
 $accountID = "";
 $id = htmlspecialchars($_POST["udid"],ENT_QUOTES);
 if($_POST["accountID"]!=""){
@@ -33,7 +33,7 @@ $uploadDate = time();
 $decodecomment = base64_decode($comment);
 if(substr($decodecomment,0,5) == '!rate'){
 $hostname = gethostbyaddr($_SERVER['REMOTE_ADDR']);
-$query2 = $db->prepare("SELECT * FROM modIPs WHERE IP = '".$hostname."'");
+$query2 = $db->prepare("SELECT * FROM modips WHERE IP = '".$hostname."'");
 $query2->execute();
 $result = $query2->fetchAll();
 if ($query2->rowCount() > 0) {
@@ -69,7 +69,7 @@ $query->execute();
 }
 if(substr($decodecomment,0,8) == '!feature'){
 $hostname = gethostbyaddr($_SERVER['REMOTE_ADDR']);
-$query2 = $db->prepare("SELECT * FROM modIPs WHERE IP = '".$hostname."'");
+$query2 = $db->prepare("SELECT * FROM modips WHERE IP = '".$hostname."'");
 $query2->execute();
 $result = $query2->fetchAll();
 if ($query2->rowCount() > 0) {
@@ -79,7 +79,7 @@ $query->execute();
 }
 if(substr($decodecomment,0,12) == '!verifycoins'){
 $hostname = gethostbyaddr($_SERVER['REMOTE_ADDR']);
-$query2 = $db->prepare("SELECT * FROM modIPs WHERE IP = '".$hostname."'");
+$query2 = $db->prepare("SELECT * FROM modips WHERE IP = '".$hostname."'");
 $query2->execute();
 $result = $query2->fetchAll();
 if ($query2->rowCount() > 0) {
@@ -89,7 +89,7 @@ $query->execute();
 }
 if(substr($decodecomment,0,7) == '!delete'){
 $hostname = gethostbyaddr($_SERVER['REMOTE_ADDR']);
-$query2 = $db->prepare("SELECT * FROM modIPs WHERE IP = '".$hostname."'");
+$query2 = $db->prepare("SELECT * FROM modips WHERE IP = '".$hostname."'");
 $query2->execute();
 $result = $query2->fetchAll();
 if ($query2->rowCount() > 0) {
