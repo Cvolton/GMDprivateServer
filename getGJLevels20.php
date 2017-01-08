@@ -276,7 +276,10 @@ if($type == 10){
 				if ($colonmarker != 1337){
 					$levelsstring = $levelsstring . "|";
 				}
-				$query12 = $db->prepare("SELECT * FROM users WHERE userID = '".$level1["userID"]."'");
+				if($result["songID"]!=0){
+					array_push($songs, $result["songID"]);
+				}
+				$query12 = $db->prepare("SELECT * FROM users WHERE userID = '".$result["userID"]."'");
 				$query12->execute();
 				$result12 = $query12->fetchAll();
 				if ($query12->rowCount() > 0) {
@@ -288,23 +291,23 @@ if($type == 10){
 					$userIDnumba = 0;
 				}
 				}
-				$levelsstring = $levelsstring . $result["userID"] . ":" . $level1["userName"] . ":" . $userIDnumba;
-				if($result["songID"]!=0){
-					$query3=$db->prepare("select * from songs where ID = ".$result["songID"]);
-					$query3->execute();
-					$result3 = $query3->fetchAll();
-					$result4 = $result3[0];
-					if($songcolonmarker != 1337){
-						$songsstring = $songsstring . ":";
-					}
-					$songsstring = $songsstring . "1~|~".$result4["ID"]."~|~2~|~".$result4["name"]."~|~3~|~".$result4["authorID"]."~|~4~|~".$result4["authorName"]."~|~5~|~".$result4["size"]."~|~6~|~~|~10~|~".$result4["download"]."~|~7~|~~|~8~|~0";
-					$songcolonmarker = 1335;
-				}
+				$levelsstring = $levelsstring . $result["userID"] . ":" . $result["userName"] . ":" . $userIDnumba;
 				$userid = $userid + 1;
 				$colonmarker = 1335;
 	}
 	echo "#".$levelsstring;
-	echo "#".$songsstring;
+	echo "#";
+/*		foreach ($songs as $key => $value) {
+			$query3=$db->prepare("select * from songs where ID = ".$value." ORDER BY ID ASC");
+			$query3->execute();
+			$result3 = $query3->fetchAll();
+			$result4 = $result3[0];
+			if($songcolonmarker != 1337){
+				echo ":";
+			}
+			$songcolonmarker = 1335;
+			echo "~1~|~".$result4["ID"]."~|~2~|~".$result4["name"]."~|~3~|~".$result4["authorID"]."~|~4~|~".$result4["authorName"]."~|~5~|~".$result4["size"]."~|~6~|~~|~10~|~".$result4["download"]."~|~7~|~~|~8~|~0~";
+		}*/
 	echo "#1:0:10";
 }
 ?>
