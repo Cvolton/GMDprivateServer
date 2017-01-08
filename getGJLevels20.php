@@ -175,7 +175,7 @@ if($type != 10){
 		$query = "SELECT * FROM levels ". $additional . " ORDER BY uploadDate DESC LIMIT ".$lvlpagea.",".$lvlpageaend."";
 	}
     if($type==5){
-		$query = "SELECT * FROM levels WHERE userID = '".$str."'ORDER BY likes DESC LIMIT ".$lvlpagea.",".$lvlpageaend."";
+		$query = "SELECT * FROM levels WHERE userID = '".$str."'ORDER BY uploadDate DESC LIMIT ".$lvlpagea.",".$lvlpageaend."";
 	}
 	if($type==6){
 		$query = "SELECT * FROM levels WHERE NOT starFeatured = 0 ".$additionalnowhere." ORDER BY uploadDate DESC LIMIT ".$lvlpagea.",".$lvlpageaend."";
