@@ -8,6 +8,8 @@ if(!is_numeric($levelID)){
 }else{
 $query=$db->prepare("select * from levels where levelID = '".$levelID."'");
 $query->execute();
+$lvls = $query->rowCount();
+if($lvls!=0){
 $result2 = $query->fetchAll();
 $result = $result2[0];
 //getting the days since uploaded... or outputting the date in Y-M-D format at least for now...
@@ -22,5 +24,8 @@ echo "1:".$result["levelID"].":2:".$result["levelName"].":3:".$result["levelDesc
 $downloads = $result["downloads"] + 1;
 $query2=$db->prepare("UPDATE levels SET downloads = ".$downloads." WHERE levelID = ".$levelID.";");
 $query2->execute();
+}else{
+	echo -1;
+}
 }
 ?>
