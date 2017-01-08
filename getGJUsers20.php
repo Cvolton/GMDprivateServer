@@ -24,4 +24,4 @@ $str = htmlspecialchars($_POST["str"], ENT_QUOTES);
 		echo "#".$totalusrcount.":".$usrpagea.":10";
 	}
 	}
-?>	
+?>

@@ -1,9 +1,29 @@
 <?php
 include "connection.php";
-	//$me = 249;
-	//$extid=249;
-	$me = htmlspecialchars($_POST["accountID"],ENT_QUOTES);
-	$extid = htmlspecialchars($_POST["targetAccountID"],ENT_QUOTES);
+$me = htmlspecialchars($_POST["accountID"],ENT_QUOTES);
+$extid = htmlspecialchars($_POST["targetAccountID"],ENT_QUOTES);
+//checking who has blocked him
+$query = "SELECT * FROM accounts WHERE accountID = '$extid'";
+$query = $db->prepare($query);
+$query->execute();
+$result = $query->fetchAll();
+$accinfo = $result[0];
+$blockedBy = $accinfo["blockedBy"];
+//echo "SES ".$me." A ON MA ZABLOKOVANY ".$blockedBy." JASNY";
+$blockedBy = explode(",",$blockedBy);
+//checking who he has blocked
+$query = "SELECT * FROM accounts WHERE accountID = '$extid'";
+$query = $db->prepare($query);
+$query->execute();
+$result = $query->fetchAll();
+$accinfo = $result[0];
+//var_dump($accinfo);
+$blocked = $accinfo["blocked"];
+$blocked = explode(",",$blocked);
+//echo "SES " . $me . "A ON MA NA BLOCK LISTU ";
+//var_dump($blocked);
+if(!in_array($me, $blockedBy, true)){
+if(!in_array($me, $blocked, true)){
 	$query = "SELECT * FROM users WHERE extID = '".$extid."'";
 	$query = $db->prepare($query);
 	$query->execute();
@@ -82,4 +102,6 @@ include "connection.php";
 			echo ":32:".$request["ID"].":35:".$request["comment"].":37:".$uploaddate;
 		}
 		}
+}else{echo "-1";}
+}else{echo "-1";}
 ?>
