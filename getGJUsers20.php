@@ -1,7 +1,7 @@
 <?php
 include "connection.php";
-$str = htmlspecialchars($_POST["str"], ENT_QUOTES);
-	$page = htmlspecialchars($_POST["page"],ENT_QUOTES);
+$str = explode(";", htmlspecialchars($_POST["str"], ENT_QUOTES))[0];
+	$page = explode(";", htmlspecialchars($_POST["page"],ENT_QUOTES))[0];
 	$usrpagea = $page*10;
 	$usrpageaend = $usrpagea +9;
 	$query = "SELECT * FROM users WHERE userName LIKE '".$str."%' ORDER BY stars DESC LIMIT ".$usrpagea.",".$usrpageaend."";

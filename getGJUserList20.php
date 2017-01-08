@@ -2,9 +2,9 @@
 include "connection.php";
 require_once "incl/GJPCheck.php";
 $GJPCheck = new GJPCheck();
-$accountID = htmlspecialchars($_POST["accountID"],ENT_QUOTES);
-$gjp = htmlspecialchars($_POST["gjp"],ENT_QUOTES);
-$type = htmlspecialchars($_POST["type"],ENT_QUOTES);
+$accountID = explode(";", htmlspecialchars($_POST["accountID"],ENT_QUOTES))[0];
+$gjp = explode(";", htmlspecialchars($_POST["gjp"],ENT_QUOTES))[0];
+$type = explode(";", htmlspecialchars($_POST["type"],ENT_QUOTES))[0];
 	$query = "SELECT * FROM accounts WHERE accountID = '$accountID'";
 	$query = $db->prepare($query);
 	$query->execute();

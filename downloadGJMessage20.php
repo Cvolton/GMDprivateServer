@@ -1,9 +1,9 @@
 <?php
 include "connection.php";
 require_once "incl/GJPCheck.php";
-$accountID = htmlspecialchars($_POST["accountID"],ENT_QUOTES);
-$gjp = htmlspecialchars($_POST["gjp"],ENT_QUOTES);
-$messageID = htmlspecialchars($_POST["messageID"],ENT_QUOTES);
+$accountID = explode(";", htmlspecialchars($_POST["accountID"],ENT_QUOTES))[0];
+$gjp = explode(";", htmlspecialchars($_POST["gjp"],ENT_QUOTES))[0];
+$messageID = explode(";", htmlspecialchars($_POST["messageID"],ENT_QUOTES))[0];
 $query=$db->prepare("select * from messages where messageID = '".$messageID."'");
 $query->execute();
 $result2 = $query->fetchAll();

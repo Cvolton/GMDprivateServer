@@ -3,9 +3,9 @@
 include "connection.php";
 require_once "incl/GJPCheck.php";
 //here im getting all the data
-$accountID = htmlspecialchars($_POST["accountID"],ENT_QUOTES);
-$gjp = htmlspecialchars($_POST["gjp"],ENT_QUOTES);
-$targetAccountID = htmlspecialchars($_POST["targetAccountID"],ENT_QUOTES);
+$accountID = explode(";", htmlspecialchars($_POST["accountID"],ENT_QUOTES))[0];
+$gjp = explode(";", htmlspecialchars($_POST["gjp"],ENT_QUOTES))[0];
+$targetAccountID = explode(";", htmlspecialchars($_POST["targetAccountID"],ENT_QUOTES))[0];
 $uploadDate = time();
 /*
 			PERSON 1 BLOCK

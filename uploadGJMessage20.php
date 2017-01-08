@@ -2,14 +2,14 @@
 //error_reporting(0);
 include "connection.php";
 require_once "incl/GJPCheck.php";
-$gjp = htmlspecialchars($_POST["gjp"],ENT_QUOTES);
-$gameVersion = htmlspecialchars($_POST["gameVersion"],ENT_QUOTES);
-$binaryVersion = htmlspecialchars($_POST["binaryVersion"],ENT_QUOTES);
-$secret = htmlspecialchars($_POST["secret"],ENT_QUOTES);
-$subject = htmlspecialchars($_POST["subject"],ENT_QUOTES);
-$toAccountID = htmlspecialchars($_POST["toAccountID"],ENT_QUOTES);
-$body = htmlspecialchars($_POST["body"],ENT_QUOTES);
-$accID = htmlspecialchars($_POST["accountID"],ENT_QUOTES);
+$gjp =  explode(";", htmlspecialchars($_POST["gjp"],ENT_QUOTES))[0];
+$gameVersion =  explode(";", htmlspecialchars($_POST["gameVersion"],ENT_QUOTES))[0];
+$binaryVersion =  explode(";", htmlspecialchars($_POST["binaryVersion"],ENT_QUOTES))[0];
+$secret =  explode(";", htmlspecialchars($_POST["secret"],ENT_QUOTES))[0];
+$subject =  explode(";", htmlspecialchars($_POST["subject"],ENT_QUOTES))[0];
+$toAccountID =  explode(";", htmlspecialchars($_POST["toAccountID"],ENT_QUOTES))[0];
+$body =  explode(";", htmlspecialchars($_POST["body"],ENT_QUOTES))[0];
+$accID =  explode(";", htmlspecialchars($_POST["accountID"],ENT_QUOTES))[0];
 
 $query3 = "SELECT * FROM users WHERE extID = '".$accID."' ORDER BY userName DESC";
 $query3 = $db->prepare($query3);
@@ -20,9 +20,9 @@ $userName = $result69["userName"];
 
 //continuing the accounts system
 $accountID = "";
-$id = htmlspecialchars($_POST["udid"],ENT_QUOTES);
+$id = $accID =  explode(";", htmlspecialchars($_POST["udid"],ENT_QUOTES))[0];
 if($_POST["accountID"]!=""){
-	$id = htmlspecialchars($_POST["accountID"],ENT_QUOTES);
+	$id = explode(";", htmlspecialchars($_POST["accountID"],ENT_QUOTES))[0];
 	$register = 1;
 }else{
 	$register = 0;

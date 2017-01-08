@@ -2,9 +2,9 @@
 include "connection.php";
 $levelsstring = "";
 $songsstring  = "";
-$getSent = htmlspecialchars($_POST["getSent"],ENT_QUOTES);
-$accountID = htmlspecialchars($_POST["accountID"],ENT_QUOTES);
-$page = htmlspecialchars($_POST["page"],ENT_QUOTES);
+$getSent = explode(";", htmlspecialchars($_POST["getSent"],ENT_QUOTES))[0];
+$accountID = explode(";", htmlspecialchars($_POST["accountID"],ENT_QUOTES))[0];
+$page = explode(";", htmlspecialchars($_POST["page"],ENT_QUOTES))[0];
 if($getSent == 0){
 	$query = "SELECT * FROM friendreqs WHERE toAccountID = '$accountID'";
 }else if($getSent == 1){

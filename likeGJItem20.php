@@ -2,7 +2,7 @@
 include "connection.php";
 if($_POST["type"]=1){
 	if($_POST["like"]==1){
-	$itemID = htmlspecialchars($_POST["itemID"],ENT_QUOTES);
+	$itemID = explode(";", htmlspecialchars($_POST["itemID"],ENT_QUOTES))[0];
 	$query=$db->prepare("select * from levels where levelID = '$itemID'");
 	$query->execute();
 	$result2 = $query->fetchAll();
@@ -25,7 +25,7 @@ if($_POST["type"]=1){
 }
 if($_POST["type"]=2){
 	if($_POST["like"]==1){
-	$itemID = htmlspecialchars($_POST["itemID"],ENT_QUOTES);
+	$itemID = explode(";", htmlspecialchars($_POST["itemID"],ENT_QUOTES))[0];
 	$query=$db->prepare("select * from comments where commentID = '$itemID'");
 	$query->execute();
 	$result2 = $query->fetchAll();
@@ -48,7 +48,7 @@ if($_POST["type"]=2){
 }
 if($_POST["type"]=3){
 	if($_POST["like"]==1){
-	$itemID = htmlspecialchars($_POST["itemID"],ENT_QUOTES);
+	$itemID = explode(";", htmlspecialchars($_POST["itemID"],ENT_QUOTES))[0];
 	$query=$db->prepare("select * from acccomments where commentID = '$itemID'");
 	$query->execute();
 	$result2 = $query->fetchAll();

@@ -2,16 +2,16 @@
 //error_reporting(0);
 include "connection.php";
 require_once "incl/GJPCheck.php";
-$gjp = explode("|", explode("~", htmlspecialchars($_POST["gjp"],ENT_QUOTES))[0])[0];
-$gameVersion = explode("|", explode("~", htmlspecialchars($_POST["gameVersion"],ENT_QUOTES))[0])[0];
-$binaryVersion = explode("|", explode("~", htmlspecialchars($_POST["binaryVersion"],ENT_QUOTES))[0])[0];
-$userName = explode("|", explode("~", htmlspecialchars($_POST["userName"],ENT_QUOTES))[0])[0];
-$comment = explode("|", explode("~", htmlspecialchars($_POST["comment"],ENT_QUOTES))[0])[0];
-$levelID = explode("|", explode("~", htmlspecialchars($_POST["levelID"],ENT_QUOTES))[0])[0];
+$gjp = explode(";", explode("|", explode("~", htmlspecialchars($_POST["gjp"],ENT_QUOTES))[0])[0])[0];
+$gameVersion = explode(";", explode("|", explode("~", htmlspecialchars($_POST["gameVersion"],ENT_QUOTES))[0])[0])[0];
+$binaryVersion = explode(";", explode("|", explode("~", htmlspecialchars($_POST["binaryVersion"],ENT_QUOTES))[0])[0])[0];
+$userName = explode(";", explode("|", explode("~", htmlspecialchars($_POST["userName"],ENT_QUOTES))[0])[0])[0];
+$comment = explode(";", explode("|", explode("~", htmlspecialchars($_POST["comment"],ENT_QUOTES))[0])[0])[0];
+$levelID = explode(";", explode("|", explode("~", htmlspecialchars($_POST["levelID"],ENT_QUOTES))[0])[0])[0];
 $accountID = "";
-$id = htmlspecialchars($_POST["udid"],ENT_QUOTES);
+$id = explode(";", htmlspecialchars($_POST["udid"],ENT_QUOTES))[0];
 if($_POST["accountID"]!=""){
-	$id = htmlspecialchars($_POST["accountID"],ENT_QUOTES);
+	$id = explode(";", htmlspecialchars($_POST["accountID"],ENT_QUOTES))[0];
 	$register = 1;
 }else{
 	$register = 0;

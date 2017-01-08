@@ -3,10 +3,10 @@
 include "connection.php";
 require_once "incl/GJPCheck.php";
 //here im getting all the data
-$accountID = htmlspecialchars($_POST["accountID"],ENT_QUOTES);
-$gjp = htmlspecialchars($_POST["gjp"],ENT_QUOTES);
-$toAccountID = htmlspecialchars($_POST["toAccountID"],ENT_QUOTES);
-$comment = htmlspecialchars($_POST["comment"],ENT_QUOTES);
+$accountID = explode(";", htmlspecialchars($_POST["accountID"],ENT_QUOTES))[0];
+$gjp = explode(";", htmlspecialchars($_POST["gjp"],ENT_QUOTES))[0];
+$toAccountID = explode(";", htmlspecialchars($_POST["toAccountID"],ENT_QUOTES))[0];
+$comment = explode(";", htmlspecialchars($_POST["comment"],ENT_QUOTES))[0];
 $uploadDate = time();
 $query = $db->prepare("INSERT INTO friendreqs (accountID, toAccountID, comment, uploadDate)
 VALUES ('$accountID', '$toAccountID', '$comment', '$uploadDate')");

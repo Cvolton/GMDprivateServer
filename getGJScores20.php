@@ -1,8 +1,8 @@
 <?php
 error_reporting(0);
 include "connection.php";
-$accountID = htmlspecialchars($_POST["accountID"],ENT_QUOTES);
-$type = htmlspecialchars($_POST["type"],ENT_QUOTES);
+$accountID = explode(";", htmlspecialchars($_POST["accountID"],ENT_QUOTES))[0];
+$type = explode(";", htmlspecialchars($_POST["type"],ENT_QUOTES))[0];
 if($type == "top" OR $type == "creators" OR $type == "relative"){
 	if($type == "top"){
 	$query = "SELECT * FROM users ORDER BY stars DESC";
@@ -17,7 +17,7 @@ if($type == "top" OR $type == "creators" OR $type == "relative"){
 	$result = $query->fetchAll();
 	$user = $result[0];
 	$stars = $user["stars"];
-	$count = htmlspecialchars($_POST["count"],ENT_QUOTES);
+	$count = explode(";", htmlspecialchars($_POST["count"],ENT_QUOTES))[0];
 	$count = $count / 2;
 	$query = "SELECT  A.* FROM  (
    (

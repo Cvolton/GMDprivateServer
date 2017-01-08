@@ -2,7 +2,7 @@
 include "connection.php";
 require "incl/XORCipher.php";
 //$levelID = 2632;
-$levelID = htmlspecialchars($_POST["levelID"],ENT_QUOTES);
+$levelID = explode(";", htmlspecialchars($_POST["levelID"],ENT_QUOTES))[0];
 if(!is_numeric($levelID)){
 	echo -1;
 }else{

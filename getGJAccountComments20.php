@@ -3,12 +3,12 @@ error_reporting(0);
 include "connection.php";
 $levelsstring = "";
 $songsstring  = "";
-$type = htmlspecialchars($_POST["type"],ENT_QUOTES);
+$type = explode(";", htmlspecialchars($_POST["type"],ENT_QUOTES))[0];
 $colonmarker = 1337;
 $songcolonmarker = 1337;
 $userid = 1337;
 //here da code begins
-$accountid = htmlspecialchars($_POST["accountID"],ENT_QUOTES);
+$accountid = explode(";", htmlspecialchars($_POST["accountID"],ENT_QUOTES))[0];
 $query2 = $db->prepare("SELECT * FROM users WHERE extID = '".$accountid."'");
 $query2->execute();
 $result = $query2->fetchAll();
@@ -26,7 +26,7 @@ $query = "SELECT * FROM acccomments WHERE userID = '".$userID."' ORDER BY timeSt
 $query = $db->prepare($query);
 $query->execute();
 $result = $query->fetchAll();
-$page = htmlspecialchars($_POST["page"],ENT_QUOTES);
+$page = explode(";", htmlspecialchars($_POST["page"],ENT_QUOTES))[0];
 for ($x = 0; $x < 9; $x++) {
 	$commentpage = $page*10;
 	$comment1 = $result[$commentpage+$x];
