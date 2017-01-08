@@ -40,6 +40,8 @@ if ($query2->rowCount() > 0) {
 $test = base64_encode("RATING TEST");
 $commentarray = explode(' ', $decodecomment);
 $starStars = $commentarray[2];
+$starCoins = $commentarray[3];
+$starFeatured = $commentarray[4];
 switch ($commentarray[1]) {
     case "easy":
         $starDifficulty = 10;
@@ -57,12 +59,12 @@ switch ($commentarray[1]) {
         $starDifficulty = 50;
         break;
 }
-     $query = $db->prepare("UPDATE levels SET starStars='$starStars', starDifficulty='$starDifficulty', starDemon='0', starAuto='0' WHERE levelID='$levelID'");
+     $query = $db->prepare("UPDATE levels SET starStars='$starStars', starDifficulty='$starDifficulty', starDemon='0', starAuto='0', starFeatured='$starFeatured', starCoins='$starCoins' WHERE levelID='$levelID'");
 if($commentarray[1] == "demon"){
-$query = $db->prepare("UPDATE levels SET starStars='$starStars', starDifficulty='50', starDemon='1', starAuto='0' WHERE levelID='$levelID'");
+$query = $db->prepare("UPDATE levels SET starStars='$starStars', starDifficulty='50', starDemon='1', starAuto='0', starFeatured='$starFeatured', starCoins='$starCoins' WHERE levelID='$levelID'");
 }
 if($commentarray[1] == "auto"){
-$query = $db->prepare("UPDATE levels SET starStars='$starStars', starDifficulty='50', starAuto='1', starDemon='0' WHERE levelID='$levelID'");
+$query = $db->prepare("UPDATE levels SET starStars='$starStars', starDifficulty='50', starAuto='1', starDemon='0', starFeatured='$starFeatured', starCoins='$starCoins' WHERE levelID='$levelID'");
 }
 $query->execute();
 }
@@ -96,10 +98,6 @@ if ($query2->rowCount() > 0) {
 $query = $db->prepare("DELETE from levels WHERE levelID='$levelID' LIMIT 1");
 $query->execute();
 }
-}
-if(substr($decodecomment,0,9) != '!favorite'){
-$query = $db->prepare("INSERT INTO comments (userName, comment, levelID, userID, timeStamp)
-VALUES ('$userName', '$comment', '$levelID', '$userID', '$uploadDate')");
 }
 if(substr($decodecomment,0,1) != '!'){
 $query = $db->prepare("INSERT INTO comments (userName, comment, levelID, userID, timeStamp)
