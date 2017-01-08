@@ -261,12 +261,12 @@ if(is_numeric($userID)){
 	}
 }
 if($type == 10){
-	$arr = explode( ',', explode(";", htmlspecialchars($_POST["str"],ENT_QUOTES) );
+	$arr = explode( ',', explode(";", htmlspecialchars($_POST["str"],ENT_QUOTES))[0]);
 	foreach ($arr as &$value) {
 		if ($colonmarker != 1337){
 			echo "|";
 		}
-		$query=$db->prepare("select * from levels where levelID = ".explode(";", htmlspecialchars($value,ENT_QUOTES));
+		$query=$db->prepare("select * from levels where levelID = ".explode(";", htmlspecialchars($value,ENT_QUOTES))[0]);
 		$query->execute();
 		$result2 = $query->fetchAll();
 		$result = $result2[0];
