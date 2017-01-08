@@ -12,6 +12,7 @@ Base for account settings by someguy28
 Used this for XOR encryption - https://github.com/sathoro/php-xor-cipher - (incl/XORCipher.php)
 
 ### To-do list
+* A major overhaul of the friends system
 * GJP Check
 	* Updating Levels
 	* Moderator system revise
@@ -20,6 +21,8 @@ Used this for XOR encryption - https://github.com/sathoro/php-xor-cipher - (incl
 	* Difficulty Filter
 	* The other filters
 	* Featured not being sorted by date anymore (!feature <position>)
+* Banning system
+	* Autoban
 * Custom Features 
 	* Favorite levels (will be shown as a map pack)
 * 2.01 and 2.1 features (future)

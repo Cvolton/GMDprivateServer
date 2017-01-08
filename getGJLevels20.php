@@ -1,23 +1,27 @@
 <?php
-error_reporting(0);
+//error_reporting(0);
 include "connection.php";
+require_once "incl/GJPCheck.php";
+$GJPCheck = new GJPCheck();
 $levelsstring = "";
 $songsstring  = "";
 $type = htmlspecialchars($_POST["type"],ENT_QUOTES);
 $colonmarker = 1337;
 $songcolonmarker = 1337;
 $userid = 1337;
-if($type == 0 OR $type == 1 OR $type == 2 OR $type == 4 OR $type == 5 OR $type == 6 OR $type == 11){
+if($type != 10){
 	$query = "";
 	$additional = "";
 	$additionalnowhere ="";
+	$len = htmlspecialchars($_POST["len"],ENT_QUOTES);
+	$diff = htmlspecialchars($_POST["diff"],ENT_QUOTES);
 	//ADDITIONAL PARAMETERS
 	if($_POST["featured"]==1){
 		$additional = "WHERE NOT starFeatured = 0 ";
 		$additionalnowhere = "AND NOT starFeatured = 0 ";
 	}
 	if($_POST["original"]==1){
-		if($additional = ""){
+		if($additional == ""){
 			$additional = "WHERE original = 0 ";
 			$additionalnowhere = "AND original = 0 ";
 		}else{
@@ -25,8 +29,43 @@ if($type == 0 OR $type == 1 OR $type == 2 OR $type == 4 OR $type == 5 OR $type =
 			$additionalnowhere = $additional."AND original = 0 ";
 		}
 	}
+	if($_POST["uncompleted"]==1){
+		$completedLevels = htmlspecialchars($_POST["completedLevels"],ENT_QUOTES);
+		$completedLevels = str_replace("(","", $completedLevels);
+		$completedLevels = str_replace(")","", $completedLevels);
+		$completedLevels = str_replace(","," AND NOT levelID = ", $completedLevels);
+		if($additional == ""){
+			$additional = "WHERE NOT levelID = ".$completedLevels." ";
+			$additionalnowhere = "AND NOT levelID = ".$completedLevels." ";
+		}else{
+			$additional = $additional."AND NOT levelID = ".$completedLevels." ";
+			$additionalnowhere = $additional."AND NOT levelID = ".$completedLevels." ";
+		}
+	}
+	if($_POST["song"]!=0){
+		if($_POST["customSong"]==0){
+			$song = htmlspecialchars($_POST["song"],ENT_QUOTES);
+			$song = $song -1;
+			if($additional == ""){
+				$additional = "WHERE audioTrack = ".$song." AND songID <> 0 ";
+				$additionalnowhere = "AND audioTrack = ".$song." AND songID <> 0 ";
+			}else{
+				$additional = $additional."AND audioTrack = ".$song." AND songID <> 0 ";
+				$additionalnowhere = $additional."AND audioTrack = ".$song." AND songID <> 0 ";
+			}
+		}else{
+			$song = htmlspecialchars($_POST["song"],ENT_QUOTES);
+			if($additional == ""){
+				$additional = "WHERE songID = ".$song." ";
+				$additionalnowhere = "AND songID = ".$song." ";
+			}else{
+				$additional = $additional."AND songID = ".$song." ";
+				$additionalnowhere = $additional."AND songID = ".$song." ";
+			}
+		}
+	}
 	if($_POST["twoPlayer"]==1){
-		if($additional = ""){
+		if($additional == ""){
 			$additional = "WHERE twoPlayer = 1 ";
 			$additionalnowhere = "AND twoPlayer = 1 ";
 		}else{
@@ -35,12 +74,78 @@ if($type == 0 OR $type == 1 OR $type == 2 OR $type == 4 OR $type == 5 OR $type =
 		}
 	}
 	if($_POST["star"]==1){
-		if($additional = ""){
+		if($additional == ""){
 			$additional = "WHERE NOT starStars = 0 ";
 			$additionalnowhere = "AND NOT starStars = 0 ";
 		}else{
 			$additional = $additional."AND NOT starStars = 0 ";
 			$additionalnowhere = $additional."AND NOT starStars = 0 ";
+		}
+	}
+	if($_POST["noStar"]==1){
+		if($additional == ""){
+			$additional = "WHERE starStars = 0 ";
+			$additionalnowhere = "AND starStars = 0 ";
+		}else{
+			$additional = $additional."AND starStars = 0 ";
+			$additionalnowhere = $additional."AND starStars = 0 ";
+		}
+	}
+	//DIFFICULTY FILTERS
+	if($diff != "-"){
+		//IF NA
+		if($diff == -1){
+			if($additional == ""){
+				$additional = "WHERE starDifficulty = 0 ";
+				$additionalnowhere = "AND starDifficulty = 0 ";
+			}else{
+				$additional = $additional."AND starDifficulty = 0 ";
+				$additionalnowhere = $additional."AND starDifficulty = 0 ";
+			}
+		}else if($diff == -3){
+			if($additional == ""){
+				$additional = "WHERE starAuto = 1 ";
+				$additionalnowhere = "AND starAuto = 1 ";
+			}else{
+				$additional = $additional."AND starAuto = 1 ";
+				$additionalnowhere = $additional."AND starAuto = 1 ";
+			}
+		}else if($diff == -2){
+			if($additional == ""){
+				$additional = "WHERE starDemon = 1 ";
+				$additionalnowhere = "AND starDemon = 1 ";
+			}else{
+				$additional = $additional."AND starDemon = 0 ";
+				$additionalnowhere = $additional."AND starDemon = 0 ";
+			}
+		}else{
+			$diffarray = explode(",", $diff);
+			$difficulties = "";
+			foreach ($diffarray as &$difficulty) {
+				if($difficulties != ""){
+					$difficulties = $difficulties . " OR starDifficulty = ";
+				}
+				$newdiff = $difficulty * 10;
+				$difficulties = $difficulties . $newdiff;
+			}
+			if($additional == ""){
+				$additional = "WHERE starAuto = 0 AND starDemon = 0 AND starDifficulty = ".$difficulties." ";
+				$additionalnowhere = "AND starAuto = 0 AND starDemon = 0 AND starDifficulty = ".$difficulties." ";
+			}else{
+				$additional = $additional."AND starAuto = 0 AND starDemon = 0 AND starDifficulty = ".$difficulties." ";
+				$additionalnowhere = $additional."AND starAuto = 0 AND starDemon = 0 AND starDifficulty = ".$difficulties." ";
+			}
+		}
+	}
+	//LENGTH FILTERS
+	if($len != "-"){
+		$len = str_replace(",", " OR levelLength = ", $len);
+		if($additional == ""){
+			$additional = "WHERE levelLength = ".$len." ";
+			$additionalnowhere = "AND levelLength = ".$len." ";
+		}else{
+			$additional = $additional."AND levelLength = ".$len." ";
+			$additionalnowhere = $additional."AND levelLength = ".$len." ";
 		}
 	}
 	//TYPE DETECTION
@@ -62,18 +167,47 @@ if($type == 0 OR $type == 1 OR $type == 2 OR $type == 4 OR $type == 5 OR $type =
 	if($type==2){
 		$query = "SELECT * FROM levels ". $additional . " ORDER BY likes DESC LIMIT ".$lvlpagea.",".$lvlpageaend."";
 	}
-	if($type==4){
+	if($type==3){ //RECENT
+		$uploadDate = time() - (7 * 24 * 60 * 60);
+		$query = "SELECT * FROM levels WHERE uploadDate > ".$uploadDate . " " . $additionalnowhere . " ORDER BY likes DESC LIMIT ".$lvlpagea.",".$lvlpageaend."";
+	}
+	if($type==4){ //RECENT
 		$query = "SELECT * FROM levels ". $additional . " ORDER BY uploadDate DESC LIMIT ".$lvlpagea.",".$lvlpageaend."";
 	}
-        if($type==5){
+    if($type==5){
 		$query = "SELECT * FROM levels WHERE userID = '".$str."'ORDER BY likes DESC LIMIT ".$lvlpagea.",".$lvlpageaend."";
 	}
 	if($type==6){
 		$query = "SELECT * FROM levels WHERE NOT starFeatured = 0 ".$additionalnowhere." ORDER BY uploadDate DESC LIMIT ".$lvlpagea.",".$lvlpageaend."";
 	}
+	if($type==7){ //MAGIC
+		$query = "SELECT * FROM levels WHERE objects > 9999 ". $additionalnowhere . " ORDER BY uploadDate DESC LIMIT ".$lvlpagea.",".$lvlpageaend."";
+	}
 	if($type==11){
 		$query = "SELECT * FROM levels WHERE NOT starStars = 0 ".$additionalnowhere." ORDER BY uploadDate DESC LIMIT ".$lvlpagea.",".$lvlpageaend."";
 	}
+	if($type==12){ //FOLLOWED
+		$followed = htmlspecialchars($_POST["followed"],ENT_QUOTES);
+		$whereor = str_replace(",", " OR extID = ", $followed);
+		$query = "SELECT * FROM levels WHERE extID = ".$whereor." ".$additionalnowhere." ORDER BY uploadDate DESC LIMIT ".$lvlpagea.",".$lvlpageaend."";
+	}
+	if($type==13){ //FRIENDS
+		$accountID = htmlspecialchars($_POST["accountID"],ENT_QUOTES);
+		$gjp = htmlspecialchars($_POST["gjp"],ENT_QUOTES);
+		$gjpresult = $GJPCheck->check($gjp,$accountID);
+		if($gjpresult == 1){
+			$query = "SELECT * FROM accounts WHERE accountID = '$accountID'";
+			$query = $db->prepare($query);
+			$query->execute();
+			$result = $query->fetchAll();
+			$account = $result[0];
+			$friendlist = $account["friends"];
+			$friendsarray = explode(",", $friendlist);
+			$whereor = str_replace(",", " OR extID = ", $friendlist);
+			$query = "SELECT * FROM levels WHERE extID = ".$whereor." ".$additionalnowhere." ORDER BY uploadDate DESC LIMIT ".$lvlpagea.",".$lvlpageaend."";
+		}
+	}
+	//echo $query;
 	$query = $db->prepare($query);
 	$query->execute();
 	$result = $query->fetchAll();
