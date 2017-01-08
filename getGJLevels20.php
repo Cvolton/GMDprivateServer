@@ -33,13 +33,13 @@ if($type != 10){
 		$completedLevels = explode(";", htmlspecialchars($_POST["completedLevels"],ENT_QUOTES))[0];
 		$completedLevels = str_replace("(","", $completedLevels);
 		$completedLevels = str_replace(")","", $completedLevels);
-		$completedLevels = str_replace(","," AND NOT levelID = ", $completedLevels);
+		$completedLevels = str_replace(",","' AND NOT levelID = '", $completedLevels);
 		if($additional == ""){
-			$additional = "WHERE NOT levelID = ".$completedLevels." ";
-			$additionalnowhere = "AND NOT levelID = ".$completedLevels." ";
+			$additional = "WHERE NOT levelID = '".$completedLevels."' ";
+			$additionalnowhere = "AND NOT levelID = '".$completedLevels."' ";
 		}else{
-			$additional = $additional."AND NOT levelID = ".$completedLevels." ";
-			$additionalnowhere = $additional."AND NOT levelID = ".$completedLevels." ";
+			$additional = $additional."AND NOT levelID = '".$completedLevels."' ";
+			$additionalnowhere = $additional."AND NOT levelID = '".$completedLevels."' ";
 		}
 	}
 	if($_POST["song"]!=0){
@@ -47,20 +47,20 @@ if($type != 10){
 			$song = explode(";", htmlspecialchars($_POST["song"],ENT_QUOTES))[0];
 			$song = $song -1;
 			if($additional == ""){
-				$additional = "WHERE audioTrack = ".$song." AND songID <> 0 ";
-				$additionalnowhere = "AND audioTrack = ".$song." AND songID <> 0 ";
+				$additional = "WHERE audioTrack = '".$song."' AND songID <> 0 ";
+				$additionalnowhere = "AND audioTrack = '".$song."' AND songID <> 0 ";
 			}else{
-				$additional = $additional."AND audioTrack = ".$song." AND songID <> 0 ";
-				$additionalnowhere = $additional."AND audioTrack = ".$song." AND songID <> 0 ";
+				$additional = $additional."AND audioTrack = '".$song."' AND songID <> 0 ";
+				$additionalnowhere = $additional."AND audioTrack = '".$song."' AND songID <> 0 ";
 			}
 		}else{
 			$song = explode(";", htmlspecialchars($_POST["song"],ENT_QUOTES))[0];
 			if($additional == ""){
-				$additional = "WHERE songID = ".$song." ";
-				$additionalnowhere = "AND songID = ".$song." ";
+				$additional = "WHERE songID = '".$song."' ";
+				$additionalnowhere = "AND songID = '".$song."' ";
 			}else{
-				$additional = $additional."AND songID = ".$song." ";
-				$additionalnowhere = $additional."AND songID = ".$song." ";
+				$additional = $additional."AND songID = '".$song."' ";
+				$additionalnowhere = $additional."AND songID = '".$song."' ";
 			}
 		}
 	}
@@ -123,29 +123,29 @@ if($type != 10){
 			$difficulties = "";
 			foreach ($diffarray as &$difficulty) {
 				if($difficulties != ""){
-					$difficulties = $difficulties . " OR starDifficulty = ";
+					$difficulties = $difficulties . "' OR starDifficulty = '";
 				}
 				$newdiff = $difficulty * 10;
 				$difficulties = $difficulties . $newdiff;
 			}
 			if($additional == ""){
-				$additional = "WHERE starAuto = 0 AND starDemon = 0 AND starDifficulty = ".$difficulties." ";
-				$additionalnowhere = "AND starAuto = 0 AND starDemon = 0 AND starDifficulty = ".$difficulties." ";
+				$additional = "WHERE starAuto = 0 AND starDemon = 0 AND starDifficulty = '".$difficulties."' ";
+				$additionalnowhere = "AND starAuto = 0 AND starDemon = 0 AND starDifficulty = '".$difficulties."' ";
 			}else{
-				$additional = $additional."AND starAuto = 0 AND starDemon = 0 AND starDifficulty = ".$difficulties." ";
-				$additionalnowhere = $additional."AND starAuto = 0 AND starDemon = 0 AND starDifficulty = ".$difficulties." ";
+				$additional = $additional."AND starAuto = 0 AND starDemon = 0 AND starDifficulty = '".$difficulties."' ";
+				$additionalnowhere = $additional."AND starAuto = 0 AND starDemon = 0 AND starDifficulty = '".$difficulties."' ";
 			}
 		}
 	}
 	//LENGTH FILTERS
 	if($len != "-"){
-		$len = str_replace(",", " OR levelLength = ", $len);
+		$len = str_replace(",", "' OR levelLength = '", $len);
 		if($additional == ""){
-			$additional = "WHERE levelLength = ".$len." ";
-			$additionalnowhere = "AND levelLength = ".$len." ";
+			$additional = "WHERE levelLength = '".$len."' ";
+			$additionalnowhere = "AND levelLength = '".$len."' ";
 		}else{
-			$additional = $additional."AND levelLength = ".$len." ";
-			$additionalnowhere = $additional."AND levelLength = ".$len." ";
+			$additional = $additional."AND levelLength = '".$len."' ";
+			$additionalnowhere = $additional."AND levelLength = '".$len."' ";
 		}
 	}
 	//TYPE DETECTION
