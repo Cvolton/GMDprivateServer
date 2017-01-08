@@ -7,10 +7,11 @@ $password = md5($_POST["password"] . "epithewoihewh577667675765768rhtre67hre687c
 $email = htmlspecialchars($_POST["email"],ENT_QUOTES);
 $secret = "";
 //checking if name is taken
-$query2 = $db->prepare("SELECT * FROM accounts WHERE userName='$username'");
+$query2 = $db->prepare("SELECT * FROM accounts WHERE userName='$userName'");
 
 $query2->execute();
-if ($query2->rowCount() > 0) {
+$regusrs = $query2->rowCount();
+if ($regusrs > 0) {
 echo "-1";
 }else{
 //registering
