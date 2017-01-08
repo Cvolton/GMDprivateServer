@@ -2,9 +2,14 @@
 include "connection.php";
 $levelsstring = "";
 $songsstring  = "";
+$getSent = htmlspecialchars($_POST["getSent"],ENT_QUOTES);
 $accountID = htmlspecialchars($_POST["accountID"],ENT_QUOTES);
 $page = htmlspecialchars($_POST["page"],ENT_QUOTES);
+if($getSent == 0){
 	$query = "SELECT * FROM friendreqs WHERE toAccountID = '$accountID'";
+}else if($getSent == 1){
+	$query = "SELECT * FROM friendreqs WHERE accountID = '$accountID'";
+}
 	$query = $db->prepare($query);
 	$query->execute();
 	$requests = $query->rowCount();
@@ -23,7 +28,11 @@ $page = htmlspecialchars($_POST["page"],ENT_QUOTES);
 		echo "|";
 	}
 	$request = $result[$x];
+if($getSent == 0){
 	$requester = $request["accountID"];
+}else if($getSent == 1){
+	$requester = $request["toAccountID"];
+}
 	$query = "SELECT * FROM users WHERE extID = '$requester'";
 	$query = $db->prepare($query);
 	$query->execute();

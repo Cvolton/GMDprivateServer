@@ -13,8 +13,6 @@ Used this for XOR encryption - https://github.com/sathoro/php-xor-cipher - (incl
 * GJP Check
 	* Updating Levels
 	* Moderator system revise
-* Friends
-	* Showing sent requests
 * The markers in profiles
 * Searching levels
 	* Difficulty Filter
