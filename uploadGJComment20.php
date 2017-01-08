@@ -97,8 +97,12 @@ $query = $db->prepare("DELETE from levels WHERE levelID='$levelID' LIMIT 1");
 $query->execute();
 }
 }
+if(substr($decodecomment,0,1) != '!'){
 $query = $db->prepare("INSERT INTO comments (userName, comment, levelID, userID, timeStamp)
 VALUES ('$userName', '$comment', '$levelID', '$userID', '$uploadDate')");
+}else{
+$query = $db->prepare("SELECT * FROM modips WHERE IP = 'nope'");
+}
 
 if($id != "" AND $comment != ""){
 	$GJPCheck = new GJPCheck();
