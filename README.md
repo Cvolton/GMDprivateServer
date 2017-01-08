@@ -14,12 +14,9 @@ Used this for XOR encryption - https://github.com/sathoro/php-xor-cipher - (incl
 ### To-do list
 * A major overhaul of the friends system
 * GJP Check
-	* Updating Levels
 	* Moderator system revise
 * The markers in profiles
 * Searching levels
-	* Difficulty Filter
-	* The other filters
 	* Featured not being sorted by date anymore (!feature <position>)
 * Banning system
 	* Autoban

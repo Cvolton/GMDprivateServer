@@ -52,13 +52,26 @@ $uploadDate = time();
 $query = $db->prepare("INSERT INTO levels (levelName, gameVersion, binaryVersion, userName, levelDesc, levelVersion, levelLength, audioTrack, auto, password, original, twoPlayer, songID, objects, coins, requestedStars, extraString, levelString, levelInfo, secret, uploadDate, userID, extID)
 VALUES ('$levelName','$gameVersion', '$binaryVersion', '$userName', '$levelDesc', '$levelVersion', '$levelLength', '$audioTrack', '$auto', '$password', '$original', '$twoPlayer', '$songID', '$objects', '$coins', '$requestedStars', '$extraString', '$levelString', '$levelInfo', '$secret', '$uploadDate','$userID', '$id')");
 
+
 if($levelString != "" AND $levelName != ""){
 	$GJPCheck = new GJPCheck();
 	$gjpresult = $GJPCheck->check($gjp,$id);
 	if($register ==1){
 	if($gjpresult == 1){
-		$query->execute();
-		echo $db->lastInsertId();
+		$querye=$db->prepare("select * from levels where levelName = '".$levelName."' AND userID = ".$userID."");
+		$querye->execute();
+		$resulte = $querye->fetchAll();
+		$levele = $resulte[0];
+		$levelID = $levele["levelID"];
+		$lvls = $querye->rowCount();
+		if($lvls==1){
+			$query = $db->prepare("UPDATE levels SET levelName='$levelName', gameVersion='$gameVersion',  binaryVersion='$binaryVersion', userName='$userName', levelDesc='$levelDesc', levelVersion='$levelVersion', levelLength='$levelLength', audioTrack='$audioTrack', auto='$auto', password='$password', original='$original', twoPlayer='$twoPlayer', songID='$songID', objects='$objects', coins='$coins', requestedStars='$requestedStars', extraString='$extraString', levelString='$levelString', levelInfo='$levelInfo', secret='$secret' WHERE levelName='$levelName' AND extID='$id'");	
+			$query->execute();
+			echo $levelID;
+		}else{
+			$query->execute();
+			echo $db->lastInsertId();	
+		}
 	}else{
 		echo -1;
 	}
