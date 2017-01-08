@@ -3,6 +3,9 @@ include "connection.php";
 require "incl/XORCipher.php";
 //$levelID = 2632;
 $levelID = htmlspecialchars($_POST["levelID"],ENT_QUOTES);
+if(!is_numeric($levelID)){
+	echo -1;
+}else{
 $query=$db->prepare("select * from levels where levelID = '".$levelID."'");
 $query->execute();
 $result2 = $query->fetchAll();
@@ -19,4 +22,5 @@ echo "1:".$result["levelID"].":2:".$result["levelName"].":3:".$result["levelDesc
 $downloads = $result["downloads"] + 1;
 $query2=$db->prepare("UPDATE levels SET downloads = ".$downloads." WHERE levelID = ".$levelID.";");
 $query2->execute();
+}
 ?>
