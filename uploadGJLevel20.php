@@ -41,8 +41,8 @@ if ($query2->rowCount() > 0) {
 $userIDalmost = $result[0];
 $userID = $userIDalmost[1];
 } else {
-$query = $db->prepare("INSERT INTO users (isRegistered, extID)
-VALUES ('$register','$id')");
+$query = $db->prepare("INSERT INTO users (isRegistered, extID, userName)
+VALUES ('$register','$id', '$userName')");
 
 $query->execute();
 $userID = $db->lastInsertId();

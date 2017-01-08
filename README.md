@@ -20,8 +20,6 @@ Used this for XOR encryption - https://github.com/sathoro/php-xor-cipher - (incl
 	* Difficulty Filter
 	* The other filters
 	* Featured not being sorted by date anymore (!feature <position>)
-* Accounts
-	* Account settings
 * Custom Features 
 	* Favorite levels (will be shown as a map pack)
 * 2.01 and 2.1 features (future)
