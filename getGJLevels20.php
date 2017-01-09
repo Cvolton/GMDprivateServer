@@ -160,7 +160,7 @@ if($type != 10){
 	}
 	$page = explode(";", htmlspecialchars($_POST["page"],ENT_QUOTES))[0];
 	$lvlpagea = $page*10;
-	$lvlpageaend = $lvlpagea +9;
+	$lvlpageaend = $lvlpagea +10;
 	if($type==1){
 		$query = "SELECT * FROM levels ". $additional . " ORDER BY downloads DESC LIMIT ".$lvlpagea.",".$lvlpageaend."";
 	}
