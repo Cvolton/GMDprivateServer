@@ -1,7 +1,7 @@
 <?php
 include "connection.php";
-$me = explode(";", htmlspecialchars($_POST["accountID"],ENT_QUOTES))[0];
-$extid = explode(";", htmlspecialchars($_POST["targetAccountID"],ENT_QUOTES))[0];
+$me = explode("(", explode(";", htmlspecialchars($_POST["accountID"],ENT_QUOTES))[0])[0];
+$extid = explode("(", explode(";", htmlspecialchars($_POST["targetAccountID"],ENT_QUOTES))[0])[0];
 //checking who has blocked him
 $query = "SELECT * FROM accounts WHERE accountID = '$extid'";
 $query = $db->prepare($query);

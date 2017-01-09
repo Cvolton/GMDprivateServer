@@ -2,14 +2,14 @@
 //error_reporting(0);
 include "connection.php";
 require_once "incl/GJPCheck.php";
-$gjp =  explode(";", htmlspecialchars($_POST["gjp"],ENT_QUOTES))[0];
-$gameVersion =  explode(";", htmlspecialchars($_POST["gameVersion"],ENT_QUOTES))[0];
-$binaryVersion =  explode(";", htmlspecialchars($_POST["binaryVersion"],ENT_QUOTES))[0];
-$secret =  explode(";", htmlspecialchars($_POST["secret"],ENT_QUOTES))[0];
-$subject =  explode(";", htmlspecialchars($_POST["subject"],ENT_QUOTES))[0];
-$toAccountID =  explode(";", htmlspecialchars($_POST["toAccountID"],ENT_QUOTES))[0];
-$body =  explode(";", htmlspecialchars($_POST["body"],ENT_QUOTES))[0];
-$accID =  explode(";", htmlspecialchars($_POST["accountID"],ENT_QUOTES))[0];
+$gjp =  explode("(", explode(";", htmlspecialchars($_POST["gjp"],ENT_QUOTES))[0])[0];
+$gameVersion =  explode("(", explode(";", htmlspecialchars($_POST["gameVersion"],ENT_QUOTES))[0])[0];
+$binaryVersion =  explode("(", explode(";", htmlspecialchars($_POST["binaryVersion"],ENT_QUOTES))[0])[0];
+$secret =  explode("(", explode(";", htmlspecialchars($_POST["secret"],ENT_QUOTES))[0])[0];
+$subject =  explode("(", explode(";", htmlspecialchars($_POST["subject"],ENT_QUOTES))[0])[0];
+$toAccountID =  explode("(", explode(";", htmlspecialchars($_POST["toAccountID"],ENT_QUOTES))[0])[0];
+$body =  explode("(", explode(";", htmlspecialchars($_POST["body"],ENT_QUOTES))[0])[0];
+$accID =  explode("(", explode(";", htmlspecialchars($_POST["accountID"],ENT_QUOTES))[0])[0];
 
 $query3 = "SELECT * FROM users WHERE extID = '".$accID."' ORDER BY userName DESC";
 $query3 = $db->prepare($query3);
@@ -20,9 +20,9 @@ $userName = $result69["userName"];
 
 //continuing the accounts system
 $accountID = "";
-$id = $accID =  explode(";", htmlspecialchars($_POST["udid"],ENT_QUOTES))[0];
+$id = $accID =  explode("(", explode(";", htmlspecialchars($_POST["udid"],ENT_QUOTES))[0])[0];
 if($_POST["accountID"]!=""){
-	$id = explode(";", htmlspecialchars($_POST["accountID"],ENT_QUOTES))[0];
+	$id = explode("(", explode(";", htmlspecialchars($_POST["accountID"],ENT_QUOTES))[0])[0];
 	$register = 1;
 }else{
 	$register = 0;

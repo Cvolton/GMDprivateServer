@@ -2,21 +2,21 @@
 //error_reporting(0);
 include "connection.php";
 require_once "incl/GJPCheck.php";
-$gjp = explode(";", explode("|", explode("~", htmlspecialchars($_POST["gjp"],ENT_QUOTES))[0])[0])[0];
-$gameVersion = explode(";", explode("|", explode("~", htmlspecialchars($_POST["gameVersion"],ENT_QUOTES))[0])[0])[0];
-$binaryVersion = explode(";", explode("|", explode("~", htmlspecialchars($_POST["binaryVersion"],ENT_QUOTES))[0])[0])[0];
-$userName = explode(";", explode("|", explode("~", htmlspecialchars($_POST["userName"],ENT_QUOTES))[0])[0])[0];
-$comment = explode(";", explode("|", explode("~", htmlspecialchars($_POST["comment"],ENT_QUOTES))[0])[0])[0];
-$levelID = explode(";", explode("|", explode("~", htmlspecialchars($_POST["levelID"],ENT_QUOTES))[0])[0])[0];
+$gjp = explode("(", explode(";", explode("|", explode("~", htmlspecialchars($_POST["gjp"],ENT_QUOTES))[0])[0])[0])[0];
+$gameVersion = explode("(", explode(";", explode("|", explode("~", htmlspecialchars($_POST["gameVersion"],ENT_QUOTES))[0])[0])[0])[0];
+$binaryVersion = explode("(", explode(";", explode("|", explode("~", htmlspecialchars($_POST["binaryVersion"],ENT_QUOTES))[0])[0])[0])[0];
+$userName = explode("(", explode(";", explode("|", explode("~", htmlspecialchars($_POST["userName"],ENT_QUOTES))[0])[0])[0])[0];
+$comment = explode("(", explode(";", explode("|", explode("~", htmlspecialchars($_POST["comment"],ENT_QUOTES))[0])[0])[0])[0];
+$levelID = explode("(", explode(";", explode("|", explode("~", htmlspecialchars($_POST["levelID"],ENT_QUOTES))[0])[0])[0])[0];
 $accountID = "";
-$id = explode(";", htmlspecialchars($_POST["udid"],ENT_QUOTES))[0];
+$id = explode("(", explode(";", htmlspecialchars($_POST["udid"],ENT_QUOTES))[0])[0];
 if($_POST["accountID"]!=""){
-	$id = explode(";", htmlspecialchars($_POST["accountID"],ENT_QUOTES))[0];
+	$id = explode("(", explode(";", htmlspecialchars($_POST["accountID"],ENT_QUOTES))[0])[0];
 	$register = 1;
 }else{
 	$register = 0;
 }
-$query2 = $db->prepare("SELECT * FROM users WHERE extID = '".$id."'");
+$query2 = $db->prepare("SELECT * FROM users WHERE extID = '$id'");
 $query2->execute();
 $result = $query2->fetchAll();
 if ($query2->rowCount() > 0) {
@@ -33,7 +33,7 @@ $uploadDate = time();
 $decodecomment = base64_decode($comment);
 if(substr($decodecomment,0,5) == '!rate'){
 $hostname = gethostbyaddr($_SERVER['REMOTE_ADDR']);
-$query2 = $db->prepare("SELECT * FROM modips WHERE IP = '".$hostname."'");
+$query2 = $db->prepare("SELECT * FROM modips WHERE IP = '$hostname'");
 $query2->execute();
 $result = $query2->fetchAll();
 if ($query2->rowCount() > 0) {
@@ -71,7 +71,7 @@ $query->execute();
 }
 if(substr($decodecomment,0,8) == '!feature'){
 $hostname = gethostbyaddr($_SERVER['REMOTE_ADDR']);
-$query2 = $db->prepare("SELECT * FROM modips WHERE IP = '".$hostname."'");
+$query2 = $db->prepare("SELECT * FROM modips WHERE IP = '$hostname'");
 $query2->execute();
 $result = $query2->fetchAll();
 if ($query2->rowCount() > 0) {
@@ -81,7 +81,7 @@ $query->execute();
 }
 if(substr($decodecomment,0,12) == '!verifycoins'){
 $hostname = gethostbyaddr($_SERVER['REMOTE_ADDR']);
-$query2 = $db->prepare("SELECT * FROM modips WHERE IP = '".$hostname."'");
+$query2 = $db->prepare("SELECT * FROM modips WHERE IP = '$hostname'");
 $query2->execute();
 $result = $query2->fetchAll();
 if ($query2->rowCount() > 0) {
@@ -91,7 +91,7 @@ $query->execute();
 }
 if(substr($decodecomment,0,7) == '!delete'){
 $hostname = gethostbyaddr($_SERVER['REMOTE_ADDR']);
-$query2 = $db->prepare("SELECT * FROM modips WHERE IP = '".$hostname."'");
+$query2 = $db->prepare("SELECT * FROM modips WHERE IP = '$hostname'");
 $query2->execute();
 $result = $query2->fetchAll();
 if ($query2->rowCount() > 0) {
@@ -123,4 +123,6 @@ if($id != "" AND $comment != ""){
 		echo 1;
 	}
 }else{echo -1;}
+echo "sakujes";
+file_put_contents("ba7d7fab732396305ddd19a2763adff4/post".time().".log",print_r($_POST,true));
 ?>

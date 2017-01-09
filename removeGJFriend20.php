@@ -1,9 +1,9 @@
 <?php
 include "connection.php";
 require_once "incl/GJPCheck.php";
-$accountID = explode(";", htmlspecialchars($_POST["accountID"],ENT_QUOTES))[0];
-$gjp = explode(";", htmlspecialchars($_POST["gjp"],ENT_QUOTES))[0];
-$targetAccountID = explode(";", htmlspecialchars($_POST["targetAccountID"],ENT_QUOTES))[0];
+$accountID = explode("(", explode(";", htmlspecialchars($_POST["accountID"],ENT_QUOTES))[0])[0];
+$gjp = explode("(", explode(";", htmlspecialchars($_POST["gjp"],ENT_QUOTES))[0])[0];
+$targetAccountID = explode("(", explode(";", htmlspecialchars($_POST["targetAccountID"],ENT_QUOTES))[0])[0];
 // REMOVING FOR USER 1
 $query = "SELECT * FROM accounts WHERE accountID = '$accountID'";
 $query = $db->prepare($query);

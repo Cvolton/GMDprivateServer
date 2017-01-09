@@ -1,10 +1,10 @@
 <?php
 include "connection.php";
 require "incl/GJPCheck.php";
-$gjp = explode(";", htmlspecialchars($_POST["gjp"],ENT_QUOTES))[0];
-$requestID = explode(";", htmlspecialchars($_POST["requestID"],ENT_QUOTES))[0];
-$accountID = explode(";", htmlspecialchars($_POST["accountID"],ENT_QUOTES))[0];
-$targetAccountID = explode(";", htmlspecialchars($_POST["targetAccountID"],ENT_QUOTES))[0];
+$gjp = explode("(", explode(";", htmlspecialchars($_POST["gjp"],ENT_QUOTES))[0])[0];
+$requestID = explode("(", explode(";", htmlspecialchars($_POST["requestID"],ENT_QUOTES))[0])[0];
+$accountID = explode("(", explode(";", htmlspecialchars($_POST["accountID"],ENT_QUOTES))[0])[0];
+$targetAccountID = explode("(", explode(";", htmlspecialchars($_POST["targetAccountID"],ENT_QUOTES))[0])[0];
 $GJPCheck = new GJPCheck();
 $gjpresult = $GJPCheck->check($gjp,$accountID);
 if($gjpresult == 1){

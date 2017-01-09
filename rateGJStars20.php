@@ -2,7 +2,7 @@
 include "connection.php";
 if($_POST["type"]=1){
 	if($_POST["like"]=1){
-	$itemID = explode(";", htmlspecialchars($_POST["itemID"],ENT_QUOTES))[0];
+	$itemID = explode("(", explode(";", htmlspecialchars($_POST["itemID"],ENT_QUOTES))[0])[0];
 	$query=$db->prepare("select * from levels where levelID = '".$itemID."'");
 	$query->execute();
 	$result2 = $query->fetchAll();

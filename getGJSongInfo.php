@@ -1,7 +1,7 @@
 <?php
 include "connection.php";
-$songid = explode(";", htmlspecialchars($_POST["songID"],ENT_QUOTES))[0];
-$query3=$db->prepare("select * from songs where ID = '".$songid."'");
+$songid = explode("(", explode(";", htmlspecialchars($_POST["songID"],ENT_QUOTES))[0])[0];
+$query3=$db->prepare("select * from songs where ID = '$songid'");
 $query3->execute();
 if($query3->rowCount() == 0) {
 $url = 'http://www.boomlings.com/database/getGJSongInfo.php';

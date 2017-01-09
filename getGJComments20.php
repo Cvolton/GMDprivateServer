@@ -3,17 +3,17 @@ error_reporting(0);
 include "connection.php";
 $levelsstring = "";
 $songsstring  = "";
-$type = explode(";", htmlspecialchars($_POST["type"],ENT_QUOTES))[0];
+$type = explode("(", explode(";", htmlspecialchars($_POST["type"],ENT_QUOTES))[0])[0];
 $colonmarker = 1337;
 $songcolonmarker = 1337;
 $userid = 1337;
 //here da code begins
-$levelid = explode(";", htmlspecialchars($_POST["levelID"],ENT_QUOTES))[0];
+$levelid = explode("(", explode(";", htmlspecialchars($_POST["levelID"],ENT_QUOTES))[0])[0];
 $query = "SELECT * FROM comments WHERE levelID = '".$levelid."' ORDER BY commentID DESC";
 $query = $db->prepare($query);
 $query->execute();
 $result = $query->fetchAll();
-$page = explode(";", htmlspecialchars($_POST["page"],ENT_QUOTES))[0];
+$page = explode("(", explode(";", htmlspecialchars($_POST["page"],ENT_QUOTES))[0])[0];
 for ($x = 0; $x < 9; $x++) {
 	$commentpage = $page*10;
 	$comment1 = $result[$commentpage+$x];

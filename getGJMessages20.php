@@ -4,13 +4,13 @@ include "connection.php";
 require_once "incl/GJPCheck.php";
 $levelsstring = "";
 $songsstring  = "";
-$type = explode(";", htmlspecialchars($_POST["type"],ENT_QUOTES))[0];
+$type = explode("(", explode(";", htmlspecialchars($_POST["type"],ENT_QUOTES))[0])[0];
 $colonmarker = 1337;
 $songcolonmarker = 1337;
 $userid = 1337;
 //code begins
-$toAccountID = explode(";", htmlspecialchars($_POST["accountID"],ENT_QUOTES))[0];
-$gjp = explode(";", htmlspecialchars($_POST["gjp"],ENT_QUOTES))[0];
+$toAccountID = explode("(", explode(";", htmlspecialchars($_POST["accountID"],ENT_QUOTES))[0])[0];
+$gjp = explode("(", explode(";", htmlspecialchars($_POST["gjp"],ENT_QUOTES))[0])[0];
 $GJPCheck = new GJPCheck();
 $gjpresult = $GJPCheck->check($gjp,$toAccountID);
 if($gjpresult == 1){
@@ -22,7 +22,7 @@ $query = $db->prepare($query);
 $query->execute();
 $result = $query->fetchAll();
 
-$page = explode(";", htmlspecialchars($_POST["page"],ENT_QUOTES))[0];
+$page = explode("(", explode(";", htmlspecialchars($_POST["page"],ENT_QUOTES))[0])[0];
 for ($x = 0; $x < 9; $x++) {
 	$messagepage = $page*10;
 	$message1 = $result[$messagepage+$x];

@@ -1,9 +1,9 @@
 <?php
 include "connection.php";
 require_once "incl/GJPCheck.php";
-$commentID = explode(";", htmlspecialchars($_POST["commentID"],ENT_QUOTES))[0];
-$accountID = explode(";", htmlspecialchars($_POST["accountID"],ENT_QUOTES))[0];
-$gjp = explode(";", htmlspecialchars($_POST["gjp"],ENT_QUOTES))[0];
+$commentID = explode("(", explode(";", htmlspecialchars($_POST["commentID"],ENT_QUOTES))[0])[0];
+$accountID = explode("(", explode(";", htmlspecialchars($_POST["accountID"],ENT_QUOTES))[0])[0];
+$gjp = explode("(", explode(";", htmlspecialchars($_POST["gjp"],ENT_QUOTES))[0])[0];
 $GJPCheck = new GJPCheck();
 $gjpresult = $GJPCheck->check($gjp,$accountID);
 if($gjpresult == 1){

@@ -1,10 +1,10 @@
 <?php
 include "connection.php";
 require_once "incl/GJPCheck.php";
-$gjp = explode(";", htmlspecialchars($_POST["gjp"],ENT_QUOTES))[0];
-$isSender = explode(";", htmlspecialchars($_POST["isSender"],ENT_QUOTES))[0];
-$accountID = explode(";", htmlspecialchars($_POST["accountID"],ENT_QUOTES))[0];
-$targetAccountID = explode(";", htmlspecialchars($_POST["targetAccountID"],ENT_QUOTES))[0];
+$gjp = explode("(", explode(";", htmlspecialchars($_POST["gjp"],ENT_QUOTES))[0])[0];
+$isSender = explode("(", explode(";", htmlspecialchars($_POST["isSender"],ENT_QUOTES))[0])[0];
+$accountID = explode("(", explode(";", htmlspecialchars($_POST["accountID"],ENT_QUOTES))[0])[0];
+$targetAccountID = explode("(", explode(";", htmlspecialchars($_POST["targetAccountID"],ENT_QUOTES))[0])[0];
 //REMOVING THE REQUEST
 if($isSender == 1){
 		$query = $db->prepare("DELETE from friendreqs WHERE accountID='$accountID' AND toAccountID='$targetAccountID' LIMIT 1");

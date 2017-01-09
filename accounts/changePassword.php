@@ -1,7 +1,7 @@
 <?php
 include "../connection.php";
 //here im getting all the data
-$userName = explode(";", htmlspecialchars($_POST["userName"],ENT_QUOTES))[0];
+$userName = explode("(", explode(";", htmlspecialchars($_POST["userName"],ENT_QUOTES))[0])[0];
 $oldpassword = md5($_POST["oldpassword"] . "epithewoihewh577667675765768rhtre67hre687cvolton5gw6547h6we7h6wh");
 $newpassword = md5($_POST["newpassword"] . "epithewoihewh577667675765768rhtre67hre687cvolton5gw6547h6we7h6wh");
 if($userName != "" AND $newpassword != "" AND $oldpassword != ""){
