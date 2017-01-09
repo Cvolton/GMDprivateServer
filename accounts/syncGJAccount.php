@@ -11,5 +11,5 @@ $query->execute();
 $result = $query->fetchAll();
 $account = $result[0];
 //var_dump($account);
-echo $account["saveData"];
+echo base64_decode($account["saveData"]);
 ?>
