@@ -14,7 +14,7 @@ $query = $db->prepare($query);
 $query->execute();
 $result = $query->fetchAll();
 $page = explode("(", explode(";", htmlspecialchars($_POST["page"],ENT_QUOTES))[0])[0];
-for ($x = 0; $x < 9; $x++) {
+for ($x = 0; $x < 10; $x++) {
 	$commentpage = $page*10;
 	$comment1 = $result[$commentpage+$x];
 	if($comment1["commentID"]!=""){
