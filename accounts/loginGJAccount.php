@@ -8,7 +8,7 @@ $secret = "";
 $query = "select * from accounts where userName = :userName AND password = :password";
 $query = $db->prepare($query);
 $query->execute([':userName' => $userName, ':password' => $password]);
-if ($query2->rowCount() > 0) {
+if ($query->rowCount() > 0) {
 $result = $query->fetchAll();
 $account = $result[0];
 //userID
@@ -37,7 +37,7 @@ $query6->execute([':hostname' => $hostname, ':id' => $id]);
 }else{
 $hostname = gethostbyaddr($_SERVER['REMOTE_ADDR']);
 $query6 = $db->prepare("INSERT INTO modips (IP, accountID, isMod) VALUES (:hostname,:id,'1')");
-$query6->execute(':hostname' => $hostname, ':id' => $id);
+$query6->execute([':hostname' => $hostname, ':id' => $id]);
 }
 }
 //result
