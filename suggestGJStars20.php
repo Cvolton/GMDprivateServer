@@ -58,10 +58,10 @@ if($id != "" AND $gjp != ""){
 			
 			$length = $lvlinfo["levelLength"] +1;
 			$stars = $stars * $length * 2;*/
-			$query = "UPDATE levels SET starDemon=:demon, starAuto=:auto, starDifficulty=:diff, starStars=:stars, starCoins='1',  starFeatured=:feature, WHERE levelID=:levelID";
+			$query = "UPDATE levels SET starDemon=:demon, starAuto=:auto, starDifficulty=:diff, starStars=:stars, starCoins='1',  starFeatured=:feature WHERE levelID=:levelID";
 			echo $query;
 			$query = $db->prepare($query);	
-			$query->execute([':demon' => $demon, ':auto' => $auto, ':diff' => $diff, ':stars:' => $stars, ':feature' => $feature, ':levelID'=>$levelID]);
+			$query->execute([':demon' => $demon, ':auto' => $auto, ':diff' => $diff, ':stars' => $stars, ':feature' => $feature, ':levelID'=>$levelID]);
 			echo $levelID;
 		}else{
 			echo -1;
