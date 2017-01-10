@@ -38,9 +38,9 @@ $commentarray = explode(' ', $decodecomment);
 $starStars = $commentarray[2];
 $starCoins = $commentarray[3];
 $starFeatured = $commentarray[4];
-switch ($commentarray[1]) {
 	$starDemon = 0;
 	$starAuto = 0;
+switch ($commentarray[1]) {
     case "easy":
         $starDifficulty = 10;
         break;

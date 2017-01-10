@@ -1,5 +1,5 @@
 <?php
-error_reporting(0);
+//error_reporting(0);
 include "connection.php";
 $levelsstring = "";
 $songsstring  = "";
@@ -8,8 +8,8 @@ $colonmarker = 1337;
 $songcolonmarker = 1337;
 $userid = 1337;
 //here da code begins
-$levelid = htmlspecialchars($_POST["levelID"],ENT_QUOTES);
-$query = "SELECT * FROM comments WHERE levelID = :levelid ORDER BY commentID DESC";
+$levelID = htmlspecialchars($_POST["levelID"],ENT_QUOTES);
+$query = "SELECT * FROM comments WHERE levelID = :levelID ORDER BY commentID DESC";
 $query = $db->prepare($query);
 $query->execute([':levelID' => $levelID]);
 $result = $query->fetchAll();
