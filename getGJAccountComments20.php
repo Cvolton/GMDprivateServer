@@ -3,30 +3,30 @@ error_reporting(0);
 include "connection.php";
 $levelsstring = "";
 $songsstring  = "";
-$type = explode("(", explode(";", htmlspecialchars($_POST["type"],ENT_QUOTES))[0])[0];
+$type = htmlspecialchars($_POST["type"],ENT_QUOTES);
 $colonmarker = 1337;
 $songcolonmarker = 1337;
 $userid = 1337;
 //here da code begins
-$accountid = explode("(", explode(";", htmlspecialchars($_POST["accountID"],ENT_QUOTES))[0])[0];
-$query2 = $db->prepare("SELECT * FROM users WHERE extID = '".$accountid."'");
-$query2->execute();
+$accountid = htmlspecialchars($_POST["accountID"],ENT_QUOTES);
+$query2 = $db->prepare("SELECT * FROM users WHERE extID = :accountid");
+$query2->execute([':accountid' => $accountid]);
 $result = $query2->fetchAll();
 if ($query2->rowCount() > 0) {
 $userIDalmost = $result[0];
 $userID = $userIDalmost[1];
 } else {
 $query = $db->prepare("INSERT INTO users (isRegistered, extID)
-VALUES ('$register','$id')");
+VALUES (:register,:id)");
 
-$query->execute();
+$query->execute([':register' => $register, ':id' => $id]);
 $userID = $db->lastInsertId();
 }
-$query = "SELECT * FROM acccomments WHERE userID = '".$userID."' ORDER BY timeStamp DESC";
+$query = "SELECT * FROM acccomments WHERE userID = :userID ORDER BY timeStamp DESC";
 $query = $db->prepare($query);
-$query->execute();
+$query->execute([':userID' => $userID]);
 $result = $query->fetchAll();
-$page = explode("(", explode(";", htmlspecialchars($_POST["page"],ENT_QUOTES))[0])[0];
+$page = htmlspecialchars($_POST["page"],ENT_QUOTES);
 for ($x = 0; $x < 9; $x++) {
 	$commentpage = $page*10;
 	$comment1 = $result[$commentpage+$x];

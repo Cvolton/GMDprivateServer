@@ -3,19 +3,19 @@
 include "connection.php";
 require_once "incl/GJPCheck.php";
 //here im getting all the data
-$accountID = explode("(", explode(";", htmlspecialchars($_POST["accountID"],ENT_QUOTES))[0])[0];
-$gjp = explode("(", explode(";", htmlspecialchars($_POST["gjp"],ENT_QUOTES))[0])[0];
-$toAccountID = explode("(", explode(";", htmlspecialchars($_POST["toAccountID"],ENT_QUOTES))[0])[0];
-$comment = explode("(", explode(";", htmlspecialchars($_POST["comment"],ENT_QUOTES))[0])[0];
+$accountID = htmlspecialchars($_POST["accountID"],ENT_QUOTES);
+$gjp = htmlspecialchars($_POST["gjp"],ENT_QUOTES);
+$toAccountID = htmlspecialchars($_POST["toAccountID"],ENT_QUOTES);
+$comment = htmlspecialchars($_POST["comment"],ENT_QUOTES);
 $uploadDate = time();
 $query = $db->prepare("INSERT INTO friendreqs (accountID, toAccountID, comment, uploadDate)
-VALUES ('$accountID', '$toAccountID', '$comment', '$uploadDate')");
+VALUES (:accountID, :toAccountID, :comment, :uploadDate)");
 if($accountID != "" AND $toAccountID != ""){
 	//GJPCheck
 	$GJPCheck = new GJPCheck();
 	$gjpresult = $GJPCheck->check($gjp,$accountID);
 	if($gjpresult == 1){
-		$query->execute();
+		$query->execute([':accountID' => $accountID, ':toAccountID' => $toAccountID, ':comment' => $comment, ':uploadDate' => $uploadDate]);
 		echo 1;
 	}else{
 		echo -1;

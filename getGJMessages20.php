@@ -4,25 +4,25 @@ include "connection.php";
 require_once "incl/GJPCheck.php";
 $levelsstring = "";
 $songsstring  = "";
-$type = explode("(", explode(";", htmlspecialchars($_POST["type"],ENT_QUOTES))[0])[0];
+$type = htmlspecialchars($_POST["type"],ENT_QUOTES);
 $colonmarker = 1337;
 $songcolonmarker = 1337;
 $userid = 1337;
 //code begins
-$toAccountID = explode("(", explode(";", htmlspecialchars($_POST["accountID"],ENT_QUOTES))[0])[0];
-$gjp = explode("(", explode(";", htmlspecialchars($_POST["gjp"],ENT_QUOTES))[0])[0];
+$toAccountID = htmlspecialchars($_POST["accountID"],ENT_QUOTES);
+$gjp = htmlspecialchars($_POST["gjp"],ENT_QUOTES);
 $GJPCheck = new GJPCheck();
 $gjpresult = $GJPCheck->check($gjp,$toAccountID);
 if($gjpresult == 1){
-	$query = "SELECT * FROM messages WHERE toAccountID = '".$toAccountID."' ORDER BY messageID DESC";
+	$query = "SELECT * FROM messages WHERE toAccountID = :toAccountID ORDER BY messageID DESC";
 }else{
 	$query = "SELECT * FROM messages WHERE toAccountID = '-1' ORDER BY messageID DESC";
 }
 $query = $db->prepare($query);
 $query->execute();
-$result = $query->fetchAll();
+$result = $query->fetchAll([':toAccountID' => $toAccountID]);
 
-$page = explode("(", explode(";", htmlspecialchars($_POST["page"],ENT_QUOTES))[0])[0];
+$page = htmlspecialchars($_POST["page"],ENT_QUOTES);
 for ($x = 0; $x < 9; $x++) {
 	$messagepage = $page*10;
 	$message1 = $result[$messagepage+$x];

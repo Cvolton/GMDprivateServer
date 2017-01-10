@@ -2,16 +2,16 @@
 include "connection.php";
 $levelsstring = "";
 $songsstring  = "";
-$getSent = explode("(", explode(";", htmlspecialchars($_POST["getSent"],ENT_QUOTES))[0])[0];
-$accountID = explode("(", explode(";", htmlspecialchars($_POST["accountID"],ENT_QUOTES))[0])[0];
-$page = explode("(", explode(";", htmlspecialchars($_POST["page"],ENT_QUOTES))[0])[0];
+$getSent = htmlspecialchars($_POST["getSent"],ENT_QUOTES);
+$accountID = htmlspecialchars($_POST["accountID"],ENT_QUOTES);
+$page = htmlspecialchars($_POST["page"],ENT_QUOTES);
 if($getSent == 0){
-	$query = "SELECT * FROM friendreqs WHERE toAccountID = '$accountID'";
+	$query = "SELECT * FROM friendreqs WHERE toAccountID = :accountID";
 }else if($getSent == 1){
-	$query = "SELECT * FROM friendreqs WHERE accountID = '$accountID'";
+	$query = "SELECT * FROM friendreqs WHERE accountID = :accountID";
 }
 	$query = $db->prepare($query);
-	$query->execute();
+	$query->execute(':accountID' => $accountID, );
 	$requests = $query->rowCount();
 	$result = $query->fetchAll();
 	$startreqs = $page*10;
@@ -33,9 +33,9 @@ if($getSent == 0){
 }else if($getSent == 1){
 	$requester = $request["toAccountID"];
 }
-	$query = "SELECT * FROM users WHERE extID = '$requester'";
+	$query = "SELECT * FROM users WHERE extID = :requester";
 	$query = $db->prepare($query);
-	$query->execute();
+	$query->execute([':requester' => $requester]);
 	$result2 = $query->fetchAll();
 	$user = $result2[0];
 	$uploadTime = 0;

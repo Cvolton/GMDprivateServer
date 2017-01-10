@@ -1,12 +1,12 @@
 <?php
 include "connection.php";
-$str = explode("(", explode(";", htmlspecialchars($_POST["str"], ENT_QUOTES))[0])[0];
-	$page = explode("(", explode(";", htmlspecialchars($_POST["page"],ENT_QUOTES))[0])[0];
+$str = htmlspecialchars($_POST["str"], ENT_QUOTES);
+	$page = htmlspecialchars($_POST["page"],ENT_QUOTES);
 	$usrpagea = $page*10;
 	$usrpageaend = $usrpagea +9;
-	$query = "SELECT * FROM users WHERE userName LIKE '".$str."%' ORDER BY stars DESC LIMIT ".$usrpagea.",".$usrpageaend."";
+	$query = "SELECT * FROM users WHERE userName LIKE CONCAT(:str, '%') ORDER BY stars DESC LIMIT $usrpagea,$usrpageaend";
 	$query = $db->prepare($query);
-	$query->execute();
+	$query->execute([':str' => $str]);
 	$result = $query->fetchAll();
 	$usercount = $query->rowCount();
 	for ($x = 0; $x < $usercount; $x++) {

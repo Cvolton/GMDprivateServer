@@ -1,6 +1,6 @@
 <?php
 include "connection.php";
-$songid = explode("(", explode(";", htmlspecialchars($_POST["songID"],ENT_QUOTES))[0])[0];
+$songid = htmlspecialchars($_POST["songID"],ENT_QUOTES);
 $query3=$db->prepare("select * from songs where ID = '$songid'");
 $query3->execute();
 if($query3->rowCount() == 0) {

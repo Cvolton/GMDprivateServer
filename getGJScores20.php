@@ -1,8 +1,8 @@
 <?php
 error_reporting(0);
 include "connection.php";
-$accountID = explode("(", explode(";", htmlspecialchars($_POST["accountID"],ENT_QUOTES))[0])[0];
-$type = explode("(", explode(";", htmlspecialchars($_POST["type"],ENT_QUOTES))[0])[0];
+$accountID = htmlspecialchars($_POST["accountID"],ENT_QUOTES);
+$type = htmlspecialchars($_POST["type"],ENT_QUOTES);
 if($type == "top" OR $type == "creators" OR $type == "relative"){
 	if($type == "top"){
 	$query = "SELECT * FROM users ORDER BY stars DESC";
@@ -11,34 +11,34 @@ if($type == "top" OR $type == "creators" OR $type == "relative"){
 	$query = "SELECT * FROM users ORDER BY creatorPoints DESC";
 	}
 	if($type == "relative"){
-	$query = "SELECT * FROM users WHERE extID = '$accountID'";
+	$query = "SELECT * FROM users WHERE extID = :accountID";
 	$query = $db->prepare($query);
-	$query->execute();
+	$query->execute([':accountID' => $accountID]);
 	$result = $query->fetchAll();
 	$user = $result[0];
 	$stars = $user["stars"];
-	$count = explode("(", explode(";", htmlspecialchars($_POST["count"],ENT_QUOTES))[0])[0];
+	$count = htmlspecialchars($_POST["count"],ENT_QUOTES);
 	$count = $count / 2;
 	$query = "SELECT  A.* FROM  (
    (
       SELECT  *  FROM users
-      WHERE stars <= $stars
+      WHERE stars <= :stars
       ORDER BY stars DESC
-      LIMIT $count
+      LIMIT :count
    )
   UNION
    (
       SELECT * FROM users
-      WHERE stars >= $stars
+      WHERE stars >= :stars
       ORDER BY stars ASC
-      LIMIT $count
+      LIMIT :count
    )
 
  ) as A
 ORDER BY A.stars DESC";
 	}
 	$query = $db->prepare($query);
-	$query->execute();
+	$query->execute([':stars' => $stars, ':count' => $count]);
 	$result = $query->fetchAll();
 	$people = $query->rowCount();
 	$xy = 1;
@@ -51,9 +51,9 @@ ORDER BY A.stars DESC";
 		$f = "SELECT rank, stars FROM (
                     SELECT @rownum := @rownum + 1 AS rank, stars, extID
                     FROM users ORDER BY stars DESC
-                    ) as result WHERE extID='$extid'";
+                    ) as result WHERE extID=:extid";
 		$query = $db->prepare($f);
-		$query->execute();
+		$query->execute([':extid' => $extid]);
 		$leaderboard = $query->fetchAll();
 		//var_dump($leaderboard);
 		$leaderboard = $leaderboard[0];
@@ -74,16 +74,16 @@ $xi = $x + $xy;
 }
 }
 if($type == "friends"){
-	$query = "SELECT * FROM accounts WHERE accountID = '$accountID'";
+	$query = "SELECT * FROM accounts WHERE accountID = :accountID";
 	$query = $db->prepare($query);
-	$query->execute();
+	$query->execute([':accountID' => $accountID]);
 	$result = $query->fetchAll();
 	$account = $result[0];
 	$friendlist = $account["friends"];
 	$whereor = str_replace(",", " OR extID = ", $friendlist);
-	$query = "SELECT * FROM users WHERE extID = ".$accountID." OR extID = ".$whereor . " ORDER BY stars DESC";
+	$query = "SELECT * FROM users WHERE extID = :accountID OR extID = ".$whereor . " ORDER BY stars DESC";
 	$query = $db->prepare($query);
-	$query->execute();
+	$query->execute([':accountID' => $accountID]);
 	$result = $query->fetchAll();
 	$people = $query->rowCount();
 	for ($x = 0; $x < $people; $x++) {

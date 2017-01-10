@@ -2,12 +2,12 @@
 include "connection.php";
 require "incl/XORCipher.php";
 //$levelID = 2632;
-$levelID = explode("(", explode(";", htmlspecialchars($_POST["levelID"],ENT_QUOTES))[0])[0];
+$levelID = htmlspecialchars($_POST["levelID"],ENT_QUOTES);
 if(!is_numeric($levelID)){
 	echo -1;
 }else{
-$query=$db->prepare("select * from levels where levelID = '".$levelID."'");
-$query->execute();
+$query=$db->prepare("select * from levels where levelID = ?");
+$query->execute(array($levelID));
 $lvls = $query->rowCount();
 if($lvls!=0){
 $result2 = $query->fetchAll();
@@ -25,10 +25,14 @@ echo "#";
 require "incl/generateHash.php";
 $hash = new generateHash();
 echo $hash->genSolo($result["levelID"]);
+//2.1 stuff
+echo "#";
+echo $result["userID"].",".$result["starStars"].",0,".$result["levelID"].",0,".$result["starFeatured"].",0,0";
+#userid,version,0,levelid,1,starfeatured,1,0
 //adding the download
 $downloads = $result["downloads"] + 1;
-$query2=$db->prepare("UPDATE levels SET downloads = ".$downloads." WHERE levelID = ".$levelID.";");
-$query2->execute();
+$query2=$db->prepare("UPDATE levels SET downloads = :downloads WHERE levelID = :levelID");
+$query2->execute([':downloads' => $downloads, ':levelID' => $levelID]);
 }else{
 	echo -1;
 }

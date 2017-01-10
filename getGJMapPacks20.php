@@ -1,7 +1,7 @@
 <?php
 //error_reporting(0);
 include "connection.php";
-$page = explode("(", explode(";", htmlspecialchars($_POST["page"],ENT_QUOTES))[0])[0];
+$page = htmlspecialchars($_POST["page"],ENT_QUOTES);
 $packpage = $page*10;
 $packpageend = $packpage + 9;
 $query = $db->prepare("SELECT * FROM `mappacks` ORDER BY `ID` ASC LIMIT $packpage,$packpageend");

@@ -3,32 +3,32 @@ error_reporting(0);
 include "connection.php";
 require_once "incl/GJPCheck.php";
 //here im getting all the data
-$gjp = explode("(", explode(";", htmlspecialchars($_POST["gjp"],ENT_QUOTES))[0])[0];
-$gameVersion = explode("(", explode(";", htmlspecialchars($_POST["gameVersion"],ENT_QUOTES))[0])[0];
-$binaryVersion = explode("(", explode(";", htmlspecialchars($_POST["binaryVersion"],ENT_QUOTES))[0])[0];
-$userName = explode("(", explode(";", htmlspecialchars($_POST["userName"],ENT_QUOTES))[0])[0];
-$secret = explode("(", explode(";", htmlspecialchars($_POST["secret"],ENT_QUOTES))[0])[0];
-$coins = explode("(", explode(";", htmlspecialchars($_POST["coins"],ENT_QUOTES))[0])[0];
-$stars = explode("(", explode(";", htmlspecialchars($_POST["stars"],ENT_QUOTES))[0])[0];
-$demons = explode("(", explode(";", htmlspecialchars($_POST["demons"],ENT_QUOTES))[0])[0];
-$icon = explode("(", explode(";", htmlspecialchars($_POST["icon"],ENT_QUOTES))[0])[0];
-$color1 = explode("(", explode(";", htmlspecialchars($_POST["color1"],ENT_QUOTES))[0])[0];
-$color2 = explode("(", explode(";", htmlspecialchars($_POST["color2"],ENT_QUOTES))[0])[0];
-$iconType = explode("(", explode(";", htmlspecialchars($_POST["iconType"],ENT_QUOTES))[0])[0];
-$userCoins = explode("(", explode(";", htmlspecialchars($_POST["userCoins"],ENT_QUOTES))[0])[0];
-$special = explode("(", explode(";", htmlspecialchars($_POST["special"],ENT_QUOTES))[0])[0];
-$accIcon = explode("(", explode(";", htmlspecialchars($_POST["accIcon"],ENT_QUOTES))[0])[0];
-$accShip = explode("(", explode(";", htmlspecialchars($_POST["accShip"],ENT_QUOTES))[0])[0];
-$accBall = explode("(", explode(";", htmlspecialchars($_POST["accBall"],ENT_QUOTES))[0])[0];
-$accBird = explode("(", explode(";", htmlspecialchars($_POST["accBird"],ENT_QUOTES))[0])[0];
-$accDart = explode("(", explode(";", htmlspecialchars($_POST["accDart"],ENT_QUOTES))[0])[0];
-$accRobot = explode("(", explode(";", htmlspecialchars($_POST["accRobot"],ENT_QUOTES))[0])[0];
-$accGlow = explode("(", explode(";", htmlspecialchars($_POST["accGlow"],ENT_QUOTES))[0])[0];
+$gjp = htmlspecialchars($_POST["gjp"],ENT_QUOTES);
+$gameVersion = htmlspecialchars($_POST["gameVersion"],ENT_QUOTES);
+$binaryVersion = htmlspecialchars($_POST["binaryVersion"],ENT_QUOTES);
+$userName = htmlspecialchars($_POST["userName"],ENT_QUOTES);
+$secret = htmlspecialchars($_POST["secret"],ENT_QUOTES);
+$coins = htmlspecialchars($_POST["coins"],ENT_QUOTES);
+$stars = htmlspecialchars($_POST["stars"],ENT_QUOTES);
+$demons = htmlspecialchars($_POST["demons"],ENT_QUOTES);
+$icon = htmlspecialchars($_POST["icon"],ENT_QUOTES);
+$color1 = htmlspecialchars($_POST["color1"],ENT_QUOTES);
+$color2 = htmlspecialchars($_POST["color2"],ENT_QUOTES);
+$iconType = htmlspecialchars($_POST["iconType"],ENT_QUOTES);
+$userCoins = htmlspecialchars($_POST["userCoins"],ENT_QUOTES);
+$special = htmlspecialchars($_POST["special"],ENT_QUOTES);
+$accIcon = htmlspecialchars($_POST["accIcon"],ENT_QUOTES);
+$accShip = htmlspecialchars($_POST["accShip"],ENT_QUOTES);
+$accBall = htmlspecialchars($_POST["accBall"],ENT_QUOTES);
+$accBird = htmlspecialchars($_POST["accBird"],ENT_QUOTES);
+$accDart = htmlspecialchars($_POST["accDart"],ENT_QUOTES);
+$accRobot = htmlspecialchars($_POST["accRobot"],ENT_QUOTES);
+$accGlow = htmlspecialchars($_POST["accGlow"],ENT_QUOTES);
 //continuing the accounts system
 $accountID = "";
-$id = explode("(", explode(";", htmlspecialchars($_POST["udid"],ENT_QUOTES))[0])[0];
+$id = htmlspecialchars($_POST["udid"],ENT_QUOTES);
 if($_POST["accountID"]!=""){
-	$id = explode("(", explode(";", htmlspecialchars($_POST["accountID"],ENT_QUOTES))[0])[0];
+	$id = htmlspecialchars($_POST["accountID"],ENT_QUOTES);
 	$register = 1;
 }else{
 	$register = 0;
@@ -49,17 +49,17 @@ $userID = $db->lastInsertId();
 $uploadDate = time();
 $hostname = gethostbyaddr($_SERVER['REMOTE_ADDR']);
 
-$query = $db->prepare("UPDATE users SET userName='$userName', coins='$coins',  secret='$secret', stars='$stars', demons='$demons', icon='$icon', color1='$color1', color2='$color2', iconType='$iconType', userCoins='$userCoins', special='$special',
-accIcon='$accIcon', accShip='$accShip', accBall='$accBall', accBird='$accBird', accDart='$accDart', accRobot='$accRobot', accGlow='$accGlow', IP='$hostname', lastPlayed='$uploadDate' WHERE userID='$userID'");
+$query = $db->prepare("UPDATE users SET userName=:userName, coins=:coins,  secret=:secret, stars=:stars, demons=:demons, icon=:icon, color1=:color1, color2=:color2, iconType=:iconType, userCoins=:userCoins, special=:special',
+accIcon=:accIcon, accShip=:accShip, accBall=:accBall, accBird=:accBird, accDart=:accDart, accRobot=:accRobot, accGlow=:accGlow, IP=:hostname, lastPlayed=:uploadDate' WHERE userID=:userID'");
 $GJPCheck = new GJPCheck();
 $gjpresult = $GJPCheck->check($gjp,$id);
 if($register ==1){
 if($gjpresult == 1){
-	$query->execute();
+	$query->execute(['userName' => $userName, ':coins' => $coins, ':secret' => $secret, ':stars' => $stars, ':demons' => $demons, ':icon' => $icon, ':color1' => $color1, ':color2' => $color2, ':iconType' => $iconType, ':userCoins' => $userCoins, ':special' => $special, ':accIcon' => $accIcon, ':accShip' => $accShip, ':accBall' => $accBall, ':accBird' => $accBird, ':accDart' => $accDart, ':accRobot' => $accRobot, ':accGlow' => $accGlow, ':hostname' => $hostname, ':lastPlayed' => $uploadDate, ':userID' => $userID]);
 	echo $userID;
 }else{echo -1;}
 }else{
-	$query->execute();
+	$query->execute(['userName' => $userName, ':coins' => $coins, ':secret' => $secret, ':stars' => $stars, ':demons' => $demons, ':icon' => $icon, ':color1' => $color1, ':color2' => $color2, ':iconType' => $iconType, ':userCoins' => $userCoins, ':special' => $special, ':accIcon' => $accIcon, ':accShip' => $accShip, ':accBall' => $accBall, ':accBird' => $accBird, ':accDart' => $accDart, ':accRobot' => $accRobot, ':accGlow' => $accGlow, ':hostname' => $hostname, ':lastPlayed' => $uploadDate, ':userID' => $userID]);
 	echo $userID;
 }
 ?>

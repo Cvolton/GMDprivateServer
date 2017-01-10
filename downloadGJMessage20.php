@@ -1,11 +1,11 @@
 <?php
 include "connection.php";
 require_once "incl/GJPCheck.php";
-$accountID = explode("(", explode(";", htmlspecialchars($_POST["accountID"],ENT_QUOTES))[0])[0];
-$gjp = explode("(", explode(";", htmlspecialchars($_POST["gjp"],ENT_QUOTES))[0])[0];
-$messageID = explode("(", explode(";", htmlspecialchars($_POST["messageID"],ENT_QUOTES))[0])[0];
-$query=$db->prepare("select * from messages where messageID = '".$messageID."'");
-$query->execute();
+$accountID = htmlspecialchars($_POST["accountID"],ENT_QUOTES);
+$gjp = htmlspecialchars($_POST["gjp"],ENT_QUOTES);
+$messageID = htmlspecialchars($_POST["messageID"],ENT_QUOTES);
+$query=$db->prepare("select * from messages where messageID = :messageID and accID = :accountID");
+$query->execute([':messageID' => $messageID, ':accountID' = > $accountID]);
 $result2 = $query->fetchAll();
 $result = $result2[0];
 $GJPCheck = new GJPCheck();

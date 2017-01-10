@@ -1,37 +1,34 @@
 <?php
 include "connection.php";
-$me = explode("(", explode(";", htmlspecialchars($_POST["accountID"],ENT_QUOTES))[0])[0];
-$extid = explode("(", explode(";", htmlspecialchars($_POST["targetAccountID"],ENT_QUOTES))[0])[0];
+$me = htmlspecialchars($_POST["accountID"],ENT_QUOTES);
+$extid = htmlspecialchars($_POST["targetAccountID"],ENT_QUOTES);
 //checking who has blocked him
-$query = "SELECT * FROM accounts WHERE accountID = '$extid'";
+$query = "SELECT * FROM accounts WHERE accountID = :extid";
 $query = $db->prepare($query);
-$query->execute();
+$query->execute([':extid' => $extid]);
 $result = $query->fetchAll();
 $accinfo = $result[0];
 $blockedBy = $accinfo["blockedBy"];
 //echo "SES ".$me." A ON MA ZABLOKOVANY ".$blockedBy." JASNY";
 $blockedBy = explode(",",$blockedBy);
 //checking who he has blocked
-$query = "SELECT * FROM accounts WHERE accountID = '$extid'";
+$query = "SELECT * FROM accounts WHERE accountID = :extid";
 $query = $db->prepare($query);
-$query->execute();
+$query->execute([':extid' => $extid]);
 $result = $query->fetchAll();
 $accinfo = $result[0];
-//var_dump($accinfo);
 $blocked = $accinfo["blocked"];
 $blocked = explode(",",$blocked);
-//echo "SES " . $me . "A ON MA NA BLOCK LISTU ";
-//var_dump($blocked);
 if(!in_array($me, $blockedBy, true)){
 if(!in_array($me, $blocked, true)){
-	$query = "SELECT * FROM users WHERE extID = '".$extid."'";
+	$query = "SELECT * FROM users WHERE extID = :extid";
 	$query = $db->prepare($query);
-	$query->execute();
+	$query->execute([':extid' => $extid]);
 	$result = $query->fetchAll();
 	$user = $result[0];
 	//placeholders
 	$creatorpoints = $user["creatorPoints"];
-	$youtubeurl = "";
+	$youtubeurl = $user["youtubeurl"];
 	// GET POSITION
 	$e = "SET @rownum := 0;";
 	$query = $db->prepare($e);
@@ -39,17 +36,17 @@ if(!in_array($me, $blocked, true)){
 	$f = "SELECT rank, stars FROM (
                     SELECT @rownum := @rownum + 1 AS rank, stars, extID
                     FROM users ORDER BY stars DESC
-                    ) as result WHERE extID='$extid'";
+                    ) as result WHERE extID=:extid";
 	$query = $db->prepare($f);
-	$query->execute();
+	$query->execute([':extid' => $extid]);
 	$leaderboard = $query->fetchAll();
 	$leaderboard = $leaderboard[0];
 	$rank = $leaderboard["rank"];
 	//var_dump($leaderboard);
 			//check if friend REQUESTS allowed
-			$query = "SELECT * FROM accounts WHERE accountID = '$me'";
+			$query = "SELECT * FROM accounts WHERE accountID = :me";
 			$query = $db->prepare($query);
-			$query->execute();
+			$query->execute([':me' => $me]);
 			$result = $query->fetchAll();
 			$account = $result[0];
 			$reqsstate = $account["frS"];
@@ -59,9 +56,9 @@ if(!in_array($me, $blocked, true)){
 	if($me==$extid){
 		/* notifications */
 			//friends
-				$query = "SELECT * FROM friendreqs WHERE toAccountID = '$me'";
+				$query = "SELECT * FROM friendreqs WHERE toAccountID = :me";
 				$query = $db->prepare($query);
-				$query->execute();
+				$query->execute([':me' => $me]);
 				$requests = $query->rowCount();
 		/* sending the data */
 			//38,39,40 are notification counters
@@ -74,9 +71,9 @@ if(!in_array($me, $blocked, true)){
 		/* friend state */
 			$friendstate=0;
 		//check if INCOING friend request
-			$query = "SELECT * FROM friendreqs WHERE accountID = '$extid' AND toAccountID = '$me'";
+			$query = "SELECT * FROM friendreqs WHERE accountID = :extid AND toAccountID = :me";
 			$query = $db->prepare($query);
-			$query->execute();
+			$query->execute([':extid' => $extid, ':me' => $me]);
 			$INCrequests = $query->rowCount();
 			$INCrequestinfo = $query->fetchAll();
 			$uploaddate = 0;
@@ -84,9 +81,9 @@ if(!in_array($me, $blocked, true)){
 				$friendstate=3;
 			}
 		//check if OUTCOMING friend request
-			$query = "SELECT * FROM friendreqs WHERE toAccountID = '$extid' AND accountID = '$me'";
+			$query = "SELECT * FROM friendreqs WHERE toAccountID = :extid AND accountID = :me";
 			$query = $db->prepare($query);
-			$query->execute();
+			$query->execute([':extid' => $extid, ':me' => $me]);
 			$OUTrequests = $query->rowCount();
 			$OUTrequestinfo = $query->fetchAll();
 			$uploaddate = 0;
@@ -94,9 +91,9 @@ if(!in_array($me, $blocked, true)){
 				$friendstate=4;
 			}
 		//check if friend ALREADY
-			$query = "SELECT * FROM accounts WHERE accountID = '$me'";
+			$query = "SELECT * FROM accounts WHERE accountID = :me";
 			$query = $db->prepare($query);
-			$query->execute();
+			$query->execute([':me' => $me]);
 			$result = $query->fetchAll();
 			$account = $result[0];
 			$friendlist = $account["friends"];
