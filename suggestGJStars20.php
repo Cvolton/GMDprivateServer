@@ -51,7 +51,7 @@ if($id != "" AND $gjp != ""){
 					break;
 			}
 			$query = $db->prepare("SELECT * FROM levels WHERE levelID = :levelID");
-			$query->execute();
+			$query->execute([':levelID' => $levelID]);
 			$result = $query->fetchAll();
 			$lvlinfo = $result[0];
 			/*CvoltonGDPS stuff
