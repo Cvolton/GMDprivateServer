@@ -150,12 +150,14 @@ if($type != 10){
 	}
 	//TYPE DETECTION
         $str = explode("(", explode(";", htmlspecialchars($_POST["str"], ENT_QUOTES))[0])[0];
-	if($type==0){
-		if(is_numeric($_POST["str"])){
+	if($type==0 OR $type==15){ //most liked, changed to 15 in GDW for whatever reason
+		if($str!=""){
+		if(is_numeric($str)){
 			$query = "SELECT * FROM levels WHERE levelID = '".$str."' ". $additionalnowhere . " ORDER BY likes DESC";
 		}else{
 			$query = "SELECT * FROM levels WHERE levelName LIKE '".$str."%' ". $additionalnowhere . " ORDER BY likes DESC";
 		}
+		}else{$type=2;}
 		
 	}
 	$page = explode("(", explode(";", htmlspecialchars($_POST["page"],ENT_QUOTES))[0])[0];
@@ -177,7 +179,7 @@ if($type != 10){
     if($type==5){
 		$query = "SELECT * FROM levels WHERE userID = '".$str."'ORDER BY uploadDate DESC LIMIT ".$lvlpagea.",".$lvlpageaend."";
 	}
-	if($type==6){
+	if($type==6 OR $type==17){
 		$query = "SELECT * FROM levels WHERE NOT starFeatured = 0 ".$additionalnowhere." ORDER BY uploadDate DESC LIMIT ".$lvlpagea.",".$lvlpageaend."";
 	}
 	if($type==7){ //MAGIC
@@ -218,7 +220,9 @@ if($type != 10){
 	if($level1["levelID"]!=""){
 		if($x != 0){
 		echo "|";
+		$lvlsmultistring = $lvlsmultistring . ",";
 	}
+	$lvlsmultistring = $lvlsmultistring . $level1["levelID"];
 	echo "1:".$level1["levelID"].":2:".$level1["levelName"].":5:".$level1["levelVersion"].":6:".$level1["userID"].":8:10:9:".$level1["starDifficulty"].":10:".$level1["downloads"].":12:".$level1["audioTrack"].":13:".$level1["gameVersion"].":14:".$level1["likes"].":17:".$level1["starDemon"].":25:".$level1["starAuto"].":18:".$level1["starStars"].":19:".$level1["starFeatured"].":3:".$level1["levelDesc"].":15:".$level1["levelLength"].":30:".$level1["original"].":31:0:37:".$level1["coins"].":38:".$level1["starCoins"].":39:".$level1["requestedStars"].":35:".$level1["songID"];
 	if($songid!=0){
 		$query3=$db->prepare("select * from songs where ID = ".$level1["songID"]);
@@ -265,6 +269,7 @@ if($type == 10){
 	foreach ($arr as &$value) {
 		if ($colonmarker != 1337){
 			echo "|";
+			$lvlsmultistring = $lvlsmultistring . ",";
 		}
 		$query=$db->prepare("select * from levels where levelID = ".explode("(", explode(";", htmlspecialchars($value,ENT_QUOTES))[0])[0]);
 		$query->execute();
@@ -273,6 +278,7 @@ if($type == 10){
 				$timeago = $result["uploadDate"];
 				$timeago2 = date('Y-M-D', $timeago);
 				echo "1:".$result["levelID"].":2:".$result["levelName"].":5:".$result["levelVersion"].":6:".$result["userID"].":8:10:9:".$result["starDifficulty"].":10:".$result["downloads"].":12:".$result["audioTrack"].":13:".$result["gameVersion"].":14:".$result["likes"].":17:".$result["starDemon"].":25:".$result["starAuto"].":18:".$result["starStars"].":19:".$result["starFeatured"].":3:".$result["levelDesc"].":15:".$result["levelLength"].":30:".$result["original"].":31:0:37:".$result["coins"].":38:".$result["starCoins"].":39:".$result["requestedStars"].":35:".$result["songID"];
+				$lvlsmultistring = $lvlsmultistring . $result["levelID"];
 				if ($colonmarker != 1337){
 					$levelsstring = $levelsstring . "|";
 				}
@@ -310,4 +316,8 @@ if($type == 10){
 		}*/
 	echo "#1:0:10";
 }
+echo "#";
+require "incl/generateHash.php";
+$hash = new generateHash();
+echo $hash->genMulti($lvlsmultistring);
 ?>
