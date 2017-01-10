@@ -5,7 +5,7 @@ $accountID = htmlspecialchars($_POST["accountID"],ENT_QUOTES);
 $type = htmlspecialchars($_POST["type"],ENT_QUOTES);
 if($type == "top" OR $type == "creators" OR $type == "relative"){
 	if($type == "top"){
-	$query = "SELECT * FROM users ORDER BY stars DESC";
+	$query = "SELECT * FROM users ORDER BY stars DESC LIMIT 100";
 	}
 	if($type == "creators"){
 	$query = "SELECT * FROM users ORDER BY creatorPoints DESC";
