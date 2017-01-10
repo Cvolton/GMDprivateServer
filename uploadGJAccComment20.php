@@ -2,12 +2,12 @@
 //error_reporting(0);
 include "connection.php";
 require_once "incl/GJPCheck.php";
-$gjp = explode("(", explode(";", explode("|", explode("~", htmlspecialchars($_POST["gjp"],ENT_QUOTES))[0])[0])[0])[0];
-$gameVersion = explode("(", explode(";", explode("|", explode("~", htmlspecialchars($_POST["gameVersion"],ENT_QUOTES))[0])[0])[0])[0];
-$binaryVersion = explode("(", explode(";", explode("|", explode("~", htmlspecialchars($_POST["binaryVersion"],ENT_QUOTES))[0])[0])[0])[0];
-$userName = explode("(", explode(";", explode("|", explode("~", htmlspecialchars($_POST["userName"],ENT_QUOTES))[0])[0])[0])[0];
-$comment = explode("(", explode(";", explode("|", explode("~", htmlspecialchars($_POST["comment"],ENT_QUOTES))[0])[0])[0])[0];
-$id = explode("(", explode(";", explode("|", explode("~", htmlspecialchars($_POST["accountID"],ENT_QUOTES))[0])[0])[0])[0];
+$gjp = mysql_real_escape_string($_POST["gjp"]);
+$gameVersion = mysql_real_escape_string($_POST["gameVersion"]);
+$binaryVersion = mysql_real_escape_string($_POST["binaryVersion"]);
+$userName = mysql_real_escape_string($_POST["userName"]);
+$comment = mysql_real_escape_string($_POST["comment"]);
+$id = mysql_real_escape_string($_POST["accountID"]);
 $query2 = $db->prepare("SELECT * FROM users WHERE extID = '".$id."'");
 $query2->execute();
 $result = $query2->fetchAll();
