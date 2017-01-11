@@ -11,7 +11,7 @@ if($getSent == 0){
 	$query = "SELECT * FROM friendreqs WHERE accountID = :accountID";
 }
 	$query = $db->prepare($query);
-	$query->execute(':accountID' => $accountID, );
+	$query->execute([':accountID' => $accountID]);
 	$requests = $query->rowCount();
 	$result = $query->fetchAll();
 	$startreqs = $page*10;

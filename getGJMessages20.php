@@ -19,8 +19,8 @@ if($gjpresult == 1){
 	$query = "SELECT * FROM messages WHERE toAccountID = '-1' ORDER BY messageID DESC";
 }
 $query = $db->prepare($query);
-$query->execute();
-$result = $query->fetchAll([':toAccountID' => $toAccountID]);
+$query->execute([':toAccountID' => $toAccountID]);
+$result = $query->fetchAll();
 
 $page = htmlspecialchars($_POST["page"],ENT_QUOTES);
 for ($x = 0; $x < 9; $x++) {
