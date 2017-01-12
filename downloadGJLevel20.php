@@ -19,7 +19,7 @@ $timeago2 = date('Y-M-D', $timeago);
 $xor = new XORCipher();
 $xorPass = base64_encode($xor->cipher($result["password"],26364));
 //submitting data
-echo "1:".$result["levelID"].":2:".$result["levelName"].":3:".$result["levelDesc"].":4:".$result["levelString"].":5:".$result["levelVersion"].":6:".$result["userID"].":8:10:9:".$result["starDifficulty"].":10:".$result["downloads"].":11:1:12:".$result["audioTrack"].":13:".$result["gameVersion"].":14:".$result["likes"].":17:".$result["starDemon"].":25:".$result["starAuto"].":18:".$result["starStars"].":19:".$result["starFeatured"].":15:".$result["levelLength"].":30:".$result["original"].":31:0:28:".$timeago2. ":29:".$timeago2. ":35:".$result["songID"].":36:".$result["extraString"].":37:".$result["coins"].":38:".$result["starCoins"].":39:".$result["requestedStars"].":27:$xorPass";
+echo "1:".$result["levelID"].":2:".$result["levelName"].":3:".$result["levelDesc"].":4:".$result["levelString"].":5:".$result["levelVersion"].":6:".$result["userID"].":8:10:9:".$result["starDifficulty"].":10:".$result["downloads"].":11:1:12:".$result["audioTrack"].":13:".$result["gameVersion"].":14:".$result["likes"].":17:".$result["starDemon"].":43:0:25:".$result["starAuto"].":18:".$result["starStars"].":19:".$result["starFeatured"].":42:0:45:0:15:".$result["levelLength"].":30:".$result["original"].":31:0:28:".$timeago2. ":29:".$timeago2. ":35:".$result["songID"].":36:".$result["extraString"].":37:".$result["coins"].":38:".$result["starCoins"].":39:".$result["requestedStars"].":27:$xorPass";
 //2.02 stuff
 echo "#";
 require "incl/generateHash.php";
@@ -27,7 +27,9 @@ $hash = new generateHash();
 echo $hash->genSolo($result["levelID"]);
 //2.1 stuff
 echo "#";
-echo $result["userID"].",".$result["starStars"].",0,".$result["levelID"].",0,".$result["starFeatured"].",0,0";
+echo $hash->genSolo2($result["levelID"]);
+echo "#";
+echo $result["userID"].",".$result["starStars"].",0,".$result["levelID"].",1,".$result["starFeatured"].",1,0";
 #userid,version,0,levelid,1,starfeatured,1,0
 //adding the download
 $downloads = $result["downloads"] + 1;

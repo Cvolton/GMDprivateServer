@@ -26,9 +26,9 @@ Used this for XOR encryption - https://github.com/sathoro/php-xor-cipher - (incl
 	* !!!!!!! THE HASH !!!!!!!!!
 	* The new mod system
 	* Entirely new 2.1 features
-	* Friends
-		* Levels Leaderboard
-	* Quests
-	* Daily features
-	* Gauntlets
-	* Hall of Fame
+		* Friends
+			* Levels Leaderboard
+		* Quests
+		* Daily features
+		* Gauntlets
+		* Hall of Fame

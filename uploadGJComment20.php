@@ -33,6 +33,7 @@ if(substr($decodecomment,0,5) == '!rate'){
 $query2 = $db->prepare("SELECT * FROM accounts WHERE accountID = :id");
 $query2->execute([':id' => $id]);
 $result = $query2->fetchAll();
+$result = $result[0];
 if ($result["isAdmin"] == 1) {
 $commentarray = explode(' ', $decodecomment);
 $starStars = $commentarray[2];
@@ -78,8 +79,23 @@ if(substr($decodecomment,0,8) == '!feature'){
 $query2 = $db->prepare("SELECT * FROM accounts WHERE accountID = :id");
 $query2->execute([':id' => $id]);
 $result = $query2->fetchAll();
+$result = $result[0];
 if ($result["isAdmin"] == 1) {
 $query = $db->prepare("UPDATE levels SET starFeatured='1' WHERE levelID=:levelID");
+	$GJPCheck = new GJPCheck();
+	$gjpresult = $GJPCheck->check($gjp,$id);
+	if($gjpresult == 1){
+		$query->execute([':levelID' => $levelID]);
+	}
+}
+}
+if(substr($decodecomment,0,5) == '!hall'){
+$query2 = $db->prepare("SELECT * FROM accounts WHERE accountID = :id");
+$query2->execute([':id' => $id]);
+$result = $query2->fetchAll();
+$result = $result[0];
+if ($result["isAdmin"] == 1) {
+$query = $db->prepare("UPDATE levels SET starHall='1' WHERE levelID=:levelID");
 	$GJPCheck = new GJPCheck();
 	$gjpresult = $GJPCheck->check($gjp,$id);
 	if($gjpresult == 1){
@@ -91,6 +107,7 @@ if(substr($decodecomment,0,12) == '!verifycoins'){
 $query2 = $db->prepare("SELECT * FROM accounts WHERE accountID = :id");
 $query2->execute([':id' => $id]);
 $result = $query2->fetchAll();
+$result = $result[0];
 if ($result["isAdmin"] == 1) {
 		$GJPCheck = new GJPCheck();
 	$gjpresult = $GJPCheck->check($gjp,$id);
@@ -104,6 +121,7 @@ if(substr($decodecomment,0,7) == '!delete'){
 $query2 = $db->prepare("SELECT * FROM accounts WHERE accountID = :id");
 $query2->execute([':id' => $id]);
 $result = $query2->fetchAll();
+$result = $result[0];
 if ($result["isAdmin"] == 1) {
 		$GJPCheck = new GJPCheck();
 	$gjpresult = $GJPCheck->check($gjp,$id);
@@ -137,6 +155,5 @@ if($id != "" AND $comment != ""){
 		echo 1;
 	}
 }else{echo -1;}
-echo "sakujes";
 //file_put_contents("ba7d7fab732396305ddd19a2763adff4/post".time().".log",print_r($_POST,true));
 ?>

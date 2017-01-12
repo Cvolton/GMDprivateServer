@@ -193,6 +193,9 @@ if($type != 10){
 	if($type==6 OR $type==17){
 		$query = "SELECT * FROM levels WHERE NOT starFeatured = 0 ".$additionalnowhere." ORDER BY uploadDate DESC LIMIT ".$lvlpagea.",".$lvlpageaend."";
 	}
+	if($type==16){ //HALL OF FAME
+		$query = "SELECT * FROM levels WHERE NOT starHall = 0 ".$additionalnowhere." ORDER BY uploadDate DESC LIMIT ".$lvlpagea.",".$lvlpageaend."";
+	}
 	if($type==7){ //MAGIC
 		$query = "SELECT * FROM levels WHERE objects > 9999 ". $additionalnowhere . " ORDER BY uploadDate DESC LIMIT ".$lvlpagea.",".$lvlpageaend."";
 	}
