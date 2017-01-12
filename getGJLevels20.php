@@ -173,7 +173,7 @@ if($type != 10){
 		$page = $db->quote($page);
 	$page = str_replace("'","", $page);
 	$lvlpagea = $page*10;
-	$lvlpageaend = $lvlpagea +9;
+	$lvlpageaend = $lvlpagea +10;
 	if($type==1){
 		$query = "SELECT * FROM levels ". $additional . " ORDER BY downloads DESC LIMIT ".$lvlpagea.",".$lvlpageaend."";
 	}
