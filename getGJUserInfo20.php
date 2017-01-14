@@ -28,7 +28,7 @@ if(!in_array($me, $blocked, true)){
 	$user = $result[0];
 	//placeholders
 	$creatorpoints = $user["creatorPoints"];
-	$youtubeurl = $user["youtubeurl"];
+	$youtubeurl = $accinfo["youtubeurl"];
 	// GET POSITION
 	$e = "SET @rownum := 0;";
 	$query = $db->prepare($e);

@@ -2,7 +2,7 @@
 ## Geometry Dash Private Server
 A PHP server, which should react exactly, how RobTop's server could react...
 
-Supported version of Geometry Dash: 2.00 (not 2.01)
+Supported version of Geometry Dash: 2.00 (generateHash.php is missing in this repository, so no 2.02 and 2.1 yet for public)
 
 ### Credits
 Private Messaging system by someguy28 (even though he needed a ton of help from me... and by a ton I mean A TON)
@@ -13,15 +13,13 @@ Used this for XOR encryption - https://github.com/sathoro/php-xor-cipher - (incl
 
 ### To-do list
 * A major overhaul of the friends system
-* GJP Check
-	* Moderator system revise
-* The markers in profiles
+* The notification counters in profiles
 * Searching levels
 	* Featured not being sorted by date anymore (!feature <position>)
 * Banning system
 	* Autoban
 * Custom Features 
-	* Favorite levels (will be shown as a map pack)
+	* Favorite levels (not sure how to implement yet)
 * 2.01 and 2.1 features (future)
 	* !!!!!!! THE HASH !!!!!!!!!
 	* The new mod system
@@ -31,4 +29,4 @@ Used this for XOR encryption - https://github.com/sathoro/php-xor-cipher - (incl
 		* Quests
 		* Daily features
 		* Gauntlets
-		* Hall of Fame
+		* Epic levels
