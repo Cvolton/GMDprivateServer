@@ -11,6 +11,8 @@ Base for account settings by someguy28
 
 Used this for XOR encryption - https://github.com/sathoro/php-xor-cipher - (incl/XORCipher.php)
 
+Most of the stuff in generateHash.php (missing in the public repository but it does exist in private) has been figured out by pavlukivan
+
 ### To-do list
 * A major overhaul of the friends system
 * The notification counters in profiles
