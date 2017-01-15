@@ -20,13 +20,8 @@ $userName = $result69["userName"];
 
 //continuing the accounts system
 $accountID = "";
-$id = $accID =  htmlspecialchars($_POST["udid"],ENT_QUOTES);
-if($_POST["accountID"]!=""){
-	$id = htmlspecialchars($_POST["accountID"],ENT_QUOTES);
-	$register = 1;
-}else{
-	$register = 0;
-}
+$id = htmlspecialchars($_POST["accountID"],ENT_QUOTES);
+$register = 1;
 $query2 = $db->prepare("SELECT * FROM users WHERE extID = :id");
 $query2->execute([':id' => $id]);
 $result = $query2->fetchAll();
@@ -43,12 +38,12 @@ $userID = $db->lastInsertId();
 $uploadDate = time();
 
 $query = $db->prepare("INSERT INTO messages (subject, body, accID, userID, userName, toAccountID, secret)
-VALUES (:subject, :body, :accID, :userID :userName, :toAccountID, :secret)");
+VALUES (:subject, :body, :accID, :userID, :userName, :toAccountID, :secret)");
 
 $GJPCheck = new GJPCheck();
-$gjpresult = $GJPCheck->check($gjp,$accID);
+$gjpresult = $GJPCheck->check($gjp,$id);
 if($gjpresult == 1){
-	$query->execute([':subject' => $subject, ':body' => $body, ':accID' => $accID, ':userID' => $userID, ':userName' => $userName, ':toAccountID' => $toAccountID, ':secret' => $secret]);
+	$query->execute([':subject' => $subject, ':body' => $body, ':accID' => $id, ':userID' => $userID, ':userName' => $userName, ':toAccountID' => $toAccountID, ':secret' => $secret]);
 	echo 1;
 }else{echo -1;}
 ?>
