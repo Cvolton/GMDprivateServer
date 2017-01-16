@@ -6,6 +6,7 @@ $gjp = explode("|", explode("~", htmlspecialchars($_POST["gjp"],ENT_QUOTES))[0])
 $userName = explode("|", explode("~", htmlspecialchars($_POST["userName"],ENT_QUOTES))[0])[0];
 $comment = explode("|", explode("~", htmlspecialchars($_POST["comment"],ENT_QUOTES))[0])[0];
 $levelID = explode("|", explode("~", htmlspecialchars($_POST["levelID"],ENT_QUOTES))[0])[0];
+$percent = explode("|", explode("~", htmlspecialchars($_POST["percent"],ENT_QUOTES))[0])[0];
 $accountID = "";
 $id = htmlspecialchars($_POST["udid"],ENT_QUOTES);
 if($_POST["accountID"]!=""){
@@ -132,8 +133,8 @@ $query->execute();
 }
 }
 if(substr($decodecomment,0,1) != '!'){
-$query = $db->prepare("INSERT INTO comments (userName, comment, levelID, userID, timeStamp)
-VALUES ('$userName', '$comment', '$levelID', '$userID', '$uploadDate')");
+$query = $db->prepare("INSERT INTO comments (userName, comment, levelID, userID, timeStamp, percent)
+VALUES (:userName, :comment, :levelID, :userID, :uploadDate, :percent)");
 }else{
 $query = $db->prepare("SELECT * FROM modips WHERE IP = 'nope'");
 }
@@ -143,7 +144,7 @@ if($id != "" AND $comment != ""){
 	$gjpresult = $GJPCheck->check($gjp,$id);
 	if($register == 1){
 	if($gjpresult == 1){
-		$query->execute();
+		$query->execute([':userName' => $userName, ':comment' => $comment, ':levelID' => $levelID, ':userID' => $userID, ':uploadDate' => $uploadDate, ':percent' => $percent]);
 		echo 1;
 	}
 	else
@@ -151,7 +152,7 @@ if($id != "" AND $comment != ""){
 		echo -1;
 	}
 	}else{
-		$query->execute();
+		$query->execute([':userName' => $userName, ':comment' => $comment, ':levelID' => $levelID, ':userID' => $userID, ':uploadDate' => $uploadDate, ':percent' => $percent]);
 		echo 1;
 	}
 }else{echo -1;}
