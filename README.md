@@ -26,3 +26,4 @@ Most of the stuff in generateHash.php (missing in the public repository but it d
 		* Daily features
 		* Gauntlets
 		* Epic levels
+		* Daily rewards
