@@ -14,7 +14,6 @@ Used this for XOR encryption - https://github.com/sathoro/php-xor-cipher - (incl
 Most of the stuff in generateHash.php (missing in the public repository but it does exist in private) has been figured out by pavlukivan
 
 ### To-do list
-* A major overhaul of the friends system
 * The notification counters in profiles
 * Searching levels
 	* Featured not being sorted by date anymore (!feature <position>)
@@ -23,12 +22,7 @@ Most of the stuff in generateHash.php (missing in the public repository but it d
 * Custom Features 
 	* Favorite levels (not sure how to implement yet)
 * 2.01 and 2.1 features (future)
-	* !!!!!!! THE HASH !!!!!!!!!
-	* The new mod system
 	* Entirely new 2.1 features
-		* Friends
-			* Levels Leaderboard
-		* Quests
 		* Daily features
 		* Gauntlets
 		* Epic levels
