@@ -74,14 +74,19 @@ $xi = $x + $xy;
 }
 }
 if($type == "friends"){
-	$query = "SELECT * FROM accounts WHERE accountID = :accountID";
+	$query = "SELECT * FROM friendships WHERE person1 = :accountID OR person2 = :accountID";
 	$query = $db->prepare($query);
 	$query->execute([':accountID' => $accountID]);
 	$result = $query->fetchAll();
-	$account = $result[0];
-	$friendlist = $account["friends"];
-	$whereor = str_replace(",", " OR extID = ", $friendlist);
-	$query = "SELECT * FROM users WHERE extID = :accountID OR extID = ".$whereor . " ORDER BY stars DESC";
+	$people = "";
+	foreach ($result as &$friendship) {
+		$person = $friendship["person1"];
+		if($friendship["person1"] == $accountID){
+			$person = $friendship["person2"];
+		}
+		$people = $people." OR extID = ".$person;
+	}
+	$query = "SELECT * FROM users WHERE extID = :accountID ".$people . " ORDER BY stars DESC";
 	$query = $db->prepare($query);
 	$query->execute([':accountID' => $accountID]);
 	$result = $query->fetchAll();

@@ -3,24 +3,18 @@ include "connection.php";
 $me = htmlspecialchars($_POST["accountID"],ENT_QUOTES);
 $extid = htmlspecialchars($_POST["targetAccountID"],ENT_QUOTES);
 //checking who has blocked him
-$query = "SELECT * FROM accounts WHERE accountID = :extid";
+$query = "SELECT * FROM blocks WHERE person1 = :extid AND person2 = :me";
 $query = $db->prepare($query);
-$query->execute([':extid' => $extid]);
-$result = $query->fetchAll();
-$accinfo = $result[0];
-$blockedBy = $accinfo["blockedBy"];
-//echo "SES ".$me." A ON MA ZABLOKOVANY ".$blockedBy." JASNY";
-$blockedBy = explode(",",$blockedBy);
-//checking who he has blocked
-$query = "SELECT * FROM accounts WHERE accountID = :extid";
+$query->execute([':extid' => $extid, ':me' => $me]);
+if($query->rowCount() > 0){
+	exit(-1);
+}
+$query = "SELECT * FROM blocks WHERE person2 = :extid AND person1 = :me";
 $query = $db->prepare($query);
-$query->execute([':extid' => $extid]);
-$result = $query->fetchAll();
-$accinfo = $result[0];
-$blocked = $accinfo["blocked"];
-$blocked = explode(",",$blocked);
-if(!in_array($me, $blockedBy, true)){
-if(!in_array($me, $blocked, true)){
+$query->execute([':extid' => $extid, ':me' => $me]);
+if($query->rowCount() > 0){
+	exit(-1);
+}
 	$query = "SELECT * FROM users WHERE extID = :extid";
 	$query = $db->prepare($query);
 	$query->execute([':extid' => $extid]);
@@ -91,15 +85,20 @@ if(!in_array($me, $blocked, true)){
 				$friendstate=4;
 			}
 		//check if friend ALREADY
-			$query = "SELECT * FROM accounts WHERE accountID = :me";
+			$query = "SELECT * FROM friendships WHERE person1 = :me AND person2 = :extID";
 			$query = $db->prepare($query);
-			$query->execute([':me' => $me]);
-			$result = $query->fetchAll();
-			$account = $result[0];
-			$friendlist = $account["friends"];
-			$friendsarray = explode(',',$friendlist);
-			if(in_array($extid, $friendsarray, true)){
+			$query->execute([':me' => $me, ':extID' => $extid]);
+			$frs = $query->rowCount();
+			if($frs > 0){
 				$friendstate=1;
+			}else{
+				$query = "SELECT * FROM friendships WHERE person2 = :me AND person1 = :extID";
+				$query = $db->prepare($query);
+				$query->execute([':me' => $me, ':extID' => $extid]);
+				$frs = $query->rowCount();
+				if($frs > 0){
+					$friendstate=1;
+				}
 			}
 		/* sending the data */
 		//$friendstate is :31:
@@ -110,6 +109,4 @@ if(!in_array($me, $blocked, true)){
 			echo ":32:".$request["ID"].":35:".$request["comment"].":37:".$uploaddate;
 		}
 		}
-}else{echo "-1";}
-}else{echo "-1";}
 ?>
