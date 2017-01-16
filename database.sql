@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Jan 16, 2017 at 02:04 AM
+-- Generation Time: Jan 16, 2017 at 02:42 AM
 -- Server version: 5.1.71-community-log
 -- PHP Version: 5.3.10
 
@@ -171,6 +171,21 @@ CREATE TABLE IF NOT EXISTS `levels` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `levelscores`
+--
+
+CREATE TABLE IF NOT EXISTS `levelscores` (
+  `scoreID` int(11) NOT NULL AUTO_INCREMENT,
+  `accountID` int(11) NOT NULL,
+  `levelID` int(11) NOT NULL,
+  `percent` int(11) NOT NULL,
+  `uploadDate` int(11) NOT NULL,
+  PRIMARY KEY (`scoreID`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `mappacks`
 --
 
@@ -244,7 +259,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `isRegistered` int(11) NOT NULL,
   `userID` int(11) NOT NULL AUTO_INCREMENT,
   `extID` varchar(100) NOT NULL,
-  `userName` varchar(69) NOT NULL DEFAULT 'idk how but my name is bugged out',
+  `userName` varchar(69) NOT NULL DEFAULT 'undefined',
   `stars` int(11) NOT NULL,
   `demons` int(11) NOT NULL,
   `icon` int(11) NOT NULL,
@@ -270,7 +285,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `accSpider` int(11) NOT NULL,
   `accExplosion` int(11) NOT NULL,
   PRIMARY KEY (`userID`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=533 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=534 ;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
