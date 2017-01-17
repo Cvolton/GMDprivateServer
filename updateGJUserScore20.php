@@ -24,8 +24,8 @@ $accBird = htmlspecialchars($_POST["accBird"],ENT_QUOTES);
 $accDart = htmlspecialchars($_POST["accDart"],ENT_QUOTES);
 $accRobot = htmlspecialchars($_POST["accRobot"],ENT_QUOTES);
 $accGlow = htmlspecialchars($_POST["accGlow"],ENT_QUOTES);
-$accSpider = htmlspecialchars($_POST["accGlow"],ENT_QUOTES);
-$accExplosion = htmlspecialchars($_POST["accGlow"],ENT_QUOTES);
+$accSpider = htmlspecialchars($_POST["accSpider"],ENT_QUOTES);
+$accExplosion = htmlspecialchars($_POST["accExplosion"],ENT_QUOTES);
 $diamonds = htmlspecialchars($_POST["diamonds"],ENT_QUOTES);
 //continuing the accounts system
 $accountID = "";
