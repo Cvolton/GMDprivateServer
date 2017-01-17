@@ -90,13 +90,13 @@ $query = $db->prepare("UPDATE levels SET starFeatured='1' WHERE levelID=:levelID
 	}
 }
 }
-if(substr($decodecomment,0,5) == '!hall'){
+if(substr($decodecomment,0,5) == '!epic'){
 $query2 = $db->prepare("SELECT * FROM accounts WHERE accountID = :id");
 $query2->execute([':id' => $id]);
 $result = $query2->fetchAll();
 $result = $result[0];
 if ($result["isAdmin"] == 1) {
-$query = $db->prepare("UPDATE levels SET starHall='1' WHERE levelID=:levelID");
+$query = $db->prepare("UPDATE levels SET starEpic='1' WHERE levelID=:levelID");
 	$GJPCheck = new GJPCheck();
 	$gjpresult = $GJPCheck->check($gjp,$id);
 	if($gjpresult == 1){
