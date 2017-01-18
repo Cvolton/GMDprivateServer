@@ -9,7 +9,7 @@ Private Messaging system by someguy28 (even though he needed a ton of help from 
 
 Base for account settings by someguy28
 
-Used this for XOR encryption - https://github.com/sathoro/php-xor-cipher - (incl/XORCipher.php)
+Using this for XOR encryption - https://github.com/sathoro/php-xor-cipher - (incl/XORCipher.php)
 
 Most of the stuff in generateHash.php (missing in the public repository but it does exist in private) has been figured out by pavlukivan
 
@@ -23,4 +23,3 @@ Most of the stuff in generateHash.php (missing in the public repository but it d
 * 2.01 and 2.1 features (future)
 	* Entirely new 2.1 features
 		* Gauntlets
-		* Daily rewards
