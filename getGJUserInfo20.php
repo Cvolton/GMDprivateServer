@@ -22,7 +22,6 @@ if($query->rowCount() > 0){
 	$user = $result[0];
 	//placeholders
 	$creatorpoints = $user["creatorPoints"];
-	$youtubeurl = $accinfo["youtubeurl"];
 	// GET POSITION
 	$e = "SET @rownum := 0;";
 	$query = $db->prepare($e);
@@ -47,6 +46,8 @@ if($query->rowCount() > 0){
 		//check if messaging allowed
 			//$msgstate = 0;
 			$msgstate = $account["mS"];
+			
+	$youtubeurl = $account["youtubeurl"];
 	if($me==$extid){
 		/* notifications */
 			//friendreqs
@@ -83,7 +84,7 @@ if($query->rowCount() > 0){
 			//19 = enabled (0) disabled (1) friend requests
 			//31 = isnt (0) or is (1) friend or (3) incoming request or (4) outgoing request
 			//:32:9558256:35:XiB0cnU=:37:3 months
-			echo "1:".$user["userName"].":2:".$user["userID"].":13:".$user["coins"].":17:".$user["userCoins"].":10:".$user["color1"].":11:".$user["color2"].":3:".$user["stars"].":46:".$user["diamonds"].":4:".$user["demons"].":8:".$creatorpoints.":18:".$msgstate.":19:".$reqsstate.":20:".$youtubeurl.":21:".$user["accIcon"].":22:".$user["accShip"].":23:".$user["accBall"].":24:".$user["accBird"].":25:".$user["accDart"].":26:".$user["accRobot"].":28:".$user["accGlow"].":43:".$user["accSpider"].":47:".$user["accExplosion"].":30:".$rank.":16:".$user["extID"].":31:0:44:".$account["twitter"].":45:".$result["twitch"].":38:".$pms.":39:".$requests.":40:".$friends.":29:1";
+			echo "1:".$user["userName"].":2:".$user["userID"].":13:".$user["coins"].":17:".$user["userCoins"].":10:".$user["color1"].":11:".$user["color2"].":3:".$user["stars"].":46:".$user["diamonds"].":4:".$user["demons"].":8:".$creatorpoints.":18:".$msgstate.":19:".$reqsstate.":20:".$youtubeurl.":21:".$user["accIcon"].":22:".$user["accShip"].":23:".$user["accBall"].":24:".$user["accBird"].":25:".$user["accDart"].":26:".$user["accRobot"].":28:".$user["accGlow"].":43:".$user["accSpider"].":47:".$user["accExplosion"].":30:".$rank.":16:".$user["extID"].":31:0:44:".$account["twitter"].":45:".$account["twitch"].":38:".$pms.":39:".$requests.":40:".$friends.":29:1";
 	}else{
 		/* friend state */
 			$friendstate=0;
@@ -126,7 +127,7 @@ if($query->rowCount() > 0){
 		/* sending the data */
 		//$friendstate is :31:
 		//$reqsstate is :19:
-		echo "1:".$user["userName"].":2:".$user["userID"].":13:".$user["coins"].":17:".$user["userCoins"].":10:".$user["color1"].":11:".$user["color2"].":3:".$user["stars"].":46:".$user["diamonds"].":4:".$user["demons"].":8:".$creatorpoints.":18:0:19:".$reqsstate.":20:".$youtubeurl.":21:".$user["accIcon"].":22:".$user["accShip"].":23:".$user["accBall"].":24:".$user["accBird"].":25:".$user["accDart"].":26:".$user["accRobot"].":28:".$user["accGlow"].":43:".$user["accSpider"].":47:".$user["accExplosion"].":30:".$rank.":16:".$user["extID"].":31:".$friendstate.":44:".$account["twitter"].":45:".$result["twitch"].":29:1";
+		echo "1:".$user["userName"].":2:".$user["userID"].":13:".$user["coins"].":17:".$user["userCoins"].":10:".$user["color1"].":11:".$user["color2"].":3:".$user["stars"].":46:".$user["diamonds"].":4:".$user["demons"].":8:".$creatorpoints.":18:0:19:".$reqsstate.":20:".$youtubeurl.":21:".$user["accIcon"].":22:".$user["accShip"].":23:".$user["accBall"].":24:".$user["accBird"].":25:".$user["accDart"].":26:".$user["accRobot"].":28:".$user["accGlow"].":43:".$user["accSpider"].":47:".$user["accExplosion"].":30:".$rank.":16:".$user["extID"].":31:".$friendstate.":44:".$account["twitter"].":45:".$account["twitch"].":29:1";
 		if ($INCrequests > 0){
 			$request = $INCrequestinfo[0];
 			echo ":32:".$request["ID"].":35:".$request["comment"].":37:".$uploaddate;
