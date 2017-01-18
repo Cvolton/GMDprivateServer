@@ -118,6 +118,20 @@ $query->execute();
 	}
 }
 }
+if(substr($decodecomment,0,6) == '!daily'){
+$query2 = $db->prepare("SELECT * FROM accounts WHERE accountID = :id");
+$query2->execute([':id' => $id]);
+$result = $query2->fetchAll();
+$result = $result[0];
+if ($result["isAdmin"] == 1) {
+	$GJPCheck = new GJPCheck();
+	$gjpresult = $GJPCheck->check($gjp,$id);
+	if($gjpresult == 1){
+		$query = $db->prepare("INSERT INTO dailyfeatures (levelID, timestamp) VALUES (:levelID, :uploadDate)");
+		$query->execute([':levelID' => $levelID, ':uploadDate' => $uploadDate]);
+	}
+}
+}
 if(substr($decodecomment,0,7) == '!delete'){
 $query2 = $db->prepare("SELECT * FROM accounts WHERE accountID = :id");
 $query2->execute([':id' => $id]);
