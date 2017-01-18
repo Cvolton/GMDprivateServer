@@ -20,8 +20,12 @@ $type = htmlspecialchars($_POST["type"],ENT_QUOTES);
 	{
 		foreach ($result as &$friendship) {
 			$person = $friendship["person1"];
+			$isnew = $friendship["isNew1"];
+			$p = 1;
 			if($friendship["person1"] == $accountID){
 				$person = $friendship["person2"];
+				$isnew = $friendship["isNew2"];
+				$p = 2;
 			}
 			$query = "SELECT * FROM users WHERE extID = :person";
 			$query = $db->prepare($query);
@@ -30,7 +34,10 @@ $type = htmlspecialchars($_POST["type"],ENT_QUOTES);
 			$user = $result2[0];
 			$gjpresult = $GJPCheck->check($gjp,$accountID);
 			if($gjpresult == 1){
-				echo "1:".$user["userName"].":2:".$user["userID"].":9:".$user["icon"].":10:".$user["color1"].":11:".$user["color2"].":14:".$user["iconType"].":15:".$user["special"].":16:".$person.":18:0:41:|";
+				echo "1:".$user["userName"].":2:".$user["userID"].":9:".$user["icon"].":10:".$user["color1"].":11:".$user["color2"].":14:".$user["iconType"].":15:".$user["special"].":16:".$person.":18:0:41:".$isnew."|";
+				$query = "UPDATE friendships SET isNew".$p." = '0' WHERE ID = :ID";
+				$query = $db->prepare($query);
+				$query->execute([':ID' => $friendship["ID"]]);
 			}else{echo "-1";}
 		}
 	}

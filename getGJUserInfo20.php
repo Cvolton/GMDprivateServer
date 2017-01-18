@@ -49,18 +49,41 @@ if($query->rowCount() > 0){
 			$msgstate = $account["mS"];
 	if($me==$extid){
 		/* notifications */
-			//friends
+			//friendreqs
 				$query = "SELECT * FROM friendreqs WHERE toAccountID = :me";
 				$query = $db->prepare($query);
 				$query->execute([':me' => $me]);
 				$requests = $query->rowCount();
+			//messages
+				$query = "SELECT * FROM messages WHERE toAccountID = :me AND isNew=0";
+				$query = $db->prepare($query);
+				$query->execute([':me' => $me]);
+				$pms = $query->rowCount();
+			//friends
+				$query = "SELECT * FROM friendships WHERE person1 = :me OR person2=:me";
+				$query = $db->prepare($query);
+				$query->execute([':me' => $me]);
+				$friendArray = $query->fetchAll();
+				$friends = 0;
+				foreach ($friendArray as &$friendship) {
+					if($friendship["person1"] == $me){
+						if($friendship["isNew2"] == 1){
+							$friends++;
+						}
+					}
+					if($friendship["person2"] == $me){
+						if($friendship["isNew1"] == 1){
+							$friends++;
+						}
+					}
+				}
 		/* sending the data */
 			//38,39,40 are notification counters
 			//18 = enabled (0) or disabled (1) messaging
 			//19 = enabled (0) disabled (1) friend requests
 			//31 = isnt (0) or is (1) friend or (3) incoming request or (4) outgoing request
 			//:32:9558256:35:XiB0cnU=:37:3 months
-			echo "1:".$user["userName"].":2:".$user["userID"].":13:".$user["coins"].":17:".$user["userCoins"].":10:".$user["color1"].":11:".$user["color2"].":3:".$user["stars"].":46:".$user["diamonds"].":4:".$user["demons"].":8:".$creatorpoints.":18:".$msgstate.":19:".$reqsstate.":20:".$youtubeurl.":21:".$user["accIcon"].":22:".$user["accShip"].":23:".$user["accBall"].":24:".$user["accBird"].":25:".$user["accDart"].":26:".$user["accRobot"].":28:".$user["accGlow"].":43:".$user["accSpider"].":47:".$user["accExplosion"].":30:".$rank.":16:".$user["extID"].":31:0:44:".$account["twitter"].":45:".$result["twitch"].":38:3:39:".$requests.":40:9:29:1";
+			echo "1:".$user["userName"].":2:".$user["userID"].":13:".$user["coins"].":17:".$user["userCoins"].":10:".$user["color1"].":11:".$user["color2"].":3:".$user["stars"].":46:".$user["diamonds"].":4:".$user["demons"].":8:".$creatorpoints.":18:".$msgstate.":19:".$reqsstate.":20:".$youtubeurl.":21:".$user["accIcon"].":22:".$user["accShip"].":23:".$user["accBall"].":24:".$user["accBird"].":25:".$user["accDart"].":26:".$user["accRobot"].":28:".$user["accGlow"].":43:".$user["accSpider"].":47:".$user["accExplosion"].":30:".$rank.":16:".$user["extID"].":31:0:44:".$account["twitter"].":45:".$result["twitch"].":38:".$pms.":39:".$requests.":40:".$friends.":29:1";
 	}else{
 		/* friend state */
 			$friendstate=0;
