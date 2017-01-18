@@ -30,7 +30,8 @@ for ($x = 0; $x < 9; $x++) {
 		if($x != 0){
 		echo "|";
 	}
-	echo "6:".$message1["userName"].":3:".$message1["userID"].":2:".$message1["accID"].":1:".$message1["messageID"].":4:".$message1["subject"].":8:1:9:0:7:CVOLTON GDPS";
+	$uploadDate = date("d/m/Y G.i", $message1["timestamp"]);
+	echo "6:".$message1["userName"].":3:".$message1["userID"].":2:".$message1["accID"].":1:".$message1["messageID"].":4:".$message1["subject"].":8:".$message1["isNew"].":9:0:7:".$uploadDate."";
 	$query12 = $db->prepare("SELECT * FROM users WHERE userID = '".$message1["userID"]."'");
 	$query12->execute();
 	$result12 = $query12->fetchAll();
@@ -51,5 +52,5 @@ if(is_numeric($userID)){
 	$userid = $userid + 1;
 	}
 }
- echo "#:0:50";
+ echo "#9999:0:50";
 ?>

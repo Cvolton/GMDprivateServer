@@ -37,13 +37,13 @@ $userID = $db->lastInsertId();
 }
 $uploadDate = time();
 
-$query = $db->prepare("INSERT INTO messages (subject, body, accID, userID, userName, toAccountID, secret)
-VALUES (:subject, :body, :accID, :userID, :userName, :toAccountID, :secret)");
+$query = $db->prepare("INSERT INTO messages (subject, body, accID, userID, userName, toAccountID, secret, timestamp)
+VALUES (:subject, :body, :accID, :userID, :userName, :toAccountID, :secret, :uploadDate)");
 
 $GJPCheck = new GJPCheck();
 $gjpresult = $GJPCheck->check($gjp,$id);
 if($gjpresult == 1){
-	$query->execute([':subject' => $subject, ':body' => $body, ':accID' => $id, ':userID' => $userID, ':userName' => $userName, ':toAccountID' => $toAccountID, ':secret' => $secret]);
+	$query->execute([':subject' => $subject, ':body' => $body, ':accID' => $id, ':userID' => $userID, ':userName' => $userName, ':toAccountID' => $toAccountID, ':secret' => $secret, ':uploadDate' => $uploadDate]);
 	echo 1;
 }else{echo -1;}
 ?>
