@@ -39,15 +39,15 @@ $chk = $XORCipher->cipher(base64_decode(substr($chk, 5)),59182);
 	$chest1stuff = rand($chest1minOrbs, $chest1maxOrbs).",".rand($chest1minDiamonds, $chest1maxDiamonds).",".rand($chest1minShards, $chest1maxShards).",".rand($chest1minKeys, $chest1maxKeys)."";
 	$chest2stuff = rand($chest2minOrbs, $chest2maxOrbs).",".rand($chest2minDiamonds, $chest2maxDiamonds).",".rand($chest2minShards, $chest2maxShards).",".rand($chest2minKeys, $chest2maxKeys)."";
 	//echo $chest1diff ."sakujesvole".$chest2diff;
-	if($chest1diff > 14399){
+	if($chest1diff > $chest1wait){
 		$chest1left = 0;
 	}else{
-		$chest1left = 14400 - $chest1diff;
+		$chest1left = $chest1wait - $chest1diff;
 	}
-	if($chest2diff > 86399){
+	if($chest2diff > $chest2wait){
 		$chest2left = 0;
 	}else{
-		$chest2left = 86400 - $chest2diff;
+		$chest2left = $chest2wait - $chest2diff;
 	}
 	if($rewardType == 1){
 		$chest1count++;

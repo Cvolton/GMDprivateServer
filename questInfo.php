@@ -10,12 +10,12 @@ $quest1Reward=69;
 //   QUEST 2
 $quest2Name="Big Mek Spek";
 $quest2Type=2;
-$quest2Amount=100;
+$quest2Amount=3;
 $quest2Reward=69;
 //   QUEST 3
 $quest3Name="Smakovka";
 $quest3Type=3;
-$quest3Amount=100;
+$quest3Amount=15;
 $quest3Reward=69;
 /*
 	REWARDS
@@ -38,4 +38,7 @@ $chest2minShards = 0;
 $chest2maxShards = 5;
 $chest2minKeys = 0;
 $chest2maxKeys = 5;
+//REWARD TIMES (in seconds)
+$chest1wait = 3600;
+$chest2wait = 14400
 ?>
