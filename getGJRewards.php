@@ -47,7 +47,7 @@ $chk = $XORCipher->cipher(base64_decode(substr($chk, 5)),59182);
 	if($chest2diff > 86399){
 		$chest2left = 0;
 	}else{
-		$chest2left = 86400 - $chest1diff;
+		$chest2left = 86400 - $chest2diff;
 	}
 	if($rewardType == 1){
 		$chest1count++;
