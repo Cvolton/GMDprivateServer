@@ -170,44 +170,41 @@ if($type != 10){
 		
 	}
 	$page = htmlspecialchars($_POST["page"],ENT_QUOTES);
-		$page = $db->quote($page);
-	$page = str_replace("'","", $page);
 	$lvlpagea = $page*10;
-	$lvlpageaend = $lvlpagea +10;
 	if($type==1){
-		$query = "SELECT * FROM levels ". $additional . " ORDER BY downloads DESC LIMIT ".$lvlpagea.",".$lvlpageaend."";
+		$query = "SELECT * FROM levels ". $additional . " ORDER BY downloads DESC LIMIT 10 OFFSET $lvlpagea";
 	}
 	if($type==2){
-		$query = "SELECT * FROM levels ". $additional . " ORDER BY likes DESC LIMIT ".$lvlpagea.",".$lvlpageaend."";
+		$query = "SELECT * FROM levels ". $additional . " ORDER BY likes DESC LIMIT 10 OFFSET $lvlpagea";
 	}
-	if($type==3){ //RECENT
+	if($type==3){ //TRENDING
 		$uploadDate = time() - (7 * 24 * 60 * 60);
-		$query = "SELECT * FROM levels WHERE uploadDate > ".$uploadDate . " " . $additionalnowhere . " ORDER BY likes DESC LIMIT ".$lvlpagea.",".$lvlpageaend."";
+		$query = "SELECT * FROM levels WHERE uploadDate > ".$uploadDate . " " . $additionalnowhere . " ORDER BY likes DESC LIMIT 10 OFFSET $lvlpagea";
 	}
 	if($type==4){ //RECENT
-		$query = "SELECT * FROM levels ". $additional . " ORDER BY uploadDate DESC LIMIT ".$lvlpagea.",".$lvlpageaend."";
+		$query = "SELECT * FROM levels ". $additional . " ORDER BY uploadDate DESC LIMIT 10 OFFSET $lvlpagea";
 	}
     if($type==5){
-		$query = "SELECT * FROM levels WHERE userID = '".$str."'ORDER BY uploadDate DESC LIMIT ".$lvlpagea.",".$lvlpageaend."";
+		$query = "SELECT * FROM levels WHERE userID = '".$str."'ORDER BY uploadDate DESC LIMIT 10 OFFSET $lvlpagea";
 	}
 	if($type==6 OR $type==17){
-		$query = "SELECT * FROM levels WHERE NOT starFeatured = 0 ".$additionalnowhere." ORDER BY uploadDate DESC LIMIT ".$lvlpagea.",".$lvlpageaend."";
+		$query = "SELECT * FROM levels WHERE NOT starFeatured = 0 ".$additionalnowhere." ORDER BY uploadDate DESC LIMIT 10 OFFSET $lvlpagea";
 	}
 	if($type==16){ //HALL OF FAME
-		$query = "SELECT * FROM levels WHERE NOT starEpic = 0 ".$additionalnowhere." ORDER BY uploadDate DESC LIMIT ".$lvlpagea.",".$lvlpageaend."";
+		$query = "SELECT * FROM levels WHERE NOT starEpic = 0 ".$additionalnowhere." ORDER BY uploadDate DESC LIMIT 10 OFFSET $lvlpagea";
 	}
 	if($type==7){ //MAGIC
-		$query = "SELECT * FROM levels WHERE objects > 9999 ". $additionalnowhere . " ORDER BY uploadDate DESC LIMIT ".$lvlpagea.",".$lvlpageaend."";
+		$query = "SELECT * FROM levels WHERE objects > 9999 ". $additionalnowhere . " ORDER BY uploadDate DESC LIMIT 10 OFFSET $lvlpagea";
 	}
 	if($type==11){
-		$query = "SELECT * FROM levels WHERE NOT starStars = 0 ".$additionalnowhere." ORDER BY uploadDate DESC LIMIT ".$lvlpagea.",".$lvlpageaend."";
+		$query = "SELECT * FROM levels WHERE NOT starStars = 0 ".$additionalnowhere." ORDER BY uploadDate DESC LIMIT 10 OFFSET $lvlpagea";
 	}
 	if($type==12){ //FOLLOWED
 		$followed = htmlspecialchars($_POST["followed"],ENT_QUOTES);
 			$followed = $db->quote($followed);
 	$followed = str_replace("'","", $followed);
 		$whereor = str_replace(",", " OR extID = ", $followed);
-		$query = "SELECT * FROM levels WHERE extID = ".$whereor." ".$additionalnowhere." ORDER BY uploadDate DESC LIMIT ".$lvlpagea.",".$lvlpageaend."";
+		$query = "SELECT * FROM levels WHERE extID = ".$whereor." ".$additionalnowhere." ORDER BY uploadDate DESC LIMIT 10 OFFSET $lvlpagea";
 	}
 	if($type==13){ //FRIENDS
 		$accountID = htmlspecialchars($_POST["accountID"],ENT_QUOTES);
@@ -226,7 +223,7 @@ if($type != 10){
 			$friendlist = $account["friends"];
 			$friendsarray = explode(",", $friendlist);
 			$whereor = str_replace(",", " OR extID = ", $friendlist);
-			$query = "SELECT * FROM levels WHERE extID = ".$whereor." ".$additionalnowhere." ORDER BY uploadDate DESC LIMIT ".$lvlpagea.",".$lvlpageaend."";
+			$query = "SELECT * FROM levels WHERE extID = ".$whereor." ".$additionalnowhere." ORDER BY uploadDate DESC LIMIT 10 OFFSET $lvlpagea";
 		}
 	}
 	//echo $query;
