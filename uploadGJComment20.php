@@ -68,7 +68,7 @@ switch ($commentarray[1]) {
 		break;
 	
 }
-     $query = $db->prepare("UPDATE levels SET starStars=:starStars, starDifficulty=:starDifficulty, starDemon=:starDemon, starAuto=:starAuto, starFeatured=:starFeatured, starCoins=:starCoins WHERE levelID=:levelID");
+	$query = $db->prepare("UPDATE levels SET starStars=:starStars, starDifficulty=:starDifficulty, starDemon=:starDemon, starAuto=:starAuto, starFeatured=:starFeatured, starCoins=:starCoins WHERE levelID=:levelID");
 	$GJPCheck = new GJPCheck();
 	$gjpresult = $GJPCheck->check($gjp,$id);
 	if($gjpresult == 1){
@@ -119,32 +119,57 @@ $query->execute();
 }
 }
 if(substr($decodecomment,0,6) == '!daily'){
-$query2 = $db->prepare("SELECT * FROM accounts WHERE accountID = :id");
-$query2->execute([':id' => $id]);
-$result = $query2->fetchAll();
-$result = $result[0];
-if ($result["isAdmin"] == 1) {
-	$GJPCheck = new GJPCheck();
-	$gjpresult = $GJPCheck->check($gjp,$id);
-	if($gjpresult == 1){
-		$query = $db->prepare("INSERT INTO dailyfeatures (levelID, timestamp) VALUES (:levelID, :uploadDate)");
-		$query->execute([':levelID' => $levelID, ':uploadDate' => $uploadDate]);
+	$query2 = $db->prepare("SELECT * FROM accounts WHERE accountID = :id");
+	$query2->execute([':id' => $id]);
+	$result = $query2->fetchAll();
+	$result = $result[0];
+	if ($result["isAdmin"] == 1) {
+		$GJPCheck = new GJPCheck();
+		$gjpresult = $GJPCheck->check($gjp,$id);
+		if($gjpresult == 1){
+			$query = $db->prepare("INSERT INTO dailyfeatures (levelID, timestamp) VALUES (:levelID, :uploadDate)");
+			$query->execute([':levelID' => $levelID, ':uploadDate' => $uploadDate]);
+		}
 	}
-}
 }
 if(substr($decodecomment,0,7) == '!delete'){
-$query2 = $db->prepare("SELECT * FROM accounts WHERE accountID = :id");
-$query2->execute([':id' => $id]);
-$result = $query2->fetchAll();
-$result = $result[0];
-if ($result["isAdmin"] == 1) {
+	$query2 = $db->prepare("SELECT * FROM accounts WHERE accountID = :id");
+	$query2->execute([':id' => $id]);
+	$result = $query2->fetchAll();
+	$result = $result[0];
+	if ($result["isAdmin"] == 1) {
 		$GJPCheck = new GJPCheck();
-	$gjpresult = $GJPCheck->check($gjp,$id);
-	if($gjpresult == 1){
-$query = $db->prepare("DELETE from levels WHERE levelID='$levelID' LIMIT 1");
-$query->execute();
+		$gjpresult = $GJPCheck->check($gjp,$id);
+		if($gjpresult == 1){
+			$query = $db->prepare("DELETE from levels WHERE levelID=:levelID LIMIT 1");
+			$query->execute([':levelID' => $levelID]);
+		}
 	}
 }
+if(substr($decodecomment,0,7) == '!setacc'){
+	$query2 = $db->prepare("SELECT * FROM accounts WHERE accountID = :id");
+	$query2->execute([':id' => $id]);
+	$result = $query2->fetchAll();
+	$result = $result[0];
+	if ($result["isAdmin"] == 1) {
+		$GJPCheck = new GJPCheck();
+		$gjpresult = $GJPCheck->check($gjp,$id);
+		if($gjpresult == 1){
+			$commentarray = explode(' ', $decodecomment);
+			$query = $db->prepare("SELECT * FROM accounts WHERE userName = :userName LIMIT 1");
+			$query->execute([':userName' => $commentarray[1]]);
+			$result = $query->fetchAll();
+			$result = $result[0];
+			var_dump($result);
+			$query = $db->prepare("SELECT * FROM users WHERE extID = :extID LIMIT 1");
+			$query->execute([':extID' => $result["accountID"]]);
+			$result2 = $query->fetchAll();
+			$result2 = $result2[0];
+			var_dump($result2);
+			$query = $db->prepare("UPDATE levels SET extID=:extID, userID=:userID, userName=:userName WHERE levelID=:levelID");
+			$query->execute([':extID' => $result["accountID"], ':userID' => $result2["userID"], ':userName' => $commentarray[1], ':levelID' => $levelID]);
+		}
+	}
 }
 if(substr($decodecomment,0,1) != '!'){
 $query = $db->prepare("INSERT INTO comments (userName, comment, levelID, userID, timeStamp, percent)
