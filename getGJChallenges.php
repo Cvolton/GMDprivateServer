@@ -19,7 +19,7 @@ $result = $result[0];
 $userid = $result["userID"];
 $chk = $XORCipher->cipher(base64_decode(substr($chk, 5)),19847);
 //Generating quest IDs
-$from = strtotime('2017-01-17');
+$from = strtotime('2016-01-17');
 $today = time();
 $difference = $today - $from;
 $questID = floor($difference / 86400);
