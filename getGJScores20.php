@@ -5,10 +5,10 @@ $accountID = htmlspecialchars($_POST["accountID"],ENT_QUOTES);
 $type = htmlspecialchars($_POST["type"],ENT_QUOTES);
 if($type == "top" OR $type == "creators" OR $type == "relative"){
 	if($type == "top"){
-	$query = "SELECT * FROM users ORDER BY stars DESC LIMIT 100";
+	$query = "SELECT * FROM users WHERE isBanned = '0' ORDER BY stars DESC LIMIT 100";
 	}
 	if($type == "creators"){
-	$query = "SELECT * FROM users ORDER BY creatorPoints DESC";
+	$query = "SELECT * FROM users WHERE isBanned = '0' ORDER BY creatorPoints DESC";
 	}
 	if($type == "relative"){
 	$query = "SELECT * FROM users WHERE extID = :accountID";
@@ -24,14 +24,14 @@ if($type == "top" OR $type == "creators" OR $type == "relative"){
       SELECT  *  FROM users
       WHERE stars <= :stars
       ORDER BY stars DESC
-      LIMIT :count
+      LIMIT $count
    )
   UNION
    (
       SELECT * FROM users
       WHERE stars >= :stars
       ORDER BY stars ASC
-      LIMIT :count
+      LIMIT $count
    )
 
  ) as A
@@ -49,8 +49,8 @@ ORDER BY A.stars DESC";
 		$query = $db->prepare($e);
 		$query->execute();
 		$f = "SELECT rank, stars FROM (
-                    SELECT @rownum := @rownum + 1 AS rank, stars, extID
-                    FROM users ORDER BY stars DESC
+                    SELECT @rownum := @rownum + 1 AS rank, stars, extID, isBanned
+                    FROM users WHERE isBanned = '0' ORDER BY stars DESC
                     ) as result WHERE extID=:extid";
 		$query = $db->prepare($f);
 		$query->execute([':extid' => $extid]);

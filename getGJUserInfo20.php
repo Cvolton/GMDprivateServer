@@ -27,8 +27,8 @@ if($query->rowCount() > 0){
 	$query = $db->prepare($e);
 	$query->execute();
 	$f = "SELECT rank, stars FROM (
-                    SELECT @rownum := @rownum + 1 AS rank, stars, extID
-                    FROM users ORDER BY stars DESC
+                    SELECT @rownum := @rownum + 1 AS rank, stars, extID, isBanned
+                    FROM users WHERE isBanned = '0' ORDER BY stars DESC
                     ) as result WHERE extID=:extid";
 	$query = $db->prepare($f);
 	$query->execute([':extid' => $extid]);
