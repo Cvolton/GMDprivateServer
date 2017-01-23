@@ -20,6 +20,3 @@ Most of the stuff in generateHash.php (missing in the public repository but it d
 	* Autoban
 * Custom Features 
 	* Favorite levels (not sure how to implement yet)
-* 2.01 and 2.1 features (future)
-	* Entirely new 2.1 features
-		* Gauntlets
