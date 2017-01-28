@@ -29,26 +29,17 @@ $chk = $XORCipher->cipher(base64_decode(substr($chk, 5)),59182);
 //rewards
 	//Time left
 	$currenttime = time();
+	$currenttime = $currenttime + 100;
 	$chest1time = $user["chest1time"];
 	$chest1count = $user["chest1count"];
 	$chest2count = $user["chest2count"];
-	$chest1diff = $currenttime - $chest1time;
 	$chest2time = $user["chest2time"];
+	$chest1diff = $currenttime - $chest1time;
 	$chest2diff = $currenttime - $chest2time;
 	//stuff
 	$chest1stuff = rand($chest1minOrbs, $chest1maxOrbs).",".rand($chest1minDiamonds, $chest1maxDiamonds).",".rand($chest1minShards, $chest1maxShards).",".rand($chest1minKeys, $chest1maxKeys)."";
 	$chest2stuff = rand($chest2minOrbs, $chest2maxOrbs).",".rand($chest2minDiamonds, $chest2maxDiamonds).",".rand($chest2minShards, $chest2maxShards).",".rand($chest2minKeys, $chest2maxKeys)."";
 	//echo $chest1diff ."sakujesvole".$chest2diff;
-	if($chest1diff > $chest1wait){
-		$chest1left = 0;
-	}else{
-		$chest1left = $chest1wait - $chest1diff;
-	}
-	if($chest2diff > $chest2wait){
-		$chest2left = 0;
-	}else{
-		$chest2left = $chest2wait - $chest2diff;
-	}
 	if($rewardType == 1){
 		$chest1count++;
 		$query = $db->prepare("UPDATE users SET chest1count=:chest1count, chest1time=:currenttime WHERE userID=:userID");	
@@ -59,6 +50,8 @@ $chk = $XORCipher->cipher(base64_decode(substr($chk, 5)),59182);
 		$query = $db->prepare("UPDATE users SET chest2count=:chest2count, chest2time=:currenttime WHERE userID=:userID");	
 		$query->execute([':chest2count' => $chest2count, ':userID' => $userid, ':currenttime' => $currenttime]);
 	}
+	$chest1left = max(0,$chest1wait - $chest1diff);
+	$chest2left = max(0,$chest2wait - $chest2diff);
 	$string = base64_encode($XORCipher->cipher("SaKuJ:".$userid.":".$chk.":".$udid.":".$accountID.":".$chest1left.":".$chest1stuff.":".$chest1count.":".$chest2left.":".$chest2stuff.":".$chest2count.":".$rewardType."",59182));
 $hash = $generateHash->genSolo4($string);
 echo "SaKuJ".$string . "|".$hash;
