@@ -17,9 +17,16 @@ if($type != 10 AND $gauntlet == ""){
 	$len = htmlspecialchars($_POST["len"],ENT_QUOTES);
 	$diff = htmlspecialchars($_POST["diff"],ENT_QUOTES);
 	//ADDITIONAL PARAMETERS
+	$additional = "WHERE NOT unlisted = 1 ";
+	$additionalnowhere = "AND NOT unlisted = 1 ";
 	if($_POST["featured"]==1){
-		$additional = "WHERE NOT starFeatured = 0 ";
-		$additionalnowhere = "AND NOT starFeatured = 0 ";
+		if($additional == ""){
+			$additional = "WHERE starFeatured = 1 ";
+			$additionalnowhere = "AND starFeatured = 1 ";
+		}else{
+			$additional = $additional."AND starFeatured = 1 ";
+			$additionalnowhere = $additionalnowhere."AND starFeatured = 1 ";
+		}
 	}
 	if($_POST["original"]==1){
 		if($additional == ""){
@@ -181,7 +188,7 @@ if($type != 10 AND $gauntlet == ""){
 	if($type==0 OR $type==15){ //most liked, changed to 15 in GDW for whatever reason
 		if($str!=""){
 		if(is_numeric($str)){
-			$query = "SELECT * FROM levels WHERE levelID = '".$str."' ". $additionalnowhere . " ORDER BY likes DESC";
+			$query = "SELECT * FROM levels WHERE levelID = '".$str."' ORDER BY likes DESC";
 		}else{
 			$query = "SELECT * FROM levels WHERE levelName LIKE '".$str."%' ". $additionalnowhere . " ORDER BY likes DESC";
 		}
@@ -314,7 +321,7 @@ if($type == 10 OR $gauntlet != ""){
 		$query->execute([':gauntlet' => $gauntlet]);
 		$actualgauntlet = $query->fetchAll();
 		$actualgauntlet = $actualgauntlet[0];
-		$str = $actualgauntlet["levels"];
+		$str = $actualgauntlet["level1"].",".$actualgauntlet["level2"].",".$actualgauntlet["level3"].",".$actualgauntlet["level4"].",".$actualgauntlet["level5"];
 	}
 	if($type == 10){
 		$str = $db->quote(htmlspecialchars($_POST["str"],ENT_QUOTES));
