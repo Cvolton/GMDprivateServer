@@ -29,6 +29,9 @@ if($query3->rowCount() == 0) {
 		$songauthor = explode('","', explode('artist":"', $songinfo)[1])[0];
 		$songurl = str_replace("\/", "/", $songurl);
 		$songname = explode("<title>", explode("</title>", $songinfo)[0])[1];
+		if($songurl == ""){
+			exit("-1");
+		}
 		$result = "1~|~".$songid."~|~2~|~".$songname."~|~3~|~1234~|~4~|~".$songauthor."~|~5~|~6.69~|~6~|~~|~10~|~".$songurl."~|~7~|~~|~8~|~0";
 	}
 	echo $result;
