@@ -30,7 +30,9 @@ if ($query2->rowCount() == 0) {
 $query = $db->prepare("INSERT INTO levelscores (accountID, levelID, percent, uploadDate)
 VALUES (:accountID, :levelID, :percent, :uploadDate)");
 } else {
-$query = $db->prepare("UPDATE levelscores SET percent=:percent, uploadDate=:uploadDate WHERE accountID=:accountID AND levelID=:levelID");
+	if($result[0]["percent"] < $percent){
+		$query = $db->prepare("UPDATE levelscores SET percent=:percent, uploadDate=:uploadDate WHERE accountID=:accountID AND levelID=:levelID");
+	}
 }
 $GJPCheck = new GJPCheck();
 $gjpresult = $GJPCheck->check($gjp,$accountID);
@@ -54,6 +56,8 @@ foreach ($result as &$score) {
 	$user = $query2->fetchAll();
 	$user = $user[0];
 	$time = date("d/m/Y G.i", $score["uploadDate"]);
-	echo "1:".$user["userName"].":2:".$user["userID"].":9:".$user["icon"].":10:".$user["color1"].":11:".$user["color2"].":14:".$user["iconType"].":15:".$user["special"].":16:".$user["extID"].":3:".$score["percent"].":6:".$x.":42:".$time."|";
+	if($user["isBanned"]==0){
+		echo "1:".$user["userName"].":2:".$user["userID"].":9:".$user["icon"].":10:".$user["color1"].":11:".$user["color2"].":14:".$user["iconType"].":15:".$user["special"].":16:".$user["extID"].":3:".$score["percent"].":6:".$x.":42:".$time."|";
+	}
 }
 ?>
