@@ -50,7 +50,13 @@ $query->execute();
 $userID = $db->lastInsertId();
 }
 $uploadDate = time();
-$hostname = gethostbyaddr($_SERVER['REMOTE_ADDR']);
+	if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
+		$hostname = $_SERVER['HTTP_CLIENT_IP'];
+	} elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+		$hostname = $_SERVER['HTTP_X_FORWARDED_FOR'];
+	} else {
+		$hostname = $_SERVER['REMOTE_ADDR'];
+	}
 
 $query = $db->prepare("UPDATE users SET userName=:userName, coins=:coins,  secret=:secret, stars=:stars, demons=:demons, icon=:icon, color1=:color1, color2=:color2, iconType=:iconType, userCoins=:userCoins, special=:special, accIcon=:accIcon, accShip=:accShip, accBall=:accBall, accBird=:accBird, accDart=:accDart, accRobot=:accRobot, accGlow=:accGlow, IP=:hostname, lastPlayed=:uploadDate, accSpider=:accSpider, accExplosion=:accExplosion, diamonds=:diamonds WHERE userID=:userID");
 $GJPCheck = new GJPCheck();
