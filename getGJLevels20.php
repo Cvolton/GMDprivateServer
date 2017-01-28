@@ -7,6 +7,7 @@ $levelsstring = "";
 $songsstring  = "";
 $type = htmlspecialchars($_POST["type"],ENT_QUOTES);
 $gauntlet = htmlspecialchars($_POST["gauntlet"],ENT_QUOTES);
+$demonFilter = htmlspecialchars($_POST["demonFilter"],ENT_QUOTES);
 $colonmarker = 1337;
 $songcolonmarker = 1337;
 $userid = 1337;
@@ -146,8 +147,53 @@ if($type != 10 AND $gauntlet == ""){
 				$additional = "WHERE starDemon = 1 ";
 				$additionalnowhere = "AND starDemon = 1 ";
 			}else{
-				$additional = $additional."AND starDemon = 0 ";
-				$additionalnowhere = $additionalnowhere."AND starDemon = 0 ";
+				$additional = $additional."AND starDemon = 1 ";
+				$additionalnowhere = $additionalnowhere."AND starDemon = 1 ";
+			}
+			if($demonFilter == 1){
+				if($additional == ""){
+					$additional = "WHERE starDemonDiff = 3 ";
+					$additionalnowhere = "AND starDemonDiff = 3 ";
+				}else{
+					$additional = $additional."AND starDemonDiff = 3 ";
+					$additionalnowhere = $additionalnowhere."AND starDemonDiff = 3 ";
+				}	
+			}
+			if($demonFilter == 2){
+				if($additional == ""){
+					$additional = "WHERE starDemonDiff = 4 ";
+					$additionalnowhere = "AND starDemonDiff = 4 ";
+				}else{
+					$additional = $additional."AND starDemonDiff = 4 ";
+					$additionalnowhere = $additionalnowhere."AND starDemonDiff = 4 ";
+				}	
+			}
+			if($demonFilter == 3){
+				if($additional == ""){
+					$additional = "WHERE starDemonDiff = 0 ";
+					$additionalnowhere = "AND starDemonDiff = 0 ";
+				}else{
+					$additional = $additional."AND starDemonDiff = 0 ";
+					$additionalnowhere = $additionalnowhere."AND starDemonDiff = 0 ";
+				}	
+			}
+			if($demonFilter == 4){
+				if($additional == ""){
+					$additional = "WHERE starDemonDiff = 5 ";
+					$additionalnowhere = "AND starDemonDiff = 5 ";
+				}else{
+					$additional = $additional."AND starDemonDiff = 5 ";
+					$additionalnowhere = $additionalnowhere."AND starDemonDiff = 5 ";
+				}	
+			}
+			if($demonFilter == 5){
+				if($additional == ""){
+					$additional = "WHERE starDemonDiff = 6 ";
+					$additionalnowhere = "AND starDemonDiff = 6 ";
+				}else{
+					$additional = $additional."AND starDemonDiff = 6 ";
+					$additionalnowhere = $additionalnowhere."AND starDemonDiff = 6 ";
+				}
 			}
 		}else{
 			$diffarray = explode(",", $diff);
