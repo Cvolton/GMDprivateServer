@@ -4,7 +4,6 @@ require "../incl/generatePass.php";
 //here im getting all the data
 $userName = htmlspecialchars($_POST["userName"],ENT_QUOTES);
 $password = md5($_POST["password"] . "epithewoihewh577667675765768rhtre67hre687cvolton5gw6547h6we7h6wh");
-$secret = "";
 //registering
 $query = "select * from accounts where userName = :userName";
 $query = $db->prepare($query);
