@@ -25,20 +25,26 @@ if($id != "" AND $gjp != ""){
 			switch($rating){
 				case 1:
 					$dmn = 3;
+					$dmnname = "Easy";
 					break;
 				case 2:
 					$dmn = 4;
+					$dmnname = "Medium";
 					break;
 				case 3:
 					$dmn = 0;
+					$dmnname = "Hard";
 					break;
 				case 4:
 					$dmn = 5;
+					$dmnname = "Insane";
 					break;
 				case 5:
 					$dmn = 6;
+					$dmnname = "Extreme";
 					break;
 			}
+			$timestamp = time();
 			$query = $db->prepare("SELECT * FROM levels WHERE levelID = :levelID");
 			$query->execute([':levelID' => $levelID]);
 			$result = $query->fetchAll();
@@ -46,6 +52,8 @@ if($id != "" AND $gjp != ""){
 			$query = "UPDATE levels SET starDemonDiff=:demon WHERE levelID=:levelID";
 			$query = $db->prepare($query);	
 			$query->execute([':demon' => $dmn, ':levelID'=>$levelID]);
+			$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('10', :value, :levelID, :timestamp, :id)");
+			$query->execute([':value' => $dmnname, ':timestamp' => $timestamp, ':id' => $id, ':levelID' => $levelID]);
 			echo $levelID;
 		}else{
 			echo -1;
