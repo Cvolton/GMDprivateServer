@@ -3,7 +3,7 @@
 include "connection.php";
 $page = htmlspecialchars($_POST["page"],ENT_QUOTES);
 $packpage = $page*10;
-$packpageend = $packpage + 9;
+$packpageend = $packpage + 10;
 $query = $db->prepare("SELECT * FROM `mappacks` ORDER BY `ID` ASC LIMIT $packpage,$packpageend");
 $query->execute();
 $result = $query->fetchAll();
