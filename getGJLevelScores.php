@@ -32,6 +32,8 @@ VALUES (:accountID, :levelID, :percent, :uploadDate)");
 } else {
 	if($result[0]["percent"] < $percent){
 		$query = $db->prepare("UPDATE levelscores SET percent=:percent, uploadDate=:uploadDate WHERE accountID=:accountID AND levelID=:levelID");
+	}else{
+		$query = $db->prepare("SELECT * FROM levelscores WHERE percent=:percent AND uploadDate=:uploadDate AND accountID=:accountID AND levelID=:levelID");
 	}
 }
 $GJPCheck = new GJPCheck();
