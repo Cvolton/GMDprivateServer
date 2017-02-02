@@ -5,6 +5,13 @@ require_once "incl/GJPCheck.php";
 $GJPCheck = new GJPCheck();
 $levelsstring = "";
 $songsstring  = "";
+$gameVersion = htmlspecialchars($_POST["gameVersion"],ENT_QUOTES);
+if($gameVersion == 20){
+	$binaryVersion = htmlspecialchars($_POST["binaryVersion"],ENT_QUOTES);
+	if($binaryVersion > 27){
+		$gameVersion++;
+	}
+}
 $type = htmlspecialchars($_POST["type"],ENT_QUOTES);
 $gauntlet = htmlspecialchars($_POST["gauntlet"],ENT_QUOTES);
 $demonFilter = htmlspecialchars($_POST["demonFilter"],ENT_QUOTES);
@@ -13,13 +20,30 @@ $songcolonmarker = 1337;
 $userid = 1337;
 if($type != 10 AND $gauntlet == ""){
 	$query = "";
-	$additional = "";
-	$additionalnowhere ="";
 	$len = htmlspecialchars($_POST["len"],ENT_QUOTES);
 	$diff = htmlspecialchars($_POST["diff"],ENT_QUOTES);
 	//ADDITIONAL PARAMETERS
 	$additional = "WHERE NOT unlisted = 1 ";
 	$additionalnowhere = "AND NOT unlisted = 1 ";
+	$gameVersion = $db->quote($gameVersion);
+	$gameVersion = str_replace("'", "", $gameVersion);
+	if($gameVersion==""){
+		if($additional == ""){
+			$additional = "WHERE gameVersion <= 18";
+			$additionalnowhere = "AND gameVersion <= 18";
+		}else{
+			$additional = $additional."AND gameVersion <= 18";
+			$additionalnowhere = $additionalnowhere."AND gameVersion <= 18";
+		}
+	}else{
+		if($additional == ""){
+			$additional = "WHERE gameVersion <= '".$gameVersion."'";
+			$additionalnowhere = "AND gameVersion <= '".$gameVersion."'";
+		}else{
+			$additional = $additional."AND gameVersion <= '".$gameVersion."'";
+			$additionalnowhere = $additionalnowhere."AND gameVersion <= '".$gameVersion."'";
+		}
+	}
 	if($_POST["featured"]==1){
 		if($additional == ""){
 			$additional = "WHERE starFeatured = 1 ";
@@ -307,6 +331,7 @@ if($type != 10 AND $gauntlet == ""){
 			}
 		}
 	}
+	//echo $query;
 	$query = $db->prepare($query);
 	$query->execute();
 	$result = $query->fetchAll();
@@ -353,7 +378,9 @@ if($type != 10 AND $gauntlet == ""){
 		}
 	}
 	echo "#".$levelsstring;
-	echo "#".$songsstring;
+	if($gameVersion > 18){
+		echo "#".$songsstring;
+	}
 	if (array_key_exists(8,$result)){
 		echo "#9999:".$lvlpagea.":10";
 	}else{
@@ -413,7 +440,9 @@ if($type == 10 OR $gauntlet != ""){
 		$colonmarker = 1335;
 	}
 	echo "#".$levelsstring;
-	echo "#";
+	if($gameVersion > 18){
+		echo "#";
+	}
 	echo "#1:0:10";
 }
 echo "#";

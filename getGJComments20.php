@@ -3,6 +3,7 @@
 include "connection.php";
 $levelsstring = "";
 $songsstring  = "";
+$gameVersion = htmlspecialchars($_POST["gameVersion"],ENT_QUOTES);
 $type = htmlspecialchars($_POST["type"],ENT_QUOTES);
 $colonmarker = 1337;
 $songcolonmarker = 1337;
@@ -22,7 +23,11 @@ for ($x = 0; $x < 9; $x++) {
 		echo "|";
 	}
 	$uploadDate = date("d/m/Y G:i", $comment1["timestamp"]);
-	echo "2~".$comment1["comment"]."~3~".$comment1["userID"]."~4~".$comment1["likes"]."~5~0~7~0~9~".$uploadDate."~6~".$comment1["commentID"];
+	$actualcomment = $comment1["comment"];
+	if($gameVersion < 20){
+		$actualcomment = base64_decode($actualcomment);
+	}
+	echo "2~".$actualcomment."~3~".$comment1["userID"]."~4~".$comment1["likes"]."~5~0~7~0~9~".$uploadDate."~6~".$comment1["commentID"];
 	$query12 = $db->prepare("SELECT * FROM users WHERE userID = '".$comment1["userID"]."'");
 	$query12->execute();
 	$result12 = $query12->fetchAll();

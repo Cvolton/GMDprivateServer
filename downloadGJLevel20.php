@@ -2,6 +2,7 @@
 include "connection.php";
 require "incl/XORCipher.php";
 //$levelID = 2632;
+$gameVersion = htmlspecialchars($_POST["gameVersion"],ENT_QUOTES);
 $levelID = htmlspecialchars($_POST["levelID"],ENT_QUOTES);
 $feaID = 0;
 if(!is_numeric($levelID)){
@@ -26,10 +27,25 @@ $result = $result2[0];
 $uploadDate = date("d-m-Y G-i", $result["uploadDate"]);
 $updateDate = date("d-m-Y G-i", $result["updateDate"]);
 //password xor
-$xor = new XORCipher();
-$xorPass = base64_encode($xor->cipher($result["password"],26364));
+$xorPass = $result["password"];
+if($gameVersion > 19){
+	$xor = new XORCipher();
+	$xorPass = base64_encode($xor->cipher($result["password"],26364));
+}
 //submitting data
-echo "1:".$result["levelID"].":2:".$result["levelName"].":3:".$result["levelDesc"].":4:".$result["levelString"].":5:".$result["levelVersion"].":6:".$result["userID"].":8:10:9:".$result["starDifficulty"].":10:".$result["downloads"].":11:1:12:".$result["audioTrack"].":13:".$result["gameVersion"].":14:".$result["likes"].":17:".$result["starDemon"].":43:".$result["starDemonDiff"].":25:".$result["starAuto"].":18:".$result["starStars"].":19:".$result["starFeatured"].":42:".$result["starEpic"].":45:0:15:".$result["levelLength"].":30:".$result["original"].":31:0:28:".$uploadDate. ":29:".$updateDate. ":35:".$result["songID"].":36:".$result["extraString"].":37:".$result["coins"].":38:".$result["starCoins"].":39:".$result["requestedStars"].":46:1:47:2:27:$xorPass";
+$desc = $result["levelDesc"];
+$levelstring = $result["levelString"];
+if($gameVersion < 20){
+	$desc = base64_decode($desc);
+}
+if($gameVersion > 18){
+	if(substr($levelstring,0,3) == 'kS1'){
+			$levelstring = base64_encode(gzcompress($levelstring));
+			$levelstring = str_replace("/","_",$levelstring);
+			$levelstring = str_replace("+","-",$levelstring);
+	}
+}
+echo "1:".$result["levelID"].":2:".$result["levelName"].":3:".$desc.":4:".$levelstring.":5:".$result["levelVersion"].":6:".$result["userID"].":8:10:9:".$result["starDifficulty"].":10:".$result["downloads"].":11:1:12:".$result["audioTrack"].":13:".$result["gameVersion"].":14:".$result["likes"].":17:".$result["starDemon"].":43:".$result["starDemonDiff"].":25:".$result["starAuto"].":18:".$result["starStars"].":19:".$result["starFeatured"].":42:".$result["starEpic"].":45:0:15:".$result["levelLength"].":30:".$result["original"].":31:0:28:".$uploadDate. ":29:".$updateDate. ":35:".$result["songID"].":36:".$result["extraString"].":37:".$result["coins"].":38:".$result["starCoins"].":39:".$result["requestedStars"].":46:1:47:2:27:$xorPass";
 if($daily == 1){
 	echo ":41:".$feaID;
 }
@@ -37,7 +53,7 @@ if($daily == 1){
 echo "#";
 require "incl/generateHash.php";
 $hash = new generateHash();
-echo $hash->genSolo($result["levelID"]);
+echo $hash->genSolo($levelstring);
 //2.1 stuff
 echo "#";
 $somestring = $result["userID"].",".$result["starStars"].",".$result["starDemon"].",".$result["levelID"].",".$result["starCoins"].",".$result["starFeatured"].",".$result["password"].",".$feaID;

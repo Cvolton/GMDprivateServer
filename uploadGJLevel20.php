@@ -10,6 +10,9 @@ $userName = explode(":", htmlspecialchars($_POST["userName"],ENT_QUOTES))[0];
 $levelID = explode(":", htmlspecialchars($_POST["levelID"],ENT_QUOTES))[0];
 $levelName = explode(":", htmlspecialchars($_POST["levelName"],ENT_QUOTES))[0];
 $levelDesc = explode(":", htmlspecialchars($_POST["levelDesc"],ENT_QUOTES))[0];
+if($gameVersion < 20){
+	$levelDesc = base64_encode($levelDesc);
+}
 $levelVersion = explode(":", htmlspecialchars($_POST["levelVersion"],ENT_QUOTES))[0];
 $levelLength = explode(":", htmlspecialchars($_POST["levelLength"],ENT_QUOTES))[0];
 $audioTrack = explode(":", htmlspecialchars($_POST["audioTrack"],ENT_QUOTES))[0];
@@ -28,7 +31,7 @@ $secret = explode(":", htmlspecialchars($_POST["secret"],ENT_QUOTES))[0];
 $unlisted = explode(":", htmlspecialchars($_POST["unlisted"],ENT_QUOTES))[0];
 $accountID = "";
 $id = explode(":", htmlspecialchars($_POST["udid"],ENT_QUOTES))[0];
-if($_POST["accountID"]!=""){
+if($_POST["accountID"]!="" AND $_POST["accountID"]!="0"){
 	$id = explode(":", htmlspecialchars($_POST["accountID"],ENT_QUOTES))[0];
 	$register = 1;
 }else{

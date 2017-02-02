@@ -30,7 +30,7 @@ $diamonds = explode(":", explode("|", htmlspecialchars($_POST["diamonds"],ENT_QU
 //continuing the accounts system
 $accountID = "";
 $id = explode(":", explode("|", htmlspecialchars($_POST["udid"],ENT_QUOTES))[0])[0];
-if($_POST["accountID"]!=""){
+if($_POST["accountID"]!="" AND $_POST["accountID"]!="0"){
 	$id = explode(":", explode("|", htmlspecialchars($_POST["accountID"],ENT_QUOTES))[0])[0];
 	$register = 1;
 }else{
