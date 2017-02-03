@@ -11,8 +11,10 @@ class songReup {
 		VALUES (:id, :name, :authorID, :authorName, :size, :download)");
 		$song = htmlspecialchars_decode($resultarray[13]);
 		if (filter_var($song, FILTER_VALIDATE_URL) == TRUE) {
-			$query->execute([':id'=>$resultarray[1], ':name' => $resultarray[3], ':authorID' => $resultarray[5], ':authorName' => $resultarray[7], ':size' => $resultarray[9], ':download' => $resultarray[13]]);
-			return $db->lastInsertId();
+			if (preg_match('/^[a-zA-Z0-9]+$/', $resultarray[7]) AND preg_match('/^[a-zA-Z0-9]+$/', $resultarray[9]) {
+				$query->execute([':id'=>$resultarray[1], ':name' => $resultarray[3], ':authorID' => $resultarray[5], ':authorName' => $resultarray[7], ':size' => $resultarray[9], ':download' => $resultarray[13]]);
+				return $db->lastInsertId();
+			}
 		}
 	}
 }
