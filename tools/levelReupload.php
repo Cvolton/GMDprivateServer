@@ -8,7 +8,7 @@
 include "../connection.php";
 if($_POST["levelid"]!=0){
 	$levelid = $_POST["levelid"];
-	$url = 'http://'.$_POST["server"].'/database/downloadGJLevel21.php';
+	$url = $_POST["server"];
 	$data = array('levelID' => $levelid, 'secret' => 'Wmfd2893gb7');
 	$options = array(
 		'http' => array(
@@ -27,14 +27,14 @@ if($_POST["levelid"]!=0){
 	$query->execute();
 	if($query->rowCount() == 0){
 		$query = $db->prepare("INSERT INTO levels (levelName, gameVersion, binaryVersion, userName, levelDesc, levelVersion, levelLength, audioTrack, auto, password, original, twoPlayer, songID, objects, coins, requestedStars, extraString, levelString, levelInfo, secret, uploadDate, starDifficulty,originalReup)
-		VALUES ('$resultarray[3]','20', '27', 'ORS', '$resultarray[5]', '$resultarray[9]', '$resultarray[35]', '$resultarray[21]', '0', '1337666', '0', '$resultarray[39]', '$resultarray[45]', '0', '$resultarray[49]', '$resultarray[53]', '$resultarray[47]', '$resultarray[7]', '0', '0', '$uploadDate', '$resultarray[15]', '$resultarray[1]')");
-		$query->execute();
+		VALUES (?,'20', '27', 'ORS', ?, ?, ?, ?, '0', '1337666', '0', ?, ?, '0', ?, ?, ?, ?, '0', '0', '$uploadDate', ?, ?)");
+		$query->execute([$resultarray[3], $resultarray[5], $resultarray[9], $resultarray[35], $resultarray[21], $resultarray[39], $resultarray[45], $resultarray[49], $resultarray[53], $resultarray[47], $resultarray[7], $resultarray[15], $resultarray[1]]);
 		echo "Level reuploaded, ID: " . $db->lastInsertId() . "<br><hr><br>";
 	}else{
 		echo "This level has been already reuploaded";
 	}
 }else{
-	echo '<form action="levelReupload.php" method="post">ID: <input type="text" name="levelid"><br>Server: <input type="text" name="server" value="www.boomlings.com"><br><input type="submit" value="Reupload"></form><br>';
+	echo '<form action="levelReupload.php" method="post">ID: <input type="text" name="levelid"><br>URL (dont change if you dont know what youre doing): <input type="text" name="server" value="http://www.boomlings.com/database/downloadGJLevel21.php"><br><input type="submit" value="Reupload"></form><br>';
 }
 ?>
 </body>
