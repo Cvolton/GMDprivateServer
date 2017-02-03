@@ -38,7 +38,7 @@ if($getSent == 0){
 	$query->execute([':requester' => $requester]);
 	$result2 = $query->fetchAll();
 	$user = $result2[0];
-	$uploadTime = 0;
+	$uploadTime = date("d/m/Y G.i", $request["uploadDate"]);
 	if(is_numeric($user["extID"])){
 		$extid = $user["extID"];
 	}else{
