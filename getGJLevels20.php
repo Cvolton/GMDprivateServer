@@ -25,8 +25,6 @@ if($type != 10 AND $gauntlet == ""){
 	//ADDITIONAL PARAMETERS
 	$additional = "WHERE NOT unlisted = 1 ";
 	$additionalnowhere = "AND NOT unlisted = 1 ";
-	$gameVersion = $db->quote($gameVersion);
-	$gameVersion = str_replace("'", "", $gameVersion);
 	if($gameVersion==""){
 		if($additional == ""){
 			$additional = "WHERE gameVersion <= 18";
@@ -36,6 +34,8 @@ if($type != 10 AND $gauntlet == ""){
 			$additionalnowhere = $additionalnowhere."AND gameVersion <= 18";
 		}
 	}else{
+		$gameVersion = $db->quote($gameVersion);
+		$gameVersion = str_replace("'", "", $gameVersion);
 		if($additional == ""){
 			$additional = "WHERE gameVersion <= '".$gameVersion."'";
 			$additionalnowhere = "AND gameVersion <= '".$gameVersion."'";
