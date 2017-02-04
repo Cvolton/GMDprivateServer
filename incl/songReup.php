@@ -10,9 +10,12 @@ class songReup {
 		$query = $db->prepare("INSERT INTO songs (ID, name, authorID, authorName, size, download)
 		VALUES (:id, :name, :authorID, :authorName, :size, :download)");
 		$song = htmlspecialchars_decode($resultarray[13]);
-		if (filter_var($song, FILTER_VALIDATE_URL) == TRUE AND preg_match('/^[a-zA-Z0-9]+$/', $resultarray[7]) AND preg_match('/^[a-zA-Z0-9]+$/', $resultarray[9])) {
+		if (filter_var($song, FILTER_VALIDATE_URL) == TRUE AND preg_match('/^[a-zA-Z0-9]+$/', $resultarray[7]) AND preg_match('/^[a-zA-Z0-9]+$/', $resultarray[9] AND strpos($resultarray[3], ';') !== false) 
+		{
 			$query->execute([':id'=>$resultarray[1], ':name' => $resultarray[3], ':authorID' => $resultarray[5], ':authorName' => $resultarray[7], ':size' => $resultarray[9], ':download' => $resultarray[13]]);
 			return $db->lastInsertId();
+		}else{
+			return -1;
 		}
 	}
 }
