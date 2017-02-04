@@ -22,9 +22,7 @@ if($query3->rowCount() == 0) {
         curl_setopt($ch, CURLOPT_URL, "http://www.newgrounds.com/audio/listen/".$songid); 
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); 
         $songinfo = curl_exec($ch); 
-        curl_close($ch);      
-		echo $songinfo;
-		echo "tomasek";
+        curl_close($ch);
 		$songurl = explode('","', explode('"url":"', $songinfo)[1])[0];
 		$songauthor = explode('","', explode('artist":"', $songinfo)[1])[0];
 		$songurl = str_replace("\/", "/", $songurl);
