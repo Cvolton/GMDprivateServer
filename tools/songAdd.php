@@ -1,7 +1,7 @@
 <?php
 //error_reporting(0);
 include "../connection.php";
-$api_key = "YOUR API KEY HERE"
+$api_key = "YOUR API KEY HERE";
 if($_POST["songlink"]){
 $song = str_replace("www.dropbox.com","dl.dropboxusercontent.com",$_POST["songlink"]);
 if (filter_var($song, FILTER_VALIDATE_URL) == TRUE) {
