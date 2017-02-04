@@ -1,3 +1,4 @@
+<hr>
 <?php
 include "../connection.php";
 $query = $db->prepare("SELECT starStars FROM levels");
