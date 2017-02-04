@@ -1,6 +1,6 @@
 <h1>Actions Count</h1>
 <table border="1">
-<tr><th>Moderator</th><th>Count</th><th>Last time online</th></tr>
+<tr><th>Moderator</th><th>Count</th><th>Levels rated</th><th>Last time online</th></tr>
 <?php
 //error_reporting(0);
 include "../connection.php";
@@ -16,7 +16,10 @@ foreach($result as &$mod){
 	$query = $db->prepare("SELECT * FROM modactions WHERE account = :id");
 	$query->execute([':id' => $mod["accountID"]]);
 	$actionscount = $query->rowCount();
-	echo "<tr><td>".$mod["userName"]."</td><td>".$actionscount."</td><td>".$time."</td></tr>";
+	$query = $db->prepare("SELECT * FROM modactions WHERE account = :id AND type = '1'");
+	$query->execute([':id' => $mod["accountID"]]);
+	$lvlcount = $query->rowCount();
+	echo "<tr><td>".$mod["userName"]."</td><td>".$actionscount."</td><td>".$lvlcount."</td><td>".$time."</td></tr>";
 }
 ?>
 </table>
