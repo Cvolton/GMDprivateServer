@@ -3,8 +3,8 @@ include "connection.php";
 require_once "incl/songReup.php";
 $songReup = new songReup();
 $songid = htmlspecialchars($_POST["songID"],ENT_QUOTES);
-$query3=$db->prepare("select * from songs where ID = '$songid'");
-$query3->execute();
+$query3=$db->prepare("select * from songs where ID = :songid");
+$query3->execute([':songid' => $songid]);
 if($query3->rowCount() == 0) {
 	$url = 'http://www.boomlings.com/database/getGJSongInfo.php';
 	$data = array('songID' => $songid, 'secret' => 'Wmfd2893gb7');
@@ -17,7 +17,7 @@ if($query3->rowCount() == 0) {
 	);
 	$context  = stream_context_create($options);
 	$result = file_get_contents($url, false, $context);
-	if ($result == "-1" OR $result == "") {
+	if ($result == "-2" OR $result == "-1" OR $result == "") {
 		$ch = curl_init(); 
         curl_setopt($ch, CURLOPT_URL, "http://www.newgrounds.com/audio/listen/".$songid); 
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); 
