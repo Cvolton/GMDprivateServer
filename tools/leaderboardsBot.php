@@ -13,9 +13,12 @@ if($page == -1){
 	$page = 0;
 }
 $page = $page * 10;
-if($type =="stars" OR $type == "diamonds" OR $type == "usrcoins" OR $type == "demons" OR $type == "cp"){
+if($type =="stars" OR $type == "diamonds" OR $type == "usrcoins" OR $type == "coins" OR $type == "demons" OR $type == "cp"){
 	if($type == "stars"){
 		$query = "SELECT * FROM users WHERE isBanned = '0' ORDER BY stars DESC LIMIT 10 OFFSET $page";
+	}
+	if($type == "coins"){
+		$query = "SELECT * FROM users WHERE isBanned = '0' ORDER BY coins DESC LIMIT 10 OFFSET $page";
 	}
 	if($type == "diamonds"){
 		$query = "SELECT * FROM users WHERE isBanned = '0' ORDER BY diamonds DESC LIMIT 10 OFFSET $page";
