@@ -1,5 +1,5 @@
 <?php
-include "connection.php";
+include "../connection.php";
 $maxstars = 0;
 $query = "SELECT starStars FROM levels";
 $query = $db->prepare($query);
