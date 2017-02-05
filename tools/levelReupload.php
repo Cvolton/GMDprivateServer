@@ -34,7 +34,10 @@ if($_POST["levelid"]!=0){
 		echo "This level has been already reuploaded";
 	}
 }else{
-	echo '<form action="levelReupload.php" method="post">ID: <input type="text" name="levelid"><br>URL (dont change if you dont know what youre doing): <input type="text" name="server" value="http://www.boomlings.com/database/downloadGJLevel21.php"><br><input type="submit" value="Reupload"></form><br>';
+	echo '<form action="levelReupload.php" method="post">ID: <input type="text" name="levelid"><br>URL (dont change if you dont know what youre doing): <input type="text" name="server" value="http://www.boomlings.com/database/downloadGJLevel21.php"><br><input type="submit" value="Reupload"></form><br>Alternative servers to reupload from:<br>
+	http://www.boomlings.com/database/downloadGJLevel21.php - Robtops server<br>
+	http://cvoltongdps.altervista.org/downloadGJLevel21.php - CvoltonGDPS<br>
+	http://teamhax.altervista.org/dbh/downloadGJLevel21.php - TeamHax GDPS';
 }
 ?>
 </body>
