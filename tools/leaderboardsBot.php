@@ -37,12 +37,13 @@ if($type =="stars" OR $type == "diamonds" OR $type == "usrcoins" OR $type == "co
 	$result = $query->fetchAll();
 	$people = $query->rowCount();
 	$xy = 1;
-	echo "`#    |        Username | Stars | Diamonds | Coins | User coins | Demons |  CP  |`\r\n";
+	echo "`#    |        Username | Stars | Diamonds | Coins | User coins | Demons |  CP  | Last time online |`\r\n";
 	for ($x = 0; $x < $people; $x++) {
 		$user = $result[$x];
 		$xi = $x + $xy + $page;
 		$xyz = str_pad($xi, 4, " ", STR_PAD_RIGHT);
-		echo "`$xyz | ".str_pad($user["userName"], 15, " ", STR_PAD_LEFT)." | ".str_pad($user["stars"], 5, " ", STR_PAD_LEFT)." | ".str_pad($user["diamonds"], 8, " ", STR_PAD_LEFT)." | ".str_pad($user["coins"], 5, " ", STR_PAD_LEFT)." | ".str_pad($user["userCoins"], 10, " ", STR_PAD_LEFT)." | ".str_pad($user["demons"], 6, " ", STR_PAD_LEFT)." | ".str_pad($user["creatorPoints"], 4, " ", STR_PAD_LEFT)." |`\r\n";
+		$date = date("d/m/Y H:i", $user["lastPlayed"]);
+		echo "`$xyz | ".str_pad($user["userName"], 15, " ", STR_PAD_LEFT)." | ".str_pad($user["stars"], 5, " ", STR_PAD_LEFT)." | ".str_pad($user["diamonds"], 8, " ", STR_PAD_LEFT)." | ".str_pad($user["coins"], 5, " ", STR_PAD_LEFT)." | ".str_pad($user["userCoins"], 10, " ", STR_PAD_LEFT)." | ".str_pad($user["demons"], 6, " ", STR_PAD_LEFT)." | ".str_pad($user["creatorPoints"], 4, " ", STR_PAD_LEFT)." | ".$date." |`\r\n";
 	}
 }else{
 	echo "**Command usage: *!top <type> <page>*\r\nValid types are: Stars, Diamonds, Coins, Usrcoins, Demons, CP**";
