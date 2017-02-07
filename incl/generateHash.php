@@ -34,7 +34,7 @@ class generateHash {
 	}
 	public function genSolo4($lvlsmultistring){
 	}
-	public function genPack($lvlsmultistring) {
+	public function genSixPack($lvlsmultistring) {
 		$lvlsarray = explode(",", $lvlsmultistring);
 		include "connection.php";
 		$hash = "";
