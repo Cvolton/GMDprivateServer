@@ -24,7 +24,7 @@ foreach($result as &$pack){
 ?>
 </table>
 <h1>GAUNTLETS</h1>
-<table border="1"><tr><th>#</th><th>Level 1</th><th>Level 2</th><th>Level 3</th><th>Level 4</th><th>Level 5</th></tr>
+<table border="1"><tr><th>#</th><th>Name</th><th>Level 1</th><th>Level 2</th><th>Level 3</th><th>Level 4</th><th>Level 5</th></tr>
 <?php
 //error_reporting(0);
 include "../connection.php";
@@ -32,7 +32,56 @@ $query = $db->prepare("SELECT * FROM gauntlets ORDER BY ID ASC");
 $query->execute();
 $result = $query->fetchAll();
 foreach($result as &$gauntlet){
-	echo "<tr><td>".$gauntlet["ID"]."</td>";
+	$gauntletname = "Unknown";
+	switch($gauntlet["ID"]){
+		case 1:
+			$gauntletname = "Fire";
+			break;
+		case 2:
+			$gauntletname = "Ice";
+			break;
+		case 3:
+			$gauntletname = "Poison";
+			break;
+		case 4:
+			$gauntletname = "Shadow";
+			break;
+		case 5:
+			$gauntletname = "Lava";
+			break;
+		case 6:
+			$gauntletname = "Bonus";
+			break;
+		case 7:
+			$gauntletname = "Chaos";
+			break;
+		case 8:
+			$gauntletname = "Demon";
+			break;
+		case 9:
+			$gauntletname = "Time";
+			break;
+		case 10:
+			$gauntletname = "Crystal";
+			break;
+		case 11:
+			$gauntletname = "Magic";
+			break;
+		case 12:
+			$gauntletname = "Spike";
+			break;
+		case 13:
+			$gauntletname = "Monster";
+			break;
+		case 14:
+			$gauntletname = "Doom";
+			break;
+		case 15:
+			$gauntletname = "Death";
+			break;
+		
+	}
+	echo "<tr><td>".$gauntlet["ID"]."</td><td>".$gauntletname."</td>";
 	for ($x = 1; $x < 6; $x++) {
 		echo "<td>";
 		$lvl = $gauntlet["level".$x];

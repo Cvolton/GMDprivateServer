@@ -255,18 +255,18 @@ if($type != 10 AND $gauntlet == ""){
         $str = htmlspecialchars($_POST["str"], ENT_QUOTES);
 		$str = $db->quote($str);
 	$str = str_replace("'","", $str);
+	$page = htmlspecialchars($_POST["page"],ENT_QUOTES);
+	$lvlpagea = $page*10;
 	if($type==0 OR $type==15){ //most liked, changed to 15 in GDW for whatever reason
 		if($str!=""){
 		if(is_numeric($str)){
-			$query = "SELECT * FROM levels WHERE levelID = '".$str."' ORDER BY likes DESC";
+			$query = "SELECT * FROM levels WHERE levelID = '".$str."' ORDER BY likes DESC LIMIT 10 OFFSET $lvlpagea";
 		}else{
-			$query = "SELECT * FROM levels WHERE levelName LIKE '".$str."%' ". $additionalnowhere . " ORDER BY likes DESC";
+			$query = "SELECT * FROM levels WHERE levelName LIKE '".$str."%' ". $additionalnowhere . " ORDER BY likes DESC LIMIT 10 OFFSET $lvlpagea";
 		}
 		}else{$type=2;}
 		
 	}
-	$page = htmlspecialchars($_POST["page"],ENT_QUOTES);
-	$lvlpagea = $page*10;
 	if($type==1){
 		$query = "SELECT * FROM levels ". $additional . " ORDER BY downloads DESC LIMIT 10 OFFSET $lvlpagea";
 	}

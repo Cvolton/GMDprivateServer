@@ -38,6 +38,7 @@ if($type =="stars" OR $type == "diamonds" OR $type == "usrcoins" OR $type == "co
 	$people = $query->rowCount();
 	$xy = 1;
 	echo "`#    |        Username | Stars | Diamonds | Coins | User coins | Demons |  CP  | Last time online |`\r\n";
+	echo "`-----|-----------------|-------|----------|-------|------------|--------|------|------------------|`\r\n";
 	for ($x = 0; $x < $people; $x++) {
 		$user = $result[$x];
 		$xi = $x + $xy + $page;
