@@ -61,8 +61,8 @@ if($levelString != "" AND $levelName != ""){
 	$gjpresult = $GJPCheck->check($gjp,$id);
 	if($register ==1){
 	if($gjpresult == 1){
-		$querye=$db->prepare("select * from levels where levelName = '".$levelName."' AND userID = ".$userID."");
-		$querye->execute();
+		$querye=$db->prepare("select * from levels where levelName = :levelName AND userID = :userID");
+		$querye->execute([':levelName' => $levelName, ':userID' => $userID]);
 		$resulte = $querye->fetchAll();
 		$levele = $resulte[0];
 		$levelID = $levele["levelID"];
