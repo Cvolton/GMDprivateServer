@@ -3,7 +3,7 @@ class generatePass
 {
 	public function isValidUsrname($userName, $pass) {
 		include dirname(__FILE__)."/../connection.php";
-		$query = $db->prepare("SELECT salt, password FROM accounts WHERE userName=:userName");
+		$query = $db->prepare("SELECT salt, password FROM accounts WHERE userName = :userName");
 		$query->execute([':userName' => $userName]);
 		$result = $query->fetchAll();
 		$result = $result[0];
@@ -36,7 +36,7 @@ class generatePass
 	}
 	public function isValid($accid, $pass){
 		include dirname(__FILE__)."/../connection.php";
-		$query = $db->prepare("SELECT userName FROM accounts WHERE accountID=:accid");
+		$query = $db->prepare("SELECT userName FROM accounts WHERE accountID = :accid");
 		$query->execute([':accid' => $accid]);
 		$result = $query->fetchAll();
 		$result = $result[0];
