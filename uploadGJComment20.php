@@ -128,8 +128,8 @@ if ($result["isAdmin"] == 1) {
 		$GJPCheck = new GJPCheck();
 	$gjpresult = $GJPCheck->check($gjp,$id);
 	if($gjpresult == 1){
-		$query = $db->prepare("UPDATE levels SET starCoins='1' WHERE levelID='$levelID'");
-		$query->execute();
+		$query = $db->prepare("UPDATE levels SET starCoins='1' WHERE levelID = :levelID");
+		$query->execute([':levelID' => $levelID]);
 		$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('2', :value, :levelID, :timestamp, :id)");
 		$query->execute([':value' => "1", ':timestamp' => $uploadDate, ':id' => $id, ':levelID' => $levelID]);
 	}
