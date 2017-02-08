@@ -37,8 +37,8 @@ if($_POST["accountID"]!="" AND $_POST["accountID"]!="0"){
 }else{
 	$register = 0;
 }
-$query2 = $db->prepare("SELECT * FROM users WHERE extID = '".$id."'");
-$query2->execute();
+$query2 = $db->prepare("SELECT * FROM users WHERE extID = :id");
+$query2->execute([':id' => $id]);
 $result = $query2->fetchAll();
 if ($query2->rowCount() > 0) {
 $userIDalmost = $result[0];
