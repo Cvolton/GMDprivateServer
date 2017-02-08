@@ -32,8 +32,8 @@ for ($x = 0; $x < 9; $x++) {
 	}
 	$uploadDate = date("d/m/Y G.i", $message1["timestamp"]);
 	echo "6:".$message1["userName"].":3:".$message1["userID"].":2:".$message1["accID"].":1:".$message1["messageID"].":4:".$message1["subject"].":8:".$message1["isNew"].":9:0:7:".$uploadDate."";
-	$query12 = $db->prepare("SELECT * FROM users WHERE userID = '".$message1["userID"]."'");
-	$query12->execute();
+	$query12 = $db->prepare("SELECT * FROM users WHERE userID = :userID");
+	$query12->execute([':userID' => $message1["userID"]]);
 	$result12 = $query12->fetchAll();
 if ($query12->rowCount() > 0) {
 	$userIDalmost = $result12[0];
