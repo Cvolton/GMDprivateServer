@@ -18,15 +18,24 @@ foreach($result as $pack){
 }
 $quarter = floor($stars / 4);
 $stars = $stars + 200 + $quarter;
-$query = $db->prepare("SELECT userID, userName FROM users WHERE stars > :stars");
+$query = $db->prepare("SELECT userID, userName, isBanned FROM users WHERE stars > :stars");
 $query->execute([':stars' => $stars]);
 $result = $query->fetchAll();
 //banning ppl
+$previousbans = [];
 foreach($result as $user){
-	$query = $db->prepare("UPDATE users SET isBanned = '1' WHERE userID = :id");
-	$query->execute([':id' => $user["userID"]]);
-	echo "Banned ".$user["userName"]." - ".$user["userID"]."<br>";
+	if ($user["isBanned"] == 0) {
+		$query = $db->prepare("UPDATE users SET isBanned = '1' WHERE userID = :id");
+		$query->execute([':id' => $user["userID"]]);
+		echo "Banned ".$user["userName"]." - ".$user["userID"]."<br>";
+	} else {
+		$previousbans[] = $user["userName"]." - ".$user["userID"]."<br>";
+	}
+}
+echo "<hr><h3>Previous Bans</h3><hr>";
+foreach($previousbans as $previousban) {
+	echo $previousban;
 }
 //done
-echo "<hr>Banned everyone with over ".$stars." stars<hr>done";
+echo "<hr>Banned everyone with over <a href="maxStars.php">Show</a> stars<hr>done";
 ?>
