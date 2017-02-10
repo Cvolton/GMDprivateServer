@@ -29,17 +29,20 @@ class generateHash {
 		return sha1($hash . "xI25fpAapCQg");
 	}
 	public function genSolo2($lvlsmultistring) {
+		return sha1($lvlsmultistring . "xI25fpAapCQg");
 	}
 	public function genSolo3($lvlsmultistring) {
+		return sha1($lvlsmultistring . "oC36fpYaPtdg");
 	}
 	public function genSolo4($lvlsmultistring){
+		return sha1($lvlsmultistring . "pC26fpYaQCtg");
 	}
 	public function genPack($lvlsmultistring) {
 		$lvlsarray = explode(",", $lvlsmultistring);
 		include "connection.php";
 		$hash = "";
 		foreach($lvlsarray as $id){
-			$query=$db->prepare("select * from mappacks where ID = $id");
+			$query=$db->prepare("select * from mappacks where ID = :id");
 			$query->execute([':id' => $id]);
 			$result2 = $query->fetchAll();
 			$result = $result2[0];
