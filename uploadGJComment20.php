@@ -36,55 +36,59 @@ $userID = $db->lastInsertId();
 $uploadDate = time();
 $decodecomment = base64_decode($comment);
 if(substr($decodecomment,0,5) == '!rate'){
-$query2 = $db->prepare("SELECT * FROM accounts WHERE accountID = :id");
-$query2->execute([':id' => $id]);
-$result = $query2->fetchAll();
-$result = $result[0];
-if ($result["isAdmin"] == 1) {
-$commentarray = explode(' ', $decodecomment);
-$starStars = $commentarray[2];
-$starCoins = $commentarray[3];
-$starFeatured = $commentarray[4];
-	$starDemon = 0;
-	$starAuto = 0;
-switch ($commentarray[1]) {
-    case "easy":
-        $starDifficulty = 10;
-        break;
-    case "normal":
-        $starDifficulty = 20;
-        break;
-    case "hard":
-        $starDifficulty = 30;
-        break;
-    case "harder":
-        $starDifficulty = 40;
-        break;
-    case "insane":
-        $starDifficulty = 50;
-        break;
-	case "auto":
-		$starDifficulty = 50;
-		$starAuto = 1;
-		break;
-	case "demon":
-		$starDifficulty = 50;
-		$starDemon = 1;
-		break;
-	
-}
-	$query = $db->prepare("UPDATE levels SET starStars=:starStars, starDifficulty=:starDifficulty, starDemon=:starDemon, starAuto=:starAuto, starFeatured=:starFeatured, starCoins=:starCoins WHERE levelID=:levelID");
-	$GJPCheck = new GJPCheck();
-	$gjpresult = $GJPCheck->check($gjp,$id);
-	if($gjpresult == 1){
-		$query->execute([':starStars' => $starStars, ':starDifficulty' => $starDifficulty, ':starDemon' => $starDemon, ':starAuto' => $starAuto, ':starFeatured' => $starFeatured, ':starCoins' => $starCoins, ':levelID' => $levelID]);
-		$query = $db->prepare("INSERT INTO modactions (type, value, value2, value3, timestamp, account) VALUES ('1', :value, :value2, :levelID, :timestamp, :id)");
-		$query->execute([':value' => $commentarray[1], ':timestamp' => $uploadDate, ':id' => $id, ':value2' => $starStars, ':levelID' => $levelID]);
-		$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('2', :value, :levelID, :timestamp, :id)");
-		$query->execute([':value' => $starFeatured, ':timestamp' => $uploadDate, ':id' => $id, ':levelID' => $levelID]);
-		$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('3', :value, :levelID, :timestamp, :id)");
-		$query->execute([':value' => $starCoins, ':timestamp' => $uploadDate, ':id' => $id, ':levelID' => $levelID]);
-	}
+	$query2 = $db->prepare("SELECT * FROM accounts WHERE accountID = :id");
+	$query2->execute([':id' => $id]);
+	$result = $query2->fetchAll();
+	$result = $result[0];
+	if ($result["isAdmin"] == 1) {
+		$commentarray = explode(' ', $decodecomment);
+		$starStars = $commentarray[2];
+		$starCoins = $commentarray[3];
+		$starFeatured = $commentarray[4];
+		$starDemon = 0;
+		$starAuto = 0;
+		switch ($commentarray[1]) {
+			case "easy":
+				$starDifficulty = 10;
+				break;
+			case "normal":
+				$starDifficulty = 20;
+				break;
+			case "hard":
+				$starDifficulty = 30;
+				break;
+			case "harder":
+				$starDifficulty = 40;
+				break;
+			case "insane":
+				$starDifficulty = 50;
+				break;
+			case "auto":
+				$starDifficulty = 50;
+				$starAuto = 1;
+				break;
+			case "demon":
+				$starDifficulty = 50;
+				$starDemon = 1;
+				break;
+			
+		}
+		$query = $db->prepare("UPDATE levels SET starStars=:starStars, starDifficulty=:starDifficulty, starDemon=:starDemon, starAuto=:starAuto, starFeatured=:starFeatured, starCoins=:starCoins WHERE levelID=:levelID");
+		$GJPCheck = new GJPCheck();
+		$gjpresult = $GJPCheck->check($gjp,$id);
+		if($gjpresult == 1){
+			$query->execute([':starStars' => $starStars, ':starDifficulty' => $starDifficulty, ':starDemon' => $starDemon, ':starAuto' => $starAuto, ':starFeatured' => $starFeatured, ':starCoins' => $starCoins, ':levelID' => $levelID]);
+			$query = $db->prepare("INSERT INTO modactions (type, value, value2, value3, timestamp, account) VALUES ('1', : , :value2, :levelID, :timestamp, :id)");
+			$query->execute([':value' => $commentarray[1], ':timestamp' => $uploadDate, ':id' => $id, ':value2' => $starStars, ':levelID' => $levelID]);
+			if($starFeatured){
+				$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('2', :value, :levelID, :timestamp, :id)");
+				$query->execute([':value' => $starFeatured, ':timestamp' => $uploadDate, ':id' => $id, ':levelID' => $levelID]);	
+			}
+			if($starCoins){
+				$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('3', :value, :levelID, :timestamp, :id)");
+				$query->execute([':value' => $starCoins, ':timestamp' => $uploadDate, ':id' => $id, ':levelID' => $levelID]);	
+			}
+		}
 	 }
 }
 if(substr($decodecomment,0,8) == '!feature'){
