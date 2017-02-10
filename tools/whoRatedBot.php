@@ -1,7 +1,7 @@
 <?php
 //error_reporting(0);
 include "../connection.php";
-$query = $db->prepare("SELECT * FROM modactions WHERE value3 = :lvid AND type = '2'");
+$query = $db->prepare("SELECT * FROM modactions WHERE value3 = :lvid AND type = '1'");
 $query->execute([':lvid' => $_GET["level"]]);
 $result = $query->fetchAll();
 if(!is_numeric($_GET["level"])){
