@@ -1,18 +1,21 @@
 <hr>
 <?php
 include "../connection.php";
-//unbanning everyone
 $query = $db->prepare("UPDATE users SET isBanned = '0'");
 $query->execute();
-$query = $db->prepare("SELECT starStars, coins, starCoins FROM levels");
+$query = $db->prepare("SELECT starStars, coins, starDemon, starCoins FROM levels");
 $query->execute();
 $levelstuff = $query->fetchAll();
 //counting stars
 $stars = 0;
+$demons = 0;
 foreach($levelstuff as $level){
 	$stars = $stars + $level["starStars"];
-	if($level["starCoins"]){
+	if($level["starCoins"] != 0){
 		$coins = $coins + $level["coins"];
+	}
+	if($level["starDemon"] != 0){
+		$demons = $demons + 1;
 	}
 }
 $query = $db->prepare("SELECT stars FROM mappacks");
@@ -47,6 +50,19 @@ foreach($result as $user){
 	$query->execute([':id' => $user["userID"]]);
 	echo "Banned ".$user["userName"]." - ".$user["userID"]."<br>";
 }
+//counting demons
+echo "<h3>Demons based bans</h3>";
+$quarter = floor($demons / 4);
+$demons = $demons + $quarter;
+$query = $db->prepare("SELECT userID, userName FROM users WHERE demons > :demons");
+$query->execute([':demons' => $demons]);
+$result = $query->fetchAll();
+//banning ppl
+foreach($result as $user){
+	$query = $db->prepare("UPDATE users SET isBanned = '1' WHERE userID = :id");
+	$query->execute([':id' => $user["userID"]]);
+	echo "Banned ".$user["userName"]." - ".$user["userID"]."<br>";
+}
 //done
-echo "<hr>Banned everyone with over ".$stars." stars and over ".$coins." user coins<hr>done";
+echo "<hr>Banned everyone with over $stars stars and over $coins user coins and over $demons demons!<hr>done";
 ?>
