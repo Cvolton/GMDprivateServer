@@ -2,7 +2,7 @@
 ## Geometry Dash Private Server
 A PHP server, which should react exactly, how RobTop's server could react...
 
-Supported version of Geometry Dash: 2.00 (generateHash.php is missing in this repository, so no 2.02 and 2.1 yet for public)
+Supported version of Geometry Dash: 1.0 - 2.1 (so any version of Geometry Dash works, as of writing this [11th February 2017])
 
 ### Credits
 Private Messaging system by someguy28 (even though he needed a ton of help from me... and by a ton I mean A TON)
