@@ -21,7 +21,9 @@ $creatorpoints = $creatorpoints + $query3->rowCount() + $query3->rowCount();
 $query4 = $db->prepare("UPDATE users SET creatorPoints='$creatorpoints' WHERE userID='".$user["userID"]."'");
 $query4->execute();
 if($creatorpoints != 0){
-echo $user["userName"] . " now has ".$creatorpoints." creator points... <br>";	
+echo $user["userName"] . " now has ".$creatorpoints." creator points... <br>";
+ob_flush();
+flush();
 }
 }
 /*
@@ -50,7 +52,9 @@ $creatorpoints++;
 //inserting cp value
 $query4 = $db->prepare("UPDATE users SET creatorPoints='$creatorpoints' WHERE userID='".$user["userID"]."'");
 $query4->execute();	
-echo $user["userName"] . " now has ".$creatorpoints." creator points... <br>";	
+echo $user["userName"] . " now has ".$creatorpoints." creator points... <br>";
+ob_flush();
+flush();
 }
 }
 }
