@@ -252,7 +252,7 @@ if($type != 10 AND $gauntlet == ""){
 		}
 	}
 	//TYPE DETECTION
-        $str = htmlspecialchars($_POST["str"], ENT_QUOTES);
+   $str = htmlspecialchars($_POST["str"], ENT_QUOTES);
 		$str = $db->quote($str);
 	$str = str_replace("'","", $str);
 	$page = htmlspecialchars($_POST["page"],ENT_QUOTES);
@@ -346,16 +346,18 @@ if($type != 10 AND $gauntlet == ""){
 			}
 			$lvlsmultistring = $lvlsmultistring . $level1["levelID"];
 			echo "1:".$level1["levelID"].":2:".$level1["levelName"].":5:".$level1["levelVersion"].":6:".$level1["userID"].":8:10:9:".$level1["starDifficulty"].":10:".$level1["downloads"].":12:".$level1["audioTrack"].":13:".$level1["gameVersion"].":14:".$level1["likes"].":17:".$level1["starDemon"].":43:".$level1["starDemonDiff"].":25:".$level1["starAuto"].":18:".$level1["starStars"].":19:".$level1["starFeatured"].":3:".$level1["levelDesc"].":15:".$level1["levelLength"].":30:".$level1["original"].":31:0:37:".$level1["coins"].":38:".$level1["starCoins"].":39:".$level1["requestedStars"].":35:".$level1["songID"].":42:".$level1["starEpic"]."";
-			if($songid!=0){
+			if($level1["songID"]!=0){
 				$query3=$db->prepare("select * from songs where ID = ".$level1["songID"]);
 				$query3->execute();
 				$result3 = $query3->fetchAll();
 				$result4 = $result3[0];
-				if($songcolonmarker != 1337){
-					$songsstring = $songsstring . ":";
+				if($result4["name"] != ""){
+					if($songcolonmarker != 1337){
+						$songsstring = $songsstring . "~:~";
+					}
+					$songsstring = $songsstring . "1~|~".$result4["ID"]."~|~2~|~".$result4["name"]."~|~3~|~".$result4["authorID"]."~|~4~|~".$result4["authorName"]."~|~5~|~".$result4["size"]."~|~6~|~~|~10~|~".urlencode($result4["download"])."~|~7~|~~|~8~|~0";
+					$songcolonmarker = 1335;
 				}
-				$songsstring = $songsstring . "1~|~".$result4["ID"]."~|~2~|~".$result4["name"]."~|~3~|~".$result4["authorID"]."~|~4~|~".$result4["authorName"]."~|~5~|~".$result4["size"]."~|~6~|~~|~10~|~".$result4["download"]."~|~7~|~~|~8~|~0";
-				$songcolonmarker = 1335;
 			}
 			$query12 = $db->prepare("SELECT * FROM users WHERE userID = '".$level1["userID"]."'");
 			$query12->execute();
@@ -421,7 +423,15 @@ if($type == 10 OR $gauntlet != ""){
 			$levelsstring = $levelsstring . "|";
 		}
 		if($result["songID"]!=0){
-			array_push($songs, $result["songID"]);
+			$query3=$db->prepare("select * from songs where ID = ".$result["songID"]);
+			$query3->execute();
+			$result3 = $query3->fetchAll();
+			$result4 = $result3[0];
+			if($songcolonmarker != 1337){
+				$songsstring = $songsstring . "~:~";
+			}
+			$songsstring = $songsstring . "1~|~".$result4["ID"]."~|~2~|~".$result4["name"]."~|~3~|~".$result4["authorID"]."~|~4~|~".$result4["authorName"]."~|~5~|~".$result4["size"]."~|~6~|~~|~10~|~".urlencode($result4["download"])."~|~7~|~~|~8~|~0";
+			$songcolonmarker = 1335;
 		}
 		$query12 = $db->prepare("SELECT * FROM users WHERE userID = '".$result["userID"]."'");
 		$query12->execute();
@@ -441,7 +451,7 @@ if($type == 10 OR $gauntlet != ""){
 	}
 	echo "#".$levelsstring;
 	if($gameVersion > 18){
-		echo "#";
+		echo "#".$songsstring;
 	}
 	echo "#1:0:10";
 }
