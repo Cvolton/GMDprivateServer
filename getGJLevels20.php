@@ -355,7 +355,11 @@ if($type != 10 AND $gauntlet == ""){
 					if($songcolonmarker != 1337){
 						$songsstring = $songsstring . "~:~";
 					}
-					$songsstring = $songsstring . "1~|~".$result4["ID"]."~|~2~|~".$result4["name"]."~|~3~|~".$result4["authorID"]."~|~4~|~".$result4["authorName"]."~|~5~|~".$result4["size"]."~|~6~|~~|~10~|~".urlencode($result4["download"])."~|~7~|~~|~8~|~0";
+					$dl = $result4["download"];
+					if(strpos($dl, ':') !== false){
+						$dl = urlencode($dl);
+					}
+					$songsstring = $songsstring . "1~|~".$result4["ID"]."~|~2~|~".$result4["name"]."~|~3~|~".$result4["authorID"]."~|~4~|~".$result4["authorName"]."~|~5~|~".$result4["size"]."~|~6~|~~|~10~|~".$dl."~|~7~|~~|~8~|~0";
 					$songcolonmarker = 1335;
 				}
 			}
@@ -430,7 +434,11 @@ if($type == 10 OR $gauntlet != ""){
 			if($songcolonmarker != 1337){
 				$songsstring = $songsstring . "~:~";
 			}
-			$songsstring = $songsstring . "1~|~".$result4["ID"]."~|~2~|~".$result4["name"]."~|~3~|~".$result4["authorID"]."~|~4~|~".$result4["authorName"]."~|~5~|~".$result4["size"]."~|~6~|~~|~10~|~".urlencode($result4["download"])."~|~7~|~~|~8~|~0";
+			$dl = $result4["download"];
+			if(strpos($dl, ':') !== false){
+				$dl = urlencode($dl);
+			}
+			$songsstring = $songsstring . "1~|~".$result4["ID"]."~|~2~|~".$result4["name"]."~|~3~|~".$result4["authorID"]."~|~4~|~".$result4["authorName"]."~|~5~|~".$result4["size"]."~|~6~|~~|~10~|~".$dl."~|~7~|~~|~8~|~0";
 			$songcolonmarker = 1335;
 		}
 		$query12 = $db->prepare("SELECT * FROM users WHERE userID = '".$result["userID"]."'");
