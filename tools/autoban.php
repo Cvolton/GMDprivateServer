@@ -40,7 +40,7 @@ foreach($result as $user){
 //counting coins
 echo "<h3>User coins based bans</h3>";
 $quarter = floor($coins / 4);
-$coins = $coins + $quarter;
+$coins = $coins + 10 + $quarter;
 $query = $db->prepare("SELECT userID, userName FROM users WHERE userCoins > :coins");
 $query->execute([':coins' => $coins]);
 $result = $query->fetchAll();
@@ -53,7 +53,7 @@ foreach($result as $user){
 //counting demons
 echo "<h3>Demons based bans</h3>";
 $quarter = floor($demons / 4);
-$demons = $demons + $quarter;
+$demons = $demons + 3 + $quarter;
 $query = $db->prepare("SELECT userID, userName FROM users WHERE demons > :demons");
 $query->execute([':demons' => $demons]);
 $result = $query->fetchAll();
