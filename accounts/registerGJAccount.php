@@ -31,8 +31,8 @@ for($i=0; $i < $Salt_Length; $i++)
 $bcrypt_salt = $Blowfish_Pre . $salt . $Blowfish_End;
 $password = crypt($password, $bcrypt_salt);
 //registering
-$query = $db->prepare("INSERT INTO accounts (userName, password, email, secret, salt)
-VALUES (:userName, :password, :email, :secret, :salt)");
+$query = $db->prepare("INSERT INTO accounts (userName, password, email, secret, salt, saveData)
+VALUES (:userName, :password, :email, :secret, :salt, '')");
 
 $query->execute([':userName' => $userName, ':password' => $password, ':email' => $email, ':secret' => $secret, ':salt' => $salt]);
 echo "1";
