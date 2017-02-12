@@ -12,6 +12,9 @@ if($gameversion < 20){
 }
 $levelID = explode("|", explode("~", htmlspecialchars($_POST["levelID"],ENT_QUOTES))[0])[0];
 $percent = explode("|", explode("~", htmlspecialchars($_POST["percent"],ENT_QUOTES))[0])[0];
+if($percent == ""){
+	$percent = 0;
+}
 $accountID = "";
 $id = htmlspecialchars($_POST["udid"],ENT_QUOTES);
 if($_POST["accountID"]!="" AND $_POST["accountID"]!="0"){
