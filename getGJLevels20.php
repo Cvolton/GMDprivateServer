@@ -375,12 +375,10 @@ if($type != 10 AND $gauntlet == ""){
 					$userIDnumba = 0;
 				}
 			}
-			if($x == 0){
-				$levelsstring = $levelsstring . $level1["userID"] . ":" . $level1["userName"] . ":" . $userIDnumba;
-			}else{
-				$levelsstring = $levelsstring ."|" . $level1["userID"] . ":" . $level1["userName"] . ":" . $userIDnumba;
+			if($x != 0){
+				$levelsstring = $levelsstring . "|";
 			}
-			$userid = $userid + 1;
+			$levelsstring = $levelsstring . $level1["userID"] . ":" . $level1["userName"] . ":" . $userIDnumba;
 		}
 	}
 	echo "#".$levelsstring;
