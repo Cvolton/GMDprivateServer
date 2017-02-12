@@ -13,4 +13,4 @@ Base for account settings by someguy28
 
 Using this for XOR encryption - https://github.com/sathoro/php-xor-cipher - (incl/XORCipher.php)
 
-Most of the stuff in generateHash.php (missing in the public repository but it does exist in private) has been figured out by pavlukivan
+Most of the stuff in generateHash.php has been figured out by pavlukivan and Italian APK Downloader, so credits to them
