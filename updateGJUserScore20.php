@@ -16,17 +16,53 @@ $color1 = explode(":", explode("|", htmlspecialchars($_POST["color1"],ENT_QUOTES
 $color2 = explode(":", explode("|", htmlspecialchars($_POST["color2"],ENT_QUOTES))[0])[0];
 $iconType = explode(":", explode("|", htmlspecialchars($_POST["iconType"],ENT_QUOTES))[0])[0];
 $userCoins = explode(":", explode("|", htmlspecialchars($_POST["userCoins"],ENT_QUOTES))[0])[0];
+if($userCoins == ""){
+	$userCoins = 0;
+}
 $special = explode(":", explode("|", htmlspecialchars($_POST["special"],ENT_QUOTES))[0])[0];
+if($special == ""){
+	$special = 0;
+}
 $accIcon = explode(":", explode("|", htmlspecialchars($_POST["accIcon"],ENT_QUOTES))[0])[0];
+if($accIcon == ""){
+	$accIcon = 0;
+}
 $accShip = explode(":", explode("|", htmlspecialchars($_POST["accShip"],ENT_QUOTES))[0])[0];
+if($accShip == ""){
+	$accShip = 0;
+}
 $accBall = explode(":", explode("|", htmlspecialchars($_POST["accBall"],ENT_QUOTES))[0])[0];
+if($accBall == ""){
+	$accBall = 0;
+}
 $accBird = explode(":", explode("|", htmlspecialchars($_POST["accBird"],ENT_QUOTES))[0])[0];
+if($accBird == ""){
+	$accBird = 0;
+}
 $accDart = explode(":", explode("|", htmlspecialchars($_POST["accDart"],ENT_QUOTES))[0])[0];
+if($accDart == ""){
+	$accDart = 0;
+}
 $accRobot = explode(":", explode("|", htmlspecialchars($_POST["accRobot"],ENT_QUOTES))[0])[0];
+if($accRobot == ""){
+	$accRobot = 0;
+}
 $accGlow = explode(":", explode("|", htmlspecialchars($_POST["accGlow"],ENT_QUOTES))[0])[0];
+if($accGlow == ""){
+	$accGlow = 0;
+}
 $accSpider = explode(":", explode("|", htmlspecialchars($_POST["accSpider"],ENT_QUOTES))[0])[0];
+if($accSpider == ""){
+	$accSpider = 0;
+}
 $accExplosion = explode(":", explode("|", htmlspecialchars($_POST["accExplosion"],ENT_QUOTES))[0])[0];
+if($accExplosion == ""){
+	$accExplosion = 0;
+}
 $diamonds = explode(":", explode("|", htmlspecialchars($_POST["diamonds"],ENT_QUOTES))[0])[0];
+if($diamonds == ""){
+	$diamonds = 0;
+}
 //continuing the accounts system
 $accountID = "";
 $id = explode(":", explode("|", htmlspecialchars($_POST["udid"],ENT_QUOTES))[0])[0];
