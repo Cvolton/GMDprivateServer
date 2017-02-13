@@ -1,8 +1,6 @@
 <hr>
 <?php
 include "../connection.php";
-$query = $db->prepare("UPDATE users SET isBanned = '0'");
-$query->execute();
 $query = $db->prepare("SELECT starStars, coins, starDemon, starCoins FROM levels");
 $query->execute();
 $levelstuff = $query->fetchAll();
