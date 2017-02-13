@@ -8,5 +8,5 @@
 <a href="../tools/cron.php">Fix Creator Points</a><br>
 <a href="../tools/songList.php">Custom Songs List</a><br>
 <a href="../tools/modActions.php">Mod Actions List</a><br>
-<a href="../tools/packList.php">Map Packs List</a>
+<a href="../tools/packTable.php">Map Packs List</a>
 <!--<h1><a href="https://discord.gg/EHYnxVE">CLICK HERE TO JOIN OUR DISCORD SERVER</a></h1>-->
