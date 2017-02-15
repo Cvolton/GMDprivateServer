@@ -11,8 +11,6 @@ if ($pass == 1) {
 $query = $db->prepare("UPDATE `accounts` SET `saveData` = :saveData WHERE userName = :userName");
 
 $query->execute([':saveData' => $saveData, ':userName' => $userName]);
-$result = $query->fetchAll();
-$account = $result[0];
 echo "1";
 }
 else{echo -1;}
