@@ -11,7 +11,7 @@ $query2 = $db->prepare("SELECT * FROM accounts WHERE userName=:userName");
 $query2->execute([':userName' => $userName]);
 $regusrs = $query2->rowCount();
 if ($regusrs > 0) {
-echo "-1";
+echo "-2";
 }else{
 //creating pass hash
 CRYPT_BLOWFISH or die ('-2');
