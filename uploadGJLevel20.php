@@ -5,10 +5,15 @@ require_once "incl/GJPCheck.php";
 //here im getting all the data
 $gjp = explode(":", htmlspecialchars($_POST["gjp"],ENT_QUOTES))[0];
 $gameVersion = explode(":", htmlspecialchars($_POST["gameVersion"],ENT_QUOTES))[0];
-$binaryVersion = explode(":", htmlspecialchars($_POST["binaryVersion"],ENT_QUOTES))[0];
+if($_POST["binaryVersion"]){
+	$binaryVersion = explode(":", htmlspecialchars($_POST["binaryVersion"],ENT_QUOTES))[0];	
+}else{
+	$binaryVersion = 0;
+}
 $userName = explode(":", htmlspecialchars($_POST["userName"],ENT_QUOTES))[0];
 $levelID = explode(":", htmlspecialchars($_POST["levelID"],ENT_QUOTES))[0];
 $levelName = explode(":", htmlspecialchars($_POST["levelName"],ENT_QUOTES))[0];
+$levelName = preg_replace("/[^A-Za-z0-9 ]/", '', $levelName);
 $levelDesc = explode(":", htmlspecialchars($_POST["levelDesc"],ENT_QUOTES))[0];
 if($gameVersion < 20){
 	$levelDesc = base64_encode($levelDesc);
@@ -16,19 +21,63 @@ if($gameVersion < 20){
 $levelVersion = explode(":", htmlspecialchars($_POST["levelVersion"],ENT_QUOTES))[0];
 $levelLength = explode(":", htmlspecialchars($_POST["levelLength"],ENT_QUOTES))[0];
 $audioTrack = explode(":", htmlspecialchars($_POST["audioTrack"],ENT_QUOTES))[0];
-$auto = explode(":", htmlspecialchars($_POST["auto"],ENT_QUOTES))[0];
-$password = explode(":", htmlspecialchars($_POST["password"],ENT_QUOTES))[0];
-$original = explode(":", htmlspecialchars($_POST["original"],ENT_QUOTES))[0];
-$twoPlayer = explode(":", htmlspecialchars($_POST["twoPlayer"],ENT_QUOTES))[0];
-$songID = explode(":", htmlspecialchars($_POST["songID"],ENT_QUOTES))[0];
-$objects = explode(":", htmlspecialchars($_POST["objects"],ENT_QUOTES))[0];
-$coins = explode(":", htmlspecialchars($_POST["coins"],ENT_QUOTES))[0];
-$requestedStars = explode(":", htmlspecialchars($_POST["requestedStars"],ENT_QUOTES))[0];
-$extraString = explode(":", htmlspecialchars($_POST["extraString"],ENT_QUOTES))[0];
+if($_POST["auto"]){
+	$auto = explode(":", htmlspecialchars($_POST["auto"],ENT_QUOTES))[0];
+}else{
+	$auto = 0;
+}
+if($_POST["password"]){
+	$password = explode(":", htmlspecialchars($_POST["password"],ENT_QUOTES))[0];
+}else{
+	$password = 1;
+}
+if($_POST["original"]){
+	$original = explode(":", htmlspecialchars($_POST["original"],ENT_QUOTES))[0];
+}else{
+	$original = 0;
+}
+if($_POST["twoPlayer"]){
+	$twoPlayer = explode(":", htmlspecialchars($_POST["twoPlayer"],ENT_QUOTES))[0];
+}else{
+	$twoPlayer = 0;
+}
+if($_POST["songID"]){
+	$songID = explode(":", htmlspecialchars($_POST["songID"],ENT_QUOTES))[0];
+}else{
+	$songID = 0;
+}
+if($_POST["objects"]){
+	$objects = explode(":", htmlspecialchars($_POST["objects"],ENT_QUOTES))[0];
+}else{
+	$objects = 0;
+}
+if($_POST["coins"]){
+	$coins = explode(":", htmlspecialchars($_POST["coins"],ENT_QUOTES))[0];
+}else{
+	$coins = 0;
+}
+if($_POST["requestedStars"]){
+	$requestedStars = explode(":", htmlspecialchars($_POST["requestedStars"],ENT_QUOTES))[0];
+}else{
+	$requestedStars = 0;
+}
+if($_POST["extraString"]){
+	$extraString = explode(":", htmlspecialchars($_POST["extraString"],ENT_QUOTES))[0];
+}else{
+	$extraString = "29_29_29_40_29_29_29_29_29_29_29_29_29_29_29_29";
+}
 $levelString = explode(":", htmlspecialchars($_POST["levelString"],ENT_QUOTES))[0];
-$levelInfo = explode(":", htmlspecialchars($_POST["levelInfo"],ENT_QUOTES))[0];
+if($_POST["levelInfo"]){
+	$levelInfo = explode(":", htmlspecialchars($_POST["levelInfo"],ENT_QUOTES))[0];
+}else{
+	$levelInfo = 0;
+}
 $secret = explode(":", htmlspecialchars($_POST["secret"],ENT_QUOTES))[0];
-$unlisted = explode(":", htmlspecialchars($_POST["unlisted"],ENT_QUOTES))[0];
+if($_POST["unlisted"]){
+	$unlisted = explode(":", htmlspecialchars($_POST["unlisted"],ENT_QUOTES))[0];
+}else{
+	$unlisted = 0;
+}
 $accountID = "";
 $id = explode(":", htmlspecialchars($_POST["udid"],ENT_QUOTES))[0];
 if($_POST["accountID"]!="" AND $_POST["accountID"]!="0"){
