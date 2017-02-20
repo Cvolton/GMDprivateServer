@@ -22,8 +22,12 @@ if($type == "top" OR $type == "creators" OR $type == "relative"){
 	$result = $query->fetchAll();
 	$user = $result[0];
 	$stars = $user["stars"];
-	$count = htmlspecialchars($_POST["count"],ENT_QUOTES);
-	$count = $count / 2;
+	if($_POST["count"]){
+		$count = htmlspecialchars($_POST["count"],ENT_QUOTES);
+	}else{
+		$count = 50;
+	}
+	$count = floor($count / 2);
 	$query = "SELECT  A.* FROM  (
    (
       SELECT  *  FROM users
