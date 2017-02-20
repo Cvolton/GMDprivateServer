@@ -8,16 +8,24 @@ $gameVersion = explode(":", explode("|", htmlspecialchars($_POST["gameVersion"],
 $binaryVersion = explode(":", explode("|", htmlspecialchars($_POST["binaryVersion"],ENT_QUOTES))[0])[0];
 $userName = explode(":", explode("|", htmlspecialchars($_POST["userName"],ENT_QUOTES))[0])[0];
 $secret = explode(":", explode("|", htmlspecialchars($_POST["secret"],ENT_QUOTES))[0])[0];
-$coins = explode(":", explode("|", htmlspecialchars($_POST["coins"],ENT_QUOTES))[0])[0];
+if($_POST["coins"]){
+	$coins = explode(":", explode("|", htmlspecialchars($_POST["coins"],ENT_QUOTES))[0])[0];
+}else{
+	$coins = -1;
+}
 $stars = explode(":", explode("|", htmlspecialchars($_POST["stars"],ENT_QUOTES))[0])[0];
 $demons = explode(":", explode("|", htmlspecialchars($_POST["demons"],ENT_QUOTES))[0])[0];
 $icon = explode(":", explode("|", htmlspecialchars($_POST["icon"],ENT_QUOTES))[0])[0];
 $color1 = explode(":", explode("|", htmlspecialchars($_POST["color1"],ENT_QUOTES))[0])[0];
 $color2 = explode(":", explode("|", htmlspecialchars($_POST["color2"],ENT_QUOTES))[0])[0];
-$iconType = explode(":", explode("|", htmlspecialchars($_POST["iconType"],ENT_QUOTES))[0])[0];
+if($_POST["iconType"]){
+	$iconType = explode(":", explode("|", htmlspecialchars($_POST["iconType"],ENT_QUOTES))[0])[0];
+}else{
+	$iconType = 0;
+}
 $userCoins = explode(":", explode("|", htmlspecialchars($_POST["userCoins"],ENT_QUOTES))[0])[0];
 if($userCoins == ""){
-	$userCoins = 0;
+	$userCoins = -1;
 }
 $special = explode(":", explode("|", htmlspecialchars($_POST["special"],ENT_QUOTES))[0])[0];
 if($special == ""){
@@ -61,7 +69,7 @@ if($accExplosion == ""){
 }
 $diamonds = explode(":", explode("|", htmlspecialchars($_POST["diamonds"],ENT_QUOTES))[0])[0];
 if($diamonds == ""){
-	$diamonds = 0;
+	$diamonds = -1;
 }
 //continuing the accounts system
 $accountID = "";
