@@ -32,14 +32,19 @@ $userID = $db->lastInsertId();
 if($account["isAdmin"]==1){
 $query4 = $db->prepare("select * from modips where accountID = :id");
 $query4->execute([':id' => $id]);
+if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
+	$ip = $_SERVER['HTTP_CLIENT_IP'];
+} elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+	$ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+} else {
+	$ip = $_SERVER['REMOTE_ADDR'];
+}
 if ($query4->rowCount() > 0) {
-$hostname = gethostbyaddr($_SERVER['REMOTE_ADDR']);
 $query6 = $db->prepare("UPDATE modips SET IP=:hostname WHERE accountID=:id");
-$query6->execute([':hostname' => $hostname, ':id' => $id]);
+$query6->execute([':hostname' => $ip, ':id' => $id]);
 }else{
-$hostname = gethostbyaddr($_SERVER['REMOTE_ADDR']);
 $query6 = $db->prepare("INSERT INTO modips (IP, accountID, isMod) VALUES (:hostname,:id,'1')");
-$query6->execute([':hostname' => $hostname, ':id' => $id]);
+$query6->execute([':hostname' => $ip, ':id' => $id]);
 }
 }
 //result
