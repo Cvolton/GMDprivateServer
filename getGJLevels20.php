@@ -281,7 +281,7 @@ if($type != 10 AND $gauntlet == ""){
 		$query = "SELECT * FROM levels ". $additional . " ORDER BY uploadDate DESC LIMIT 10 OFFSET $lvlpagea";
 	}
     if($type==5){
-		$query = "SELECT * FROM levels WHERE userID = '".$str."'ORDER BY uploadDate DESC LIMIT 10 OFFSET $lvlpagea";
+		$query = "SELECT * FROM levels WHERE userID = '".$str."' " . $additionalnowhere . " ORDER BY uploadDate DESC LIMIT 10 OFFSET $lvlpagea";
 	}
 	if($type==6 OR $type==17){
 		$query = "SELECT * FROM levels WHERE NOT starFeatured = 0 ".$additionalnowhere." ORDER BY uploadDate DESC LIMIT 10 OFFSET $lvlpagea";
