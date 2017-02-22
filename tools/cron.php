@@ -2,6 +2,9 @@
 include "fixcps.php";
 ob_flush();
 flush();
+include "fixlikes.php";
+ob_flush();
+flush();
 include "removeBlankLevels.php";
 ob_flush();
 flush();

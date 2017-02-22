@@ -30,9 +30,9 @@ if($_POST["levelid"]!=0){
 		$query->execute([':lvl' => $_POST["levelid"]]);
 		if($query->rowCount() == 0){
 			//var_dump($resultarray);
-			$query = $db->prepare("INSERT INTO levels (levelName, gameVersion, binaryVersion, userName, levelDesc, levelVersion, levelLength, audioTrack, auto, password, original, twoPlayer, songID, objects, coins, requestedStars, extraString, levelString, levelInfo, secret, uploadDate, updateDate, starDifficulty, originalReup, userID, extID, unlisted)
-																			VALUES (:name ,'20', '27', 'Reupload', :desc, :version, :length, :audiotrack, '0', '1337666', '0', :twoPlayer, :songID, '0', :coins, :reqstar, :extraString, :levelString, '0', '0', '$uploadDate', '$uploadDate', :starDifficulty, :originalReup, '388', '263', '0')");
-			$query->execute([':name' => $resultarray[3], ':desc' => $resultarray[5], ':version' => $resultarray[9], ':length' => $resultarray[41], ':audiotrack' => $resultarray[21], ':twoPlayer' => $resultarray[45], ':songID' => $resultarray[51], ':coins' => $resultarray[55], ':reqstar' => $resultarray[59], ':extraString' => $resultarray[53], ':levelString' => $resultarray[7], ':starDifficulty' => $resultarray[15], ':originalReup' => $resultarray[1]]);
+			$query = $db->prepare("INSERT INTO levels (levelName, gameVersion, binaryVersion, userName, levelDesc, levelVersion, levelLength, audioTrack, auto, password, original, twoPlayer, songID, objects, coins, requestedStars, extraString, levelString, levelInfo, secret, uploadDate, updateDate, originalReup, userID, extID, unlisted)
+																			VALUES (:name ,'20', '27', 'Reupload', :desc, :version, :length, :audiotrack, '0', '1337666', '0', :twoPlayer, :songID, '0', :coins, :reqstar, :extraString, :levelString, '0', '0', '$uploadDate', '$uploadDate', :originalReup, '388', '263', '0')");
+			$query->execute([':name' => $resultarray[3], ':desc' => $resultarray[5], ':version' => $resultarray[9], ':length' => $resultarray[41], ':audiotrack' => $resultarray[21], ':twoPlayer' => $resultarray[45], ':songID' => $resultarray[51], ':coins' => $resultarray[55], ':reqstar' => $resultarray[59], ':extraString' => $resultarray[53], ':levelString' => $resultarray[7], ':originalReup' => $resultarray[1]]);
 			echo "Level reuploaded, ID: " . $db->lastInsertId() . "<br><hr><br>";
 		}else{
 			echo "This level has been already reuploaded";
