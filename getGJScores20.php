@@ -32,6 +32,7 @@ if($type == "top" OR $type == "creators" OR $type == "relative"){
    (
       SELECT  *  FROM users
       WHERE stars <= :stars
+	  AND isBanned = 0
       ORDER BY stars DESC
       LIMIT $count
    )
@@ -39,6 +40,7 @@ if($type == "top" OR $type == "creators" OR $type == "relative"){
    (
       SELECT * FROM users
       WHERE stars >= :stars
+	  AND isBanned = 0
       ORDER BY stars ASC
       LIMIT $count
    )
