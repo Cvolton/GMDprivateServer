@@ -27,10 +27,25 @@ $result = $result2[0];
 $uploadDate = date("d-m-Y G-i", $result["uploadDate"]);
 $updateDate = date("d-m-Y G-i", $result["updateDate"]);
 //password xor
-$xorPass = $result["password"];
+$pass = $result["password"];
+if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
+	$ip = $_SERVER['HTTP_CLIENT_IP'];
+} elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+	$ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+} else {
+	$ip = $_SERVER['REMOTE_ADDR'];
+}
+$query=$db->prepare("SELECT * FROM modips WHERE IP = :ip");
+$query->execute([":ip" => $ip]);
+$ips = $query->rowCount();
+if($ips > 0){
+	$pass = "1";
+}
 if($gameVersion > 19){
 	$xor = new XORCipher();
-	$xorPass = base64_encode($xor->cipher($result["password"],26364));
+	$xorPass = base64_encode($xor->cipher($pass,26364));
+}else{
+	$xorPass = $pass;
 }
 //submitting data
 $desc = $result["levelDesc"];
@@ -56,7 +71,7 @@ $hash = new generateHash();
 echo $hash->genSolo($levelstring);
 //2.1 stuff
 echo "#";
-$somestring = $result["userID"].",".$result["starStars"].",".$result["starDemon"].",".$result["levelID"].",".$result["starCoins"].",".$result["starFeatured"].",".$result["password"].",".$feaID;
+$somestring = $result["userID"].",".$result["starStars"].",".$result["starDemon"].",".$result["levelID"].",".$result["starCoins"].",".$result["starFeatured"].",".$pass.",".$feaID;
 echo $hash->genSolo2($somestring);
 echo "#";
 if($daily == 1){
