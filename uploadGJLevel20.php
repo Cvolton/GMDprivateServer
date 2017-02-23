@@ -100,10 +100,6 @@ $query->execute([':register' => $register, ':id' => $id, ':userName' => $userNam
 $userID = $db->lastInsertId();
 }
 $uploadDate = time();
-//thanks jman for posting this in moonlit gdps chat tbh
-if (preg_match('/^[a-zA-Z0-9]+$/', $levelName) == false){
-	exit(-1);
-}
 $query = $db->prepare("INSERT INTO levels (levelName, gameVersion, binaryVersion, userName, levelDesc, levelVersion, levelLength, audioTrack, auto, password, original, twoPlayer, songID, objects, coins, requestedStars, extraString, levelString, levelInfo, secret, uploadDate, userID, extID, updateDate, unlisted)
 VALUES (:levelName, :gameVersion, :binaryVersion, :userName, :levelDesc, :levelVersion, :levelLength, :audioTrack, :auto, :password, :original, :twoPlayer, :songID, :objects, :coins, :requestedStars, :extraString, :levelString, :levelInfo, :secret, :uploadDate, :userID, :id, :uploadDate, :unlisted)");
 
