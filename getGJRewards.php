@@ -19,10 +19,26 @@ if($gjpresult !== 1 AND $accountID !== 0){
 $query=$db->prepare("select * from users where extID = ?");
 if($accountID != 0){
 	$query->execute(array($accountID));
+	$register = 1;
 }else{
 	$query->execute(array($udid));
+	$register = 0;
 }
 $result = $query->fetchAll();
+if ($query->rowCount() == 0) {
+	$query = $db->prepare("INSERT INTO users (isRegistered, extID)
+	VALUES (:register,:id)");
+	$query->execute([':register' => $register, ':id' => $id]);
+	$query=$db->prepare("select * from users where extID = ?");
+	if($accountID != 0){
+		$query->execute(array($accountID));
+		$register = 1;
+	}else{
+		$query->execute(array($udid));
+		$register = 0;
+	}
+	$result = $query->fetchAll();
+}
 $user = $result[0];
 $userid = $user["userID"];
 $chk = $XORCipher->cipher(base64_decode(substr($chk, 5)),59182);
@@ -38,7 +54,7 @@ $chk = $XORCipher->cipher(base64_decode(substr($chk, 5)),59182);
 	$chest2diff = $currenttime - $chest2time;
 	//stuff
 	$chest1stuff = rand($chest1minOrbs, $chest1maxOrbs).",".rand($chest1minDiamonds, $chest1maxDiamonds).",".rand($chest1minShards, $chest1maxShards).",".rand($chest1minKeys, $chest1maxKeys)."";
-	$chest2stuff = rand($chest2minOrbs, $chest2maxOrbs).",".rand($chest2minDiamonds, $chest2maxDiamonds).",".rand($chest2minShards, $chest2maxShards).",".rand($chest2minKeys, $chest2maxKeys)."";
+	$chest2stuff = "3,0,10,0,0,0,0,0,0";
 	//echo $chest1diff ."sakujesvole".$chest2diff;
 	$chest1left = max(0,$chest1wait - $chest1diff);
 	$chest2left = max(0,$chest2wait - $chest2diff);
@@ -55,7 +71,7 @@ $chk = $XORCipher->cipher(base64_decode(substr($chk, 5)),59182);
 		$query->execute([':chest2count' => $chest2count, ':userID' => $userid, ':currenttime' => $currenttime]);
 		$chest2left = $chest2wait;
 	}
-	$string = base64_encode($XORCipher->cipher("SaKuJ:".$userid.":".$chk.":".$udid.":".$accountID.":".$chest1left.":".$chest1stuff.":".$chest1count.":".$chest2left.":".$chest2stuff.":".$chest2count.":".$rewardType."",59182));
+	$string = base64_encode($XORCipher->cipher("1:".$userid.":".$chk.":".$udid.":".$accountID.":".$chest1left.":".$chest1stuff.":".$chest1count.":".$chest2left.":".$chest2stuff.":".$chest2count.":".$rewardType."",59182));
 $hash = $generateHash->genSolo4($string);
 echo "SaKuJ".$string . "|".$hash;
 ?>
