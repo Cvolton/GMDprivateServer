@@ -7,6 +7,7 @@ $gjp = explode(":", explode("|", htmlspecialchars($_POST["gjp"],ENT_QUOTES))[0])
 $gameVersion = explode(":", explode("|", htmlspecialchars($_POST["gameVersion"],ENT_QUOTES))[0])[0];
 $binaryVersion = explode(":", explode("|", htmlspecialchars($_POST["binaryVersion"],ENT_QUOTES))[0])[0];
 $userName = explode(":", explode("|", htmlspecialchars($_POST["userName"],ENT_QUOTES))[0])[0];
+$userName = preg_replace("/[^A-Za-z0-9 ]/", '', $userName);
 $secret = explode(":", explode("|", htmlspecialchars($_POST["secret"],ENT_QUOTES))[0])[0];
 if($_POST["coins"] != ""){
 	$coins = explode(":", explode("|", htmlspecialchars($_POST["coins"],ENT_QUOTES))[0])[0];
