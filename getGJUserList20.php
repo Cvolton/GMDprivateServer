@@ -5,6 +5,7 @@ $GJPCheck = new GJPCheck();
 $accountID = htmlspecialchars($_POST["accountID"],ENT_QUOTES);
 $gjp = htmlspecialchars($_POST["gjp"],ENT_QUOTES);
 $type = htmlspecialchars($_POST["type"],ENT_QUOTES);
+$gdw = htmlspecialchars($_POST["gdw"],ENT_QUOTES);
 if($type == 0){
 	$query = "SELECT * FROM friendships WHERE person1 = :accountID OR person2 = :accountID";
 }else if($type==1){
