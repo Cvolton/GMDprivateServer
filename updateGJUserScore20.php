@@ -8,7 +8,7 @@ $gameVersion = explode(":", explode("|", htmlspecialchars($_POST["gameVersion"],
 $binaryVersion = explode(":", explode("|", htmlspecialchars($_POST["binaryVersion"],ENT_QUOTES))[0])[0];
 $userName = explode(":", explode("|", htmlspecialchars($_POST["userName"],ENT_QUOTES))[0])[0];
 $secret = explode(":", explode("|", htmlspecialchars($_POST["secret"],ENT_QUOTES))[0])[0];
-if($_POST["coins"]){
+if($_POST["coins"] != ""){
 	$coins = explode(":", explode("|", htmlspecialchars($_POST["coins"],ENT_QUOTES))[0])[0];
 }else{
 	$coins = -1;
