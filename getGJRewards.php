@@ -54,7 +54,7 @@ $chk = $XORCipher->cipher(base64_decode(substr($chk, 5)),59182);
 	$chest2diff = $currenttime - $chest2time;
 	//stuff
 	$chest1stuff = rand($chest1minOrbs, $chest1maxOrbs).",".rand($chest1minDiamonds, $chest1maxDiamonds).",".rand($chest1minShards, $chest1maxShards).",".rand($chest1minKeys, $chest1maxKeys)."";
-	$chest2stuff = "3,0,10,0,0,0,0,0,0";
+	$chest2stuff = rand($chest2minOrbs, $chest2maxOrbs).",".rand($chest2minDiamonds, $chest2maxDiamonds).",".rand($chest2minShards, $chest2maxShards).",".rand($chest2minKeys, $chest2maxKeys)."";
 	//echo $chest1diff ."sakujesvole".$chest2diff;
 	$chest1left = max(0,$chest1wait - $chest1diff);
 	$chest2left = max(0,$chest2wait - $chest2diff);
