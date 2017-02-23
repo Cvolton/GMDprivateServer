@@ -11,6 +11,7 @@ if($_POST["binaryVersion"]){
 	$binaryVersion = 0;
 }
 $userName = explode(":", htmlspecialchars($_POST["userName"],ENT_QUOTES))[0];
+$userName = preg_replace("/[^A-Za-z0-9 ]/", '', $userName);
 $levelID = explode(":", htmlspecialchars($_POST["levelID"],ENT_QUOTES))[0];
 $levelName = explode(":", htmlspecialchars($_POST["levelName"],ENT_QUOTES))[0];
 $levelName = preg_replace("/[^A-Za-z0-9 ]/", '', $levelName);
