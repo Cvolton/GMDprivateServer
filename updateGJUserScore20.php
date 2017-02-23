@@ -88,9 +88,9 @@ $userIDalmost = $result[0];
 $userID = $userIDalmost[1];
 } else {
 $query = $db->prepare("INSERT INTO users (isRegistered, extID)
-VALUES ('$register','$id')");
+VALUES (:register, :id)");
 
-$query->execute();
+$query->execute([':register' => $register, ':id' => $id]);
 $userID = $db->lastInsertId();
 }
 $uploadDate = time();
