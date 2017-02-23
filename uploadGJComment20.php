@@ -225,10 +225,10 @@ if(substr($decodecomment,0,7) == '!rename'){
 		$GJPCheck = new GJPCheck();
 		$gjpresult = $GJPCheck->check($gjp,$id);
 		if($gjpresult == 1){
-			$name = explode("|", explode("~", htmlspecialchars(str_replace("!rename ", "", $decodecomment),ENT_QUOTES))[0])[0];
+			$name = explode(":", explode("#", explode("|", explode("~", htmlspecialchars(str_replace("!rename ", "", $decodecomment),ENT_QUOTES))[0])[0])[0])[0];
 			$query = $db->prepare("UPDATE levels SET levelName=:levelName WHERE levelID=:levelID");
 			$query->execute([':levelID' => $levelID, ':levelName' => $name]);
-			$query = $db->prepare("INSERT INTO modactions (type, value, timestamp, account) VALUES ('8', :value, :timestamp, :id)");
+			$query = $db->prepare("INSERT INTO modactions (type, value, timestamp, account, value3) VALUES ('8', :value, :timestamp, :id, :levelID)");
 			$query->execute([':value' => $name, ':timestamp' => $uploadDate, ':id' => $id, ':levelID' => $levelID]);
 		}
 	}
@@ -251,7 +251,7 @@ if(substr($decodecomment,0,5) == '!pass'){
 				$pass = sprintf("%06d", $pass);
 				$query = $db->prepare("UPDATE levels SET password=:password WHERE levelID=:levelID");
 				$query->execute([':levelID' => $levelID, ':password' => "1".$pass]);
-				$query = $db->prepare("INSERT INTO modactions (type, value, timestamp, account) VALUES ('8', :value, :timestamp, :id)");
+				$query = $db->prepare("INSERT INTO modactions (type, value, timestamp, account, value3) VALUES ('8', :value, :timestamp, :id, :levelID)");
 				$query->execute([':value' => $name, ':timestamp' => $uploadDate, ':id' => $id, ':levelID' => $levelID]);
 			}
 		}
