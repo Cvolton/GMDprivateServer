@@ -95,6 +95,21 @@ if($type != 10 AND $gauntlet == ""){
 			$additionalnowhere = $additionalnowhere."AND NOT levelID = '".$completedLevels."' ";
 		}
 	}
+	if($_POST["onlyCompleted"]==1){
+		$completedLevels = htmlspecialchars($_POST["completedLevels"],ENT_QUOTES);
+		$completedLevels = str_replace("(","", $completedLevels);
+		$completedLevels = str_replace(")","", $completedLevels);
+		$completedLevels = $db->quote($completedLevels);
+		$completedLevels = str_replace("'","", $completedLevels);
+		$completedLevels = str_replace(",","' OR levelID = '", $completedLevels);
+		if($additional == ""){
+			$additional = "WHERE levelID = '".$completedLevels."' ";
+			$additionalnowhere = "OR levelID = '".$completedLevels."' ";
+		}else{
+			$additional = $additional."AND levelID = '".$completedLevels."' ";
+			$additionalnowhere = $additionalnowhere."OR levelID = '".$completedLevels."' ";
+		}
+	}
 	if($_POST["song"]!=0){
 		if($_POST["customSong"]==0){
 			$song = htmlspecialchars($_POST["song"],ENT_QUOTES);
