@@ -37,27 +37,31 @@ $msgcount = $query2->rowCount();*/
 
 foreach ($result as &$message1) {
 	if($message1["messageID"]!=""){
-	$uploadDate = date("d/m/Y G.i", $message1["timestamp"]);
-	echo "6:".$message1["userName"].":3:".$message1["userID"].":2:".$message1["accID"].":1:".$message1["messageID"].":4:".$message1["subject"].":8:".$message1["isNew"].":9:0:7:".$uploadDate."|";
-	$query12 = $db->prepare("SELECT * FROM users WHERE userID = :userID");
-	$query12->execute([':userID' => $message1["userID"]]);
-	$result12 = $query12->fetchAll();
-if ($query12->rowCount() > 0) {
-	$userIDalmost = $result12[0];
-	$userID = $userIDalmost["extID"];
-if(is_numeric($userID)){
-	$userIDnumba = $userID;
-}else{
-	$userIDnumba = 0;
-}
-}
+		$uploadDate = date("d/m/Y G.i", $message1["timestamp"]);
+		if($getSent == 1){
+			$accountID = $message1["toAccountID"];
+		}else{
+			$accountID = $message1["accID"];
+		}
+		$query=$db->prepare("SELECT * FROM users WHERE extID = :accountID");
+		$query->execute([':accountID' => $accountID]);
+		$result12 = $query->fetchAll()[0];
+		echo "6:".$result12["userName"].":3:".$result12["userID"].":2:".$result12["extID"].":1:".$message1["messageID"].":4:".$message1["subject"].":8:".$message1["isNew"].":9:".$getSent.":7:".$uploadDate."|";
+		if ($query->rowCount() > 0) {
+			$userID = $result12["extID"];
+			if(is_numeric($userID)){
+				$userIDnumba = $userID;
+			}else{
+				$userIDnumba = 0;
+			}
+		}
 	if($x == 0){
-	$levelsstring = $levelsstring . $message1["userID"] . ":" . $message1["userName"] . ":" . $userIDnumba;
+		$levelsstring = $levelsstring . $message1["userID"] . ":" . $message1["userName"] . ":" . $userIDnumba;
 	}else{
-	$levelsstring = $levelsstring ."|" . $message1["userID"] . ":" . $message1["userName"] . ":" . $userIDnumba;
+		$levelsstring = $levelsstring ."|" . $message1["userID"] . ":" . $message1["userName"] . ":" . $userIDnumba;
 	}
 	$userid = $userid + 1;
-	}
+}
 }
  echo "#".$msgcount.":".$offset.":10";
 ?>
