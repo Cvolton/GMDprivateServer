@@ -51,7 +51,7 @@ if($gameVersion > 19){
 $desc = $result["levelDesc"];
 $levelstring = $result["levelString"];
 if($gameVersion < 20){
-	$desc = base64_decode($desc);
+	$desc = explode(':', explode('#', base64_decode($desc))[0])[0];
 }
 if($gameVersion > 18){
 	if(substr($levelstring,0,3) == 'kS1'){
