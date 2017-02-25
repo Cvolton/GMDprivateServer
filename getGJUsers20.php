@@ -3,7 +3,7 @@ include "connection.php";
 $str = htmlspecialchars($_POST["str"], ENT_QUOTES);
 	$page = htmlspecialchars($_POST["page"],ENT_QUOTES);
 	$usrpagea = $page*10;
-	$query = "SELECT * FROM users WHERE userName LIKE CONCAT(:str, '%') ORDER BY stars DESC LIMIT $usrpagea,10";
+	$query = "SELECT * FROM users WHERE userName LIKE CONCAT('%', :str, '%') ORDER BY stars DESC LIMIT $usrpagea,10";
 	$query = $db->prepare($query);
 	$query->execute([':str' => $str]);
 	$result = $query->fetchAll();
