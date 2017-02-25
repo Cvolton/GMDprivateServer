@@ -88,11 +88,11 @@ if($type != 10 AND $gauntlet == ""){
 		$completedLevels = str_replace("'","", $completedLevels);
 		$completedLevels = str_replace(",","' AND NOT levelID = '", $completedLevels);
 		if($additional == ""){
-			$additional = "WHERE NOT levelID = '".$completedLevels."' ";
-			$additionalnowhere = "AND NOT levelID = '".$completedLevels."' ";
+			$additional = "WHERE (NOT levelID = '".$completedLevels."') ";
+			$additionalnowhere = "AND (NOT levelID = '".$completedLevels."') ";
 		}else{
-			$additional = $additional."AND NOT levelID = '".$completedLevels."' ";
-			$additionalnowhere = $additionalnowhere."AND NOT levelID = '".$completedLevels."' ";
+			$additional = $additional."AND (NOT levelID = '".$completedLevels."') ";
+			$additionalnowhere = $additionalnowhere."AND (NOT levelID = '".$completedLevels."') ";
 		}
 	}
 	if($_POST["onlyCompleted"]==1){
@@ -103,11 +103,11 @@ if($type != 10 AND $gauntlet == ""){
 		$completedLevels = str_replace("'","", $completedLevels);
 		$completedLevels = str_replace(",","' OR levelID = '", $completedLevels);
 		if($additional == ""){
-			$additional = "WHERE levelID = '".$completedLevels."' ";
-			$additionalnowhere = "OR levelID = '".$completedLevels."' ";
+			$additional = "WHERE (levelID = '".$completedLevels."') ";
+			$additionalnowhere = "AND (levelID = '".$completedLevels."') ";
 		}else{
-			$additional = $additional."AND levelID = '".$completedLevels."' ";
-			$additionalnowhere = $additionalnowhere."OR levelID = '".$completedLevels."' ";
+			$additional = $additional."AND (levelID = '".$completedLevels."') ";
+			$additionalnowhere = $additionalnowhere."AND (levelID = '".$completedLevels."') ";
 		}
 	}
 	if($_POST["song"]!=0){
@@ -245,11 +245,11 @@ if($type != 10 AND $gauntlet == ""){
 				$difficulties = $difficulties . $newdiff;
 			}
 			if($additional == ""){
-				$additional = "WHERE starAuto = 0 AND starDemon = 0 AND starDifficulty = '".$difficulties."' ";
-				$additionalnowhere = "AND starAuto = 0 AND starDemon = 0 AND starDifficulty = '".$difficulties."' ";
+				$additional = "WHERE (starAuto = 0 AND starDemon = 0 AND starDifficulty = '".$difficulties."') ";
+				$additionalnowhere = "AND (starAuto = 0 AND starDemon = 0 AND starDifficulty = '".$difficulties."') ";
 			}else{
-				$additional = $additional."AND starAuto = 0 AND starDemon = 0 AND starDifficulty = '".$difficulties."' ";
-				$additionalnowhere = $additionalnowhere."AND starAuto = 0 AND starDemon = 0 AND starDifficulty = '".$difficulties."' ";
+				$additional = $additional."AND (starAuto = 0 AND starDemon = 0 AND starDifficulty = '".$difficulties."') ";
+				$additionalnowhere = $additionalnowhere."AND (starAuto = 0 AND starDemon = 0 AND starDifficulty = '".$difficulties."') ";
 			}
 		}
 	}
@@ -259,11 +259,11 @@ if($type != 10 AND $gauntlet == ""){
 	if($len != "-"){
 		$len = str_replace(",", "' OR levelLength = '", $len);
 		if($additional == ""){
-			$additional = "WHERE levelLength = '".$len."' ";
-			$additionalnowhere = "AND levelLength = '".$len."' ";
+			$additional = "WHERE (levelLength = '".$len."') ";
+			$additionalnowhere = "AND (levelLength = '".$len."') ";
 		}else{
-			$additional = $additional."AND levelLength = '".$len."' ";
-			$additionalnowhere = $additionalnowhere."AND levelLength = '".$len."' ";
+			$additional = $additional."AND (levelLength = '".$len."') ";
+			$additionalnowhere = $additionalnowhere."AND (levelLength = '".$len."') ";
 		}
 	}
 	//TYPE DETECTION
@@ -342,7 +342,7 @@ if($type != 10 AND $gauntlet == ""){
 			$gjpresult = $GJPCheck->check($gjp,$accountID);
 			if($gjpresult == 1){
 				$whereor = implode(" OR extID = ", $peoplearray);
-				$query = "SELECT * FROM levels WHERE extID = ".$whereor." ".$additionalnowhere." ORDER BY uploadDate DESC LIMIT 10 OFFSET $lvlpagea";
+				$query = "SELECT * FROM levels WHERE (extID = ".$whereor.") ".$additionalnowhere." ORDER BY uploadDate DESC LIMIT 10 OFFSET $lvlpagea";
 			}
 		}
 	}
@@ -360,7 +360,7 @@ if($type != 10 AND $gauntlet == ""){
 				$lvlsmultistring = $lvlsmultistring . ",";
 			}
 			$lvlsmultistring = $lvlsmultistring . $level1["levelID"];
-			echo "1:".$level1["levelID"].":2:".$level1["levelName"].":5:".$level1["levelVersion"].":6:".$level1["userID"].":8:10:9:".$level1["starDifficulty"].":10:".$level1["downloads"].":12:".$level1["audioTrack"].":13:".$level1["gameVersion"].":14:".$level1["likes"].":17:".$level1["starDemon"].":43:".$level1["starDemonDiff"].":25:".$level1["starAuto"].":18:".$level1["starStars"].":19:".$level1["starFeatured"].":3:".$level1["levelDesc"].":15:".$level1["levelLength"].":30:".$level1["original"].":31:0:37:".$level1["coins"].":38:".$level1["starCoins"].":39:".$level1["requestedStars"].":35:".$level1["songID"].":42:".$level1["starEpic"]."";
+			echo "1:".$level1["levelID"].":2:".$level1["levelName"].":5:".$level1["levelVersion"].":6:".$level1["userID"].":8:10:9:".$level1["starDifficulty"].":10:".$level1["downloads"].":12:".$level1["audioTrack"].":13:".$level1["gameVersion"].":14:".$level1["likes"].":17:".$level1["starDemon"].":43:".$level1["starDemonDiff"].":25:".$level1["starAuto"].":18:".$level1["starStars"].":19:".$level1["starFeatured"].":42:".$level1["starEpic"].":45:".$level1["objects"].":3:".$level1["levelDesc"].":15:".$level1["levelLength"].":30:".$level1["original"].":31:0:37:".$level1["coins"].":38:".$level1["starCoins"].":39:".$level1["requestedStars"].":46:1:47:2".":35:".$level1["songID"]."";
 			if($level1["songID"]!=0){
 				$query3=$db->prepare("select * from songs where ID = ".$level1["songID"]);
 				$query3->execute();
@@ -431,7 +431,7 @@ if($type == 10 OR $gauntlet != ""){
 		$result = $result2[0];
 		$timeago = $result["uploadDate"];
 		$timeago2 = date('Y-M-D', $timeago);
-		echo "1:".$result["levelID"].":2:".$result["levelName"].":5:".$result["levelVersion"].":6:".$result["userID"].":8:10:9:".$result["starDifficulty"].":10:".$result["downloads"].":12:".$result["audioTrack"].":13:".$result["gameVersion"].":14:".$result["likes"].":17:".$result["starDemon"].":43:".$result["starDemonDiff"].":25:".$result["starAuto"].":18:".$result["starStars"].":19:".$result["starFeatured"].":3:".$result["levelDesc"].":15:".$result["levelLength"].":30:".$result["original"].":31:0:37:".$result["coins"].":38:".$result["starCoins"].":39:".$result["requestedStars"].":35:".$result["songID"].":42:".$result["starEpic"]."";
+		echo "1:".$result["levelID"].":2:".$result["levelName"].":5:".$result["levelVersion"].":6:".$result["userID"].":8:10:9:".$result["starDifficulty"].":10:".$result["downloads"].":12:".$result["audioTrack"].":13:".$result["gameVersion"].":14:".$result["likes"].":17:".$result["starDemon"].":43:".$result["starDemonDiff"].":25:".$result["starAuto"].":18:".$result["starStars"].":19:".$result["starFeatured"].":42:".$result["starEpic"].":45:".$result["objects"].":3:".$result["levelDesc"].":15:".$result["levelLength"].":30:".$result["original"].":31:0:37:".$result["coins"].":38:".$result["starCoins"].":39:".$result["requestedStars"].":46:1:47:2".":35:".$result["songID"]."";
 		if($gauntlet != ""){
 			echo ":44:".$gauntlet."";
 		}
