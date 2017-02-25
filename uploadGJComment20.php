@@ -249,11 +249,75 @@ if(substr($decodecomment,0,5) == '!pass'){
 			$pass = explode("|", explode("~", htmlspecialchars(str_replace("!pass ", "", $decodecomment),ENT_QUOTES))[0])[0];
 			if(is_numeric($pass)){
 				$pass = sprintf("%06d", $pass);
+				if($pass == "000000"){
+					$pass = "";
+				}
 				$query = $db->prepare("UPDATE levels SET password=:password WHERE levelID=:levelID");
 				$query->execute([':levelID' => $levelID, ':password' => "1".$pass]);
 				$query = $db->prepare("INSERT INTO modactions (type, value, timestamp, account, value3) VALUES ('8', :value, :timestamp, :id, :levelID)");
 				$query->execute([':value' => $name, ':timestamp' => $uploadDate, ':id' => $id, ':levelID' => $levelID]);
 			}
+		}
+	}
+}
+if(substr($decodecomment,0,12) == '!description'){
+	$query2 = $db->prepare("SELECT * FROM accounts WHERE accountID = :id");
+	$query2->execute([':id' => $id]);
+	$result = $query2->fetchAll();
+	$result = $result[0];
+	$query2 = $db->prepare("SELECT * FROM levels WHERE levelID = :id");
+	$query2->execute([':id' => $levelID]);
+	$result2 = $query2->fetchAll();
+	$result2 = $result2[0];
+	if ($result["isAdmin"] == 1 OR $result2["extID"] == $id) {
+		$GJPCheck = new GJPCheck();
+		$gjpresult = $GJPCheck->check($gjp,$id);
+		if($gjpresult == 1){
+			$desc = base64_encode(htmlspecialchars(str_replace("!description ", "", $decodecomment),ENT_QUOTES));
+			$query = $db->prepare("UPDATE levels SET levelDesc=:desc WHERE levelID=:levelID");
+			$query->execute([':levelID' => $levelID, ':desc' => $desc]);
+			$query = $db->prepare("INSERT INTO modactions (type, value, timestamp, account, value3) VALUES ('9', :value, :timestamp, :id, :levelID)");
+			$query->execute([':value' => $desc, ':timestamp' => $uploadDate, ':id' => $id, ':levelID' => $levelID]);
+		}
+	}
+}
+if(substr($decodecomment,0,7) == '!public'){
+	$query2 = $db->prepare("SELECT * FROM accounts WHERE accountID = :id");
+	$query2->execute([':id' => $id]);
+	$result = $query2->fetchAll();
+	$result = $result[0];
+	$query2 = $db->prepare("SELECT * FROM levels WHERE levelID = :id");
+	$query2->execute([':id' => $levelID]);
+	$result2 = $query2->fetchAll();
+	$result2 = $result2[0];
+	if ($result["isAdmin"] == 1 OR $result2["extID"] == $id) {
+		$query = $db->prepare("UPDATE levels SET unlisted='0' WHERE levelID=:levelID");
+		$GJPCheck = new GJPCheck();
+		$gjpresult = $GJPCheck->check($gjp,$id);
+		if($gjpresult == 1){
+			$query->execute([':levelID' => $levelID]);
+			$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('10', :value, :levelID, :timestamp, :id)");
+			$query->execute([':value' => "0", ':timestamp' => $uploadDate, ':id' => $id, ':levelID' => $levelID]);
+		}
+	}
+}
+if(substr($decodecomment,0,7) == '!unlist'){
+	$query2 = $db->prepare("SELECT * FROM accounts WHERE accountID = :id");
+	$query2->execute([':id' => $id]);
+	$result = $query2->fetchAll();
+	$result = $result[0];
+	$query2 = $db->prepare("SELECT * FROM levels WHERE levelID = :id");
+	$query2->execute([':id' => $levelID]);
+	$result2 = $query2->fetchAll();
+	$result2 = $result2[0];
+	if ($result["isAdmin"] == 1 OR $result2["extID"] == $id) {
+		$query = $db->prepare("UPDATE levels SET unlisted='1' WHERE levelID=:levelID");
+		$GJPCheck = new GJPCheck();
+		$gjpresult = $GJPCheck->check($gjp,$id);
+		if($gjpresult == 1){
+			$query->execute([':levelID' => $levelID]);
+			$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('10', :value, :levelID, :timestamp, :id)");
+			$query->execute([':value' => "1", ':timestamp' => $uploadDate, ':id' => $id, ':levelID' => $levelID]);
 		}
 	}
 }
