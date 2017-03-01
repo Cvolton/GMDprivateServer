@@ -15,7 +15,6 @@ $percent = explode("|", explode("~", htmlspecialchars($_POST["percent"],ENT_QUOT
 if($percent == ""){
 	$percent = 0;
 }
-$accountID = "";
 $id = htmlspecialchars($_POST["udid"],ENT_QUOTES);
 if($_POST["accountID"]!="" AND $_POST["accountID"]!="0"){
 	$id = htmlspecialchars($_POST["accountID"],ENT_QUOTES);
@@ -326,6 +325,7 @@ $query = $db->prepare("INSERT INTO comments (userName, comment, levelID, userID,
 VALUES (:userName, :comment, :levelID, :userID, :uploadDate, :percent)");
 }else{
 $query = $db->prepare("SELECT * FROM modips WHERE IP = 'nope'");
+echo "-";
 }
 
 if($id != "" AND $comment != ""){
@@ -335,6 +335,22 @@ if($id != "" AND $comment != ""){
 	if($gjpresult == 1){
 		$query->execute([':userName' => $userName, ':comment' => $comment, ':levelID' => $levelID, ':userID' => $userID, ':uploadDate' => $uploadDate, ':percent' => $percent]);
 		echo 1;
+		if($percent != 0){
+			$query2 = $db->prepare("SELECT * FROM levelscores WHERE accountID = :accountID AND levelID = :levelID");
+			$query2->execute([':accountID' => $id, ':levelID' => $levelID]);
+			$result = $query2->fetchAll();
+			if ($query2->rowCount() == 0) {
+				$query = $db->prepare("INSERT INTO levelscores (accountID, levelID, percent, uploadDate)
+				VALUES (:accountID, :levelID, :percent, :uploadDate)");
+			} else {
+				if($result[0]["percent"] < $percent){
+					$query = $db->prepare("UPDATE levelscores SET percent=:percent, uploadDate=:uploadDate WHERE accountID=:accountID AND levelID=:levelID");
+				}else{
+					$query = $db->prepare("SELECT * FROM levelscores WHERE percent=:percent AND uploadDate=:uploadDate AND accountID=:accountID AND levelID=:levelID");
+				}
+			}
+			$query->execute([':accountID' => $id, ':levelID' => $levelID, ':percent' => $percent, ':uploadDate' => $uploadDate]);
+		}
 	}
 	else
 	{
