@@ -6,28 +6,29 @@
 <?php
 //error_reporting(0);
 include "../connection.php";
-if($_POST["levelid"]!=0){
-	$levelid = $_POST["levelid"];
+if($_POST["levelid"]!=""){
+	$levelID = $_POST["levelid"];
+	$levelID = preg_replace("/[^0-9]/", '', $levelID);
 	$url = $_POST["server"];
-	$data = array('levelID' => $levelid, 'secret' => 'Wmfd2893gb7');
-	$options = array(
-		'http' => array(
-			'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
-			'method'  => 'POST',
-			'content' => http_build_query($data),
-		),
-	);
-	$context  = stream_context_create($options);
-	$result = file_get_contents($url, false, $context);
+	$post = ['levelID' => $levelID, 'secret' => 'Wmfd2893gb7'];
+	$ch = curl_init($url);
+	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+	curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
+	$result = curl_exec($ch);
+	curl_close($ch);
 	if($result == "" OR $result == "-1"){
-		echo "This level doesn't exist.";
+		if($result==""){
+			echo "An error has occured while connecting to the server.";
+		}else{
+			echo "This level doesn't exist.";
+		}
 	}else{
 		$resultarray = explode(':', $result);
 		//echo $result;
 		//var_dump($resultarray);
 		$uploadDate = time();
 		$query = $db->prepare("SELECT * FROM levels WHERE originalReup = :lvl");
-		$query->execute([':lvl' => $_POST["levelid"]]);
+		$query->execute([':lvl' => $levelID]);
 		if($query->rowCount() == 0){
 			//var_dump($resultarray);
 			$query = $db->prepare("INSERT INTO levels (levelName, gameVersion, binaryVersion, userName, levelDesc, levelVersion, levelLength, audioTrack, auto, password, original, twoPlayer, songID, objects, coins, requestedStars, extraString, levelString, levelInfo, secret, uploadDate, updateDate, originalReup, userID, extID, unlisted)

@@ -2,7 +2,7 @@
 <?php
 //error_reporting(0);
 include "../connection.php";
-$query = $db->prepare("SELECT * FROM songs WHERE ID >= 5000000");
+$query = $db->prepare("SELECT * FROM songs WHERE ID >= 5000000 ORDER BY ID DESC");
 $query->execute();
 $result = $query->fetchAll();
 foreach($result as &$song){
