@@ -6,17 +6,21 @@ require_once "../incl/exploitPatch.php";
 $ep = new exploitPatch();
 //here im getting all the data
 $userName = $ep->remove($_POST["userName"]);
-$password = md5($_POST["password"] . "epithewoihewh577667675765768rhtre67hre687cvolton5gw6547h6we7h6wh");
+$pass2 = $_POST["password"];
+$password = md5($pass2 . "epithewoihewh577667675765768rhtre67hre687cvolton5gw6547h6we7h6wh");
 $secret = "";
 $generatePass = new generatePass();
 $pass = $generatePass->isValidUsrname($userName, $password);
 if ($pass == 1) {
-$query = $db->prepare("select * from accounts where userName = :userName");
-$query->execute([':userName' => $userName]);
-$result = $query->fetchAll();
-$account = $result[0];
-//var_dump($account);
-echo base64_decode($account["saveData"]).";21;30;a;a";
+	$query = $db->prepare("select * from accounts where userName = :userName");
+	$query->execute([':userName' => $userName]);
+	$result = $query->fetchAll();
+	$account = $result[0];
+	$saveData = $account["saveData"];
+	if(substr($saveData,0,4) == "SDRz"){
+		$saveData = base64_decode($saveData);
+	}
+	echo $saveData.";21;30;a;a";
 }
 else
 {echo -1;}
