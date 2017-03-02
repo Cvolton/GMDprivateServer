@@ -226,7 +226,7 @@ if(substr($decodecomment,0,7) == '!rename'){
 		$GJPCheck = new GJPCheck();
 		$gjpresult = $GJPCheck->check($gjp,$id);
 		if($gjpresult == 1){
-			$name = explode(":", explode("#", $ep->remove(str_replace("!rename ", "", $decodecomment)))[0])[0])[0])[0];
+			$name = $ep->remove(str_replace("!rename ", "", $decodecomment));
 			$query = $db->prepare("UPDATE levels SET levelName=:levelName WHERE levelID=:levelID");
 			$query->execute([':levelID' => $levelID, ':levelName' => $name]);
 			$query = $db->prepare("INSERT INTO modactions (type, value, timestamp, account, value3) VALUES ('8', :value, :timestamp, :id, :levelID)");
