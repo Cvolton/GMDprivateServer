@@ -2,15 +2,17 @@
 //error_reporting(0);
 include "connection.php";
 require_once "incl/GJPCheck.php";
+require_once "incl/exploitPatch.php";
+$ep = new exploitPatch();
 //here im getting all the data
-$levelDesc = htmlspecialchars($_POST["levelDesc"],ENT_QUOTES);
-$levelID = htmlspecialchars($_POST["levelID"],ENT_QUOTES);
+$levelDesc = $ep->remove($_POST["levelDesc"]);
+$levelID = $ep->remove($_POST["levelID"]);
 if($_POST["udid"]){
-	$id = htmlspecialchars($_POST["udid"],ENT_QUOTES);
+	$id = $ep->remove($_POST["udid"]);
 	$registered = 0;
 }else{
-	$id = htmlspecialchars($_POST["accountID"],ENT_QUOTES);
-	$gjp = htmlspecialchars($_POST["gjp"],ENT_QUOTES);
+	$id = $ep->remove($_POST["accountID"]);
+	$gjp = $ep->remove($_POST["gjp"]);
 	$registered = 1;
 }
 $query = $db->prepare("SELECT userID FROM users WHERE extID = :id");
@@ -22,7 +24,7 @@ $userID = $userID["userID"];
 $query = $db->prepare("UPDATE levels SET levelDesc=:levelDesc WHERE levelID=:levelID AND userID=:userID");
 $GJPCheck = new GJPCheck();
 if($registered == 1){
-	$gjpresult = $GJPCheck->check($gjp,$id);	
+	$gjpresult = $GJPCheck->check($gjp,$id);
 }else{
 	$gjpresult = 1;
 }

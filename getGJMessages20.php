@@ -2,13 +2,15 @@
 //error_reporting(0);
 include "connection.php";
 require_once "incl/GJPCheck.php";
-$type = htmlspecialchars($_POST["type"],ENT_QUOTES);
-$getSent = htmlspecialchars($_POST["getSent"],ENT_QUOTES);
+require_once "incl/exploitPatch.php";
+$ep = new exploitPatch();
+$type = $ep->remove($_POST["type"]);
+$getSent = $ep->remove($_POST["getSent"]);
 $userid = 1337;
 //code begins
-$toAccountID = htmlspecialchars($_POST["accountID"],ENT_QUOTES);
-$gjp = htmlspecialchars($_POST["gjp"],ENT_QUOTES);
-$page = htmlspecialchars($_POST["page"],ENT_QUOTES);
+$toAccountID = $ep->remove($_POST["accountID"]);
+$gjp = $ep->remove($_POST["gjp"]);
+$page = $ep->remove($_POST["page"]);
 $offset = $page * 10;
 $GJPCheck = new GJPCheck();
 $gjpresult = $GJPCheck->check($gjp,$toAccountID);

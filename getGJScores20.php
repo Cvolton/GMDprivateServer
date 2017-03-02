@@ -1,13 +1,15 @@
 <?php
 //error_reporting(0);
 include "connection.php";
+require_once "incl/exploitPatch.php";
+$ep = new exploitPatch();
 if($_POST["accountID"]){
-	$accountID = htmlspecialchars($_POST["accountID"],ENT_QUOTES);
+	$accountID = $ep->remove($_POST["accountID"]);
 }else{
-	$accountID = htmlspecialchars($_POST["udid"],ENT_QUOTES);
+	$accountID = $ep->remove($_POST["udid"]);
 }
 
-$type = htmlspecialchars($_POST["type"],ENT_QUOTES);
+$type = $ep->remove($_POST["type"]);
 if($type == "top" OR $type == "creators" OR $type == "relative"){
 	if($type == "top"){
 	$query = "SELECT * FROM users WHERE isBanned = '0' ORDER BY stars DESC LIMIT 100";
@@ -23,7 +25,7 @@ if($type == "top" OR $type == "creators" OR $type == "relative"){
 	$user = $result[0];
 	$stars = $user["stars"];
 	if($_POST["count"]){
-		$count = htmlspecialchars($_POST["count"],ENT_QUOTES);
+		$count = $ep->remove($_POST["count"]);
 	}else{
 		$count = 50;
 	}

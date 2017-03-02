@@ -2,26 +2,28 @@
 //error_reporting(0);
 include "connection.php";
 require_once "incl/GJPCheck.php";
+require_once "incl/exploitPatch.php";
+$ep = new exploitPatch();
 $GJPCheck = new GJPCheck();
 $levelsstring = "";
 $songsstring  = "";
-$gameVersion = htmlspecialchars($_POST["gameVersion"],ENT_QUOTES);
+$gameVersion = $ep->remove($_POST["gameVersion"]);
 if($gameVersion == 20){
-	$binaryVersion = htmlspecialchars($_POST["binaryVersion"],ENT_QUOTES);
+	$binaryVersion = $ep->remove($_POST["binaryVersion"]);
 	if($binaryVersion > 27){
 		$gameVersion++;
 	}
 }
-$type = htmlspecialchars($_POST["type"],ENT_QUOTES);
-$gauntlet = htmlspecialchars($_POST["gauntlet"],ENT_QUOTES);
-$demonFilter = htmlspecialchars($_POST["demonFilter"],ENT_QUOTES);
+$type = $ep->remove($_POST["type"]);
+$gauntlet = $ep->remove($_POST["gauntlet"]);
+$demonFilter = $ep->remove($_POST["demonFilter"]);
 $colonmarker = 1337;
 $songcolonmarker = 1337;
 $userid = 1337;
 if($type != 10 AND $gauntlet == ""){
 	$query = "";
-	$len = htmlspecialchars($_POST["len"],ENT_QUOTES);
-	$diff = htmlspecialchars($_POST["diff"],ENT_QUOTES);
+	$len = $ep->remove($_POST["len"]);
+	$diff = $ep->remove($_POST["diff"]);
 	//ADDITIONAL PARAMETERS
 	$additional = "WHERE NOT unlisted = 1 ";
 	$additionalnowhere = "AND NOT unlisted = 1 ";
@@ -81,9 +83,9 @@ if($type != 10 AND $gauntlet == ""){
 		}
 	}
 	if($_POST["uncompleted"]==1){
-		$completedLevels = htmlspecialchars($_POST["completedLevels"],ENT_QUOTES);
-		$completedLevels = str_replace("(","", $completedLevels);
-		$completedLevels = str_replace(")","", $completedLevels);
+		$completedLevels = $ep->remove($_POST["completedLevels"]);
+		$completedLevels = explode("(",$completedLevels)[1];
+		$completedLevels = explode(")",$completedLevels)[0];
 		$completedLevels = $db->quote($completedLevels);
 		$completedLevels = str_replace("'","", $completedLevels);
 		$completedLevels = str_replace(",","' AND NOT levelID = '", $completedLevels);
@@ -96,7 +98,7 @@ if($type != 10 AND $gauntlet == ""){
 		}
 	}
 	if($_POST["onlyCompleted"]==1){
-		$completedLevels = htmlspecialchars($_POST["completedLevels"],ENT_QUOTES);
+		$completedLevels = $ep->remove($_POST["completedLevels"]);
 		$completedLevels = str_replace("(","", $completedLevels);
 		$completedLevels = str_replace(")","", $completedLevels);
 		$completedLevels = $db->quote($completedLevels);
@@ -112,7 +114,7 @@ if($type != 10 AND $gauntlet == ""){
 	}
 	if($_POST["song"]!=0){
 		if($_POST["customSong"]==0){
-			$song = htmlspecialchars($_POST["song"],ENT_QUOTES);
+			$song = $ep->remove($_POST["song"]);
 			$song = $db->quote($song);
 			$song = $song -1;
 			if($additional == ""){
@@ -123,7 +125,7 @@ if($type != 10 AND $gauntlet == ""){
 				$additionalnowhere = $additionalnowhere."AND audioTrack = '".$song."' AND songID <> 0 ";
 			}
 		}else{
-			$song = htmlspecialchars($_POST["song"],ENT_QUOTES);
+			$song = $ep->remove($_POST["song"]);
 			if($additional == ""){
 				$additional = "WHERE songID = '".$song."' ";
 				$additionalnowhere = "AND songID = '".$song."' ";
@@ -267,10 +269,10 @@ if($type != 10 AND $gauntlet == ""){
 		}
 	}
 	//TYPE DETECTION
-   $str = htmlspecialchars($_POST["str"], ENT_QUOTES);
+   $str = $ep->remove($_POST["str"]);
 		$str = $db->quote($str);
 	$str = str_replace("'","", $str);
-	$page = htmlspecialchars($_POST["page"],ENT_QUOTES);
+	$page = $ep->remove($_POST["page"]);
 	$lvlpagea = $page*10;
 	if($type==0 OR $type==15){ //most liked, changed to 15 in GDW for whatever reason
 		if($str!=""){
@@ -311,7 +313,7 @@ if($type != 10 AND $gauntlet == ""){
 		$query = "SELECT * FROM levels WHERE NOT starStars = 0 ".$additionalnowhere." ORDER BY uploadDate DESC LIMIT 10 OFFSET $lvlpagea";
 	}
 	if($type==12){ //FOLLOWED
-		$followed = htmlspecialchars($_POST["followed"],ENT_QUOTES);
+		$followed = $ep->remove($_POST["followed"]);
 		$followed = $db->quote($followed);
 		$followed = str_replace("'","", $followed);
 		$whereor = str_replace(",", " OR extID = ", $followed);
@@ -319,7 +321,7 @@ if($type != 10 AND $gauntlet == ""){
 	}
 	if($type==13){ //FRIENDS
 		$peoplearray = array();
-		$accountID = htmlspecialchars($_POST["accountID"], ENT_QUOTES);
+		$accountID = $ep->remove($_POST["accountID"]);
 		$query = "SELECT * FROM friendships WHERE person1 = :accountID OR person2 = :accountID"; //selecting friendships
 		$query = $db->prepare($query);
 		$query->execute([':accountID' => $accountID]);
@@ -336,7 +338,7 @@ if($type != 10 AND $gauntlet == ""){
 				}
 				$peoplearray[] = $person;
 			}
-			$gjp = htmlspecialchars($_POST["gjp"],ENT_QUOTES);
+			$gjp = $ep->remove($_POST["gjp"]);
 			$gjp = $db->quote($gjp);
 			$gjp = str_replace("'","", $gjp);
 			$gjpresult = $GJPCheck->check($gjp,$accountID);
@@ -416,7 +418,7 @@ if($type == 10 OR $gauntlet != ""){
 		$str = $actualgauntlet["level1"].",".$actualgauntlet["level2"].",".$actualgauntlet["level3"].",".$actualgauntlet["level4"].",".$actualgauntlet["level5"];
 	}
 	if($type == 10){
-		$str = $db->quote(htmlspecialchars($_POST["str"],ENT_QUOTES));
+		$str = $db->quote($ep->remove($_POST["str"]));
 		$str = str_replace("'","", $str);	
 	}
 	$arr = explode( ',', $str);

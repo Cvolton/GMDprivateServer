@@ -2,11 +2,13 @@
 //error_reporting(0);
 include "connection.php";
 require_once "incl/GJPCheck.php";
+require_once "incl/exploitPatch.php";
+$ep = new exploitPatch();
 //here im getting all the data
-$gjp = htmlspecialchars($_POST["gjp"],ENT_QUOTES);
-$accountID = htmlspecialchars($_POST["accountID"],ENT_QUOTES);
-$levelID = htmlspecialchars($_POST["levelID"],ENT_QUOTES);
-$percent = htmlspecialchars($_POST["percent"],ENT_QUOTES);
+$gjp = $ep->remove($_POST["gjp"]);
+$accountID = $ep->remove($_POST["accountID"]);
+$levelID = $ep->remove($_POST["levelID"]);
+$percent = $ep->remove($_POST["percent"]);
 $uploadDate = time();
 //UPDATING SCORE
 $query2 = $db->prepare("SELECT * FROM users WHERE extID = :accountID");

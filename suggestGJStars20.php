@@ -2,11 +2,13 @@
 //error_reporting(0);
 include "connection.php";
 require_once "incl/GJPCheck.php";
-$gjp = htmlspecialchars($_POST["gjp"],ENT_QUOTES);
-$stars = htmlspecialchars($_POST["stars"],ENT_QUOTES);
-$feature = htmlspecialchars($_POST["feature"],ENT_QUOTES);
-$levelID = htmlspecialchars($_POST["levelID"],ENT_QUOTES);
-$id = htmlspecialchars($_POST["accountID"],ENT_QUOTES);
+require_once "incl/exploitPatch.php";
+$ep = new exploitPatch();
+$gjp = $ep->remove($_POST["gjp"]);
+$stars = $ep->remove($_POST["stars"]);
+$feature = $ep->remove($_POST["feature"]);
+$levelID = $ep->remove($_POST["levelID"]);
+$id = $ep->remove($_POST["accountID"]);
 $query2 = $db->prepare("SELECT * FROM users WHERE extID = :id");
 $query2->execute([':id' => $id]);
 $result = $query2->fetchAll();

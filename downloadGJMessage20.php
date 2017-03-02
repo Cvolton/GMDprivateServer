@@ -1,10 +1,12 @@
 <?php
 include "connection.php";
 require_once "incl/GJPCheck.php";
-$accountID = htmlspecialchars($_POST["accountID"],ENT_QUOTES);
-$gjp = htmlspecialchars($_POST["gjp"],ENT_QUOTES);
-$messageID = htmlspecialchars($_POST["messageID"],ENT_QUOTES);
-$isSender = htmlspecialchars($_POST["isSender"],ENT_QUOTES);
+require_once "incl/exploitPatch.php";
+$ep = new exploitPatch();
+$accountID = $ep->remove($_POST["accountID"]);
+$gjp = $ep->remove($_POST["gjp"]);
+$messageID = $ep->remove($_POST["messageID"]);
+$isSender = $ep->remove($_POST["isSender"]);
 $query=$db->prepare("select * from messages where messageID = :messageID");
 $query->execute([':messageID' => $messageID]);
 $result2 = $query->fetchAll();

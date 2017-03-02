@@ -1,6 +1,8 @@
 <?php
 include "../connection.php";
-$playername = htmlspecialchars($_GET["player"],ENT_QUOTES);
+require_once "../incl/exploitPatch.php";
+$ep = new exploitPatch();
+$playername = $ep->remove($_GET["player"]);
 //checking who has blocked him
 $query = "SELECT * FROM users WHERE userName = :userName ORDER BY stars DESC LIMIT 1";
 $query = $db->prepare($query);

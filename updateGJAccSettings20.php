@@ -2,14 +2,16 @@
 //error_reporting(0);
 include "connection.php";
 require_once "incl/GJPCheck.php";
+require_once "incl/exploitPatch.php";
+$ep = new exploitPatch();
 //here im getting all the data
-$mS = htmlspecialchars($_POST["mS"],ENT_QUOTES);
-$frS = htmlspecialchars($_POST["frS"],ENT_QUOTES);
-$youtubeurl = htmlspecialchars($_POST["yt"],ENT_QUOTES);
-$gjp = htmlspecialchars($_POST["gjp"],ENT_QUOTES);
-$accountID = htmlspecialchars($_POST["accountID"],ENT_QUOTES);
-$twitter = htmlspecialchars($_POST["twitter"],ENT_QUOTES);
-$twitch = htmlspecialchars($_POST["twitch"],ENT_QUOTES);
+$mS = $ep->remove($_POST["mS"]);
+$frS = $ep->remove($_POST["frS"]);
+$youtubeurl = $ep->remove($_POST["yt"]);
+$gjp = $ep->remove($_POST["gjp"]);
+$accountID = $ep->remove($_POST["accountID"]);
+$twitter = $ep->remove($_POST["twitter"]);
+$twitch = $ep->remove($_POST["twitch"]);
 //query
 $query = $db->prepare("UPDATE accounts SET mS=:mS, frS=:frS, youtubeurl=:youtubeurl, twitter=:twitter, twitch=:twitch WHERE accountID=:accountID");
 $GJPCheck = new GJPCheck();

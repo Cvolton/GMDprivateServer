@@ -1,8 +1,10 @@
 <?php
 error_reporting(0);
 include "connection.php";
-$accountID = htmlspecialchars($_POST["accountID"],ENT_QUOTES);
-$type = htmlspecialchars($_POST["type"],ENT_QUOTES);
+require_once "incl/exploitPatch.php";
+$ep = new exploitPatch();
+$accountID = $ep->remove($_POST["accountID"]);
+$type = $ep->remove($_POST["type"]);
 $query = "SELECT * FROM users WHERE isBanned = '0' ORDER BY creatorPoints DESC LIMIT 100";
 $query = $db->prepare($query);
 $query->execute([':stars' => $stars, ':count' => $count]);

@@ -1,9 +1,11 @@
 <?php
 include "connection.php";
 require_once "incl/GJPCheck.php";
-$commentID = htmlspecialchars($_POST["commentID"],ENT_QUOTES);
-$accountID = htmlspecialchars($_POST["accountID"],ENT_QUOTES);
-$gjp = htmlspecialchars($_POST["gjp"],ENT_QUOTES);
+require_once "incl/exploitPatch.php";
+$ep = new exploitPatch();
+$commentID = $ep->remove($_POST["commentID"]);
+$accountID = $ep->remove($_POST["accountID"]);
+$gjp = $ep->remove($_POST["gjp"]);
 $GJPCheck = new GJPCheck();
 $gjpresult = $GJPCheck->check($gjp,$accountID);
 if($gjpresult == 1){

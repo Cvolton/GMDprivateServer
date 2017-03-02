@@ -2,81 +2,83 @@
 //error_reporting(0);
 include "connection.php";
 require_once "incl/GJPCheck.php";
+require_once "incl/exploitPatch.php";
+$ep = new exploitPatch();
 //here im getting all the data
-$gjp = explode(":", explode("|", htmlspecialchars($_POST["gjp"],ENT_QUOTES))[0])[0];
-$gameVersion = explode(":", explode("|", htmlspecialchars($_POST["gameVersion"],ENT_QUOTES))[0])[0];
-$binaryVersion = explode(":", explode("|", htmlspecialchars($_POST["binaryVersion"],ENT_QUOTES))[0])[0];
-$userName = explode(":", explode("|", htmlspecialchars($_POST["userName"],ENT_QUOTES))[0])[0];
+$gjp = $ep->remove($_POST["gjp"]);
+$gameVersion = $ep->remove($_POST["gameVersion"]);
+$binaryVersion = $ep->remove($_POST["binaryVersion"]);
+$userName = $ep->remove($_POST["userName"]);
 $userName = preg_replace("/[^A-Za-z0-9 ]/", '', $userName);
-$secret = explode(":", explode("|", htmlspecialchars($_POST["secret"],ENT_QUOTES))[0])[0];
+$secret = $ep->remove($_POST["secret"]);
 if($_POST["coins"] != ""){
-	$coins = explode(":", explode("|", htmlspecialchars($_POST["coins"],ENT_QUOTES))[0])[0];
+	$coins = $ep->remove($_POST["coins"]);
 }else{
 	$coins = -1;
 }
-$stars = explode(":", explode("|", htmlspecialchars($_POST["stars"],ENT_QUOTES))[0])[0];
-$demons = explode(":", explode("|", htmlspecialchars($_POST["demons"],ENT_QUOTES))[0])[0];
-$icon = explode(":", explode("|", htmlspecialchars($_POST["icon"],ENT_QUOTES))[0])[0];
-$color1 = explode(":", explode("|", htmlspecialchars($_POST["color1"],ENT_QUOTES))[0])[0];
-$color2 = explode(":", explode("|", htmlspecialchars($_POST["color2"],ENT_QUOTES))[0])[0];
+$stars = $ep->remove($_POST["stars"]);
+$demons = $ep->remove($_POST["demons"]);
+$icon = $ep->remove($_POST["icon"]);
+$color1 = $ep->remove($_POST["color1"]);
+$color2 = $ep->remove($_POST["color2"]);
 if($_POST["iconType"]){
-	$iconType = explode(":", explode("|", htmlspecialchars($_POST["iconType"],ENT_QUOTES))[0])[0];
+	$iconType = $ep->remove($_POST["iconType"]);
 }else{
 	$iconType = 0;
 }
-$userCoins = explode(":", explode("|", htmlspecialchars($_POST["userCoins"],ENT_QUOTES))[0])[0];
+$userCoins = $ep->remove($_POST["userCoins"]);
 if($userCoins == ""){
 	$userCoins = -1;
 }
-$special = explode(":", explode("|", htmlspecialchars($_POST["special"],ENT_QUOTES))[0])[0];
+$special = $ep->remove($_POST["special"]);
 if($special == ""){
 	$special = 0;
 }
-$accIcon = explode(":", explode("|", htmlspecialchars($_POST["accIcon"],ENT_QUOTES))[0])[0];
+$accIcon = $ep->remove($_POST["accIcon"]);
 if($accIcon == ""){
 	$accIcon = 0;
 }
-$accShip = explode(":", explode("|", htmlspecialchars($_POST["accShip"],ENT_QUOTES))[0])[0];
+$accShip = $ep->remove($_POST["accShip"]);
 if($accShip == ""){
 	$accShip = 0;
 }
-$accBall = explode(":", explode("|", htmlspecialchars($_POST["accBall"],ENT_QUOTES))[0])[0];
+$accBall = $ep->remove($_POST["accBall"]);
 if($accBall == ""){
 	$accBall = 0;
 }
-$accBird = explode(":", explode("|", htmlspecialchars($_POST["accBird"],ENT_QUOTES))[0])[0];
+$accBird = $ep->remove($_POST["accBird"]);
 if($accBird == ""){
 	$accBird = 0;
 }
-$accDart = explode(":", explode("|", htmlspecialchars($_POST["accDart"],ENT_QUOTES))[0])[0];
+$accDart = $ep->remove($_POST["accDart"]);
 if($accDart == ""){
 	$accDart = 0;
 }
-$accRobot = explode(":", explode("|", htmlspecialchars($_POST["accRobot"],ENT_QUOTES))[0])[0];
+$accRobot = $ep->remove($_POST["accRobot"]);
 if($accRobot == ""){
 	$accRobot = 0;
 }
-$accGlow = explode(":", explode("|", htmlspecialchars($_POST["accGlow"],ENT_QUOTES))[0])[0];
+$accGlow = $ep->remove($_POST["accGlow"]);
 if($accGlow == ""){
 	$accGlow = 0;
 }
-$accSpider = explode(":", explode("|", htmlspecialchars($_POST["accSpider"],ENT_QUOTES))[0])[0];
+$accSpider = $ep->remove($_POST["accSpider"]);
 if($accSpider == ""){
 	$accSpider = 0;
 }
-$accExplosion = explode(":", explode("|", htmlspecialchars($_POST["accExplosion"],ENT_QUOTES))[0])[0];
+$accExplosion = $ep->remove($_POST["accExplosion"]);
 if($accExplosion == ""){
 	$accExplosion = 0;
 }
-$diamonds = explode(":", explode("|", htmlspecialchars($_POST["diamonds"],ENT_QUOTES))[0])[0];
+$diamonds = $ep->remove($_POST["diamonds"]);
 if($diamonds == ""){
 	$diamonds = -1;
 }
 //continuing the accounts system
 $accountID = "";
-$id = explode(":", explode("|", htmlspecialchars($_POST["udid"],ENT_QUOTES))[0])[0];
+$id = $ep->remove($_POST["udid"]);
 if($_POST["accountID"]!="" AND $_POST["accountID"]!="0"){
-	$id = explode(":", explode("|", htmlspecialchars($_POST["accountID"],ENT_QUOTES))[0])[0];
+	$id = $ep->remove($_POST["accountID"]);
 	$register = 1;
 }else{
 	$register = 0;

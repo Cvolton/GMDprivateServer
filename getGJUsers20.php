@@ -1,7 +1,9 @@
 <?php
 include "connection.php";
-$str = htmlspecialchars($_POST["str"], ENT_QUOTES);
-	$page = htmlspecialchars($_POST["page"],ENT_QUOTES);
+require_once "incl/exploitPatch.php";
+$ep = new exploitPatch();
+$str = $ep->remove($_POST["str"]);
+	$page = $ep->remove($_POST["page"]);
 	$usrpagea = $page*10;
 	$query = "SELECT * FROM users WHERE userName LIKE CONCAT('%', :str, '%') ORDER BY stars DESC LIMIT $usrpagea,10";
 	$query = $db->prepare($query);

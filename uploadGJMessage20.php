@@ -2,14 +2,16 @@
 //error_reporting(0);
 include "connection.php";
 require_once "incl/GJPCheck.php";
-$gjp =  htmlspecialchars($_POST["gjp"],ENT_QUOTES);
-$gameVersion =  htmlspecialchars($_POST["gameVersion"],ENT_QUOTES);
-$binaryVersion =  htmlspecialchars($_POST["binaryVersion"],ENT_QUOTES);
-$secret =  htmlspecialchars($_POST["secret"],ENT_QUOTES);
-$subject =  htmlspecialchars($_POST["subject"],ENT_QUOTES);
-$toAccountID =  htmlspecialchars($_POST["toAccountID"],ENT_QUOTES);
-$body =  htmlspecialchars($_POST["body"],ENT_QUOTES);
-$accID =  htmlspecialchars($_POST["accountID"],ENT_QUOTES);
+require_once "incl/exploitPatch.php";
+$ep = new exploitPatch();
+$gjp =  $ep->remove($_POST["gjp"]);
+$gameVersion =  $ep->remove($_POST["gameVersion"]);
+$binaryVersion =  $ep->remove($_POST["binaryVersion"]);
+$secret =  $ep->remove($_POST["secret"]);
+$subject =  $ep->remove($_POST["subject"]);
+$toAccountID =  $ep->remove($_POST["toAccountID"]);
+$body =  $ep->remove($_POST["body"]);
+$accID =  $ep->remove($_POST["accountID"]);
 
 $query3 = "SELECT * FROM users WHERE extID = :accID ORDER BY userName DESC";
 $query3 = $db->prepare($query3);
@@ -20,7 +22,7 @@ $userName = $result69["userName"];
 
 //continuing the accounts system
 $accountID = "";
-$id = htmlspecialchars($_POST["accountID"],ENT_QUOTES);
+$id = $ep->remove($_POST["accountID"]);
 $register = 1;
 $query2 = $db->prepare("SELECT * FROM users WHERE extID = :id");
 $query2->execute([':id' => $id]);

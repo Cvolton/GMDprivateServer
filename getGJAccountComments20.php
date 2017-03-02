@@ -1,14 +1,16 @@
 <?php
 error_reporting(0);
 include "connection.php";
+require_once "incl/exploitPatch.php";
+$ep = new exploitPatch();
 $levelsstring = "";
 $songsstring  = "";
-$type = htmlspecialchars($_POST["type"],ENT_QUOTES);
+$type = $ep->remove($_POST["type"]);
 $colonmarker = 1337;
 $songcolonmarker = 1337;
 $userid = 1337;
 //here da code begins
-$accountid = htmlspecialchars($_POST["accountID"],ENT_QUOTES);
+$accountid = $ep->remove($_POST["accountID"]);
 $query2 = $db->prepare("SELECT * FROM users WHERE extID = :accountid");
 $query2->execute([':accountid' => $accountid]);
 $result = $query2->fetchAll();
@@ -26,7 +28,7 @@ $query = "SELECT * FROM acccomments WHERE userID = :userID ORDER BY timeStamp DE
 $query = $db->prepare($query);
 $query->execute([':userID' => $userID]);
 $result = $query->fetchAll();
-$page = htmlspecialchars($_POST["page"],ENT_QUOTES);
+$page = $ep->remove($_POST["page"]);
 for ($x = 0; $x < 9; $x++) {
 	$commentpage = $page*10;
 	$comment1 = $result[$commentpage+$x];

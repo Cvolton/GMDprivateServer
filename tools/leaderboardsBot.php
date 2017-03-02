@@ -1,8 +1,10 @@
 <?php
 //error_reporting(0);
 include "../connection.php";
-$type = strtolower(htmlspecialchars($_GET["type"],ENT_QUOTES));
-$page = htmlspecialchars($_GET["page"],ENT_QUOTES);
+require_once "../incl/exploitPatch.php";
+$ep = new exploitPatch();
+$type = strtolower($ep->remove($_GET["type"]));
+$page = $ep->remove($_GET["page"]);
 $page = $db->quote($page);
 $page = str_replace("'", "", $page);
 if($page == ""){

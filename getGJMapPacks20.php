@@ -1,7 +1,9 @@
 <?php
 //error_reporting(0);
 include "connection.php";
-$page = htmlspecialchars($_POST["page"],ENT_QUOTES);
+require_once "incl/exploitPatch.php";
+$ep = new exploitPatch();
+$page = $ep->remove($_POST["page"]);
 $packpage = $page*10;
 $packpageend = $packpage + 10;
 $query = $db->prepare("SELECT * FROM `mappacks` ORDER BY `ID` ASC LIMIT $packpage,$packpageend");

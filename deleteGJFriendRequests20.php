@@ -1,10 +1,12 @@
 <?php
 include "connection.php";
 require_once "incl/GJPCheck.php";
-$gjp = htmlspecialchars($_POST["gjp"],ENT_QUOTES);
-$isSender = htmlspecialchars($_POST["isSender"],ENT_QUOTES);
-$accountID = htmlspecialchars($_POST["accountID"],ENT_QUOTES);
-$targetAccountID = htmlspecialchars($_POST["targetAccountID"],ENT_QUOTES);
+require_once "incl/exploitPatch.php";
+$ep = new exploitPatch();
+$gjp = $ep->remove($_POST["gjp"]);
+$isSender = $ep->remove($_POST["isSender"]);
+$accountID = $ep->remove($_POST["accountID"]);
+$targetAccountID = $ep->remove($_POST["targetAccountID"]);
 //REMOVING THE REQUEST
 if($isSender == 1){
 		$query = $db->prepare("DELETE from friendreqs WHERE accountID=:accountID AND toAccountID=:targetAccountID LIMIT 1");

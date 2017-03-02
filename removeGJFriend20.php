@@ -1,9 +1,11 @@
 <?php
 include "connection.php";
 require_once "incl/GJPCheck.php";
-$accountID = htmlspecialchars($_POST["accountID"],ENT_QUOTES);
-$gjp = htmlspecialchars($_POST["gjp"],ENT_QUOTES);
-$targetAccountID = htmlspecialchars($_POST["targetAccountID"],ENT_QUOTES);
+require_once "incl/exploitPatch.php";
+$ep = new exploitPatch();
+$accountID = $ep->remove($_POST["accountID"]);
+$gjp = $ep->remove($_POST["gjp"]);
+$targetAccountID = $ep->remove($_POST["targetAccountID"]);
 // REMOVING FOR USER 1
 $query = "DELETE FROM friendships WHERE person1 = :accountID AND person2 = :targetAccountID";
 $query = $db->prepare($query);

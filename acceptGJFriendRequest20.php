@@ -1,10 +1,12 @@
 <?php
 include "connection.php";
 require "incl/GJPCheck.php";
-$gjp = htmlspecialchars($_POST["gjp"],ENT_QUOTES);
-$requestID = htmlspecialchars($_POST["requestID"],ENT_QUOTES);
-$accountID = htmlspecialchars($_POST["accountID"],ENT_QUOTES);
-$targetAccountID = htmlspecialchars($_POST["targetAccountID"],ENT_QUOTES);
+require_once "incl/exploitPatch.php";
+$ep = new exploitPatch();
+$gjp = $ep->remove($_POST["gjp"]);
+$requestID = $ep->remove($_POST["requestID"]);
+$accountID = $ep->remove($_POST["accountID"]);
+$targetAccountID = $ep->remove($_POST["targetAccountID"]);
 $GJPCheck = new GJPCheck();
 $gjpresult = $GJPCheck->check($gjp,$accountID);
 if($gjpresult == 1){

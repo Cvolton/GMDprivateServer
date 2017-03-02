@@ -1,10 +1,12 @@
 <?php
 include "../connection.php";
 require "../incl/generatePass.php";
+require_once "../incl/exploitPatch.php";
+$ep = new exploitPatch();
 //here im getting all the data
-$userName = htmlspecialchars($_POST["userName"],ENT_QUOTES);
+$userName = $ep->remove($_POST["userName"]);
 $password = md5($_POST["password"] . "epithewoihewh577667675765768rhtre67hre687cvolton5gw6547h6we7h6wh");
-$saveData = base64_encode(htmlspecialchars($_POST["saveData"],ENT_QUOTES));
+$saveData = base64_encode($ep->remove($_POST["saveData"]));
 $generatePass = new generatePass();
 $pass = $generatePass->isValidUsrname($userName, $password);
 if ($pass == 1) {

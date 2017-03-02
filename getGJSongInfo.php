@@ -2,7 +2,9 @@
 include "connection.php";
 require_once "incl/songReup.php";
 $songReup = new songReup();
-$songid = htmlspecialchars($_POST["songID"],ENT_QUOTES);
+require_once "incl/exploitPatch.php";
+$ep = new exploitPatch();
+$songid = $ep->remove($_POST["songID"]);
 $query3=$db->prepare("select * from songs where ID = :songid");
 $query3->execute([':songid' => $songid]);
 if($query3->rowCount() == 0) {

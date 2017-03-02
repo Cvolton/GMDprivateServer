@@ -3,21 +3,23 @@
 include "connection.php";
 require_once "incl/XORCipher.php";
 require_once "incl/GJPCheck.php";
-$gjp = explode("|", explode("~", htmlspecialchars($_POST["gjp"],ENT_QUOTES))[0])[0];
-$userName = explode("|", explode("~", htmlspecialchars($_POST["userName"],ENT_QUOTES))[0])[0];
-$comment = explode("|", explode("~", htmlspecialchars($_POST["comment"],ENT_QUOTES))[0])[0];
+require_once "incl/exploitPatch.php";
+$ep = new exploitPatch();
+$gjp = $ep->remove($_POST["gjp"]);
+$userName = $ep->remove($_POST["userName"]);
+$comment = $ep->remove($_POST["comment"]);
 $gameversion = $_POST["gameVersion"];
 if($gameversion < 20){
 	$comment = base64_encode($comment);
 }
-$levelID = explode("|", explode("~", htmlspecialchars($_POST["levelID"],ENT_QUOTES))[0])[0];
-$percent = explode("|", explode("~", htmlspecialchars($_POST["percent"],ENT_QUOTES))[0])[0];
+$levelID = $ep->remove($_POST["levelID"]);
+$percent = $ep->remove($_POST["percent"]);
 if($percent == ""){
 	$percent = 0;
 }
-$id = htmlspecialchars($_POST["udid"],ENT_QUOTES);
+$id = $ep->remove($_POST["udid"]);
 if($_POST["accountID"]!="" AND $_POST["accountID"]!="0"){
-	$id = htmlspecialchars($_POST["accountID"],ENT_QUOTES);
+	$id = $ep->remove($_POST["accountID"]);
 	$register = 1;
 }else{
 	$register = 0;
@@ -224,7 +226,7 @@ if(substr($decodecomment,0,7) == '!rename'){
 		$GJPCheck = new GJPCheck();
 		$gjpresult = $GJPCheck->check($gjp,$id);
 		if($gjpresult == 1){
-			$name = explode(":", explode("#", explode("|", explode("~", htmlspecialchars(str_replace("!rename ", "", $decodecomment),ENT_QUOTES))[0])[0])[0])[0];
+			$name = explode(":", explode("#", $ep->remove(str_replace("!rename ", "", $decodecomment)))[0])[0])[0])[0];
 			$query = $db->prepare("UPDATE levels SET levelName=:levelName WHERE levelID=:levelID");
 			$query->execute([':levelID' => $levelID, ':levelName' => $name]);
 			$query = $db->prepare("INSERT INTO modactions (type, value, timestamp, account, value3) VALUES ('8', :value, :timestamp, :id, :levelID)");
@@ -245,7 +247,7 @@ if(substr($decodecomment,0,5) == '!pass'){
 		$GJPCheck = new GJPCheck();
 		$gjpresult = $GJPCheck->check($gjp,$id);
 		if($gjpresult == 1){
-			$pass = explode("|", explode("~", htmlspecialchars(str_replace("!pass ", "", $decodecomment),ENT_QUOTES))[0])[0];
+			$pass = $ep->remove(str_replace("!pass ", "", $decodecomment));
 			if(is_numeric($pass)){
 				$pass = sprintf("%06d", $pass);
 				if($pass == "000000"){
@@ -272,7 +274,7 @@ if(substr($decodecomment,0,12) == '!description'){
 		$GJPCheck = new GJPCheck();
 		$gjpresult = $GJPCheck->check($gjp,$id);
 		if($gjpresult == 1){
-			$desc = base64_encode(htmlspecialchars(str_replace("!description ", "", $decodecomment),ENT_QUOTES));
+			$desc = base64_encode($ep->remove(str_replace("!description ", "", $decodecomment)));
 			$query = $db->prepare("UPDATE levels SET levelDesc=:desc WHERE levelID=:levelID");
 			$query->execute([':levelID' => $levelID, ':desc' => $desc]);
 			$query = $db->prepare("INSERT INTO modactions (type, value, timestamp, account, value3) VALUES ('9', :value, :timestamp, :id, :levelID)");

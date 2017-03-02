@@ -1,9 +1,11 @@
 <?php
 include "../connection.php";
 require "../incl/generatePass.php";
+require_once "../incl/exploitPatch.php";
+$ep = new exploitPatch();
 //here im getting all the data
-$userName = htmlspecialchars($_POST["userName"],ENT_QUOTES);
-$newusr = htmlspecialchars($_POST["newusr"],ENT_QUOTES);
+$userName = $ep->remove($_POST["userName"]);
+$newusr = $ep->remove($_POST["newusr"]);
 $password = md5($_POST["password"] . "epithewoihewh577667675765768rhtre67hre687cvolton5gw6547h6we7h6wh");
 if($userName != "" AND $newusr != "" AND $password != ""){
 	$generatePass = new generatePass();

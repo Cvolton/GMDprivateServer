@@ -1,20 +1,22 @@
 <?php
 //error_reporting(0);
 include "connection.php";
+require_once "incl/exploitPatch.php";
+$ep = new exploitPatch();
 $levelsstring = "";
 $songsstring  = "";
-$gameVersion = htmlspecialchars($_POST["gameVersion"],ENT_QUOTES);
-$type = htmlspecialchars($_POST["type"],ENT_QUOTES);
+$gameVersion = $ep->remove($_POST["gameVersion"]);
+$type = $ep->remove($_POST["type"]);
 $colonmarker = 1337;
 $songcolonmarker = 1337;
 $userid = 1337;
 //here da code begins
-$levelID = htmlspecialchars($_POST["levelID"],ENT_QUOTES);
+$levelID = $ep->remove($_POST["levelID"]);
 $query = "SELECT * FROM comments WHERE levelID = :levelID ORDER BY commentID DESC";
 $query = $db->prepare($query);
 $query->execute([':levelID' => $levelID]);
 $result = $query->fetchAll();
-$page = htmlspecialchars($_POST["page"],ENT_QUOTES);
+$page = $ep->remove($_POST["page"]);
 for ($x = 0; $x < 9; $x++) {
 	$commentpage = $page*10;
 	$comment1 = $result[$commentpage+$x];

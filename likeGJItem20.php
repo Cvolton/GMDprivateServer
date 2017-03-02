@@ -1,8 +1,10 @@
 <?php
 include "connection.php";
+require_once "incl/exploitPatch.php";
+$ep = new exploitPatch();
 if($_POST["type"]=1){
 	if($_POST["like"]==1){
-	$itemID = htmlspecialchars($_POST["itemID"],ENT_QUOTES);
+	$itemID = $ep->remove($_POST["itemID"]);
 	$query=$db->prepare("select * from levels where levelID = :itemID");
 	$query->execute([':itemID' => $itemID]);
 	$result2 = $query->fetchAll();
@@ -25,7 +27,7 @@ if($_POST["type"]=1){
 }
 if($_POST["type"]=2){
 	if($_POST["like"]==1){
-	$itemID = htmlspecialchars($_POST["itemID"],ENT_QUOTES);
+	$itemID = $ep->remove($_POST["itemID"]);
 	$query=$db->prepare("select * from comments where commentID = :itemID");
 	$query->execute([':itemID' => $itemID]);
 	$result2 = $query->fetchAll();
@@ -48,7 +50,7 @@ if($_POST["type"]=2){
 }
 if($_POST["type"]=3){
 	if($_POST["like"]==1){
-	$itemID = htmlspecialchars($_POST["itemID"],ENT_QUOTES);
+	$itemID = $ep->remove($_POST["itemID"]);
 	$query=$db->prepare("select * from acccomments where commentID = :itemID");
 	$query->execute([':itemID' => $itemID]);
 	$result2 = $query->fetchAll();

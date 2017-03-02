@@ -1,9 +1,11 @@
 <?php
 include "connection.php";
 require "incl/XORCipher.php";
+require_once "incl/exploitPatch.php";
+$ep = new exploitPatch();
 //$levelID = 2632;
-$gameVersion = htmlspecialchars($_POST["gameVersion"],ENT_QUOTES);
-$levelID = htmlspecialchars($_POST["levelID"],ENT_QUOTES);
+$gameVersion = $ep->remove($_POST["gameVersion"]);
+$levelID = $ep->remove($_POST["levelID"]);
 $feaID = 0;
 if(!is_numeric($levelID)){
 	echo -1;

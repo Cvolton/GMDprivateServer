@@ -1,10 +1,12 @@
 <?php
 include "connection.php";
 require_once "incl/GJPCheck.php";
+require_once "incl/exploitPatch.php";
+$ep = new exploitPatch();
 $GJPCheck = new GJPCheck();
-$accountID = htmlspecialchars($_POST["accountID"],ENT_QUOTES);
-$gjp = htmlspecialchars($_POST["gjp"],ENT_QUOTES);
-$type = htmlspecialchars($_POST["type"],ENT_QUOTES);
+$accountID = $ep->remove($_POST["accountID"]);
+$gjp = $ep->remove($_POST["gjp"]);
+$type = $ep->remove($_POST["type"]);
 if($type == 0){
 	$query = "SELECT * FROM friendships WHERE person1 = :accountID OR person2 = :accountID";
 }else if($type==1){

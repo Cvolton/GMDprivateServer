@@ -1,8 +1,10 @@
 <?php
 //error_reporting(0);
 include "connection.php";
+require_once "incl/exploitPatch.php";
+$ep = new exploitPatch();
 if($_POST["levelID"]){
-	$levelID =  htmlspecialchars($_POST["levelID"],ENT_QUOTES);
+	$levelID =  $ep->remove($_POST["levelID"]);
 	if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
 		$ip = $_SERVER['HTTP_CLIENT_IP'];
 	} elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {

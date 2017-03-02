@@ -1,10 +1,12 @@
 <?php
 include "connection.php";
+require_once "incl/exploitPatch.php";
+$ep = new exploitPatch();
 $levelsstring = "";
 $songsstring  = "";
-$getSent = htmlspecialchars($_POST["getSent"],ENT_QUOTES);
-$accountID = htmlspecialchars($_POST["accountID"],ENT_QUOTES);
-$page = htmlspecialchars($_POST["page"],ENT_QUOTES);
+$getSent = $ep->remove($_POST["getSent"]);
+$accountID = $ep->remove($_POST["accountID"]);
+$page = $ep->remove($_POST["page"]);
 if($getSent == 0){
 	$query = "SELECT * FROM friendreqs WHERE toAccountID = :accountID";
 }else if($getSent == 1){

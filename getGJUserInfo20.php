@@ -1,7 +1,9 @@
 <?php
 include "connection.php";
-$me = htmlspecialchars($_POST["accountID"],ENT_QUOTES);
-$extid = htmlspecialchars($_POST["targetAccountID"],ENT_QUOTES);
+require_once "incl/exploitPatch.php";
+$ep = new exploitPatch();
+$me = $ep->remove($_POST["accountID"]);
+$extid = $ep->remove($_POST["targetAccountID"]);
 //checking who has blocked him
 $query = "SELECT * FROM blocks WHERE person1 = :extid AND person2 = :me";
 $query = $db->prepare($query);

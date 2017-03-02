@@ -2,10 +2,12 @@
 //error_reporting(0);
 include "connection.php";
 require_once "incl/GJPCheck.php";
+require_once "incl/exploitPatch.php";
+$ep = new exploitPatch();
 //here im getting all the data
-$accountID = htmlspecialchars($_POST["accountID"],ENT_QUOTES);
-$gjp = htmlspecialchars($_POST["gjp"],ENT_QUOTES);
-$targetAccountID = htmlspecialchars($_POST["targetAccountID"],ENT_QUOTES);
+$accountID = $ep->remove($_POST["accountID"]);
+$gjp = $ep->remove($_POST["gjp"]);
+$targetAccountID = $ep->remove($_POST["targetAccountID"]);
 if($accountID != "" AND $targetAccountID != ""){
 	//GJPCheck
 	$GJPCheck = new GJPCheck();
