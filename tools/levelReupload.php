@@ -10,7 +10,7 @@ if($_POST["levelid"]!=""){
 	$levelID = $_POST["levelid"];
 	$levelID = preg_replace("/[^0-9]/", '', $levelID);
 	$url = $_POST["server"];
-	$post = ['gameVersion' => '21', 'binaryVersion' => '33', 'gdw' => '0', 'levelID' => $levelID, 'secret' => 'Wmfd2893gb7'];
+	$post = ['gameVersion' => '21', 'binaryVersion' => '33', 'gdw' => '0', 'levelID' => $levelID, 'secret' => 'Wmfd2893gb7', 'inc' => '1', 'extras' => '0'];
 	$ch = curl_init($url);
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 	curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
@@ -20,10 +20,11 @@ if($_POST["levelid"]!=""){
 		if($result==""){
 			echo "An error has occured while connecting to the server.";
 		}else if($result=="-1"){
-			echo "This level doesn't exist.<br>$result";
+			echo "This level doesn't exist.";
 		}else{
 			echo "RobTop doesn't like you or something...";
 		}
+		echo "<br>Error code: $result";
 	}else{
 		$resultarray = explode(':', $result);
 		//echo $result;

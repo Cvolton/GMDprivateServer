@@ -1,8 +1,6 @@
 <?php
 //error_reporting(0);
 include "../connection.php";
-require_once "../incl/exploitPatch.php";
-$ep = new exploitPatch();
 $api_key = "dc467dd431fc48eb0244b0aead929ccd";
 if($_POST["songlink"]){
 $song = str_replace("www.dropbox.com","dl.dropboxusercontent.com",$_POST["songlink"]);
@@ -11,7 +9,7 @@ if (filter_var($song, FILTER_VALIDATE_URL) == TRUE) {
 		$songinfo = file_get_contents("https://api.soundcloud.com/resolve.json?url=".$song."&client_id=".$api_key);
 		$array = json_decode($songinfo);
 		if($array->downloadable == true){
-			$song = $ep->remove($array->download_url . "?client_id=".$api_key);
+			$song = trim($array->download_url . "?client_id=".$api_key);
 			$name = $array->title;
 			$author = $array->user->username;
 			$author = preg_replace("/[^A-Za-z0-9 ]/", '', $author);
@@ -22,7 +20,7 @@ if (filter_var($song, FILTER_VALIDATE_URL) == TRUE) {
 	}else{
 		$song = str_replace("?dl=0","",$song);
 		$song = str_replace("?dl=1","",$song);
-		$song = $ep->remove($song);
+		$song = trim($song);
 		$name = str_replace(".mp3", "", basename($song));
 		$name = str_replace(".webm", "", $name);
 		$name = str_replace(".mp4", "", $name);
