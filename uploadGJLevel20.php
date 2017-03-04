@@ -20,7 +20,7 @@ $levelName = preg_replace("/[^A-Za-z0-9 ]/", '', $levelName);
 $levelDesc = $ep->remove($_POST["levelDesc"]);
 if($gameVersion < 20){
 	$levelDesc = base64_encode($levelDesc);
-}jm
+}
 $levelVersion = $ep->remove($_POST["levelVersion"]);
 $levelLength = $ep->remove($_POST["levelLength"]);
 $audioTrack = $ep->remove($_POST["audioTrack"]);
