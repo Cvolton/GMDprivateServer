@@ -1,5 +1,5 @@
 <h1>Account management tools:</h1>
-<a href="changeUsername.php">Change Username</a>
+<a href="changeUsername.php">Change Username</a><br>
 <a href="changePassword.php">Change Password</a>
 <h1>Server tools:</h1>
 <a href="../tools/levelReupload.php">Level Reupload</a><br>
