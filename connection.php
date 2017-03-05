@@ -1,12 +1,14 @@
 <?php
 header('Content-Type: text/html; charset=utf-8');
 $servername = "localhost";
-$username = "root";
+$username = "cvoltongdps";
 $password = "";
-$dbname = "geometrydash";
+$dbname = "my_cvoltongdps";
 
 try {
-    $db = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+    $db = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password, array(
+    PDO::ATTR_PERSISTENT => true
+));
     // set the PDO error mode to exception
     $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     }
