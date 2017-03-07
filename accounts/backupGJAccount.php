@@ -16,6 +16,8 @@ if ($pass == 1) {
 	$saveData = str_replace("_","/",$saveData);
 	$saveData = base64_decode($saveData);
 	$saveData = gzdecode($saveData);
+	$orbs = explode("</s><k>14</k><s>",$saveData)[1];
+	$orbs = explode("</s>",$orbs)[0];
 	$saveData = str_replace($pass2, "not the actual password", $saveData); //replacing pass
 	$saveData = gzencode($saveData); //encoding back
 	$saveData = base64_encode($saveData);
@@ -24,6 +26,13 @@ if ($pass == 1) {
 	$saveData = $saveData . ";" . $saveDataArr[1]; //merging ccgamemanager and cclocallevels
 	$query = $db->prepare("UPDATE `accounts` SET `saveData` = :saveData WHERE userName = :userName");
 	$query->execute([':saveData' => $saveData, ':userName' => $userName]);
+	$query = $db->prepare("SELECT extID FROM users WHERE userName = :userName LIMIT 1");
+	$query->execute([':userName' => $userName]);
+	$result = $query->fetchAll();
+	$result = $result[0];
+	$extID = $result["extID"];
+	$query = $db->prepare("UPDATE `users` SET `orbs` = :orbs WHERE extID = :extID");
+	$query->execute([':orbs' => $orbs, ':extID' => $extID]);
 	echo "1";
 }
 else

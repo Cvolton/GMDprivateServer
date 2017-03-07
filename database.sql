@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Mar 03, 2017 at 10:40 PM
+-- Generation Time: Mar 07, 2017 at 06:18 PM
 -- Server version: 5.6.33-log
 -- PHP Version: 5.3.10
 
@@ -35,7 +35,7 @@ CREATE TABLE IF NOT EXISTS `acccomments` (
   `timestamp` int(11) NOT NULL,
   `likes` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`commentID`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1338 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1462 ;
 
 -- --------------------------------------------------------
 
@@ -61,8 +61,30 @@ CREATE TABLE IF NOT EXISTS `accounts` (
   `twitter` varchar(255) NOT NULL DEFAULT '',
   `twitch` varchar(255) NOT NULL DEFAULT '',
   `salt` varchar(255) NOT NULL,
+  `registerDate` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`accountID`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1124 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1216 ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `actions`
+--
+
+CREATE TABLE IF NOT EXISTS `actions` (
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
+  `type` int(11) NOT NULL DEFAULT '0',
+  `value` varchar(255) NOT NULL DEFAULT '0',
+  `timestamp` int(11) NOT NULL DEFAULT '0',
+  `value2` varchar(255) NOT NULL DEFAULT '0',
+  `value3` int(11) NOT NULL DEFAULT '0',
+  `value4` int(11) NOT NULL DEFAULT '0',
+  `value5` int(11) NOT NULL DEFAULT '0',
+  `value6` int(11) NOT NULL DEFAULT '0',
+  `account` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`ID`),
+  UNIQUE KEY `ID` (`ID`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=503 ;
 
 -- --------------------------------------------------------
 
@@ -88,7 +110,7 @@ CREATE TABLE IF NOT EXISTS `blocks` (
   `person2` int(11) NOT NULL,
   PRIMARY KEY (`ID`),
   UNIQUE KEY `ID` (`ID`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=8 ;
 
 -- --------------------------------------------------------
 
@@ -107,7 +129,7 @@ CREATE TABLE IF NOT EXISTS `comments` (
   `likes` int(11) NOT NULL DEFAULT '0',
   `percent` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`commentID`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6022 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6598 ;
 
 -- --------------------------------------------------------
 
@@ -120,7 +142,7 @@ CREATE TABLE IF NOT EXISTS `dailyfeatures` (
   `levelID` int(11) NOT NULL,
   `timestamp` int(11) NOT NULL,
   PRIMARY KEY (`feaID`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=115 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=116 ;
 
 -- --------------------------------------------------------
 
@@ -135,7 +157,7 @@ CREATE TABLE IF NOT EXISTS `friendreqs` (
   `uploadDate` int(11) NOT NULL,
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`ID`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1186 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1329 ;
 
 -- --------------------------------------------------------
 
@@ -150,7 +172,7 @@ CREATE TABLE IF NOT EXISTS `friendships` (
   `isNew1` int(11) NOT NULL,
   `isNew2` int(11) NOT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=775 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=897 ;
 
 -- --------------------------------------------------------
 
@@ -187,11 +209,11 @@ CREATE TABLE IF NOT EXISTS `levels` (
   `auto` int(11) NOT NULL,
   `password` int(11) NOT NULL,
   `original` int(11) NOT NULL,
-  `twoPlayer` int(11) NOT NULL,
-  `songID` int(11) NOT NULL,
-  `objects` int(11) NOT NULL,
-  `coins` int(11) NOT NULL,
-  `requestedStars` int(11) NOT NULL,
+  `twoPlayer` int(11) NOT NULL DEFAULT '0',
+  `songID` int(11) NOT NULL DEFAULT '0',
+  `objects` int(11) NOT NULL DEFAULT '0',
+  `coins` int(11) NOT NULL DEFAULT '0',
+  `requestedStars` int(11) NOT NULL DEFAULT '0',
   `extraString` text NOT NULL,
   `levelString` longtext NOT NULL,
   `levelInfo` text NOT NULL,
@@ -215,7 +237,7 @@ CREATE TABLE IF NOT EXISTS `levels` (
   `originalReup` int(11) NOT NULL DEFAULT '0' COMMENT 'used for levelReupload.php',
   `hostname` varchar(255) NOT NULL,
   PRIMARY KEY (`levelID`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6698 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=7052 ;
 
 -- --------------------------------------------------------
 
@@ -230,7 +252,22 @@ CREATE TABLE IF NOT EXISTS `levelscores` (
   `percent` int(11) NOT NULL,
   `uploadDate` int(11) NOT NULL,
   PRIMARY KEY (`scoreID`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6039 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6745 ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `links`
+--
+
+CREATE TABLE IF NOT EXISTS `links` (
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
+  `accountID` int(11) NOT NULL,
+  `targetAccountID` int(11) NOT NULL,
+  `server` varchar(255) NOT NULL,
+  `timestamp` int(11) NOT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -247,7 +284,7 @@ CREATE TABLE IF NOT EXISTS `mappacks` (
   `difficulty` int(11) NOT NULL,
   `rgbcolors` varchar(11) NOT NULL COMMENT 'entered as R,G,B',
   PRIMARY KEY (`ID`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=38 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=39 ;
 
 -- --------------------------------------------------------
 
@@ -267,7 +304,7 @@ CREATE TABLE IF NOT EXISTS `messages` (
   `secret` varchar(25) NOT NULL DEFAULT 'unused',
   `isNew` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`messageID`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=497 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=579 ;
 
 -- --------------------------------------------------------
 
@@ -287,7 +324,7 @@ CREATE TABLE IF NOT EXISTS `modactions` (
   `value6` int(11) NOT NULL DEFAULT '0',
   `account` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`ID`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4238 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4830 ;
 
 -- --------------------------------------------------------
 
@@ -329,7 +366,7 @@ CREATE TABLE IF NOT EXISTS `reports` (
   `levelID` int(11) NOT NULL,
   `hostname` varchar(255) NOT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=52 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=58 ;
 
 -- --------------------------------------------------------
 
@@ -345,7 +382,7 @@ CREATE TABLE IF NOT EXISTS `songs` (
   `size` varchar(100) NOT NULL,
   `download` varchar(1337) NOT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5100978 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5101054 ;
 
 -- --------------------------------------------------------
 
@@ -380,6 +417,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `IP` varchar(69) NOT NULL DEFAULT '127.0.0.1',
   `lastPlayed` int(11) NOT NULL DEFAULT '0',
   `diamonds` int(11) NOT NULL DEFAULT '-1',
+  `orbs` int(11) NOT NULL DEFAULT '0',
   `accSpider` int(11) NOT NULL DEFAULT '0',
   `accExplosion` int(11) NOT NULL DEFAULT '0',
   `chest1time` int(11) NOT NULL DEFAULT '0',
@@ -388,21 +426,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `chest2count` int(11) NOT NULL DEFAULT '0',
   `isBanned` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`userID`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1594 ;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `_stuff`
---
-
-CREATE TABLE IF NOT EXISTS `_stuff` (
-  `value` int(11) NOT NULL,
-  `value2` varchar(255) NOT NULL,
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `value3` varchar(255) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=322 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1694 ;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
