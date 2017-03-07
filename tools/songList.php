@@ -6,7 +6,7 @@ $query = $db->prepare("SELECT * FROM songs WHERE ID >= 5000000 ORDER BY ID DESC"
 $query->execute();
 $result = $query->fetchAll();
 foreach($result as &$song){
-	echo "<tr><td>".$song["ID"]."</td><td>".$song["name"]."</td></tr>";
+	echo "<tr><td>".$song["ID"]."</td><td>".htmlspecialchars($song["name"],ENT_QUOTES)."</td></tr>";
 }
 ?>
 </table>

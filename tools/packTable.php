@@ -9,7 +9,7 @@ $query->execute();
 $result = $query->fetchAll();
 foreach($result as &$pack){
 	$lvlarray = explode(",", $pack["levels"]);
-	echo "<tr><td>$x</td><td>".$pack["ID"]."</td><td>".$pack["name"]."</td><td>".$pack["stars"]."</td><td>".$pack["coins"]."</td><td>";
+	echo "<tr><td>$x</td><td>".$pack["ID"]."</td><td>".htmlspecialchars($pack["name"],ENT_QUOTES)."</td><td>".$pack["stars"]."</td><td>".$pack["coins"]."</td><td>";
 	$x++;
 	foreach($lvlarray as &$lvl){
 		echo $lvl . " - ";

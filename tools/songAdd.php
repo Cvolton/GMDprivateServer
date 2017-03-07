@@ -13,7 +13,7 @@ if (filter_var($song, FILTER_VALIDATE_URL) == TRUE) {
 			$name = $array->title;
 			$author = $array->user->username;
 			$author = preg_replace("/[^A-Za-z0-9 ]/", '', $author);
-			echo "Processing Soundcloud song $name by $author with the download link $song <br>";
+			echo "Processing Soundcloud song ".htmlspecialchars($name,ENT_QUOTES)." by ".htmlspecialchars($author,ENT_QUOTES)." with the download link ".htmlspecialchars($song,ENT_QUOTES)." <br>";
 		}else{
 			exit("This song isn't downloadable.<br>");
 		}

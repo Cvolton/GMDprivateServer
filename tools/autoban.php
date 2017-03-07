@@ -33,7 +33,7 @@ $result = $query->fetchAll();
 foreach($result as $user){
 	$query = $db->prepare("UPDATE users SET isBanned = '1' WHERE userID = :id");
 	$query->execute([':id' => $user["userID"]]);
-	echo "Banned ".$user["userName"]." - ".$user["userID"]."<br>";
+	echo "Banned ".htmlspecialchars($user["userName"],ENT_QUOTES)." - ".$user["userID"]."<br>";
 }
 //counting coins
 echo "<h3>User coins based bans</h3>";
@@ -46,7 +46,7 @@ $result = $query->fetchAll();
 foreach($result as $user){
 	$query = $db->prepare("UPDATE users SET isBanned = '1' WHERE userID = :id");
 	$query->execute([':id' => $user["userID"]]);
-	echo "Banned ".$user["userName"]." - ".$user["userID"]."<br>";
+	echo "Banned ".htmlspecialchars($user["userName"],ENT_QUOTES)." - ".$user["userID"]."<br>";
 }
 //counting demons
 echo "<h3>Demons based bans</h3>";
@@ -59,7 +59,7 @@ $result = $query->fetchAll();
 foreach($result as $user){
 	$query = $db->prepare("UPDATE users SET isBanned = '1' WHERE userID = :id");
 	$query->execute([':id' => $user["userID"]]);
-	echo "Banned ".$user["userName"]." - ".$user["userID"]."<br>";
+	echo "Banned ".htmlspecialchars($user["userName"],ENT_QUOTES)." - ".$user["userID"]."<br>";
 }
 //done
 echo "<hr>Banned everyone with over $stars stars and over $coins user coins and over $demons demons!<hr>done";
