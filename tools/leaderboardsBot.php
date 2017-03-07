@@ -15,7 +15,7 @@ if($page == -1){
 	$page = 0;
 }
 $page = $page * 10;
-if($type =="stars" OR $type == "diamonds" OR $type == "usrcoins" OR $type == "coins" OR $type == "demons" OR $type == "cp"){
+if($type =="stars" OR $type == "diamonds" OR $type == "usrcoins" OR $type == "coins" OR $type == "demons" OR $type == "cp" OR $type == "orbs"){
 	if($type == "stars"){
 		$query = "SELECT * FROM users WHERE isBanned = '0' ORDER BY stars DESC LIMIT 10 OFFSET $page";
 	}
@@ -34,21 +34,24 @@ if($type =="stars" OR $type == "diamonds" OR $type == "usrcoins" OR $type == "co
 	if($type == "cp"){
 		$query = "SELECT * FROM users WHERE isBanned = '0' ORDER BY creatorPoints DESC LIMIT 10 OFFSET $page";
 	}
+	if($type == "orbs"){
+		$query = "SELECT * FROM users WHERE isBanned = '0' ORDER BY orbs DESC LIMIT 10 OFFSET $page";
+	}
 	$query = $db->prepare($query);
 	$query->execute([':page' => $page]);
 	$result = $query->fetchAll();
 	$people = $query->rowCount();
 	$xy = 1;
-	echo "`#    |        Username | Stars | Diamonds | Coins | User coins | Demons |  CP  | Last time online |`\r\n";
-	echo "`-----|-----------------|-------|----------|-------|------------|--------|------|------------------|`\r\n";
+	echo "`#    |        Username | Stars | Diamonds | Coins | User coins | Demons |  CP  |    Orbs    |`\r\n";
+	echo "`-----|-----------------|-------|----------|-------|------------|--------|------|------------|`\r\n";
 	for ($x = 0; $x < $people; $x++) {
 		$user = $result[$x];
 		$xi = $x + $xy + $page;
 		$xyz = str_pad($xi, 4, " ", STR_PAD_RIGHT);
 		$date = date("d/m/Y H:i", $user["lastPlayed"]);
-		echo "`$xyz | ".str_pad($user["userName"], 15, " ", STR_PAD_LEFT)." | ".str_pad($user["stars"], 5, " ", STR_PAD_LEFT)." | ".str_pad($user["diamonds"], 8, " ", STR_PAD_LEFT)." | ".str_pad($user["coins"], 5, " ", STR_PAD_LEFT)." | ".str_pad($user["userCoins"], 10, " ", STR_PAD_LEFT)." | ".str_pad($user["demons"], 6, " ", STR_PAD_LEFT)." | ".str_pad($user["creatorPoints"], 4, " ", STR_PAD_LEFT)." | ".$date." |`\r\n";
+		echo "`$xyz | ".str_pad($user["userName"], 15, " ", STR_PAD_LEFT)." | ".str_pad($user["stars"], 5, " ", STR_PAD_LEFT)." | ".str_pad($user["diamonds"], 8, " ", STR_PAD_LEFT)." | ".str_pad($user["coins"], 5, " ", STR_PAD_LEFT)." | ".str_pad($user["userCoins"], 10, " ", STR_PAD_LEFT)." | ".str_pad($user["demons"], 6, " ", STR_PAD_LEFT)." | ".str_pad($user["creatorPoints"], 4, " ", STR_PAD_LEFT)." | ".str_pad($user["orbs"], 10, " ", STR_PAD_LEFT)." |`\r\n";
 	}
 }else{
-	echo "**Command usage: *!top <type> <page>*\r\nValid types are: Stars, Diamonds, Coins, Usrcoins, Demons, CP**";
+	echo "**Command usage: *!top <type> <page>*\r\nValid types are: Stars, Diamonds, Coins, Usrcoins, Demons, CP, Orbs**";
 }
 ?>
