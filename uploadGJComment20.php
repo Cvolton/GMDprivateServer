@@ -90,14 +90,14 @@ if(substr($decodecomment,0,5) == '!rate'){
 			$query->execute([':starStars' => $starStars, ':starDifficulty' => $starDifficulty, ':starDemon' => $starDemon, ':starAuto' => $starAuto, ':levelID' => $levelID]);
 			$query = $db->prepare("INSERT INTO modactions (type, value, value2, value3, timestamp, account) VALUES ('1', :value, :value2, :levelID, :timestamp, :id)");
 			$query->execute([':value' => $commentarray[1], ':timestamp' => $uploadDate, ':id' => $id, ':value2' => $starStars, ':levelID' => $levelID]);
-			if($starFeatured){
+			if($starFeatured != ""){
 				$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('2', :value, :levelID, :timestamp, :id)");
 				$query->execute([':value' => $starFeatured, ':timestamp' => $uploadDate, ':id' => $id, ':levelID' => $levelID]);	
 				$query = $db->prepare("UPDATE levels SET starFeatured=:starFeatured WHERE levelID=:levelID");
 				$query->execute([':starFeatured' => $starFeatured, ':levelID' => $levelID]);
 		
 			}
-			if($starCoins){
+			if($starCoins != ""){
 				$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('3', :value, :levelID, :timestamp, :id)");
 				$query->execute([':value' => $starCoins, ':timestamp' => $uploadDate, ':id' => $id, ':levelID' => $levelID]);
 				$query = $db->prepare("UPDATE levels SET starCoins=:starCoins WHERE levelID=:levelID");
@@ -253,10 +253,11 @@ if(substr($decodecomment,0,5) == '!pass'){
 				if($pass == "000000"){
 					$pass = "";
 				}
+				$pass = "1".$pass;
 				$query = $db->prepare("UPDATE levels SET password=:password WHERE levelID=:levelID");
-				$query->execute([':levelID' => $levelID, ':password' => "1".$pass]);
+				$query->execute([':levelID' => $levelID, ':password' => $pass]);
 				$query = $db->prepare("INSERT INTO modactions (type, value, timestamp, account, value3) VALUES ('8', :value, :timestamp, :id, :levelID)");
-				$query->execute([':value' => $name, ':timestamp' => $uploadDate, ':id' => $id, ':levelID' => $levelID]);
+				$query->execute([':value' => $pass, ':timestamp' => $uploadDate, ':id' => $id, ':levelID' => $levelID]);
 			}
 		}
 	}
