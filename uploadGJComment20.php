@@ -200,12 +200,12 @@ if(substr($decodecomment,0,7) == '!setacc'){
 			$query->execute([':userName' => $commentarray[1]]);
 			$result = $query->fetchAll();
 			$result = $result[0];
-			var_dump($result);
+			//var_dump($result);
 			$query = $db->prepare("SELECT * FROM users WHERE extID = :extID LIMIT 1");
 			$query->execute([':extID' => $result["accountID"]]);
 			$result2 = $query->fetchAll();
 			$result2 = $result2[0];
-			var_dump($result2);
+			//var_dump($result2);
 			$query = $db->prepare("UPDATE levels SET extID=:extID, userID=:userID, userName=:userName WHERE levelID=:levelID");
 			$query->execute([':extID' => $result["accountID"], ':userID' => $result2["userID"], ':userName' => $commentarray[1], ':levelID' => $levelID]);
 			$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('7', :value, :levelID, :timestamp, :id)");
