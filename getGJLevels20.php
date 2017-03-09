@@ -276,11 +276,7 @@ if($type != 10 AND $gauntlet == ""){
 	$lvlpagea = $page*10;
 	if($type==0 OR $type==15){ //most liked, changed to 15 in GDW for whatever reason
 		if($str!=""){
-		if(is_numeric($str)){
-			$query = "SELECT * FROM levels WHERE levelID = '".$str."' OR levelName LIKE '%$str%' ORDER BY likes DESC LIMIT 10 OFFSET $lvlpagea";
-		}else{
-			$query = "SELECT * FROM levels WHERE levelName LIKE '%".$str."%' ". $additionalnowhere . " ORDER BY likes DESC LIMIT 10 OFFSET $lvlpagea";
-		}
+			$query = "SELECT * FROM levels WHERE levelID = '$str' OR (levelName LIKE '%".$str."%' ". $additionalnowhere . ") ORDER BY likes DESC LIMIT 10 OFFSET $lvlpagea";
 		}else{$type=2;}
 		
 	}
