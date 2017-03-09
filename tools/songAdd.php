@@ -15,7 +15,14 @@ if (filter_var($song, FILTER_VALIDATE_URL) == TRUE) {
 			$author = preg_replace("/[^A-Za-z0-9 ]/", '', $author);
 			echo "Processing Soundcloud song ".htmlspecialchars($name,ENT_QUOTES)." by ".htmlspecialchars($author,ENT_QUOTES)." with the download link ".htmlspecialchars($song,ENT_QUOTES)." <br>";
 		}else{
-			exit("This song isn't downloadable.<br>");
+			if(!$array->id){
+				exit("This song is neither downloadable, nor streamable");
+			}
+			$song = trim("https://api.soundcloud.com/tracks/".$array->id."/stream?client_id=".$api_key);
+			$name = $array->title;
+			$author = $array->user->username;
+			$author = preg_replace("/[^A-Za-z0-9 ]/", '', $author);
+			echo "This song isn't downloadable, attempting to insert it anyways<br>";
 		}
 	}else{
 		$song = str_replace("?dl=0","",$song);
