@@ -50,7 +50,7 @@ foreach($result as $user){
 }
 //counting demons
 echo "<h3>Demons based bans</h3>";
-$quarter = floor($demons / 4);
+$quarter = floor($demons / 16);
 $demons = $demons + 3 + $quarter;
 $query = $db->prepare("SELECT userID, userName FROM users WHERE demons > :demons");
 $query->execute([':demons' => $demons]);
