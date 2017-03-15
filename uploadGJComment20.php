@@ -39,6 +39,9 @@ $userID = $db->lastInsertId();
 }
 $uploadDate = time();
 $decodecomment = base64_decode($comment);
+/*
+	COMMANDS
+*/
 if(substr($decodecomment,0,5) == '!rate'){
 	$query2 = $db->prepare("SELECT * FROM accounts WHERE accountID = :id");
 	$query2->execute([':id' => $id]);
@@ -170,7 +173,10 @@ if(substr($decodecomment,0,6) == '!daily'){
 		}
 	}
 }
-if(substr($decodecomment,0,7) == '!delete'){
+if(substr($decodecomment,0,6) == '!delet'){
+	if(!is_numeric($levelID)){
+		exit("-1");
+	}
 	$query2 = $db->prepare("SELECT * FROM accounts WHERE accountID = :id");
 	$query2->execute([':id' => $id]);
 	$result = $query2->fetchAll();
@@ -183,6 +189,9 @@ if(substr($decodecomment,0,7) == '!delete'){
 			$query->execute([':levelID' => $levelID]);
 			$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('6', :value, :levelID, :timestamp, :id)");
 			$query->execute([':value' => "1", ':timestamp' => $uploadDate, ':id' => $id, ':levelID' => $levelID]);
+			if(file_exists("data/levels/$levelID")){
+				rename("data/levels/$levelID","data/levels/deleted/$levelID");
+			}
 		}
 	}
 }
