@@ -13,4 +13,6 @@ Base for account settings by someguy28
 
 Using this for XOR encryption - https://github.com/sathoro/php-xor-cipher - (incl/XORCipher.php)
 
+Jscolor (color picker in packCreate.php) - http://jscolor.com/
+
 Most of the stuff in generateHash.php has been figured out by pavlukivan and Italian APK Downloader, so credits to them
