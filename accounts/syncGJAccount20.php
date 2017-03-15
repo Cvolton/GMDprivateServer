@@ -16,9 +16,17 @@ if ($pass == 1) {
 	$query->execute([':userName' => $userName]);
 	$result = $query->fetchAll();
 	$account = $result[0];
-	$saveData = $account["saveData"];
-	if(substr($saveData,0,4) == "SDRz"){
-		$saveData = base64_decode($saveData);
+	$accountID = $account["accountID"];
+	if(!is_numeric($accountID)){
+		exit("-1");
+	}
+	if(!file_exists("../data/accounts/$accountID")){
+			$saveData = $account["saveData"];
+		if(substr($saveData,0,4) == "SDRz"){
+			$saveData = base64_decode($saveData);
+		}
+	}else{
+		$saveData = file_get_contents("../data/accounts/$accountID");
 	}
 	echo $saveData.";21;30;a;a";
 }
