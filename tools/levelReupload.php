@@ -90,18 +90,22 @@ if($_POST["levelid"]!=""){
 			$starStars = chkarray($levelarray["a18"]);
 			$starCoins = 0;
 			$starDiff = 0;
+			$starDemon = 0;
+			$starAuto = 0;
 			if($parsedurl["host"] == "www.boomlings.com"){
 				if($starStars != 0){
 					$starCoins = chkarray($levelarray["a38"]);
 					$starDiff = chkarray($levelarray["a9"]);
+					$starDemon = chkarray($levelarray["a17"]);
+					$starAuto = chkarray($levelarray["a25"]);
 				}
 			}else{
 				$starStars = 0;
 			}
 			//query
-			$query = $db->prepare("INSERT INTO levels (levelName, gameVersion, binaryVersion, userName, levelDesc, levelVersion, levelLength, audioTrack, auto, password, original, twoPlayer, songID, objects, coins, requestedStars, extraString, levelString, levelInfo, secret, uploadDate, updateDate, originalReup, userID, extID, unlisted, hostname, starStars, starCoins, starDifficulty)
-																			VALUES (:name ,:gameVersion, '27', 'Reupload', :desc, :version, :length, :audiotrack, '0', '1337666', :originalReup, :twoPlayer, :songID, '0', :coins, :reqstar, :extraString, :levelString, '0', '0', '$uploadDate', '$uploadDate', :originalReup, '388', '263', '0', :hostname, :starStars, :starCoins, :starDifficulty)");
-			$query->execute([':gameVersion' => $gameVersion, ':name' => $levelarray["a2"], ':desc' => $levelarray["a3"], ':version' => $levelarray["a5"], ':length' => $levelarray["a15"], ':audiotrack' => $levelarray["a12"], ':twoPlayer' => $twoPlayer, ':songID' => $songID, ':coins' => $coins, ':reqstar' => $reqstar, ':extraString' => $extraString, ':levelString' => $levelString, ':originalReup' => $levelarray["a1"], ':hostname' => $hostname, ':starStars' => $starStars, ':starCoins' => $starCoins, ':starDifficulty' => $starDiff]);
+			$query = $db->prepare("INSERT INTO levels (levelName, gameVersion, binaryVersion, userName, levelDesc, levelVersion, levelLength, audioTrack, auto, password, original, twoPlayer, songID, objects, coins, requestedStars, extraString, levelString, levelInfo, secret, uploadDate, updateDate, originalReup, userID, extID, unlisted, hostname, starStars, starCoins, starDifficulty, starDemon, starAuto)
+																			VALUES (:name ,:gameVersion, '27', 'Reupload', :desc, :version, :length, :audiotrack, '0', '1337666', :originalReup, :twoPlayer, :songID, '0', :coins, :reqstar, :extraString, :levelString, '0', '0', '$uploadDate', '$uploadDate', :originalReup, '388', '263', '0', :hostname, :starStars, :starCoins, :starDifficulty, :starDemon, :starAuto)");
+			$query->execute([':starDemon' => $starDemon, ':starAuto' => $starAuto, ':gameVersion' => $gameVersion, ':name' => $levelarray["a2"], ':desc' => $levelarray["a3"], ':version' => $levelarray["a5"], ':length' => $levelarray["a15"], ':audiotrack' => $levelarray["a12"], ':twoPlayer' => $twoPlayer, ':songID' => $songID, ':coins' => $coins, ':reqstar' => $reqstar, ':extraString' => $extraString, ':levelString' => $levelString, ':originalReup' => $levelarray["a1"], ':hostname' => $hostname, ':starStars' => $starStars, ':starCoins' => $starCoins, ':starDifficulty' => $starDiff]);
 			echo "Level reuploaded, ID: " . $db->lastInsertId() . "<br><hr><br>";
 		}else{
 			echo "This level has been already reuploaded";
@@ -110,7 +114,7 @@ if($_POST["levelid"]!=""){
 }else{
 	echo '<form action="levelReupload.php" method="post">ID: <input type="text" name="levelid"><br>URL (dont change if you dont know what youre doing): <input type="text" name="server" value="http://www.boomlings.com/database/downloadGJLevel22.php"><br>Debug Mode (0=off, 1=on): <input type="text" name="debug" value="0"><br><input type="submit" value="Reupload"></form><br>Alternative servers to reupload from:<br>
 	http://www.boomlings.com/database/downloadGJLevel22.php - Robtops server<br>
-	http://cvoltongdps.altervista.org/downloadGJLevel22.php - CvoltonGDPS<br>
+	http://cvoltongdps.pe.hu/gdserver/downloadGJLevel22.php - CvoltonGDPS<br>
 	http://teamhax.altervista.org/dbh/downloadGJLevel22.php - TeamHax GDPS';
 }
 ?>
