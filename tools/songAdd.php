@@ -6,6 +6,7 @@ if($_POST["songlink"]){
 $song = str_replace("www.dropbox.com","dl.dropboxusercontent.com",$_POST["songlink"]);
 if (filter_var($song, FILTER_VALIDATE_URL) == TRUE) {
 	if(strpos($song, 'soundcloud.com') !== false){
+		$soundcloud = true;
 		$songinfo = file_get_contents("https://api.soundcloud.com/resolve.json?url=".$song."&client_id=".$api_key);
 		$array = json_decode($songinfo);
 		if($array->downloadable == true){
@@ -38,18 +39,27 @@ if (filter_var($song, FILTER_VALIDATE_URL) == TRUE) {
 		$name = str_replace("|", "", $name);
 		$author = "Reupload";
 	}
-	 $ch = curl_init($song);
-	 curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-	 curl_setopt($ch, CURLOPT_HEADER, TRUE);
-	 curl_setopt($ch, CURLOPT_NOBODY, TRUE);
-	 $data = curl_exec($ch);
-	 $size = curl_getinfo($ch, CURLINFO_CONTENT_LENGTH_DOWNLOAD);
-	 curl_close($ch);
-	 $size = round($size / 1024 / 1024, 2);
-    $query = $db->prepare("INSERT INTO songs (name, authorID, authorName, size, download)
-	VALUES (:name, '9', :author, :size, :download)");
-	$query->execute([':name' => $name, ':download' => $song, ':author' => $author, ':size' => $size]);
-	echo "Song reuploaded: <b>".$db->lastInsertId()."</b><hr>";
+	$ch = curl_init($song);
+	curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+	curl_setopt($ch, CURLOPT_HEADER, TRUE);
+	curl_setopt($ch, CURLOPT_NOBODY, TRUE);
+	$data = curl_exec($ch);
+	$size = curl_getinfo($ch, CURLINFO_CONTENT_LENGTH_DOWNLOAD);
+	curl_close($ch);
+	$size = round($size / 1024 / 1024, 2);
+	$hash = sha1(file_get_contents($song));
+	if(!$soundcloud){
+		$query = $db->prepare("SELECT * FROM songs WHERE download = :download OR hash = :hash");
+		$query->execute([':download' => $song, ':hash' => $hash]);	
+	}
+	if($query->rowCount() != 0){
+		echo "This song already exists in our database.";
+	}else{
+	    $query = $db->prepare("INSERT INTO songs (name, authorID, authorName, size, download, hash)
+		VALUES (:name, '9', :author, :size, :download, :hash)");
+		$query->execute([':name' => $name, ':download' => $song, ':author' => $author, ':size' => $size, ':hash' => $hash]);
+		echo "Song reuploaded: <b>".$db->lastInsertId()."</b><hr>";
+	}
 }else{
 	echo "The download link isn't a valid URL";
 }
