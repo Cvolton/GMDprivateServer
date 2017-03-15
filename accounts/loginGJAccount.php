@@ -20,15 +20,17 @@ $query = $db->prepare($query);
 $query->execute([':userName' => $userName]);
 $result = $query->fetchAll();
 $account = $result[0];
+//rate limiting
+$newtime = time() - 3600;
+$query6 = $db->prepare("SELECT * FROM actions WHERE type = '1' AND timestamp > :time AND value2 = :ip");
+$query6->execute([':time' => $newtime, ':ip' => $ip]);
+if($query6->rowCount > 2){
+	exit("-12");
+}
+//authenticating
 $generatePass = new generatePass();
 $pass = $generatePass->isValidUsrname($userName, $password);
-if ($pass == 1) {
-	$newtime = time() - (24*60*60);
-	$query6 = $db->prepare("SELECT * FROM actions WHERE type = '1' AND timestamp > :time AND value2 = :ip");
-	$query6->execute([':time' => $newtime, ':ip' => $ip]);
-	if($query6->rowCount > 2){
-		exit(-1);
-	}
+if ($pass == 1) { //success
 	//userID
 	$id = $account["accountID"];
 	$query2 = $db->prepare("SELECT * FROM users WHERE extID = :id");
@@ -45,30 +47,31 @@ if ($pass == 1) {
 	$query->execute([':id' => $id, ':userName' => $userName]);
 	$userID = $db->lastInsertId();
 	}
-	if($account["isAdmin"]==1){
-	$query4 = $db->prepare("select * from modips where accountID = :id");
-	$query4->execute([':id' => $id]);
-	if ($query4->rowCount() > 0) {
-	$query6 = $db->prepare("UPDATE modips SET IP=:hostname WHERE accountID=:id");
-	$query6->execute([':hostname' => $ip, ':id' => $id]);
-	}else{
-	$query6 = $db->prepare("INSERT INTO modips (IP, accountID, isMod) VALUES (:hostname,:id,'1')");
-	$query6->execute([':hostname' => $ip, ':id' => $id]);
+	if($account["isAdmin"]==1){ //modIPs
+		$query4 = $db->prepare("select * from modips where accountID = :id");
+		$query4->execute([':id' => $id]);
+		if ($query4->rowCount() > 0) {
+			$query6 = $db->prepare("UPDATE modips SET IP=:hostname WHERE accountID=:id");
+			$query6->execute([':hostname' => $ip, ':id' => $id]);
+		}else{
+			$query6 = $db->prepare("INSERT INTO modips (IP, accountID, isMod) VALUES (:hostname,:id,'1')");
+			$query6->execute([':hostname' => $ip, ':id' => $id]);
+		}
 	}
-	}
-	//result
+	//logging
 	$query6 = $db->prepare("INSERT INTO actions (type, value, timestamp, value2) VALUES 
 												('2',:username,:time,:ip)");
 	$query6->execute([':username' => $userName, ':time' => time(), ':ip' => $ip]);
+	//result
 	echo $id.",".$userID;
-	if(is_numeric($udid) == FALSE){
+	if(!is_numeric($udid)){
 		$query2 = $db->prepare("SELECT * FROM users WHERE extID = :udid");
 		$query2->execute([':udid' => $udid]);
-		$usrid2 = $query->fetchAll[0]["userID"];
+		$usrid2 = $query->fetchAll()[0]["userID"];
 		$query2 = $db->prepare("UPDATE levels SET userID = :userID, extID = :extID WHERE userID = :usrid2");
 		$query2->execute([':userID' => $userID, ':extID' => $id, ':usrid2' => $usrid2]);	
 	}
-}else{
+}else{ //failure
 	echo -1;
 	$query6 = $db->prepare("INSERT INTO actions (type, value, timestamp, value2) VALUES 
 												('1',:username,:time,:ip)");
