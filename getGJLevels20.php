@@ -247,11 +247,11 @@ if($type != 10 AND $gauntlet == ""){
 				$difficulties = $difficulties . $newdiff;
 			}
 			if($additional == ""){
-				$additional = "WHERE (starAuto = 0 AND starDemon = 0 AND starDifficulty = '".$difficulties."') ";
-				$additionalnowhere = "AND (starAuto = 0 AND starDemon = 0 AND starDifficulty = '".$difficulties."') ";
+				$additional = "WHERE starAuto = 0 AND starDemon = 0 AND (starDifficulty = '".$difficulties."') ";
+				$additionalnowhere = "AND (starAuto = 0 AND starDemon = 0 AND (starDifficulty = '".$difficulties."') ";
 			}else{
-				$additional = $additional."AND (starAuto = 0 AND starDemon = 0 AND starDifficulty = '".$difficulties."') ";
-				$additionalnowhere = $additionalnowhere."AND (starAuto = 0 AND starDemon = 0 AND starDifficulty = '".$difficulties."') ";
+				$additional = $additional."AND starAuto = 0 AND starDemon = 0 AND (starDifficulty = '".$difficulties."') ";
+				$additionalnowhere = $additionalnowhere."AND starAuto = 0 AND starDemon = 0 AND (starDifficulty = '".$difficulties."') ";
 			}
 		}
 	}
@@ -276,7 +276,7 @@ if($type != 10 AND $gauntlet == ""){
 	$lvlpagea = $page*10;
 	if($type==0 OR $type==15){ //most liked, changed to 15 in GDW for whatever reason
 		if($str!=""){
-			$query = "SELECT * FROM levels WHERE levelID = '$str' OR (levelName LIKE '%".$str."%' ". $additionalnowhere . ") ORDER BY likes DESC LIMIT 10 OFFSET $lvlpagea";
+			$query = "(SELECT * FROM levels WHERE levelID = '$str') UNION (SELECT * FROM levels WHERE levelName LIKE '%".$str."%' ". $additionalnowhere . " ORDER BY likes DESC) LIMIT 10 OFFSET $lvlpagea";
 		}else{$type=2;}
 		
 	}
@@ -376,22 +376,23 @@ if($type != 10 AND $gauntlet == ""){
 					$songcolonmarker = 1335;
 				}
 			}
-			$query12 = $db->prepare("SELECT * FROM users WHERE userID = '".$level1["userID"]."'");
-			$query12->execute();
+			$query12 = $db->prepare("SELECT * FROM users WHERE userID = :userid");
+			$query12->execute([':userid' => $level1["userID"]]);
 			$result12 = $query12->fetchAll();
 			if ($query12->rowCount() > 0) {
-				$userIDalmost = $result12[0];
-				$userID = $userIDalmost["extID"];
+				$userInfo = $result12[0];
+				$userName = $userInfo["userName"];
+				$userID = $userInfo["extID"];
 				if(is_numeric($userID)){
 					$userIDnumba = $userID;
 				}else{
 					$userIDnumba = 0;
 				}
+				if($x != 0){
+					$levelsstring = $levelsstring . "|";
+				}
+				$levelsstring = $levelsstring . $level1["userID"] . ":" . $userName . ":" . $userIDnumba;
 			}
-			if($x != 0){
-				$levelsstring = $levelsstring . "|";
-			}
-			$levelsstring = $levelsstring . $level1["userID"] . ":" . $level1["userName"] . ":" . $userIDnumba;
 		}
 	}
 	echo "#".$levelsstring;
