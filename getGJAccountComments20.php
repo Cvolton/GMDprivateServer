@@ -58,6 +58,5 @@ if(is_numeric($userID)){
 	$userid = $userid + 1;
 	}
 }
-	echo "#".$levelsstring;
 	echo "#9999:".$commentpage.":10";
 ?>
