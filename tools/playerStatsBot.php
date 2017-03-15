@@ -51,6 +51,7 @@ if($query->rowCount() == 0){
 		"\r\n**Diamonds:** ".$user["diamonds"].
 		"\r\n**Demons: **".$user["demons"].
 		"\r\n**Orbs: **".$user["orbs"].
+		"\r\n**Completed Levels: **".$user["completedLvls"].
 		"\r\n**Creator points:** ".$creatorpoints.
 		"\r\n**Leaderboards rank:** ".$rank;
 		if($accinfo["youtubeurl"] != ""){
