@@ -62,5 +62,5 @@ foreach($result as $user){
 	echo "Banned ".htmlspecialchars($user["userName"],ENT_QUOTES)." - ".$user["userID"]."<br>";
 }
 //done
-echo "<hr>Banned everyone with over $stars stars and over $coins user coins and over $demons demons!<hr>done";
+//echo "<hr>Banned everyone with over $stars stars and over $coins user coins and over $demons demons!<hr>done";
 ?>
