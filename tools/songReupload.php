@@ -3,7 +3,7 @@
 include "../connection.php";
 if($_POST["songid"]!=0){
 $songid = $_POST["songid"];
-$url = 'http://'.$_POST["server"].'/database/getGJSongInfo.php';
+$url = $_POST["server"];
 $data = array('songID' => $songid, 'secret' => 'Wmfd2893gb7');
 
 $options = array(
@@ -31,6 +31,6 @@ if($result != "-1"){
 	echo "This song either doesnt exist, or the author isnt scouted -_-";
 }
 }else{
-	echo '<form action="songReupload.php" method="post">ID: <input type="text" name="songid"><br>Server: <input type="text" name="server" value="www.boomlings.com"><br><input type="submit" value="Reupload"></form>';
+	echo '<form action="songReupload.php" method="post">ID: <input type="text" name="songid"><br>URL: <input type="text" name="server" value="http://www.boomlings.com/database/getGJSongInfo.php"><br><input type="submit" value="Reupload"></form>';
 }
 ?>
