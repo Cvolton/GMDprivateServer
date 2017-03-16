@@ -67,8 +67,8 @@ if($_POST["levelid"]!=""){
 			}
 		}
 		//check if exists
-		$query = $db->prepare("SELECT * FROM levels WHERE levelString = :lvl");
-		$query->execute([':lvl' => $levelString]);
+		$query = $db->prepare("SELECT * FROM levels WHERE originalReup = :lvl OR original = :lvl");
+		$query->execute([':lvl' => $levelarray["a1"]]);
 		if($query->rowCount() == 0){
 			$parsedurl = parse_url($url);
 			if($parsedurl["host"] == $_SERVER['SERVER_NAME']){
@@ -105,8 +105,10 @@ if($_POST["levelid"]!=""){
 			//query
 			$query = $db->prepare("INSERT INTO levels (levelName, gameVersion, binaryVersion, userName, levelDesc, levelVersion, levelLength, audioTrack, auto, password, original, twoPlayer, songID, objects, coins, requestedStars, extraString, levelString, levelInfo, secret, uploadDate, updateDate, originalReup, userID, extID, unlisted, hostname, starStars, starCoins, starDifficulty, starDemon, starAuto)
 																			VALUES (:name ,:gameVersion, '27', 'Reupload', :desc, :version, :length, :audiotrack, '0', '1337666', :originalReup, :twoPlayer, :songID, '0', :coins, :reqstar, :extraString, :levelString, '0', '0', '$uploadDate', '$uploadDate', :originalReup, '388', '263', '0', :hostname, :starStars, :starCoins, :starDifficulty, :starDemon, :starAuto)");
-			$query->execute([':starDemon' => $starDemon, ':starAuto' => $starAuto, ':gameVersion' => $gameVersion, ':name' => $levelarray["a2"], ':desc' => $levelarray["a3"], ':version' => $levelarray["a5"], ':length' => $levelarray["a15"], ':audiotrack' => $levelarray["a12"], ':twoPlayer' => $twoPlayer, ':songID' => $songID, ':coins' => $coins, ':reqstar' => $reqstar, ':extraString' => $extraString, ':levelString' => $levelString, ':originalReup' => $levelarray["a1"], ':hostname' => $hostname, ':starStars' => $starStars, ':starCoins' => $starCoins, ':starDifficulty' => $starDiff]);
-			echo "Level reuploaded, ID: " . $db->lastInsertId() . "<br><hr><br>";
+			$query->execute([':starDemon' => $starDemon, ':starAuto' => $starAuto, ':gameVersion' => $gameVersion, ':name' => $levelarray["a2"], ':desc' => $levelarray["a3"], ':version' => $levelarray["a5"], ':length' => $levelarray["a15"], ':audiotrack' => $levelarray["a12"], ':twoPlayer' => $twoPlayer, ':songID' => $songID, ':coins' => $coins, ':reqstar' => $reqstar, ':extraString' => $extraString, ':levelString' => "", ':originalReup' => $levelarray["a1"], ':hostname' => $hostname, ':starStars' => $starStars, ':starCoins' => $starCoins, ':starDifficulty' => $starDiff]);
+			$levelID = $db->lastInsertId();
+			file_put_contents("../data/levels/$levelID",$levelString);
+			echo "Level reuploaded, ID: $levelID<br><hr><br>";
 		}else{
 			echo "This level has been already reuploaded";
 		}
