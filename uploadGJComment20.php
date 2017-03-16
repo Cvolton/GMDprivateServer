@@ -110,36 +110,52 @@ if(substr($decodecomment,0,5) == '!rate'){
 	 }
 }
 if(substr($decodecomment,0,8) == '!feature'){
-$query2 = $db->prepare("SELECT * FROM accounts WHERE accountID = :id");
-$query2->execute([':id' => $id]);
-$result = $query2->fetchAll();
-$result = $result[0];
-if ($result["isAdmin"] == 1) {
-$query = $db->prepare("UPDATE levels SET starFeatured='1' WHERE levelID=:levelID");
-	$GJPCheck = new GJPCheck();
-	$gjpresult = $GJPCheck->check($gjp,$id);
-	if($gjpresult == 1){
-		$query->execute([':levelID' => $levelID]);
-		$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('2', :value, :levelID, :timestamp, :id)");
-		$query->execute([':value' => "1", ':timestamp' => $uploadDate, ':id' => $id, ':levelID' => $levelID]);
+	$query2 = $db->prepare("SELECT * FROM accounts WHERE accountID = :id");
+	$query2->execute([':id' => $id]);
+	$result = $query2->fetchAll();
+	$result = $result[0];
+	if ($result["isAdmin"] == 1) {
+	$query = $db->prepare("UPDATE levels SET starFeatured='1' WHERE levelID=:levelID");
+		$GJPCheck = new GJPCheck();
+		$gjpresult = $GJPCheck->check($gjp,$id);
+		if($gjpresult == 1){
+			$query->execute([':levelID' => $levelID]);
+			$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('2', :value, :levelID, :timestamp, :id)");
+			$query->execute([':value' => "1", ':timestamp' => $uploadDate, ':id' => $id, ':levelID' => $levelID]);
+		}
 	}
-}
 }
 if(substr($decodecomment,0,5) == '!epic'){
-$query2 = $db->prepare("SELECT * FROM accounts WHERE accountID = :id");
-$query2->execute([':id' => $id]);
-$result = $query2->fetchAll();
-$result = $result[0];
-if ($result["isAdmin"] == 1) {
-$query = $db->prepare("UPDATE levels SET starEpic='1' WHERE levelID=:levelID");
-	$GJPCheck = new GJPCheck();
-	$gjpresult = $GJPCheck->check($gjp,$id);
-	if($gjpresult == 1){
-		$query->execute([':levelID' => $levelID]);
-		$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('4', :value, :levelID, :timestamp, :id)");
-		$query->execute([':value' => "1", ':timestamp' => $uploadDate, ':id' => $id, ':levelID' => $levelID]);
+	$query2 = $db->prepare("SELECT * FROM accounts WHERE accountID = :id");
+	$query2->execute([':id' => $id]);
+	$result = $query2->fetchAll();
+	$result = $result[0];
+	if ($result["isAdmin"] == 1) {
+	$query = $db->prepare("UPDATE levels SET starEpic='1' WHERE levelID=:levelID");
+		$GJPCheck = new GJPCheck();
+		$gjpresult = $GJPCheck->check($gjp,$id);
+		if($gjpresult == 1){
+			$query->execute([':levelID' => $levelID]);
+			$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('4', :value, :levelID, :timestamp, :id)");
+			$query->execute([':value' => "1", ':timestamp' => $uploadDate, ':id' => $id, ':levelID' => $levelID]);
+		}
 	}
 }
+if(substr($decodecomment,0,7) == '!unepic'){
+	$query2 = $db->prepare("SELECT * FROM accounts WHERE accountID = :id");
+	$query2->execute([':id' => $id]);
+	$result = $query2->fetchAll();
+	$result = $result[0];
+	if ($result["isAdmin"] == 1) {
+	$query = $db->prepare("UPDATE levels SET starEpic='0' WHERE levelID=:levelID");
+		$GJPCheck = new GJPCheck();
+		$gjpresult = $GJPCheck->check($gjp,$id);
+		if($gjpresult == 1){
+			$query->execute([':levelID' => $levelID]);
+			$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('4', :value, :levelID, :timestamp, :id)");
+			$query->execute([':value' => "0", ':timestamp' => $uploadDate, ':id' => $id, ':levelID' => $levelID]);
+		}
+	}
 }
 if(substr($decodecomment,0,12) == '!verifycoins'){
 $query2 = $db->prepare("SELECT * FROM accounts WHERE accountID = :id");
