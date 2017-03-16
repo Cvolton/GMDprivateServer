@@ -81,12 +81,7 @@ if($_POST["unlisted"]){
 }else{
 	$unlisted = 0;
 }
-$query = $db->prepare("SELECT * FROM levels WHERE levelString = :lvl");
-$query->execute([':lvl' => $levelString]);
 file_put_contents("debug.txt",$query->rowCount());
-if($query->rowCount() != 0){
-	exit("-1");
-}
 $accountID = "";
 $id = $ep->remove($_POST["udid"]);
 if($_POST["accountID"]!="" AND $_POST["accountID"]!="0"){
