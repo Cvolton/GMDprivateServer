@@ -1,55 +1,53 @@
-
 -- phpMyAdmin SQL Dump
--- version 3.5.2.2
--- http://www.phpmyadmin.net
+-- version 4.6.6
+-- https://www.phpmyadmin.net/
 --
--- Počítač: localhost
--- Vygenerováno: Stř 15. bře 2017, 22:57
--- Verze MySQL: 10.0.28-MariaDB
--- Verze PHP: 5.2.17
+-- Host: localhost
+-- Generation Time: Mar 27, 2017 at 01:45 AM
+-- Server version: 10.0.30-MariaDB-0+deb8u1
+-- PHP Version: 7.1.3-2~bpo8+1
 
-SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
+/*!40101 SET NAMES utf8mb4 */;
 
 --
--- Databáze: `u286789777_gdps`
+-- Database: `public_cvoltongdps`
 --
 
 -- --------------------------------------------------------
 
 --
--- Struktura tabulky `acccomments`
+-- Table structure for table `acccomments`
 --
 
-CREATE TABLE IF NOT EXISTS `acccomments` (
+CREATE TABLE `acccomments` (
   `userID` int(11) NOT NULL,
   `userName` varchar(50) NOT NULL,
   `comment` longtext NOT NULL,
   `secret` varchar(10) NOT NULL DEFAULT 'unused',
-  `commentID` int(11) NOT NULL AUTO_INCREMENT,
+  `commentID` int(11) NOT NULL,
   `timestamp` int(11) NOT NULL,
-  `likes` int(11) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`commentID`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1614 ;
+  `likes` int(11) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
 --
--- Struktura tabulky `accounts`
+-- Table structure for table `accounts`
 --
 
-CREATE TABLE IF NOT EXISTS `accounts` (
+CREATE TABLE `accounts` (
   `userName` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL,
   `email` varchar(255) NOT NULL,
   `secret` varchar(255) NOT NULL DEFAULT 'unused',
-  `accountID` int(11) NOT NULL AUTO_INCREMENT,
+  `accountID` int(11) NOT NULL,
   `saveData` longtext NOT NULL,
   `isAdmin` int(11) NOT NULL DEFAULT '0',
   `userID` int(11) NOT NULL DEFAULT '0',
@@ -63,17 +61,17 @@ CREATE TABLE IF NOT EXISTS `accounts` (
   `twitch` varchar(255) NOT NULL DEFAULT '',
   `salt` varchar(255) NOT NULL,
   `registerDate` int(11) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`accountID`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1321 ;
+  `friendsCount` int(11) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
 --
--- Struktura tabulky `actions`
+-- Table structure for table `actions`
 --
 
-CREATE TABLE IF NOT EXISTS `actions` (
-  `ID` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `actions` (
+  `ID` int(11) NOT NULL,
   `type` int(11) NOT NULL DEFAULT '0',
   `value` int(11) NOT NULL DEFAULT '0',
   `timestamp` int(11) NOT NULL DEFAULT '0',
@@ -82,127 +80,118 @@ CREATE TABLE IF NOT EXISTS `actions` (
   `value4` int(11) NOT NULL DEFAULT '0',
   `value5` int(11) NOT NULL DEFAULT '0',
   `value6` int(11) NOT NULL DEFAULT '0',
-  `account` int(11) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`ID`),
-  UNIQUE KEY `ID` (`ID`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5158 ;
+  `account` int(11) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
 --
--- Struktura tabulky `bannedips`
+-- Table structure for table `bannedips`
 --
 
-CREATE TABLE IF NOT EXISTS `bannedips` (
+CREATE TABLE `bannedips` (
   `IP` varchar(255) NOT NULL DEFAULT '127.0.0.1',
-  `ID` int(11) NOT NULL AUTO_INCREMENT,
-  PRIMARY KEY (`ID`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+  `ID` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
 --
--- Struktura tabulky `blocks`
+-- Table structure for table `blocks`
 --
 
-CREATE TABLE IF NOT EXISTS `blocks` (
-  `ID` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `blocks` (
+  `ID` int(11) NOT NULL,
   `person1` int(11) NOT NULL,
-  `person2` int(11) NOT NULL,
-  PRIMARY KEY (`ID`),
-  UNIQUE KEY `ID` (`ID`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=11 ;
+  `person2` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
 --
--- Struktura tabulky `comments`
+-- Table structure for table `comments`
 --
 
-CREATE TABLE IF NOT EXISTS `comments` (
+CREATE TABLE `comments` (
   `userID` int(11) NOT NULL,
   `userName` varchar(50) NOT NULL,
   `comment` longtext NOT NULL,
   `secret` varchar(10) NOT NULL DEFAULT 'none',
   `levelID` int(11) NOT NULL,
-  `commentID` int(11) NOT NULL AUTO_INCREMENT,
+  `commentID` int(11) NOT NULL,
   `timestamp` int(11) NOT NULL,
   `likes` int(11) NOT NULL DEFAULT '0',
-  `percent` int(11) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`commentID`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=7390 ;
+  `percent` int(11) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
 --
--- Struktura tabulky `dailyfeatures`
+-- Table structure for table `dailyfeatures`
 --
 
-CREATE TABLE IF NOT EXISTS `dailyfeatures` (
-  `feaID` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `dailyfeatures` (
+  `feaID` int(11) NOT NULL,
   `levelID` int(11) NOT NULL,
-  `timestamp` int(11) NOT NULL,
-  PRIMARY KEY (`feaID`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=120 ;
+  `timestamp` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
 --
--- Struktura tabulky `friendreqs`
+-- Table structure for table `friendreqs`
 --
 
-CREATE TABLE IF NOT EXISTS `friendreqs` (
+CREATE TABLE `friendreqs` (
   `accountID` int(11) NOT NULL,
   `toAccountID` int(11) NOT NULL,
   `comment` varchar(1000) NOT NULL,
   `uploadDate` int(11) NOT NULL,
-  `ID` int(11) NOT NULL AUTO_INCREMENT,
-  PRIMARY KEY (`ID`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1431 ;
+  `ID` int(11) NOT NULL,
+  `isNew` tinyint(1) NOT NULL DEFAULT '1'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
 --
--- Struktura tabulky `friendships`
+-- Table structure for table `friendships`
 --
 
-CREATE TABLE IF NOT EXISTS `friendships` (
-  `ID` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `friendships` (
+  `ID` int(11) NOT NULL,
   `person1` int(11) NOT NULL,
   `person2` int(11) NOT NULL,
   `isNew1` int(11) NOT NULL,
-  `isNew2` int(11) NOT NULL,
-  PRIMARY KEY (`ID`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=987 ;
+  `isNew2` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
 --
--- Struktura tabulky `gauntlets`
+-- Table structure for table `gauntlets`
 --
 
-CREATE TABLE IF NOT EXISTS `gauntlets` (
-  `ID` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `gauntlets` (
+  `ID` int(11) NOT NULL,
   `level1` int(11) NOT NULL,
   `level2` int(11) NOT NULL,
   `level3` int(11) NOT NULL,
   `level4` int(11) NOT NULL,
-  `level5` int(11) NOT NULL,
-  PRIMARY KEY (`ID`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=22 ;
+  `level5` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
 --
--- Struktura tabulky `levels`
+-- Table structure for table `levels`
 --
 
-CREATE TABLE IF NOT EXISTS `levels` (
+CREATE TABLE `levels` (
   `gameVersion` int(11) NOT NULL,
   `binaryVersion` int(11) NOT NULL DEFAULT '0',
   `userName` text NOT NULL,
-  `levelID` int(11) NOT NULL AUTO_INCREMENT,
-  `levelName` text NOT NULL,
+  `levelID` int(11) NOT NULL,
+  `levelName` varchar(255) NOT NULL,
   `levelDesc` text NOT NULL,
   `levelVersion` int(11) NOT NULL,
   `levelLength` int(11) NOT NULL DEFAULT '0',
@@ -236,85 +225,82 @@ CREATE TABLE IF NOT EXISTS `levels` (
   `extID` varchar(255) NOT NULL,
   `unlisted` int(11) NOT NULL,
   `originalReup` int(11) NOT NULL DEFAULT '0' COMMENT 'used for levelReupload.php',
-  `hostname` varchar(255) NOT NULL,
-  PRIMARY KEY (`levelID`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=7570 ;
+  `hostname` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
 --
--- Struktura tabulky `levelscores`
+-- Table structure for table `levelscores`
 --
 
-CREATE TABLE IF NOT EXISTS `levelscores` (
-  `scoreID` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `levelscores` (
+  `scoreID` int(11) NOT NULL,
   `accountID` int(11) NOT NULL,
   `levelID` int(11) NOT NULL,
   `percent` int(11) NOT NULL,
-  `uploadDate` int(11) NOT NULL,
-  PRIMARY KEY (`scoreID`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=7819 ;
+  `uploadDate` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
 --
--- Struktura tabulky `links`
+-- Table structure for table `links`
 --
 
-CREATE TABLE IF NOT EXISTS `links` (
-  `ID` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `links` (
+  `ID` int(11) NOT NULL,
   `accountID` int(11) NOT NULL,
   `targetAccountID` int(11) NOT NULL,
   `server` varchar(255) NOT NULL,
   `timestamp` int(11) NOT NULL,
-  PRIMARY KEY (`ID`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+  `userID` int(11) NOT NULL,
+  `targetUserID` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
 --
--- Struktura tabulky `mappacks`
+-- Table structure for table `mappacks`
 --
 
-CREATE TABLE IF NOT EXISTS `mappacks` (
-  `ID` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `mappacks` (
+  `ID` int(11) NOT NULL,
   `name` varchar(100) NOT NULL,
   `levels` varchar(512) NOT NULL COMMENT 'entered as "ID of level 1, ID of level 2, ID of level 3" for example "13,14,15" (without the "s)',
   `stars` int(11) NOT NULL,
   `coins` int(11) NOT NULL,
   `difficulty` int(11) NOT NULL,
-  `rgbcolors` varchar(11) NOT NULL COMMENT 'entered as R,G,B',
-  PRIMARY KEY (`ID`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=47 ;
+  `rgbcolors` varchar(11) NOT NULL COMMENT 'entered as R,G,B'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
 --
--- Struktura tabulky `messages`
+-- Table structure for table `messages`
 --
 
-CREATE TABLE IF NOT EXISTS `messages` (
+CREATE TABLE `messages` (
   `userID` int(11) NOT NULL,
   `userName` varchar(50) NOT NULL,
   `body` longtext NOT NULL,
   `subject` longtext NOT NULL,
   `accID` int(11) NOT NULL,
-  `messageID` int(11) NOT NULL AUTO_INCREMENT,
+  `messageID` int(11) NOT NULL,
   `toAccountID` int(11) NOT NULL,
   `timestamp` int(11) NOT NULL,
   `secret` varchar(25) NOT NULL DEFAULT 'unused',
-  `isNew` int(11) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`messageID`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=632 ;
+  `isNew` int(11) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
 --
--- Struktura tabulky `modactions`
+-- Table structure for table `modactions`
 --
 
-CREATE TABLE IF NOT EXISTS `modactions` (
-  `ID` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `modactions` (
+  `ID` int(11) NOT NULL,
   `type` int(11) NOT NULL DEFAULT '0',
   `value` varchar(255) NOT NULL DEFAULT '0',
   `timestamp` int(11) NOT NULL DEFAULT '0',
@@ -324,78 +310,74 @@ CREATE TABLE IF NOT EXISTS `modactions` (
   `value5` int(11) NOT NULL DEFAULT '0',
   `value6` int(11) NOT NULL DEFAULT '0',
   `account` int(11) NOT NULL DEFAULT '0',
-  `value7` varchar(255) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`ID`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5971 ;
+  `value7` varchar(255) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
 --
--- Struktura tabulky `modips`
+-- Table structure for table `modips`
 --
 
-CREATE TABLE IF NOT EXISTS `modips` (
-  `ID` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `modips` (
+  `ID` int(11) NOT NULL,
   `IP` varchar(69) NOT NULL,
   `isMod` int(11) NOT NULL,
-  `accountID` int(11) NOT NULL,
-  PRIMARY KEY (`ID`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=23 ;
+  `accountID` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
 --
--- Struktura tabulky `quests`
+-- Table structure for table `quests`
 --
 
-CREATE TABLE IF NOT EXISTS `quests` (
-  `ID` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `quests` (
+  `ID` int(11) NOT NULL,
   `type` int(11) NOT NULL,
   `amount` int(11) NOT NULL,
   `reward` int(11) NOT NULL,
-  `name` varchar(255) NOT NULL,
-  PRIMARY KEY (`ID`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=12 ;
+  `name` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
 --
--- Struktura tabulky `reports`
+-- Table structure for table `reports`
 --
 
-CREATE TABLE IF NOT EXISTS `reports` (
-  `ID` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `reports` (
+  `ID` int(11) NOT NULL,
   `levelID` int(11) NOT NULL,
-  `hostname` varchar(255) NOT NULL,
-  PRIMARY KEY (`ID`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=63 ;
+  `hostname` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
 --
--- Struktura tabulky `songs`
+-- Table structure for table `songs`
 --
 
-CREATE TABLE IF NOT EXISTS `songs` (
-  `ID` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `songs` (
+  `ID` int(11) NOT NULL,
   `name` varchar(100) NOT NULL,
   `authorID` int(11) NOT NULL,
   `authorName` varchar(100) NOT NULL,
   `size` varchar(100) NOT NULL,
   `download` varchar(1337) NOT NULL,
   `hash` varchar(256) NOT NULL,
-  PRIMARY KEY (`ID`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5105231 ;
+  `isDisabled` int(11) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
 --
--- Struktura tabulky `users`
+-- Table structure for table `users`
 --
 
-CREATE TABLE IF NOT EXISTS `users` (
+CREATE TABLE `users` (
   `isRegistered` int(11) NOT NULL,
-  `userID` int(11) NOT NULL AUTO_INCREMENT,
+  `userID` int(11) NOT NULL,
   `extID` varchar(100) NOT NULL,
   `userName` varchar(69) NOT NULL DEFAULT 'undefined',
   `stars` int(11) NOT NULL DEFAULT '-1',
@@ -429,9 +411,283 @@ CREATE TABLE IF NOT EXISTS `users` (
   `chest1count` int(11) NOT NULL DEFAULT '0',
   `chest2count` int(11) NOT NULL DEFAULT '0',
   `isBanned` int(11) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`userID`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1861 ;
+  `isCreatorBanned` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `acccomments`
+--
+ALTER TABLE `acccomments`
+  ADD PRIMARY KEY (`commentID`);
+
+--
+-- Indexes for table `accounts`
+--
+ALTER TABLE `accounts`
+  ADD PRIMARY KEY (`accountID`),
+  ADD KEY `userName` (`userName`),
+  ADD KEY `isAdmin` (`isAdmin`);
+
+--
+-- Indexes for table `actions`
+--
+ALTER TABLE `actions`
+  ADD PRIMARY KEY (`ID`),
+  ADD UNIQUE KEY `ID` (`ID`);
+
+--
+-- Indexes for table `bannedips`
+--
+ALTER TABLE `bannedips`
+  ADD PRIMARY KEY (`ID`);
+
+--
+-- Indexes for table `blocks`
+--
+ALTER TABLE `blocks`
+  ADD PRIMARY KEY (`ID`),
+  ADD UNIQUE KEY `ID` (`ID`);
+
+--
+-- Indexes for table `comments`
+--
+ALTER TABLE `comments`
+  ADD PRIMARY KEY (`commentID`);
+
+--
+-- Indexes for table `dailyfeatures`
+--
+ALTER TABLE `dailyfeatures`
+  ADD PRIMARY KEY (`feaID`);
+
+--
+-- Indexes for table `friendreqs`
+--
+ALTER TABLE `friendreqs`
+  ADD PRIMARY KEY (`ID`);
+
+--
+-- Indexes for table `friendships`
+--
+ALTER TABLE `friendships`
+  ADD PRIMARY KEY (`ID`);
+
+--
+-- Indexes for table `gauntlets`
+--
+ALTER TABLE `gauntlets`
+  ADD PRIMARY KEY (`ID`);
+
+--
+-- Indexes for table `levels`
+--
+ALTER TABLE `levels`
+  ADD PRIMARY KEY (`levelID`),
+  ADD KEY `levelID` (`levelID`),
+  ADD KEY `levelName` (`levelName`),
+  ADD KEY `starDifficulty` (`starDifficulty`),
+  ADD KEY `starFeatured` (`starFeatured`),
+  ADD KEY `starEpic` (`starEpic`),
+  ADD KEY `starDemonDiff` (`starDemonDiff`),
+  ADD KEY `userID` (`userID`),
+  ADD KEY `likes` (`likes`),
+  ADD KEY `downloads` (`downloads`),
+  ADD KEY `starStars` (`starStars`),
+  ADD KEY `songID` (`songID`),
+  ADD KEY `audioTrack` (`audioTrack`),
+  ADD KEY `levelLength` (`levelLength`),
+  ADD KEY `twoPlayer` (`twoPlayer`);
+
+--
+-- Indexes for table `levelscores`
+--
+ALTER TABLE `levelscores`
+  ADD PRIMARY KEY (`scoreID`);
+
+--
+-- Indexes for table `links`
+--
+ALTER TABLE `links`
+  ADD PRIMARY KEY (`ID`);
+
+--
+-- Indexes for table `mappacks`
+--
+ALTER TABLE `mappacks`
+  ADD PRIMARY KEY (`ID`);
+
+--
+-- Indexes for table `messages`
+--
+ALTER TABLE `messages`
+  ADD PRIMARY KEY (`messageID`),
+  ADD KEY `toAccountID` (`toAccountID`),
+  ADD KEY `messageID` (`messageID`);
+
+--
+-- Indexes for table `modactions`
+--
+ALTER TABLE `modactions`
+  ADD PRIMARY KEY (`ID`);
+
+--
+-- Indexes for table `modips`
+--
+ALTER TABLE `modips`
+  ADD PRIMARY KEY (`ID`);
+
+--
+-- Indexes for table `quests`
+--
+ALTER TABLE `quests`
+  ADD PRIMARY KEY (`ID`);
+
+--
+-- Indexes for table `reports`
+--
+ALTER TABLE `reports`
+  ADD PRIMARY KEY (`ID`);
+
+--
+-- Indexes for table `songs`
+--
+ALTER TABLE `songs`
+  ADD PRIMARY KEY (`ID`),
+  ADD KEY `name` (`name`),
+  ADD KEY `ID` (`ID`);
+
+--
+-- Indexes for table `users`
+--
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`userID`),
+  ADD KEY `userID` (`userID`),
+  ADD KEY `userName` (`userName`),
+  ADD KEY `stars` (`stars`),
+  ADD KEY `demons` (`demons`),
+  ADD KEY `coins` (`coins`),
+  ADD KEY `userCoins` (`userCoins`),
+  ADD KEY `gameVersion` (`gameVersion`),
+  ADD KEY `creatorPoints` (`creatorPoints`),
+  ADD KEY `diamonds` (`diamonds`),
+  ADD KEY `orbs` (`orbs`),
+  ADD KEY `completedLvls` (`completedLvls`),
+  ADD KEY `isBanned` (`isBanned`),
+  ADD KEY `isCreatorBanned` (`isCreatorBanned`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `acccomments`
+--
+ALTER TABLE `acccomments`
+  MODIFY `commentID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1840;
+--
+-- AUTO_INCREMENT for table `accounts`
+--
+ALTER TABLE `accounts`
+  MODIFY `accountID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1448;
+--
+-- AUTO_INCREMENT for table `actions`
+--
+ALTER TABLE `actions`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31472;
+--
+-- AUTO_INCREMENT for table `bannedips`
+--
+ALTER TABLE `bannedips`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+--
+-- AUTO_INCREMENT for table `blocks`
+--
+ALTER TABLE `blocks`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+--
+-- AUTO_INCREMENT for table `comments`
+--
+ALTER TABLE `comments`
+  MODIFY `commentID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8348;
+--
+-- AUTO_INCREMENT for table `dailyfeatures`
+--
+ALTER TABLE `dailyfeatures`
+  MODIFY `feaID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=125;
+--
+-- AUTO_INCREMENT for table `friendreqs`
+--
+ALTER TABLE `friendreqs`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1911;
+--
+-- AUTO_INCREMENT for table `friendships`
+--
+ALTER TABLE `friendships`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1208;
+--
+-- AUTO_INCREMENT for table `gauntlets`
+--
+ALTER TABLE `gauntlets`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+--
+-- AUTO_INCREMENT for table `levels`
+--
+ALTER TABLE `levels`
+  MODIFY `levelID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8108;
+--
+-- AUTO_INCREMENT for table `levelscores`
+--
+ALTER TABLE `levelscores`
+  MODIFY `scoreID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9034;
+--
+-- AUTO_INCREMENT for table `links`
+--
+ALTER TABLE `links`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+--
+-- AUTO_INCREMENT for table `mappacks`
+--
+ALTER TABLE `mappacks`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=50;
+--
+-- AUTO_INCREMENT for table `messages`
+--
+ALTER TABLE `messages`
+  MODIFY `messageID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=741;
+--
+-- AUTO_INCREMENT for table `modactions`
+--
+ALTER TABLE `modactions`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6953;
+--
+-- AUTO_INCREMENT for table `modips`
+--
+ALTER TABLE `modips`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+--
+-- AUTO_INCREMENT for table `quests`
+--
+ALTER TABLE `quests`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+--
+-- AUTO_INCREMENT for table `reports`
+--
+ALTER TABLE `reports`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=87;
+--
+-- AUTO_INCREMENT for table `songs`
+--
+ALTER TABLE `songs`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5105386;
+--
+-- AUTO_INCREMENT for table `users`
+--
+ALTER TABLE `users`
+  MODIFY `userID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2060;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
