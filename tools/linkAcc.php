@@ -1,0 +1,84 @@
+<html>
+<head>
+<title>ACCOUNT LINKING</title>
+</head>
+<body>
+<?php
+//error_reporting(-1);
+include "../incl/lib/connection.php";
+require_once "../incl/lib/generatePass.php";
+$generatePass = new generatePass();
+require_once "../incl/lib/exploitPatch.php";
+$ep = new exploitPatch();
+if($_POST["userhere"]!="" AND $_POST["passhere"]!="" AND $_POST["usertarg"]!="" AND $_POST["passtarg"]!=""){
+	$userhere = $ep->remove($_POST["userhere"]);
+	$passhere = md5($ep->remove($_POST["passhere"]). "epithewoihewh577667675765768rhtre67hre687cvolton5gw6547h6we7h6wh");
+	$usertarg = $ep->remove($_POST["usertarg"]);
+	$passtarg = $ep->remove($_POST["passtarg"]);
+	$pass = $generatePass->isValidUsrname($userhere, $passhere);
+	//echo $pass;
+	if ($pass == 1) {
+		$url = $_POST["server"];
+		$udid = "S" . mt_rand(111111111,999999999) . mt_rand(111111111,999999999) . mt_rand(111111111,999999999) . mt_rand(111111111,999999999) . mt_rand(1,9);
+		$sid = mt_rand(111111111,999999999) . mt_rand(11111111,99999999);
+		//echo $udid;
+		$post = ['userName' => $usertarg, 'udid' => $udid, 'password' => $passtarg, 'sID' => $sid, 'secret' => 'Wmfv3899gc9'];
+		$ch = curl_init($url);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
+		$result = curl_exec($ch);
+		curl_close($ch);
+		if($result == "" OR $result == "-1" OR $result == "No no no"){
+			if($result==""){
+				echo "An error has occured while connecting to the server.";
+			}else if($result=="-1"){
+				echo "Login to the target server failed.";
+			}else{
+				echo "RobTop doesn't like you or something...";
+			}
+			echo "<br>Error code: $result";
+		}else{
+			if($_POST["debug"] == 1){
+				echo "<br>$result<br>";
+			}
+			$parsedurl = parse_url($url);
+			if($parsedurl["host"] == $_SERVER['SERVER_NAME']){
+				exit("You can't link 2 accounts on the same server.");
+			}
+			//getting stuff
+			$query = $db->prepare("SELECT accountID FROM accounts WHERE userName = :userName LIMIT 1");
+			$query->execute([':userName' => $userhere]);
+			$accountID = $query->fetchAll()[0]["accountID"];
+			$query = $db->prepare("SELECT userID FROM users WHERE extID = :extID LIMIT 1");
+			$query->execute([':extID' => $accountID]);
+			$userID = $query->fetchAll()[0]["userID"];
+			$targetAccountID = explode(",",$result)[0];
+			$targetUserID = explode(",",$result)[1];
+			$query = $db->prepare("SELECT count(*) FROM links WHERE targetAccountID = :targetAccountID LIMIT 1");
+			$query->execute([':targetAccountID' => $targetAccountID]);
+			if($query->fetchAll()[0][0] != 0){
+				exit("The target account is linked to a different account already.");
+			}
+			//echo $accountID;
+			if(!is_numeric($targetAccountID) OR !is_numeric($accountID)){
+				exit("Invalid AccountID found");
+			}
+			$server = $parsedurl["host"];
+			//query
+			$query = $db->prepare("INSERT INTO links (accountID, targetAccountID, server, timestamp, userID, targetUserID)
+											 VALUES (:accountID,:targetAccountID,:server,:timestamp,:userID,:targetUserID)");
+			$query->execute([':accountID' => $accountID, ':targetAccountID' => $targetAccountID, ':server' => $server, ':timestamp' => time(), 'userID' => $userID, 'targetUserID' => $targetUserID]);
+			echo "Account linked.<br><hr><br>$result";
+		}
+	}else{
+		echo "Invalid local username/password combination.";
+	}
+}else{
+	echo '<form action="linkAcc.php" method="post">Your password for the target server is NOT saved, it\'s used for one-time verification purposes only.<h3>CvoltonGDPS</h3>Username: <input type="text" name="userhere"><br>Password: <input type="password" name="passhere"><br><h3>Target server</h3>Username: <input type="text" name="usertarg"><br>Password: <input type="password" name="passtarg"><br>URL (dont change if you dont know what youre doing): <input type="text" name="server" value="http://www.boomlings.com/database/accounts/loginGJAccount.php"><br>Debug Mode (0=off, 1=on): <input type="text" name="debug" value="0"><br><input type="submit" value="Link Accounts"></form><br>Alternative servers to link to:<br>
+	http://www.boomlings.com/database/accounts/loginGJAccount.php - Robtops server<br>
+	http://cvoltongdps.altervista.org/accounts/loginGJAccount.php - CvoltonGDPS<br>
+	http://teamhax.altervista.org/dbh/accounts/loginGJAccount.php - TeamHax GDPS';
+}
+?>
+</body>
+</html>

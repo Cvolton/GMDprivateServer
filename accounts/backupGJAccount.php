@@ -2,9 +2,9 @@
 ini_set("memory_limit","128M");
 ini_set("post_max_size","50M");
 ini_set("upload_max_filesize","50M");
-include "../connection.php";
-require "../incl/generatePass.php";
-require_once "../incl/exploitPatch.php";
+include "../incl/lib/connection.php";
+require "../incl/lib/generatePass.php";
+require_once "../incl/lib/exploitPatch.php";
 $ep = new exploitPatch();
 //here im getting all the data
 $userName = $ep->remove($_POST["userName"]);

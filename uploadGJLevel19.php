@@ -1,3 +1,3 @@
 <?php
-include "uploadGJLevel20.php"
+include "incl/levels/uploadGJLevel.php";
 ?>

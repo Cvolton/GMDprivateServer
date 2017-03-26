@@ -1,3 +1,3 @@
 <?php
-include "uploadGJComment20.php";
+include "incl/comments/uploadGJComment.php";
 ?>

@@ -1,3 +1,3 @@
 <?php
-include "updateGJUserScore20.php";
+include "incl/scores/updateGJUserScore.php";
 ?>

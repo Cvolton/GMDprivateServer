@@ -13,7 +13,7 @@ function chkarray($source){
 	return $target;
 }
 //error_reporting(0);
-include "../connection.php";
+include "../incl/lib/connection.php";
 if($_POST["levelid"]!=""){
 	$levelID = $_POST["levelid"];
 	$levelID = preg_replace("/[^0-9]/", '', $levelID);
@@ -102,10 +102,22 @@ if($_POST["levelid"]!=""){
 			}else{
 				$starStars = 0;
 			}
+			$targetUserID = chkarray($levelarray["a6"]);
+			//linkacc
+			$query = $db->prepare("SELECT accountID, userID FROM links WHERE targetUserID=:target");
+			$query->execute([':target' => $targetUserID]);
+			if($query->rowCount() == 0){
+				$userID = 388;
+				$extID = 263;
+			}else{
+				$userInfo = $query->fetchAll()[0];
+				$userID = $userInfo["userID"];
+				$extID = $userInfo["accountID"];
+			}
 			//query
 			$query = $db->prepare("INSERT INTO levels (levelName, gameVersion, binaryVersion, userName, levelDesc, levelVersion, levelLength, audioTrack, auto, password, original, twoPlayer, songID, objects, coins, requestedStars, extraString, levelString, levelInfo, secret, uploadDate, updateDate, originalReup, userID, extID, unlisted, hostname, starStars, starCoins, starDifficulty, starDemon, starAuto)
-																			VALUES (:name ,:gameVersion, '27', 'Reupload', :desc, :version, :length, :audiotrack, '0', '1337666', :originalReup, :twoPlayer, :songID, '0', :coins, :reqstar, :extraString, :levelString, '0', '0', '$uploadDate', '$uploadDate', :originalReup, '388', '263', '0', :hostname, :starStars, :starCoins, :starDifficulty, :starDemon, :starAuto)");
-			$query->execute([':starDemon' => $starDemon, ':starAuto' => $starAuto, ':gameVersion' => $gameVersion, ':name' => $levelarray["a2"], ':desc' => $levelarray["a3"], ':version' => $levelarray["a5"], ':length' => $levelarray["a15"], ':audiotrack' => $levelarray["a12"], ':twoPlayer' => $twoPlayer, ':songID' => $songID, ':coins' => $coins, ':reqstar' => $reqstar, ':extraString' => $extraString, ':levelString' => "", ':originalReup' => $levelarray["a1"], ':hostname' => $hostname, ':starStars' => $starStars, ':starCoins' => $starCoins, ':starDifficulty' => $starDiff]);
+												VALUES (:name ,:gameVersion, '27', 'Reupload', :desc, :version, :length, :audiotrack, '0', '1337666', :originalReup, :twoPlayer, :songID, '0', :coins, :reqstar, :extraString, :levelString, '0', '0', '$uploadDate', '$uploadDate', :originalReup, :userID, :extID, '0', :hostname, :starStars, :starCoins, :starDifficulty, :starDemon, :starAuto)");
+			$query->execute([':starDemon' => $starDemon, ':starAuto' => $starAuto, ':gameVersion' => $gameVersion, ':name' => $levelarray["a2"], ':desc' => $levelarray["a3"], ':version' => $levelarray["a5"], ':length' => $levelarray["a15"], ':audiotrack' => $levelarray["a12"], ':twoPlayer' => $twoPlayer, ':songID' => $songID, ':coins' => $coins, ':reqstar' => $reqstar, ':extraString' => $extraString, ':levelString' => "", ':originalReup' => $levelarray["a1"], ':hostname' => $hostname, ':starStars' => $starStars, ':starCoins' => $starCoins, ':starDifficulty' => $starDiff, ':userID' => $userID, ':extID' => $extID]);
 			$levelID = $db->lastInsertId();
 			file_put_contents("../data/levels/$levelID",$levelString);
 			echo "Level reuploaded, ID: $levelID<br><hr><br>";
@@ -114,7 +126,7 @@ if($_POST["levelid"]!=""){
 		}
 	}
 }else{
-	echo '<form action="levelReupload.php" method="post">ID: <input type="text" name="levelid"><br>URL (dont change if you dont know what youre doing): <input type="text" name="server" value="http://www.boomlings.com/database/downloadGJLevel22.php"><br>Debug Mode (0=off, 1=on): <input type="text" name="debug" value="0"><br><input type="submit" value="Reupload"></form><br>Alternative servers to reupload from:<br>
+	echo '<h4><a href="linkAcc.php">LINKING YOUR ACCOUNT USING linkAcc.php RECOMMENDED</a></h4><form action="levelReupload.php" method="post">ID: <input type="text" name="levelid"><br>URL (dont change if you dont know what youre doing): <input type="text" name="server" value="http://www.boomlings.com/database/downloadGJLevel22.php"><br>Debug Mode (0=off, 1=on): <input type="text" name="debug" value="0"><br><input type="submit" value="Reupload"></form><br>Alternative servers to reupload from:<br>
 	http://www.boomlings.com/database/downloadGJLevel22.php - Robtops server<br>
 	http://cvoltongdps.pe.hu/gdserver/downloadGJLevel22.php - CvoltonGDPS<br>
 	http://teamhax.altervista.org/dbh/downloadGJLevel22.php - TeamHax GDPS';

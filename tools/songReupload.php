@@ -1,6 +1,6 @@
 <?php
 //error_reporting(0);
-include "../connection.php";
+include "../incl/lib/connection.php";
 if($_POST["songid"]!=0){
 $songid = $_POST["songid"];
 $url = $_POST["server"];
@@ -16,7 +16,7 @@ $options = array(
 $context  = stream_context_create($options);
 $result = file_get_contents($url, false, $context);
 if($result != "-1"){
-	require_once "../incl/songReup.php";
+	require_once "../incl/lib/songReup.php";
 	$resultfixed = str_replace("~", "", $result);
 	$resultarray = explode('|', $resultfixed);
 	$song = urldecode($resultarray[13]);

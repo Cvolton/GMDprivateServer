@@ -1,6 +1,6 @@
 <?php
-include "../connection.php";
-require_once "../incl/exploitPatch.php";
+include "../incl/lib/connection.php";
+require_once "../incl/lib/exploitPatch.php";
 $ep = new exploitPatch();
 if($_POST["userName"] != ""){
 //here im getting all the data

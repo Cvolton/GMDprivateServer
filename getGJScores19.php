@@ -1,3 +1,3 @@
 <?php
-include "getGJScores20.php";
+include "incl/scores/getGJScores.php";
 ?>

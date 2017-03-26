@@ -11,7 +11,7 @@ Private Messaging system by someguy28 (even though he needed a ton of help from 
 
 Base for account settings by someguy28
 
-Using this for XOR encryption - https://github.com/sathoro/php-xor-cipher - (incl/XORCipher.php)
+Using this for XOR encryption - https://github.com/sathoro/php-xor-cipher - (incl/lib/XORCipher.php)
 
 Jscolor (color picker in packCreate.php) - http://jscolor.com/
 

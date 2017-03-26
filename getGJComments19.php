@@ -1,3 +1,3 @@
 <?php
-include "getGJComments20.php";
+include "incl/comments/getGJComments.php";
 ?>

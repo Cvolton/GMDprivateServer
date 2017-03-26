@@ -1,7 +1,7 @@
 <?php
-include "../connection.php";
-require "../incl/generatePass.php";
-require_once "../incl/exploitPatch.php";
+include "../incl/lib/connection.php";
+require "../incl/lib/generatePass.php";
+require_once "../incl/lib/exploitPatch.php";
 if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
 	$ip = $_SERVER['HTTP_CLIENT_IP'];
 } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {

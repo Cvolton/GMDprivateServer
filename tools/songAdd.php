@@ -1,6 +1,6 @@
 <?php
 //error_reporting(0);
-include "../connection.php";
+include "../incl/lib/connection.php";
 $api_key = "dc467dd431fc48eb0244b0aead929ccd";
 if($_POST["songlink"]){
 $song = str_replace("www.dropbox.com","dl.dropboxusercontent.com",$_POST["songlink"]);
@@ -47,12 +47,18 @@ if (filter_var($song, FILTER_VALIDATE_URL) == TRUE) {
 	$size = curl_getinfo($ch, CURLINFO_CONTENT_LENGTH_DOWNLOAD);
 	curl_close($ch);
 	$size = round($size / 1024 / 1024, 2);
-	$hash = sha1(file_get_contents($song));
+	$hash = "";
+	//$hash = sha1_file($song);
+	$count = 0;
+	$query = $db->prepare("SELECT * FROM songs WHERE download = :download");
+	$query->execute([':download' => $song]);	
+	$count = $query->rowCount();
 	if(!$soundcloud){
-		$query = $db->prepare("SELECT * FROM songs WHERE download = :download OR hash = :hash");
-		$query->execute([':download' => $song, ':hash' => $hash]);	
+		$query = $db->prepare("SELECT * FROM songs WHERE hash = :hash");
+		//$query->execute([':hash' => $hash]);
+		//$count += $query->rowCount();
 	}
-	if($query->rowCount() != 0){
+	if($count != 0){
 		echo "This song already exists in our database.";
 	}else{
 	    $query = $db->prepare("INSERT INTO songs (name, authorID, authorName, size, download, hash)
@@ -64,6 +70,6 @@ if (filter_var($song, FILTER_VALIDATE_URL) == TRUE) {
 	echo "The download link isn't a valid URL";
 }
 }
-	echo '<b>Soundcloud links</b> or <b>Direct links</b> or <b>Dropbox links</b> only accepted, <b><font size="5">NO YOUTUBE LINKS</font></b><br><form action="songAdd.php" method="post">Link: <input type="text" name="songlink"><br><input type="submit" value="Reupload"></form>';
+	echo '<b>Soundcloud links</b> or <b>Direct links</b> or <b>Dropbox links</b> only accepted, <b><font size="5">NO YOUTUBE LINKS</font></b><br><form action="songAdd.php" method="post">Link: <input type="text" name="songlink"><br><input type="submit" value="Add Song"></form>';
 
 ?>

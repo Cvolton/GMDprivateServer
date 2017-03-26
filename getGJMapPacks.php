@@ -1,3 +1,3 @@
 <?php
-include "getGJMapPacks20.php";
+include "incl/levelpacks/getGJMapPacks.php";
 ?>

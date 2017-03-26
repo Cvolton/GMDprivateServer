@@ -1,3 +1,3 @@
 <?php
-include "likeGJItem20.php";
+include "incl/misc/likeGJItem.php";
 ?>

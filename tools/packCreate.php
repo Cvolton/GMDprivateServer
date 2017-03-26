@@ -1,7 +1,7 @@
 <?php
-include "../connection.php";
-require "../incl/generatePass.php";
-require_once "../incl/exploitPatch.php";
+include "../incl/lib/connection.php";
+require "../incl/lib/generatePass.php";
+require_once "../incl/lib/exploitPatch.php";
 $ep = new exploitPatch();
 //here im getting all the data
 $userName = $ep->remove($_POST["userName"]);
@@ -105,6 +105,6 @@ if($userName != "" AND $password != "" AND $levels != "" AND $color != ""){
 		<br>Stars: <input type="text" name="stars"> (max 10)
 		<br>Coins: <input type="text" name="coins"> (max 2)
 		<br>Color: <input name="color" class="jscolor" value="ffffff">
-		<input type="submit" value="Change"></form>';
+		<input type="submit" value="Create"></form>';
 }
 ?>
