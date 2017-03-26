@@ -48,7 +48,7 @@ class generateHash {
 	public function genSolo4($lvlsmultistring){
 		return sha1($lvlsmultistring . "pC26fpYaQCtg");
 	}
-	public function genPack($lvlsmultistring) {
+	public function genSixPack($lvlsmultistring) {
 		$lvlsarray = explode(",", $lvlsmultistring);
 		include "connection.php";
 		$hash = "";
