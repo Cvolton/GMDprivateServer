@@ -81,7 +81,6 @@ if($_POST["unlisted"]){
 }else{
 	$unlisted = 0;
 }
-file_put_contents("debug.txt",$query->rowCount());
 $accountID = "";
 $id = $ep->remove($_POST["udid"]);
 if($_POST["accountID"]!="" AND $_POST["accountID"]!="0"){
