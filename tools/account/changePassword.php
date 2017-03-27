@@ -1,8 +1,8 @@
 <?php
-include "../incl/lib/connection.php";
-require "../incl/lib/generatePass.php";
+include "../../incl/lib/connection.php";
+require "../../incl/lib/generatePass.php";
 //here im getting all the data
-require_once "../incl/lib/exploitPatch.php";
+require_once "../../incl/lib/exploitPatch.php";
 $ep = new exploitPatch();
 $userName = $ep->remove($_POST["userName"]);
 $oldpassword = md5($_POST["oldpassword"] . "epithewoihewh577667675765768rhtre67hre687cvolton5gw6547h6we7h6wh");
