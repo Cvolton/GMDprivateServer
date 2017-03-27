@@ -1,10 +1,15 @@
 # GMDprivateServer
 ## Geometry Dash Private Server
-A PHP server, which should react exactly, how RobTop's server could react...
+Basically a Geometry Dash Server Emulator
 
 Supported version of Geometry Dash: 1.0 - 2.1 (so any version of Geometry Dash works, as of writing this [11th February 2017])
 
-Required version of PHP: 5.6 (7.0 - untested, 5.3 - confirmed to not be working)
+Required version of PHP: 5.4+ (tested up to 7.1.3)
+
+### Setup
+1) Upload the files on a webserver
+2) Import database.sql into a MySQL/MariaDB database
+3) Edit the links in GeometryDash.exe (some are base64 encoded since 2.1, remember that)
 
 ### Credits
 Private Messaging system by someguy28 (even though he needed a ton of help from me... and by a ton I mean A TON)
