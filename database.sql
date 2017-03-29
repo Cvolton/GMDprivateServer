@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Mar 27, 2017 at 01:45 AM
+-- Generation Time: Mar 29, 2017 at 01:47 PM
 -- Server version: 10.0.30-MariaDB-0+deb8u1
 -- PHP Version: 7.1.3-2~bpo8+1
 
@@ -33,7 +33,8 @@ CREATE TABLE `acccomments` (
   `secret` varchar(10) NOT NULL DEFAULT 'unused',
   `commentID` int(11) NOT NULL,
   `timestamp` int(11) NOT NULL,
-  `likes` int(11) NOT NULL DEFAULT '0'
+  `likes` int(11) NOT NULL DEFAULT '0',
+  `isSpam` int(11) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -121,7 +122,8 @@ CREATE TABLE `comments` (
   `commentID` int(11) NOT NULL,
   `timestamp` int(11) NOT NULL,
   `likes` int(11) NOT NULL DEFAULT '0',
-  `percent` int(11) NOT NULL DEFAULT '0'
+  `percent` int(11) NOT NULL DEFAULT '0',
+  `isSpam` tinyint(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -271,7 +273,8 @@ CREATE TABLE `mappacks` (
   `stars` int(11) NOT NULL,
   `coins` int(11) NOT NULL,
   `difficulty` int(11) NOT NULL,
-  `rgbcolors` varchar(11) NOT NULL COMMENT 'entered as R,G,B'
+  `rgbcolors` varchar(11) NOT NULL COMMENT 'entered as R,G,B',
+  `colors2` varchar(11) NOT NULL DEFAULT 'none'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -587,17 +590,17 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `acccomments`
 --
 ALTER TABLE `acccomments`
-  MODIFY `commentID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1840;
+  MODIFY `commentID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1874;
 --
 -- AUTO_INCREMENT for table `accounts`
 --
 ALTER TABLE `accounts`
-  MODIFY `accountID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1448;
+  MODIFY `accountID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1481;
 --
 -- AUTO_INCREMENT for table `actions`
 --
 ALTER TABLE `actions`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31472;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35971;
 --
 -- AUTO_INCREMENT for table `bannedips`
 --
@@ -612,22 +615,22 @@ ALTER TABLE `blocks`
 -- AUTO_INCREMENT for table `comments`
 --
 ALTER TABLE `comments`
-  MODIFY `commentID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8348;
+  MODIFY `commentID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8466;
 --
 -- AUTO_INCREMENT for table `dailyfeatures`
 --
 ALTER TABLE `dailyfeatures`
-  MODIFY `feaID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=125;
+  MODIFY `feaID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=126;
 --
 -- AUTO_INCREMENT for table `friendreqs`
 --
 ALTER TABLE `friendreqs`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1911;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1960;
 --
 -- AUTO_INCREMENT for table `friendships`
 --
 ALTER TABLE `friendships`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1208;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1247;
 --
 -- AUTO_INCREMENT for table `gauntlets`
 --
@@ -637,17 +640,17 @@ ALTER TABLE `gauntlets`
 -- AUTO_INCREMENT for table `levels`
 --
 ALTER TABLE `levels`
-  MODIFY `levelID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8108;
+  MODIFY `levelID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8189;
 --
 -- AUTO_INCREMENT for table `levelscores`
 --
 ALTER TABLE `levelscores`
-  MODIFY `scoreID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9034;
+  MODIFY `scoreID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9181;
 --
 -- AUTO_INCREMENT for table `links`
 --
 ALTER TABLE `links`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
 --
 -- AUTO_INCREMENT for table `mappacks`
 --
@@ -657,12 +660,12 @@ ALTER TABLE `mappacks`
 -- AUTO_INCREMENT for table `messages`
 --
 ALTER TABLE `messages`
-  MODIFY `messageID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=741;
+  MODIFY `messageID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=745;
 --
 -- AUTO_INCREMENT for table `modactions`
 --
 ALTER TABLE `modactions`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6953;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7067;
 --
 -- AUTO_INCREMENT for table `modips`
 --
@@ -677,17 +680,17 @@ ALTER TABLE `quests`
 -- AUTO_INCREMENT for table `reports`
 --
 ALTER TABLE `reports`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=87;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=88;
 --
 -- AUTO_INCREMENT for table `songs`
 --
 ALTER TABLE `songs`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5105386;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5105396;
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `userID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2060;
+  MODIFY `userID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2104;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
