@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Mar 29, 2017 at 01:47 PM
+-- Generation Time: Mar 29, 2017 at 02:10 PM
 -- Server version: 10.0.30-MariaDB-0+deb8u1
 -- PHP Version: 7.1.3-2~bpo8+1
 
@@ -414,7 +414,7 @@ CREATE TABLE `users` (
   `chest1count` int(11) NOT NULL DEFAULT '0',
   `chest2count` int(11) NOT NULL DEFAULT '0',
   `isBanned` int(11) NOT NULL DEFAULT '0',
-  `isCreatorBanned` int(11) NOT NULL
+  `isCreatorBanned` int(11) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -600,7 +600,7 @@ ALTER TABLE `accounts`
 -- AUTO_INCREMENT for table `actions`
 --
 ALTER TABLE `actions`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35971;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36064;
 --
 -- AUTO_INCREMENT for table `bannedips`
 --
@@ -615,7 +615,7 @@ ALTER TABLE `blocks`
 -- AUTO_INCREMENT for table `comments`
 --
 ALTER TABLE `comments`
-  MODIFY `commentID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8466;
+  MODIFY `commentID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8467;
 --
 -- AUTO_INCREMENT for table `dailyfeatures`
 --
@@ -645,7 +645,7 @@ ALTER TABLE `levels`
 -- AUTO_INCREMENT for table `levelscores`
 --
 ALTER TABLE `levelscores`
-  MODIFY `scoreID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9181;
+  MODIFY `scoreID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9185;
 --
 -- AUTO_INCREMENT for table `links`
 --
