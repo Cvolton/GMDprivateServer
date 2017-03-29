@@ -61,7 +61,6 @@ if($type == "top" OR $type == "creators" OR $type == "relative"){
 	$query->execute([':stars' => $stars, ':count' => $count]);
 	$result = $query->fetchAll();
 	$people = $query->rowCount();
-	$xy = 1;
 	if($type == "relative"){
 		$user = $result[0];
 		$extid = $user["extID"];
@@ -77,14 +76,14 @@ if($type == "top" OR $type == "creators" OR $type == "relative"){
 		$leaderboard = $query->fetchAll();
 		//var_dump($leaderboard);
 		$leaderboard = $leaderboard[0];
-		$xy = $leaderboard["rank"];
+		$xi = $leaderboard["rank"] - 1;
 	}
 	foreach($result as &$user) {
 		$extid = 0;
 		if(is_numeric($user["extID"])){
 			$extid = $user["extID"];
 		}
-		$xi = $x + $xy;
+		$xi++;
 		$lbstring .= "1:".$user["userName"].":2:".$user["userID"].":13:".$user["coins"].":17:".$user["userCoins"].":6:".$xi.":9:".$user["icon"].":10:".$user["color1"].":11:".$user["color2"].":14:".$user["iconType"].":15:".$user["special"].":16:".$extid.":3:".$user["stars"].":8:".$user["creatorPoints"].":4:".$user["demons"].":7:".$extid.":46:".$user["diamonds"]."|";
 	}
 }
