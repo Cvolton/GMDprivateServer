@@ -30,7 +30,7 @@ if($_POST["auto"]){
 }else{
 	$auto = 0;
 }
-if($_POST["password"]){
+if($_POST["password"] == ""){
 	$password = $ep->remove($_POST["password"]);
 }else{
 	$password = 1;
