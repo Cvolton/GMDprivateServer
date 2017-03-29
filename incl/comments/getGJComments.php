@@ -3,13 +3,11 @@ chdir(dirname(__FILE__));
 //error_reporting(0);
 include "../lib/connection.php";
 require_once "../lib/exploitPatch.php";
-$users = array();
 $ep = new exploitPatch();
-$levelsstring = "";
-$songsstring  = "";
 $gameVersion = $ep->remove($_POST["gameVersion"]);
 $type = $ep->remove($_POST["type"]);
 $levelID = $ep->remove($_POST["levelID"]);
+$users = array();
 if($_POST["mode"]){
 	$mode = $ep->remove($_POST["mode"]);
 }else{
@@ -32,15 +30,14 @@ if($commentcount == 0){
 $query = $db->prepare($query);
 $query->execute([':levelID' => $levelID]);
 $result = $query->fetchAll();
-for ($x = 0; $x < 10; $x++) {
-	$comment1 = $result[$x];
+foreach($result as &$comment1) {
 	if($comment1["commentID"]!=""){
 		$uploadDate = date("d/m/Y G.i", $comment1["timestamp"]);
 		$actualcomment = $comment1["comment"];
 		if($gameVersion < 20){
 			$actualcomment = base64_decode($actualcomment);
 		}
-		$commentstring .= "2~".$actualcomment."~3~".$comment1["userID"]."~4~".$comment1["likes"]."~5~0~7~0~9~".$uploadDate."~6~".$comment1["commentID"]."~10~".$comment1["percent"]."";
+		$commentstring .= "2~".$actualcomment."~3~".$comment1["userID"]."~4~".$comment1["likes"]."~5~0~7~".$comment1["isSpam"]."~9~".$uploadDate."~6~".$comment1["commentID"]."~10~".$comment1["percent"]."";
 		$query12 = $db->prepare("SELECT * FROM users WHERE userID = '".$comment1["userID"]."'");
 		$query12->execute();
 		$result12 = $query12->fetchAll();
