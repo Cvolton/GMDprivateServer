@@ -9,9 +9,11 @@ $result = $query->fetchAll();
 foreach($result as &$gauntlet){
 	if($gauntlet["level5"] != 0){
 		$lvls = $gauntlet["level1"].",".$gauntlet["level2"].",".$gauntlet["level3"].",".$gauntlet["level4"].",".$gauntlet["level5"];
-		echo "1:".$gauntlet["ID"].":3:".$lvls."|";
-		$string = $string.$gauntlet["ID"].$lvls;
+		$gauntletstring .= "1:".$gauntlet["ID"].":3:".$lvls."|";
+		$string .= $gauntlet["ID"].$lvls;
 	}
 }
+$gauntletstring = substr($gauntletstring, 0, -1);
+echo $gauntletstring;
 echo "#".$generateHash->genSolo2($string);
 ?>
