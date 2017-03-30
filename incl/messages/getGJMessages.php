@@ -15,16 +15,15 @@ $page = $ep->remove($_POST["page"]);
 $offset = $page * 10;
 $GJPCheck = new GJPCheck();
 $gjpresult = $GJPCheck->check($gjp,$toAccountID);
-if($gjpresult == 1){
-	if($getSent != 1){
-		$query = "SELECT * FROM messages WHERE toAccountID = :toAccountID ORDER BY messageID DESC LIMIT 10 OFFSET $offset";
-		$countquery = "SELECT count(*) FROM messages WHERE toAccountID = :toAccountID";
-	}else{
-		$query = "SELECT * FROM messages WHERE accID = :toAccountID ORDER BY messageID DESC LIMIT 10 OFFSET $offset";
-		$countquery = "SELECT count(*) FROM messages WHERE accID = :toAccountID";
-	}
-}else{
+if($gjpresult != 1){
 	exit("-1");
+}
+if($getSent != 1){
+	$query = "SELECT * FROM messages WHERE toAccountID = :toAccountID ORDER BY messageID DESC LIMIT 10 OFFSET $offset";
+	$countquery = "SELECT count(*) FROM messages WHERE toAccountID = :toAccountID";
+}else{
+	$query = "SELECT * FROM messages WHERE accID = :toAccountID ORDER BY messageID DESC LIMIT 10 OFFSET $offset";
+	$countquery = "SELECT count(*) FROM messages WHERE accID = :toAccountID";
 }
 $query = $db->prepare($query);
 $query->execute([':toAccountID' => $toAccountID]);
@@ -46,22 +45,9 @@ foreach ($result as &$message1) {
 		$query=$db->prepare("SELECT * FROM users WHERE extID = :accountID");
 		$query->execute([':accountID' => $accountID]);
 		$result12 = $query->fetchAll()[0];
-		echo "6:".$result12["userName"].":3:".$result12["userID"].":2:".$result12["extID"].":1:".$message1["messageID"].":4:".$message1["subject"].":8:".$message1["isNew"].":9:".$getSent.":7:".$uploadDate."|";
-		if ($query->rowCount() > 0) {
-			$userID = $result12["extID"];
-			if(is_numeric($userID)){
-				$userIDnumba = $userID;
-			}else{
-				$userIDnumba = 0;
-			}
-		}
-	if($x == 0){
-		$levelsstring = $levelsstring . $message1["userID"] . ":" . $message1["userName"] . ":" . $userIDnumba;
-	}else{
-		$levelsstring = $levelsstring ."|" . $message1["userID"] . ":" . $message1["userName"] . ":" . $userIDnumba;
+		$msgstring .= "6:".$result12["userName"].":3:".$result12["userID"].":2:".$result12["extID"].":1:".$message1["messageID"].":4:".$message1["subject"].":8:".$message1["isNew"].":9:".$getSent.":7:".$uploadDate."|";
 	}
-	$userid = $userid + 1;
 }
-}
- echo "#".$msgcount.":".$offset.":10";
+$msgstring = substr($msgstring, 0, -1);
+echo $msgstring ."#".$msgcount.":".$offset.":10";
 ?>
