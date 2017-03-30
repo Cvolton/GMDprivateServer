@@ -8,6 +8,7 @@ $GJPCheck = new GJPCheck();
 $accountID = $ep->remove($_POST["accountID"]);
 $gjp = $ep->remove($_POST["gjp"]);
 $gjpresult = $GJPCheck->check($gjp,$accountID);
+$new = array();
 if($gjpresult != 1){
 	exit("-1");
 }
@@ -28,23 +29,28 @@ else
 	foreach ($result as &$friendship) {
 		$person = $friendship["person1"];
 		$isnew = $friendship["isNew1"];
-		$p = 1;
 		if($friendship["person1"] == $accountID){
 			$person = $friendship["person2"];
 			$isnew = $friendship["isNew2"];
-			$p = 2;
 		}
-		$query = "SELECT * FROM users WHERE extID = :person";
-		$query = $db->prepare($query);
-		$query->execute([':person' => $person]);
-		$result2 = $query->fetchAll();
-		$user = $result2[0];
-		echo "1:".$user["userName"].":2:".$user["userID"].":9:".$user["icon"].":10:".$user["color1"].":11:".$user["color2"].":14:".$user["iconType"].":15:".$user["special"].":16:".$person.":18:0:41:".$isnew."|";
-		if($isnew == 1){
-			$query = "UPDATE friendships SET isNew".$p." = '0' WHERE ID = :ID";
-			$query = $db->prepare($query);
-			$query->execute([':ID' => $friendship["ID"]]);
-		}
+		$new["a".$person] = $isNew;
+		$people .= $person . ",";
 	}
+	$people = substr($people, 0,-1);
+	$query = $db->prepare("SELECT userName, userID, icon, color1, color2, iconType, special, extID FROM users WHERE extID IN ($people) ORDER BY userName ASC");
+	$query->execute();
+	$result = $query->fetchAll();
+	foreach($result as &$user){
+		$peoplestring .= "1:".$user["userName"].":2:".$user["userID"].":9:".$user["icon"].":10:".$user["color1"].":11:".$user["color2"].":14:".$user["iconType"].":15:".$user["special"].":16:".$user["extID"].":18:0:41:".$new["a".$extID]."|";
+	}
+	$peoplestring = substr($peoplestring, 0, -1);
+	$query = $db->prepare("UPDATE friendships SET isNew1 = '0' WHERE person2 = :me");
+	$query->execute([':me' => $accountID]);
+	$query = $db->prepare("UPDATE friendships SET isNew2 = '0' WHERE person1 = :me");
+	$query->execute([':me' => $accountID]);
+	if($peoplestring == ""){
+		exit("-1");
+	}
+	echo $peoplestring;
 }
 ?>
