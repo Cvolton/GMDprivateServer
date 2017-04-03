@@ -2,9 +2,18 @@
 chdir(dirname(__FILE__));
 include "../lib/connection.php";
 require_once "../lib/exploitPatch.php";
+require_once "../lib/GJPCheck.php";
 $ep = new exploitPatch();
 $me = $ep->remove($_POST["accountID"]);
+$gjp = $ep->remove($_POST["gjp"]);
 $extid = $ep->remove($_POST["targetAccountID"]);
+if($me){
+	$GJPCheck = new GJPCheck(); //gjp check
+	$gjpresult = $GJPCheck->check($gjp,$me);
+	if($gjpresult != 1){
+		exit("-1");
+	}
+}
 //checking who has blocked him
 $query = "SELECT * FROM blocks WHERE person1 = :extid AND person2 = :me";
 $query = $db->prepare($query);
