@@ -37,6 +37,8 @@ foreach($result as &$action){
 	$result2 = $query->fetchAll();
 	$account = $result2[0]["userName"];
 	//detecting action
+	$value = $action["value"];
+	$value2 = $action["value2"];
 	switch($action["type"]){
 		case 1:
 			$actionname = "Rated a level";
@@ -52,6 +54,7 @@ foreach($result as &$action){
 			break;
 		case 5:
 			$actionname = "Set as daily feature";
+			$value2 = date("d/m/Y G:i", $action["value2"]);
 			break;
 		case 6:
 			$actionname = "Deleted a level";
@@ -69,7 +72,6 @@ foreach($result as &$action){
 			$actionname = "Changed demon difficulty";
 			break;
 		}
-	$value = $action["value"];
 	if($action["type"] == 2 OR $action["type"] == 3 OR $action["type"] == 4){
 		if($action["value"] == 1){
 			$value = "True";
@@ -81,7 +83,12 @@ foreach($result as &$action){
 		$value = "";
 	}
 	$time = date("d/m/Y G:i", $action["timestamp"]);
-	echo "<tr><td>".$account."</td><td>".$actionname."</td><td>".$value."</td><td>".$action["value2"]."</td><td>".$action["value3"]."</td><td>".$time."</td></tr>";
+	if($action["type"] == 5 AND $action["value2"] > time()){
+		echo "<tr><td>".$account."</td><td>".$actionname."</td><td>".$value."</td><td>".$value2."</td><td>future</td><td>".$time."</td></tr>";
+	}else{
+		echo "<tr><td>".$account."</td><td>".$actionname."</td><td>".$value."</td><td>".$value2."</td><td>".$action["value3"]."</td><td>".$time."</td></tr>";
+	}
+	
 }
 ?>
 </table>

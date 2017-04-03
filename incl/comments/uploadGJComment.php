@@ -1,6 +1,6 @@
 <?php
 chdir(dirname(__FILE__));
-//error_reporting(0);
+//error_reporting(E_ALL);
 include "../lib/connection.php";
 require_once "../lib/XORCipher.php";
 require_once "../lib/GJPCheck.php";
@@ -159,34 +159,49 @@ if(substr($decodecomment,0,7) == '!unepic'){
 	}
 }
 if(substr($decodecomment,0,12) == '!verifycoins'){
-$query2 = $db->prepare("SELECT * FROM accounts WHERE accountID = :id");
-$query2->execute([':id' => $id]);
-$result = $query2->fetchAll();
-$result = $result[0];
-if ($result["isAdmin"] == 1) {
-		$GJPCheck = new GJPCheck();
-	$gjpresult = $GJPCheck->check($gjp,$id);
-	if($gjpresult == 1){
-		$query = $db->prepare("UPDATE levels SET starCoins='1' WHERE levelID = :levelID");
-		$query->execute([':levelID' => $levelID]);
-		$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('2', :value, :levelID, :timestamp, :id)");
-		$query->execute([':value' => "1", ':timestamp' => $uploadDate, ':id' => $id, ':levelID' => $levelID]);
-	}
-}
-}
-if(substr($decodecomment,0,6) == '!daily'){
 	$query2 = $db->prepare("SELECT * FROM accounts WHERE accountID = :id");
 	$query2->execute([':id' => $id]);
 	$result = $query2->fetchAll();
 	$result = $result[0];
 	if ($result["isAdmin"] == 1) {
+			$GJPCheck = new GJPCheck();
+		$gjpresult = $GJPCheck->check($gjp,$id);
+		if($gjpresult == 1){
+			$query = $db->prepare("UPDATE levels SET starCoins='1' WHERE levelID = :levelID");
+			$query->execute([':levelID' => $levelID]);
+			$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('2', :value, :levelID, :timestamp, :id)");
+			$query->execute([':value' => "1", ':timestamp' => $uploadDate, ':id' => $id, ':levelID' => $levelID]);
+		}
+	}
+}
+if(substr($decodecomment,0,6) == '!daily'){
+	$log = "started daily";
+	$query2 = $db->prepare("SELECT * FROM accounts WHERE accountID = :id");
+	$query2->execute([':id' => $id]);
+	$result = $query2->fetchAll();
+	$result = $result[0];
+	$log .= "found acc info";
+	
+	if ($result["isAdmin"] == 1) {
 		$GJPCheck = new GJPCheck();
 		$gjpresult = $GJPCheck->check($gjp,$id);
 		if($gjpresult == 1){
+			$query = $db->prepare("SELECT count(*) FROM dailyfeatures WHERE levelID = :level");
+			$query->execute([':level' => $levelID]);
+			if($query->fetchAll()[0][0] != 0){
+				exit("-1");
+			}
+			$query = $db->prepare("SELECT timestamp FROM dailyfeatures WHERE timestamp >= :tomorrow ORDER BY timestamp DESC LIMIT 1");
+			$query->execute([':tomorrow' => strtotime("tomorrow 00:00:00")]);
+			if($query->rowCount() == 0){
+				$timestamp = strtotime("tomorrow 00:00:00");
+			}else{
+				$timestamp = $query->fetchAll()[0]["timestamp"] + 86400;
+			}
 			$query = $db->prepare("INSERT INTO dailyfeatures (levelID, timestamp) VALUES (:levelID, :uploadDate)");
-			$query->execute([':levelID' => $levelID, ':uploadDate' => $uploadDate]);
-			$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('5', :value, :levelID, :timestamp, :id)");
-			$query->execute([':value' => "1", ':timestamp' => $uploadDate, ':id' => $id, ':levelID' => $levelID]);
+			$query->execute([':levelID' => $levelID, ':uploadDate' => $timestamp]);
+			$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account, value2) VALUES ('5', :value, :levelID, :timestamp, :id, :dailytime)");
+			$query->execute([':value' => "1", ':timestamp' => $uploadDate, ':id' => $id, ':levelID' => $levelID, ':dailytime' => $timestamp]);
 		}
 	}
 }
@@ -350,44 +365,44 @@ if(substr($decodecomment,0,7) == '!unlist'){
 	}
 }
 if(substr($decodecomment,0,1) != '!'){
-$query = $db->prepare("INSERT INTO comments (userName, comment, levelID, userID, timeStamp, percent)
-VALUES (:userName, :comment, :levelID, :userID, :uploadDate, :percent)");
+	$query = $db->prepare("INSERT INTO comments (userName, comment, levelID, userID, timeStamp, percent) VALUES (:userName, :comment, :levelID, :userID, :uploadDate, :percent)");
 }else{
-$query = $db->prepare("SELECT * FROM modips WHERE IP = 'nope'");
-echo "-";
+	exit("-1");
 }
 
 if($id != "" AND $comment != ""){
 	$GJPCheck = new GJPCheck();
 	$gjpresult = $GJPCheck->check($gjp,$id);
 	if($register == 1){
-	if($gjpresult == 1){
-		$query->execute([':userName' => $userName, ':comment' => $comment, ':levelID' => $levelID, ':userID' => $userID, ':uploadDate' => $uploadDate, ':percent' => $percent]);
-		echo 1;
-		if($percent != 0){
-			$query2 = $db->prepare("SELECT * FROM levelscores WHERE accountID = :accountID AND levelID = :levelID");
-			$query2->execute([':accountID' => $id, ':levelID' => $levelID]);
-			$result = $query2->fetchAll();
-			if ($query2->rowCount() == 0) {
-				$query = $db->prepare("INSERT INTO levelscores (accountID, levelID, percent, uploadDate)
-				VALUES (:accountID, :levelID, :percent, :uploadDate)");
-			} else {
-				if($result[0]["percent"] < $percent){
-					$query = $db->prepare("UPDATE levelscores SET percent=:percent, uploadDate=:uploadDate WHERE accountID=:accountID AND levelID=:levelID");
-				}else{
-					$query = $db->prepare("SELECT * FROM levelscores WHERE percent=:percent AND uploadDate=:uploadDate AND accountID=:accountID AND levelID=:levelID");
+		if($gjpresult == 1){
+			$query->execute([':userName' => $userName, ':comment' => $comment, ':levelID' => $levelID, ':userID' => $userID, ':uploadDate' => $uploadDate, ':percent' => $percent]);
+			echo 1;
+			if($percent != 0){
+				$query2 = $db->prepare("SELECT * FROM levelscores WHERE accountID = :accountID AND levelID = :levelID");
+				$query2->execute([':accountID' => $id, ':levelID' => $levelID]);
+				$result = $query2->fetchAll();
+				if ($query2->rowCount() == 0) {
+					$query = $db->prepare("INSERT INTO levelscores (accountID, levelID, percent, uploadDate)
+					VALUES (:accountID, :levelID, :percent, :uploadDate)");
+				} else {
+					if($result[0]["percent"] < $percent){
+						$query = $db->prepare("UPDATE levelscores SET percent=:percent, uploadDate=:uploadDate WHERE accountID=:accountID AND levelID=:levelID");
+					}else{
+						$query = $db->prepare("SELECT * FROM levelscores WHERE percent=:percent AND uploadDate=:uploadDate AND accountID=:accountID AND levelID=:levelID");
+					}
 				}
+				$query->execute([':accountID' => $id, ':levelID' => $levelID, ':percent' => $percent, ':uploadDate' => $uploadDate]);
 			}
-			$query->execute([':accountID' => $id, ':levelID' => $levelID, ':percent' => $percent, ':uploadDate' => $uploadDate]);
 		}
-	}
-	else
-	{
-		echo -1;
-	}
+		else
+		{
+			echo -1;
+		}
 	}else{
 		$query->execute([':userName' => $userName, ':comment' => $comment, ':levelID' => $levelID, ':userID' => $userID, ':uploadDate' => $uploadDate, ':percent' => $percent]);
 		echo 1;
 	}
-}else{echo -1;}
+}else{
+	echo -1;
+}
 ?>

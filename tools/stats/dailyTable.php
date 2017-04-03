@@ -4,8 +4,8 @@
 //error_reporting(0);
 include "../../incl/lib/connection.php";
 $x = 1;
-$query = $db->prepare("SELECT * FROM dailyfeatures ORDER BY feaID DESC");
-$query->execute();
+$query = $db->prepare("SELECT * FROM dailyfeatures WHERE timestamp < :time ORDER BY feaID DESC");
+$query->execute([':time' => time()]);
 $result = $query->fetchAll();
 foreach($result as &$daily){
 	//basic daily info

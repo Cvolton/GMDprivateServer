@@ -19,8 +19,8 @@ if(!is_numeric($levelID)){
 	echo -1;
 }else{
 	if($levelID == "-1"){
-				$query = $db->prepare("SELECT * FROM dailyfeatures ORDER BY timestamp DESC LIMIT 1");
-				$query->execute();
+				$query = $db->prepare("SELECT * FROM dailyfeatures WHERE timestamp < :time ORDER BY timestamp DESC LIMIT 1");
+				$query->execute([':time' => time()]);
 				$result = $query->fetchAll();
 				$result = $result[0];
 				$levelID = $result["levelID"];
