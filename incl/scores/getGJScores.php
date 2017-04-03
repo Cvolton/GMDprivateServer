@@ -3,6 +3,7 @@ chdir(dirname(__FILE__));
 //error_reporting(0);
 include "../lib/connection.php";
 require_once "../lib/exploitPatch.php";
+require_once "../lib/GJPCheck.php";
 $ep = new exploitPatch();
 if($_POST["gameVersion"] > 19){
 	$sign = "> 19";
@@ -11,6 +12,12 @@ if($_POST["gameVersion"] > 19){
 }
 if($_POST["accountID"]){
 	$accountID = $ep->remove($_POST["accountID"]);
+	$gjp = $ep->remove($_POST["gjp"]);
+	$GJPCheck = new GJPCheck(); //gjp check
+	$gjpresult = $GJPCheck->check($gjp,$accountID);
+	if($gjpresult != 1){
+		exit("-1");
+	}
 }else{
 	$accountID = $ep->remove($_POST["udid"]);
 }
