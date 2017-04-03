@@ -47,17 +47,6 @@ if ($pass == 1) { //success
 	$query->execute([':id' => $id, ':userName' => $userName]);
 	$userID = $db->lastInsertId();
 	}
-	if($account["isAdmin"]==1){ //modIPs
-		$query4 = $db->prepare("select * from modips where accountID = :id");
-		$query4->execute([':id' => $id]);
-		if ($query4->rowCount() > 0) {
-			$query6 = $db->prepare("UPDATE modips SET IP=:hostname WHERE accountID=:id");
-			$query6->execute([':hostname' => $ip, ':id' => $id]);
-		}else{
-			$query6 = $db->prepare("INSERT INTO modips (IP, accountID, isMod) VALUES (:hostname,:id,'1')");
-			$query6->execute([':hostname' => $ip, ':id' => $id]);
-		}
-	}
 	//logging
 	$query6 = $db->prepare("INSERT INTO actions (type, value, timestamp, value2) VALUES 
 												('2',:username,:time,:ip)");

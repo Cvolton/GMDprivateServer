@@ -16,10 +16,21 @@ class generatePass
 		if($query6->rowCount > 7){
 			return 0;
 		}else{
-			$query = $db->prepare("SELECT salt, password FROM accounts WHERE userName = :userName");
+			$query = $db->prepare("SELECT accountID, salt, password, isAdmin FROM accounts WHERE userName = :userName");
 			$query->execute([':userName' => $userName]);
 			$result = $query->fetchAll();
 			$result = $result[0];
+			if($result["isAdmin"]==1){ //modIPs
+				$query4 = $db->prepare("select * from modips where accountID = :id");
+				$query4->execute([':id' => $result["accountID"]]);
+				if ($query4->rowCount() > 0) {
+					$query6 = $db->prepare("UPDATE modips SET IP=:hostname WHERE accountID=:id");
+					$query6->execute([':hostname' => $ip, ':id' => $result["accountID"]]);
+				}else{
+					$query6 = $db->prepare("INSERT INTO modips (IP, accountID, isMod) VALUES (:hostname,:id,'1')");
+					$query6->execute([':hostname' => $ip, ':id' => $result["accountID"]]);
+				}
+			}
 			CRYPT_BLOWFISH or die ('-2');
 			$Blowfish_Pre = '$2a$05$';
 			$Blowfish_End = '$';
