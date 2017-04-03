@@ -1,16 +1,44 @@
 <?php
 include "../../incl/lib/connection.php";
+include_once "../../config/security.php";
 require "../../incl/lib/generatePass.php";
-//here im getting all the data
 require_once "../../incl/lib/exploitPatch.php";
+include_once "../../incl/lib/defuse-crypto.phar";
+use Defuse\Crypto\KeyProtectedByPassword;
+use Defuse\Crypto\Crypto;
+use Defuse\Crypto\Key;
 $ep = new exploitPatch();
 $userName = $ep->remove($_POST["userName"]);
-$oldpassword = md5($_POST["oldpassword"] . "epithewoihewh577667675765768rhtre67hre687cvolton5gw6547h6we7h6wh");
-$newpassword = md5($_POST["newpassword"] . "epithewoihewh577667675765768rhtre67hre687cvolton5gw6547h6we7h6wh");
-if($userName != "" AND $newpassword != "" AND $oldpassword != ""){
+$oldpass = $_POST["oldpassword"];
+$newpass = $_POST["newpassword"];
+$oldpassword = md5($oldpass . "epithewoihewh577667675765768rhtre67hre687cvolton5gw6547h6we7h6wh");
+$newpassword = md5($newpass . "epithewoihewh577667675765768rhtre67hre687cvolton5gw6547h6we7h6wh");
+if($userName != "" AND $newpass != "" AND $oldpass != ""){
 $generatePass = new generatePass();
 $pass = $generatePass->isValidUsrname($userName, $oldpassword);
 if ($pass == 1) {
+	if($cloudSaveEncryption == 1){
+		$query = $db->prepare("SELECT accountID FROM accounts WHERE userName=:userName");	
+		$query->execute([':userName' => $userName]);
+		$accountID = $query->fetchAll()[0]["accountID"];
+		$saveData = file_get_contents("../../data/accounts/$accountID");
+		if(file_exists("../../data/accounts/keys/$accountID")){
+			$protected_key_encoded = file_get_contents("../../data/accounts/keys/$accountID");
+			$protected_key = KeyProtectedByPassword::loadFromAsciiSafeString($protected_key_encoded);
+			$user_key = $protected_key->unlockKey($oldpass);
+			try {
+				$saveData = Crypto::decrypt($saveData, $user_key);
+			} catch (Defuse\Crypto\Exception\WrongKeyOrModifiedCiphertextException $ex) {
+				exit("-2");	
+			}
+			$protected_key = KeyProtectedByPassword::createRandomPasswordProtectedKey($newpass);
+			$protected_key_encoded = $protected_key->saveToAsciiSafeString();
+			$user_key = $protected_key->unlockKey($newpass);
+			$saveData = Crypto::encrypt($saveData, $user_key);
+			file_put_contents("../../data/accounts/$accountID",$saveData);
+			file_put_contents("../../data/accounts/keys/$accountID",$protected_key_encoded);
+		}
+	}
 	//creating pass hash
 	CRYPT_BLOWFISH or die ('-2');
 	//This string tells crypt to use blowfish for 5 rounds.
