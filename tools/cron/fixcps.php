@@ -85,8 +85,8 @@ foreach($result as $gauntlet){
 	NOW to update DAILY CP
 */
 echo "<hr><h1>DAILY LEVELS UPDATE</h1><hr>";
-$query = $db->prepare("SELECT * FROM dailyfeatures");
-$query->execute();
+$query = $db->prepare("SELECT * FROM dailyfeatures WHERE timestamp < :time");
+$query->execute([':time' => time()]);
 $result = $query->fetchAll();
 //getting gauntlets
 foreach($result as $daily){
@@ -116,7 +116,16 @@ foreach($result as $daily){
 	DONE
 */
 echo "<hr>done";
-$query4 = $db->prepare("UPDATE users SET creatorPoints='0' WHERE userName='Ramppi'");
-$query4->execute();
+//april fools
+$date = date("d-m");
+if($date == "01-04"){
+	$query4 = $db->prepare("UPDATE users SET creatorPoints='99999', userName='sakujes', stars='999', secret='april'");
+	$query4->execute();
+}else{
+	$query4 = $db->prepare("UPDATE users SET gameVersion='0', stars='0' WHERE secret='april'");
+	$query4->execute();
+	$query4 = $db->prepare("UPDATE users SET creatorPoints='0' WHERE creatorPoints='99999'");
+	$query4->execute();
+}
 file_put_contents("../logs/cplog.txt",$cplog);
 ?>
