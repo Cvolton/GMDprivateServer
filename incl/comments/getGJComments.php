@@ -4,6 +4,7 @@ chdir(dirname(__FILE__));
 include "../lib/connection.php";
 require_once "../lib/exploitPatch.php";
 $ep = new exploitPatch();
+$binaryVersion = $ep->remove($_POST["binaryVersion"]);
 $gameVersion = $ep->remove($_POST["gameVersion"]);
 $type = $ep->remove($_POST["type"]);
 $levelID = $ep->remove($_POST["levelID"]);
@@ -52,7 +53,7 @@ foreach($result as &$comment1) {
 				$users[] = $user["userID"];
 				$userstring .=  $user["userID"] . ":" . $user["userName"] . ":" . $extID . "|";
 			}
-			if($gameVersion > 20){
+			if($binaryVersion > 31){
 				$commentstring .= ":1~".$user["userName"]."~9~".$user["icon"]."~10~".$user["color1"]."~11~".$user["color2"]."~14~".$user["iconType"]."~15~".$user["special"]."~16~".$user["extID"];
 			}
 			$commentstring .= "|";
@@ -62,7 +63,7 @@ foreach($result as &$comment1) {
 $commentstring = substr($commentstring, 0, -1);
 $userstring = substr($userstring, 0, -1);
 echo $commentstring;
-if($gameVersion < 21){
+if($binaryVersion < 32){
 	echo "#$userstring";
 }
 echo "#".$commentcount.":".$commentpage.":10";
