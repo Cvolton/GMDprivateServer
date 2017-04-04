@@ -11,8 +11,7 @@ use Defuse\Crypto\Key;
 $ep = new exploitPatch();
 //here im getting all the data
 $userName = $ep->remove($_POST["userName"]);
-$pass2 = $_POST["password"];
-$password = md5($pass2 . "epithewoihewh577667675765768rhtre67hre687cvolton5gw6547h6we7h6wh");
+$password = $_POST["password"];
 $secret = "";
 $generatePass = new generatePass();
 $pass = $generatePass->isValidUsrname($userName, $password);
@@ -36,7 +35,7 @@ if ($pass == 1) {
 			if(file_exists("../data/accounts/keys/$accountID")){
 				$protected_key_encoded = file_get_contents("../data/accounts/keys/$accountID");
 				$protected_key = KeyProtectedByPassword::loadFromAsciiSafeString($protected_key_encoded);
-				$user_key = $protected_key->unlockKey($pass2);
+				$user_key = $protected_key->unlockKey($password);
 				try {
 					$saveData = Crypto::decrypt($saveData, $user_key);
 				} catch (Defuse\Crypto\Exception\WrongKeyOrModifiedCiphertextException $ex) {

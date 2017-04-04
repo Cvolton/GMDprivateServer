@@ -12,7 +12,7 @@ require_once "../incl/lib/exploitPatch.php";
 $ep = new exploitPatch();
 if($_POST["userhere"]!="" AND $_POST["passhere"]!="" AND $_POST["usertarg"]!="" AND $_POST["passtarg"]!=""){
 	$userhere = $ep->remove($_POST["userhere"]);
-	$passhere = md5($ep->remove($_POST["passhere"]). "epithewoihewh577667675765768rhtre67hre687cvolton5gw6547h6we7h6wh");
+	$passhere = $ep->remove($_POST["passhere"]);
 	$usertarg = $ep->remove($_POST["usertarg"]);
 	$passtarg = $ep->remove($_POST["passtarg"]);
 	$pass = $generatePass->isValidUsrname($userhere, $passhere);

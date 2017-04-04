@@ -13,7 +13,7 @@ $ep = new exploitPatch();
 //here im getting all the data
 $udid = $ep->remove($_POST["udid"]);
 $userName = $ep->remove($_POST["userName"]);
-$password = md5($_POST["password"] . "epithewoihewh577667675765768rhtre67hre687cvolton5gw6547h6we7h6wh");
+$password = $ep->remove($_POST["password"]);
 //registering
 $query = "select * from accounts where userName = :userName";
 $query = $db->prepare($query);

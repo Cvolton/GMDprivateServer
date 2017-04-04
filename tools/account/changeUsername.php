@@ -6,7 +6,7 @@ $ep = new exploitPatch();
 //here im getting all the data
 $userName = $ep->remove($_POST["userName"]);
 $newusr = $ep->remove($_POST["newusr"]);
-$password = md5($_POST["password"] . "epithewoihewh577667675765768rhtre67hre687cvolton5gw6547h6we7h6wh");
+$password = $ep->remove($_POST["password"]);
 if($userName != "" AND $newusr != "" AND $password != ""){
 	$generatePass = new generatePass();
 	$pass = $generatePass->isValidUsrname($userName, $password);

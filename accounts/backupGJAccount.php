@@ -13,8 +13,7 @@ use Defuse\Crypto\Key;
 $ep = new exploitPatch();
 //here im getting all the data
 $userName = $ep->remove($_POST["userName"]);
-$pass2 = $_POST["password"];
-$password = md5($pass2 . "epithewoihewh577667675765768rhtre67hre687cvolton5gw6547h6we7h6wh");
+$password = $_POST["password"];
 $saveData = $ep->remove($_POST["saveData"]);
 $generatePass = new generatePass();
 $pass = $generatePass->isValidUsrname($userName, $password);
@@ -31,7 +30,7 @@ if ($pass == 1) {
 	$lvls = explode("</s>",$lvls)[0];
 	$protected_key_encoded = "";
 	if($cloudSaveEncryption == 0){
-		$saveData = str_replace($pass2, "not the actual password", $saveData); //replacing pass
+		$saveData = str_replace($password, "not the actual password", $saveData); //replacing pass
 		//file_put_contents($userName, $saveData);
 		$saveData = gzencode($saveData); //encoding back
 		$saveData = base64_encode($saveData);
@@ -40,9 +39,9 @@ if ($pass == 1) {
 		$saveData = $saveData . ";" . $saveDataArr[1]; //merging ccgamemanager and cclocallevels
 	}else if($cloudSaveEncryption == 1){
 		$saveData = $ep->remove($_POST["saveData"]);
-		$protected_key = KeyProtectedByPassword::createRandomPasswordProtectedKey($pass2);
+		$protected_key = KeyProtectedByPassword::createRandomPasswordProtectedKey($password);
 		$protected_key_encoded = $protected_key->saveToAsciiSafeString();
-		$user_key = $protected_key->unlockKey($pass2);
+		$user_key = $protected_key->unlockKey($password);
 		$saveData = Crypto::encrypt($saveData, $user_key);
 	}
 	//$query = $db->prepare("UPDATE `accounts` SET `saveData` = :saveData WHERE userName = :userName");
