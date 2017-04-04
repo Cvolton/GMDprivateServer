@@ -21,7 +21,6 @@ class generatePass
 			$result = $query->fetchAll();
 			$result = $result[0];
 			if(password_verify($pass, $result["password"])){
-				return 1;
 				if($result["isAdmin"]==1){ //modIPs
 					$query4 = $db->prepare("select * from modips where accountID = :id");
 					$query4->execute([':id' => $result["accountID"]]);
@@ -33,6 +32,7 @@ class generatePass
 						$query6->execute([':hostname' => $ip, ':id' => $result["accountID"]]);
 					}
 				}
+				return 1;
 			}else{
 				$md5pass = md5($pass . "epithewoihewh577667675765768rhtre67hre687cvolton5gw6547h6we7h6wh");
 				CRYPT_BLOWFISH or die ('-2');
