@@ -1,8 +1,9 @@
 <?php
 //error_reporting(0);
-$page = $_GET["page"];
-if($page != 0){
-	$page = $page -1;
+if($_GET["page"] > 0){
+	$page = $_GET["page"] - 1;
+}else{
+	$page = 0;
 }
 $humanpage = $page +1;
 $page = $page*20;
