@@ -195,5 +195,39 @@ class getStuff {
 				break;
 		}
 	}
+	public function getDiffFromName($name) {
+		$name = strtolower($name);
+		$starAuto = 0;
+		$starDemon = 0;
+		switch ($name) {
+			case "na":
+				$starDifficulty = 0;
+				break;
+			case "easy":
+				$starDifficulty = 10;
+				break;
+			case "normal":
+				$starDifficulty = 20;
+				break;
+			case "hard":
+				$starDifficulty = 30;
+				break;
+			case "harder":
+				$starDifficulty = 40;
+				break;
+			case "insane":
+				$starDifficulty = 50;
+				break;
+			case "auto":
+				$starDifficulty = 50;
+				$starAuto = 1;
+				break;
+			case "demon":
+				$starDifficulty = 50;
+				$starDemon = 1;
+				break;
+		}
+		return array($starDifficulty, $starDemon, $starAuto);
+	}
 }
 ?>
