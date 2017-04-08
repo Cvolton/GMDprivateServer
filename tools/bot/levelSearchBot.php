@@ -3,8 +3,8 @@
 include_once "../../incl/lib/connection.php";
 require_once "../../incl/lib/exploitPatch.php";
 $ep = new exploitPatch();
-require_once "../../incl/lib/getStuff.php";
-$gs = new getStuff();
+require_once "../../incl/lib/mainLib.php";
+$gs = new mainLib();
 $str = $ep->remove($_GET["str"]);
 //getting level data
 echo "***SHOWING RESULT FOR $str***\r\n";

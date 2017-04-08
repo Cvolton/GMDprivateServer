@@ -1,5 +1,5 @@
 <?php
-class getStuff {
+class mainLib {
 	public function getAudioTrack($id) {
 		switch($id){
 			case 0:
@@ -144,6 +144,46 @@ class getStuff {
 			}
 		}
 	}
+	public function getDiffFromStars($stars) {
+		$auto = 0;
+		$demon = 0;
+		switch($stars){
+			case 1:
+				$diffname = "Auto";
+				$diff = 50;
+				$auto = 1;
+				break;
+			case 2:
+				$diffname = "Easy";
+				$diff = 10;
+				break;
+			case 3:
+				$diffname = "Normal";
+				$diff = 20;
+				break;
+			case 4:
+			case 5:
+				$diffname = "Hard";
+				$diff = 30;
+				break;
+			case 6:
+			case 7:
+				$diffname = "Harder";
+				$diff = 40;
+				break;
+			case 8:
+			case 9:
+				$diffname = "Insane";
+				$diff = 50;
+				break;
+			case 10:
+				$diffname = "Demon";
+				$diff = 50;
+				$demon = 1;
+				break;
+		}
+		return array('diff' => $diff, 'auto' => $auto, 'demon' => $demon, 'name' => $diffname);
+	}
 	public function getLength($length) {
 		switch($length){
 			case 0:
@@ -228,6 +268,26 @@ class getStuff {
 				break;
 		}
 		return array($starDifficulty, $starDemon, $starAuto);
+	}
+	public function getUserID($extID, $userName = "Undefined") {
+		include __DIR__ . "/connection.php";
+		if(is_numeric($extID)){
+			$register = 1;
+		}else{
+			$register = 0;
+		}
+		$query = $db->prepare("SELECT userID FROM users WHERE extID = :id");
+		$query->execute([':id' => $extID]);
+		if ($query->rowCount() > 0) {
+			$userID = $query->fetchAll()[0]["userID"];
+		} else {
+			$query = $db->prepare("INSERT INTO users (isRegistered, extID, userName)
+			VALUES (:register, :id, :userName)");
+
+			$query->execute([':id' => $extID, ':register' => $register, ':userName' => $userName]);
+			$userID = $db->lastInsertId();
+		}
+		return $userID;
 	}
 }
 ?>

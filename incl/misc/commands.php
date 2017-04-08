@@ -2,8 +2,7 @@
 class Commands {
 	public function doCommands($accountID, $comment, $levelID) {
 		include dirname(__FILE__)."/../lib/connection.php";
-		include dirname(__FILE__)."/../lib/getStuff.php";
-		$gs = new getStuff();
+		$gs = new mainLib();
 		$commentarray = explode(' ', $comment);
 		$uploadDate = time();
 		//GETTING USERINFO
