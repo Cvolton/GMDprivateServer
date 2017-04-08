@@ -12,7 +12,7 @@ $XORCipher = new XORCipher();
 $generateHash = new generateHash();
 $accountID = $ep->remove($_POST["accountID"]);
 $udid = $ep->remove($_POST["udid"]);
-$chk = $ep->remove($_POST["chk"]);¨
+$chk = $ep->remove($_POST["chk"]);
 if($accountID != 0){
 	$userID = $gs->getUserID($accountID);
 }else{
