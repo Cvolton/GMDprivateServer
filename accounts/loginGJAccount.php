@@ -22,9 +22,9 @@ $result = $query->fetchAll();
 $account = $result[0];
 //rate limiting
 $newtime = time() - 3600;
-$query6 = $db->prepare("SELECT * FROM actions WHERE type = '1' AND timestamp > :time AND value2 = :ip");
+$query6 = $db->prepare("SELECT count(*) FROM actions WHERE type = '1' AND timestamp > :time AND value2 = :ip");
 $query6->execute([':time' => $newtime, ':ip' => $ip]);
-if($query6->rowCount > 2){
+if($query6->fetchAll()[0][0] > 2){
 	exit("-12");
 }
 //authenticating
@@ -33,19 +33,17 @@ $pass = $generatePass->isValidUsrname($userName, $password);
 if ($pass == 1) { //success
 	//userID
 	$id = $account["accountID"];
-	$query2 = $db->prepare("SELECT * FROM users WHERE extID = :id");
+	$query2 = $db->prepare("SELECT userID FROM users WHERE extID = :id");
 
 	$query2->execute([':id' => $id]);
-	$result = $query2->fetchAll();
 	if ($query2->rowCount() > 0) {
-	$select = $result[0];
-	$userID = $select[1];
+		$userID = $query2->fetchAll()[0]["userID"];
 	} else {
-	$query = $db->prepare("INSERT INTO users (isRegistered, extID, userName)
-	VALUES (1, :id, :userName)");
+		$query = $db->prepare("INSERT INTO users (isRegistered, extID, userName)
+		VALUES (1, :id, :userName)");
 
-	$query->execute([':id' => $id, ':userName' => $userName]);
-	$userID = $db->lastInsertId();
+		$query->execute([':id' => $id, ':userName' => $userName]);
+		$userID = $db->lastInsertId();
 	}
 	//logging
 	$query6 = $db->prepare("INSERT INTO actions (type, value, timestamp, value2) VALUES 

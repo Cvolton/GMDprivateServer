@@ -67,7 +67,6 @@ if($type == "top" OR $type == "creators" OR $type == "relative"){
 	$query = $db->prepare($query);
 	$query->execute([':stars' => $stars, ':count' => $count]);
 	$result = $query->fetchAll();
-	$people = $query->rowCount();
 	if($type == "relative"){
 		$user = $result[0];
 		$extid = $user["extID"];
@@ -105,21 +104,19 @@ if($type == "friends"){
 		if($friendship["person1"] == $accountID){
 			$person = $friendship["person2"];
 		}
-		$people = $people." OR extID = ".$person;
+		$people .= ",".$person;
 	}
-	$query = "SELECT * FROM users WHERE extID = :accountID ".$people . " ORDER BY stars DESC";
+	$query = "SELECT * FROM users WHERE extID IN (:accountID $people ) ORDER BY stars DESC";
 	$query = $db->prepare($query);
 	$query->execute([':accountID' => $accountID]);
 	$result = $query->fetchAll();
-	$people = $query->rowCount();
-	for ($x = 0; $x < $people; $x++) {
-		$user = $result[$x];
+	foreach($result as &$user){
 		if(is_numeric($user["extID"])){
 			$extid = $user["extID"];
 		}else{
 			$extid = 0;
 		}
-		$xi = $x + 1;
+		$xi++;
 		$lbstring .= "1:".$user["userName"].":2:".$user["userID"].":13:".$user["coins"].":17:".$user["userCoins"].":6:".$xi.":9:".$user["icon"].":10:".$user["color1"].":11:".$user["color2"].":14:".$user["iconType"].":15:".$user["special"].":16:".$extid.":3:".$user["stars"].":8:".$user["creatorPoints"].":4:".$user["demons"].":7:".$extid.":46:".$user["diamonds"]."|";
 	}
 }

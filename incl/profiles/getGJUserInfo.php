@@ -15,16 +15,16 @@ if($me){
 	}
 }
 //checking who has blocked him
-$query = "SELECT * FROM blocks WHERE person1 = :extid AND person2 = :me";
+$query = "SELECT count(*) FROM blocks WHERE person1 = :extid AND person2 = :me";
 $query = $db->prepare($query);
 $query->execute([':extid' => $extid, ':me' => $me]);
-if($query->rowCount() > 0){
+if($query->fetchAll()[0][0] > 0){
 	exit(-1);
 }
-$query = "SELECT * FROM blocks WHERE person2 = :extid AND person1 = :me";
+$query = "SELECT count(*) FROM blocks WHERE person2 = :extid AND person1 = :me";
 $query = $db->prepare($query);
 $query->execute([':extid' => $extid, ':me' => $me]);
-if($query->rowCount() > 0){
+if($query->fetchAll()[0][0] > 0){
 	exit(-1);
 }
 	$query = "SELECT * FROM users WHERE extID = :extid";
@@ -67,17 +67,17 @@ if($query->rowCount() > 0){
 	if($me==$extid){
 		/* notifications */
 			//friendreqs
-				$query = "SELECT * FROM friendreqs WHERE toAccountID = :me";
+				$query = "SELECT count(*) FROM friendreqs WHERE toAccountID = :me";
 				$query = $db->prepare($query);
 				$query->execute([':me' => $me]);
-				$requests = $query->rowCount();
+				$requests = $query->fetchAll()[0][0];
 			//messages
-				$query = "SELECT * FROM messages WHERE toAccountID = :me AND isNew=0";
+				$query = "SELECT count(*) FROM messages WHERE toAccountID = :me AND isNew=0";
 				$query = $db->prepare($query);
 				$query->execute([':me' => $me]);
-				$pms = $query->rowCount();
+				$pms = $query->fetchAll()[0][0];
 			//friends
-				$query = "SELECT * FROM friendships WHERE person1 = :me OR person2=:me";
+				$query = "SELECT * FROM friendships WHERE (person1 = :me OR person2=:me) AND (isNew1 = '1' OR isNew2 = '2')";
 				$query = $db->prepare($query);
 				$query->execute([':me' => $me]);
 				$friendArray = $query->fetchAll();
@@ -125,17 +125,17 @@ if($query->rowCount() > 0){
 				$friendstate=4;
 			}
 		//check if friend ALREADY
-			$query = "SELECT * FROM friendships WHERE person1 = :me AND person2 = :extID";
+			$query = "SELECT count(*) FROM friendships WHERE person1 = :me AND person2 = :extID";
 			$query = $db->prepare($query);
 			$query->execute([':me' => $me, ':extID' => $extid]);
-			$frs = $query->rowCount();
+			$frs = $query->fetchAll()[0][0];
 			if($frs > 0){
 				$friendstate=1;
 			}else{
-				$query = "SELECT * FROM friendships WHERE person2 = :me AND person1 = :extID";
+				$query = "SELECT count(*) FROM friendships WHERE person2 = :me AND person1 = :extID";
 				$query = $db->prepare($query);
 				$query->execute([':me' => $me, ':extID' => $extid]);
-				$frs = $query->rowCount();
+				$frs = $query->fetchAll()[0][0];
 				if($frs > 0){
 					$friendstate=1;
 				}

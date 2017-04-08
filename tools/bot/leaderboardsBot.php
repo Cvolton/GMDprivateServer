@@ -49,13 +49,12 @@ if($type =="stars" OR $type == "diamonds" OR $type == "usrcoins" OR $type == "co
 	$query = $db->prepare($query);
 	$query->execute([':page' => $page]);
 	$result = $query->fetchAll();
-	$people = $query->rowCount();
 	$xy = 1;
 	echo "`#    |        Username | ".str_pad($typename, 16, " ", STR_PAD_LEFT)." |`\r\n";
 	echo "`-----|-----------------|------------------|`\r\n";
-	for ($x = 0; $x < $people; $x++) {
-		$user = $result[$x];
-		$xi = $x + $xy + $page;
+	$xi = $page;
+	foreach($result as &$user){
+		$xi++;
 		$xyz = str_pad($xi, 4, " ", STR_PAD_RIGHT);
 		//$date = date("d/m/Y H:i", $user["lastPlayed"]);
 		switch($type){

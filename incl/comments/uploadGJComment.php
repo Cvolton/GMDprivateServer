@@ -1,7 +1,10 @@
 <?php
 chdir(dirname(__FILE__));
+ini_set('display_errors', 1); 
 error_reporting(E_ALL);
 include "../lib/connection.php";
+require_once "../lib/mainLib.php";
+$mainLib = new mainLib();
 require_once "../lib/XORCipher.php";
 require_once "../lib/GJPCheck.php";
 require_once "../lib/exploitPatch.php";
@@ -32,17 +35,7 @@ if($_POST["accountID"]!="" AND $_POST["accountID"]!="0"){
 }else{
 	$register = 0;
 }
-$query2 = $db->prepare("SELECT userID FROM users WHERE extID = :id");
-$query2->execute([':id' => $id]);
-if ($query2->rowCount() > 0) {
-	$userID = $query2->fetchAll()[0]["userID"];
-} else {
-	$query = $db->prepare("INSERT INTO users (isRegistered, extID, userName)
-	VALUES (:register, :id, :userName)");
-
-	$query->execute([':id' => $id, ':register' => $register, ':userName' => $userName]);
-	$userID = $db->lastInsertId();
-}
+$userID = $mainLib->getUserID($id, $userName);
 $uploadDate = time();
 $decodecomment = base64_decode($comment);
 if($cmds->doCommands($id, $decodecomment, $levelID)){

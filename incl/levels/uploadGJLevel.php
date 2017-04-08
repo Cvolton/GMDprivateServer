@@ -4,6 +4,8 @@ chdir(dirname(__FILE__));
 include "../lib/connection.php";
 require_once "../lib/GJPCheck.php";
 require_once "../lib/exploitPatch.php";
+require_once "../lib/mainLib.php";
+$mainLib = new mainLib();
 $ep = new exploitPatch();
 //here im getting all the data
 $gjp = $ep->remove($_POST["gjp"]);
@@ -90,18 +92,7 @@ if($_POST["accountID"]!="" AND $_POST["accountID"]!="0"){
 }else{
 	$register = 0;
 }
-$query2 = $db->prepare("SELECT * FROM users WHERE extID = :id");
-$query2->execute([':id' => $id]);
-$result = $query2->fetchAll();
-if ($query2->rowCount() > 0) {
-$userIDalmost = $result[0];
-$userID = $userIDalmost[1];
-} else {
-$query = $db->prepare("INSERT INTO users (isRegistered, extID, userName)
-VALUES (:register, :id, :userName)");
-$query->execute([':register' => $register, ':id' => $id, ':userName' => $userName]);
-$userID = $db->lastInsertId();
-}
+$userID = $mainLib->getUserID($id, $userName);
 $uploadDate = time();
 $query = $db->prepare("INSERT INTO levels (levelName, gameVersion, binaryVersion, userName, levelDesc, levelVersion, levelLength, audioTrack, auto, password, original, twoPlayer, songID, objects, coins, requestedStars, extraString, levelString, levelInfo, secret, uploadDate, userID, extID, updateDate, unlisted, hostname)
 VALUES (:levelName, :gameVersion, :binaryVersion, :userName, :levelDesc, :levelVersion, :levelLength, :audioTrack, :auto, :password, :original, :twoPlayer, :songID, :objects, :coins, :requestedStars, :extraString, :levelString, :levelInfo, :secret, :uploadDate, :userID, :id, :uploadDate, :unlisted, :hostname)");

@@ -13,11 +13,11 @@ if($_POST["levelID"]){
 	} else {
 		$ip = $_SERVER['REMOTE_ADDR'];
 	}
-	$query = "SELECT * FROM reports WHERE levelID = :levelID AND hostname = :hostname";
+	$query = "SELECT count(*) FROM reports WHERE levelID = :levelID AND hostname = :hostname";
 	$query = $db->prepare($query);
 	$query->execute([':levelID' => $levelID, ':hostname' => $ip]);
 
-	if($query->rowCount() == 0){
+	if($query->fetchAll()[0][0] == 0){
 		$query = $db->prepare("INSERT INTO reports (levelID, hostname) VALUES (:levelID, :hostname)");	
 		$query->execute([':levelID' => $levelID, ':hostname' => $ip]);
 		echo $db->lastInsertId();

@@ -10,12 +10,10 @@ $type = $ep->remove($_POST["type"]);
 $accountid = $ep->remove($_POST["accountID"]);
 $page = $ep->remove($_POST["page"]);
 $commentpage = $page*10;
-$query2 = $db->prepare("SELECT * FROM users WHERE extID = :accountid");
+$query2 = $db->prepare("SELECT userID FROM users WHERE extID = :accountid");
 $query2->execute([':accountid' => $accountid]);
-$result = $query2->fetchAll();
 if ($query2->rowCount() > 0) {
-	$userIDalmost = $result[0];
-	$userID = $userIDalmost[1];
+	$userID = $query2->fetchAll()[0]["userID"];
 } else {
 	$query = $db->prepare("INSERT INTO users (isRegistered, extID)
 	VALUES (:register,:id)");

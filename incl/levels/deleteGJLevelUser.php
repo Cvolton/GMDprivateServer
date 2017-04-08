@@ -3,6 +3,8 @@ chdir(dirname(__FILE__));
 include "../lib/connection.php";
 require_once "../lib/GJPCheck.php";
 require_once "../lib/exploitPatch.php";
+require_once "../lib/mainLib.php";
+$mainLib = new mainLib();
 $ep = new exploitPatch();
 $levelID = $ep->remove($_POST["levelID"]);
 $accountID = $ep->remove($_POST["accountID"]);
@@ -13,13 +15,7 @@ if(!is_numeric($levelID)){
 	exit("-1");
 }
 if($gjpresult == 1){
-	$query2 = $db->prepare("SELECT * FROM users WHERE extID = :accountID");
-	$query2->execute([':accountID' => $accountID]);
-	$result = $query2->fetchAll();
-	if ($query2->rowCount() > 0) {
-		$userIDalmost = $result[0];
-		$userID = $userIDalmost[1];
-	}
+	$userID = $mainLib->getUserID($accountID, $userName);
 	$query = $db->prepare("DELETE from levels WHERE levelID=:levelID AND userID=:userID AND starStars = 0 LIMIT 1");
 	$query->execute([':levelID' => $levelID, ':userID' => $userID]);
 	$query6 = $db->prepare("INSERT INTO actions (type, value, timestamp, value2) VALUES 
