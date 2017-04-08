@@ -15,16 +15,14 @@ $udid = $ep->remove($_POST["udid"]);
 $userName = $ep->remove($_POST["userName"]);
 $password = $ep->remove($_POST["password"]);
 //registering
-$query = "select * from accounts where userName = :userName";
-$query = $db->prepare($query);
+$query = $db->prepare("SELECT accountID FROM accounts WHERE userName = :userName");
 $query->execute([':userName' => $userName]);
-$result = $query->fetchAll();
-$account = $result[0];
+$account = $query->fetchAll()[0];
 //rate limiting
 $newtime = time() - 3600;
 $query6 = $db->prepare("SELECT count(*) FROM actions WHERE type = '1' AND timestamp > :time AND value2 = :ip");
 $query6->execute([':time' => $newtime, ':ip' => $ip]);
-if($query6->fetchAll()[0][0] > 2){
+if($query6->fetchColumn() > 2){
 	exit("-12");
 }
 //authenticating
@@ -52,9 +50,9 @@ if ($pass == 1) { //success
 	//result
 	echo $id.",".$userID;
 	if(!is_numeric($udid)){
-		$query2 = $db->prepare("SELECT * FROM users WHERE extID = :udid");
+		$query2 = $db->prepare("SELECT userID FROM users WHERE extID = :udid");
 		$query2->execute([':udid' => $udid]);
-		$usrid2 = $query->fetchAll()[0]["userID"];
+		$usrid2 = $query2->fetchColumn();
 		$query2 = $db->prepare("UPDATE levels SET userID = :userID, extID = :extID WHERE userID = :usrid2");
 		$query2->execute([':userID' => $userID, ':extID' => $id, ':usrid2' => $usrid2]);	
 	}

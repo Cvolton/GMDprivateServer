@@ -50,13 +50,13 @@ if (filter_var($song, FILTER_VALIDATE_URL) == TRUE) {
 	$hash = "";
 	//$hash = sha1_file($song);
 	$count = 0;
-	$query = $db->prepare("SELECT * FROM songs WHERE download = :download");
+	$query = $db->prepare("SELECT count(*) FROM songs WHERE download = :download");
 	$query->execute([':download' => $song]);	
-	$count = $query->rowCount();
+	$count = $query->fetchColumn();
 	if(!$soundcloud){
-		$query = $db->prepare("SELECT * FROM songs WHERE hash = :hash");
+		//$query = $db->prepare("SELECT count(*) FROM songs WHERE hash = :hash");
 		//$query->execute([':hash' => $hash]);
-		//$count += $query->rowCount();
+		//$count += $query->fetchColumn();
 	}
 	if($count != 0){
 		echo "This song already exists in our database.";

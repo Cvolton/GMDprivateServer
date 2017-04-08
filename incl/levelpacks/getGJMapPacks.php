@@ -21,7 +21,7 @@ foreach($result as &$mappack) {
 }
 $query = $db->prepare("SELECT count(*) FROM mappacks");
 $query->execute();
-$totalpackcount = $query->fetchAll()[0][0];
+$totalpackcount = $query->fetchColumn();
 $mappackstring = substr($mappackstring, 0, -1);
 $lvlsmultistring = substr($lvlsmultistring, 0, -1);
 echo $mappackstring;

@@ -6,7 +6,7 @@ $songReup = new songReup();
 require_once "../lib/exploitPatch.php";
 $ep = new exploitPatch();
 $songid = $ep->remove($_POST["songID"]);
-$query3=$db->prepare("select * from songs where ID = :songid");
+$query3=$db->prepare("SELECT * FROM songs WHERE ID = :songid LIMIT 1");
 $query3->execute([':songid' => $songid]);
 if($query3->rowCount() == 0) {
 	$url = 'http://www.boomlings.com/database/getGJSongInfo.php';
@@ -38,8 +38,7 @@ if($query3->rowCount() == 0) {
 	echo $result;
 	$reup = $songReup->reup($result);
 }else{
-	$result3 = $query3->fetchAll();
-	$result4 = $result3[0];
+	$result4 = $query3->fetch();
 	if($result4["isDisabled"] == 1){
 		exit("-2");
 	}

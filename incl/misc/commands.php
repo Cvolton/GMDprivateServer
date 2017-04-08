@@ -76,7 +76,7 @@ class Commands {
 			if(substr($comment,0,6) == '!daily'){
 				$query = $db->prepare("SELECT count(*) FROM dailyfeatures WHERE levelID = :level");
 				$query->execute([':level' => $levelID]);
-				if($query->fetchAll()[0][0] != 0){
+				if($query->fetchColumn() != 0){
 					exit("-1");
 				}
 				$query = $db->prepare("SELECT timestamp FROM dailyfeatures WHERE timestamp >= :tomorrow ORDER BY timestamp DESC LIMIT 1");
@@ -110,13 +110,11 @@ class Commands {
 				$query->execute([':userName' => $commentarray[1]]);
 				$targetAcc = $query->fetchAll()[0];
 				//var_dump($result);
-				$query = $db->prepare("SELECT * FROM users WHERE extID = :extID LIMIT 1");
+				$query = $db->prepare("SELECT userID FROM users WHERE extID = :extID LIMIT 1");
 				$query->execute([':extID' => $targetAcc["accountID"]]);
-				$result2 = $query->fetchAll();
-				$result2 = $result2[0];
-				//var_dump($result2);
+				$userID = $query->fetchColumn();
 				$query = $db->prepare("UPDATE levels SET extID=:extID, userID=:userID, userName=:userName WHERE levelID=:levelID");
-				$query->execute([':extID' => $targetAcc["accountID"], ':userID' => $result2["userID"], ':userName' => $commentarray[1], ':levelID' => $levelID]);
+				$query->execute([':extID' => $targetAcc["accountID"], ':userID' => $userID, ':userName' => $commentarray[1], ':levelID' => $levelID]);
 				$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('7', :value, :levelID, :timestamp, :id)");
 				$query->execute([':value' => $commentarray[1], ':timestamp' => $uploadDate, ':id' => $accountID, ':levelID' => $levelID]);
 				return true;

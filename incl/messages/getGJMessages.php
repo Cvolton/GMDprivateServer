@@ -30,7 +30,7 @@ $query->execute([':toAccountID' => $toAccountID]);
 $result = $query->fetchAll();
 $countquery = $db->prepare($countquery);
 $countquery->execute([':toAccountID' => $toAccountID]);
-$msgcount = $countquery->fetchAll()[0][0];
+$msgcount = $countquery->fetchColumn();
 if($msgcount == 0){
 	exit("-2");
 }

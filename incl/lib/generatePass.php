@@ -11,9 +11,9 @@ class generatePass
 			$ip = $_SERVER['REMOTE_ADDR'];
 		}
 		$newtime = time() - (60*60);
-		$query6 = $db->prepare("SELECT * FROM actions WHERE type = '6' AND timestamp > :time AND value2 = :ip");
+		$query6 = $db->prepare("SELECT count(*) FROM actions WHERE type = '6' AND timestamp > :time AND value2 = :ip");
 		$query6->execute([':time' => $newtime, ':ip' => $ip]);
-		if($query6->rowCount > 7){
+		if($query6->fetchColumn() > 7){
 			return 0;
 		}else{
 			$query = $db->prepare("SELECT accountID, salt, password, isAdmin FROM accounts WHERE userName = :userName");
@@ -22,9 +22,9 @@ class generatePass
 			$result = $result[0];
 			if(password_verify($pass, $result["password"])){
 				if($result["isAdmin"]==1){ //modIPs
-					$query4 = $db->prepare("select * from modips where accountID = :id");
+					$query4 = $db->prepare("SELECT count(*) FROM modips WHERE accountID = :id");
 					$query4->execute([':id' => $result["accountID"]]);
-					if ($query4->rowCount() > 0) {
+					if ($query4->fetchColumn() > 0) {
 						$query6 = $db->prepare("UPDATE modips SET IP=:hostname WHERE accountID=:id");
 						$query6->execute([':hostname' => $ip, ':id' => $result["accountID"]]);
 					}else{

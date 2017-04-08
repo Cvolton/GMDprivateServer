@@ -33,7 +33,7 @@ else
 			$person = $friendship["person2"];
 			$isnew = $friendship["isNew2"];
 		}
-		$new["a".$person] = $isNew;
+		$new[$person] = $isNew;
 		$people .= $person . ",";
 	}
 	$people = substr($people, 0,-1);
@@ -41,7 +41,7 @@ else
 	$query->execute();
 	$result = $query->fetchAll();
 	foreach($result as &$user){
-		$peoplestring .= "1:".$user["userName"].":2:".$user["userID"].":9:".$user["icon"].":10:".$user["color1"].":11:".$user["color2"].":14:".$user["iconType"].":15:".$user["special"].":16:".$user["extID"].":18:0:41:".$new["a".$extID]."|";
+		$peoplestring .= "1:".$user["userName"].":2:".$user["userID"].":9:".$user["icon"].":10:".$user["color1"].":11:".$user["color2"].":14:".$user["iconType"].":15:".$user["special"].":16:".$user["extID"].":18:0:41:".$new[$extID]."|";
 	}
 	$peoplestring = substr($peoplestring, 0, -1);
 	$query = $db->prepare("UPDATE friendships SET isNew1 = '0' WHERE person2 = :me");

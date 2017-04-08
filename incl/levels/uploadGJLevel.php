@@ -110,11 +110,9 @@ if($levelString != "" AND $levelName != ""){
 	$gjpresult = $GJPCheck->check($gjp,$id);
 	if($register ==1){
 	if($gjpresult == 1){
-		$querye=$db->prepare("select * from levels where levelName = :levelName AND userID = :userID");
+		$querye=$db->prepare("SELECT levelID FROM levels WHERE levelName = :levelName AND userID = :userID");
 		$querye->execute([':levelName' => $levelName, ':userID' => $userID]);
-		$resulte = $querye->fetchAll();
-		$levele = $resulte[0];
-		$levelID = $levele["levelID"];
+		$levelID = $querye->fetchColumn();
 		$lvls = $querye->rowCount();
 		if($lvls==1){
 			$query = $db->prepare("UPDATE levels SET levelName=:levelName, gameVersion=:gameVersion,  binaryVersion=:binaryVersion, userName=:userName, levelDesc=:levelDesc, levelVersion=:levelVersion, levelLength=:levelLength, audioTrack=:audioTrack, auto=:auto, password=:password, original=:original, twoPlayer=:twoPlayer, songID=:songID, objects=:objects, coins=:coins, requestedStars=:requestedStars, extraString=:extraString, levelString=:levelString, levelInfo=:levelInfo, secret=:secret, updateDate=:uploadDate, unlisted=:unlisted, hostname=:hostname WHERE levelName=:levelName AND extID=:id");	

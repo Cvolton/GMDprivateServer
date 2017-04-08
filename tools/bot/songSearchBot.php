@@ -8,7 +8,7 @@ $str = $db->quote($str);
 $str = str_replace("'","", $str);
 echo "***SHOWING RESULTS FOR $str***\r\n";
 include "../../incl/lib/connection.php";
-$query = $db->prepare("(SELECT * FROM songs WHERE ID = :str) UNION (SELECT * FROM songs WHERE name LIKE CONCAT('%', :str, '%'))"); //getting song info
+$query = $db->prepare("(SELECT ID,name FROM songs WHERE ID = :str) UNION (SELECT ID,name FROM songs WHERE name LIKE CONCAT('%', :str, '%'))"); //getting song info
 $query->execute([':str' => $str]);
 $result = $query->fetchAll();
 foreach($result as &$song){

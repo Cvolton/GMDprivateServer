@@ -30,10 +30,6 @@ if($levelID != ""){
 	$stars = $diffinfo["stars"];
 	$auto = $diffinfo["auto"];
 	$diffname = $diffinfo["name"];
-	$query = $db->prepare("SELECT * FROM levels WHERE levelID = :levelID");
-	$query->execute([':levelID' => $levelID]);
-	$result = $query->fetchAll();
-	$lvlinfo = $result[0];
 	$query = "UPDATE levels SET starDemon=:demon, starAuto=:auto, starDifficulty=:diff, starStars=:stars WHERE levelID=:levelID";
 	$query = $db->prepare($query);	
 	$query->execute([':demon' => $demon, ':auto' => $auto, ':diff' => $diff, ':stars' => "0", ':levelID'=>$levelID]);

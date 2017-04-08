@@ -16,7 +16,7 @@ if(count($result) < 1){
 $countquery = "SELECT count(*) FROM users WHERE userName LIKE CONCAT('%', :str, '%')";
 $countquery = $db->prepare($countquery);
 $countquery->execute([':str' => $str]);
-$usercount = $countquery->fetchAll()[0][0];
+$usercount = $countquery->fetchColumn();
 foreach($result as &$user){
 	$userstring .= "1:".$user["userName"].":2:".$user["userID"].":13:".$user["coins"].":17:".$user["userCoins"].":6:".$xi.":9:".$user["icon"].":10:".$user["color1"].":11:".$user["color2"].":14:".$user["iconType"].":15:".$user["special"].":16:".$user["extID"].":3:".$user["stars"].":8:".$user["creatorPoints"].":4:".$user["demons"]."|";
 }

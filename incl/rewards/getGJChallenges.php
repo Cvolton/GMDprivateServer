@@ -5,21 +5,19 @@ require "../lib/XORCipher.php";
 require "../lib/generateHash.php";
 require_once "../lib/exploitPatch.php";
 $ep = new exploitPatch();
+require_once "../lib/mainLib.php";
+$gs = new mainLib();
 $usedids = array();
 $XORCipher = new XORCipher();
 $generateHash = new generateHash();
 $accountID = $ep->remove($_POST["accountID"]);
 $udid = $ep->remove($_POST["udid"]);
-$chk = $ep->remove($_POST["chk"]);
-$query=$db->prepare("select * from users where extID = ?");
+$chk = $ep->remove($_POST["chk"]);¨
 if($accountID != 0){
-	$query->execute(array($accountID));
+	$userID = $gs->getUserID($accountID);
 }else{
-	$query->execute(array($udid));
+	$userID = $gs->getUserID($udid);
 }
-$result = $query->fetchAll();
-$result = $result[0];
-$userid = $result["userID"];
 $chk = $XORCipher->cipher(base64_decode(substr($chk, 5)),19847);
 //Generating quest IDs
 $from = strtotime('2000-12-17');
@@ -34,7 +32,7 @@ $quest3ID = $questID+2;
 $midnight = strtotime("tomorrow 00:00:00");
 $current = time();
 $timeleft = $midnight - $current;
-$query=$db->prepare("SELECT * FROM quests");
+$query=$db->prepare("SELECT type,amount,reward,name FROM quests");
 $query->execute();
 $result = $query->fetchAll();
 //var_dump($result);

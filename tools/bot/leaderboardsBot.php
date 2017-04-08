@@ -17,39 +17,19 @@ if($page < 0){
 $page = $page * 10;
 if($type =="stars" OR $type == "diamonds" OR $type == "usrcoins" OR $type == "coins" OR $type == "demons" OR $type == "cp" OR $type == "orbs" OR $type == "levels" OR $type == "friends"){
 	$typename = $type;
-	if($type == "stars"){
-		$query = "SELECT * FROM users WHERE isBanned = '0' ORDER BY stars DESC LIMIT 10 OFFSET $page";
-	}
-	if($type == "coins"){
-		$query = "SELECT * FROM users WHERE isBanned = '0' ORDER BY coins DESC LIMIT 10 OFFSET $page";
-	}
-	if($type == "diamonds"){
-		$query = "SELECT * FROM users WHERE isBanned = '0' ORDER BY diamonds DESC LIMIT 10 OFFSET $page";
-	}
 	if($type == "usrcoins"){
-		$query = "SELECT * FROM users WHERE isBanned = '0' ORDER BY userCoins DESC LIMIT 10 OFFSET $page";
 		$typename = "User Coins";
 	}
-	if($type == "demons"){
-		$query = "SELECT * FROM users WHERE isBanned = '0' ORDER BY demons DESC LIMIT 10 OFFSET $page";
-	}
-	if($type == "cp"){
-		$query = "SELECT * FROM users WHERE isBanned = '0' ORDER BY creatorPoints DESC LIMIT 10 OFFSET $page";
-	}
-	if($type == "orbs"){
-		$query = "SELECT * FROM users WHERE isBanned = '0' ORDER BY orbs DESC LIMIT 10 OFFSET $page";
-	}
-	if($type == "friends"){
-		$query = "SELECT * FROM accounts ORDER BY friendsCount DESC LIMIT 10 OFFSET $page";
-	}
 	if($type == "levels"){
-		$query = "SELECT * FROM users WHERE isBanned = '0' ORDER BY completedLvls DESC LIMIT 10 OFFSET $page";
 		$typename = "Completed Levels";
+	}
+	$query = "SELECT $type , userName FROM users WHERE isBanned = '0' ORDER BY $type DESC LIMIT 10 OFFSET $page";
+	if($type == "friends"){
+		$query = "SELECT userName, friendsCount FROM accounts ORDER BY friendsCount DESC LIMIT 10 OFFSET $page";
 	}
 	$query = $db->prepare($query);
 	$query->execute([':page' => $page]);
 	$result = $query->fetchAll();
-	$xy = 1;
 	echo "`#    |        Username | ".str_pad($typename, 16, " ", STR_PAD_LEFT)." |`\r\n";
 	echo "`-----|-----------------|------------------|`\r\n";
 	$xi = $page;

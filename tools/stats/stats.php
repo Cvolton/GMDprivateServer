@@ -6,19 +6,19 @@ function genLvlRow($params, $params2, $params3, $params4){
 	include "../../incl/lib/connection.php";
 	$query = $db->prepare("SELECT count(*) FROM levels ".$params4." ".$params2);
 	$query->execute();
-	$row = "<tr><td>$params3</td><td>".$query->fetchAll()[0][0]."</td>";
+	$row = "<tr><td>$params3</td><td>".$query->fetchColumn()."</td>";
 	$query = $db->prepare("SELECT count(*) FROM levels WHERE starStars = 0 ".$params." ".$params2);
 	$query->execute();
-	$row .= "<td>".$query->fetchAll()[0][0]."</td>";
+	$row .= "<td>".$query->fetchColumn()."</td>";
 	$query = $db->prepare("SELECT count(*) FROM levels WHERE starStars <> 0 ".$params." ".$params2);
 	$query->execute();
-	$row .= "<td>".$query->fetchAll()[0][0]."</td>";
+	$row .= "<td>".$query->fetchColumn()."</td>";
 	$query = $db->prepare("SELECT count(*) FROM levels WHERE starFeatured <> 0 ".$params." ".$params2);
 	$query->execute();
-	$row .= "<td>".$query->fetchAll()[0][0]."</td>";
+	$row .= "<td>".$query->fetchColumn()."</td>";
 	$query = $db->prepare("SELECT count(*) FROM levels WHERE starEpic <> 0 ".$params." ".$params2);
 	$query->execute();
-	$row .= "<td>".$query->fetchAll()[0][0]."</td></tr>";
+	$row .= "<td>".$query->fetchColumn()."</td></tr>";
 	return $row;
 }
 //error_reporting(0);

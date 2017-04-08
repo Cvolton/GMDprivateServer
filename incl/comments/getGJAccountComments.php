@@ -21,13 +21,13 @@ if ($query2->rowCount() > 0) {
 	$query->execute([':register' => $register, ':id' => $id]);
 	$userID = $db->lastInsertId();
 }
-$query = "SELECT * FROM acccomments WHERE userID = :userID ORDER BY timeStamp DESC LIMIT 10 OFFSET $commentpage";
+$query = "SELECT comment, userID, likes, isSpam, commentID, timestamp FROM acccomments WHERE userID = :userID ORDER BY timeStamp DESC LIMIT 10 OFFSET $commentpage";
 $query = $db->prepare($query);
 $query->execute([':userID' => $userID]);
 $result = $query->fetchAll();
 $countquery = $db->prepare("SELECT count(*) FROM acccomments WHERE userID = :userID");
 $countquery->execute([':userID' => $userID]);
-$commentcount = $countquery->fetchAll()[0][0];
+$commentcount = $countquery->fetchColumn();
 foreach($result as &$comment1) {
 	if($comment1["commentID"]!=""){
 		$uploadDate = date("d/m/Y G:i", $comment1["timestamp"]);

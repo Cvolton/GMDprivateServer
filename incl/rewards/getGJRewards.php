@@ -63,12 +63,18 @@ $chk = $XORCipher->cipher(base64_decode(substr($chk, 5)),59182);
 	$chest2left = max(0,$chest2wait - $chest2diff);
 	//reward claiming
 	if($rewardType == 1){
+		if($chest1left != 0){
+			exit("-1");
+		}
 		$chest1count++;
 		$query = $db->prepare("UPDATE users SET chest1count=:chest1count, chest1time=:currenttime WHERE userID=:userID");	
 		$query->execute([':chest1count' => $chest1count, ':userID' => $userid, ':currenttime' => $currenttime]);
 		$chest1left = $chest1wait;
 	}
 	if($rewardType == 2){
+		if($chest2left != 0){
+			exit("-1");
+		}
 		$chest2count++;
 		$query = $db->prepare("UPDATE users SET chest2count=:chest2count, chest2time=:currenttime WHERE userID=:userID");	
 		$query->execute([':chest2count' => $chest2count, ':userID' => $userid, ':currenttime' => $currenttime]);

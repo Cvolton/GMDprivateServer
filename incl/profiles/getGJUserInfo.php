@@ -18,20 +18,19 @@ if($me){
 $query = "SELECT count(*) FROM blocks WHERE person1 = :extid AND person2 = :me";
 $query = $db->prepare($query);
 $query->execute([':extid' => $extid, ':me' => $me]);
-if($query->fetchAll()[0][0] > 0){
+if($query->fetchColumn() > 0){
 	exit(-1);
 }
 $query = "SELECT count(*) FROM blocks WHERE person2 = :extid AND person1 = :me";
 $query = $db->prepare($query);
 $query->execute([':extid' => $extid, ':me' => $me]);
-if($query->fetchAll()[0][0] > 0){
+if($query->fetchColumn() > 0){
 	exit(-1);
 }
 	$query = "SELECT * FROM users WHERE extID = :extid";
 	$query = $db->prepare($query);
 	$query->execute([':extid' => $extid]);
-	$result = $query->fetchAll();
-	$user = $result[0];
+	$user = $query->fetch();
 	//placeholders
 	$creatorpoints = $user["creatorPoints"];
 	// GET POSITION
@@ -59,41 +58,27 @@ if($query->fetchAll()[0][0] > 0){
 			//$msgstate = 0;
 			$msgstate = $account["mS"];
 		//accinfo
-			$query = "SELECT * FROM accounts WHERE accountID = :extID";
+			$query = "SELECT youtubeurl,twitter,twitch FROM accounts WHERE accountID = :extID";
 			$query = $db->prepare($query);
 			$query->execute([':extID' => $extid]);
-			$accinfo = $query->fetchAll();
-			$accinfo = $accinfo[0];
+			$accinfo = $query->fetch();
 	if($me==$extid){
 		/* notifications */
 			//friendreqs
 				$query = "SELECT count(*) FROM friendreqs WHERE toAccountID = :me";
 				$query = $db->prepare($query);
 				$query->execute([':me' => $me]);
-				$requests = $query->fetchAll()[0][0];
+				$requests = $query->fetchColumn();
 			//messages
 				$query = "SELECT count(*) FROM messages WHERE toAccountID = :me AND isNew=0";
 				$query = $db->prepare($query);
 				$query->execute([':me' => $me]);
-				$pms = $query->fetchAll()[0][0];
+				$pms = $query->fetchColumn();
 			//friends
-				$query = "SELECT * FROM friendships WHERE (person1 = :me OR person2=:me) AND (isNew1 = '1' OR isNew2 = '2')";
+				$query = "SELECT count(*) FROM friendships WHERE (person1 = :me AND isNew2 = '1') OR  (person2 = :me AND isNew1 = '1')";
 				$query = $db->prepare($query);
 				$query->execute([':me' => $me]);
-				$friendArray = $query->fetchAll();
-				$friends = 0;
-				foreach ($friendArray as &$friendship) {
-					if($friendship["person1"] == $me){
-						if($friendship["isNew2"] == 1){
-							$friends++;
-						}
-					}
-					if($friendship["person2"] == $me){
-						if($friendship["isNew1"] == 1){
-							$friends++;
-						}
-					}
-				}
+				$friends = $query->fetchColumn();
 		/* sending the data */
 			//38,39,40 are notification counters
 			//18 = enabled (0) or disabled (1) messaging
@@ -105,48 +90,37 @@ if($query->fetchAll()[0][0] > 0){
 		/* friend state */
 			$friendstate=0;
 		//check if INCOING friend request
-			$query = "SELECT * FROM friendreqs WHERE accountID = :extid AND toAccountID = :me";
+			$query = "SELECT ID,comment,uploadDate FROM friendreqs WHERE accountID = :extid AND toAccountID = :me";
 			$query = $db->prepare($query);
 			$query->execute([':extid' => $extid, ':me' => $me]);
 			$INCrequests = $query->rowCount();
-			$INCrequestinfo = $query->fetchAll();
-			$uploaddate = 0;
+			$INCrequestinfo = $query->fetch();
+			$uploaddate = date("d/m/Y G.i", $INCrequestinfo["uploadDate"]);;
 			if($INCrequests > 0){
 				$friendstate=3;
 			}
 		//check if OUTCOMING friend request
-			$query = "SELECT * FROM friendreqs WHERE toAccountID = :extid AND accountID = :me";
+			$query = "SELECT count(*) FROM friendreqs WHERE toAccountID = :extid AND accountID = :me";
 			$query = $db->prepare($query);
 			$query->execute([':extid' => $extid, ':me' => $me]);
-			$OUTrequests = $query->rowCount();
-			$OUTrequestinfo = $query->fetchAll();
-			$uploaddate = 0;
+			$OUTrequests = $query->fetchColumn();
 			if($OUTrequests > 0){
 				$friendstate=4;
 			}
 		//check if friend ALREADY
-			$query = "SELECT count(*) FROM friendships WHERE person1 = :me AND person2 = :extID";
+			$query = "SELECT count(*) FROM friendships WHERE (person1 = :me AND person2 = :extID) OR (person2 = :me AND person1 = :extID)";
 			$query = $db->prepare($query);
 			$query->execute([':me' => $me, ':extID' => $extid]);
-			$frs = $query->fetchAll()[0][0];
+			$frs = $query->fetchColumn();
 			if($frs > 0){
 				$friendstate=1;
-			}else{
-				$query = "SELECT count(*) FROM friendships WHERE person2 = :me AND person1 = :extID";
-				$query = $db->prepare($query);
-				$query->execute([':me' => $me, ':extID' => $extid]);
-				$frs = $query->fetchAll()[0][0];
-				if($frs > 0){
-					$friendstate=1;
-				}
 			}
 		/* sending the data */
 		//$friendstate is :31:
 		//$reqsstate is :19:
 		echo "1:".$user["userName"].":2:".$user["userID"].":13:".$user["coins"].":17:".$user["userCoins"].":10:".$user["color1"].":11:".$user["color2"].":3:".$user["stars"].":46:".$user["diamonds"].":4:".$user["demons"].":8:".$creatorpoints.":18:0:19:".$reqsstate.":20:".$accinfo["youtubeurl"].":21:".$user["accIcon"].":22:".$user["accShip"].":23:".$user["accBall"].":24:".$user["accBird"].":25:".$user["accDart"].":26:".$user["accRobot"].":28:".$user["accGlow"].":43:".$user["accSpider"].":47:".$user["accExplosion"].":30:".$rank.":16:".$user["extID"].":31:".$friendstate.":44:".$accinfo["twitter"].":45:".$accinfo["twitch"].":29:1";
 		if ($INCrequests > 0){
-			$request = $INCrequestinfo[0];
-			echo ":32:".$request["ID"].":35:".$request["comment"].":37:".$uploaddate;
+			echo ":32:".$INCrequestinfo["ID"].":35:".$INCrequestinfo["comment"].":37:".$uploaddate;
 		}
-		}
+	}
 ?>

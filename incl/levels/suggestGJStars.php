@@ -10,19 +10,13 @@ $stars = $ep->remove($_POST["stars"]);
 $feature = $ep->remove($_POST["feature"]);
 $levelID = $ep->remove($_POST["levelID"]);
 $id = $ep->remove($_POST["accountID"]);
-$query2 = $db->prepare("SELECT * FROM users WHERE extID = :id");
-$query2->execute([':id' => $id]);
-$result = $query2->fetchAll();
-
-$query = $db->prepare("SELECT * FROM accounts WHERE accountID = :id");
 if($id != "" AND $gjp != ""){
 	$GJPCheck = new GJPCheck();
 	$gjpresult = $GJPCheck->check($gjp,$id);
 	if($gjpresult == 1){
+		$query = $db->prepare("SELECT count(*) FROM accounts WHERE accountID = :id");
 		$query->execute([':id' => $id]);
-		$result = $query->fetchAll();
-		$accinfo = $result[0];
-		if($accinfo["isAdmin"]==1){
+		if($query->fetchColumn()==1){
 			$auto = 0;
 			$demon = 0;
 			switch($stars){
@@ -60,14 +54,6 @@ if($id != "" AND $gjp != ""){
 					$demon = 1;
 					break;
 			}
-			$query = $db->prepare("SELECT * FROM levels WHERE levelID = :levelID");
-			$query->execute([':levelID' => $levelID]);
-			$result = $query->fetchAll();
-			$lvlinfo = $result[0];
-			/*CvoltonGDPS stuff
-			
-			$length = $lvlinfo["levelLength"] +1;
-			$stars = $stars * $length * 2;*/
 			$query = "UPDATE levels SET starDemon=:demon, starAuto=:auto, starDifficulty=:diff, starStars=:stars, starCoins='1',  starFeatured=:feature WHERE levelID=:levelID";
 			echo $query;
 			$query = $db->prepare($query);	

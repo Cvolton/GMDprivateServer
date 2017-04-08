@@ -18,9 +18,9 @@ $name = str_replace("#", "", $name);
 $name = str_replace(":", "", $name);
 $name = str_replace("~", "", $name);
 $name = str_replace("|", "", $name);
-$query = $db->prepare("SELECT * FROM songs WHERE download = :download");
+$query = $db->prepare("SELECT count(*) FROM songs WHERE download = :download");
 $query->execute([':download' => $link]);
-$count = $query->rowCount();
+$count = $query->fetchColumn();
 if($count != 0){
 	echo "This song already exists in our database.";
 }else{

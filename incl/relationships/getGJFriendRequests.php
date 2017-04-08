@@ -21,7 +21,7 @@ $query->execute([':accountID' => $accountID]);
 $result = $query->fetchAll();
 $countquery = $db->prepare($countquery);
 $countquery->execute([':accountID' => $accountID]);
-$reqcount = $countquery->fetchAll()[0][0];
+$reqcount = $countquery->fetchColumn();
 if($reqcount == 0){
 	exit("-2");
 }

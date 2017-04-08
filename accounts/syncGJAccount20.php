@@ -16,10 +16,9 @@ $secret = "";
 $generatePass = new generatePass();
 $pass = $generatePass->isValidUsrname($userName, $password);
 if ($pass == 1) {
-	$query = $db->prepare("select * from accounts where userName = :userName");
+	$query = $db->prepare("select accountID, saveData from accounts where userName = :userName");
 	$query->execute([':userName' => $userName]);
-	$result = $query->fetchAll();
-	$account = $result[0];
+	$account = $query->fetch();
 	$accountID = $account["accountID"];
 	if(!is_numeric($accountID)){
 		exit("-1");

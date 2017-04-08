@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Apr 05, 2017 at 09:18 PM
+-- Generation Time: Apr 08, 2017 at 10:19 PM
 -- Server version: 10.0.30-MariaDB-0+deb8u1
 -- PHP Version: 7.1.3-2~bpo8+1
 
@@ -79,13 +79,13 @@ CREATE TABLE `actions` (
   `type` int(11) NOT NULL DEFAULT '0',
   `value` int(11) NOT NULL DEFAULT '0',
   `timestamp` int(11) NOT NULL DEFAULT '0',
-  `value2` varchar(255) NOT NULL DEFAULT '0',
+  `value2` varchar(255) CHARACTER SET latin1 NOT NULL DEFAULT '0',
   `value3` int(11) NOT NULL DEFAULT '0',
   `value4` int(11) NOT NULL DEFAULT '0',
   `value5` int(11) NOT NULL DEFAULT '0',
   `value6` int(11) NOT NULL DEFAULT '0',
   `account` int(11) NOT NULL DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -194,10 +194,10 @@ CREATE TABLE `gauntlets` (
 CREATE TABLE `levels` (
   `gameVersion` int(11) NOT NULL,
   `binaryVersion` int(11) NOT NULL DEFAULT '0',
-  `userName` text NOT NULL,
+  `userName` mediumtext NOT NULL,
   `levelID` int(11) NOT NULL,
   `levelName` varchar(255) NOT NULL,
-  `levelDesc` text NOT NULL,
+  `levelDesc` mediumtext NOT NULL,
   `levelVersion` int(11) NOT NULL,
   `levelLength` int(11) NOT NULL DEFAULT '0',
   `audioTrack` int(11) NOT NULL,
@@ -209,10 +209,10 @@ CREATE TABLE `levels` (
   `objects` int(11) NOT NULL DEFAULT '0',
   `coins` int(11) NOT NULL DEFAULT '0',
   `requestedStars` int(11) NOT NULL DEFAULT '0',
-  `extraString` text NOT NULL,
+  `extraString` mediumtext NOT NULL,
   `levelString` longtext NOT NULL,
-  `levelInfo` text NOT NULL,
-  `secret` text NOT NULL,
+  `levelInfo` mediumtext NOT NULL,
+  `secret` mediumtext NOT NULL,
   `starDifficulty` int(11) NOT NULL DEFAULT '0' COMMENT '0=N/A 10=EASY 20=NORMAL 30=HARD 40=HARDER 50=INSANE 50=AUTO 50=DEMON',
   `downloads` int(11) NOT NULL DEFAULT '300',
   `likes` int(11) NOT NULL DEFAULT '100',
@@ -231,7 +231,7 @@ CREATE TABLE `levels` (
   `unlisted` int(11) NOT NULL,
   `originalReup` int(11) NOT NULL DEFAULT '0' COMMENT 'used for levelReupload.php',
   `hostname` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -386,14 +386,14 @@ CREATE TABLE `users` (
   `userID` int(11) NOT NULL,
   `extID` varchar(100) NOT NULL,
   `userName` varchar(69) NOT NULL DEFAULT 'undefined',
-  `stars` int(11) NOT NULL DEFAULT '-1',
-  `demons` int(11) NOT NULL DEFAULT '-1',
+  `stars` int(11) NOT NULL DEFAULT '0',
+  `demons` int(11) NOT NULL DEFAULT '0',
   `icon` int(11) NOT NULL DEFAULT '0',
   `color1` int(11) NOT NULL DEFAULT '0',
-  `color2` int(11) NOT NULL DEFAULT '0',
+  `color2` int(11) NOT NULL DEFAULT '3',
   `iconType` int(11) NOT NULL DEFAULT '0',
-  `coins` int(11) NOT NULL DEFAULT '-1',
-  `userCoins` int(11) NOT NULL DEFAULT '-1',
+  `coins` int(11) NOT NULL DEFAULT '0',
+  `userCoins` int(11) NOT NULL DEFAULT '0',
   `special` int(11) NOT NULL DEFAULT '0',
   `gameVersion` int(11) NOT NULL DEFAULT '0',
   `secret` varchar(69) NOT NULL DEFAULT 'none',
@@ -407,7 +407,7 @@ CREATE TABLE `users` (
   `creatorPoints` int(11) NOT NULL DEFAULT '0',
   `IP` varchar(69) NOT NULL DEFAULT '127.0.0.1',
   `lastPlayed` int(11) NOT NULL DEFAULT '0',
-  `diamonds` int(11) NOT NULL DEFAULT '-1',
+  `diamonds` int(11) NOT NULL DEFAULT '0',
   `orbs` int(11) NOT NULL DEFAULT '0',
   `completedLvls` int(11) NOT NULL DEFAULT '0',
   `accSpider` int(11) NOT NULL DEFAULT '0',
@@ -593,17 +593,17 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `acccomments`
 --
 ALTER TABLE `acccomments`
-  MODIFY `commentID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2038;
+  MODIFY `commentID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2091;
 --
 -- AUTO_INCREMENT for table `accounts`
 --
 ALTER TABLE `accounts`
-  MODIFY `accountID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1532;
+  MODIFY `accountID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1548;
 --
 -- AUTO_INCREMENT for table `actions`
 --
 ALTER TABLE `actions`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51592;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=56691;
 --
 -- AUTO_INCREMENT for table `bannedips`
 --
@@ -613,27 +613,27 @@ ALTER TABLE `bannedips`
 -- AUTO_INCREMENT for table `blocks`
 --
 ALTER TABLE `blocks`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 --
 -- AUTO_INCREMENT for table `comments`
 --
 ALTER TABLE `comments`
-  MODIFY `commentID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8900;
+  MODIFY `commentID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9085;
 --
 -- AUTO_INCREMENT for table `dailyfeatures`
 --
 ALTER TABLE `dailyfeatures`
-  MODIFY `feaID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=132;
+  MODIFY `feaID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=133;
 --
 -- AUTO_INCREMENT for table `friendreqs`
 --
 ALTER TABLE `friendreqs`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2024;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2041;
 --
 -- AUTO_INCREMENT for table `friendships`
 --
 ALTER TABLE `friendships`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1336;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1359;
 --
 -- AUTO_INCREMENT for table `gauntlets`
 --
@@ -643,17 +643,17 @@ ALTER TABLE `gauntlets`
 -- AUTO_INCREMENT for table `levels`
 --
 ALTER TABLE `levels`
-  MODIFY `levelID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8416;
+  MODIFY `levelID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8539;
 --
 -- AUTO_INCREMENT for table `levelscores`
 --
 ALTER TABLE `levelscores`
-  MODIFY `scoreID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9672;
+  MODIFY `scoreID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9811;
 --
 -- AUTO_INCREMENT for table `links`
 --
 ALTER TABLE `links`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
 --
 -- AUTO_INCREMENT for table `mappacks`
 --
@@ -663,12 +663,12 @@ ALTER TABLE `mappacks`
 -- AUTO_INCREMENT for table `messages`
 --
 ALTER TABLE `messages`
-  MODIFY `messageID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=785;
+  MODIFY `messageID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=818;
 --
 -- AUTO_INCREMENT for table `modactions`
 --
 ALTER TABLE `modactions`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7553;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7964;
 --
 -- AUTO_INCREMENT for table `modips`
 --
@@ -683,17 +683,17 @@ ALTER TABLE `quests`
 -- AUTO_INCREMENT for table `reports`
 --
 ALTER TABLE `reports`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=90;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=91;
 --
 -- AUTO_INCREMENT for table `songs`
 --
 ALTER TABLE `songs`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5105493;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5105531;
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `userID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2201;COMMIT;
+  MODIFY `userID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2240;COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

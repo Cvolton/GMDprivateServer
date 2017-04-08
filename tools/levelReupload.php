@@ -67,9 +67,9 @@ if($_POST["levelid"]!=""){
 			}
 		}
 		//check if exists
-		$query = $db->prepare("SELECT * FROM levels WHERE originalReup = :lvl OR original = :lvl");
+		$query = $db->prepare("SELECT count(*) FROM levels WHERE originalReup = :lvl OR original = :lvl");
 		$query->execute([':lvl' => $levelarray["a1"]]);
-		if($query->rowCount() == 0){
+		if($query->fetchColumn() == 0){
 			$parsedurl = parse_url($url);
 			if($parsedurl["host"] == $_SERVER['SERVER_NAME']){
 				exit("You're attempting to reupload from the target server.");

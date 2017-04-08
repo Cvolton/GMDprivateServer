@@ -24,7 +24,7 @@ if($mode==0){
 $countquery = "SELECT count(*) FROM comments WHERE levelID = :levelID";
 $countquery = $db->prepare($countquery);
 $countquery->execute([':levelID' => $levelID]);
-$commentcount = $countquery->fetchAll()[0][0];
+$commentcount = $countquery->fetchColumn();
 if($commentcount == 0){
 	exit("-2");
 }
@@ -39,11 +39,10 @@ foreach($result as &$comment1) {
 			$actualcomment = base64_decode($actualcomment);
 		}
 		$commentstring .= "2~".$actualcomment."~3~".$comment1["userID"]."~4~".$comment1["likes"]."~5~0~7~".$comment1["isSpam"]."~9~".$uploadDate."~6~".$comment1["commentID"]."~10~".$comment1["percent"]."";
-		$query12 = $db->prepare("SELECT * FROM users WHERE userID = '".$comment1["userID"]."'");
-		$query12->execute();
-		$result12 = $query12->fetchAll();
+		$query12 = $db->prepare("SELECT userID, userName, icon, color1, color2, iconType, special, extID FROM users WHERE userID = :userID");
+		$query12->execute([':userID' => $comment1["userID"]]);
 		if ($query12->rowCount() > 0) {
-			$user = $result12[0];
+			$user = $query12->fetchAll()[0];
 			if(is_numeric($user["extID"])){
 				$extID = $user["extID"];
 			}else{

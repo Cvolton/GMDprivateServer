@@ -99,9 +99,9 @@ $uploadDate = time();
 	} else {
 		$hostname = $_SERVER['REMOTE_ADDR'];
 	}
-$query = $db->prepare("SELECT * FROM users WHERE userID=:userID"); //getting differences
+$query = $db->prepare("SELECT stars,coins,demons,userCoins,diamonds FROM users WHERE userID=:userID LIMIT 1"); //getting differences
 $query->execute([':userID' => $userID]);
-$old = $query->fetchAll()[0];
+$old = $query->fetch();
 $starsdiff = $stars - $old["stars"];
 $coindiff = $coins - $old["coins"];
 $demondiff = $demons - $old["demons"];

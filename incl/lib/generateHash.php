@@ -10,7 +10,7 @@ class generateHash {
 			if(!is_numeric($id)){
 				exit("-1");
 			}
-			$query=$db->prepare("select * from levels where levelID = :id");
+			$query=$db->prepare("SELECT levelString, levelID, starStars, starCoins FROM levels WHERE levelID = :id");
 			$query->execute([':id' => $id]);
 			$result2 = $query->fetchAll();
 			$result = $result2[0];
@@ -26,7 +26,6 @@ class generateHash {
 		return sha1($hash . "xI25fpAapCQg");
 	}
 	public function genSolo($lvlsmultistring) {
-		include dirname(__FILE__)."/connection.php";
 		$levelstring = $lvlsmultistring;
 		$hash = "aaaaa";
 		$len = strlen($levelstring);
@@ -53,7 +52,7 @@ class generateHash {
 		include dirname(__FILE__)."/connection.php";
 		$hash = "";
 		foreach($lvlsarray as $id){
-			$query=$db->prepare("select * from mappacks where ID = :id");
+			$query=$db->prepare("SELECT ID,stars,coins FROM mappacks WHERE ID = :id");
 			$query->execute([':id' => $id]);
 			$result2 = $query->fetchAll();
 			$result = $result2[0];

@@ -10,19 +10,13 @@ $rating = $ep->remove($_POST["rating"]);
 $feature = $ep->remove($_POST["feature"]);
 $levelID = $ep->remove($_POST["levelID"]);
 $id = $ep->remove($_POST["accountID"]);
-$query2 = $db->prepare("SELECT * FROM users WHERE extID = :id");
-$query2->execute([':id' => $id]);
-$result = $query2->fetchAll();
-
-$query = $db->prepare("SELECT * FROM accounts WHERE accountID = :id");
 if($id != "" AND $gjp != ""){
 	$GJPCheck = new GJPCheck();
 	$gjpresult = $GJPCheck->check($gjp,$id);
 	if($gjpresult == 1){
+		$query = $db->prepare("SELECT isAdmin FROM accounts WHERE accountID = :id");
 		$query->execute([':id' => $id]);
-		$result = $query->fetchAll();
-		$accinfo = $result[0];
-		if($accinfo["isAdmin"]==1){
+		if($query->fetchColumn() ==1){
 			$auto = 0;
 			$demon = 0;
 			switch($rating){
@@ -48,12 +42,7 @@ if($id != "" AND $gjp != ""){
 					break;
 			}
 			$timestamp = time();
-			$query = $db->prepare("SELECT * FROM levels WHERE levelID = :levelID");
-			$query->execute([':levelID' => $levelID]);
-			$result = $query->fetchAll();
-			$lvlinfo = $result[0];
-			$query = "UPDATE levels SET starDemonDiff=:demon WHERE levelID=:levelID";
-			$query = $db->prepare($query);	
+			$query = $db->prepare("UPDATE levels SET starDemonDiff=:demon WHERE levelID=:levelID");	
 			$query->execute([':demon' => $dmn, ':levelID'=>$levelID]);
 			$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('10', :value, :levelID, :timestamp, :id)");
 			$query->execute([':value' => $dmnname, ':timestamp' => $timestamp, ':id' => $id, ':levelID' => $levelID]);

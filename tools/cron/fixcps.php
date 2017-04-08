@@ -16,7 +16,7 @@ file_put_contents("../logs/fixcpslog.txt",time());
 set_time_limit(0);
 $cplog = "";
 include "../../incl/lib/connection.php";
-$query = $db->prepare("SELECT * FROM users");
+$query = $db->prepare("SELECT userID, userName FROM users");
 $query->execute();
 $result = $query->fetchAll();
 //getting users
@@ -25,18 +25,18 @@ foreach($result as $user){
 	//getting starred lvls count
 	$query2 = $db->prepare("SELECT count(*) FROM levels WHERE userID = :userID AND starStars != 0");
 	$query2->execute([':userID' => $userID]);
-	$creatorpoints = $query2->fetchAll()[0][0];
+	$creatorpoints = $query2->fetchColumn();
 	$cplog .= $user["userName"] . " - " . $creatorpoints . "\r\n";
 	//getting featured lvls count
 	$query3 = $db->prepare("SELECT count(*) FROM levels WHERE userID = :userID AND starFeatured != 0");
 	$query3->execute([':userID' => $userID]);
-	$cpgain = $query3->fetchAll()[0][0];
+	$cpgain = $query3->fetchColumn();
 	$creatorpoints = $creatorpoints + $cpgain;
 	$cplog .= $user["userName"] . " - " . $creatorpoints . "\r\n";
 	//getting epic lvls count
 	$query3 = $db->prepare("SELECT count(*) FROM levels WHERE userID = :userID AND starEpic != 0");
 	$query3->execute([':userID' => $userID]);
-	$cpgain = $query3->fetchAll()[0][0];
+	$cpgain = $query3->fetchColumn();
 	$creatorpoints = $creatorpoints + $cpgain + $cpgain;
 	$cplog .= $user["userName"] . " - " . $creatorpoints . "\r\n";
 	//inserting cp value
@@ -52,7 +52,7 @@ foreach($result as $user){
 	NOW to update GAUNTLETS CP
 */
 echo "<hr><h1>GAUNTLETS UPDATE</h1><hr>";
-$query = $db->prepare("SELECT * FROM gauntlets");
+$query = $db->prepare("SELECT level1,level2,level3,level4,level5 FROM gauntlets");
 $query->execute();
 $result = $query->fetchAll();
 //getting gauntlets
@@ -85,7 +85,7 @@ foreach($result as $gauntlet){
 	NOW to update DAILY CP
 */
 echo "<hr><h1>DAILY LEVELS UPDATE</h1><hr>";
-$query = $db->prepare("SELECT * FROM dailyfeatures WHERE timestamp < :time");
+$query = $db->prepare("SELECT levelID FROM dailyfeatures WHERE timestamp < :time");
 $query->execute([':time' => time()]);
 $result = $query->fetchAll();
 //getting gauntlets
@@ -93,8 +93,7 @@ foreach($result as $daily){
 	//getting lvls
 	$query = $db->prepare("SELECT userID, levelID FROM levels WHERE levelID = :levelID");
 	$query->execute([':levelID' => $daily["levelID"]]);
-	$result = $query->fetchAll();
-	$result = $result[0];
+	$result = $query->fetch();
 	//getting users
 	if($result["userID"] != ""){
 		$query = $db->prepare("SELECT userName, userID, creatorPoints FROM users WHERE userID = ".$result["userID"]);

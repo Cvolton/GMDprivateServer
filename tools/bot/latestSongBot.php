@@ -7,5 +7,5 @@ $query = $db->prepare("SELECT `AUTO_INCREMENT`
 	WHERE TABLE_SCHEMA = :database
 	AND   TABLE_NAME   = 'songs';"); 
 $query->execute([':database' => $dbname]);
-echo $query->fetchAll()[0][0];
+echo $query->fetchColumn();
 ?>

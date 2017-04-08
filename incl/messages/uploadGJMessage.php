@@ -5,6 +5,8 @@ include "../lib/connection.php";
 require_once "../lib/GJPCheck.php";
 require_once "../lib/exploitPatch.php";
 $ep = new exploitPatch();
+require_once "../lib/mainLib.php";
+$gs = new mainLib();
 $gjp =  $ep->remove($_POST["gjp"]);
 $gameVersion =  $ep->remove($_POST["gameVersion"]);
 $binaryVersion =  $ep->remove($_POST["binaryVersion"]);
@@ -13,31 +15,14 @@ $subject =  $ep->remove($_POST["subject"]);
 $toAccountID =  $ep->remove($_POST["toAccountID"]);
 $body =  $ep->remove($_POST["body"]);
 $accID =  $ep->remove($_POST["accountID"]);
-
-$query3 = "SELECT * FROM users WHERE extID = :accID ORDER BY userName DESC";
+$query3 = "SELECT userName FROM users WHERE extID = :accID ORDER BY userName DESC";
 $query3 = $db->prepare($query3);
 $query3->execute([':accID' => $accID]);
-$result = $query3->fetchAll();
-$result69 = $result[0];
-$userName = $result69["userName"];
-
+$userName = $query3->fetchColumn();
 //continuing the accounts system
-$accountID = "";
 $id = $ep->remove($_POST["accountID"]);
 $register = 1;
-$query2 = $db->prepare("SELECT * FROM users WHERE extID = :id");
-$query2->execute([':id' => $id]);
-$result = $query2->fetchAll();
-if ($query2->rowCount() > 0) {
-$userIDalmost = $result[0];
-$userID = $userIDalmost[1];
-} else {
-$query = $db->prepare("INSERT INTO users (isRegistered, extID, userName)
-VALUES (:register, :id, :userName)");
-
-$query->execute([':register' => $register, ':id' => $id, ':userName' => $userName]);
-$userID = $db->lastInsertId();
-}
+$userID = $gs->getUserID($id)
 $uploadDate = time();
 
 $query = $db->prepare("INSERT INTO messages (subject, body, accID, userID, userName, toAccountID, secret, timestamp)

@@ -25,7 +25,7 @@ foreach($result as $account){
 	$me = $account["accountID"];
 	$query2 = $db->prepare("SELECT count(*) FROM friendships WHERE person1 = :me OR person2 = :me");
 	$query2->execute([':me' => $me]);
-	$friendscount = $query2->fetchAll()[0][0];
+	$friendscount = $query2->fetchColumn();
 	$frndlog .= $account["userName"] . " - " . $friendscount . "\r\n";
 	//inserting friends count value
 	if($friendscount != 0){

@@ -56,7 +56,7 @@ if($_POST["userhere"]!="" AND $_POST["passhere"]!="" AND $_POST["usertarg"]!="" 
 			$targetUserID = explode(",",$result)[1];
 			$query = $db->prepare("SELECT count(*) FROM links WHERE targetAccountID = :targetAccountID LIMIT 1");
 			$query->execute([':targetAccountID' => $targetAccountID]);
-			if($query->fetchAll()[0][0] != 0){
+			if($query->fetchColumn() != 0){
 				exit("The target account is linked to a different account already.");
 			}
 			//echo $accountID;

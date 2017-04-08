@@ -17,7 +17,7 @@ if($_POST["levelID"]){
 	$query = $db->prepare($query);
 	$query->execute([':levelID' => $levelID, ':hostname' => $ip]);
 
-	if($query->fetchAll()[0][0] == 0){
+	if($query->fetchColumn() == 0){
 		$query = $db->prepare("INSERT INTO reports (levelID, hostname) VALUES (:levelID, :hostname)");	
 		$query->execute([':levelID' => $levelID, ':hostname' => $ip]);
 		echo $db->lastInsertId();

@@ -9,9 +9,9 @@ if($_POST["userName"] != ""){
 	$email = $ep->remove($_POST["email"]);
 	$secret = "";
 	//checking if name is taken
-	$query2 = $db->prepare("SELECT * FROM accounts WHERE userName=:userName");
+	$query2 = $db->prepare("SELECT count(*) FROM accounts WHERE userName=:userName");
 	$query2->execute([':userName' => $userName]);
-	$regusrs = $query2->rowCount();
+	$regusrs = $query2->fetchColumn();
 	if ($regusrs > 0) {
 		echo "-2";
 	}else{
