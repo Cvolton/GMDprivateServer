@@ -5,6 +5,8 @@ include "../lib/connection.php";
 require_once "../lib/GJPCheck.php";
 require_once "../lib/exploitPatch.php";
 $ep = new exploitPatch();
+require_once "../lib/mainLib.php";
+$gs = new mainLib();
 //here im getting all the data
 $gjp = $ep->remove($_POST["gjp"]);
 if($_POST["gameVersion"]){
@@ -88,19 +90,7 @@ if($_POST["accountID"]!="" AND $_POST["accountID"]!="0"){
 }else{
 	$register = 0;
 }
-$query2 = $db->prepare("SELECT * FROM users WHERE extID = '".$id."'");
-$query2->execute();
-$result = $query2->fetchAll();
-if ($query2->rowCount() > 0) {
-$userIDalmost = $result[0];
-$userID = $userIDalmost[1];
-} else {
-$query = $db->prepare("INSERT INTO users (isRegistered, extID)
-VALUES (:register, :id)");
-
-$query->execute([':register' => $register, ':id' => $id]);
-$userID = $db->lastInsertId();
-}
+$userID = $gs->getUserID($id, $userName);
 $uploadDate = time();
 	if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
 		$hostname = $_SERVER['HTTP_CLIENT_IP'];
