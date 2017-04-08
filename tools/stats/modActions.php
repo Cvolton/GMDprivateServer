@@ -12,7 +12,7 @@ foreach($result as &$mod){
 	$query->execute([':id' => $mod["accountID"]]);
 	$result2 = $query->fetchAll();
 	$result2 = $result2[0];
-	$time = date("d/m/Y G:i", $result2["lastPlayed"]);
+	$time = date("d/m/Y G:i:s", $result2["lastPlayed"]);
 	$query = $db->prepare("SELECT * FROM modactions WHERE account = :id");
 	$query->execute([':id' => $mod["accountID"]]);
 	$actionscount = $query->rowCount();
@@ -54,7 +54,7 @@ foreach($result as &$action){
 			break;
 		case 5:
 			$actionname = "Set as daily feature";
-			$value2 = date("d/m/Y G:i", $action["value2"]);
+			$value2 = date("d/m/Y G:i:s", $action["value2"]);
 			break;
 		case 6:
 			$actionname = "Deleted a level";
@@ -82,7 +82,7 @@ foreach($result as &$action){
 	if($action["type"] == 5 OR $action["type"] == 6){
 		$value = "";
 	}
-	$time = date("d/m/Y G:i", $action["timestamp"]);
+	$time = date("d/m/Y G:i:s", $action["timestamp"]);
 	if($action["type"] == 5 AND $action["value2"] > time()){
 		echo "<tr><td>".$account."</td><td>".$actionname."</td><td>".$value."</td><td>".$value2."</td><td>future</td><td>".$time."</td></tr>";
 	}else{
