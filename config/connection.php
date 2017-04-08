@@ -1,6 +1,6 @@
 <?php
 $servername = "127.0.0.1";
-$username = "cvoltongdps";
+$username = "root";
 $password = "";
-$dbname = "my_cvoltongdps";
+$dbname = "geometrydash";
 ?>
