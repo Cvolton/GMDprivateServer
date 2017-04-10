@@ -8,20 +8,27 @@ $ep = new exploitPatch();
 $GJPCheck = new GJPCheck();
 $levelsstring = "";
 $songsstring  = "";
-$gameVersion = $ep->remove($_POST["gameVersion"]);
+$lvlsmultistring = "";
+if(isset($_POST["gameVersion"])){
+	$gameVersion = $ep->remove($_POST["gameVersion"]);
+}else{
+	$gameVersion = 0;
+}
 if($gameVersion == 20){
 	$binaryVersion = $ep->remove($_POST["binaryVersion"]);
 	if($binaryVersion > 27){
 		$gameVersion++;
 	}
 }
-$type = $ep->remove($_POST["type"]);
-$gauntlet = $ep->remove($_POST["gauntlet"]);
-$demonFilter = $ep->remove($_POST["demonFilter"]);
+if(isset($_POST["type"])){
+	$type = $ep->remove($_POST["type"]);
+}else{
+	$type = 0;
+}
 $colonmarker = 1337;
 $songcolonmarker = 1337;
 $userid = 1337;
-if($type != 10 AND $gauntlet == ""){
+if($type != 10 AND !isset($_POST["gauntlet"])){
 	$query = "";
 	$len = $ep->remove($_POST["len"]);
 	$diff = $ep->remove($_POST["diff"]);
@@ -113,7 +120,7 @@ if($type != 10 AND $gauntlet == ""){
 			$additionalnowhere = $additionalnowhere."AND (levelID = '".$completedLevels."') ";
 		}
 	}
-	if($_POST["song"]!=0){
+	if(isset($_POST["song"])){
 		if($_POST["customSong"]==0){
 			$song = $ep->remove($_POST["song"]);
 			$song = $db->quote($song);
@@ -145,7 +152,7 @@ if($type != 10 AND $gauntlet == ""){
 			$additionalnowhere = $additionalnowhere."AND twoPlayer = 1 ";
 		}
 	}
-	if($_POST["star"]==1){
+	if(isset($_POST["star"])){
 		if($additional == ""){
 			$additional = "WHERE NOT starStars = 0 ";
 			$additionalnowhere = "AND NOT starStars = 0 ";
@@ -154,7 +161,7 @@ if($type != 10 AND $gauntlet == ""){
 			$additionalnowhere = $additionalnowhere."AND NOT starStars = 0 ";
 		}
 	}
-	if($_POST["noStar"]==1){
+	if(isset($_POST["noStar"])){
 		if($additional == ""){
 			$additional = "WHERE starStars = 0 ";
 			$additionalnowhere = "AND starStars = 0 ";
@@ -185,6 +192,11 @@ if($type != 10 AND $gauntlet == ""){
 				$additionalnowhere = $additionalnowhere."AND starAuto = 1 ";
 			}
 		}else if($diff == -2){
+			if(isset($_POST["demonFilter"])){
+				$demonFilter = $ep->remove($_POST["demonFilter"]);
+			}else{
+				$demonFilter = 0;
+			}
 			if($additional == ""){
 				$additional = "WHERE starDemon = 1 ";
 				$additionalnowhere = "AND starDemon = 1 ";
@@ -279,8 +291,9 @@ if($type != 10 AND $gauntlet == ""){
 		if($str!=""){
 			$query = "(SELECT * FROM levels WHERE levelID = '$str') UNION (SELECT * FROM levels WHERE levelName LIKE '%".$str."%' ". $additionalnowhere . " ORDER BY likes DESC) LIMIT 10 OFFSET $lvlpagea";
 			$countquery = "(SELECT count(*) FROM levels WHERE levelID = '$str') UNION (SELECT count(*) FROM levels WHERE levelName LIKE '%".$str."%' ". $additionalnowhere . ")";
-		}else{$type=2;}
-		
+		}else{
+			$type=2;
+		}
 	}
 	if($type==1){
 		$query = "SELECT * FROM levels ". $additional . " ORDER BY downloads DESC LIMIT 10 OFFSET $lvlpagea";
@@ -363,7 +376,10 @@ if($type != 10 AND $gauntlet == ""){
 	$countquery = $db->prepare($countquery);
 	$countquery->execute();
 	$countdata = $countquery->fetchAll();
-	$totallvlcount = $countdata[0][0] + $countdata[1][0];
+	$totallvlcount = $countdata[0][0];
+	if(isset($countdata[1][0])){
+		$totallvlcount += $countdata[1][0];
+	}
 	$result = $query->fetchAll();
 	$levelcount = $query->rowCount();
 	for ($x = 0; $x < $levelcount; $x++) {
@@ -377,7 +393,7 @@ if($type != 10 AND $gauntlet == ""){
 				echo "|";
 				$lvlsmultistring = $lvlsmultistring . ",";
 			}
-			$lvlsmultistring = $lvlsmultistring . $level1["levelID"];
+			$lvlsmultistring .= $level1["levelID"];
 			echo "1:".$level1["levelID"].":2:".$level1["levelName"].":5:".$level1["levelVersion"].":6:".$level1["userID"].":8:10:9:".$level1["starDifficulty"].":10:".$level1["downloads"].":12:".$level1["audioTrack"].":13:".$level1["gameVersion"].":14:".$level1["likes"].":17:".$level1["starDemon"].":43:".$level1["starDemonDiff"].":25:".$level1["starAuto"].":18:".$level1["starStars"].":19:".$level1["starFeatured"].":42:".$level1["starEpic"].":45:".$level1["objects"].":3:".$level1["levelDesc"].":15:".$level1["levelLength"].":30:".$level1["original"].":31:0:37:".$level1["coins"].":38:".$level1["starCoins"].":39:".$level1["requestedStars"].":46:1:47:2".":35:".$level1["songID"]."";
 			if($level1["songID"]!=0){
 				$query3=$db->prepare("select * from songs where ID = ".$level1["songID"]);
@@ -426,7 +442,8 @@ if($type != 10 AND $gauntlet == ""){
 	echo "#".$totallvlcount.":".$lvlpagea.":10";
 	//}
 }
-if($type == 10 OR $gauntlet != ""){
+if($type == 10 OR isset($_POST["gauntlet"])){
+	$gauntlet = $ep->remove($_POST["gauntlet"]);
 	if($gauntlet != ""){
 		$query=$db->prepare("select * from gauntlets where ID = :gauntlet");
 		$query->execute([':gauntlet' => $gauntlet]);

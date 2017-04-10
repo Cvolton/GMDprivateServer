@@ -5,12 +5,16 @@ require_once "../lib/exploitPatch.php";
 $ep = new exploitPatch();
 $levelsstring = "";
 $songsstring  = "";
-$getSent = $ep->remove($_POST["getSent"]);
+if(isset($_POST["getSent"])){
+	$getSent = $ep->remove($_POST["getSent"]);
+}else{
+	$getSent = 0;
+}
 $accountID = $ep->remove($_POST["accountID"]);
 $page = $ep->remove($_POST["page"]);
 $offset = $page*10;
 if($getSent == 0){
-	$query = "SELECT * FROM friendreqs WHERE toAccountID = :accountID LIMIT 10 OFFSET $offset";
+	$query = "SELECT accountID, toAccountID, uploadDate, ID, comment, isNew FROM friendreqs WHERE toAccountID = :accountID LIMIT 10 OFFSET $offset";
 	$countquery = "SELECT count(*) FROM friendreqs WHERE toAccountID = :accountID";
 }else if($getSent == 1){
 	$query = "SELECT * FROM friendreqs WHERE accountID = :accountID LIMIT 10 OFFSET $offset";

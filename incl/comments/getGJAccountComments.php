@@ -4,27 +4,20 @@ chdir(dirname(__FILE__));
 include "../lib/connection.php";
 require_once "../lib/exploitPatch.php";
 $ep = new exploitPatch();
-$userstring = "";
-$songsstring  = "";
-$type = $ep->remove($_POST["type"]);
+require_once "../lib/mainLib.php";
+$gs = new mainLib();
+$commentstring = "";
 $accountid = $ep->remove($_POST["accountID"]);
 $page = $ep->remove($_POST["page"]);
 $commentpage = $page*10;
-$query2 = $db->prepare("SELECT userID FROM users WHERE extID = :accountid");
-$query2->execute([':accountid' => $accountid]);
-if ($query2->rowCount() > 0) {
-	$userID = $query2->fetchAll()[0]["userID"];
-} else {
-	$query = $db->prepare("INSERT INTO users (isRegistered, extID)
-	VALUES (:register,:id)");
-
-	$query->execute([':register' => $register, ':id' => $id]);
-	$userID = $db->lastInsertId();
-}
+$userID = $gs->getUserID($accountid);
 $query = "SELECT comment, userID, likes, isSpam, commentID, timestamp FROM acccomments WHERE userID = :userID ORDER BY timeStamp DESC LIMIT 10 OFFSET $commentpage";
 $query = $db->prepare($query);
 $query->execute([':userID' => $userID]);
 $result = $query->fetchAll();
+if($query->rowCount() == 0){
+	exit("-1");
+}
 $countquery = $db->prepare("SELECT count(*) FROM acccomments WHERE userID = :userID");
 $countquery->execute([':userID' => $userID]);
 $commentcount = $countquery->fetchColumn();

@@ -6,8 +6,9 @@ require_once "../lib/exploitPatch.php";
 $ep = new exploitPatch();
 $binaryVersion = $ep->remove($_POST["binaryVersion"]);
 $gameVersion = $ep->remove($_POST["gameVersion"]);
-$type = $ep->remove($_POST["type"]);
 $levelID = $ep->remove($_POST["levelID"]);
+$commentstring = "";
+$userstring = "";
 $users = array();
 if($_POST["mode"]){
 	$mode = $ep->remove($_POST["mode"]);
@@ -17,10 +18,11 @@ if($_POST["mode"]){
 $page = $ep->remove($_POST["page"]);
 $commentpage = $page*10;
 if($mode==0){
-	$query = "SELECT * FROM comments WHERE levelID = :levelID ORDER BY commentID DESC LIMIT 10 OFFSET $commentpage";
+	$modeColumn = "commentID";
 }else{
-	$query = "SELECT * FROM comments WHERE levelID = :levelID ORDER BY likes DESC LIMIT 10 OFFSET $commentpage";
+	$modeColumn = "likes";
 }
+$query = "SELECT commentID, timestamp, comment, userID, likes, isSpam, percent FROM comments WHERE levelID = :levelID ORDER BY $modeColumn DESC LIMIT 10 OFFSET $commentpage";
 $countquery = "SELECT count(*) FROM comments WHERE levelID = :levelID";
 $countquery = $db->prepare($countquery);
 $countquery->execute([':levelID' => $levelID]);

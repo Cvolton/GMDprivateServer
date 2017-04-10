@@ -279,7 +279,7 @@ class mainLib {
 		$query = $db->prepare("SELECT userID FROM users WHERE extID = :id");
 		$query->execute([':id' => $extID]);
 		if ($query->rowCount() > 0) {
-			$userID = $query->fetchAll()[0]["userID"];
+			$userID = $query->fetchColumn();
 		} else {
 			$query = $db->prepare("INSERT INTO users (isRegistered, extID, userName)
 			VALUES (:register, :id, :userName)");
@@ -288,6 +288,16 @@ class mainLib {
 			$userID = $db->lastInsertId();
 		}
 		return $userID;
+	}
+	public function getExtID($extID) {
+		include __DIR__ . "/connection.php";
+		$query = $db->prepare("SELECT extID FROM users WHERE extID = :id");
+		$query->execute([':id' => $extID]);
+		if ($query->rowCount() > 0) {
+			return $query->fetchColumn();
+		}else{
+			return 0;
+		}
 	}
 }
 ?>

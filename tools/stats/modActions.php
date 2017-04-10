@@ -52,7 +52,9 @@ foreach($result as &$action){
 			break;
 		case 5:
 			$actionname = "Set as daily feature";
-			$value2 = date("d/m/Y G:i:s", $action["value2"]);
+			if(is_numeric($value2)){
+				$value2 = date("d/m/Y G:i:s", $value2);
+			}
 			break;
 		case 6:
 			$actionname = "Deleted a level";

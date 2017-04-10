@@ -17,13 +17,37 @@ if($page < 0){
 $page = $page * 10;
 if($type =="stars" OR $type == "diamonds" OR $type == "usrcoins" OR $type == "coins" OR $type == "demons" OR $type == "cp" OR $type == "orbs" OR $type == "levels" OR $type == "friends"){
 	$typename = $type;
-	if($type == "usrcoins"){
-		$typename = "User Coins";
+	switch($type){
+		case "stars":
+			$thing = "stars";
+			break;
+		case "coins":
+			$thing = "coins";
+			break;
+		case "diamonds":
+			$thing = "diamonds";
+			break;
+		case "usrcoins":
+			$typename = "User Coins";
+			$thing = "userCoins";
+			break;
+		case "demons":
+			$thing = "demons";
+			break;
+		case "cp":
+			$thing = "creatorPoints";
+			break;
+		case "orbs":
+			$thing = "orbs";
+			break;
+		case "levels":
+			$typename = "Completed Levels";
+			$thing = "completedLvls";
+			break;
+		case "friends":
+			$thing = "friendsCount";
 	}
-	if($type == "levels"){
-		$typename = "Completed Levels";
-	}
-	$query = "SELECT $type , userName FROM users WHERE isBanned = '0' ORDER BY $type DESC LIMIT 10 OFFSET $page";
+	$query = "SELECT $thing , userName FROM users WHERE isBanned = '0' ORDER BY $thing DESC LIMIT 10 OFFSET $page";
 	if($type == "friends"){
 		$query = "SELECT userName, friendsCount FROM accounts ORDER BY friendsCount DESC LIMIT 10 OFFSET $page";
 	}
@@ -37,35 +61,7 @@ if($type =="stars" OR $type == "diamonds" OR $type == "usrcoins" OR $type == "co
 		$xi++;
 		$xyz = str_pad($xi, 4, " ", STR_PAD_RIGHT);
 		//$date = date("d/m/Y H:i", $user["lastPlayed"]);
-		switch($type){
-			case "stars":
-				$thing = $user["stars"];
-				break;
-			case "coins":
-				$thing = $user["coins"];
-				break;
-			case "diamonds":
-				$thing = $user["diamonds"];
-				break;
-			case "usrcoins":
-				$thing = $user["userCoins"];
-				break;
-			case "demons":
-				$thing = $user["demons"];
-				break;
-			case "cp":
-				$thing = $user["creatorPoints"];
-				break;
-			case "orbs":
-				$thing = $user["orbs"];
-				break;
-			case "levels":
-				$thing = $user["completedLvls"];
-				break;
-			case "friends":
-				$thing = $user["friendsCount"];
-		}
-		echo "`$xyz | ".str_pad($user["userName"], 15, " ", STR_PAD_LEFT)." | ".str_pad($thing, 16, " ", STR_PAD_LEFT)." |`\r\n";
+		echo "`$xyz | ".str_pad($user["userName"], 15, " ", STR_PAD_LEFT)." | ".str_pad($user[$thing], 16, " ", STR_PAD_LEFT)." |`\r\n";
 	}
 }else{
 	echo "**Command usage: *!top <type> <page>*\r\nValid types are: Stars, Diamonds, Coins, Usrcoins, Demons, CP, Orbs, Levels, Friends**";

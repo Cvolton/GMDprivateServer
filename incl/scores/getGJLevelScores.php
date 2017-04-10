@@ -5,6 +5,8 @@ include "../lib/connection.php";
 require_once "../lib/GJPCheck.php";
 require_once "../lib/exploitPatch.php";
 $ep = new exploitPatch();
+require_once "../lib/mainLib.php";
+$gs = new mainLib();
 //here im getting all the data
 $gjp = $ep->remove($_POST["gjp"]);
 $accountID = $ep->remove($_POST["accountID"]);
@@ -12,20 +14,7 @@ $levelID = $ep->remove($_POST["levelID"]);
 $percent = $ep->remove($_POST["percent"]);
 $uploadDate = time();
 //UPDATING SCORE
-$query2 = $db->prepare("SELECT * FROM users WHERE extID = :accountID");
-$query2->execute([':accountID' => $accountID]);
-$result = $query2->fetchAll();
-if ($query2->rowCount() > 0) {
-$userIDalmost = $result[0];
-$userID = $userIDalmost[1];
-} else {
-$query = $db->prepare("INSERT INTO users (isRegistered, extID)
-VALUES (1, :accountID)");
-
-$query->execute([':accountID' => $accountID]);
-$userID = $db->lastInsertId();
-}
-
+$userID = $gs->getUserID($accountID);
 $query2 = $db->prepare("SELECT * FROM levelscores WHERE accountID = :accountID AND levelID = :levelID");
 $query2->execute([':accountID' => $accountID, ':levelID' => $levelID]);
 $result = $query2->fetchAll();

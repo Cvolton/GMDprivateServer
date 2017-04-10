@@ -7,6 +7,8 @@ $ep = new exploitPatch();
 $GJPCheck = new GJPCheck();
 $accountID = $ep->remove($_POST["accountID"]);
 $gjp = $ep->remove($_POST["gjp"]);
+$people = "";
+$peoplestring = "";
 $gjpresult = $GJPCheck->check($gjp,$accountID);
 $new = array();
 if($gjpresult != 1){
@@ -14,9 +16,9 @@ if($gjpresult != 1){
 }
 $type = $ep->remove($_POST["type"]);
 if($type == 0){
-	$query = "SELECT * FROM friendships WHERE person1 = :accountID OR person2 = :accountID";
+	$query = "SELECT person1,isNew1,person2,isNew2 FROM friendships WHERE person1 = :accountID OR person2 = :accountID";
 }else if($type==1){
-	$query = "SELECT * FROM blocks WHERE person1 = :accountID";
+	$query = "SELECT person1,person2 FROM blocks WHERE person1 = :accountID";
 }
 $query = $db->prepare($query);
 $query->execute([':accountID' => $accountID]);
@@ -33,7 +35,7 @@ else
 			$person = $friendship["person2"];
 			$isnew = $friendship["isNew2"];
 		}
-		$new[$person] = $isNew;
+		$new[$person] = $isnew;
 		$people .= $person . ",";
 	}
 	$people = substr($people, 0,-1);
@@ -41,7 +43,7 @@ else
 	$query->execute();
 	$result = $query->fetchAll();
 	foreach($result as &$user){
-		$peoplestring .= "1:".$user["userName"].":2:".$user["userID"].":9:".$user["icon"].":10:".$user["color1"].":11:".$user["color2"].":14:".$user["iconType"].":15:".$user["special"].":16:".$user["extID"].":18:0:41:".$new[$extID]."|";
+		$peoplestring .= "1:".$user["userName"].":2:".$user["userID"].":9:".$user["icon"].":10:".$user["color1"].":11:".$user["color2"].":14:".$user["iconType"].":15:".$user["special"].":16:".$user["extID"].":18:0:41:".$new[$user["extID"]]."|";
 	}
 	$peoplestring = substr($peoplestring, 0, -1);
 	$query = $db->prepare("UPDATE friendships SET isNew1 = '0' WHERE person2 = :me");

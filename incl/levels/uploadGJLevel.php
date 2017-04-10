@@ -85,8 +85,10 @@ if($_POST["unlisted"]){
 	$unlisted = 0;
 }
 $accountID = "";
-$id = $ep->remove($_POST["udid"]);
-if($_POST["accountID"]!="" AND $_POST["accountID"]!="0"){
+if(isset($_POST["udid"])){
+	$id = $ep->remove($_POST["udid"]);
+}
+if(isset($_POST["accountID"]) AND $_POST["accountID"]!="0"){
 	$id = $ep->remove($_POST["accountID"]);
 	$register = 1;
 }else{

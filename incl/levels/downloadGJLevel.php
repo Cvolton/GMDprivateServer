@@ -4,6 +4,8 @@ include "../lib/connection.php";
 require "../lib/XORCipher.php";
 require_once "../lib/exploitPatch.php";
 $ep = new exploitPatch();
+require_once "../lib/mainLib.php";
+$gs = new mainLib();
 if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
 	$ip = $_SERVER['HTTP_CLIENT_IP'];
 } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
@@ -37,9 +39,9 @@ if(!is_numeric($levelID)){
 	if($lvls!=0){
 		$result = $query->fetch();
 		//adding the download
-		$query6 = $db->prepare("SELECT * FROM actions WHERE type=:type AND value=:itemID AND value2=:ip");
+		$query6 = $db->prepare("SELECT count(*) FROM actions WHERE type=:type AND value=:itemID AND value2=:ip");
 		$query6->execute([':type' => 7, ':itemID' => $levelID, ':ip' => $ip]);
-		if($query6->rowCount() < 2){
+		if($query6->fetchColumn() < 2){
 			$downloads = $result["downloads"] + 1;
 			$query2=$db->prepare("UPDATE levels SET downloads = :downloads WHERE levelID = :levelID");
 			$query2->execute([':downloads' => $downloads, ':levelID' => $levelID]);
@@ -59,9 +61,9 @@ if(!is_numeric($levelID)){
 		} else {
 			$ip = $_SERVER['REMOTE_ADDR'];
 		}
-		$query=$db->prepare("SELECT * FROM modips WHERE IP = :ip");
+		$query=$db->prepare("SELECT count(*) FROM modips WHERE IP = :ip");
 		$query->execute([":ip" => $ip]);
-		$ips = $query->rowCount();
+		$ips = $query->fetchColumn();
 		if($ips > 0){
 			$pass = "1";
 		}
@@ -102,19 +104,11 @@ if(!is_numeric($levelID)){
 		echo $hash->genSolo2($somestring);
 		echo "#";
 		if($daily == 1){
-			$userIDquery = $db->prepare("SELECT * FROM users WHERE userID = '".$result["userID"]."'");
-			$userIDquery->execute();
-			$userID = $userIDquery->fetchAll();
-			if ($userIDquery->rowCount() > 0) {
-				$userID = $userID[0];
-				$userID = $userID["extID"];
-				if(is_numeric($userID)){
-					$userID = $userID;
-				}else{
-					$userID = 0;
-				}
+			$extID = $gs->getExtID($result["userID"]);
+			if(!is_numeric($extID)){
+				$extID = 0;
 			}
-			echo $result["userID"] . ":" . $result["userName"] . ":" . $userID;
+			echo $result["userID"] . ":" . $result["userName"] . ":" . $extID;
 		}else{
 			echo $somestring;
 		}

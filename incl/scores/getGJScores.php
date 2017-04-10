@@ -5,6 +5,10 @@ include "../lib/connection.php";
 require_once "../lib/exploitPatch.php";
 require_once "../lib/GJPCheck.php";
 $ep = new exploitPatch();
+$stars = 0;
+$count = 0;
+$xi = 0;
+$lbstring = "";
 if($_POST["gameVersion"] > 19){
 	$sign = "> 19";
 }else{

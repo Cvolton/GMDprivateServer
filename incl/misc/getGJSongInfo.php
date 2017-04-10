@@ -6,7 +6,7 @@ $songReup = new songReup();
 require_once "../lib/exploitPatch.php";
 $ep = new exploitPatch();
 $songid = $ep->remove($_POST["songID"]);
-$query3=$db->prepare("SELECT * FROM songs WHERE ID = :songid LIMIT 1");
+$query3=$db->prepare("SELECT ID,name,authorID,authorName,size,isDisabled,download FROM songs WHERE ID = :songid LIMIT 1");
 $query3->execute([':songid' => $songid]);
 if($query3->rowCount() == 0) {
 	$url = 'http://www.boomlings.com/database/getGJSongInfo.php';
