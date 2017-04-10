@@ -4,14 +4,9 @@ require_once "../../incl/lib/exploitPatch.php";
 $ep = new exploitPatch();
 $playername = $ep->remove($_GET["player"]);
 //checking who has blocked him
-$query = "SELECT * FROM users WHERE userName = :userName ORDER BY stars DESC LIMIT 1";
+$query = "SELECT * FROM users WHERE userName = :userName OR userID = :userName ORDER BY stars DESC LIMIT 1";
 $query = $db->prepare($query);
 $query->execute([':userName' => $playername]);
-if(is_numeric($_GET["player"])){
-	$query = "SELECT * FROM users WHERE userID = :id ORDER BY stars DESC LIMIT 1";
-	$query = $db->prepare($query);
-	$query->execute([':id' => $playername]);
-}
 if($query->rowCount() == 0){
 	$query = "SELECT * FROM users WHERE userName LIKE CONCAT(:str, '%') ORDER BY stars DESC LIMIT 1";
 	$query = $db->prepare($query);
