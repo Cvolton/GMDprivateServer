@@ -15,14 +15,14 @@ $udid = $ep->remove($_POST["udid"]);
 $userName = $ep->remove($_POST["userName"]);
 $password = $ep->remove($_POST["password"]);
 //registering
-$query = $db->prepare("SELECT accountID FROM accounts WHERE userName = :userName");
+$query = $db->prepare("SELECT accountID FROM accounts WHERE userName LIKE :userName");
 $query->execute([':userName' => $userName]);
 $account = $query->fetchAll()[0];
 //rate limiting
 $newtime = time() - 3600;
 $query6 = $db->prepare("SELECT count(*) FROM actions WHERE type = '1' AND timestamp > :time AND value2 = :ip");
 $query6->execute([':time' => $newtime, ':ip' => $ip]);
-if($query6->fetchColumn() > 2){
+if($query6->fetchColumn() > 5){
 	exit("-12");
 }
 //authenticating
