@@ -3,8 +3,7 @@ chdir(dirname(__FILE__));
 include "../lib/connection.php";
 require_once "../lib/exploitPatch.php";
 $ep = new exploitPatch();
-$levelsstring = "";
-$songsstring  = "";
+$reqstring = "";
 if(isset($_POST["getSent"])){
 	$getSent = $ep->remove($_POST["getSent"]);
 }else{
