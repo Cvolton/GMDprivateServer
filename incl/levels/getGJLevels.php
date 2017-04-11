@@ -77,7 +77,7 @@ if(isset($_POST["onlyCompleted"]) AND $_POST["onlyCompleted"]==1){
 	$completedLevels = str_replace("'","", $completedLevels);
 	$params[] = "levelID IN ($completedLevels)";
 }
-if(isset($_POST["song"]) AND isset($_POST["song"])){
+if(isset($_POST["song"])){
 	if($_POST["customSong"]==0){
 		$song = $ep->remove($_POST["song"]);
 		$song = $db->quote($song);
@@ -92,10 +92,10 @@ if(isset($_POST["twoPlayer"]) AND $_POST["twoPlayer"]==1){
 	$params[] = "twoPlayer = 1";
 }
 if(isset($_POST["star"])){
-	$params[] = "starStars = 0";
+	$params[] = "NOT starStars = 0";
 }
 if(isset($_POST["noStar"])){
-	$params[] = "NOT starStars = 0";
+	$params[] = "starStars = 0";
 }
 if(isset($_POST["gauntlet"])){
 	$gauntlet = $ep->remove($_POST["gauntlet"]);
@@ -293,17 +293,11 @@ $lvlstring = substr($lvlstring, 0, -1);
 $lvlsmultistring = substr($lvlsmultistring, 0, -1);
 $userstring = substr($userstring, 0, -1);
 $songsstring = substr($songsstring, 0, -3);
-echo $lvlstring;
-echo "#".$userstring;
+echo $lvlstring."#".$userstring;
 if($gameVersion > 18){
 	echo "#".$songsstring;
 }
-/*if (array_key_exists(8,$result)){
-	echo "#9999:".$lvlpagea.":10";
-}else{
-	$totallvlcount = $lvlpagea+$levelcount;*/
 echo "#".$totallvlcount.":".$lvlpagea.":10";
-//}
 echo "#";
 require "../lib/generateHash.php";
 $hash = new generateHash();
