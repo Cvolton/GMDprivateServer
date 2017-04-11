@@ -289,15 +289,44 @@ class mainLib {
 		}
 		return $userID;
 	}
-	public function getExtID($extID) {
+	public function getExtID($userID) {
 		include __DIR__ . "/connection.php";
-		$query = $db->prepare("SELECT extID FROM users WHERE extID = :id");
-		$query->execute([':id' => $extID]);
+		$query = $db->prepare("SELECT extID FROM users WHERE userID = :id");
+		$query->execute([':id' => $userID]);
 		if ($query->rowCount() > 0) {
 			return $query->fetchColumn();
 		}else{
 			return 0;
 		}
+	}
+	public function getUserString($userID) {
+		include __DIR__ . "/connection.php";
+		$query = $db->prepare("SELECT userName, extID FROM users WHERE userID = :id");
+		$query->execute([':id' => $userID]);
+		$userdata = $query->fetch();
+		if(is_numeric($userdata["extID"])){
+			$extID = $userdata["extID"];
+		}else{
+			$extID = 0;
+		}
+		return $userID . ":" . $userdata["userName"] . ":" . $extID;
+	}
+	public function getSongString($songID){
+		include __DIR__ . "/connection.php";
+		$query3=$db->prepare("SELECT ID,name,authorID,authorName,size,isDisabled,download FROM songs WHERE ID = :songid LIMIT 1");
+		$query3->execute([':songid' => $songID]);
+		if($query3->rowCount() == 0){
+			return false;
+		}
+		$result4 = $query3->fetch();
+		if($result4["isDisabled"] == 1){
+			return false;
+		}
+		$dl = $result4["download"];
+		if(strpos($dl, ':') !== false){
+			$dl = urlencode($dl);
+		}
+		return "1~|~".$result4["ID"]."~|~2~|~".$result4["name"]."~|~3~|~".$result4["authorID"]."~|~4~|~".$result4["authorName"]."~|~5~|~".$result4["size"]."~|~6~|~~|~10~|~".$dl."~|~7~|~~|~8~|~0";
 	}
 }
 ?>
