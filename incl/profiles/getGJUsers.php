@@ -7,7 +7,7 @@ $str = $ep->remove($_POST["str"]);
 $page = $ep->remove($_POST["page"]);
 $userstring = "";
 $usrpagea = $page*10;
-$query = "SELECT userName, userID, coins, userCoins, icon, color1, color2, iconType, special, extID, stars, creatorPoints, demons FROM users WHERE userName LIKE CONCAT('%', :str, '%') ORDER BY stars DESC LIMIT 10 OFFSET $usrpagea";
+$query = "SELECT userName, userID, coins, userCoins, icon, color1, color2, iconType, special, extID, stars, creatorPoints, demons FROM users WHERE userID = :str OR userName LIKE CONCAT('%', :str, '%') ORDER BY stars DESC LIMIT 10 OFFSET $usrpagea";
 $query = $db->prepare($query);
 $query->execute([':str' => $str]);
 $result = $query->fetchAll();
