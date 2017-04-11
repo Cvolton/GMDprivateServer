@@ -14,7 +14,7 @@ if($id != "" AND $gjp != ""){
 	$GJPCheck = new GJPCheck();
 	$gjpresult = $GJPCheck->check($gjp,$id);
 	if($gjpresult == 1){
-		$query = $db->prepare("SELECT count(*) FROM accounts WHERE accountID = :id");
+		$query = $db->prepare("SELECT count(*) FROM accounts WHERE accountID = :id AND NOT isAdmin = 0");
 		$query->execute([':id' => $id]);
 		if($query->fetchColumn()==1){
 			$auto = 0;
