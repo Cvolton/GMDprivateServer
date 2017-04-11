@@ -12,6 +12,7 @@ $lvlstring = "";
 $userstring = "";
 $songsstring  = "";
 $lvlsmultistring = "";
+$orderenabled = true;
 $params = array("NOT unlisted = 1");
 if(isset($_POST["gameVersion"])){
 	$gameVersion = $ep->remove($_POST["gameVersion"]);
@@ -98,6 +99,7 @@ if(isset($_POST["noStar"])){
 	$params[] = "starStars = 0";
 }
 if(isset($_POST["gauntlet"])){
+	$order = false;
 	$gauntlet = $ep->remove($_POST["gauntlet"]);
 	$query=$db->prepare("SELECT * FROM gauntlets WHERE ID = :gauntlet");
 	$query->execute([':gauntlet' => $gauntlet]);
@@ -205,6 +207,7 @@ if($type==7){ //MAGIC
 	$params[] = "objects > 9999";
 }
 if($type==10){ //MAP PACKS
+	$order = false;
 	$params[] = "levelID IN ($str)";
 }
 if($type==11){
@@ -253,7 +256,11 @@ $querybase = "FROM levels";
 if(!empty($params)){
 	$querybase .= " WHERE (" . implode(" ) AND ( ", $params) . ")";
 }
-$query = "(SELECT * $querybase ) ORDER BY $order DESC LIMIT 10 OFFSET $lvlpagea";
+$query = "(SELECT * $querybase ) ";
+if($order){
+	$query .= "ORDER BY $order DESC";
+}
+$query .= " LIMIT 10 OFFSET $lvlpagea";
 //echo $query;
 $countquery = "SELECT count(*) $querybase";
 $query = $db->prepare($query);
