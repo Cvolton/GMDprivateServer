@@ -16,7 +16,7 @@ $query = $db->prepare($query);
 $query->execute([':userID' => $userID]);
 $result = $query->fetchAll();
 if($query->rowCount() == 0){
-	exit("-1");
+	exit("#0:0:0");
 }
 $countquery = $db->prepare("SELECT count(*) FROM acccomments WHERE userID = :userID");
 $countquery->execute([':userID' => $userID]);
