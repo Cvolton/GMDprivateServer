@@ -180,8 +180,6 @@ if($type==0 OR $type==15){ //most liked, changed to 15 in GDW for whatever reaso
 		}else{
 			$params[] = "levelName LIKE '%$str%'";
 		}
-	}else{
-		$type=2;
 	}
 }
 if($type==1){
@@ -194,23 +192,16 @@ if($type==3){ //TRENDING
 	$uploadDate = time() - (7 * 24 * 60 * 60);
 	$params[] = "uploadDate > $uploadDate ";
 }
-if($type==4){ //RECENT
-	$order = "uploadDate";
-}
 if($type==5){
-	$order = "uploadDate";
 	$params[] = "userID = '$str'";
 }
 if($type==6 OR $type==17){ //featured
-	$order = "uploadDate";
 	$params[] = "NOT starFeatured = 0";
 }
 if($type==16){ //HALL OF FAME
-	$order = "uploadDate";
 	$params[] = "NOT starEpic = 0";
 }
 if($type==7){ //MAGIC
-	$order = "uploadDate";
 	$params[] = "objects > 9999";
 }
 if($type==10){ //MAP PACKS
@@ -256,7 +247,7 @@ if($type==13){ //FRIENDS
 	}
 }
 if(!isset($order)){
-	$order = "likes";
+	$order = "uploadDate";
 }
 $querybase = "FROM levels";
 if(!empty($params)){

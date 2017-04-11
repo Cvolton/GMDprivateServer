@@ -6,6 +6,8 @@ $ep = new exploitPatch();
 require_once "../../incl/lib/mainLib.php";
 $gs = new mainLib();
 $str = $ep->remove($_GET["str"]);
+$difficulty = "";
+$original = "";
 //getting level data
 echo "***SHOWING RESULT FOR $str***\r\n";
 include "../../incl/lib/connection.php";
@@ -19,7 +21,7 @@ $levelInfo = $query->fetchAll()[0];
 //getting creator name
 $query = $db->prepare("SELECT userName FROM users WHERE userID = :userID");
 $query->execute([':userID' => $levelInfo["userID"]]);
-$creator = $query->fetchAll()[0]["userName"];
+$creator = $query->fetchColumn();
 //getting song name
 if($levelInfo["songID"] != 0){
 	$query = $db->prepare("SELECT name, authorName, ID FROM songs WHERE ID = :songID");
@@ -47,7 +49,7 @@ $uploadDate = date("d-m-Y G-i", $levelInfo["uploadDate"]);
 $updateDate = date("d-m-Y G-i", $levelInfo["updateDate"]);
 //getting original level
 if($levelInfo["original"] != 0){
-	$original = "\r\n**Original:** " . $levelInfo["original"] ."";
+	$original .= "\r\n**Original:** " . $levelInfo["original"] ."";
 }
 if($levelInfo["originalReup"] != 0){
 	$original .= "\r\n**Reupload Original:** ".$levelInfo["originalReup"] . "";

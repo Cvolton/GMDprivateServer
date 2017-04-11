@@ -30,9 +30,7 @@ if($query->rowCount() == 0){
                     ) as result WHERE extID=:extid";
 	$query = $db->prepare($f);
 	$query->execute([':extid' => $extid]);
-	$leaderboard = $query->fetchAll();
-	$leaderboard = $leaderboard[0];
-	$rank = $leaderboard["rank"];
+	$rank = $query->fetchColumn();
 	/*$f = "SELECT rank, creatorPoints FROM (
                     SELECT @rownum := @rownum + 1 AS rank, creatorPoints, extID, isCreatorBanned
                     FROM users WHERE isCreatorBanned = '0' ORDER BY creatorPoints DESC

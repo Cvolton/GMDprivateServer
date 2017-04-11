@@ -4,28 +4,24 @@ include "../lib/connection.php";
 require_once "../lib/exploitPatch.php";
 require_once "../lib/GJPCheck.php";
 $ep = new exploitPatch();
-$me = $ep->remove($_POST["accountID"]);
 $gjp = $ep->remove($_POST["gjp"]);
 $extid = $ep->remove($_POST["targetAccountID"]);
-if($me){
+if(isset($_POST["accountID"])){
+	$me = $ep->remove($_POST["accountID"]);
 	$GJPCheck = new GJPCheck(); //gjp check
 	$gjpresult = $GJPCheck->check($gjp,$me);
 	if($gjpresult != 1){
 		exit("-1");
 	}
+}else{
+	$me = 0;
 }
 //checking who has blocked him
-$query = "SELECT count(*) FROM blocks WHERE person1 = :extid AND person2 = :me";
+$query = "SELECT count(*) FROM blocks WHERE (person1 = :extid AND person2 = :me) OR (person2 = :extid AND person1 = :me)";
 $query = $db->prepare($query);
 $query->execute([':extid' => $extid, ':me' => $me]);
 if($query->fetchColumn() > 0){
-	exit(-1);
-}
-$query = "SELECT count(*) FROM blocks WHERE person2 = :extid AND person1 = :me";
-$query = $db->prepare($query);
-$query->execute([':extid' => $extid, ':me' => $me]);
-if($query->fetchColumn() > 0){
-	exit(-1);
+	exit("-1");
 }
 	$query = "SELECT * FROM users WHERE extID = :extid";
 	$query = $db->prepare($query);
@@ -37,31 +33,21 @@ if($query->fetchColumn() > 0){
 	$e = "SET @rownum := 0;";
 	$query = $db->prepare($e);
 	$query->execute();
-	$f = "SELECT rank, stars FROM (
-                    SELECT @rownum := @rownum + 1 AS rank, stars, extID, isBanned
-                    FROM users WHERE isBanned = '0' AND gameVersion > 19 ORDER BY stars DESC
+	$f = "SELECT rank FROM (
+                    SELECT @rownum := @rownum + 1 AS rank, extID
+                    FROM users WHERE isBanned = '0' AND gameVersion > 19 AND stars > 25 ORDER BY stars DESC
                     ) as result WHERE extID=:extid";
 	$query = $db->prepare($f);
 	$query->execute([':extid' => $extid]);
-	$leaderboard = $query->fetchAll();
-	$leaderboard = $leaderboard[0];
-	$rank = $leaderboard["rank"];
+	$rank = $query->fetchColumn();
 	//var_dump($leaderboard);
-			//check if friend REQUESTS allowed
-			$query = "SELECT * FROM accounts WHERE accountID = :me";
-			$query = $db->prepare($query);
-			$query->execute([':me' => $me]);
-			$result = $query->fetchAll();
-			$account = $result[0];
-			$reqsstate = $account["frS"];
-		//check if messaging allowed
-			//$msgstate = 0;
-			$msgstate = $account["mS"];
 		//accinfo
-			$query = "SELECT youtubeurl,twitter,twitch FROM accounts WHERE accountID = :extID";
+			$query = "SELECT youtubeurl,twitter,twitch, frS, mS FROM accounts WHERE accountID = :extID";
 			$query = $db->prepare($query);
 			$query->execute([':extID' => $extid]);
 			$accinfo = $query->fetch();
+			$reqsstate = $accinfo["frS"];
+			$msgstate = $accinfo["mS"];
 	if($me==$extid){
 		/* notifications */
 			//friendreqs
