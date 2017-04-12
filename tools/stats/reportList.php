@@ -7,7 +7,11 @@ $query = $db->prepare("SELECT levelID FROM reports");
 $query->execute();
 $result = $query->fetchAll();
 foreach($result as &$report){
-	$array[$report["levelID"]]++;
+	if(isset($array[$report["levelID"]])){
+		$array[$report["levelID"]]++;
+	}else{
+		$array[$report["levelID"]] = 1;
+	}
 }
 arsort($array);
 foreach($array as $id => $count){

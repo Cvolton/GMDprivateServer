@@ -58,17 +58,15 @@ $result = $query->fetchAll();
 //getting gauntlets
 foreach($result as $gauntlet){
 	//getting lvls
-	for($x = 0; $x < 6; $x++){
+	for($x = 1; $x < 6; $x++){
 		$query = $db->prepare("SELECT userID, levelID FROM levels WHERE levelID = :levelID");
 		$query->execute([':levelID' => $gauntlet["level".$x]]);
-		$result = $query->fetchAll();
-		$result = $result[0];
+		$result = $query->fetch();
 		//getting users
 		if($result["userID"] != ""){
 			$query = $db->prepare("SELECT userName, userID, creatorPoints FROM users WHERE userID = ".$result["userID"]);
 			$query->execute();
-			$result = $query->fetchAll();
-			$user = $result[0];
+			$user = $query->fetch();
 			$creatorpoints = $user["creatorPoints"];
 			$creatorpoints++;
 			$cplog .= $user["userName"] . " - " . $creatorpoints . "\r\n";
@@ -98,15 +96,14 @@ foreach($result as $daily){
 	if($result["userID"] != ""){
 		$query = $db->prepare("SELECT userName, userID, creatorPoints FROM users WHERE userID = ".$result["userID"]);
 		$query->execute();
-		$result = $query->fetchAll();
-		$user = $result[0];
+		$user = $query->fetch();
 		$creatorpoints = $user["creatorPoints"];
 		$creatorpoints++;
 		$cplog .= $user["userName"] . " - " . $creatorpoints . "\r\n";
 		//inserting cp value
 		$query4 = $db->prepare("UPDATE users SET creatorPoints='$creatorpoints' WHERE userID='".$user["userID"]."'");
 		$query4->execute();	
-		echo htmlspecialchars($user["userName"],ENT_QUOTES) . " now has ".$creatorpoints." creator points... <br>";
+		echo htmlspecialchars($user["userName"],ENT_QUOTES) . " now has $creatorpoints creator points... <br>";
 		ob_flush();
 		flush();
 	}

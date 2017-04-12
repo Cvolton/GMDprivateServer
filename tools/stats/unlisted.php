@@ -3,10 +3,9 @@ include "../../incl/lib/connection.php";
 require "../../incl/lib/generatePass.php";
 require_once "../../incl/lib/exploitPatch.php";
 $ep = new exploitPatch();
-//here im getting all the data
-$userName = $ep->remove($_POST["userName"]);
-$password = $ep->remove($_POST["password"]);
-if($userName != "" AND $password != ""){
+if(isset($_POST["userName"]) AND isset($_POST["password"])){
+	$userName = $ep->remove($_POST["userName"]);
+	$password = $ep->remove($_POST["password"]);
 	$generatePass = new generatePass();
 	$pass = $generatePass->isValidUsrname($userName, $password);
 	if ($pass == 1) {

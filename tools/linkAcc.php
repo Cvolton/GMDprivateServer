@@ -10,7 +10,7 @@ require_once "../incl/lib/generatePass.php";
 $generatePass = new generatePass();
 require_once "../incl/lib/exploitPatch.php";
 $ep = new exploitPatch();
-if($_POST["userhere"]!="" AND $_POST["passhere"]!="" AND $_POST["usertarg"]!="" AND $_POST["passtarg"]!=""){
+if(isset($_POST["userhere"]) AND isset($_POST["passhere"]) AND isset($_POST["usertarg"]) AND isset($_POST["passtarg"])){
 	$userhere = $ep->remove($_POST["userhere"]);
 	$passhere = $ep->remove($_POST["passhere"]);
 	$usertarg = $ep->remove($_POST["usertarg"]);
@@ -57,7 +57,7 @@ if($_POST["userhere"]!="" AND $_POST["passhere"]!="" AND $_POST["usertarg"]!="" 
 			$query = $db->prepare("SELECT count(*) FROM links WHERE targetAccountID = :targetAccountID LIMIT 1");
 			$query->execute([':targetAccountID' => $targetAccountID]);
 			if($query->fetchColumn() != 0){
-				exit("The target account is linked to a different account already.");
+				exit("The target account is linked to an account already.");
 			}
 			//echo $accountID;
 			if(!is_numeric($targetAccountID) OR !is_numeric($accountID)){
@@ -68,7 +68,7 @@ if($_POST["userhere"]!="" AND $_POST["passhere"]!="" AND $_POST["usertarg"]!="" 
 			$query = $db->prepare("INSERT INTO links (accountID, targetAccountID, server, timestamp, userID, targetUserID)
 											 VALUES (:accountID,:targetAccountID,:server,:timestamp,:userID,:targetUserID)");
 			$query->execute([':accountID' => $accountID, ':targetAccountID' => $targetAccountID, ':server' => $server, ':timestamp' => time(), 'userID' => $userID, 'targetUserID' => $targetUserID]);
-			echo "Account linked.<br><hr><br>$result";
+			echo "Account linked succesfully.";
 		}
 	}else{
 		echo "Invalid local username/password combination.";

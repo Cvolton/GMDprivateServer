@@ -10,10 +10,10 @@ $demons = 0;
 foreach($levelstuff as $level){
 	$stars = $stars + $level["starStars"];
 	if($level["starCoins"] != 0){
-		$coins = $coins + $level["coins"];
+		$coins += $level["coins"];
 	}
 	if($level["starDemon"] != 0){
-		$demons = $demons + 1;
+		$demons++;
 	}
 }
 $query = $db->prepare("SELECT stars FROM mappacks");
@@ -22,7 +22,7 @@ $result = $query->fetchAll();
 //counting stars
 echo "<h3>Stars based bans</h3>";
 foreach($result as $pack){
-	$stars = $stars + $pack["stars"];
+	$stars += $pack["stars"];
 }
 $quarter = floor($stars / 4);
 $stars = $stars + 200 + $quarter;

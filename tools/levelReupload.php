@@ -14,7 +14,7 @@ function chkarray($source){
 }
 //error_reporting(0);
 include "../incl/lib/connection.php";
-if($_POST["levelid"]!=""){
+if(isset($_POST["levelid"])){
 	$levelID = $_POST["levelid"];
 	$levelID = preg_replace("/[^0-9]/", '', $levelID);
 	$url = $_POST["server"];

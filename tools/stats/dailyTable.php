@@ -16,14 +16,14 @@ foreach($result as &$daily){
 	//level name
 	$query = $db->prepare("SELECT levelName, userID FROM levels WHERE levelID = :level");
 	$query->execute([':level' => $levelID]);
-	$level = $query->fetchAll()[0];
+	$level = $query->fetch();
 	$levelName = $level["levelName"];
 	$userID = $level["userID"];
 	echo "<td>$levelName</td>";
 	//creator name
 	$query = $db->prepare("SELECT userName FROM users WHERE userID = :userID");
 	$query->execute([':userID' => $userID]);
-	$creator = $query->fetchAll()[0]["userName"];
+	$creator = $query->fetchColumn();
 	echo "<td>$creator</td>";
 	//timestamp
 	$time = date("d/m/Y H:i", $time);

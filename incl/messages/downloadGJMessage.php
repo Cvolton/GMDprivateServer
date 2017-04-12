@@ -7,21 +7,22 @@ $ep = new exploitPatch();
 $accountID = $ep->remove($_POST["accountID"]);
 $gjp = $ep->remove($_POST["gjp"]);
 $messageID = $ep->remove($_POST["messageID"]);
-$isSender = $ep->remove($_POST["isSender"]);
 $GJPCheck = new GJPCheck();
 $gjpresult = $GJPCheck->check($gjp,$accountID);
 if($gjpresult == 1){
-	$query=$db->prepare("SELECT accID, toAccountID, timestamp, userName, userID, extID, messageID, subject, isNew, body FROM messages WHERE messageID = :messageID AND (accountID = :accID OR toAccountID = :accID) LIMIT 1");
+	$query=$db->prepare("SELECT accID, toAccountID, timestamp, userName, messageID, subject, isNew, body FROM messages WHERE messageID = :messageID AND (accID = :accID OR toAccountID = :accID) LIMIT 1");
 	$query->execute([':messageID' => $messageID, ':accID' => $accountID]);
 	$result = $query->fetch();
 	if($query->rowCount() == 0){
 		exit("-1");
 	}
-	if($isSender != 1){
+	if(!isset($_POST["isSender"])){
 		$query=$db->prepare("UPDATE messages SET isNew=1 WHERE messageID = :messageID AND toAccountID = :accID");
 		$query->execute([':messageID' => $messageID, ':accID' =>$accountID]);
 		$accountID = $result["accID"];
+		$isSender = 0;
 	}else{
+		$isSender = 1;
 		$accountID = $result["toAccountID"];
 	}
 	$query=$db->prepare("SELECT userName,userID,extID FROM users WHERE extID = :accountID");

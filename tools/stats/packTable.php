@@ -88,10 +88,10 @@ foreach($result as &$gauntlet){
 		echo "<td>";
 		$lvl = $gauntlet["level".$x];
 		echo $lvl . " - ";
-		$query = $db->prepare("SELECT * FROM levels WHERE levelID = :levelID");
+		$query = $db->prepare("SELECT levelName FROM levels WHERE levelID = :levelID");
 		$query->execute([':levelID' => $lvl]);
-		$result2 = $query->fetchAll();
-		echo $result2[0]["levelName"] . "</td>";
+		$levelName = $query->fetchColumn();
+		echo "$levelName</td>";
 	}
 	echo "</tr>";
 }
