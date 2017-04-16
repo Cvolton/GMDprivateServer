@@ -16,7 +16,7 @@ class generatePass
 		if($query6->fetchColumn() > 7){
 			return 0;
 		}else{
-			$query = $db->prepare("SELECT accountID, salt, password, isAdmin FROM accounts WHERE userName = :userName");
+			$query = $db->prepare("SELECT accountID, salt, password, isAdmin FROM accounts WHERE userName LIKE :userName");
 			$query->execute([':userName' => $userName]);
 			$result = $query->fetchAll();
 			$result = $result[0];

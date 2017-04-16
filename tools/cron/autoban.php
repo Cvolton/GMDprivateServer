@@ -1,6 +1,9 @@
 <hr>
 <?php
 include "../../incl/lib/connection.php";
+echo "Initializing autoban";
+ob_flush();
+flush();
 $query = $db->prepare("SELECT starStars, coins, starDemon, starCoins FROM levels");
 $query->execute();
 $levelstuff = $query->fetchAll();
@@ -21,6 +24,8 @@ $query->execute();
 $result = $query->fetchAll();
 //counting stars
 echo "<h3>Stars based bans</h3>";
+ob_flush();
+flush();
 foreach($result as $pack){
 	$stars += $pack["stars"];
 }
@@ -37,6 +42,8 @@ foreach($result as $user){
 }
 //counting coins
 echo "<h3>User coins based bans</h3>";
+ob_flush();
+flush();
 $quarter = floor($coins / 4);
 $coins = $coins + 10 + $quarter;
 $query = $db->prepare("SELECT userID, userName FROM users WHERE userCoins > :coins");
@@ -50,6 +57,8 @@ foreach($result as $user){
 }
 //counting demons
 echo "<h3>Demons based bans</h3>";
+ob_flush();
+flush();
 $quarter = floor($demons / 16);
 $demons = $demons + 3 + $quarter;
 $query = $db->prepare("SELECT userID, userName FROM users WHERE demons > :demons");
@@ -69,6 +78,9 @@ foreach($result as $ip){
 	$query = $db->prepare("UPDATE users SET isBanned = '1' WHERE IP = :ip");
 	$query->execute([':ip' => $ip["IP"]]);
 }
+echo "<hr>Autoban finished";
+ob_flush();
+flush();
 //done
 //echo "<hr>Banned everyone with over $stars stars and over $coins user coins and over $demons demons!<hr>done";
 ?>

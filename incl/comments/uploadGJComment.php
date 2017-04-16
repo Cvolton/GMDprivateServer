@@ -19,12 +19,12 @@ if($gameversion < 20){
 	$comment = base64_encode($comment);
 }
 $levelID = $ep->remove($_POST["levelID"]);
-$percent = $ep->remove($_POST["percent"]);
-if($percent == ""){
+if(isset($_POST["percent"])){
+	$percent = $ep->remove($_POST["percent"]);
+}else{
 	$percent = 0;
 }
-$id = $ep->remove($_POST["udid"]);
-if($_POST["accountID"]!="" AND $_POST["accountID"]!="0"){
+if(isset($_POST["accountID"]) AND $_POST["accountID"]!="0"){
 	$id = $ep->remove($_POST["accountID"]);
 	$register = 1;
 	$GJPCheck = new GJPCheck();
@@ -33,6 +33,7 @@ if($_POST["accountID"]!="" AND $_POST["accountID"]!="0"){
 		exit("-1");
 	}
 }else{
+	$id = $ep->remove($_POST["udid"]);
 	$register = 0;
 }
 $userID = $mainLib->getUserID($id, $userName);
