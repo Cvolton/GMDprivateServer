@@ -25,8 +25,7 @@ class generateHash {
 		}
 		return sha1($hash . "xI25fpAapCQg");
 	}
-	public function genSolo($lvlsmultistring) {
-		$levelstring = $lvlsmultistring;
+	public function genSolo($levelstring) {
 		$hash = "aaaaa";
 		$len = strlen($levelstring);
 		$divided = intval($len/40);
@@ -59,6 +58,19 @@ class generateHash {
 			$hash = $hash . $result["ID"][0].$result["ID"][strlen($result["ID"])-1].$result["stars"].$result["coins"];
 		}
 		return sha1($hash . "xI25fpAapCQg");
+	}
+	public function genSeed2noXor($levelstring) {
+		$hash = "aaaaa";
+		$len = strlen($levelstring);
+		$divided = intval($len/50);
+		$p = 0;
+		for($k = 0; $k < $len ; $k= $k+$divided){
+			if($p > 49) break;
+			$hash[$p] = $levelstring[$k]; 
+			$p++;
+		}
+		$hash = sha1($hash."xI25fpAapCQg");
+		return $hash;
 	}
 }
 ?>
