@@ -28,6 +28,8 @@ if(!is_numeric($levelID)){
 				$levelID = $result["levelID"];
 				$feaID = $result["feaID"];
 				$daily = 1;
+	}else{
+		$daily = 0;
 	}
 	if(!is_numeric($levelID)){
 		exit("-1");

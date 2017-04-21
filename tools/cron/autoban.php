@@ -74,8 +74,8 @@ foreach($result as $user){
 $query = $db->prepare("SELECT IP FROM bannedips");
 $query->execute();
 $result = $query->fetchAll();
-foreach($result as $ip){
-	$query = $db->prepare("UPDATE users SET isBanned = '1' WHERE IP = :ip");
+foreach($result as &$ip){
+	$query = $db->prepare("UPDATE users SET isBanned = '1' WHERE IP LIKE CONCAT(:ip, '%')");
 	$query->execute([':ip' => $ip["IP"]]);
 }
 echo "<hr>Autoban finished";

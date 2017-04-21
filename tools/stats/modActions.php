@@ -71,6 +71,12 @@ foreach($result as &$action){
 		case 10:
 			$actionname = "Changed demon difficulty";
 			break;
+		case 11:
+			$actionname = "Shared CP";
+			break;
+		default:
+			$actionname = $action["type"];
+			break;
 		}
 	if($action["type"] == 2 OR $action["type"] == 3 OR $action["type"] == 4){
 		if($action["value"] == 1){

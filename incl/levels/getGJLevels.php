@@ -193,6 +193,7 @@ if($type==2){
 if($type==3){ //TRENDING
 	$uploadDate = time() - (7 * 24 * 60 * 60);
 	$params[] = "uploadDate > $uploadDate ";
+	$order = "likes";
 }
 if($type==5){
 	$params[] = "userID = '$str'";

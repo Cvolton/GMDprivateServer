@@ -28,7 +28,7 @@ if($query->fetchColumn() > 0){
 	$query->execute([':extid' => $extid]);
 	$user = $query->fetch();
 	//placeholders
-	$creatorpoints = $user["creatorPoints"];
+	$creatorpoints = round($user["creatorPoints"], PHP_ROUND_HALF_DOWN);
 	// GET POSITION
 	$e = "SET @rownum := 0;";
 	$query = $db->prepare($e);

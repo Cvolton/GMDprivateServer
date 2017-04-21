@@ -37,4 +37,5 @@ foreach($result as $account){
 	}
 }
 file_put_contents("../logs/frndlog.txt",$frndlog);
+echo "<hr>";
 ?>
