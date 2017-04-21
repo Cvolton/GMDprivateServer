@@ -11,6 +11,9 @@ $XORCipher = new XORCipher();
 $generateHash = new generateHash();
 $accountID = $ep->remove($_POST["accountID"]);
 $udid = $ep->remove($_POST["udid"]);
+if(is_numeric($udid)){
+	exit("-1");
+}
 $chk = $ep->remove($_POST["chk"]);
 $gjp = $ep->remove($_POST["gjp"]);
 $rewardType = $ep->remove($_POST["rewardType"]);

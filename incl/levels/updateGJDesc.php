@@ -12,6 +12,9 @@ $levelDesc = $ep->remove($_POST["levelDesc"]);
 $levelID = $ep->remove($_POST["levelID"]);
 if($_POST["udid"]){
 	$id = $ep->remove($_POST["udid"]);
+	if(is_numeric($id)){
+		exit("-1");
+	}
 }else{
 	$id = $ep->remove($_POST["accountID"]);
 	$gjp = $ep->remove($_POST["gjp"]);

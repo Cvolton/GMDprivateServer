@@ -87,6 +87,9 @@ if(isset($_POST["unlisted"])){
 $accountID = "";
 if(isset($_POST["udid"])){
 	$id = $ep->remove($_POST["udid"]);
+	if(is_numeric($id)){
+		exit("-1");
+	}
 }
 if(isset($_POST["accountID"]) AND $_POST["accountID"]!="0"){
 	$id = $ep->remove($_POST["accountID"]);
