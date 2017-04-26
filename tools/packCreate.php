@@ -3,15 +3,14 @@ include "../incl/lib/connection.php";
 require "../incl/lib/generatePass.php";
 require_once "../incl/lib/exploitPatch.php";
 $ep = new exploitPatch();
-//here im getting all the data
-$userName = $ep->remove($_POST["userName"]);
-$password = $ep->remove($_POST["password"]);
-$packName = $ep->remove($_POST["packName"]);
-$levels = $ep->remove($_POST["levels"]);
-$stars = $ep->remove($_POST["stars"]);
-$coins = $ep->remove($_POST["coins"]);
-$color = $ep->remove($_POST["color"]);
-if($userName != "" AND $password != "" AND $levels != "" AND $color != ""){
+if(isset($_POST["userName"]) AND isset($_POST["password"]) AND isset($_POST["packName"]) AND isset($_POST["levels"]) AND isset($_POST["stars"]) AND isset($_POST["coins"]) AND isset(["color"])){
+	$userName = $ep->remove($_POST["userName"]);
+	$password = $ep->remove($_POST["password"]);
+	$packName = $ep->remove($_POST["packName"]);
+	$levels = $ep->remove($_POST["levels"]);
+	$stars = $ep->remove($_POST["stars"]);
+	$coins = $ep->remove($_POST["coins"]);
+	$color = $ep->remove($_POST["color"]);
 	$generatePass = new generatePass();
 	$pass = $generatePass->isValidUsrname($userName, $password);
 	if ($pass == 1) {
