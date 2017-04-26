@@ -13,7 +13,7 @@ if(isset($_POST["userName"]) AND isset($_POST["password"]) AND isset($_POST["use
 		$query = $db->prepare("SELECT accountID FROM accounts WHERE userName=:userName AND isAdmin = 1");	
 		$query->execute([':userName' => $userName]);
 		if($query->rowCount()==0){
-			echo "Account doesn't have moderator access to the server. <a href='packCreate.php'>Try again</a>";
+			echo "Account doesn't have moderator access to the server. <a href='leaderboardsBan.php'>Try again</a>";
 		}else{
 			if(!is_numeric($userID)){
 				exit("Invalid userID");
