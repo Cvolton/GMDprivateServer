@@ -79,11 +79,11 @@ if(isset($_POST["onlyCompleted"]) AND $_POST["onlyCompleted"]==1){
 	$params[] = "levelID IN ($completedLevels)";
 }
 if(isset($_POST["song"])){
-	if($_POST["customSong"]==0){
+	if(!isset($_POST["customSong"])){
 		$song = $ep->remove($_POST["song"]);
-		$song = $db->quote($song);
+		$song = str_replace("'", "", $db->quote($song));
 		$song = $song -1;
-		$params[] = "audioTrack = '$song' AND songID <> 0";
+		$params[] = "audioTrack = '$song' AND songID = 0";
 	}else{
 		$song = $ep->remove($_POST["song"]);
 		$params[] = "songID = '$song'";
