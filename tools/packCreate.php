@@ -3,7 +3,7 @@ include "../incl/lib/connection.php";
 require "../incl/lib/generatePass.php";
 require_once "../incl/lib/exploitPatch.php";
 $ep = new exploitPatch();
-if(isset($_POST["userName"]) AND isset($_POST["password"]) AND isset($_POST["packName"]) AND isset($_POST["levels"]) AND isset($_POST["stars"]) AND isset($_POST["coins"]) AND isset(["color"])){
+if(isset($_POST["userName"]) AND isset($_POST["password"]) AND isset($_POST["packName"]) AND isset($_POST["levels"]) AND isset($_POST["stars"]) AND isset($_POST["coins"]) AND isset($_POST["color"])){
 	$userName = $ep->remove($_POST["userName"]);
 	$password = $ep->remove($_POST["password"]);
 	$packName = $ep->remove($_POST["packName"]);
