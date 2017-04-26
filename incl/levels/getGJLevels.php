@@ -72,8 +72,8 @@ if(isset($_POST["uncompleted"]) AND $_POST["uncompleted"]==1){
 }
 if(isset($_POST["onlyCompleted"]) AND $_POST["onlyCompleted"]==1){
 	$completedLevels = $ep->remove($_POST["completedLevels"]);
-	$completedLevels = explode("(","", $completedLevels)[1];
-	$completedLevels = explode(")","", $completedLevels)[0];
+	$completedLevels = explode("(",$completedLevels)[1];
+	$completedLevels = explode(")",$completedLevels)[0];
 	$completedLevels = $db->quote($completedLevels);
 	$completedLevels = str_replace("'","", $completedLevels);
 	$params[] = "levelID IN ($completedLevels)";
