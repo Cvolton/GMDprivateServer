@@ -281,10 +281,10 @@ class mainLib {
 		if ($query->rowCount() > 0) {
 			$userID = $query->fetchColumn();
 		} else {
-			$query = $db->prepare("INSERT INTO users (isRegistered, extID, userName)
-			VALUES (:register, :id, :userName)");
+			$query = $db->prepare("INSERT INTO users (isRegistered, extID, userName, lastPlayed)
+			VALUES (:register, :id, :userName, :uploadDate)");
 
-			$query->execute([':id' => $extID, ':register' => $register, ':userName' => $userName]);
+			$query->execute([':id' => $extID, ':register' => $register, ':userName' => $userName, ':uploadDate' => time()]);
 			$userID = $db->lastInsertId();
 		}
 		return $userID;
