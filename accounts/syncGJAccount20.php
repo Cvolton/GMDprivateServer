@@ -29,9 +29,9 @@ if ($pass == 1) {
 			$saveData = base64_decode($saveData);
 		}
 	}else{
-		if($cloudSaveEncryption == 1){
+		if(file_exists("../data/accounts/keys/$accountID")){
 			$saveData = file_get_contents("../data/accounts/$accountID");
-			if(file_exists("../data/accounts/keys/$accountID")){
+			if($cloudSaveEncryption == 1 AND substr($saveData,0,3) != "H4s"){
 				$protected_key_encoded = file_get_contents("../data/accounts/keys/$accountID");
 				$protected_key = KeyProtectedByPassword::loadFromAsciiSafeString($protected_key_encoded);
 				$user_key = $protected_key->unlockKey($password);
