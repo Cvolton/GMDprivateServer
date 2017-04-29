@@ -128,10 +128,10 @@ if(isset($_POST["userhere"]) AND isset($_POST["passhere"]) AND isset($_POST["use
 	Password: <input type="password" name="passtarg"><br>
 	URL (dont change if you dont know what youre doing): <input type="text" name="server" value="http://www.boomlings.com/database/"><br>
 	Debug Mode (0=off, 1=on): <input type="text" name="debug" value="0"><br>
-	<input type="submit" value="Reupload"></form><br>Alternative servers to link to:<br>
+	<input type="submit" value="Reupload"></form><br>Alternative servers to reupload to:<br>
 	http://www.boomlings.com/database/ - Robtops server<br>
-	http://pi.michaelbrabec.cz:9010/a/accounts/ - CvoltonGDPS<br>
-	http://teamhax.altervista.org/dbh/accounts/ - TeamHax GDPS';
+	http://pi.michaelbrabec.cz:9010/a/ - CvoltonGDPS<br>
+	http://teamhax.altervista.org/dbh/ - TeamHax GDPS';
 }
 ?>
 </body>
