@@ -140,7 +140,7 @@ class Commands {
 					$pass = "1".$pass;
 					$query = $db->prepare("UPDATE levels SET password=:password WHERE levelID=:levelID");
 					$query->execute([':levelID' => $levelID, ':password' => $pass]);
-					$query = $db->prepare("INSERT INTO modactions (type, value, timestamp, account, value3) VALUES ('8', :value, :timestamp, :id, :levelID)");
+					$query = $db->prepare("INSERT INTO modactions (type, value, timestamp, account, value3) VALUES ('9', :value, :timestamp, :id, :levelID)");
 					$query->execute([':value' => $pass, ':timestamp' => $uploadDate, ':id' => $accountID, ':levelID' => $levelID]);
 					return true;
 				}
@@ -149,21 +149,21 @@ class Commands {
 				$desc = base64_encode($ep->remove(str_replace("!description ", "", $comment)));
 				$query = $db->prepare("UPDATE levels SET levelDesc=:desc WHERE levelID=:levelID");
 				$query->execute([':levelID' => $levelID, ':desc' => $desc]);
-				$query = $db->prepare("INSERT INTO modactions (type, value, timestamp, account, value3) VALUES ('9', :value, :timestamp, :id, :levelID)");
+				$query = $db->prepare("INSERT INTO modactions (type, value, timestamp, account, value3) VALUES ('13', :value, :timestamp, :id, :levelID)");
 				$query->execute([':value' => $desc, ':timestamp' => $uploadDate, ':id' => $accountID, ':levelID' => $levelID]);
 				return true;
 			}
 			if(substr($comment,0,7) == '!public'){
 				$query = $db->prepare("UPDATE levels SET unlisted='0' WHERE levelID=:levelID");
 				$query->execute([':levelID' => $levelID]);
-				$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('10', :value, :levelID, :timestamp, :id)");
+				$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('12', :value, :levelID, :timestamp, :id)");
 				$query->execute([':value' => "0", ':timestamp' => $uploadDate, ':id' => $accountID, ':levelID' => $levelID]);
 				return true;
 			}
 			if(substr($comment,0,7) == '!unlist'){
 				$query = $db->prepare("UPDATE levels SET unlisted='1' WHERE levelID=:levelID");
 				$query->execute([':levelID' => $levelID]);
-				$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('10', :value, :levelID, :timestamp, :id)");
+				$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('12', :value, :levelID, :timestamp, :id)");
 				$query->execute([':value' => "1", ':timestamp' => $uploadDate, ':id' => $accountID, ':levelID' => $levelID]);
 				return true;
 			}

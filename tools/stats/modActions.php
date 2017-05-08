@@ -74,6 +74,12 @@ foreach($result as &$action){
 		case 11:
 			$actionname = "Shared CP";
 			break;
+		case 12:
+			$actionname = "Changed level publicity";
+			break;
+		case 13:
+			$actionname = "Changed level description";
+			break;
 		default:
 			$actionname = $action["type"];
 			break;
