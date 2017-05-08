@@ -10,7 +10,7 @@ $ep = new exploitPatch();
 //here im getting all the data
 $gjp = $ep->remove($_POST["gjp"]);
 $gameVersion = $ep->remove($_POST["gameVersion"]);
-if(isset($_POST["binaryVersion"])){
+if(!empty($_POST["binaryVersion"])){
 	$binaryVersion = $ep->remove($_POST["binaryVersion"]);	
 }else{
 	$binaryVersion = 0;
@@ -27,71 +27,71 @@ if($gameVersion < 20){
 $levelVersion = $ep->remove($_POST["levelVersion"]);
 $levelLength = $ep->remove($_POST["levelLength"]);
 $audioTrack = $ep->remove($_POST["audioTrack"]);
-if(isset($_POST["auto"])){
+if(!empty($_POST["auto"])){
 	$auto = $ep->remove($_POST["auto"]);
 }else{
 	$auto = 0;
 }
-if(isset($_POST["password"])){
+if(!empty($_POST["password"])){
 	$password = $ep->remove($_POST["password"]);
 }else{
 	$password = 1;
 }
-if(isset($_POST["original"])){
+if(!empty($_POST["original"])){
 	$original = $ep->remove($_POST["original"]);
 }else{
 	$original = 0;
 }
-if(isset($_POST["twoPlayer"])){
+if(!empty($_POST["twoPlayer"])){
 	$twoPlayer = $ep->remove($_POST["twoPlayer"]);
 }else{
 	$twoPlayer = 0;
 }
-if(isset($_POST["songID"])){
+if(!empty($_POST["songID"])){
 	$songID = $ep->remove($_POST["songID"]);
 }else{
 	$songID = 0;
 }
-if(isset($_POST["objects"])){
+if(!empty($_POST["objects"])){
 	$objects = $ep->remove($_POST["objects"]);
 }else{
 	$objects = 0;
 }
-if(isset($_POST["coins"])){
+if(!empty($_POST["coins"])){
 	$coins = $ep->remove($_POST["coins"]);
 }else{
 	$coins = 0;
 }
-if(isset($_POST["requestedStars"])){
+if(!empty($_POST["requestedStars"])){
 	$requestedStars = $ep->remove($_POST["requestedStars"]);
 }else{
 	$requestedStars = 0;
 }
-if(isset($_POST["extraString"])){
+if(!empty($_POST["extraString"])){
 	$extraString = $ep->remove($_POST["extraString"]);
 }else{
 	$extraString = "29_29_29_40_29_29_29_29_29_29_29_29_29_29_29_29";
 }
 $levelString = $ep->remove($_POST["levelString"]);
-if(isset($_POST["levelInfo"])){
+if(!empty($_POST["levelInfo"])){
 	$levelInfo = $ep->remove($_POST["levelInfo"]);
 }else{
 	$levelInfo = 0;
 }
 $secret = $ep->remove($_POST["secret"]);
-if(isset($_POST["unlisted"])){
+if(!empty($_POST["unlisted"])){
 	$unlisted = $ep->remove($_POST["unlisted"]);
 }else{
 	$unlisted = 0;
 }
 $accountID = "";
-if(isset($_POST["udid"])){
+if(!empty($_POST["udid"])){
 	$id = $ep->remove($_POST["udid"]);
 	if(is_numeric($id)){
 		exit("-1");
 	}
 }
-if(isset($_POST["accountID"]) AND $_POST["accountID"]!="0"){
+if(!empty($_POST["accountID"]) AND $_POST["accountID"]!="0"){
 	$id = $ep->remove($_POST["accountID"]);
 	$GJPCheck = new GJPCheck();
 	$gjpresult = $GJPCheck->check($gjp,$id);

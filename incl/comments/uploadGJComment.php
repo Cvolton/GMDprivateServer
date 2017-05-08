@@ -19,12 +19,12 @@ if($gameversion < 20){
 	$comment = base64_encode($comment);
 }
 $levelID = $ep->remove($_POST["levelID"]);
-if(isset($_POST["percent"])){
+if(!empty($_POST["percent"])){
 	$percent = $ep->remove($_POST["percent"]);
 }else{
 	$percent = 0;
 }
-if(isset($_POST["accountID"]) AND $_POST["accountID"]!="0"){
+if(!empty($_POST["accountID"]) AND $_POST["accountID"]!="0"){
 	$id = $ep->remove($_POST["accountID"]);
 	$register = 1;
 	$GJPCheck = new GJPCheck();

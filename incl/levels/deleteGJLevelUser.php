@@ -15,7 +15,7 @@ if(!is_numeric($levelID)){
 	exit("-1");
 }
 if($gjpresult == 1){
-	$userID = $mainLib->getUserID($accountID, $userName);
+	$userID = $mainLib->getUserID($accountID);
 	$query = $db->prepare("DELETE from levels WHERE levelID=:levelID AND userID=:userID AND starStars = 0 LIMIT 1");
 	$query->execute([':levelID' => $levelID, ':userID' => $userID]);
 	$query6 = $db->prepare("INSERT INTO actions (type, value, timestamp, value2) VALUES 

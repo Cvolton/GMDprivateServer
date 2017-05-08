@@ -14,7 +14,7 @@ if($_POST["gameVersion"] > 19){
 }else{
 	$sign = "< 20 AND gameVersion <> 0";
 }
-if($_POST["accountID"]){
+if(!empty($_POST["accountID"])){
 	$accountID = $ep->remove($_POST["accountID"]);
 	$gjp = $ep->remove($_POST["gjp"]);
 	$GJPCheck = new GJPCheck(); //gjp check

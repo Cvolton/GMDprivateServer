@@ -16,7 +16,7 @@ if($gjpresult == 1){
 	if($query->rowCount() == 0){
 		exit("-1");
 	}
-	if(!isset($_POST["isSender"])){
+	if(empty($_POST["isSender"])){
 		$query=$db->prepare("UPDATE messages SET isNew=1 WHERE messageID = :messageID AND toAccountID = :accID");
 		$query->execute([':messageID' => $messageID, ':accID' =>$accountID]);
 		$accountID = $result["accID"];

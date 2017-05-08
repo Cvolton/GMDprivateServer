@@ -5,8 +5,12 @@ require_once "../lib/GJPCheck.php";
 require_once "../lib/exploitPatch.php";
 $ep = new exploitPatch();
 $GJPCheck = new GJPCheck();
+if(empty($_POST["accountID"]) OR empty($_POST["gjp"]) OR (!isset($_POST["type"]) OR !is_numeric($_POST["type"]))){
+	exit("-1");
+}
 $accountID = $ep->remove($_POST["accountID"]);
 $gjp = $ep->remove($_POST["gjp"]);
+$type = $ep->remove($_POST["type"]);
 $people = "";
 $peoplestring = "";
 $gjpresult = $GJPCheck->check($gjp,$accountID);
@@ -14,7 +18,6 @@ $new = array();
 if($gjpresult != 1){
 	exit("-1");
 }
-$type = $ep->remove($_POST["type"]);
 if($type == 0){
 	$query = "SELECT person1,isNew1,person2,isNew2 FROM friendships WHERE person1 = :accountID OR person2 = :accountID";
 }else if($type==1){

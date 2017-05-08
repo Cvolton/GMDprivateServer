@@ -17,7 +17,10 @@ $password = $ep->remove($_POST["password"]);
 //registering
 $query = $db->prepare("SELECT accountID FROM accounts WHERE userName LIKE :userName");
 $query->execute([':userName' => $userName]);
-$account = $query->fetchAll()[0];
+if($query->rowCount() == 0){
+	exit("-1");
+}
+$account = $query->fetch();
 //rate limiting
 $newtime = time() - 3600;
 $query6 = $db->prepare("SELECT count(*) FROM actions WHERE type = '1' AND timestamp > :time AND value2 = :ip");

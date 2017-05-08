@@ -18,8 +18,10 @@ class generatePass
 		}else{
 			$query = $db->prepare("SELECT accountID, salt, password, isAdmin FROM accounts WHERE userName LIKE :userName");
 			$query->execute([':userName' => $userName]);
-			$result = $query->fetchAll();
-			$result = $result[0];
+			if($query->rowCount() == 0){
+				return 0;
+			}
+			$result = $query->fetch();
 			if(password_verify($pass, $result["password"])){
 				if($result["isAdmin"]==1){ //modIPs
 					$query4 = $db->prepare("SELECT count(*) FROM modips WHERE accountID = :id");
@@ -66,8 +68,10 @@ class generatePass
 		include dirname(__FILE__)."/connection.php";
 		$query = $db->prepare("SELECT userName FROM accounts WHERE accountID = :accid");
 		$query->execute([':accid' => $accid]);
-		$result = $query->fetchAll();
-		$result = $result[0];
+		if($query->rowCount() == 0){
+			return 0;
+		}
+		$result = $query->fetch();
 		$userName = $result["userName"];
 		$generatePass = new generatePass();
 		return $generatePass->isValidUsrname($userName, $pass);

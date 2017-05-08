@@ -2,7 +2,7 @@
 //error_reporting(0);
 include "../incl/lib/connection.php";
 $api_key = "dc467dd431fc48eb0244b0aead929ccd";
-if(isset($_POST["songlink"])){
+if(!empty($_POST["songlink"])){
 $song = str_replace("www.dropbox.com","dl.dropboxusercontent.com",$_POST["songlink"]);
 if (filter_var($song, FILTER_VALIDATE_URL) == TRUE) {
 	if(strpos($song, 'soundcloud.com') !== false){

@@ -2,15 +2,25 @@
 chdir(dirname(__FILE__));
 include "../lib/connection.php";
 require_once "../lib/exploitPatch.php";
+require_once "../lib/GJPCheck.php";
 $ep = new exploitPatch();
+$GJPCheck = new GJPCheck();
 $reqstring = "";
-if(isset($_POST["getSent"])){
+if(!empty($_POST["getSent"])){
 	$getSent = $ep->remove($_POST["getSent"]);
 }else{
 	$getSent = 0;
 }
+if(empty($_POST["accountID"]) OR (!isset($_POST["page"]) OR !is_numeric($_POST["page"])) OR empty($_POST["gjp"])){
+	exit("-1");
+}
 $accountID = $ep->remove($_POST["accountID"]);
 $page = $ep->remove($_POST["page"]);
+$gjp = $ep->remove($_POST["gjp"]);
+$gjpresult = $GJPCheck->check($gjp,$accountID);
+if($gjpresult != 1){
+	exit("-1");
+}
 $offset = $page*10;
 if($getSent == 0){
 	$query = "SELECT accountID, toAccountID, uploadDate, ID, comment, isNew FROM friendreqs WHERE toAccountID = :accountID LIMIT 10 OFFSET $offset";

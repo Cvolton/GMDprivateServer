@@ -22,7 +22,7 @@ $userName = $query3->fetchColumn();
 //continuing the accounts system
 $id = $ep->remove($_POST["accountID"]);
 $register = 1;
-$userID = $gs->getUserID($id)
+$userID = $gs->getUserID($id);
 $uploadDate = time();
 
 $query = $db->prepare("INSERT INTO messages (subject, body, accID, userID, userName, toAccountID, secret, timestamp)

@@ -6,7 +6,7 @@ require_once "../lib/GJPCheck.php";
 $ep = new exploitPatch();
 $gjp = $ep->remove($_POST["gjp"]);
 $extid = $ep->remove($_POST["targetAccountID"]);
-if(isset($_POST["accountID"])){
+if(!empty($_POST["accountID"])){
 	$me = $ep->remove($_POST["accountID"]);
 	$GJPCheck = new GJPCheck(); //gjp check
 	$gjpresult = $GJPCheck->check($gjp,$me);

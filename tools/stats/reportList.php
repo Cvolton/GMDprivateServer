@@ -7,7 +7,7 @@ $query = $db->prepare("SELECT levelID FROM reports");
 $query->execute();
 $result = $query->fetchAll();
 foreach($result as &$report){
-	if(isset($array[$report["levelID"]])){
+	if(!empty($array[$report["levelID"]])){
 		$array[$report["levelID"]]++;
 	}else{
 		$array[$report["levelID"]] = 1;

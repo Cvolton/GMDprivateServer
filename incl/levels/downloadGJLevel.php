@@ -16,7 +16,14 @@ if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
 	$ip = $_SERVER['REMOTE_ADDR'];
 }
 //$levelID = 2632;
-$gameVersion = $ep->remove($_POST["gameVersion"]);
+if(empty($_POST["gameVersion"])){
+	$gameVersion = 1;
+}else{
+	$gameVersion = $ep->remove($_POST["gameVersion"]);
+}
+if(empty($_POST["levelID"])){
+	exit("-1");
+}
 $levelID = $ep->remove($_POST["levelID"]);
 $feaID = 0;
 if(!is_numeric($levelID)){

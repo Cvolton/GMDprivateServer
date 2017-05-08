@@ -3,7 +3,7 @@ include "../incl/lib/connection.php";
 require "../incl/lib/generatePass.php";
 require_once "../incl/lib/exploitPatch.php";
 $ep = new exploitPatch();
-if(isset($_POST["userName"]) AND isset($_POST["password"]) AND isset($_POST["userID"])){
+if(!empty($_POST["userName"]) AND !empty($_POST["password"]) AND !empty($_POST["userID"])){
 	$userName = $ep->remove($_POST["userName"]);
 	$password = $ep->remove($_POST["password"]);
 	$userID = $ep->remove($_POST["userID"]);
