@@ -45,6 +45,7 @@ class Commands {
 				}
 				return true;
 			}
+		if ($userinfo["isAdmin"] == 2) {
 			if(substr($comment,0,8) == '!feature'){
 				$query = $db->prepare("UPDATE levels SET starFeatured='1' WHERE levelID=:levelID");
 				$query->execute([':levelID' => $levelID]);
@@ -73,6 +74,7 @@ class Commands {
 				$query->execute([':value' => "1", ':timestamp' => $uploadDate, ':id' => $accountID, ':levelID' => $levelID]);
 				return true;
 			}
+		if ($userinfo["isAdmin"] == 3) {
 			if(substr($comment,0,6) == '!daily'){
 				$query = $db->prepare("SELECT count(*) FROM dailyfeatures WHERE levelID = :level");
 				$query->execute([':level' => $levelID]);
@@ -92,6 +94,7 @@ class Commands {
 				$query->execute([':value' => "1", ':timestamp' => $uploadDate, ':id' => $accountID, ':levelID' => $levelID, ':dailytime' => $timestamp]);
 				return true;
 			}
+		if ($userinfo["isAdmin"] == 4) {
 			if(substr($comment,0,6) == '!delet'){
 				if(!is_numeric($levelID)){
 					return false;
