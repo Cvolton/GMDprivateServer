@@ -32,10 +32,13 @@ if(!empty($_POST["auto"])){
 }else{
 	$auto = 0;
 }
-if(!empty($_POST["password"])){
+if(!isset($_POST["password"])){
 	$password = $ep->remove($_POST["password"]);
 }else{
 	$password = 1;
+	if($gameVersion > 17){
+		$password = 0;
+	}
 }
 if(!empty($_POST["original"])){
 	$original = $ep->remove($_POST["original"]);
