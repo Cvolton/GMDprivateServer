@@ -26,7 +26,6 @@ class Commands {
 				$starDemon = $diffArray[1];
 				$starAuto = $diffArray[2];
 				$starDifficulty = $diffArray[0];
-				file_put_contents(dirname(__FILE__)."/../../data/levels/wtf.txt","$starDifficulty:$levelID");
 				$query = $db->prepare("UPDATE levels SET starStars=:starStars, starDifficulty=:starDifficulty, starDemon=:starDemon, starAuto=:starAuto WHERE levelID=:levelID");
 				$query->execute([':starStars' => $starStars, ':starDifficulty' => $starDifficulty, ':starDemon' => $starDemon, ':starAuto' => $starAuto, ':levelID' => $levelID]);
 				$query = $db->prepare("INSERT INTO modactions (type, value, value2, value3, timestamp, account) VALUES ('1', :value, :value2, :levelID, :timestamp, :id)");
