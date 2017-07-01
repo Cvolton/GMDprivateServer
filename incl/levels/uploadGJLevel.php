@@ -32,7 +32,7 @@ if(!empty($_POST["auto"])){
 }else{
 	$auto = 0;
 }
-if(!isset($_POST["password"])){
+if(isset($_POST["password"])){
 	$password = $ep->remove($_POST["password"]);
 }else{
 	$password = 1;
