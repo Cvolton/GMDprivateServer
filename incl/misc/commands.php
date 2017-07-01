@@ -2,6 +2,9 @@
 class Commands {
 	public function doCommands($accountID, $comment, $levelID) {
 		include dirname(__FILE__)."/../lib/connection.php";
+		require_once "../lib/exploitPatch.php";
+		require_once "../lib/mainLib.php";
+		$ep = new exploitPatch();
 		$gs = new mainLib();
 		$commentarray = explode(' ', $comment);
 		$uploadDate = time();
