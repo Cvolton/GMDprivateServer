@@ -9,10 +9,10 @@ $stars = 0;
 $count = 0;
 $xi = 0;
 $lbstring = "";
-if($_POST["gameVersion"] > 19){
-	$sign = "> 19";
-}else{
+if(empty($_POST["gameVersion"])){
 	$sign = "< 20 AND gameVersion <> 0";
+}else{
+	$sign = "> 19";
 }
 if(!empty($_POST["accountID"])){
 	$accountID = $ep->remove($_POST["accountID"]);
