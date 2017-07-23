@@ -101,7 +101,7 @@ if(!is_numeric($levelID)){
 			if(!is_numeric($extID)){
 				$extID = 0;
 			}
-			$response .= $result["userID"] . ":" . $result["userName"] . ":" . $extID;
+			$response .= $gs->getUserString($level1["userID"]);
 		}else{
 			$response .= $somestring;
 		}
