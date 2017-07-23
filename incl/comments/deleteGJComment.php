@@ -10,13 +10,26 @@ $gjp = $ep->remove($_POST["gjp"]);
 $GJPCheck = new GJPCheck();
 $gjpresult = $GJPCheck->check($gjp,$accountID);
 if($gjpresult == 1){
-	$query2 = $db->prepare("SELECT userID FROM users WHERE extID = :accountID");
-	$query2->execute([':accountID' => $accountID]);
-	if ($query2->rowCount() > 0) {
-		$userID = $query2->fetchAll()[0]["userID"];
-	}
+	$query = $db->prepare("SELECT userID FROM users WHERE extID = :accountID");
+	$query->execute([':accountID' => $accountID]);
+	$userID = $query->fetchColumn();
 	$query = $db->prepare("DELETE FROM comments WHERE commentID=:commentID AND userID=:userID LIMIT 1");
 	$query->execute([':commentID' => $commentID, ':userID' => $userID]);
+	if($query->rowCount() == 0){
+		$query = $db->prepare("SELECT levelID FROM comments WHERE commentID = :commentID");
+		$query->execute([':commentID' => $commentID]);
+		$levelID = $query->fetchColumn();
+		$query = $db->prepare("SELECT userID FROM levels WHERE levelID = :levelID");
+		$query->execute([':levelID' => $levelID]);
+		$creatorID = $query->fetchColumn();
+		$query = $db->prepare("SELECT extID FROM users WHERE userID = :userID");
+		$query->execute([':userID' => $creatorID]);
+		$creatorAccID = $query->fetchColumn();
+		if($creatorAccID == $accountID){
+			$query = $db->prepare("DELETE FROM comments WHERE commentID=:commentID AND levelID=:levelID LIMIT 1");
+			$query->execute([':commentID' => $commentID, ':levelID' => $levelID]);
+		}
+	}
 	echo "1";
 }else{
 	echo "-1";
