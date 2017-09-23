@@ -7,7 +7,7 @@ include "../config/security.php";
 include "../incl/lib/connection.php";
 require "../incl/lib/generatePass.php";
 require_once "../incl/lib/exploitPatch.php";
-include_once("../incl/lib/defuse-crypto.phar");
+include_once "../incl/lib/defuse-crypto.phar";
 use Defuse\Crypto\KeyProtectedByPassword;
 use Defuse\Crypto\Crypto;
 use Defuse\Crypto\Key;
@@ -31,7 +31,7 @@ if ($pass == 1) {
 	$lvls = explode("</s>",$lvls)[0];
 	$protected_key_encoded = "";
 	if($cloudSaveEncryption == 0){
-		$saveData = str_replace($password, "not the actual password", $saveData); //replacing pass
+		$saveData = str_replace("<k>GJA_002</k><s>".$password."</s>", "<k>GJA_002</k><s>not the actual password</s>", $saveData); //replacing pass
 		//file_put_contents($userName, $saveData);
 		$saveData = gzencode($saveData); //encoding back
 		$saveData = base64_encode($saveData);
