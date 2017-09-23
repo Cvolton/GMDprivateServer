@@ -2,6 +2,7 @@
 <table border="1">
 <tr><th>Difficulty</th><th>Total</th><th>Unrated</th><th>Rated</th><th>Featured</th><th>Epic</th></tr>
 <?php
+include "../../incl/lib/connection.php";
 function genLvlRow($params, $params2, $params3, $params4){
 	include "../../incl/lib/connection.php";
 	$query = $db->prepare("SELECT count(*) FROM levels ".$params4." ".$params2);
@@ -43,5 +44,24 @@ echo genLvlRow("AND","starDemon = 1 AND starDemonDiff = 4", "Medium", "WHERE");
 echo genLvlRow("AND","starDemon = 1 AND starDemonDiff = 0", "Hard", "WHERE");
 echo genLvlRow("AND","starDemon = 1 AND starDemonDiff = 5", "Insane", "WHERE");
 echo genLvlRow("AND","starDemon = 1 AND starDemonDiff = 6", "Extreme", "WHERE");
+?>
+</table>
+<h1>Accounts</h1>
+<table border="1">
+<tr><th>Type</th><th>Count</th>
+<?php
+$query = $db->prepare("SELECT count(*) FROM users");
+$query->execute();
+$thing = $query->fetchColumn();
+echo "<tr><td>Total</td><td>$thing</td></tr>";
+$query = $db->prepare("SELECT count(*) FROM accounts");
+$query->execute();
+$thing = $query->fetchColumn();
+echo "<tr><td>Registered</td><td>$thing</td></tr>";
+$sevendaysago = time() - 86400;
+$query = $db->prepare("SELECT count(*) FROM users WHERE lastPlayed > :lastPlayed");
+$query->execute([':lastPlayed' => $sevendaysago]);
+$thing = $query->fetchColumn();
+echo "<tr><td>Active</td><td>$thing</td></tr>";
 ?>
 </table>
