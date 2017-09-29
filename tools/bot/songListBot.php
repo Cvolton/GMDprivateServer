@@ -9,7 +9,7 @@ $humanpage = $page +1;
 $page = $page*20;
 echo "***SHOWING PAGE $humanpage***\r\n";
 include "../../incl/lib/connection.php";
-$query = $db->prepare("SELECT ID,name FROM songs WHERE ID >= 5000000 LIMIT $page , 20");
+$query = $db->prepare("SELECT ID,name FROM songs WHERE ID >= 5000000 ORDER BY ID DESC LIMIT $page , 20");
 $query->execute();
 $result = $query->fetchAll();
 foreach($result as &$song){
