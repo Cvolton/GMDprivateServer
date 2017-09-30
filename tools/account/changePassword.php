@@ -7,6 +7,7 @@ include_once "../../incl/lib/defuse-crypto.phar";
 use Defuse\Crypto\KeyProtectedByPassword;
 use Defuse\Crypto\Crypto;
 use Defuse\Crypto\Key;
+error_reporting(0);
 $ep = new exploitPatch();
 $userName = $ep->remove($_POST["userName"]);
 $oldpass = $_POST["oldpassword"];
