@@ -34,7 +34,7 @@ $auto = $diffinfo["auto"];
 $diffname = $diffinfo["name"];
 $query = $db->prepare("UPDATE levels SET starDemon=:demon, starAuto=:auto, starDifficulty=:diff, starStars=:stars WHERE levelID=:levelID");	
 $query->execute([':demon' => $demon, ':auto' => $auto, ':diff' => $diff, ':stars' => "0", ':levelID'=>$levelID]);
-echo -1;
+echo 1;
 $timestamp = time();
 $query = $db->prepare("INSERT INTO modactions (type, value, value2, value3, timestamp, account) VALUES ('1', :value, :value2, :levelID, :timestamp, :id)");
 $query->execute([':value' => $diffname, ':timestamp' => $timestamp, ':id' => $accid, ':value2' => "0", ':levelID' => $levelID]);

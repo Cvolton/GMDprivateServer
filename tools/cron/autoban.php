@@ -41,6 +41,30 @@ foreach($result as $user){
 	echo "Banned ".htmlspecialchars($user["userName"],ENT_QUOTES)." - ".$user["userID"]."<br>";
 }
 //counting coins
+$query = $db->prepare("SELECT coins FROM mappacks");
+$query->execute();
+$result = $query->fetchAll();
+
+$total_levels = 21; //change this wen game has update!!
+$goldCoins = ($total_levels * 3) + 5;
+foreach($result as $pack){
+	$goldCoins += $pack["coins"];
+}
+
+echo "<h3>Gold coins based bans</h3>";
+ob_flush();
+flush();
+$query = $db->prepare("SELECT userID, userName FROM users WHERE coins > :goldCoins");
+$query->execute([':goldCoins' => $goldCoins]);
+$result = $query->fetchAll();
+//banning ppl
+foreach($result as $user){
+	$query = $db->prepare("UPDATE users SET isBanned = '1' WHERE userID = :id");
+	$query->execute([':id' => $user["userID"]]);
+	echo "Banned ".htmlspecialchars($user["userName"],ENT_QUOTES)." - ".$user["userID"]."<br>";
+}
+
+//counting usercoins
 echo "<h3>User coins based bans</h3>";
 ob_flush();
 flush();

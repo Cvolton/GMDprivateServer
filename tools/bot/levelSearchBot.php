@@ -15,7 +15,7 @@ $query = $db->prepare("(SELECT * FROM levels WHERE levelID = :str) UNION (SELECT
 $query->execute([':str' => $str]);
 //checking if exists
 if($query->rowCount() == 0){
-	exit("The level you are searching for doesn't exist");
+	exit(":warning: Level not found!");
 }
 $levelInfo = $query->fetchAll()[0];
 //getting creator name

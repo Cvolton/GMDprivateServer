@@ -4,8 +4,10 @@ class Commands {
 		include dirname(__FILE__)."/../lib/connection.php";
 		require_once "../lib/exploitPatch.php";
 		require_once "../lib/mainLib.php";
+		require_once "webhooks/webhook.php";
 		$ep = new exploitPatch();
 		$gs = new mainLib();
+		$uname = $gs->getAccName($accountID);
 		$commentarray = explode(' ', $comment);
 		$uploadDate = time();
 		//GETTING USERINFO
@@ -20,12 +22,13 @@ class Commands {
 		if ($userinfo["isAdmin"] == 1) {
 			if(substr($comment,0,5) == '!rate'){
 				$starStars = $commentarray[2];
-				if($starStars == ""){
+				if($starStars == "" or $starStars > 20){
 					$starStars = 0;
 				}
 				$starCoins = $commentarray[3];
 				$starFeatured = $commentarray[4];
 				$diffArray = $gs->getDiffFromName($commentarray[1]);
+				$diffName = $commentarray[1];
 				$starDemon = $diffArray[1];
 				$starAuto = $diffArray[2];
 				$starDifficulty = $diffArray[0];
@@ -45,6 +48,7 @@ class Commands {
 					$query = $db->prepare("UPDATE levels SET starCoins=:starCoins WHERE levelID=:levelID");
 					$query->execute([':starCoins' => $starCoins, ':levelID' => $levelID]);
 				}
+				PostToHook("Command - Rate", "Account $uname rated level $levelID.\nStars: $starStars\nDifficulty: $diffName\nFeatured: $starFeatured\n");
 				return true;
 			}
 			if(substr($comment,0,8) == '!feature'){
@@ -52,6 +56,8 @@ class Commands {
 				$query->execute([':levelID' => $levelID]);
 				$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('2', :value, :levelID, :timestamp, :id)");
 				$query->execute([':value' => "1", ':timestamp' => $uploadDate, ':id' => $accountID, ':levelID' => $levelID]);
+				PostToHook("Command - Feature", "Account $uname featured level $levelID.");
+
 				return true;
 			}
 			if(substr($comment,0,5) == '!epic'){
@@ -59,6 +65,8 @@ class Commands {
 				$query->execute([':levelID' => $levelID]);
 				$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('4', :value, :levelID, :timestamp, :id)");
 				$query->execute([':value' => "1", ':timestamp' => $uploadDate, ':id' => $accountID, ':levelID' => $levelID]);
+				PostToHook("Command - Epic", "Account $uname epic featured level $levelID.");
+				
 				return true;
 			}
 			if(substr($comment,0,7) == '!unepic'){
@@ -66,6 +74,8 @@ class Commands {
 				$query->execute([':levelID' => $levelID]);
 				$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('4', :value, :levelID, :timestamp, :id)");
 				$query->execute([':value' => "0", ':timestamp' => $uploadDate, ':id' => $accountID, ':levelID' => $levelID]);
+				PostToHook("Command - Unepic", "Account $uname unepic featured level $levelID.");
+				
 				return true;
 			}
 			if(substr($comment,0,12) == '!verifycoins'){
@@ -73,6 +83,8 @@ class Commands {
 				$query->execute([':levelID' => $levelID]);
 				$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('2', :value, :levelID, :timestamp, :id)");
 				$query->execute([':value' => "1", ':timestamp' => $uploadDate, ':id' => $accountID, ':levelID' => $levelID]);
+				PostToHook("Command - VerifyCoins", "Account $uname verified coins for level level $levelID.");
+				
 				return true;
 			}
 			if(substr($comment,0,6) == '!daily'){
@@ -92,6 +104,8 @@ class Commands {
 				$query->execute([':levelID' => $levelID, ':uploadDate' => $timestamp]);
 				$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account, value2) VALUES ('5', :value, :levelID, :timestamp, :id, :dailytime)");
 				$query->execute([':value' => "1", ':timestamp' => $uploadDate, ':id' => $accountID, ':levelID' => $levelID, ':dailytime' => $timestamp]);
+				PostToHook("Command - Daily", "Account $uname added level $levelID to the daily queue.");
+				
 				return true;
 			}
 			if(substr($comment,0,6) == '!delet'){
@@ -105,6 +119,8 @@ class Commands {
 				if(file_exists(dirname(__FILE__)."../../data/levels/$levelID")){
 					rename(dirname(__FILE__)."../../data/levels/$levelID",dirname(__FILE__)."../../data/levels/deleted/$levelID");
 				}
+				PostToHook("Command - Delete", "Account $uname deleted level $levelID.");
+				
 				return true;
 			}
 			if(substr($comment,0,7) == '!setacc'){
@@ -119,6 +135,8 @@ class Commands {
 				$query->execute([':extID' => $targetAcc["accountID"], ':userID' => $userID, ':userName' => $commentarray[1], ':levelID' => $levelID]);
 				$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('7', :value, :levelID, :timestamp, :id)");
 				$query->execute([':value' => $commentarray[1], ':timestamp' => $uploadDate, ':id' => $accountID, ':levelID' => $levelID]);
+				PostToHook("Command - SetAcc", "Account $uname moved level $levelID to account $commentarray[1].");
+				
 				return true;
 			}
 		}

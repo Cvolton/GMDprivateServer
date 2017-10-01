@@ -70,5 +70,4 @@ if (filter_var($song, FILTER_VALIDATE_URL) == TRUE) {
 }
 }
 	echo '<b>Soundcloud links</b> or <b>Direct links</b> or <b>Dropbox links</b> only accepted, <b><font size="5">NO YOUTUBE LINKS</font></b><br><form action="songAdd.php" method="post">Link: <input type="text" name="songlink"><br><input type="submit" value="Add Song"></form>';
-
 ?>

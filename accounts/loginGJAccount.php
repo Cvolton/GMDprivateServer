@@ -16,21 +16,23 @@ $userName = $ep->remove($_POST["userName"]);
 $password = $ep->remove($_POST["password"]);
 //registering
 $query = $db->prepare("SELECT accountID FROM accounts WHERE userName LIKE :userName");
+
 $query->execute([':userName' => $userName]);
 if($query->rowCount() == 0){
 	exit("-1");
 }
 $account = $query->fetch();
 //rate limiting
-$newtime = time() - 3600;
+$newtime = time() - 86400;
 $query6 = $db->prepare("SELECT count(*) FROM actions WHERE type = '1' AND timestamp > :time AND value2 = :ip");
 $query6->execute([':time' => $newtime, ':ip' => $ip]);
-if($query6->fetchColumn() > 5){
+if($query6->fetchColumn() > 25){
 	exit("-12");
 }
 //authenticating
 $generatePass = new generatePass();
 $pass = $generatePass->isValidUsrname($userName, $password);
+
 if ($pass == 1) { //success
 	//userID
 	$id = $account["accountID"];

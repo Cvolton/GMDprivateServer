@@ -34,18 +34,6 @@ echo genLvlRow("AND","starDifficulty = 50 AND starDemon = 0 AND starAuto = 0 AND
 echo genLvlRow("AND","starDemon = 1", "Demon", "WHERE");
 ?>
 </table>
-<h1>Demons</h1>
-<table border="1">
-<tr><th>Difficulty</th><th>Total</th><th>Unrated</th><th>Rated</th><th>Featured</th><th>Epic</th></tr>
-<?php
-echo genLvlRow("AND","starDemon = 1", "Total", "WHERE");
-echo genLvlRow("AND","starDemon = 1 AND starDemonDiff = 3", "Easy", "WHERE");
-echo genLvlRow("AND","starDemon = 1 AND starDemonDiff = 4", "Medium", "WHERE");
-echo genLvlRow("AND","starDemon = 1 AND starDemonDiff = 0", "Hard", "WHERE");
-echo genLvlRow("AND","starDemon = 1 AND starDemonDiff = 5", "Insane", "WHERE");
-echo genLvlRow("AND","starDemon = 1 AND starDemonDiff = 6", "Extreme", "WHERE");
-?>
-</table>
 <h1>Accounts</h1>
 <table border="1">
 <tr><th>Type</th><th>Count</th>
@@ -58,10 +46,9 @@ $query = $db->prepare("SELECT count(*) FROM accounts");
 $query->execute();
 $thing = $query->fetchColumn();
 echo "<tr><td>Registered</td><td>$thing</td></tr>";
-$sevendaysago = time() - 86400;
-$query = $db->prepare("SELECT count(*) FROM users WHERE lastPlayed > :lastPlayed");
-$query->execute([':lastPlayed' => $sevendaysago]);
+$query = $db->prepare("SELECT count(*) FROM actions");
+$query->execute();
 $thing = $query->fetchColumn();
-echo "<tr><td>Active</td><td>$thing</td></tr>";
+echo "<tr><td>Total Actions</td><td>$thing</td></tr>";
 ?>
 </table>

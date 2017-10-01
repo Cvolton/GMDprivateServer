@@ -311,6 +311,16 @@ class mainLib {
 		}
 		return $userID . ":" . $userdata["userName"] . ":" . $extID;
 	}
+	public function getAccName($accountID) {
+		if (is_numeric($accountID)) {
+			include __DIR__ . "/connection.php";
+			$query = $db->prepare("SELECT userName FROM accounts WHERE accountID = :id");
+			$query->execute([':id' => $accountID]);
+			$data = $query->fetch();
+			return $data["userName"];
+		}
+		return "\0";
+	}
 	public function getSongString($songID){
 		include __DIR__ . "/connection.php";
 		$query3=$db->prepare("SELECT ID,name,authorID,authorName,size,isDisabled,download FROM songs WHERE ID = :songid LIMIT 1");

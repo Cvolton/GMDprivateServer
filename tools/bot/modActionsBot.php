@@ -1,6 +1,6 @@
-Mod actions:
-`|            Name | Actions count | Levels count | Last time online |`
-`|-----------------|---------------|--------------|------------------|`
+__**Mod actions:**__
+```|            Name | Actions count | Levels count |
+|-----------------|---------------|--------------|
 <?php
 //error_reporting(0);
 include "../../incl/lib/connection.php";
@@ -17,6 +17,7 @@ foreach($result as &$mod){
 	$query = $db->prepare("SELECT count(*) FROM modactions WHERE account = :id AND type = '1'");
 	$query->execute([':id' => $mod["accountID"]]);
 	$lvlcount = $query->fetchColumn();
-	echo "`| ".str_pad($mod["userName"], 15, " ", STR_PAD_LEFT)." | ".str_pad($actionscount, 13, " ", STR_PAD_LEFT)." | ".str_pad($lvlcount, 12, " ", STR_PAD_LEFT)." | ".$time." |`\r\n";
+	echo "| ".str_pad($mod["userName"], 15, " ", STR_PAD_LEFT)." | ".str_pad($actionscount, 13, " ", STR_PAD_LEFT)." | ".str_pad($lvlcount, 12, " ", STR_PAD_LEFT)." |\r\n";
 }
 ?>
+```

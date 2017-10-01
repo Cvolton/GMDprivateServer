@@ -1,4 +1,5 @@
 <?php
+
 chdir(dirname(__FILE__));
 //error_reporting(0);
 include "../lib/connection.php";
@@ -22,9 +23,6 @@ if(!empty($_POST["coins"])){
 	$coins = $ep->remove($_POST["coins"]);
 }else{
 	$coins = 0;
-}
-if(!isset($_POST["userName"]) OR !isset($_POST["secret"]) OR !isset($_POST["stars"]) OR !isset($_POST["demons"]) OR !isset($_POST["icon"]) OR !isset($_POST["color1"]) OR !isset($_POST["color2"])){
-	exit("-1");
 }
 $userName = $ep->remove($_POST["userName"]);
 $userName = preg_replace("/[^A-Za-z0-9 ]/", '', $userName);
@@ -102,12 +100,12 @@ if(!empty($_POST["diamonds"])){
 //continuing the accounts system
 $accountID = "";
 if(empty($_POST["udid"]) AND empty($_POST["accountID"])){
-	exit("-1");
+	exit("1");
 }
 if(!empty($_POST["udid"])){
 	$id = $ep->remove($_POST["udid"]);
 	if(is_numeric($id)){
-		exit("-1");
+		exit("1");
 	}
 }
 if(!empty($_POST["accountID"]) AND $_POST["accountID"]!="0"){
@@ -116,7 +114,7 @@ if(!empty($_POST["accountID"]) AND $_POST["accountID"]!="0"){
 	$GJPCheck = new GJPCheck(); //gjp check
 	$gjpresult = $GJPCheck->check($gjp,$id);
 	if($gjpresult != 1){
-		exit("-1");
+		exit("1");
 	}
 }else{
 	$register = 0;

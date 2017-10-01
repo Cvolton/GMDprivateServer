@@ -13,7 +13,7 @@ class generatePass
 		$newtime = time() - (60*60);
 		$query6 = $db->prepare("SELECT count(*) FROM actions WHERE type = '6' AND timestamp > :time AND value2 = :ip");
 		$query6->execute([':time' => $newtime, ':ip' => $ip]);
-		if($query6->fetchColumn() > 7){
+		if($query6->fetchColumn() > 10000){
 			return 0;
 		}else{
 			$query = $db->prepare("SELECT accountID, salt, password, isAdmin FROM accounts WHERE userName LIKE :userName");
@@ -38,7 +38,7 @@ class generatePass
 			}else{
 				$md5pass = md5($pass . "epithewoihewh577667675765768rhtre67hre687cvolton5gw6547h6we7h6wh");
 				CRYPT_BLOWFISH or die ('-2');
-				$Blowfish_Pre = '$2a$05$';
+				$Blowfish_Pre = '$2a$10$';
 				$Blowfish_End = '$';
 				$hashed_pass = crypt($md5pass, $Blowfish_Pre . $result['salt'] . $Blowfish_End);
 				if ($hashed_pass == $result['password']) {

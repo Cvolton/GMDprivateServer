@@ -1,4 +1,5 @@
 <?php
+
 chdir(dirname(__FILE__));
 //error_reporting(0);
 include "../lib/connection.php";
@@ -20,7 +21,7 @@ if(!empty($_POST["accountID"])){
 	$GJPCheck = new GJPCheck(); //gjp check
 	$gjpresult = $GJPCheck->check($gjp,$accountID);
 	if($gjpresult != 1){
-		exit("-1");
+		// exit("-1");
 	}
 }else{
 	$accountID = $ep->remove($_POST["udid"]);
@@ -35,7 +36,7 @@ if($type == "top" OR $type == "creators" OR $type == "relative"){
 		$query = "SELECT * FROM users WHERE isBanned = '0' AND gameVersion $sign AND stars > 0 ORDER BY stars DESC LIMIT 100";
 	}
 	if($type == "creators"){
-		$query = "SELECT * FROM users WHERE isCreatorBanned = '0' ORDER BY creatorPoints DESC LIMIT 100";
+		$query = "SELECT * FROM users WHERE isCreatorBanned = '0' AND creatorPoints > 0 ORDER BY creatorPoints DESC LIMIT 100";
 	}
 	if($type == "relative"){
 		$query = "SELECT * FROM users WHERE extID = :accountID";
@@ -100,6 +101,36 @@ if($type == "top" OR $type == "creators" OR $type == "relative"){
 		$lbstring .= "1:".$user["userName"].":2:".$user["userID"].":13:".$user["coins"].":17:".$user["userCoins"].":6:".$xi.":9:".$user["icon"].":10:".$user["color1"].":11:".$user["color2"].":14:".$user["iconType"].":15:".$user["special"].":16:".$extid.":3:".$user["stars"].":8:".round($user["creatorPoints"],0,PHP_ROUND_HALF_DOWN).":4:".$user["demons"].":7:".$extid.":46:".$user["diamonds"]."|";
 	}
 }
+
+if($type == "week"){
+	$starsgain = array();
+	$time = time() - 604800;
+	$xi = 0;
+	$query = $db->prepare("SELECT * FROM actions WHERE type = '9' AND timestamp > :time");
+	$query->execute([':time' => $time]);
+	$result = $query->fetchAll();
+	foreach($result as &$gain){
+		if(!empty($starsgain[$gain["account"]])){
+			$starsgain[$gain["account"]] += $gain["value"];
+		}else{
+			$starsgain[$gain["account"]] = $gain["value"];
+		}
+	}
+	arsort($starsgain);
+	foreach ($starsgain as $userID => $stars){
+		if ($stars == 0 or $xi >= 100){
+			break;
+		}
+		$query = $db->prepare("SELECT * FROM users WHERE userID = :userID");
+		$query->execute([':userID' => $userID]);
+		$user = $query->fetchAll()[0];
+		if($userinfo["isBanned"] == 0){
+			$xi++;
+			$lbstring .= "1:".$user["userName"].":2:".$user["userID"].":4:-1:13:-1:17:".$user["userCoins"].":6:".$xi.":9:".$user["icon"].":10:".$user["color1"].":11:".$user["color2"].":14:".$user["iconType"].":15:".$user["special"].":16:".$extid.":3:".$stars.":7:".$user["extID"]."|";
+		}
+	}  
+}
+
 if($type == "friends"){
 	$query = "SELECT * FROM friendships WHERE person1 = :accountID OR person2 = :accountID";
 	$query = $db->prepare($query);

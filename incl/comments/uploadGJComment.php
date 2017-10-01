@@ -14,7 +14,7 @@ $cmds = new Commands();
 $gjp = $ep->remove($_POST["gjp"]);
 $userName = $ep->remove($_POST["userName"]);
 $comment = $ep->remove($_POST["comment"]);
-$gameversion = $_POST["gameVersion"];
+$gameversion = 0;
 if($gameversion < 20){
 	$comment = base64_encode($comment);
 }
@@ -43,7 +43,7 @@ $userID = $mainLib->getUserID($id, $userName);
 $uploadDate = time();
 $decodecomment = base64_decode($comment);
 if($cmds->doCommands($id, $decodecomment, $levelID)){
-	exit("-1");
+	exit("-10");
 }
 if($id != "" AND $comment != ""){
 	$query = $db->prepare("INSERT INTO comments (userName, comment, levelID, userID, timeStamp, percent) VALUES (:userName, :comment, :levelID, :userID, :uploadDate, :percent)");

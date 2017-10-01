@@ -12,7 +12,7 @@ if($query->rowCount() == 0){
 	$query = $db->prepare($query);
 	$query->execute([':str' => $playername]);
 	if($query->rowCount() == 0){
-		exit("No account with this or a similiar name has been found");
+		exit(":warning: Player not found.");
 	}
 }
 	$result = $query->fetchAll();
@@ -38,32 +38,28 @@ if($query->rowCount() == 0){
 	$query = $db->prepare($f);
 	$query->execute([':extid' => $extid]);
 	$leaderboard = $query->fetchAll();
-	$leaderboard = $leaderboard[0];
+	$leaderboard = $leaderboard[0];																	OK CVOLTON
 	$crearank = $leaderboard["rank"];*/
 	$query = "SELECT * FROM accounts WHERE accountID = :extID";
 	$query = $db->prepare($query);
 	$query->execute([':extID' => $extid]);
 	$accinfo = $query->fetchAll();
 	$accinfo = $accinfo[0];
-		echo "**Name:** ".$user["userName"].
-		"\r\n**User ID:** ".$user["userID"].
-		"\r\n**Stars:** ".$user["stars"].
-		"\r\n**Coins:** ".$user["coins"].
-		"\r\n**User Coins:** ".$user["userCoins"].
-		"\r\n**Diamonds:** ".$user["diamonds"].
-		"\r\n**Demons: **".$user["demons"].
-		"\r\n**Orbs: **".$user["orbs"].
-		"\r\n**Completed Levels: **".$user["completedLvls"].
-		"\r\n**Creator points:** ".$creatorpoints.
-		"\r\n**Leaderboards rank:** ".$rank;
+		echo "`Name`: ".$user["userName"].
+		"\r\n`User ID`: ".$user["userID"].
+		"\r\n`Stars`: ".$user["stars"].
+		"\r\n`Coins`: ".$user["coins"].
+		"\r\n`Demons`:".$user["demons"].
+		"\r\n`Creator points`: ".$creatorpoints;
+		//"\r\n`Leaderboards rank`: ".$rank;
 		//"\r\n**Creator leaderboards rank:** ".$crearank;
 		if($accinfo["youtubeurl"] != ""){
-			echo "\r\n**YouTube:** http://youtube.com/channel/".$accinfo["youtubeurl"];
+			echo "\r\n`YouTube:` http://youtube.com/channel/".$accinfo["youtubeurl"];
 		}
 		if($accinfo["twitter"] != ""){
-			echo "\r\n**Twitter:** http://twitter.com/".$accinfo["twitter"];
+			echo "\r\n`Twitter:` http://twitter.com/".$accinfo["twitter"];
 		}
 		if($accinfo["twitch"] != ""){
-			echo "\r\n**Twitch:** http://twitch.tv/".$accinfo["twitch"]."";
+			echo "\r\n`Twitch:` http://twitch.tv/".$accinfo["twitch"]."";
 		}
 ?>
