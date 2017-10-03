@@ -124,7 +124,7 @@ if($type == "week"){
 		$query = $db->prepare("SELECT * FROM users WHERE userID = :userID");
 		$query->execute([':userID' => $userID]);
 		$user = $query->fetchAll()[0];
-		if($userinfo["isBanned"] == 0){
+		if($user["isBanned"] == 0){
 			$xi++;
 			$lbstring .= "1:".$user["userName"].":2:".$user["userID"].":4:-1:13:-1:17:".$user["userCoins"].":6:".$xi.":9:".$user["icon"].":10:".$user["color1"].":11:".$user["color2"].":14:".$user["iconType"].":15:".$user["special"].":16:".$extid.":3:".$stars.":7:".$user["extID"]."|";
 		}
