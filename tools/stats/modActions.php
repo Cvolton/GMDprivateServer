@@ -80,6 +80,9 @@ foreach($result as &$action){
 		case 13:
 			$actionname = "Changed level description";
 			break;
+		case 14:
+			$actionname = "Changed level CP reward";
+			break;
 		default:
 			$actionname = $action["type"];
 			break;
