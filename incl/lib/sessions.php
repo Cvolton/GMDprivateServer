@@ -20,7 +20,7 @@ class accSession
 		$accID = $result["accountID"];
 		$ip = $_SERVER["REMOTE_ADDR"];
 		$sessionStart = time();
-		$sessionEnd = $sessionStart - 43200; //session timeout (12h)
+		$sessionEnd = $sessionStart - 172800; //session timeout (12h)
 		
 		$queryDupe = $db->prepare("SELECT accountID FROM accSessions WHERE accountID = :accID AND sessionStart > :timestamp");
 		$queryDupe->execute([':accID' => $accID, ':timestamp' => $sessionEnd]);
@@ -39,7 +39,7 @@ class accSession
 	{
 		include dirname(__FILE__)."/connection.php";
 		
-		$sessionEnd = time() - 43200;
+		$sessionEnd = time() - 172800;
 
 		$query = $db->prepare("SELECT accountID FROM accSessions WHERE accountID = :accID AND ip = :IP AND sessionStart > :timestamp");
 		$query->execute([':accID' => $accID, ':IP' => $_SERVER["REMOTE_ADDR"], ':timestamp' => $sessionEnd]);
@@ -53,13 +53,13 @@ class accSession
 	{
 		include dirname(__FILE__)."/connection.php";
 		
-		$sessionEnd = time() - 43200;
+		$sessionEnd = time() - 172800;
 
 		$query = $db->prepare("SELECT sessionStart FROM accSessions WHERE accountID = :accID AND ip = :IP AND sessionStart > :timestamp");
 		$query->execute([':accID' => $accID, ':IP' => $_SERVER["REMOTE_ADDR"], ':timestamp' => $sessionEnd]);
 		if ($query->rowCount() > 0) { //if session exists
 			$result = $query->fetch(); //table from SQL database
-			return 42300 - (time() - $result["sessionStart"]);
+			return 172800 - (time() - $result["sessionStart"]);
 		}
 		return 0;
 	}
