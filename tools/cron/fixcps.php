@@ -28,18 +28,18 @@ $result = $query->fetchAll();
 foreach($result as $user){
 	$userID = $user["userID"];
 	//getting starred lvls count
-	$query2 = $db->prepare("SELECT count(*) FROM levels WHERE userID = :userID AND starStars != 0 AND isCPShared = 0");
+	$query2 = $db->prepare("SELECT count(*) FROM levels WHERE userID = :userID AND starStars != 0 AND isCPShared = 0 AND giveNoCP = 0");
 	$query2->execute([':userID' => $userID]);
 	$creatorpoints = $query2->fetchColumn();
 	$cplog .= $user["userName"] . " - " . $creatorpoints . "\r\n";
 	//getting featured lvls count
-	$query3 = $db->prepare("SELECT count(*) FROM levels WHERE userID = :userID AND starFeatured != 0 AND isCPShared = 0");
+	$query3 = $db->prepare("SELECT count(*) FROM levels WHERE userID = :userID AND starFeatured != 0 AND isCPShared = 0 AND giveNoCP = 0");
 	$query3->execute([':userID' => $userID]);
 	$cpgain = $query3->fetchColumn();
 	$creatorpoints = $creatorpoints + $cpgain;
 	$cplog .= $user["userName"] . " - " . $creatorpoints . "\r\n";
 	//getting epic lvls count
-	$query3 = $db->prepare("SELECT count(*) FROM levels WHERE userID = :userID AND starEpic != 0 AND isCPShared = 0");
+	$query3 = $db->prepare("SELECT count(*) FROM levels WHERE userID = :userID AND starEpic != 0 AND isCPShared = 0 AND giveNoCP = 0");
 	$query3->execute([':userID' => $userID]);
 	$cpgain = $query3->fetchColumn();
 	$creatorpoints = $creatorpoints + $cpgain + $cpgain;
@@ -54,7 +54,7 @@ foreach($result as $user){
 /*
 	CP SHARING
 */
-$query = $db->prepare("SELECT levelID, userID, starStars, starFeatured, starEpic FROM levels WHERE isCPShared = 1");
+$query = $db->prepare("SELECT levelID, userID, starStars, starFeatured, starEpic FROM levels WHERE isCPShared = 1 AND giveNoCP = 0");
 $query->execute();
 $result = $query->fetchAll();
 foreach($result as $level){
@@ -88,7 +88,7 @@ $result = $query->fetchAll();
 foreach($result as $gauntlet){
 	//getting lvls
 	for($x = 1; $x < 6; $x++){
-		$query = $db->prepare("SELECT userID, levelID FROM levels WHERE levelID = :levelID");
+		$query = $db->prepare("SELECT userID, levelID FROM levels WHERE levelID = :levelID AND giveNoCP = 0");
 		$query->execute([':levelID' => $gauntlet["level".$x]]);
 		$result = $query->fetch();
 		//getting users
@@ -107,7 +107,7 @@ $result = $query->fetchAll();
 //getting gauntlets
 foreach($result as $daily){
 	//getting lvls
-	$query = $db->prepare("SELECT userID, levelID FROM levels WHERE levelID = :levelID");
+	$query = $db->prepare("SELECT userID, levelID FROM levels WHERE levelID = :levelID AND giveNoCP = 0");
 	$query->execute([':levelID' => $daily["levelID"]]);
 	$result = $query->fetch();
 	//getting users
