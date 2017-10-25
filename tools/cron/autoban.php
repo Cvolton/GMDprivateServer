@@ -1,4 +1,4 @@
-<hr>
+isbanne<hr>
 <?php
 include "../../incl/lib/connection.php";
 echo "Initializing autoban";
@@ -59,7 +59,7 @@ $query->execute([':goldCoins' => $goldCoins]);
 $result = $query->fetchAll();
 //banning ppl
 foreach($result as $user){
-	$query = $db->prepare("UPDATE users SET isBanned = '1' WHERE userID = :id");
+	$query = $db->prepare("UPDATE users SET isBanned = '1', banReason = '<b>Autoban: Coins</b>' WHERE userID = :id");
 	$query->execute([':id' => $user["userID"]]);
 	echo "Banned ".htmlspecialchars($user["userName"],ENT_QUOTES)." - ".$user["userID"]."<br>";
 }
@@ -75,7 +75,7 @@ $query->execute([':coins' => $coins]);
 $result = $query->fetchAll();
 //banning ppl
 foreach($result as $user){
-	$query = $db->prepare("UPDATE users SET isBanned = '1' WHERE userID = :id");
+	$query = $db->prepare("UPDATE users SET isBanned = '1', banReason = '<b>Autoban: Usercoins</b>' WHERE userID = :id");
 	$query->execute([':id' => $user["userID"]]);
 	echo "Banned ".htmlspecialchars($user["userName"],ENT_QUOTES)." - ".$user["userID"]."<br>";
 }
@@ -90,7 +90,7 @@ $query->execute([':demons' => $demons]);
 $result = $query->fetchAll();
 //banning ppl
 foreach($result as $user){
-	$query = $db->prepare("UPDATE users SET isBanned = '1' WHERE userID = :id");
+	$query = $db->prepare("UPDATE users SET isBanned = '1', banReason = '<b>Autoban: Demons</b>' WHERE userID = :id");
 	$query->execute([':id' => $user["userID"]]);
 	echo "Banned ".htmlspecialchars($user["userName"],ENT_QUOTES)." - ".$user["userID"]."<br>";
 }
@@ -99,7 +99,7 @@ $query = $db->prepare("SELECT IP FROM bannedips");
 $query->execute();
 $result = $query->fetchAll();
 foreach($result as &$ip){
-	$query = $db->prepare("UPDATE users SET isBanned = '1' WHERE IP LIKE CONCAT(:ip, '%')");
+	$query = $db->prepare("UPDATE users SET isBanned = '1', banReason = '<b>Autoban: BannedIP</b>' WHERE IP LIKE CONCAT(:ip, '%')");
 	$query->execute([':ip' => $ip["IP"]]);
 }
 echo "<hr>Autoban finished";
