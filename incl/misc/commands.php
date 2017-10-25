@@ -131,7 +131,7 @@ class Commands {
 			//	
 			//	return true;
 			//}
-			if(substr($comment,0,6) == '!delete'){
+			if(substr($comment,0,7) == '!delete'){
 				if(!is_numeric($levelID)){
 					return false;
 				}
