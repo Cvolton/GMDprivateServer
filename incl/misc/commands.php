@@ -108,7 +108,7 @@ class Commands {
 				return true;
 			}
 			if(substr($comment,0,7) == '!setacc'){
-				$query = $db->prepare("SELECT accountID FROM accounts WHERE userName = :userName LIMIT 1");
+				$query = $db->prepare("SELECT accountID FROM accounts WHERE userName = :userName OR accountID = :userName LIMIT 1");
 				$query->execute([':userName' => $commentarray[1]]);
 				$targetAcc = $query->fetchAll()[0];
 				//var_dump($result);
@@ -180,6 +180,57 @@ class Commands {
 				$query->execute([':levelID' => $levelID]);
 				$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('11', :value, :levelID, :timestamp, :id)");
 				$query->execute([':value' => $commentarray[1], ':timestamp' => $uploadDate, ':id' => $accountID, ':levelID' => $levelID]);
+				return true;
+			}
+			if(substr($comment,0,4) == '!ldm'){
+				$query = $db->prepare("UPDATE levels SET isLDM='1' WHERE levelID=:levelID");
+				$query->execute([':levelID' => $levelID]);
+				$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('14', :value, :levelID, :timestamp, :id)");
+				$query->execute([':value' => "1", ':timestamp' => $uploadDate, ':id' => $accountID, ':levelID' => $levelID]);
+				return true;
+			}
+			if(substr($comment,0,6) == '!unldm'){
+				$query = $db->prepare("UPDATE levels SET isLDM='0' WHERE levelID=:levelID");
+				$query->execute([':levelID' => $levelID]);
+				$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('14', :value, :levelID, :timestamp, :id)");
+				$query->execute([':value' => "0", ':timestamp' => $uploadDate, ':id' => $accountID, ':levelID' => $levelID]);
+				return true;
+			}
+		}
+		return false;
+	}
+	public function doProfileCommands($accountID, $command){
+		include dirname(__FILE__)."/../lib/connection.php";
+		require_once "../lib/exploitPatch.php";
+		require_once "../lib/mainLib.php";
+		$ep = new exploitPatch();
+		$gs = new mainLib();
+		if(substr($command, 0, 8) == '!discord'){
+			if(substr($command, 9, 6) == "accept"){
+				$query = $db->prepare("UPDATE accounts SET discordID = discordLinkReq, discordLinkReq = '0' WHERE accountID = :accountID AND discordLinkReq <> 0");
+				$query->execute([':accountID' => $accountID]);
+				$query = $db->prepare("SELECT discordID, userName FROM accounts WHERE accountID = :accountID");
+				$query->execute([':accountID' => $accountID]);
+				$account = $query->fetch();
+				$gs->sendDiscordPM($account["discordID"], "Your link request to " . $account["userName"] . " has been accepted!");
+				return true;
+			}
+			if(substr($command, 9, 4) == "deny"){
+				$query = $db->prepare("SELECT discordLinkReq, userName FROM accounts WHERE accountID = :accountID");
+				$query->execute([':accountID' => $accountID]);
+				$account = $query->fetch();
+				$gs->sendDiscordPM($account["discordLinkReq"], "Your link request to " . $account["userName"] . " has been denied!");
+				$query = $db->prepare("UPDATE accounts SET discordLinkReq = '0' WHERE accountID = :accountID");
+				$query->execute([':accountID' => $accountID]);
+				return true;
+			}
+			if(substr($command, 9, 6) == "unlink"){
+				$query = $db->prepare("SELECT discordID, userName FROM accounts WHERE accountID = :accountID");
+				$query->execute([':accountID' => $accountID]);
+				$account = $query->fetch();
+				$gs->sendDiscordPM($account["discordID"], "Your Discord account has been unlinked from " . $account["userName"] . "!");
+				$query = $db->prepare("UPDATE accounts SET discordID = '0' WHERE accountID = :accountID");
+				$query->execute([':accountID' => $accountID]);
 				return true;
 			}
 		}
