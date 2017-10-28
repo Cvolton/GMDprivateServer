@@ -1,0 +1,44 @@
+.menubar {
+	background-color: #1e2124;
+	color: #d6ddde;
+}
+.content {
+	background-color: #36393e;
+	color: #a7a8aa;
+}
+html,body{
+	height:100%;
+	background-color: #36393e
+}
+.fill {
+	flex:1;
+}
+.btn-primary,
+.btn-primary:visited {
+	background-color: #212529;
+	border-color: #212529;
+}
+.btn-primary:hover,
+.btn-primary:active,
+.btn-primary:focus {
+	background-color: #47494e;
+	border-color: #47494e;
+}
+.buffer {
+	margin-top:20px;
+	margin-bottom:20px;
+	margin-left:20px;
+	margin-right:20px;
+}
+.container-box {
+	height: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+.login-input {
+	width: 250px;
+}
+.black-dropdown {
+	background-color: #e7e7e7;
+}
