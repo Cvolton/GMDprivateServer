@@ -19,23 +19,23 @@ if(!empty($_POST["userName"]) AND !empty($_POST["password"]) AND !empty($_POST["
 			if(!is_numeric($userID)){
 				exit("Invalid userID");
 			}
-			$query = $db->prepare("UPDATE users SET isBanned = 1 WHERE userID = :id");
+			$query = $db->prepare("UPDATE users SET isBanned = 0 WHERE userID = :id");
 			$query->execute([':id' => $userID]);
 			if($query->rowCount() != 0){
-				echo "Banned succesfully.";
+				echo "unBanned succesfully.";
 			}else{
-				echo "Ban failed.";
+				echo "unBan failed.";
 			}
 		}else{
-			exit("You do not have the permission to do this action. <a href='leaderboardsBan.php'>Try again</a>");
+			exit("You do not have the permission to do this action. <a href='leaderboardsUnban.php'>Try again</a>");
 		}
 	}else{
-		echo "Invalid password or nonexistant account. <a href='leaderboardsBan.php'>Try again</a>";
+		echo "Invalid password or nonexistant account. <a href='leaderboardsUnban.php'>Try again</a>";
 	}
 }else{
-	echo '<form action="leaderboardsBan.php" method="post">Your Username: <input type="text" name="userName">
+	echo '<form action="leaderboardsUnban.php" method="post">Your Username: <input type="text" name="userName">
 		<br>Your Password: <input type="password" name="password">
 		<br>Target UserID: <input type="text" name="userID">
-		<br><input type="submit" value="Ban"></form>';
+		<br><input type="submit" value="unBan"></form>';
 }
 ?>
