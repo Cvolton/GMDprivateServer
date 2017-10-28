@@ -1,6 +1,4 @@
 <?php
-echo "-1";
-exit();
 //error_reporting(0);
 chdir(dirname(__FILE__));
 include "../lib/connection.php";
