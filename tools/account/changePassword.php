@@ -41,7 +41,7 @@ if ($pass == 1) {
 	$passhash = password_hash($newpass, PASSWORD_DEFAULT);
 	$query = $db->prepare("UPDATE accounts SET password=:password, salt=:salt WHERE userName=:userName");	
 	$query->execute([':password' => $passhash, ':userName' => $userName, ':salt' => $salt]);
-	echo "Password changed. <a href='accountManagement.php'>Go back to account management</a>";
+	echo "Password changed. <a href='..'>Go back to tools</a>";
 }else{
 	echo "Invalid old password or nonexistent account. <a href='changePassword.php'>Try again</a>";
 
