@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Počítač: localhost
--- Vytvořeno: Sob 28. říj 2017, 19:53
+-- Vytvořeno: Pon 13. lis 2017, 17:01
 -- Verze serveru: 10.1.23-MariaDB-9+deb9u1
--- Verze PHP: 7.1.10-1+0~20170929170631.9+jessie~1.gbp501135
+-- Verze PHP: 7.1.11-1+0~20171027135825.10+jessie~1.gbp2e638d
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -154,7 +154,8 @@ CREATE TABLE `cpshares` (
 CREATE TABLE `dailyfeatures` (
   `feaID` int(11) NOT NULL,
   `levelID` int(11) NOT NULL,
-  `timestamp` int(11) NOT NULL
+  `timestamp` int(11) NOT NULL,
+  `type` int(11) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -332,7 +333,7 @@ CREATE TABLE `modactions` (
   `timestamp` int(11) NOT NULL DEFAULT '0',
   `value2` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT '0',
   `value3` int(11) NOT NULL DEFAULT '0',
-  `value4` int(11) NOT NULL DEFAULT '0',
+  `value4` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT '0',
   `value5` int(11) NOT NULL DEFAULT '0',
   `value6` int(11) NOT NULL DEFAULT '0',
   `account` int(11) NOT NULL DEFAULT '0',
@@ -441,7 +442,8 @@ CREATE TABLE `roles` (
   `toolPackcreate` int(11) NOT NULL DEFAULT '0',
   `toolModactions` int(11) NOT NULL DEFAULT '0',
   `dashboardModTools` int(11) NOT NULL DEFAULT '0',
-  `isDefault` int(11) NOT NULL DEFAULT '0'
+  `isDefault` int(11) NOT NULL DEFAULT '0',
+  `commentColor` varchar(11) NOT NULL DEFAULT '000,000,000'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -710,17 +712,17 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT pro tabulku `acccomments`
 --
 ALTER TABLE `acccomments`
-  MODIFY `commentID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4444;
+  MODIFY `commentID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4542;
 --
 -- AUTO_INCREMENT pro tabulku `accounts`
 --
 ALTER TABLE `accounts`
-  MODIFY `accountID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2498;
+  MODIFY `accountID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2546;
 --
 -- AUTO_INCREMENT pro tabulku `actions`
 --
 ALTER TABLE `actions`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=337326;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=354974;
 --
 -- AUTO_INCREMENT pro tabulku `bannedips`
 --
@@ -735,27 +737,27 @@ ALTER TABLE `blocks`
 -- AUTO_INCREMENT pro tabulku `comments`
 --
 ALTER TABLE `comments`
-  MODIFY `commentID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20746;
+  MODIFY `commentID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21239;
 --
 -- AUTO_INCREMENT pro tabulku `cpshares`
 --
 ALTER TABLE `cpshares`
-  MODIFY `shareID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
+  MODIFY `shareID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
 --
 -- AUTO_INCREMENT pro tabulku `dailyfeatures`
 --
 ALTER TABLE `dailyfeatures`
-  MODIFY `feaID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=184;
+  MODIFY `feaID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=189;
 --
 -- AUTO_INCREMENT pro tabulku `friendreqs`
 --
 ALTER TABLE `friendreqs`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5675;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5745;
 --
 -- AUTO_INCREMENT pro tabulku `friendships`
 --
 ALTER TABLE `friendships`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2814;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2862;
 --
 -- AUTO_INCREMENT pro tabulku `gauntlets`
 --
@@ -765,32 +767,32 @@ ALTER TABLE `gauntlets`
 -- AUTO_INCREMENT pro tabulku `levels`
 --
 ALTER TABLE `levels`
-  MODIFY `levelID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13605;
+  MODIFY `levelID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13836;
 --
 -- AUTO_INCREMENT pro tabulku `levelscores`
 --
 ALTER TABLE `levelscores`
-  MODIFY `scoreID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16369;
+  MODIFY `scoreID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16668;
 --
 -- AUTO_INCREMENT pro tabulku `links`
 --
 ALTER TABLE `links`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=140;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=144;
 --
 -- AUTO_INCREMENT pro tabulku `mappacks`
 --
 ALTER TABLE `mappacks`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=67;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=68;
 --
 -- AUTO_INCREMENT pro tabulku `messages`
 --
 ALTER TABLE `messages`
-  MODIFY `messageID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2134;
+  MODIFY `messageID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2192;
 --
 -- AUTO_INCREMENT pro tabulku `modactions`
 --
 ALTER TABLE `modactions`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15485;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15844;
 --
 -- AUTO_INCREMENT pro tabulku `modips`
 --
@@ -810,12 +812,12 @@ ALTER TABLE `quests`
 -- AUTO_INCREMENT pro tabulku `reports`
 --
 ALTER TABLE `reports`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=243;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=247;
 --
 -- AUTO_INCREMENT pro tabulku `roleassign`
 --
 ALTER TABLE `roleassign`
-  MODIFY `assignID` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=689;
+  MODIFY `assignID` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=757;
 --
 -- AUTO_INCREMENT pro tabulku `roles`
 --
@@ -825,12 +827,12 @@ ALTER TABLE `roles`
 -- AUTO_INCREMENT pro tabulku `songs`
 --
 ALTER TABLE `songs`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5106860;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5106951;
 --
 -- AUTO_INCREMENT pro tabulku `users`
 --
 ALTER TABLE `users`
-  MODIFY `userID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3907;COMMIT;
+  MODIFY `userID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4008;COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
