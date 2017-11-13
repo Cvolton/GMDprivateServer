@@ -76,7 +76,7 @@ class Commands {
 				return true;
 			}
 			if(substr($comment,0,6) == '!daily'){
-				$query = $db->prepare("SELECT count(*) FROM dailyfeatures WHERE levelID = :level");
+				$query = $db->prepare("SELECT count(*) FROM dailyfeatures WHERE levelID = :level AND type = 0");
 				$query->execute([':level' => $levelID]);
 				if($query->fetchColumn() != 0){
 					return false;
@@ -88,9 +88,28 @@ class Commands {
 				}else{
 					$timestamp = $query->fetchAll()[0]["timestamp"] + 86400;
 				}
-				$query = $db->prepare("INSERT INTO dailyfeatures (levelID, timestamp) VALUES (:levelID, :uploadDate)");
+				$query = $db->prepare("INSERT INTO dailyfeatures (levelID, timestamp, type) VALUES (:levelID, :uploadDate, 0)");
 				$query->execute([':levelID' => $levelID, ':uploadDate' => $timestamp]);
-				$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account, value2) VALUES ('5', :value, :levelID, :timestamp, :id, :dailytime)");
+				$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account, value2, value4) VALUES ('5', :value, :levelID, :timestamp, :id, :dailytime, 0)");
+				$query->execute([':value' => "1", ':timestamp' => $uploadDate, ':id' => $accountID, ':levelID' => $levelID, ':dailytime' => $timestamp]);
+				return true;
+			}
+			if(substr($comment,0,6) == '!daily'){
+				$query = $db->prepare("SELECT count(*) FROM dailyfeatures WHERE levelID = :level AND type = 0");
+				$query->execute([':level' => $levelID]);
+				if($query->fetchColumn() != 0){
+					return false;
+				}
+				$query = $db->prepare("SELECT timestamp FROM dailyfeatures WHERE timestamp >= :tomorrow ORDER BY timestamp DESC LIMIT 1");
+				$query->execute([':tomorrow' => strtotime("tomorrow 00:00:00")]);
+				if($query->rowCount() == 0){
+					$timestamp = strtotime("next monday");
+				}else{
+					$timestamp = $query->fetchAll()[0]["timestamp"] + 604800;
+				}
+				$query = $db->prepare("INSERT INTO dailyfeatures (levelID, timestamp, type) VALUES (:levelID, :uploadDate, 1)");
+				$query->execute([':levelID' => $levelID, ':uploadDate' => $timestamp]);
+				$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account, value2, value4) VALUES ('5', :value, :levelID, :timestamp, :id, :dailytime, 1)");
 				$query->execute([':value' => "1", ':timestamp' => $uploadDate, ':id' => $accountID, ':levelID' => $levelID, ':dailytime' => $timestamp]);
 				return true;
 			}
