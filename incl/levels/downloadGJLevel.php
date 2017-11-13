@@ -29,15 +29,26 @@ $feaID = 0;
 if(!is_numeric($levelID)){
 	echo -1;
 }else{
-	if($levelID == "-1"){
-		$query = $db->prepare("SELECT feaID, levelID FROM dailyfeatures WHERE timestamp < :time ORDER BY timestamp DESC LIMIT 1");
-		$query->execute([':time' => time()]);
-		$result = $query->fetch();
-		$levelID = $result["levelID"];
-		$feaID = $result["feaID"];
-		$daily = 1;
-	}else{
-		$daily = 0;
+	switch($levelID){
+		case -1:
+			$query = $db->prepare("SELECT feaID, levelID FROM dailyfeatures WHERE timestamp < :time AND type = 0 ORDER BY timestamp DESC LIMIT 1");
+			$query->execute([':time' => time()]);
+			$result = $query->fetch();
+			$levelID = $result["levelID"];
+			$feaID = $result["feaID"];
+			$daily = 1;
+			break;
+		case -2:
+			$query = $db->prepare("SELECT feaID, levelID FROM dailyfeatures WHERE timestamp < :time AND type = 1 ORDER BY timestamp DESC LIMIT 1");
+			$query->execute([':time' => time()]);
+			$result = $query->fetch();
+			$levelID = $result["levelID"];
+			$feaID = $result["feaID"];
+			$feaID = $feaID + 100001;
+			$daily = 1;
+			break;
+		default:
+			$daily = 0;
 	}
 	//downloading the level
 	$query=$db->prepare("SELECT * FROM levels WHERE levelID = :levelID");
