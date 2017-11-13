@@ -6,7 +6,6 @@ require_once "../lib/exploitPatch.php";
 $ep = new exploitPatch();
 $binaryVersion = $ep->remove($_POST["binaryVersion"]);
 $gameVersion = $ep->remove($_POST["gameVersion"]);
-$levelID = $ep->remove($_POST["levelID"]);
 $commentstring = "";
 $userstring = "";
 $users = array();
@@ -22,8 +21,15 @@ if($mode==0){
 }else{
 	$modeColumn = "likes";
 }
-$query = "SELECT commentID, timestamp, comment, userID, likes, isSpam, percent FROM comments WHERE levelID = :levelID ORDER BY $modeColumn DESC LIMIT 10 OFFSET $commentpage";
-$countquery = "SELECT count(*) FROM comments WHERE levelID = :levelID";
+if(!$_POST["levelID"]){
+	$levelID = $ep->remove($_POST["userID"]);
+	$query = "SELECT levelID, commentID, timestamp, comment, userID, likes, isSpam, percent FROM comments WHERE userID = :levelID ORDER BY $modeColumn DESC LIMIT 10 OFFSET $commentpage";
+	$countquery = "SELECT count(*) FROM comments WHERE userID = :levelID";
+}else{
+	$levelID = $ep->remove($_POST["levelID"]);
+	$query = "SELECT levelID, commentID, timestamp, comment, userID, likes, isSpam, percent FROM comments WHERE levelID = :levelID ORDER BY $modeColumn DESC LIMIT 10 OFFSET $commentpage";
+	$countquery = "SELECT count(*) FROM comments WHERE levelID = :levelID";
+}
 $countquery = $db->prepare($countquery);
 $countquery->execute([':levelID' => $levelID]);
 $commentcount = $countquery->fetchColumn();
@@ -40,7 +46,7 @@ foreach($result as &$comment1) {
 		if($gameVersion < 20){
 			$actualcomment = base64_decode($actualcomment);
 		}
-		$commentstring .= "2~".$actualcomment."~3~".$comment1["userID"]."~4~".$comment1["likes"]."~5~0~7~".$comment1["isSpam"]."~9~".$uploadDate."~6~".$comment1["commentID"]."~10~".$comment1["percent"]."";
+		$commentstring .= "1~".$comment1["levelID"]."~2~".$actualcomment."~3~".$comment1["userID"]."~4~".$comment1["likes"]."~5~0~7~".$comment1["isSpam"]."~9~".$uploadDate."~6~".$comment1["commentID"]."~10~".$comment1["percent"]."";
 		$query12 = $db->prepare("SELECT userID, userName, icon, color1, color2, iconType, special, extID FROM users WHERE userID = :userID");
 		$query12->execute([':userID' => $comment1["userID"]]);
 		if ($query12->rowCount() > 0) {
@@ -55,7 +61,7 @@ foreach($result as &$comment1) {
 				$userstring .=  $user["userID"] . ":" . $user["userName"] . ":" . $extID . "|";
 			}
 			if($binaryVersion > 31){
-				$commentstring .= ":1~".$user["userName"]."~9~".$user["icon"]."~10~".$user["color1"]."~11~".$user["color2"]."~14~".$user["iconType"]."~15~".$user["special"]."~16~".$user["extID"];
+				$commentstring .= ":1~".$user["userName"]."~7~1~9~".$user["icon"]."~10~".$user["color1"]."~11~".$user["color2"]."~14~".$user["iconType"]."~15~".$user["special"]."~16~".$user["extID"];
 			}
 			$commentstring .= "|";
 		}
