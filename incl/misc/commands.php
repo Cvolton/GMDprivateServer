@@ -94,14 +94,14 @@ class Commands {
 				$query->execute([':value' => "1", ':timestamp' => $uploadDate, ':id' => $accountID, ':levelID' => $levelID, ':dailytime' => $timestamp]);
 				return true;
 			}
-			if(substr($comment,0,6) == '!daily'){
-				$query = $db->prepare("SELECT count(*) FROM dailyfeatures WHERE levelID = :level AND type = 0");
+			if(substr($comment,0,7) == '!weekly'){
+				$query = $db->prepare("SELECT count(*) FROM dailyfeatures WHERE levelID = :level AND type = 1");
 				$query->execute([':level' => $levelID]);
 				if($query->fetchColumn() != 0){
 					return false;
 				}
 				$query = $db->prepare("SELECT timestamp FROM dailyfeatures WHERE timestamp >= :tomorrow ORDER BY timestamp DESC LIMIT 1");
-				$query->execute([':tomorrow' => strtotime("tomorrow 00:00:00")]);
+				$query->execute([':tomorrow' => strtotime("next monday")]);
 				if($query->rowCount() == 0){
 					$timestamp = strtotime("next monday");
 				}else{
