@@ -536,6 +536,54 @@ class mainLib {
 		}
 		return false;
 	}
+	public function getMaxValuePermission($accountID, $permission){
+		include __DIR__ . "/connection.php";
+		$maxvalue = 0;
+		$query = $db->prepare("SELECT roleID FROM roleassign WHERE accountID = :accountID");
+		$query->execute([':accountID' => $accountID]);
+		$roleIDarray = $query->fetchAll();
+		$roleIDlist = "";
+		foreach($roleIDarray as &$roleIDobject){
+			$roleIDlist .= $roleIDobject["roleID"] . ",";
+		}
+		$roleIDlist = substr($roleIDlist, 0, -1);
+		if($roleIDlist != ""){
+			$query = $db->prepare("SELECT $permission FROM roles WHERE roleID IN ($roleIDlist) ORDER BY priority DESC");
+			$query->execute();
+			$roles = $query->fetchAll();
+			foreach($roles as &$role){ 
+				if($role[$permission] > $maxvalue){
+					$maxvalue = $role[$permission];
+				}
+			}
+		}
+		return $maxvalue;
+	}
+	public function getAccountCommentColor($accountID){
+		include __DIR__ . "/connection.php";
+		$query = $db->prepare("SELECT roleID FROM roleassign WHERE accountID = :accountID");
+		$query->execute([':accountID' => $accountID]);
+		$roleIDarray = $query->fetchAll();
+		$roleIDlist = "";
+		foreach($roleIDarray as &$roleIDobject){
+			$roleIDlist .= $roleIDobject["roleID"] . ",";
+		}
+		$roleIDlist = substr($roleIDlist, 0, -1);
+		if($roleIDlist != ""){
+			$query = $db->prepare("SELECT commentColor FROM roles WHERE roleID IN ($roleIDlist) ORDER BY priority DESC");
+			$query->execute();
+			$roles = $query->fetchAll();
+			foreach($roles as &$role){
+				if($role["commentColor"] != "000,000,000"){
+					return $role["commentColor"];
+				}
+			}
+		}
+		$query = $db->prepare("SELECT commentColor FROM roles WHERE isDefault = 1");
+		$query->execute();
+		$role = $query->fetch();
+		return $role["commentColor"];
+	}
 	public function songReupload($url){
 		require __DIR__ . "/../../incl/lib/connection.php";
 		require __DIR__ . "/../../incl/lib/exploitPatch.php";
