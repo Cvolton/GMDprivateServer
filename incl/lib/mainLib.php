@@ -614,6 +614,35 @@ class mainLib {
 		$role = $query->fetch();
 		return $role["commentColor"];
 	}
+	public function rateLevel($accountID, $levelID, $stars, $difficulty, $auto, $demon){
+		include __DIR__ . "/connection.php";
+		//lets assume the perms check is done properly before
+		$query = "UPDATE levels SET starDemon=:demon, starAuto=:auto, starDifficulty=:diff, starStars=:stars, rateDate=:now WHERE levelID=:levelID";
+		$query = $db->prepare($query);	
+		$query->execute([':demon' => $demon, ':auto' => $auto, ':diff' => $difficulty, ':stars' => $stars, ':levelID'=>$levelID, ':now' => time()]);
+		
+		$query = $db->prepare("INSERT INTO modactions (type, value, value2, value3, timestamp, account) VALUES ('1', :value, :value2, :levelID, :timestamp, :id)");
+		$query->execute([':value' => $this->getDiffFromStars($stars)["name"], ':timestamp' => time(), ':id' => $accountID, ':value2' => $stars, ':levelID' => $levelID]);
+		
+		
+	}
+	public function featureLevel($accountID, $levelID, $feature){
+		include __DIR__ . "/connection.php";
+		$query = "UPDATE levels SET starFeatured=:feature, rateDate=:now WHERE levelID=:levelID";
+		$query = $db->prepare($query);	
+		$query->execute([':feature' => $feature, ':levelID'=>$levelID, ':now' => time()]);
+		$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('2', :value, :levelID, :timestamp, :id)");
+		$query->execute([':value' => $feature, ':timestamp' => time(), ':id' => $accountID, ':levelID' => $levelID]);
+	}
+	public function verifyCoinsLevel($accountID, $levelID, $coins){
+		include __DIR__ . "/connection.php";
+		$query = "UPDATE levels SET starCoins=:coins WHERE levelID=:levelID";
+		$query = $db->prepare($query);	
+		$query->execute([':coins' => $coins, ':levelID'=>$levelID]);
+		
+		$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('3', :value, :levelID, :timestamp, :id)");
+		$query->execute([':value' => $coins, ':timestamp' => time(), ':id' => $accountID, ':levelID' => $levelID]);
+	}
 	public function songReupload($url){
 		require __DIR__ . "/../../incl/lib/connection.php";
 		require __DIR__ . "/../../incl/lib/exploitPatch.php";
