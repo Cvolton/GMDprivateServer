@@ -504,6 +504,14 @@ class mainLib {
 	}
 	public function checkPermission($accountID, $permission){
 		include __DIR__ . "/connection.php";
+		//isAdmin check
+		$query = $db->prepare("SELECT isAdmin FROM accounts WHERE accountID = :accountID");
+		$query->execute([':accountID' => $accountID]);
+		$isAdmin = $query->fetchColumn();
+		if($isAdmin == 1){
+			return 1;
+		}
+		
 		$query = $db->prepare("SELECT roleID FROM roleassign WHERE accountID = :accountID");
 		$query->execute([':accountID' => $accountID]);
 		$roleIDarray = $query->fetchAll();
