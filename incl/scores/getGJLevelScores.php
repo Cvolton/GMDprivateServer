@@ -41,10 +41,35 @@ if($percent > 100){
 
 
 //GETTING SCORES
+if(!isset($_POST["type"])){
+	$type = 1;
+}else{
+	$type = $_POST["type"];
+}
+switch($type){
+	case 0:
+		$friends = $gs->getFriends($accountID);
+		$friends[] = $accountID;
+		$friends = implode(",",$friends);
+		$query2 = $db->prepare("SELECT * FROM levelscores WHERE levelID = :levelID AND accountID IN ($friends) ORDER BY percent DESC");
+		$query2args = [':levelID' => $levelID];
+		break;
+	case 1:
+		$query2 = $db->prepare("SELECT * FROM levelscores WHERE levelID = :levelID ORDER BY percent DESC");
+		$query2args = [':levelID' => $levelID];
+		break;
+	case 2:
+		$query2 = $db->prepare("SELECT * FROM levelscores WHERE levelID = :levelID AND uploadDate > :time ORDER BY percent DESC");
+		$query2args = [':levelID' => $levelID, ':time' => time() - 604800];
+		break;
+	default:
+		return -1;
+		break;
+}
 
 
-$query2 = $db->prepare("SELECT * FROM levelscores WHERE levelID = :levelID ORDER BY percent DESC");
-$query2->execute([':levelID' => $levelID]);
+
+$query2->execute($query2args);
 $result = $query2->fetchAll();
 foreach ($result as &$score) {
 	$extID = $score["accountID"];
