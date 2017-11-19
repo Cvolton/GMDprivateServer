@@ -536,6 +536,28 @@ class mainLib {
 		}
 		return false;
 	}
+	public function getFriends($accountID){
+		include __DIR__ . "/connection.php";
+		$friendsarray = array();
+		$query = "SELECT person1,person2 FROM friendships WHERE person1 = :accountID OR person2 = :accountID"; //selecting friendships
+		$query = $db->prepare($query);
+		$query->execute([':accountID' => $accountID]);
+		$result = $query->fetchAll();//getting friends
+		if($query->rowCount() == 0){
+			return array();
+		}
+		else
+		{//oh so you actually have some friends kden
+			foreach ($result as &$friendship) {
+				$person = $friendship["person1"];
+				if($friendship["person1"] == $accountID){
+					$person = $friendship["person2"];
+				}
+				$friendsarray[] = $person;
+			}
+		}
+		return $friendsarray;
+	}
 	public function getMaxValuePermission($accountID, $permission){
 		include __DIR__ . "/connection.php";
 		$maxvalue = 0;

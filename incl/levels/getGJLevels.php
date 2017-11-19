@@ -223,32 +223,13 @@ if($type==12){ //FOLLOWED
 	$params[] = "extID IN ($followed)";
 }
 if($type==13){ //FRIENDS
-	$peoplearray = array();
 	$accountID = $ep->remove($_POST["accountID"]);
-	$query = "SELECT person1,person2 FROM friendships WHERE person1 = :accountID OR person2 = :accountID"; //selecting friendships
-	$query = $db->prepare($query);
-	$query->execute([':accountID' => $accountID]);
-	$result = $query->fetchAll();//getting friends
-	if($query->rowCount() == 0){
-		exit("-2");//if youre lonely
-	}
-	else
-	{//oh so you actually have some friends kden
-		foreach ($result as &$friendship) {
-			$person = $friendship["person1"];
-			if($friendship["person1"] == $accountID){
-				$person = $friendship["person2"];
-			}
-			$peoplearray[] = $person;
-		}
-		$gjp = $ep->remove($_POST["gjp"]);
-		$gjp = $db->quote($gjp);
-		$gjp = str_replace("'","", $gjp);
-		$gjpresult = $GJPCheck->check($gjp,$accountID);
-		if($gjpresult == 1){
-			$whereor = implode(",", $peoplearray);
-			$params[] = "extID in ($whereor)";
-		}
+	$gjp = $ep->remove($_POST["gjp"]);
+	$gjpresult = $GJPCheck->check($gjp,$accountID);
+	if($gjpresult == 1){
+		$peoplearray = $gs->getFriends($accountID);
+		$whereor = implode(",", $peoplearray);
+		$params[] = "extID in ($whereor)";
 	}
 }
 if(empty($order)){
