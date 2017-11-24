@@ -11,13 +11,18 @@ $gameVersion = $ep->remove($_POST["gameVersion"]);
 $commentstring = "";
 $userstring = "";
 $users = array();
-if($_POST["mode"]){
+if(isset($_POST["mode"])){
 	$mode = $ep->remove($_POST["mode"]);
 }else{
 	$mode = 0;
 }
+if(isset($_POST["count"]) AND is_numeric($_POST["count"])){
+	$count = $ep->remove($_POST["count"]);
+}else{
+	$count = 10;
+}
 $page = $ep->remove($_POST["page"]);
-$commentpage = $page*10;
+$commentpage = $page*$count;
 if($mode==0){
 	$modeColumn = "commentID";
 }else{
@@ -26,12 +31,12 @@ if($mode==0){
 if(!$_POST["levelID"]){
 	$displayLevelID = true;
 	$levelID = $ep->remove($_POST["userID"]);
-	$query = "SELECT levelID, commentID, timestamp, comment, userID, likes, isSpam, percent FROM comments WHERE userID = :levelID ORDER BY $modeColumn DESC LIMIT 10 OFFSET $commentpage";
+	$query = "SELECT levelID, commentID, timestamp, comment, userID, likes, isSpam, percent FROM comments WHERE userID = :levelID ORDER BY $modeColumn DESC LIMIT $count OFFSET $commentpage";
 	$countquery = "SELECT count(*) FROM comments WHERE userID = :levelID";
 }else{
 	$displayLevelID = false;
 	$levelID = $ep->remove($_POST["levelID"]);
-	$query = "SELECT levelID, commentID, timestamp, comment, userID, likes, isSpam, percent FROM comments WHERE levelID = :levelID ORDER BY $modeColumn DESC LIMIT 10 OFFSET $commentpage";
+	$query = "SELECT levelID, commentID, timestamp, comment, userID, likes, isSpam, percent FROM comments WHERE levelID = :levelID ORDER BY $modeColumn DESC LIMIT $count OFFSET $commentpage";
 	$countquery = "SELECT count(*) FROM comments WHERE levelID = :levelID";
 }
 $countquery = $db->prepare($countquery);
