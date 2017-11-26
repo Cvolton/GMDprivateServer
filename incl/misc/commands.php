@@ -81,7 +81,7 @@ class Commands {
 				if($query->fetchColumn() != 0){
 					return false;
 				}
-				$query = $db->prepare("SELECT timestamp FROM dailyfeatures WHERE timestamp >= :tomorrow ORDER BY timestamp DESC LIMIT 1");
+				$query = $db->prepare("SELECT timestamp FROM dailyfeatures WHERE timestamp >= :tomorrow AND type = 0 ORDER BY timestamp DESC LIMIT 1");
 				$query->execute([':tomorrow' => strtotime("tomorrow 00:00:00")]);
 				if($query->rowCount() == 0){
 					$timestamp = strtotime("tomorrow 00:00:00");
@@ -100,7 +100,7 @@ class Commands {
 				if($query->fetchColumn() != 0){
 					return false;
 				}
-				$query = $db->prepare("SELECT timestamp FROM dailyfeatures WHERE timestamp >= :tomorrow ORDER BY timestamp DESC LIMIT 1");
+				$query = $db->prepare("SELECT timestamp FROM dailyfeatures WHERE timestamp >= :tomorrow AND type = 1 ORDER BY timestamp DESC LIMIT 1");
 				$query->execute([':tomorrow' => strtotime("next monday")]);
 				if($query->rowCount() == 0){
 					$timestamp = strtotime("next monday");
