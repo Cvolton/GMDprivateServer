@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Počítač: localhost
--- Vytvořeno: Pon 27. lis 2017, 10:14
+-- Vytvořeno: Pon 27. lis 2017, 21:42
 -- Verze serveru: 10.1.23-MariaDB-9+deb9u1
 -- Verze PHP: 7.1.11-1+0~20171027135825.10+jessie~1.gbp2e638d
 
@@ -59,6 +59,7 @@ CREATE TABLE `accounts` (
   `blocked` varchar(1024) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'unused',
   `mS` int(11) NOT NULL DEFAULT '0',
   `frS` int(11) NOT NULL DEFAULT '0',
+  `cS` int(11) NOT NULL,
   `youtubeurl` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
   `twitter` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
   `twitch` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
@@ -714,7 +715,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT pro tabulku `acccomments`
 --
 ALTER TABLE `acccomments`
-  MODIFY `commentID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4667;
+  MODIFY `commentID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4669;
 --
 -- AUTO_INCREMENT pro tabulku `accounts`
 --
@@ -724,7 +725,7 @@ ALTER TABLE `accounts`
 -- AUTO_INCREMENT pro tabulku `actions`
 --
 ALTER TABLE `actions`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=375533;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=376072;
 --
 -- AUTO_INCREMENT pro tabulku `bannedips`
 --
@@ -739,7 +740,7 @@ ALTER TABLE `blocks`
 -- AUTO_INCREMENT pro tabulku `comments`
 --
 ALTER TABLE `comments`
-  MODIFY `commentID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21973;
+  MODIFY `commentID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22001;
 --
 -- AUTO_INCREMENT pro tabulku `cpshares`
 --
@@ -754,12 +755,12 @@ ALTER TABLE `dailyfeatures`
 -- AUTO_INCREMENT pro tabulku `friendreqs`
 --
 ALTER TABLE `friendreqs`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5806;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5807;
 --
 -- AUTO_INCREMENT pro tabulku `friendships`
 --
 ALTER TABLE `friendships`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2926;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2927;
 --
 -- AUTO_INCREMENT pro tabulku `gauntlets`
 --
@@ -769,17 +770,17 @@ ALTER TABLE `gauntlets`
 -- AUTO_INCREMENT pro tabulku `levels`
 --
 ALTER TABLE `levels`
-  MODIFY `levelID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14128;
+  MODIFY `levelID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14139;
 --
 -- AUTO_INCREMENT pro tabulku `levelscores`
 --
 ALTER TABLE `levelscores`
-  MODIFY `scoreID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16914;
+  MODIFY `scoreID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16919;
 --
 -- AUTO_INCREMENT pro tabulku `links`
 --
 ALTER TABLE `links`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=149;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=150;
 --
 -- AUTO_INCREMENT pro tabulku `mappacks`
 --
@@ -789,12 +790,12 @@ ALTER TABLE `mappacks`
 -- AUTO_INCREMENT pro tabulku `messages`
 --
 ALTER TABLE `messages`
-  MODIFY `messageID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2260;
+  MODIFY `messageID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2261;
 --
 -- AUTO_INCREMENT pro tabulku `modactions`
 --
 ALTER TABLE `modactions`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17162;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17164;
 --
 -- AUTO_INCREMENT pro tabulku `modips`
 --
@@ -814,7 +815,7 @@ ALTER TABLE `quests`
 -- AUTO_INCREMENT pro tabulku `reports`
 --
 ALTER TABLE `reports`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=257;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=259;
 --
 -- AUTO_INCREMENT pro tabulku `roleassign`
 --
@@ -829,12 +830,12 @@ ALTER TABLE `roles`
 -- AUTO_INCREMENT pro tabulku `songs`
 --
 ALTER TABLE `songs`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5107019;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5107024;
 --
 -- AUTO_INCREMENT pro tabulku `users`
 --
 ALTER TABLE `users`
-  MODIFY `userID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4104;COMMIT;
+  MODIFY `userID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4106;COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
