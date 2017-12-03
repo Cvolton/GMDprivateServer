@@ -17,131 +17,131 @@ class Commands {
 		$query2->execute([':id' => $levelID]);
 		$targetExtID = $query2->fetchAll()[0]["extID"];
 		//ADMIN COMMANDS
-		if ($userinfo["isAdmin"] == 1) {
-			if(substr($comment,0,5) == '!rate'){
-				$starStars = $commentarray[2];
-				if($starStars == ""){
-					$starStars = 0;
-				}
-				$starCoins = $commentarray[3];
-				$starFeatured = $commentarray[4];
-				$diffArray = $gs->getDiffFromName($commentarray[1]);
-				$starDemon = $diffArray[1];
-				$starAuto = $diffArray[2];
-				$starDifficulty = $diffArray[0];
-				$query = $db->prepare("UPDATE levels SET starStars=:starStars, starDifficulty=:starDifficulty, starDemon=:starDemon, starAuto=:starAuto WHERE levelID=:levelID");
-				$query->execute([':starStars' => $starStars, ':starDifficulty' => $starDifficulty, ':starDemon' => $starDemon, ':starAuto' => $starAuto, ':levelID' => $levelID]);
-				$query = $db->prepare("INSERT INTO modactions (type, value, value2, value3, timestamp, account) VALUES ('1', :value, :value2, :levelID, :timestamp, :id)");
-				$query->execute([':value' => $commentarray[1], ':timestamp' => $uploadDate, ':id' => $accountID, ':value2' => $starStars, ':levelID' => $levelID]);
-				if($starFeatured != ""){
-					$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('2', :value, :levelID, :timestamp, :id)");
-					$query->execute([':value' => $starFeatured, ':timestamp' => $uploadDate, ':id' => $accountID, ':levelID' => $levelID]);	
-					$query = $db->prepare("UPDATE levels SET starFeatured=:starFeatured WHERE levelID=:levelID");
-					$query->execute([':starFeatured' => $starFeatured, ':levelID' => $levelID]);
-				}
-				if($starCoins != ""){
-					$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('3', :value, :levelID, :timestamp, :id)");
-					$query->execute([':value' => $starCoins, ':timestamp' => $uploadDate, ':id' => $accountID, ':levelID' => $levelID]);
-					$query = $db->prepare("UPDATE levels SET starCoins=:starCoins WHERE levelID=:levelID");
-					$query->execute([':starCoins' => $starCoins, ':levelID' => $levelID]);
-				}
-				return true;
+		if(substr($comment,0,5) == '!rate' AND $gs->checkPermission($accountID, "commandRate")){
+			$starStars = $commentarray[2];
+			if($starStars == ""){
+				$starStars = 0;
 			}
-			if(substr($comment,0,8) == '!feature'){
-				$query = $db->prepare("UPDATE levels SET starFeatured='1' WHERE levelID=:levelID");
-				$query->execute([':levelID' => $levelID]);
+			$starCoins = $commentarray[3];
+			$starFeatured = $commentarray[4];
+			$diffArray = $gs->getDiffFromName($commentarray[1]);
+			$starDemon = $diffArray[1];
+			$starAuto = $diffArray[2];
+			$starDifficulty = $diffArray[0];
+			$query = $db->prepare("UPDATE levels SET starStars=:starStars, starDifficulty=:starDifficulty, starDemon=:starDemon, starAuto=:starAuto WHERE levelID=:levelID");
+			$query->execute([':starStars' => $starStars, ':starDifficulty' => $starDifficulty, ':starDemon' => $starDemon, ':starAuto' => $starAuto, ':levelID' => $levelID]);
+			$query = $db->prepare("INSERT INTO modactions (type, value, value2, value3, timestamp, account) VALUES ('1', :value, :value2, :levelID, :timestamp, :id)");
+			$query->execute([':value' => $commentarray[1], ':timestamp' => $uploadDate, ':id' => $accountID, ':value2' => $starStars, ':levelID' => $levelID]);
+			if($starFeatured != ""){
 				$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('2', :value, :levelID, :timestamp, :id)");
-				$query->execute([':value' => "1", ':timestamp' => $uploadDate, ':id' => $accountID, ':levelID' => $levelID]);
-				return true;
+				$query->execute([':value' => $starFeatured, ':timestamp' => $uploadDate, ':id' => $accountID, ':levelID' => $levelID]);	
+				$query = $db->prepare("UPDATE levels SET starFeatured=:starFeatured WHERE levelID=:levelID");
+				$query->execute([':starFeatured' => $starFeatured, ':levelID' => $levelID]);
 			}
-			if(substr($comment,0,5) == '!epic'){
-				$query = $db->prepare("UPDATE levels SET starEpic='1' WHERE levelID=:levelID");
-				$query->execute([':levelID' => $levelID]);
-				$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('4', :value, :levelID, :timestamp, :id)");
-				$query->execute([':value' => "1", ':timestamp' => $uploadDate, ':id' => $accountID, ':levelID' => $levelID]);
-				return true;
+			if($starCoins != ""){
+				$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('3', :value, :levelID, :timestamp, :id)");
+				$query->execute([':value' => $starCoins, ':timestamp' => $uploadDate, ':id' => $accountID, ':levelID' => $levelID]);
+				$query = $db->prepare("UPDATE levels SET starCoins=:starCoins WHERE levelID=:levelID");
+				$query->execute([':starCoins' => $starCoins, ':levelID' => $levelID]);
 			}
-			if(substr($comment,0,7) == '!unepic'){
-				$query = $db->prepare("UPDATE levels SET starEpic='0' WHERE levelID=:levelID");
-				$query->execute([':levelID' => $levelID]);
-				$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('4', :value, :levelID, :timestamp, :id)");
-				$query->execute([':value' => "0", ':timestamp' => $uploadDate, ':id' => $accountID, ':levelID' => $levelID]);
-				return true;
-			}
-			if(substr($comment,0,12) == '!verifycoins'){
-				$query = $db->prepare("UPDATE levels SET starCoins='1' WHERE levelID = :levelID");
-				$query->execute([':levelID' => $levelID]);
-				$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('2', :value, :levelID, :timestamp, :id)");
-				$query->execute([':value' => "1", ':timestamp' => $uploadDate, ':id' => $accountID, ':levelID' => $levelID]);
-				return true;
-			}
-			if(substr($comment,0,6) == '!daily'){
-				$query = $db->prepare("SELECT count(*) FROM dailyfeatures WHERE levelID = :level AND type = 0");
-				$query->execute([':level' => $levelID]);
-				if($query->fetchColumn() != 0){
-					return false;
-				}
-				$query = $db->prepare("SELECT timestamp FROM dailyfeatures WHERE timestamp >= :tomorrow AND type = 0 ORDER BY timestamp DESC LIMIT 1");
-				$query->execute([':tomorrow' => strtotime("tomorrow 00:00:00")]);
-				if($query->rowCount() == 0){
-					$timestamp = strtotime("tomorrow 00:00:00");
-				}else{
-					$timestamp = $query->fetchAll()[0]["timestamp"] + 86400;
-				}
-				$query = $db->prepare("INSERT INTO dailyfeatures (levelID, timestamp, type) VALUES (:levelID, :uploadDate, 0)");
-				$query->execute([':levelID' => $levelID, ':uploadDate' => $timestamp]);
-				$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account, value2, value4) VALUES ('5', :value, :levelID, :timestamp, :id, :dailytime, 0)");
-				$query->execute([':value' => "1", ':timestamp' => $uploadDate, ':id' => $accountID, ':levelID' => $levelID, ':dailytime' => $timestamp]);
-				return true;
-			}
-			if(substr($comment,0,7) == '!weekly'){
-				$query = $db->prepare("SELECT count(*) FROM dailyfeatures WHERE levelID = :level AND type = 1");
-				$query->execute([':level' => $levelID]);
-				if($query->fetchColumn() != 0){
-					return false;
-				}
-				$query = $db->prepare("SELECT timestamp FROM dailyfeatures WHERE timestamp >= :tomorrow AND type = 1 ORDER BY timestamp DESC LIMIT 1");
-				$query->execute([':tomorrow' => strtotime("next monday")]);
-				if($query->rowCount() == 0){
-					$timestamp = strtotime("next monday");
-				}else{
-					$timestamp = $query->fetchAll()[0]["timestamp"] + 604800;
-				}
-				$query = $db->prepare("INSERT INTO dailyfeatures (levelID, timestamp, type) VALUES (:levelID, :uploadDate, 1)");
-				$query->execute([':levelID' => $levelID, ':uploadDate' => $timestamp]);
-				$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account, value2, value4) VALUES ('5', :value, :levelID, :timestamp, :id, :dailytime, 1)");
-				$query->execute([':value' => "1", ':timestamp' => $uploadDate, ':id' => $accountID, ':levelID' => $levelID, ':dailytime' => $timestamp]);
-				return true;
-			}
-			if(substr($comment,0,6) == '!delet'){
-				if(!is_numeric($levelID)){
-					return false;
-				}
-				$query = $db->prepare("DELETE from levels WHERE levelID=:levelID LIMIT 1");
-				$query->execute([':levelID' => $levelID]);
-				$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('6', :value, :levelID, :timestamp, :id)");
-				$query->execute([':value' => "1", ':timestamp' => $uploadDate, ':id' => $accountID, ':levelID' => $levelID]);
-				if(file_exists(dirname(__FILE__)."../../data/levels/$levelID")){
-					rename(dirname(__FILE__)."../../data/levels/$levelID",dirname(__FILE__)."../../data/levels/deleted/$levelID");
-				}
-				return true;
-			}
-			if(substr($comment,0,7) == '!setacc'){
-				$query = $db->prepare("SELECT accountID FROM accounts WHERE userName = :userName OR accountID = :userName LIMIT 1");
-				$query->execute([':userName' => $commentarray[1]]);
-				$targetAcc = $query->fetchAll()[0];
-				//var_dump($result);
-				$query = $db->prepare("SELECT userID FROM users WHERE extID = :extID LIMIT 1");
-				$query->execute([':extID' => $targetAcc["accountID"]]);
-				$userID = $query->fetchColumn();
-				$query = $db->prepare("UPDATE levels SET extID=:extID, userID=:userID, userName=:userName WHERE levelID=:levelID");
-				$query->execute([':extID' => $targetAcc["accountID"], ':userID' => $userID, ':userName' => $commentarray[1], ':levelID' => $levelID]);
-				$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('7', :value, :levelID, :timestamp, :id)");
-				$query->execute([':value' => $commentarray[1], ':timestamp' => $uploadDate, ':id' => $accountID, ':levelID' => $levelID]);
-				return true;
-			}
+			return true;
 		}
-		//NON-ADMIN COMMANDS
+		if(substr($comment,0,8) == '!feature' AND $gs->checkPermission($accountID, "commandFeature")){
+			$query = $db->prepare("UPDATE levels SET starFeatured='1' WHERE levelID=:levelID");
+			$query->execute([':levelID' => $levelID]);
+			$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('2', :value, :levelID, :timestamp, :id)");
+			$query->execute([':value' => "1", ':timestamp' => $uploadDate, ':id' => $accountID, ':levelID' => $levelID]);
+			return true;
+		}
+		if(substr($comment,0,5) == '!epic' AND $gs->checkPermission($accountID, "commandEpic")){
+			$query = $db->prepare("UPDATE levels SET starEpic='1' WHERE levelID=:levelID");
+			$query->execute([':levelID' => $levelID]);
+			$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('4', :value, :levelID, :timestamp, :id)");
+			$query->execute([':value' => "1", ':timestamp' => $uploadDate, ':id' => $accountID, ':levelID' => $levelID]);
+			return true;
+		}
+		if(substr($comment,0,7) == '!unepic' AND $gs->checkPermission($accountID, "commandUnepic")){
+			$query = $db->prepare("UPDATE levels SET starEpic='0' WHERE levelID=:levelID");
+			$query->execute([':levelID' => $levelID]);
+			$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('4', :value, :levelID, :timestamp, :id)");
+			$query->execute([':value' => "0", ':timestamp' => $uploadDate, ':id' => $accountID, ':levelID' => $levelID]);
+				return true;
+		}
+		if(substr($comment,0,12) == '!verifycoins' AND $gs->checkPermission($accountID, "commandVerifycoins")){
+			$query = $db->prepare("UPDATE levels SET starCoins='1' WHERE levelID = :levelID");
+			$query->execute([':levelID' => $levelID]);
+			$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('2', :value, :levelID, :timestamp, :id)");
+			$query->execute([':value' => "1", ':timestamp' => $uploadDate, ':id' => $accountID, ':levelID' => $levelID]);
+			return true;
+		}
+		if(substr($comment,0,6) == '!daily' AND $gs->checkPermission($accountID, "commandDaily")){
+			$query = $db->prepare("SELECT count(*) FROM dailyfeatures WHERE levelID = :level AND type = 0");
+				$query->execute([':level' => $levelID]);
+			if($query->fetchColumn() != 0){
+				return false;
+			}
+			$query = $db->prepare("SELECT timestamp FROM dailyfeatures WHERE timestamp >= :tomorrow AND type = 0 ORDER BY timestamp DESC LIMIT 1");
+			$query->execute([':tomorrow' => strtotime("tomorrow 00:00:00")]);
+			if($query->rowCount() == 0){
+				$timestamp = strtotime("tomorrow 00:00:00");
+			}else{
+				$timestamp = $query->fetchAll()[0]["timestamp"] + 86400;
+			}
+			$query = $db->prepare("INSERT INTO dailyfeatures (levelID, timestamp, type) VALUES (:levelID, :uploadDate, 0)");
+				$query->execute([':levelID' => $levelID, ':uploadDate' => $timestamp]);
+			$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account, value2, value4) VALUES ('5', :value, :levelID, :timestamp, :id, :dailytime, 0)");
+			$query->execute([':value' => "1", ':timestamp' => $uploadDate, ':id' => $accountID, ':levelID' => $levelID, ':dailytime' => $timestamp]);
+			return true;
+		}
+		if(substr($comment,0,7) == '!weekly' AND $gs->checkPermission($accountID, "commandWeekly")){
+			$query = $db->prepare("SELECT count(*) FROM dailyfeatures WHERE levelID = :level AND type = 1");
+			$query->execute([':level' => $levelID]);
+			if($query->fetchColumn() != 0){
+				return false;
+			}
+			$query = $db->prepare("SELECT timestamp FROM dailyfeatures WHERE timestamp >= :tomorrow AND type = 1 ORDER BY timestamp DESC LIMIT 1");
+				$query->execute([':tomorrow' => strtotime("next monday")]);
+			if($query->rowCount() == 0){
+				$timestamp = strtotime("next monday");
+			}else{
+				$timestamp = $query->fetchAll()[0]["timestamp"] + 604800;
+			}
+			$query = $db->prepare("INSERT INTO dailyfeatures (levelID, timestamp, type) VALUES (:levelID, :uploadDate, 1)");
+			$query->execute([':levelID' => $levelID, ':uploadDate' => $timestamp]);
+			$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account, value2, value4) VALUES ('5', :value, :levelID, :timestamp, :id, :dailytime, 1)");
+			$query->execute([':value' => "1", ':timestamp' => $uploadDate, ':id' => $accountID, ':levelID' => $levelID, ':dailytime' => $timestamp]);
+			return true;
+		}
+		if(substr($comment,0,6) == '!delet' AND $gs->checkPermission($accountID, "commandDelete")){
+			if(!is_numeric($levelID)){
+				return false;
+			}
+			$query = $db->prepare("DELETE from levels WHERE levelID=:levelID LIMIT 1");
+			$query->execute([':levelID' => $levelID]);
+			$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('6', :value, :levelID, :timestamp, :id)");
+			$query->execute([':value' => "1", ':timestamp' => $uploadDate, ':id' => $accountID, ':levelID' => $levelID]);
+			if(file_exists(dirname(__FILE__)."../../data/levels/$levelID")){
+				rename(dirname(__FILE__)."../../data/levels/$levelID",dirname(__FILE__)."../../data/levels/deleted/$levelID");
+			}
+			return true;
+		}
+		if(substr($comment,0,7) == '!setacc' AND $gs->checkPermission($accountID, "commandSetacc")){
+			$query = $db->prepare("SELECT accountID FROM accounts WHERE userName = :userName OR accountID = :userName LIMIT 1");
+			$query->execute([':userName' => $commentarray[1]]);
+			$targetAcc = $query->fetchAll()[0];
+			//var_dump($result);
+			$query = $db->prepare("SELECT userID FROM users WHERE extID = :extID LIMIT 1");
+			$query->execute([':extID' => $targetAcc["accountID"]]);
+			$userID = $query->fetchColumn();
+			$query = $db->prepare("UPDATE levels SET extID=:extID, userID=:userID, userName=:userName WHERE levelID=:levelID");
+			$query->execute([':extID' => $targetAcc["accountID"], ':userID' => $userID, ':userName' => $commentarray[1], ':levelID' => $levelID]);
+			$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('7', :value, :levelID, :timestamp, :id)");
+			$query->execute([':value' => $commentarray[1], ':timestamp' => $uploadDate, ':id' => $accountID, ':levelID' => $levelID]);
+			return true;
+		}
+
+		
+	//NON-ADMIN COMMANDS
 		if ($userinfo["isAdmin"] == 1 OR $targetExtID == $accountID) {
 			if(substr($comment,0,7) == '!rename'){
 				$name = $ep->remove(str_replace("!rename ", "", $comment));
