@@ -14,9 +14,7 @@ $levelID = $ep->remove($_POST["levelID"]);
 $id = $ep->remove($_POST["accountID"]);
 $GJPCheck = new GJPCheck();
 $gjpresult = $GJPCheck->check($gjp,$id);
-$query = $db->prepare("SELECT isAdmin FROM accounts WHERE accountID = :id");
-$query->execute([':id' => $id]);
-if($query->fetchColumn() == 0 OR $gjpresult != 1){
+if(!$gs->checkPermission($id, "actionRateDemon")){
 	exit("-1");
 }
 $auto = 0;
