@@ -26,6 +26,9 @@ if(!empty($_POST["userName"]) AND !empty($_POST["password"]) AND !empty($_POST["
 			}else{
 				echo "unBan failed.";
 			}
+			$query = $db->prepare("INSERT INTO modactions  (type, value, value2, timestamp, account) 
+													VALUES ('15',:userID, '0',  :timestamp,:account)");
+			$query->execute([':userID' => $userID, ':timestamp' => time(), ':account' => $accountID]);
 		}else{
 			exit("You do not have the permission to do this action. <a href='leaderboardsUnban.php'>Try again</a>");
 		}
