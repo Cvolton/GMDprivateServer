@@ -20,7 +20,7 @@ $levelInfo = $query->fetchAll()[0];
 //getting creator name
 $query = $db->prepare("SELECT userName FROM users WHERE userID = :userID");
 $query->execute([':userID' => $levelInfo["userID"]]);
-$creator = $query->fetchAll()[0]["userName"];
+$creator = $query->fetchColumn();
 //getting song name
 if($levelInfo["songID"] != 0){
 	$query = $db->prepare("SELECT name, authorName, ID FROM songs WHERE ID = :songID");

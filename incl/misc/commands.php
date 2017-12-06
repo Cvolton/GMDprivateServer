@@ -92,7 +92,7 @@ class Commands {
 			if($query->rowCount() == 0){
 				$timestamp = strtotime("tomorrow 00:00:00");
 			}else{
-				$timestamp = $query->fetchAll()[0]["timestamp"] + 86400;
+				$timestamp = $query->fetchColumn() + 86400;
 			}
 			$query = $db->prepare("INSERT INTO dailyfeatures (levelID, timestamp, type) VALUES (:levelID, :uploadDate, 0)");
 				$query->execute([':levelID' => $levelID, ':uploadDate' => $timestamp]);
@@ -111,7 +111,7 @@ class Commands {
 			if($query->rowCount() == 0){
 				$timestamp = strtotime("next monday");
 			}else{
-				$timestamp = $query->fetchAll()[0]["timestamp"] + 604800;
+				$timestamp = $query->fetchColumn() + 604800;
 			}
 			$query = $db->prepare("INSERT INTO dailyfeatures (levelID, timestamp, type) VALUES (:levelID, :uploadDate, 1)");
 			$query->execute([':levelID' => $levelID, ':uploadDate' => $timestamp]);

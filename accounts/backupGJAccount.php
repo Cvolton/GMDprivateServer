@@ -50,7 +50,7 @@ if ($pass == 1) {
 	//$query->execute([':saveData' => $saveData, ':userName' => $userName]);
 	$query = $db->prepare("SELECT accountID FROM accounts WHERE userName = :userName");
 	$query->execute([':userName' => $userName]);
-	$accountID = $query->fetchAll()[0]["accountID"];
+	$accountID = $query->fetchColumn();
 	if(!is_numeric($accountID)){
 		exit("-1");
 	}

@@ -30,10 +30,9 @@ $result = $query->fetchAll();
 foreach($result as &$action){
 	//detecting mod
 	$account = $action["account"];
-	$query = $db->prepare("SELECT * FROM accounts WHERE accountID = :id");
+	$query = $db->prepare("SELECT userName FROM accounts WHERE accountID = :id");
 	$query->execute([':id'=>$account]);
-	$result2 = $query->fetchAll();
-	$account = $result2[0]["userName"];
+	$account = $query->fetchColumn();
 	//detecting action
 	$value = $action["value"];
 	$value2 = $action["value2"];

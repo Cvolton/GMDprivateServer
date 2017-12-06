@@ -31,7 +31,6 @@ if(!empty($_POST["userName"]) AND !empty($_POST["password"]) AND !empty($_POST["
 			$rgb = hexdec(substr($color,0,2)).
 				",".hexdec(substr($color,2,2)).
 				",".hexdec(substr($color,4,2));
-			$accid = $query->fetchAll()[0]["accountID"];
 			$lvlsarray = explode(",", $levels);
 			foreach($lvlsarray AS &$level){
 				if(!is_numeric($level)){
@@ -42,7 +41,7 @@ if(!empty($_POST["userName"]) AND !empty($_POST["password"]) AND !empty($_POST["
 				if($query->rowCount() == 0){
 					exit("Level #$level doesn't exist.");
 				}
-				$levelName = $query->fetchAll()[0]["levelName"];
+				$levelName = $query->fetchColumn();
 				$levelstring .= $levelName . ", ";
 			}
 			$levelstring = substr($levelstring,0,-2);
@@ -81,7 +80,7 @@ if(!empty($_POST["userName"]) AND !empty($_POST["password"]) AND !empty($_POST["
 					$diff = 6;
 					break;
 			}
-			echo "AccountID: $accid <br>
+			echo "AccountID: $accountID <br>
 				Pack Name: $packName <br>
 				Levels: $levelstring ($levels)<br>
 				Difficulty: $diffname ($diff)<br>
@@ -93,7 +92,7 @@ if(!empty($_POST["userName"]) AND !empty($_POST["password"]) AND !empty($_POST["
 			$query->execute([':name' => $packName, ':levels' => $levels, ':stars' => $stars, ':coins' => $coins, ':difficulty' => $diff, ':rgbcolors' => $rgb]);
 			$query = $db->prepare("INSERT INTO modactions  (type, value, timestamp, account, value2, value3, value4, value7) 
 													VALUES ('11',:value,:timestamp,:account,:levels, :stars, :coins, :rgb)");
-			$query->execute([':value' => $packName, ':timestamp' => time(), ':account' => $accid, ':levels' => $levels, ':stars' => $stars, ':coins' => $coins, ':rgb' => $rgb]);
+			$query->execute([':value' => $packName, ':timestamp' => time(), ':account' => $accountID, ':levels' => $levels, ':stars' => $stars, ':coins' => $coins, ':rgb' => $rgb]);
 		}
 	}else{
 		echo "Invalid password or nonexistant account. <a href='packCreate.php'>Try again</a>";

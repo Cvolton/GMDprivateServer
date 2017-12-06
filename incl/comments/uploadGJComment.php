@@ -53,12 +53,12 @@ if($id != "" AND $comment != ""){
 		if($percent != 0){
 			$query2 = $db->prepare("SELECT percent FROM levelscores WHERE accountID = :accountID AND levelID = :levelID");
 			$query2->execute([':accountID' => $id, ':levelID' => $levelID]);
-			$result = $query2->fetchAll();
+			$result = $query2->fetchColumn();
 			if ($query2->rowCount() == 0) {
 				$query = $db->prepare("INSERT INTO levelscores (accountID, levelID, percent, uploadDate)
 				VALUES (:accountID, :levelID, :percent, :uploadDate)");
 			} else {
-				if($result[0]["percent"] < $percent){
+				if($result < $percent){
 					$query = $db->prepare("UPDATE levelscores SET percent=:percent, uploadDate=:uploadDate WHERE accountID=:accountID AND levelID=:levelID");
 					$query->execute([':accountID' => $id, ':levelID' => $levelID, ':percent' => $percent, ':uploadDate' => $uploadDate]);
 				}

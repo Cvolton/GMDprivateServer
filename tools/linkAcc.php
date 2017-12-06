@@ -48,10 +48,10 @@ if(!empty($_POST["userhere"]) AND !empty($_POST["passhere"]) AND !empty($_POST["
 			//getting stuff
 			$query = $db->prepare("SELECT accountID FROM accounts WHERE userName = :userName LIMIT 1");
 			$query->execute([':userName' => $userhere]);
-			$accountID = $query->fetchAll()[0]["accountID"];
+			$accountID = $query->fetchColumn();
 			$query = $db->prepare("SELECT userID FROM users WHERE extID = :extID LIMIT 1");
 			$query->execute([':extID' => $accountID]);
-			$userID = $query->fetchAll()[0]["userID"];
+			$userID = $query->fetchColumn();
 			$targetAccountID = explode(",",$result)[0];
 			$targetUserID = explode(",",$result)[1];
 			$query = $db->prepare("SELECT count(*) FROM links WHERE targetAccountID = :targetAccountID LIMIT 1");

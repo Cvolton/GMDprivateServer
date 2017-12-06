@@ -18,7 +18,7 @@ if ($pass == 1) {
 	if($cloudSaveEncryption == 1){
 		$query = $db->prepare("SELECT accountID FROM accounts WHERE userName=:userName");	
 		$query->execute([':userName' => $userName]);
-		$accountID = $query->fetchAll()[0]["accountID"];
+		$accountID = $query->fetchColumn();
 		$saveData = file_get_contents("../../data/accounts/$accountID");
 		if(file_exists("../../data/accounts/keys/$accountID")){
 			$protected_key_encoded = file_get_contents("../../data/accounts/keys/$accountID");
