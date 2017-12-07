@@ -4,7 +4,10 @@
 <?php
 //error_reporting(0);
 include "../../incl/lib/connection.php";
-$query = $db->prepare("SELECT accountID, userName FROM accounts WHERE isAdmin = 1");
+require "../../incl/lib/mainLib.php";
+$gs = new mainLib();
+$accounts = implode(",",$gs->getAccountsWithPermission("toolModactions"));
+$query = $db->prepare("SELECT accountID, userName FROM accounts WHERE accountID IN ($accounts) ORDER BY userName ASC");
 $query->execute();
 $result = $query->fetchAll();
 foreach($result as &$mod){
