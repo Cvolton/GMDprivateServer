@@ -1,6 +1,6 @@
 <?php
 chdir(dirname(__FILE__));
-if(empty($_GET["weekly"]) OR $_GET["weekly"] == 0){
+if(empty($_POST["weekly"]) OR $_POST["weekly"] == 0){
 	$weekly = 0;
 	$midnight = strtotime("tomorrow 00:00:00");
 }else{
