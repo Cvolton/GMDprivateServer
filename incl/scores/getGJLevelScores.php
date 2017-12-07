@@ -32,12 +32,12 @@ if(isset($_POST["s9"])){
 $userID = $gs->getUserID($accountID);
 $query2 = $db->prepare("SELECT percent FROM levelscores WHERE accountID = :accountID AND levelID = :levelID");
 $query2->execute([':accountID' => $accountID, ':levelID' => $levelID]);
-$percent = $query2->fetchColumn();
+$oldPercent = $query2->fetchColumn();
 if($query2->rowCount() == 0) {
 	$query = $db->prepare("INSERT INTO levelscores (accountID, levelID, percent, uploadDate, coins, attempts)
 	VALUES (:accountID, :levelID, :percent, :uploadDate, :coins, :attempts)");
 } else {
-	if($percent <= $percent){
+	if($oldPercent <= $percent){
 		$query = $db->prepare("UPDATE levelscores SET percent=:percent, uploadDate=:uploadDate, coins=:coins, attempts=:attempts WHERE accountID=:accountID AND levelID=:levelID");
 	}else{
 		$query = $db->prepare("SELECT count(*) FROM levelscores WHERE percent=:percent AND uploadDate=:uploadDate AND accountID=:accountID AND levelID=:levelID AND coins = :coins AND attempts = :attempts");
