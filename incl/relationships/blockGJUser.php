@@ -6,7 +6,7 @@ require_once "../lib/GJPCheck.php";
 require_once "../lib/exploitPatch.php";
 $ep = new exploitPatch();
 //here im getting all the data
-if(!empty($_POST["accountId"]) AND !empty($_POST["gjp"]) AND !empty($_POST["targetAccountID"])){
+if(!empty($_POST["accountID"]) AND !empty($_POST["gjp"]) AND !empty($_POST["targetAccountID"])){
 	$accountID = $ep->remove($_POST["accountID"]);
 	$gjp = $ep->remove($_POST["gjp"]);
 	$targetAccountID = $ep->remove($_POST["targetAccountID"]);
