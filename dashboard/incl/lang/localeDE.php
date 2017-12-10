@@ -88,3 +88,6 @@ $string["modAction11"] = "Teilte CP";
 $string["modAction12"] = "Un/publizierte";
 $string["modAction13"] = "Änderte Level Beschreibung";
 $string["modAction14"] = "Schalte LDM An/aus eines Levels";
+$string["modAction15"] = "Leaderboard un/banned";
+//errors
+$string["errorNoAccWithPerm"] = "Error: No accounts with the '%s' permission have been found";

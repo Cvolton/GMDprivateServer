@@ -88,3 +88,6 @@ $string["modAction11"] = "Compartió Creator Points";
 $string["modAction12"] = "Des/Publicado";
 $string["modAction13"] = "Cambió la descripción del nivel";
 $string["modAction14"] = "Activó/Desactivó la opción LDM";
+$string["modAction15"] = "Leaderboard un/banned";
+//errors
+$string["errorNoAccWithPerm"] = "Error: No accounts with the '%s' permission have been found";

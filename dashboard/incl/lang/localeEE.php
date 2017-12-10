@@ -88,3 +88,6 @@ $string["modAction11"] = "Jagas CP'd";
 $string["modAction12"] = "Mitte/Avaldas";
 $string["modAction13"] = "Vahetas leveli kirjeldust";
 $string["modAction14"] = "Lubas/Keelas LDM'i";
+$string["modAction15"] = "Leaderboard un/banned";
+//errors
+$string["errorNoAccWithPerm"] = "Error: No accounts with the '%s' permission have been found";

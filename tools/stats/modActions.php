@@ -7,6 +7,9 @@ include "../../incl/lib/connection.php";
 require "../../incl/lib/mainLib.php";
 $gs = new mainLib();
 $accounts = implode(",",$gs->getAccountsWithPermission("toolModactions"));
+if($accounts == ""){
+	exit("Error: No accounts with the 'toolModactions' permission have been found");
+}
 $query = $db->prepare("SELECT accountID, userName FROM accounts WHERE accountID IN ($accounts) ORDER BY userName ASC");
 $query->execute();
 $result = $query->fetchAll();

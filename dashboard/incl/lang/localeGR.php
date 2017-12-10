@@ -88,3 +88,6 @@ $string["modAction11"] = "Μοιράστηκε CP";
 $string["modAction12"] = "Δημοσίευσε/Απέκρυψε";
 $string["modAction13"] = "Άλλαξε τη περιγραφή πίστας";
 $string["modAction14"] = "Ενεργοποίησε LDM";
+$string["modAction15"] = "Leaderboard un/banned";
+//errors
+$string["errorNoAccWithPerm"] = "Error: No accounts with the '%s' permission have been found";

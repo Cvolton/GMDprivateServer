@@ -10,6 +10,10 @@ $gs = new mainLib();
 */
 $modtable = "";
 $accounts = implode(",",$gs->getAccountsWithPermission("toolModactions"));
+if($accounts == ""){
+	$dl->printBox(sprintf($dl->getLocalizedString("errorNoAccWithPerm"), "toolsModactions"));
+	exit();
+}
 $query = $db->prepare("SELECT accountID, userName FROM accounts WHERE accountID IN ($accounts) ORDER BY userName ASC");
 $query->execute();
 $result = $query->fetchAll();

@@ -88,3 +88,6 @@ $string["modAction11"] = "แบ่ง CP";
 $string["modAction12"] = "แผยแพร่/หยุดเผยแพร่";
 $string["modAction13"] = "เปลี่ยนคำอธิบายเลเวล";
 $string["modAction14"] = "เปิด/ปิด ปุ่ม LDM";
+$string["modAction15"] = "Leaderboard un/banned";
+//errors
+$string["errorNoAccWithPerm"] = "Error: No accounts with the '%s' permission have been found";

@@ -88,3 +88,6 @@ $string["modAction11"] = "Поделились СП (Создательским�
 $string["modAction12"] = "Опубликовали";
 $string["modAction13"] = "Изменили описание";
 $string["modAction14"] = "Включили/выключили ЛДМ";
+$string["modAction15"] = "Leaderboard un/banned";
+//errors
+$string["errorNoAccWithPerm"] = "Error: No accounts with the '%s' permission have been found";
