@@ -83,11 +83,11 @@ $string["modAction6"] = "Deletou o nível";
 $string["modAction7"] = "Mudou o criador do nível";
 $string["modAction8"] = "Renomeou o nível";
 $string["modAction9"] = "Mudou a senha do nível";
-$string["modAction10"] = "Mudou a dificuldade de demon";
-$string["modAction11"] = "Dividiu CP";
+$string["modAction10"] = "Mudou a dificuldade do demon";
+$string["modAction11"] = "Compartilhou CP";
 $string["modAction12"] = "Des/publicou";
 $string["modAction13"] = "Mudou a descrição do nível";
 $string["modAction14"] = "Des/abilitou LDM";
-$string["modAction15"] = "Leaderboard un/banned";
+$string["modAction15"] = "Des/banido do ranking";
 //errors
-$string["errorNoAccWithPerm"] = "Error: No accounts with the '%s' permission have been found";
+$string["errorNoAccWithPerm"] = "Erro: Nenhuma conta com a permissão '%s' foi encontrada";

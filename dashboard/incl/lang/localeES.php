@@ -7,7 +7,7 @@ $string["homeNavbar"] = "Inicio";
 $string["accountManagement"] = "Ajustes de cuenta";
 $string["changePassword"] = "Cambiar contraseña";
 $string["changeUsername"] = "Cambiar nombre";
-$string["unlistedLevels"] = "Niveles \"Unlisted\"";
+$string["unlistedLevels"] = "Niveles no listados";
 
 $string["modTools"] = "Herramientas de moderador";
 $string["leaderboardBan"] = "Banear un usuario";
@@ -17,11 +17,11 @@ $string["reuploadSection"] = "Resubir";
 $string["levelReupload"] = "Resubir niveles";
 $string["songAdd"] = "Añadir una canción";
 
-$string["browse"] = "Browse";
+$string["browse"] = "Buscar";
 $string["statsSection"] = "Estadísticas";
 $string["dailyTable"] = "Niveles diarios";
 $string["modActions"] = "Acciones de moderador";
-$string["gauntletTable"] = "List of Gauntlets";
+$string["gauntletTable"] = "Lista de Gauntlets";
 $string["packTable"] = "Lista de Map Packs";
 $string["leaderboardTime"] = "Progreso de la clasificación";
 
@@ -52,9 +52,9 @@ $string["songAddError-4"] = "Esta canción no se puede resubir";
 $string["ID"] = "ID";
 $string["stars"] = "Estrellas";
 $string["coins"] = "Monedas";
-$string["accounts"] = "Accounts";
+$string["accounts"] = "Cuentas";
 $string["levels"] = "Niveles";
-$string["songs"] = "Songs";
+$string["songs"] = "Canciones";
 $string["author"] = "Creador";
 $string["name"] = "Nombre";
 $string["userCoins"] = "Monedas de usuario";
@@ -88,6 +88,6 @@ $string["modAction11"] = "Compartió Creator Points";
 $string["modAction12"] = "Des/Publicado";
 $string["modAction13"] = "Cambió la descripción del nivel";
 $string["modAction14"] = "Activó/Desactivó la opción LDM";
-$string["modAction15"] = "Leaderboard un/banned";
+$string["modAction15"] = "Des/baneado de las tablas de clasificación";
 //errors
-$string["errorNoAccWithPerm"] = "Error: No accounts with the '%s' permission have been found";
+$string["errorNoAccWithPerm"] = "Error: ninguna cuenta se ha encontrado con el permiso '%s'";
