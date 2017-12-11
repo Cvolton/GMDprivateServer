@@ -75,19 +75,19 @@ $string["action"] = "สิ่งที่ทำ";
 $string["value"] = "ค่าที่ 1";
 $string["value2"] = "ค่าที่ 2";
 $string["modAction1"] = "เรทเลเวล";
-$string["modAction2"] = "ให้/ยึดรางวัล Feature";
-$string["modAction3"] = "ทำเหรียญผู้เล่นมีผล/ไม่มีผลต่อค่าสถานะ";
-$string["modAction4"] = "ให้/ยึดรางวัล Epic";
+$string["modAction2"] = "ให้รางวัล Feature หรือนำออก";
+$string["modAction3"] = "ทำให้เหรียญผู้เล่นมีผล/ไม่มีผลต่อค่าสถานะ";
+$string["modAction4"] = "ให้รางวัล Epic หรือนำออก";
 $string["modAction5"] = "ทำให้เป็นเลเวลประจำวัน";
 $string["modAction6"] = "ลบเลเวล";
 $string["modAction7"] = "เปลี่ยนผู้สร้าง";
 $string["modAction8"] = "เปลี่ยนชื่อด่าน";
-$string["modAction9"] = "เปลี่ยนพาสเวิร์ดเลเวล";
+$string["modAction9"] = "เปลี่ยนรหัสเลเวล";
 $string["modAction10"] = "เปลี่ยนระดับความยากของ Demom";
 $string["modAction11"] = "แบ่ง CP";
-$string["modAction12"] = "แผยแพร่/หยุดเผยแพร่";
+$string["modAction12"] = "ตั้งเป็นสาธารณะ/ไม่แสดงในรายการ";
 $string["modAction13"] = "เปลี่ยนคำอธิบายเลเวล";
 $string["modAction14"] = "เปิด/ปิด ปุ่ม LDM";
-$string["modAction15"] = "Leaderboard un/banned";
-//errors
-$string["errorNoAccWithPerm"] = "Error: No accounts with the '%s' permission have been found";
+$string["modAction15"] = "แบน/ปลดแบนบนกระดานคะแนน";
+//errors ข้อผิดพลาด
+$string["errorNoAccWithPerm"] = "ข้อผิดพลาด : ไม่พบบัญชีที่มีสิทธิ '%s'";
