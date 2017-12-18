@@ -6,6 +6,8 @@ Supported version of Geometry Dash: 1.0 - 2.11 (so any version of Geometry Dash 
 
 Required version of PHP: 5.4+ (tested up to 7.1.3)
 
+CvoltonGDPS - the "official" GDPS: https://discord.gg/EHYnxVE
+
 ### Setup
 1) Upload the files on a webserver
 2) Import database.sql into a MySQL/MariaDB database
