@@ -135,10 +135,13 @@ class Commands {
 		if(substr($comment,0,7) == '!setacc' AND $gs->checkPermission($accountID, "commandSetacc")){
 			$query = $db->prepare("SELECT accountID FROM accounts WHERE userName = :userName OR accountID = :userName LIMIT 1");
 			$query->execute([':userName' => $commentarray[1]]);
-			$targetAcc = $query->fetchAll()[0];
+			if($query->rowCount() == 0){
+				return false;
+			}
+			$targetAcc = $query->fetchColumn();
 			//var_dump($result);
 			$query = $db->prepare("SELECT userID FROM users WHERE extID = :extID LIMIT 1");
-			$query->execute([':extID' => $targetAcc["accountID"]]);
+			$query->execute([':extID' => $targetAcc]);
 			$userID = $query->fetchColumn();
 			$query = $db->prepare("UPDATE levels SET extID=:extID, userID=:userID, userName=:userName WHERE levelID=:levelID");
 			$query->execute([':extID' => $targetAcc["accountID"], ':userID' => $userID, ':userName' => $commentarray[1], ':levelID' => $levelID]);
