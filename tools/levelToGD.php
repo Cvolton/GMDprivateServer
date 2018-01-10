@@ -131,7 +131,8 @@ if(!empty($_POST["userhere"]) AND !empty($_POST["passhere"]) AND !empty($_POST["
 	<input type="submit" value="Reupload"></form><br>Alternative servers to reupload to:<br>
 	http://www.boomlings.com/database/ - Robtops server<br>
 	http://pi.michaelbrabec.cz:9010/a/ - CvoltonGDPS<br>
-	http://teamhax.altervista.org/dbh/ - TeamHax GDPS';
+	http://teamhax.altervista.org/dbh/ - TeamHax GDPS<br>
+	http://eogd.emreoyun.com/database/ - EOGD';
 }
 ?>
 </body>
