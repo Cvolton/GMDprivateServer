@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Počítač: localhost
--- Vytvořeno: Stř 26. dub 2017, 13:59
--- Verze serveru: 10.0.30-MariaDB-0+deb8u1
--- Verze PHP: 7.1.3-2~bpo8+1
+-- Vytvořeno: Sob 09. pro 2017, 22:42
+-- Verze serveru: 10.1.23-MariaDB-9+deb9u1
+-- Verze PHP: 7.1.11-1+0~20171027135825.10+jessie~1.gbp2e638d
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -16,7 +16,7 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
+/*!40101 SET NAMES utf8mb4 */;
 
 --
 -- Databáze: `public_cvoltongdps`
@@ -59,13 +59,16 @@ CREATE TABLE `accounts` (
   `blocked` varchar(1024) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'unused',
   `mS` int(11) NOT NULL DEFAULT '0',
   `frS` int(11) NOT NULL DEFAULT '0',
+  `cS` int(11) NOT NULL DEFAULT '0',
   `youtubeurl` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
   `twitter` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
   `twitch` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
   `salt` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
   `registerDate` int(11) NOT NULL DEFAULT '0',
   `friendsCount` int(11) NOT NULL DEFAULT '0',
-  `saveKey` blob NOT NULL
+  `saveKey` blob NOT NULL,
+  `discordID` bigint(20) NOT NULL DEFAULT '0',
+  `discordLinkReq` bigint(20) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -150,7 +153,8 @@ CREATE TABLE `cpshares` (
 CREATE TABLE `dailyfeatures` (
   `feaID` int(11) NOT NULL,
   `levelID` int(11) NOT NULL,
-  `timestamp` int(11) NOT NULL
+  `timestamp` int(11) NOT NULL,
+  `type` int(11) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -222,7 +226,7 @@ CREATE TABLE `levels` (
   `coins` int(11) NOT NULL DEFAULT '0',
   `requestedStars` int(11) NOT NULL DEFAULT '0',
   `extraString` mediumtext COLLATE utf8_unicode_ci NOT NULL,
-  `levelString` longtext COLLATE utf8_unicode_ci NOT NULL,
+  `levelString` longtext COLLATE utf8_unicode_ci,
   `levelInfo` mediumtext COLLATE utf8_unicode_ci NOT NULL,
   `secret` mediumtext COLLATE utf8_unicode_ci NOT NULL,
   `starDifficulty` int(11) NOT NULL DEFAULT '0' COMMENT '0=N/A 10=EASY 20=NORMAL 30=HARD 40=HARDER 50=INSANE 50=AUTO 50=DEMON',
@@ -232,7 +236,8 @@ CREATE TABLE `levels` (
   `starAuto` varchar(11) COLLATE utf8_unicode_ci NOT NULL DEFAULT '0',
   `starStars` int(11) NOT NULL DEFAULT '0',
   `uploadDate` varchar(1337) COLLATE utf8_unicode_ci NOT NULL,
-  `updateDate` int(11) NOT NULL,
+  `updateDate` bigint(11) NOT NULL,
+  `rateDate` bigint(20) NOT NULL DEFAULT '0',
   `starCoins` int(11) NOT NULL DEFAULT '0',
   `starFeatured` int(11) NOT NULL DEFAULT '0',
   `starHall` int(11) NOT NULL DEFAULT '0',
@@ -243,7 +248,9 @@ CREATE TABLE `levels` (
   `unlisted` int(11) NOT NULL,
   `originalReup` int(11) NOT NULL DEFAULT '0' COMMENT 'used for levelReupload.php',
   `hostname` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `isCPShared` int(11) NOT NULL DEFAULT '0'
+  `isCPShared` int(11) NOT NULL DEFAULT '0',
+  `isDeleted` int(11) NOT NULL DEFAULT '0',
+  `isLDM` int(11) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -257,7 +264,9 @@ CREATE TABLE `levelscores` (
   `accountID` int(11) NOT NULL,
   `levelID` int(11) NOT NULL,
   `percent` int(11) NOT NULL,
-  `uploadDate` int(11) NOT NULL
+  `uploadDate` int(11) NOT NULL,
+  `attempts` int(11) NOT NULL DEFAULT '0',
+  `coins` int(11) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -325,7 +334,7 @@ CREATE TABLE `modactions` (
   `timestamp` int(11) NOT NULL DEFAULT '0',
   `value2` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT '0',
   `value3` int(11) NOT NULL DEFAULT '0',
-  `value4` int(11) NOT NULL DEFAULT '0',
+  `value4` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT '0',
   `value5` int(11) NOT NULL DEFAULT '0',
   `value6` int(11) NOT NULL DEFAULT '0',
   `account` int(11) NOT NULL DEFAULT '0',
@@ -344,6 +353,18 @@ CREATE TABLE `modips` (
   `isMod` int(11) NOT NULL,
   `accountID` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabulky `poll`
+--
+
+CREATE TABLE `poll` (
+  `accountID` int(11) NOT NULL,
+  `pollOption` varchar(255) NOT NULL,
+  `optionID` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -374,6 +395,63 @@ CREATE TABLE `reports` (
 -- --------------------------------------------------------
 
 --
+-- Struktura tabulky `roleassign`
+--
+
+CREATE TABLE `roleassign` (
+  `assignID` bigint(20) NOT NULL,
+  `roleID` bigint(20) NOT NULL,
+  `accountID` bigint(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabulky `roles`
+--
+
+CREATE TABLE `roles` (
+  `roleID` bigint(11) NOT NULL,
+  `priority` int(11) NOT NULL DEFAULT '0',
+  `roleName` varchar(255) NOT NULL,
+  `commandRate` int(11) NOT NULL DEFAULT '0',
+  `commandFeature` int(11) NOT NULL DEFAULT '0',
+  `commandEpic` int(11) NOT NULL DEFAULT '0',
+  `commandUnepic` int(11) NOT NULL DEFAULT '0',
+  `commandVerifycoins` int(11) NOT NULL DEFAULT '0',
+  `commandDaily` int(11) NOT NULL DEFAULT '0',
+  `commandWeekly` int(11) NOT NULL DEFAULT '0',
+  `commandDelete` int(11) NOT NULL DEFAULT '0',
+  `commandSetacc` int(11) NOT NULL DEFAULT '0',
+  `commandRenameOwn` int(11) NOT NULL DEFAULT '1',
+  `commandRenameAll` int(11) NOT NULL DEFAULT '0',
+  `commandPassOwn` int(11) NOT NULL DEFAULT '1',
+  `commandPassAll` int(11) NOT NULL DEFAULT '0',
+  `commandDescriptionOwn` int(11) NOT NULL DEFAULT '1',
+  `commandDescriptionAll` int(11) NOT NULL DEFAULT '0',
+  `commandPublicOwn` int(11) NOT NULL DEFAULT '1',
+  `commandPublicAll` int(11) NOT NULL DEFAULT '0',
+  `commandUnlistOwn` int(11) NOT NULL DEFAULT '1',
+  `commandUnlistAll` int(11) NOT NULL DEFAULT '0',
+  `commandSharecpOwn` int(11) NOT NULL DEFAULT '1',
+  `commandSharecpAll` int(11) NOT NULL DEFAULT '0',
+  `profilecommandDiscord` int(11) NOT NULL DEFAULT '1',
+  `actionRateDemon` int(11) NOT NULL DEFAULT '0',
+  `actionRateStars` int(11) NOT NULL DEFAULT '0',
+  `actionRateDifficulty` int(11) NOT NULL DEFAULT '0',
+  `actionRequestMod` int(11) NOT NULL DEFAULT '0',
+  `toolLeaderboardsban` int(11) NOT NULL DEFAULT '0',
+  `toolPackcreate` int(11) NOT NULL DEFAULT '0',
+  `toolModactions` int(11) NOT NULL DEFAULT '0',
+  `dashboardModTools` int(11) NOT NULL DEFAULT '0',
+  `isDefault` int(11) NOT NULL DEFAULT '0',
+  `commentColor` varchar(11) NOT NULL DEFAULT '000,000,000',
+  `modBadgeLevel` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
 -- Struktura tabulky `songs`
 --
 
@@ -386,7 +464,8 @@ CREATE TABLE `songs` (
   `download` varchar(1337) COLLATE utf8_unicode_ci NOT NULL,
   `hash` varchar(256) COLLATE utf8_unicode_ci NOT NULL,
   `isDisabled` int(11) NOT NULL DEFAULT '0',
-  `levelsCount` int(11) NOT NULL
+  `levelsCount` int(11) NOT NULL DEFAULT '0',
+  `reuploadTime` int(11) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -574,6 +653,12 @@ ALTER TABLE `modips`
   ADD PRIMARY KEY (`ID`);
 
 --
+-- Klíče pro tabulku `poll`
+--
+ALTER TABLE `poll`
+  ADD PRIMARY KEY (`optionID`);
+
+--
 -- Klíče pro tabulku `quests`
 --
 ALTER TABLE `quests`
@@ -584,6 +669,18 @@ ALTER TABLE `quests`
 --
 ALTER TABLE `reports`
   ADD PRIMARY KEY (`ID`);
+
+--
+-- Klíče pro tabulku `roleassign`
+--
+ALTER TABLE `roleassign`
+  ADD PRIMARY KEY (`assignID`);
+
+--
+-- Klíče pro tabulku `roles`
+--
+ALTER TABLE `roles`
+  ADD PRIMARY KEY (`roleID`);
 
 --
 -- Klíče pro tabulku `songs`
@@ -619,112 +716,127 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT pro tabulku `acccomments`
 --
 ALTER TABLE `acccomments`
-  MODIFY `commentID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2491;
+  MODIFY `commentID` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT pro tabulku `accounts`
 --
 ALTER TABLE `accounts`
-  MODIFY `accountID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1711;
+  MODIFY `accountID` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT pro tabulku `actions`
 --
 ALTER TABLE `actions`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=87980;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT pro tabulku `bannedips`
 --
 ALTER TABLE `bannedips`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT pro tabulku `blocks`
 --
 ALTER TABLE `blocks`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT pro tabulku `comments`
 --
 ALTER TABLE `comments`
-  MODIFY `commentID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10081;
+  MODIFY `commentID` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT pro tabulku `cpshares`
 --
 ALTER TABLE `cpshares`
-  MODIFY `shareID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `shareID` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT pro tabulku `dailyfeatures`
 --
 ALTER TABLE `dailyfeatures`
-  MODIFY `feaID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=136;
+  MODIFY `feaID` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT pro tabulku `friendreqs`
 --
 ALTER TABLE `friendreqs`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2191;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT pro tabulku `friendships`
 --
 ALTER TABLE `friendships`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1469;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT pro tabulku `gauntlets`
 --
 ALTER TABLE `gauntlets`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT pro tabulku `levels`
 --
 ALTER TABLE `levels`
-  MODIFY `levelID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9166;
+  MODIFY `levelID` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT pro tabulku `levelscores`
 --
 ALTER TABLE `levelscores`
-  MODIFY `scoreID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10498;
+  MODIFY `scoreID` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT pro tabulku `links`
 --
 ALTER TABLE `links`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=57;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT pro tabulku `mappacks`
 --
 ALTER TABLE `mappacks`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT pro tabulku `messages`
 --
 ALTER TABLE `messages`
-  MODIFY `messageID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=818;
+  MODIFY `messageID` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT pro tabulku `modactions`
 --
 ALTER TABLE `modactions`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9024;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT pro tabulku `modips`
 --
 ALTER TABLE `modips`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT pro tabulku `poll`
+--
+ALTER TABLE `poll`
+  MODIFY `optionID` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT pro tabulku `quests`
 --
 ALTER TABLE `quests`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT pro tabulku `reports`
 --
 ALTER TABLE `reports`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=97;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT pro tabulku `roleassign`
+--
+ALTER TABLE `roleassign`
+  MODIFY `assignID` bigint(20) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT pro tabulku `roles`
+--
+ALTER TABLE `roles`
+  MODIFY `roleID` bigint(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT pro tabulku `songs`
 --
 ALTER TABLE `songs`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5105655;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT pro tabulku `users`
 --
 ALTER TABLE `users`
-  MODIFY `userID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2479;COMMIT;
+  MODIFY `userID` int(11) NOT NULL AUTO_INCREMENT;COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

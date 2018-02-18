@@ -47,21 +47,36 @@ if($type =="stars" OR $type == "diamonds" OR $type == "usrcoins" OR $type == "co
 		case "friends":
 			$thing = "friendsCount";
 	}
-	$query = "SELECT $thing , userName FROM users WHERE isBanned = '0' ORDER BY $thing DESC LIMIT 10 OFFSET $page";
+	$query = "SELECT $thing , userName, extID FROM users WHERE isBanned = '0' ORDER BY $thing DESC LIMIT 10 OFFSET $page";
 	if($type == "friends"){
-		$query = "SELECT userName, friendsCount FROM accounts ORDER BY friendsCount DESC LIMIT 10 OFFSET $page";
+		$query = "SELECT userName, friendsCount, accountID FROM accounts ORDER BY friendsCount DESC LIMIT 10 OFFSET $page";
 	}
 	$query = $db->prepare($query);
 	$query->execute([':page' => $page]);
 	$result = $query->fetchAll();
-	echo "`#    |        Username | ".str_pad($typename, 16, " ", STR_PAD_LEFT)." |`\r\n";
-	echo "`-----|-----------------|------------------|`\r\n";
+	echo "`#    |        Username | ".str_pad($typename, 16, " ", STR_PAD_LEFT)." | Linked? |`\r\n";
+	echo "`-----|-----------------|------------------|---------|`\r\n";
 	$xi = $page;
 	foreach($result as &$user){
+		$query = $db->prepare("SELECT discordID FROM accounts WHERE accountID = :extID");
+		if($type == "friends"){
+			$query->execute([':extID' => $user["accountID"]]);
+		}else{
+			$query->execute([':extID' => $user["extID"]]);
+		}
+		if($query->rowCount() == 0){
+			$link = "N/A";
+		}else{
+			if($query->fetchColumn() == 0){
+				$link = "No";
+			}else{
+				$link = "Yes";
+			}
+		}
 		$xi++;
 		$xyz = str_pad($xi, 4, " ", STR_PAD_RIGHT);
 		//$date = date("d/m/Y H:i", $user["lastPlayed"]);
-		echo "`$xyz | ".str_pad($user["userName"], 15, " ", STR_PAD_LEFT)." | ".str_pad($user[$thing], 16, " ", STR_PAD_LEFT)." |`\r\n";
+		echo "`$xyz | ".str_pad($user["userName"], 15, " ", STR_PAD_LEFT)." | ".str_pad($user[$thing], 16, " ", STR_PAD_LEFT)." | " . str_pad($link, 7, " ", STR_PAD_LEFT) . " |`\r\n";
 	}
 }else{
 	echo "**Command usage: *!top <type> <page>*\r\nValid types are: Stars, Diamonds, Coins, Usrcoins, Demons, CP, Orbs, Levels, Friends**";

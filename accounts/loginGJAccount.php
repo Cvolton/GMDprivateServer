@@ -38,7 +38,7 @@ if ($pass == 1) { //success
 
 	$query2->execute([':id' => $id]);
 	if ($query2->rowCount() > 0) {
-		$userID = $query2->fetchAll()[0]["userID"];
+		$userID = $query2->fetchColumn();
 	} else {
 		$query = $db->prepare("INSERT INTO users (isRegistered, extID, userName)
 		VALUES (1, :id, :userName)");

@@ -18,7 +18,7 @@ if ($pass == 1) {
 	if($cloudSaveEncryption == 1){
 		$query = $db->prepare("SELECT accountID FROM accounts WHERE userName=:userName");	
 		$query->execute([':userName' => $userName]);
-		$accountID = $query->fetchAll()[0]["accountID"];
+		$accountID = $query->fetchColumn();
 		$saveData = file_get_contents("../../data/accounts/$accountID");
 		if(file_exists("../../data/accounts/keys/$accountID")){
 			$protected_key_encoded = file_get_contents("../../data/accounts/keys/$accountID");
@@ -41,7 +41,7 @@ if ($pass == 1) {
 	$passhash = password_hash($newpass, PASSWORD_DEFAULT);
 	$query = $db->prepare("UPDATE accounts SET password=:password, salt=:salt WHERE userName=:userName");	
 	$query->execute([':password' => $passhash, ':userName' => $userName, ':salt' => $salt]);
-	echo "Password changed. <a href='accountManagement.php'>Go back to account management</a>";
+	echo "Password changed. <a href='..'>Go back to tools</a>";
 }else{
 	echo "Invalid old password or nonexistent account. <a href='changePassword.php'>Try again</a>";
 

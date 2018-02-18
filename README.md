@@ -2,9 +2,11 @@
 ## Geometry Dash Private Server
 Basically a Geometry Dash Server Emulator
 
-Supported version of Geometry Dash: 1.0 - 2.1 (so any version of Geometry Dash works, as of writing this [11th February 2017])
+Supported version of Geometry Dash: 1.0 - 2.11 (so any version of Geometry Dash works, as of writing this [December 10, 2017])
 
 Required version of PHP: 5.4+ (tested up to 7.1.3)
+
+CvoltonGDPS - the "official" GDPS: https://discord.gg/EHYnxVE
 
 ### Setup
 1) Upload the files on a webserver

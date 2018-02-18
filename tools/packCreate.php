@@ -1,7 +1,9 @@
 <?php
 include "../incl/lib/connection.php";
 require "../incl/lib/generatePass.php";
-require_once "../incl/lib/exploitPatch.php";
+require "../incl/lib/exploitPatch.php";
+require "../incl/lib/mainLib.php";
+$gs = new mainLib();
 $ep = new exploitPatch();
 if(!empty($_POST["userName"]) AND !empty($_POST["password"]) AND !empty($_POST["packName"]) AND !empty($_POST["levels"]) AND !empty($_POST["stars"]) AND !empty($_POST["coins"]) AND !empty($_POST["color"])){
 	$userName = $ep->remove($_POST["userName"]);
@@ -14,10 +16,11 @@ if(!empty($_POST["userName"]) AND !empty($_POST["password"]) AND !empty($_POST["
 	$generatePass = new generatePass();
 	$pass = $generatePass->isValidUsrname($userName, $password);
 	if ($pass == 1) {
-		$query = $db->prepare("SELECT accountID FROM accounts WHERE userName=:userName AND isAdmin = 1");	
+		$query = $db->prepare("SELECT accountID FROM accounts WHERE userName=:userName");	
 		$query->execute([':userName' => $userName]);
-		if($query->rowCount()==0){
-			echo "Account doesn't have moderator access to the server. <a href='packCreate.php'>Try again</a>";
+		$accountID = $query->fetchColumn();
+		if($gs->checkPermission($accountID, "toolPackcreate") == false){
+			echo "This account doesn't have the permissions to access this tool. <a href='packCreate.php'>Try again</a>";
 		}else{
 			if(!is_numeric($stars) OR !is_numeric($coins) OR $stars > 10 OR $coins > 2){
 				exit("Invalid stars/coins value");
@@ -28,7 +31,6 @@ if(!empty($_POST["userName"]) AND !empty($_POST["password"]) AND !empty($_POST["
 			$rgb = hexdec(substr($color,0,2)).
 				",".hexdec(substr($color,2,2)).
 				",".hexdec(substr($color,4,2));
-			$accid = $query->fetchAll()[0]["accountID"];
 			$lvlsarray = explode(",", $levels);
 			foreach($lvlsarray AS &$level){
 				if(!is_numeric($level)){
@@ -39,7 +41,7 @@ if(!empty($_POST["userName"]) AND !empty($_POST["password"]) AND !empty($_POST["
 				if($query->rowCount() == 0){
 					exit("Level #$level doesn't exist.");
 				}
-				$levelName = $query->fetchAll()[0]["levelName"];
+				$levelName = $query->fetchColumn();
 				$levelstring .= $levelName . ", ";
 			}
 			$levelstring = substr($levelstring,0,-2);
@@ -78,7 +80,7 @@ if(!empty($_POST["userName"]) AND !empty($_POST["password"]) AND !empty($_POST["
 					$diff = 6;
 					break;
 			}
-			echo "AccountID: $accid <br>
+			echo "AccountID: $accountID <br>
 				Pack Name: $packName <br>
 				Levels: $levelstring ($levels)<br>
 				Difficulty: $diffname ($diff)<br>
@@ -90,7 +92,7 @@ if(!empty($_POST["userName"]) AND !empty($_POST["password"]) AND !empty($_POST["
 			$query->execute([':name' => $packName, ':levels' => $levels, ':stars' => $stars, ':coins' => $coins, ':difficulty' => $diff, ':rgbcolors' => $rgb]);
 			$query = $db->prepare("INSERT INTO modactions  (type, value, timestamp, account, value2, value3, value4, value7) 
 													VALUES ('11',:value,:timestamp,:account,:levels, :stars, :coins, :rgb)");
-			$query->execute([':value' => $packName, ':timestamp' => time(), ':account' => $accid, ':levels' => $levels, ':stars' => $stars, ':coins' => $coins, ':rgb' => $rgb]);
+			$query->execute([':value' => $packName, ':timestamp' => time(), ':account' => $accountID, ':levels' => $levels, ':stars' => $stars, ':coins' => $coins, ':rgb' => $rgb]);
 		}
 	}else{
 		echo "Invalid password or nonexistant account. <a href='packCreate.php'>Try again</a>";

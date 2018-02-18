@@ -29,15 +29,26 @@ $feaID = 0;
 if(!is_numeric($levelID)){
 	echo -1;
 }else{
-	if($levelID == "-1"){
-		$query = $db->prepare("SELECT feaID, levelID FROM dailyfeatures WHERE timestamp < :time ORDER BY timestamp DESC LIMIT 1");
-		$query->execute([':time' => time()]);
-		$result = $query->fetch();
-		$levelID = $result["levelID"];
-		$feaID = $result["feaID"];
-		$daily = 1;
-	}else{
-		$daily = 0;
+	switch($levelID){
+		case -1:
+			$query = $db->prepare("SELECT feaID, levelID FROM dailyfeatures WHERE timestamp < :time AND type = 0 ORDER BY timestamp DESC LIMIT 1");
+			$query->execute([':time' => time()]);
+			$result = $query->fetch();
+			$levelID = $result["levelID"];
+			$feaID = $result["feaID"];
+			$daily = 1;
+			break;
+		case -2:
+			$query = $db->prepare("SELECT feaID, levelID FROM dailyfeatures WHERE timestamp < :time AND type = 1 ORDER BY timestamp DESC LIMIT 1");
+			$query->execute([':time' => time()]);
+			$result = $query->fetch();
+			$levelID = $result["levelID"];
+			$feaID = $result["feaID"];
+			$feaID = $feaID + 100001;
+			$daily = 1;
+			break;
+		default:
+			$daily = 0;
 	}
 	//downloading the level
 	$query=$db->prepare("SELECT * FROM levels WHERE levelID = :levelID");
@@ -87,7 +98,7 @@ if(!is_numeric($levelID)){
 				$levelstring = str_replace("+","-",$levelstring);
 			}
 		}
-		$response = "1:".$result["levelID"].":2:".$result["levelName"].":3:".$desc.":4:".$levelstring.":5:".$result["levelVersion"].":6:".$result["userID"].":8:10:9:".$result["starDifficulty"].":10:".$result["downloads"].":11:1:12:".$result["audioTrack"].":13:".$result["gameVersion"].":14:".$result["likes"].":17:".$result["starDemon"].":43:".$result["starDemonDiff"].":25:".$result["starAuto"].":18:".$result["starStars"].":19:".$result["starFeatured"].":42:".$result["starEpic"].":45:".$result["objects"].":15:".$result["levelLength"].":30:".$result["original"].":31:1:28:".$uploadDate. ":29:".$updateDate. ":35:".$result["songID"].":36:".$result["extraString"].":37:".$result["coins"].":38:".$result["starCoins"].":39:".$result["requestedStars"].":46:1:47:2:48:1:27:$xorPass";
+		$response = "1:".$result["levelID"].":2:".$result["levelName"].":3:".$desc.":4:".$levelstring.":5:".$result["levelVersion"].":6:".$result["userID"].":8:10:9:".$result["starDifficulty"].":10:".$result["downloads"].":11:1:12:".$result["audioTrack"].":13:".$result["gameVersion"].":14:".$result["likes"].":17:".$result["starDemon"].":43:".$result["starDemonDiff"].":25:".$result["starAuto"].":18:".$result["starStars"].":19:".$result["starFeatured"].":42:".$result["starEpic"].":45:".$result["objects"].":15:".$result["levelLength"].":30:".$result["original"].":31:1:28:".$uploadDate. ":29:".$updateDate. ":35:".$result["songID"].":36:".$result["extraString"].":37:".$result["coins"].":38:".$result["starCoins"].":39:".$result["requestedStars"].":46:1:47:2:48:1:40:".$result["isLDM"].":27:$xorPass";
 		if($daily == 1){
 			$response .= ":41:".$feaID;
 		}

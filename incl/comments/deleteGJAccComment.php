@@ -13,7 +13,7 @@ if($gjpresult == 1){
 	$query2 = $db->prepare("SELECT userID FROM users WHERE extID = :accountID");
 	$query2->execute([':accountID' => $accountID]);
 	if ($query2->rowCount() > 0) {
-		$userID = $query2->fetchAll()[0]["userID"];
+		$userID = $query2->fetchColumn();
 	}
 	$query = $db->prepare("DELETE FROM acccomments WHERE commentID=:commentID AND userID=:userID LIMIT 1");
 	$query->execute([':userID' => $userID, ':commentID' => $commentID]);

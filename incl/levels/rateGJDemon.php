@@ -4,6 +4,8 @@ chdir(dirname(__FILE__));
 include "../lib/connection.php";
 require_once "../lib/GJPCheck.php";
 require_once "../lib/exploitPatch.php";
+require_once "../lib/mainLib.php";
+$gs = new mainLib();
 $ep = new exploitPatch();
 if(!isset($_POST["gjp"]) OR !isset($_POST["rating"]) OR !isset($_POST["levelID"]) OR !isset($_POST["accountID"])){
 	exit("-1");
@@ -14,9 +16,7 @@ $levelID = $ep->remove($_POST["levelID"]);
 $id = $ep->remove($_POST["accountID"]);
 $GJPCheck = new GJPCheck();
 $gjpresult = $GJPCheck->check($gjp,$id);
-$query = $db->prepare("SELECT isAdmin FROM accounts WHERE accountID = :id");
-$query->execute([':id' => $id]);
-if($query->fetchColumn() == 0 OR $gjpresult != 1){
+if($gs->checkPermission($id, "actionRateDemon") == false){
 	exit("-1");
 }
 $auto = 0;
