@@ -1,22 +1,58 @@
-<?php
-function listdir($dir){
-	$dirstring = "";
+<html><head><title>Tools</title><link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,300,600,400italic,700' rel='stylesheet' type='text/css'></head><body><style>
+body
+{
+  font-family: "Source Sans Pro", Arial, sans-serif;
+  font-weight: 300;
+  font-size: 16px;
+  line-height: 1.2;
+  background: #fff;
+  height: 100%;
+  position: relative;
+}
+
+a:link
+{
+	transition: all 0.25s;
+	color:#0000ff;
+}
+a:visited
+{
+	color:#0000aa;
+}
+a:hover
+{
+	color: #ff00ff;
+}
+</style><center><h1>TOOLS</h1><hr><?php
+
+function getname($file)
+{
+	return str_replace('Mac O S', 'MacOS', str_replace('G D', 'GD', ucfirst(implode(' ', preg_split('/(?=[A-Z,0-25])/', str_replace('.php', '', $file))))));
+}
+
+function listdir($dir)
+{
+	$dirstring = array();
 	$files = scandir($dir);
-	foreach($files as $file) {
-		if(pathinfo($file, PATHINFO_EXTENSION) == "php" AND $file != "index.php" AND $file != "list.php"){
-			$dirstring .= "<li><a href='$dir/$file'>$file</a></li>";
+	foreach($files as $file)
+	{
+		if(pathinfo($file, PATHINFO_EXTENSION) == "php" AND $file != "index.php" AND $file != "list.php")
+		{
+			array_push($dirstring, "<b><a href='$dir/$file' class=\"link2\">".getname($file)."</a></b>");
 		}
 	}
-	return $dirstring;
+	return implode(' - ', $dirstring);
 }
-echo '<h1>Account Management:</h1><ul>';
+echo '<h2>Download:</h2>';
+echo listdir("download");
+echo '<h2>Account Management:</h2>';
 echo listdir("account");
-echo '</ul><h1>Moderation/Reuploads/Sessions:</h1><ul>';
+echo '<h2>Moderation, Reuploads, Songs & Sessions:</h2>';
 echo listdir(".");
-echo "</ul><h1>Demon List:</h1><ul>";
-echo listdir("demon_list");
-echo "</ul><h1>The Cron Job (fixing CPs, autoban, etc.):</h1><ul>";
-echo "<li><a href='cron/cron.php'>cron.php</a></li>";
-echo "</ul><h1>Statistics:</h1><ul>";
+echo "<h2>Update:</h2>";
+echo listdir("cron");
+echo "<h2>Search, Statistics & Data:</h2>";
 echo listdir("stats");
-?>
+echo "<h2>ADMIN:</h2>";
+echo listdir("admin");
+?></ul></center></body></html>

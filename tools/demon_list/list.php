@@ -1,15 +1,14 @@
 <?php
-include "../../incl/lib/connection.php";
 
-$query = $db->prepare("SELECT * FROM demonList ORDER BY listIndex ASC");
-$query->execute();
-$result = $query->fetchAll();
-$split = ",";
+$url = "https://gdps-dlist.glitch.me/demon-list.txt";
 
-if ($_POST['client'] == "android") {
-	$split = ":";
+$content = explode("\n", file_get_contents($url));
+
+for ($i = 0; $i < 29; $i++)
+{
+	echo $content[$i] . "\n";
 }
-foreach ($result as &$demon) {
-	echo $demon["Title"].$split.$demon["Creator"].$split.$demon["videoURL"]."|";
-}
+
+echo $content[29];
+
 ?>

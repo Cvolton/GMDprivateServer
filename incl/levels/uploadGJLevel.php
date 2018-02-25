@@ -52,6 +52,10 @@ if(!empty($_POST["twoPlayer"])){
 }
 if(!empty($_POST["songID"])){
 	$songID = $ep->remove($_POST["songID"]);
+	if ($songID >= 990000 AND $songID < 1000000)
+	{
+		$songID += 4115655;
+	}
 }else{
 	$songID = 0;
 }

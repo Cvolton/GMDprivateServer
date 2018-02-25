@@ -22,7 +22,7 @@ if($mode==0){
 }else{
 	$modeColumn = "likes";
 }
-$query = "SELECT commentID, timestamp, comment, userID, likes, isSpam, percent FROM comments WHERE levelID = :levelID ORDER BY $modeColumn DESC LIMIT 10 OFFSET $commentpage";
+$query = "SELECT commentID, timestamp, comment, userID, likes, isSpam, percent FROM comments WHERE levelID = :levelID AND isSpam = 0 ORDER BY $modeColumn DESC LIMIT 10 OFFSET $commentpage";
 $countquery = "SELECT count(*) FROM comments WHERE levelID = :levelID";
 $countquery = $db->prepare($countquery);
 $countquery->execute([':levelID' => $levelID]);

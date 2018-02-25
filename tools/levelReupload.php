@@ -13,6 +13,7 @@ function chkarray($source){
 	return $target;
 }
 //error_reporting(0);
+
 include "../incl/lib/connection.php";
 require "../incl/lib/XORCipher.php";
 $xc = new XORCipher();

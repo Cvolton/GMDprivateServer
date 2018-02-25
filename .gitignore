@@ -42,3 +42,6 @@ Network Trash Folder
 Temporary Items
 .apdisk
 incl/lib/debug.php
+
+# Error logs
+error_log*

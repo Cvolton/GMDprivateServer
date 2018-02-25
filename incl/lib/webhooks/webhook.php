@@ -4,7 +4,7 @@ require 'Embed.php';
 
 function PostToHook($em_title, $em_message, $em_colour = 0x5c00a8)
 {
-	$token = "TOKEN HERE";
+	$token = "TOKEN";
 	$enabled = true;
 	
 	if ($enabled) {

@@ -9,8 +9,15 @@ if(empty($_POST["songID"])){
 	exit("-1");
 }
 $songid = $ep->remove($_POST["songID"]);
+$realid = $songid;
+
+if ($realid >= 990000 AND $realid < 1000000)
+{
+	$realid += 4115655;
+}
+
 $query3=$db->prepare("SELECT ID,name,authorID,authorName,size,isDisabled,download FROM songs WHERE ID = :songid LIMIT 1");
-$query3->execute([':songid' => $songid]);
+$query3->execute([':songid' => $realid]);
 if($query3->rowCount() == 0) {
 	$url = 'http://www.boomlings.com/database/getGJSongInfo.php';
 	$data = array('songID' => $songid, 'secret' => 'Wmfd2893gb7');
@@ -84,6 +91,6 @@ if($query3->rowCount() == 0) {
 	if(strpos($dl, ':') !== false){
 		$dl = urlencode($dl);
 	}
-	echo "1~|~".$result4["ID"]."~|~2~|~".$result4["name"]."~|~3~|~".$result4["authorID"]."~|~4~|~".$result4["authorName"]."~|~5~|~".$result4["size"]."~|~6~|~~|~10~|~".$dl."~|~7~|~~|~8~|~0";
+	echo "1~|~".$songid."~|~2~|~".$result4["name"]."~|~3~|~".$result4["authorID"]."~|~4~|~".$result4["authorName"]."~|~5~|~".$result4["size"]."~|~6~|~~|~10~|~".$dl."~|~7~|~~|~8~|~0";
 }
 ?>

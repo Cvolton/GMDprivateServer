@@ -8,7 +8,7 @@ $page = $ep->remove($_POST["page"]);
 $packpage = $page*10;
 $mappackstring = "";
 $lvlsmultistring = "";
-$query = $db->prepare("SELECT colors2,rgbcolors,ID,name,levels,stars,coins,difficulty FROM `mappacks` ORDER BY `ID` ASC LIMIT 10 OFFSET $packpage");
+$query = $db->prepare("SELECT colors2,rgbcolors,ID,name,levels,stars,coins,difficulty FROM `mappacks` ORDER BY `stars` ASC LIMIT 10 OFFSET $packpage");
 $query->execute();
 $result = $query->fetchAll();
 $packcount = $query->rowCount();

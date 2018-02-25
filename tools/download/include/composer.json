@@ -1,0 +1,25 @@
+{
+	"name": "iignatov/lightopenid",
+	"type": "library",
+	"description": "Lightweight PHP5 library for easy OpenID authentication.",
+	"keywords": ["openid", "authentication", "security"],
+	"homepage": "https://github.com/iignatov/LightOpenID",
+	"license": "MIT",
+	"version": "1.3.1",
+	"authors": [
+		{
+			"name": "Mewp",
+			"homepage": "https://code.google.com/p/lightopenid/"
+		},
+		{
+			"name": "Ignat Ignatov",
+			"homepage": "https://github.com/iignatov/LightOpenID"
+		}
+	],
+	"require": {
+		"php": ">=5.2"
+	},
+	"autoload": {
+		"classmap": ["openid.php", "provider/provider.php"]
+	}
+}

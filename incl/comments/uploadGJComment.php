@@ -15,9 +15,7 @@ $gjp = $ep->remove($_POST["gjp"]);
 $userName = $ep->remove($_POST["userName"]);
 $comment = $ep->remove($_POST["comment"]);
 $gameversion = 0;
-if($gameversion < 20){
-	$comment = base64_encode($comment);
-}
+
 $levelID = $ep->remove($_POST["levelID"]);
 if(!empty($_POST["percent"])){
 	$percent = $ep->remove($_POST["percent"]);
@@ -39,13 +37,26 @@ if(!empty($_POST["accountID"]) AND $_POST["accountID"]!="0"){
 		exit("-1");
 	}
 }
+
+if($cmds->doCommands($id, $comment, $levelID)){
+	exit("-10");
+}
+
+$queryChk = $db->prepare("SELECT * FROM accounts WHERE accountID = :accID AND isAdmin = 1");
+$queryChk->execute([':accID' => $id]);
+if ($queryChk->rowCount() > 0)
+{
+	$comment = "<cg>".$comment."</c>";
+}
+
+$comment = base64_encode($comment);
+
 $userID = $mainLib->getUserID($id, $userName);
 $uploadDate = time();
 $decodecomment = base64_decode($comment);
-if($cmds->doCommands($id, $decodecomment, $levelID)){
-	exit("-10");
-}
+
 if($id != "" AND $comment != ""){
+
 	$query = $db->prepare("INSERT INTO comments (userName, comment, levelID, userID, timeStamp, percent) VALUES (:userName, :comment, :levelID, :userID, :uploadDate, :percent)");
 	if($register == 1){
 		$query->execute([':userName' => $userName, ':comment' => $comment, ':levelID' => $levelID, ':userID' => $userID, ':uploadDate' => $uploadDate, ':percent' => $percent]);

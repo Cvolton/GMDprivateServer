@@ -8,7 +8,7 @@ class Commands {
 		$ep = new exploitPatch();
 		$gs = new mainLib();
 		$uname = $gs->getAccName($accountID);
-		$commentarray = explode(' ', $comment);
+		$commentarray = explode(' ', $comment, 5);
 		$uploadDate = time();
 		//GETTING USERINFO
 		$query2 = $db->prepare("SELECT isAdmin FROM accounts WHERE accountID = :accID");
@@ -18,6 +18,12 @@ class Commands {
 		$query2 = $db->prepare("SELECT extID FROM levels WHERE levelID = :id");
 		$query2->execute([':id' => $levelID]);
 		$targetExtID = $query2->fetchAll()[0]["extID"];
+		
+		$queryNAME = $db->prepare("SELECT levelName, userName FROM levels WHERE levelID = :id");
+		$queryNAME->execute([':id' => $levelID]);
+		$res = $queryNAME->fetchAll();
+		$aLevelName = $res[0]["levelName"];
+		$aUserName = $res[0]["userName"];
 		//ADMIN COMMANDS
 		if ($userinfo["isAdmin"] == 1) {
 			if(substr($comment,0,5) == '!rate'){
@@ -26,6 +32,15 @@ class Commands {
 					$starStars = 0;
 				}
 				//$starCoins = $commentarray[3];
+				$rateReason = $commentarray[4];
+				if ($rateReason == "")
+				{
+					$rateReason = "None";
+				}
+				else
+				{
+					$rateReason = "\"".$rateReason."\"";
+				}
 				$starFeatured = $commentarray[3];
 				$diffArray = $gs->getDiffFromName($commentarray[1]);
 				$diffName = $commentarray[1];
@@ -53,7 +68,7 @@ class Commands {
 				} else {
 					$featurestr = "No";
 				}
-				PostToHook("Command - Rate", "Account $uname rated level $levelID.\nStars: $starStars\nDifficulty: $diffName\nFeatured: $featurestr\n");
+				PostToHook("Command - Rate", "$uname rated $aLevelName by $aUserName ($levelID).\nStars: $starStars\nDifficulty: $diffName\nFeatured: $featurestr\nReason: $rateReason");
 				return true;
 			}
 			if(substr($comment,0,8) == '!feature'){
@@ -61,7 +76,7 @@ class Commands {
 				$query->execute([':levelID' => $levelID]);
 				$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('2', :value, :levelID, :timestamp, :id)");
 				$query->execute([':value' => "1", ':timestamp' => $uploadDate, ':id' => $accountID, ':levelID' => $levelID]);
-				PostToHook("Command - Feature", "Account $uname featured level $levelID.");
+				PostToHook("Command - Feature", "$uname featured $aLevelName by $aUserName ($levelID).");
 
 				return true;
 			}
@@ -70,7 +85,7 @@ class Commands {
 				$query->execute([':levelID' => $levelID]);
 				$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('14', :value, :levelID, :timestamp, :id)");
 				$query->execute([':value' => '1', ':timestamp' => $uploadDate, ':id' => $accountID, ':levelID' => $levelID]);
-				PostToHook("Command - NoCP", "Account $uname set $levelID to give no creator points.");
+				PostToHook("Command - NoCP", "$uname set $aLevelName by $aUserName ($levelID) to give no creator points.", 0x800000);
 				
 				return true;
 			}
@@ -79,58 +94,10 @@ class Commands {
 				$query->execute([':levelID' => $levelID]);
 				$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('14', :value, :levelID, :timestamp, :id)");
 				$query->execute([':value' => '0', ':timestamp' => $uploadDate, ':id' => $accountID, ':levelID' => $levelID]);
-				PostToHook("Command - NoCP", "Account $uname set $levelID to give creator points.");
+				PostToHook("Command - GiveCP", "$uname set $aLevelName by $aUserName ($levelID) to give creator points.", 0x008000);
 				
 				return true;
 			}
-			//if(substr($comment,0,5) == '!epic'){
-			//	$query = $db->prepare("UPDATE levels SET starEpic='1' WHERE levelID=:levelID");
-			//	$query->execute([':levelID' => $levelID]);
-			//	$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('4', :value, :levelID, :timestamp, :id)");
-			//	$query->execute([':value' => "1", ':timestamp' => $uploadDate, ':id' => $accountID, ':levelID' => $levelID]);
-			//	PostToHook("Command - Epic", "Account $uname epic featured level $levelID.");
-			//	
-			//	return true;
-			//}
-			//if(substr($comment,0,7) == '!unepic'){
-			//	$query = $db->prepare("UPDATE levels SET starEpic='0' WHERE levelID=:levelID");
-			//	$query->execute([':levelID' => $levelID]);
-			//	$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('4', :value, :levelID, :timestamp, :id)");
-			//	$query->execute([':value' => "0", ':timestamp' => $uploadDate, ':id' => $accountID, ':levelID' => $levelID]);
-			//	PostToHook("Command - Unepic", "Account $uname unepic featured level $levelID.");
-			//	
-			//	return true;
-			//}
-			//if(substr($comment,0,12) == '!verifycoins'){
-			//	$query = $db->prepare("UPDATE levels SET starCoins='1' WHERE levelID = :levelID");
-			//	$query->execute([':levelID' => $levelID]);
-			//	$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('2', :value, :levelID, :timestamp, :id)");
-			//	$query->execute([':value' => "1", ':timestamp' => $uploadDate, ':id' => $accountID, ':levelID' => $levelID]);
-			//	PostToHook("Command - VerifyCoins", "Account $uname verified coins for level level $levelID.");
-			//	
-			//	return true;
-			//}
-			//if(substr($comment,0,6) == '!daily'){
-			//	$query = $db->prepare("SELECT count(*) FROM dailyfeatures WHERE levelID = :level");
-			//	$query->execute([':level' => $levelID]);
-			//	if($query->fetchColumn() != 0){
-			//		return false;
-			//	}
-			//	$query = $db->prepare("SELECT timestamp FROM dailyfeatures WHERE timestamp >= :tomorrow ORDER BY timestamp DESC LIMIT 1");
-			//	$query->execute([':tomorrow' => strtotime("tomorrow 00:00:00")]);
-			//	if($query->rowCount() == 0){
-			//		$timestamp = strtotime("tomorrow 00:00:00");
-			//	}else{
-			//		$timestamp = $query->fetchAll()[0]["timestamp"] + 86400;
-			//	}
-			//	$query = $db->prepare("INSERT INTO dailyfeatures (levelID, timestamp) VALUES (:levelID, :uploadDate)");
-			//	$query->execute([':levelID' => $levelID, ':uploadDate' => $timestamp]);
-			//	$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account, value2) VALUES ('5', :value, :levelID, :timestamp, :id, :dailytime)");
-			//	$query->execute([':value' => "1", ':timestamp' => $uploadDate, ':id' => $accountID, ':levelID' => $levelID, ':dailytime' => $timestamp]);
-			//	PostToHook("Command - Daily", "Account $uname added level $levelID to the daily queue.");
-			//	
-			//	return true;
-			//}
 			if(substr($comment,0,7) == '!delete'){
 				if(!is_numeric($levelID)){
 					return false;
@@ -142,12 +109,13 @@ class Commands {
 				if(file_exists(dirname(__FILE__)."../../data/levels/$levelID")){
 					rename(dirname(__FILE__)."../../data/levels/$levelID",dirname(__FILE__)."../../data/levels/deleted/$levelID");
 				}
+				PostToHook("Command - Delete", "$uname deleted $aLevelName by $aUserName (x-$levelID).", 0x800000);
 				
 				return true;
 			}
 			if(substr($comment,0,7) == '!setacc'){
 				$query = $db->prepare("SELECT accountID FROM accounts WHERE userName = :userName LIMIT 1");
-				$query->execute([':userName' => $commentarray[1]]);
+				$query->execute([':userName' => implode(' ', array_slice($commentarray, 1))]);
 				$targetAcc = $query->fetchAll()[0];
 				//var_dump($result);
 				$query = $db->prepare("SELECT userID FROM users WHERE extID = :extID LIMIT 1");
