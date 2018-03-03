@@ -57,9 +57,9 @@ class accSession
 
 		$query = $db->prepare("SELECT sessionStart FROM accSessions WHERE accountID = :accID AND ip = :IP AND sessionStart > :timestamp");
 		$query->execute([':accID' => $accID, ':IP' => $_SERVER["REMOTE_ADDR"], ':timestamp' => $sessionEnd]);
-		if ($query->rowCount() > 0) { //if session exists
-			$result = $query->fetch(); //table from SQL database
-			return 172800 - (time() - $result["sessionStart"]);
+		if ($query->rowCount() > 0)
+		{ //if session exists
+			return 172800 - (time() - $query->fetch()["sessionStart"]);
 		}
 		return 0;
 	}
