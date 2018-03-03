@@ -14,13 +14,13 @@ if (array_key_exists('u', $_GET))
 	$accid = $query->fetch()['accountID'];
 
 	$session = new accSession();
-	$init = (int)$session->getTimeLeft($accid);
+	$init = $session->getTimeLeft($accid);
 
 	$hours = floor($init / 3600);
 	$minutes = floor(($init / 60) % 60);
 	$seconds = $init % 60;
 
-	if ($init)
+	if ($init >= 0)
 	{
 		echo "Session expires in: ".$hours."h:".$minutes."m:".$seconds."s";
 	}

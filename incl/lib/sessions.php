@@ -61,7 +61,7 @@ class accSession
 		{ //if session exists
 			return 172800 - (time() - $query->fetch()["sessionStart"]);
 		}
-		return 0;
+		return -1;
 	}
 }
 ?>
