@@ -175,6 +175,16 @@ class Commands {
 				return true;
 			}
 		}
+		if($this->ownCommand($comment, "song", $accountID, $targetExtID)){
+			$song = $ep->remove(str_replace("!song ", "", $comment));
+			if(is_numeric($song)){
+				$query = $db->prepare("UPDATE levels SET songID=:song WHERE levelID=:levelID");
+				$query->execute([':levelID' => $levelID, ':song' => $song]);
+				$query = $db->prepare("INSERT INTO modactions (type, value, timestamp, account, value3) VALUES ('16', :value, :timestamp, :id, :levelID)");
+				$query->execute([':value' => $song, ':timestamp' => $uploadDate, ':id' => $accountID, ':levelID' => $levelID]);
+				return true;
+			}
+		}
 		if($this->ownCommand($comment, "description", $accountID, $targetExtID)){
 			$desc = base64_encode($ep->remove(str_replace("!description ", "", $comment)));
 			$query = $db->prepare("UPDATE levels SET levelDesc=:desc WHERE levelID=:levelID");
