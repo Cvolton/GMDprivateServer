@@ -535,11 +535,40 @@ class mainLib {
 		}
 		$query = $db->prepare("SELECT $permission FROM roles WHERE isDefault = 1");
 		$query->execute();
-		$role = $query->fetch();
-		if($role[$permission] == 1){
+		$permState = $query->fetchColumn();
+		if($permState == 1){
 			return true;
 		}
-		if($role[$permission] == 2){
+		if($permState == 2){
+			return false;
+		}
+		return false;
+	}
+	public function getIP(){
+		if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
+			$ip = $_SERVER['HTTP_CLIENT_IP'];
+		} elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+			$ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+		} else {
+			$ip = $_SERVER['REMOTE_ADDR'];
+		}
+		return $ip;
+	}
+	public function checkModIPPermission($permission){
+		include __DIR__ . "/connection.php";
+		$ip = $this->getIP();
+		$query=$db->prepare("SELECT modipCategory FROM modips WHERE IP = :ip");
+		$query->execute([':ip' => $ip]);
+		$categoryID = $query->fetchColumn();
+		
+		$query=$db->prepare("SELECT $permission FROM modipperms WHERE categoryID = :id");
+		$query->execute([':id' => $categoryID]);
+		$permState = $query->fetchColumn();
+		
+		if($permState == 1){
+			return true;
+		}
+		if($permState == 2){
 			return false;
 		}
 		return false;

@@ -8,13 +8,6 @@ require_once "../lib/mainLib.php";
 $gs = new mainLib();
 require "../lib/generateHash.php";
 $hash = new generateHash();
-if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
-	$ip = $_SERVER['HTTP_CLIENT_IP'];
-} elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
-	$ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
-} else {
-	$ip = $_SERVER['REMOTE_ADDR'];
-}
 //$levelID = 2632;
 if(empty($_POST["gameVersion"])){
 	$gameVersion = 1;
@@ -24,6 +17,7 @@ if(empty($_POST["gameVersion"])){
 if(empty($_POST["levelID"])){
 	exit("-1");
 }
+$ip = $gs->getIP();
 $levelID = $ep->remove($_POST["levelID"]);
 $feaID = 0;
 if(!is_numeric($levelID)){
@@ -72,10 +66,7 @@ if(!is_numeric($levelID)){
 		//password xor
 		$pass = $result["password"];
 		$desc = $result["levelDesc"];
-		$query=$db->prepare("SELECT count(*) FROM modips WHERE IP = :ip");
-		$query->execute([":ip" => $ip]);
-		$ips = $query->fetchColumn();
-		if($ips > 0){
+		if($gs->checkModIPPermission("actionFreeCopy") == 1){
 			$pass = "1";
 		}
 		if($gameVersion > 19){
