@@ -4,7 +4,9 @@ chdir(dirname(__FILE__));
 include "../lib/connection.php";
 require_once "../lib/exploitPatch.php";
 require_once "../lib/GJPCheck.php";
+require "../lib/anticheat.php";
 $ep = new exploitPatch();
+$ac = new Anticheat();
 $stars = 0;
 $count = 0;
 $xi = 0;
@@ -27,6 +29,10 @@ if(!empty($_POST["accountID"])){
 	if(is_numeric($accountID)){
 		exit("-1");
 	}
+}
+
+if($ac->check($accountID)){
+	$ac->ban_by_accountID($accountID);
 }
 
 $type = $ep->remove($_POST["type"]);
