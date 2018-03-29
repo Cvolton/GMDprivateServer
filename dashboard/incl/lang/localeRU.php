@@ -1,27 +1,42 @@
 <?php
+
+/*
+Alright, since shit's happening with some certain GDPS, i feel like i need to address this. 
+This applies to any versions of the translation starting from the version this text first appeared in, starting from December 19, 2017.
+
+
+If my (TheFox#5812's) work is used in a project that is not CvoltonGDPS, I have the full right to request my work, being the translation, removed from the project. If not done, i have full permission to fill a DMCA claim to the domain of the project.
+I also have full right to request an edit to my work, if not done, as stated above, i am able to fill a DMCA claim.
+If you do not agree to these terms, remove this file from the folder that it is located in.
+
+
+TL;DR if you use this outside cvoltongdps i can delet your site kthxbye
+ - Artemiy "TheFox" Aleksandrov Borisovich.
+*/
+
 /*
 	NAVBAR
 */
 $string["homeNavbar"] = "Домой";
 
-$string["accountManagement"] = "Личный Кабинет";
-$string["changePassword"] = "Изменить Пароль";
-$string["changeUsername"] = "Изменить Ник";
-$string["unlistedLevels"] = "Скрытые Уровни";
+$string["accountManagement"] = "Личный кабинет";
+$string["changePassword"] = "Изменить пароль";
+$string["changeUsername"] = "Изменить ник";
+$string["unlistedLevels"] = "Скрытые уровни";
 
-$string["modTools"] = "Меню Модератора";
-$string["leaderboardBan"] = "Забанить";
-$string["packCreate"] = "Создать Мап-Пак";
+$string["modTools"] = "Меню модератора";
+$string["leaderboardBan"] = "Бан";
+$string["packCreate"] = "Создатель Пакетов Карт";
 
-$string["reuploadSection"] = "Добавка Данных";
+$string["reuploadSection"] = "Добавка данных";
 $string["levelReupload"] = "Добавить с другого сервера";
 $string["songAdd"] = "Добавить песню";
 
-$string["browse"] = "Browse";
+$string["browse"] = "Просматривать";
 $string["statsSection"] = "Статистика";
 $string["dailyTable"] = "Дневные уровни";
 $string["modActions"] = "Модераторские действия";
-$string["packTable"] = "Все Мап-Паки";
+$string["packTable"] = "Все Пакеты Карт";
 $string["leaderboardTime"] = "Лидерборды";
 
 $string["language"] = "Язык";
@@ -59,10 +74,10 @@ $string["author"] = "Создаватель";
 $string["name"] = "Название";
 $string["userCoins"] = "Создательские Монеты";
 $string["time"] = "Время";
-$string["deletedLevel"] = "Удалённый Уровень";
+$string["deletedLevel"] = "Удалённый уровень";
 $string["mod"] = "Модератор";
 $string["count"] = "Число";
-$string["ratedLevels"] = "Оценнённые Уровни";
+$string["ratedLevels"] = "Оценнённые уровни";
 $string["lastSeen"] = "Виден прошлый раз";
 $string["level"] = "Уровень";
 $string["pageInfo"] = "Страница %s из %s-и";
@@ -72,13 +87,13 @@ $string["next"] = "Следуйщая";
 $string["last"] = "Последняя";
 //modActionsList
 $string["action"] = "Функция";
-$string["value"] = "1ое Значение";
-$string["value2"] = "2ое Значение";
-$string["modAction1"] = "Оценили Уровень";
-$string["modAction2"] = "Убрали/Добавили к Лучшим Уровням";
+$string["value"] = "1-е значение";
+$string["value2"] = "2-е значение";
+$string["modAction1"] = "Оценили уровень";
+$string["modAction2"] = "Убрали/добавили к Звёздным Уровням";
 $string["modAction3"] = "Проверили монеты";
 $string["modAction4"] = "Убрали/Добавили к Эпик Уровням";
-$string["modAction5"] = "Сделали Дневным Уровнем";
+$string["modAction5"] = "Сделали дневным уровнем";
 $string["modAction6"] = "Удалили уровень";
 $string["modAction7"] = "Изминили создателя";
 $string["modAction8"] = "Переименовали уровень";
@@ -88,6 +103,8 @@ $string["modAction11"] = "Поделились СП (Создательским�
 $string["modAction12"] = "Опубликовали";
 $string["modAction13"] = "Изменили описание";
 $string["modAction14"] = "Включили/выключили ЛДМ";
-$string["modAction15"] = "Leaderboard un/banned";
+$string["modAction15"] = "Бан по лидербордам";
 //errors
-$string["errorNoAccWithPerm"] = "Error: No accounts with the '%s' permission have been found";
+$string["errorNoAccWithPerm"] = "Ошибка: никаких аккаунтов с возмоюностью '%s' были найдены.";
+
+//Translation done by TheFox#5812

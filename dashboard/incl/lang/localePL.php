@@ -52,7 +52,7 @@ $string["songAddError-4"] = "Tej piosenki nie ma jak przerzucić.";
 $string["ID"] = "ID";
 $string["stars"] = "Gwiazdki";
 $string["coins"] = "Monety";
-$string["accounts"] = "Accounts";
+$string["accounts"] = "Konta";
 $string["levels"] = "Poziomy";
 $string["songs"] = "Songs";
 $string["author"] = "Twórca";
@@ -64,30 +64,36 @@ $string["mod"] = "Moderator";
 $string["count"] = "Ilość akcji";
 $string["ratedLevels"] = "Ocenionych poziomów";
 $string["lastSeen"] = "Ostatnio widziany";
-$string["level"] = "Level";
-$string["pageInfo"] = "Showing page %s of %s";
-$string["first"] = "First";
-$string["previous"] = "Previous";
-$string["next"] = "Next";
-$string["last"] = "Last";
+$string["level"] = "Poziom";
+$string["pageInfo"] = "Pokazywanie strony %s z %s";
+$string["first"] = "Pierwszy";
+$string["previous"] = "Poprzedni";
+$string["next"] = "Następny";
+$string["last"] = "Ostatni";
 //modActionsList
-$string["action"] = "Action";
-$string["value"] = "1st Value";
-$string["value2"] = "2nd Value";
-$string["modAction1"] = "Rated a level";
-$string["modAction2"] = "Un/featured a level";
-$string["modAction3"] = "Un/verified coins";
-$string["modAction4"] = "Un/epiced a level";
-$string["modAction5"] = "Set as daily feature";
-$string["modAction6"] = "Deleted a level";
-$string["modAction7"] = "Creator change";
-$string["modAction8"] = "Renamed a level";
-$string["modAction9"] = "Changed level password";
-$string["modAction10"] = "Changed demon difficulty";
-$string["modAction11"] = "Shared CP";
-$string["modAction12"] = "Un/published";
-$string["modAction13"] = "Changed level description";
-$string["modAction14"] = "Enabled/disabled LDM";
-$string["modAction15"] = "Leaderboard un/banned";
+$string["action"] = "Akcja";
+$string["value"] = "Pierwsza wartość";
+$string["value2"] = "Druga wartość";
+$string["modAction1"] = "ocenił poziom";
+$string["modAction2"] = "nadał/odebrał poziomowi featured";
+$string["modAction3"] = "z/odweryfikował monety";
+$string["modAction4"] = "nadał/odebrał poziomowi epic";
+$string["modAction5"] = "ustawił jako dzienny poziom";
+$string["modAction6"] = "usunął poziom";
+$string["modAction7"] = "zmienił twórcę";
+$string["modAction8"] = "zmienił nazwę poziomu";
+$string["modAction9"] = "zmienił hasło poziomu";
+$string["modAction10"] = "zmienił trudność demona";
+$string["modAction11"] = "rozdzielił CP";
+$string["modAction12"] = "opublikował/schował";
+$string["modAction13"] = "zmienił opis poziomu";
+$string["modAction14"] = "włączył/wyłączył LDM";
+$string["modAction15"] = "zbanował/odbanował na tabeli wyników";
 //errors
-$string["errorNoAccWithPerm"] = "Error: No accounts with the '%s' permission have been found";
+$string["errorNoAccWithPerm"] = "Błąd: Nie znaleziono żadnych kont z zezwoleniem '%s'";
+/*
+   This is the Polish language translation created
+   exclusively for CvoltonGDPS by Tygrysek, ONLY ALLOWED FOR USE
+   on CvoltonGDPS. If you would like to use it for your GDPS, please contact.
+   IF I FIND YOU USING IT WITHOUT ASKING ME I WILL DESTROY YOUR HOUSE
+*/
