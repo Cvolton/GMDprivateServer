@@ -3,7 +3,7 @@ class generatePass
 {
 	public function isValidUsrname($userName, $pass) {
 		include dirname(__FILE__)."/connection.php";
-		require dirname(__FILE__)."/mainLib.php";
+		require_once dirname(__FILE__)."/mainLib.php";
 		$gs = new mainLib();
 		if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
 			$ip = $_SERVER['HTTP_CLIENT_IP'];
