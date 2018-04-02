@@ -9,6 +9,7 @@ $stars = 0;
 $count = 0;
 $xi = 0;
 $lbstring = "";
+$date = date("d-m");
 if(empty($_POST["gameVersion"])){
 	$sign = "< 20 AND gameVersion <> 0";
 }else{
@@ -97,7 +98,6 @@ if($type == "top" OR $type == "creators" OR $type == "relative"){
 			$extid = $user["extID"];
 		}
 		$xi++;
-		$date = date("d-m");
 		if($date == "01-04"){
 			$lbstring .= "1:sakujes:2:".$user["userID"].":13:999:17:999:6:".$xi.":9:9:10:9:11:8:14:1:15:3:16:".$extid.":3:999:8:99999:4:999:7:".$extid.":46:99999|";
 		}else{
