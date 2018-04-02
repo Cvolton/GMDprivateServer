@@ -132,7 +132,7 @@ foreach($people as $user => $cp){
 }
 echo "<hr>done";
 //april fools
-$date = date("d-m");
+/*$date = date("d-m");
 if($date == "01-04"){
 	$query4 = $db->prepare("UPDATE users SET creatorPoints='99999', userName='sakujes', stars='999', secret='april'");
 	$query4->execute();
@@ -141,6 +141,6 @@ if($date == "01-04"){
 	$query4->execute();
 	$query4 = $db->prepare("UPDATE users SET creatorPoints='0' WHERE creatorPoints='99999'");
 	$query4->execute();
-}
+}*/
 file_put_contents("../logs/cplog.txt",$cplog);
 ?>
