@@ -11,6 +11,7 @@ $ep = new exploitPatch();
 $userName = $ep->remove($_POST["userName"]);
 $oldpass = $_POST["oldpassword"];
 $newpass = $_POST["newpassword"];
+$salt = "";
 if($userName != "" AND $newpass != "" AND $oldpass != ""){
 $generatePass = new generatePass();
 $pass = $generatePass->isValidUsrname($userName, $oldpass);
