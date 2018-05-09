@@ -6,10 +6,17 @@ Supported version of Geometry Dash: 1.0 - 2.11 (so any version of Geometry Dash 
 
 Required version of PHP: 5.4+ (tested up to 7.1.3)
 
-### Setup
+### Setup for Web Hostings
 1) Upload the files on a webserver
 2) Import database.sql into a MySQL/MariaDB database
-3) Edit the links in GeometryDash.exe (some are base64 encoded since 2.1, remember that)
+3) Edit the connection info at /config/connection.php
+4) Edit the links in GeometryDash.exe (some are base64 encoded since 2.1, remember that)
+
+### Setup for Dedicated Servers
+1) Upload the files on web files tree folder.
+2) Import database.sql into your webserver database[Which one you can reach: http://localhost/phpmyadmin(On some servers.)] or another database.
+3) Edit the connection info at /config/connection.php(Set server to localhost if you're using localhost database)
+4) Edit the links in GeometryDash.exe (some are base64 encoded since 2.1, remember that)
 
 ### Credits
 Private Messaging system by someguy28 (even though he needed a ton of help from me... and by a ton I mean A TON)
