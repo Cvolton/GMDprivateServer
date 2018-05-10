@@ -19,11 +19,13 @@ Required version of PHP: 5.4+ (tested up to 7.1.3)
 4) Import database.sql into your webserver database[Which one you can reach: http://localhost/phpmyadmin(On some servers.)] or another database.
 
 Example1: [For iss(coming from Server Manager on Windows Server) install to C:\inetpub\wwwroot]
+
 Example2: [For XAMPP(Can Downloadable) install to C:\xampp\htdocs)
 
 5) Import database.sql into your webserver database.
 
 Example1: ISS doesn't have Database, use another database app
+
 Example2: XAMPP have database you can found http://localhost/phpmyadmin
 
 6) Edit the connection info at /config/connection.php(Set server to localhost if you're using localhost database)
