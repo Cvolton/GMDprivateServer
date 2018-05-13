@@ -16,10 +16,10 @@ if(!empty($_POST["binaryVersion"])){
 	$binaryVersion = 0;
 }
 $userName = $ep->remove($_POST["userName"]);
-$userName = preg_replace("/[^A-Za-z0-9 ]/", '', $userName);
+$userName = $ep->charclean($userName);
 $levelID = $ep->remove($_POST["levelID"]);
 $levelName = $ep->remove($_POST["levelName"]);
-$levelName = preg_replace("/[^A-Za-z0-9 ]/", '', $levelName);
+$levelName = $ep->charclean($levelName);
 $levelDesc = $ep->remove($_POST["levelDesc"]);
 if($gameVersion < 20){
 	$levelDesc = base64_encode($levelDesc);
