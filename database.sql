@@ -29,14 +29,14 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `acccomments` (
-  `userID` int(11) NOT NULL,
+  `userID` int(11) NOT NULL COMMENT 'ID Of the user commented',
   `userName` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-  `comment` longtext COLLATE utf8_unicode_ci NOT NULL,
-  `secret` varchar(10) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'unused',
-  `commentID` int(11) NOT NULL,
-  `timestamp` int(11) NOT NULL,
-  `likes` int(11) NOT NULL DEFAULT '0',
-  `isSpam` int(11) NOT NULL DEFAULT '0'
+  `comment` longtext COLLATE utf8_unicode_ci NOT NULL COMMENT 'Comment is encrypted in Base64',
+  `secret` varchar(10) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'unused' COMMENT 'Unused',
+  `commentID` int(11) NOT NULL COMMENT 'Sorted IDs',
+  `timestamp` int(11) NOT NULL COMMENT 'Seconds since comment exist, Starting off Year 1970',
+  `likes` int(11) NOT NULL DEFAULT '0' COMMENT 'Amount of likes',
+  `isSpam` int(11) NOT NULL DEFAULT '0' COMMENT '0=No 1=Yes'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -47,12 +47,12 @@ CREATE TABLE `acccomments` (
 
 CREATE TABLE `accounts` (
   `userName` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `password` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `email` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `secret` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'unused',
-  `accountID` int(11) NOT NULL,
-  `saveData` longtext COLLATE utf8_unicode_ci NOT NULL,
-  `isAdmin` int(11) NOT NULL DEFAULT '0',
+  `password` varchar(255) COLLATE utf8_unicode_ci NOT NULL COMMENT 'Passwords are BCrypted, so It is impossible to decrypt',
+  `email` varchar(255) COLLATE utf8_unicode_ci NOT NULL COMMENT 'Emails of an user, pretty much ignored since you dont need a verification to register',
+  `secret` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'unused' COMMENT 'Unused',
+  `accountID` int(11) NOT NULL COMMENT 'Simliar to UserIDs',
+  `saveData` longtext COLLATE utf8_unicode_ci NOT NULL COMMENT 'Save datas are splitten in two parts and encrypted in Base64',
+  `isAdmin` int(11) NOT NULL DEFAULT '0' COMMENT 'Allows player with the value 1 to use commands in levels',
   `userID` int(11) NOT NULL DEFAULT '0',
   `friends` varchar(1024) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'unused',
   `blockedBy` varchar(1024) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'unused',
@@ -63,11 +63,11 @@ CREATE TABLE `accounts` (
   `youtubeurl` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
   `twitter` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
   `twitch` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
-  `salt` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
-  `registerDate` int(11) NOT NULL DEFAULT '0',
+  `salt` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT 'Unknown useage',
+  `registerDate` int(11) NOT NULL DEFAULT '0' COMMENT 'Seconds since Account exist, Starting off Year 1970',
   `friendsCount` int(11) NOT NULL DEFAULT '0',
   `saveKey` blob NOT NULL,
-  `discordID` bigint(20) NOT NULL DEFAULT '0',
+  `discordID` bigint(20) NOT NULL DEFAULT '0' COMMENT 'Used for Discord Intigration',
   `discordLinkReq` bigint(20) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
@@ -97,8 +97,8 @@ CREATE TABLE `actions` (
 --
 
 CREATE TABLE `bannedips` (
-  `IP` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT '127.0.0.1',
-  `ID` int(11) NOT NULL
+  `IP` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT '127.0.0.1' COMMENT 'IP Adress from player, defends player from making alts',
+  `ID` int(11) NOT NULL COMMENT 'User or accountID form player'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -122,13 +122,13 @@ CREATE TABLE `blocks` (
 CREATE TABLE `comments` (
   `userID` int(11) NOT NULL,
   `userName` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-  `comment` longtext COLLATE utf8_unicode_ci NOT NULL,
-  `secret` varchar(10) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'none',
+  `comment` longtext COLLATE utf8_unicode_ci NOT NULL COMMENT 'Comment is encrypted in Base64',
+  `secret` varchar(10) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'none' COMMENT 'Unknown Usage',
   `levelID` int(11) NOT NULL,
   `commentID` int(11) NOT NULL,
-  `timestamp` int(11) NOT NULL,
+  `timestamp` int(11) NOT NULL COMMENT 'Seconds since comment exist, Starting off Year 1970',
   `likes` int(11) NOT NULL DEFAULT '0',
-  `percent` int(11) NOT NULL DEFAULT '0',
+  `percent` int(11) NOT NULL DEFAULT '0' COMMENT 'Percentage progress of player shown in the comment',
   `isSpam` tinyint(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
@@ -151,10 +151,10 @@ CREATE TABLE `cpshares` (
 --
 
 CREATE TABLE `dailyfeatures` (
-  `feaID` int(11) NOT NULL,
+  `feaID` int(11) NOT NULL COMMENT 'Sorted IDs',
   `levelID` int(11) NOT NULL,
   `timestamp` int(11) NOT NULL,
-  `type` int(11) NOT NULL DEFAULT '0'
+  `type` int(11) NOT NULL DEFAULT '0' COMMENT '0=Daily 1=Weekly'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -166,10 +166,10 @@ CREATE TABLE `dailyfeatures` (
 CREATE TABLE `friendreqs` (
   `accountID` int(11) NOT NULL,
   `toAccountID` int(11) NOT NULL,
-  `comment` varchar(1000) COLLATE utf8_unicode_ci NOT NULL,
-  `uploadDate` int(11) NOT NULL,
-  `ID` int(11) NOT NULL,
-  `isNew` tinyint(1) NOT NULL DEFAULT '1'
+  `comment` varchar(1000) COLLATE utf8_unicode_ci NOT NULL COMMENT 'Comment is encrypted in Base64',
+  `uploadDate` int(11) NOT NULL COMMENT 'Seconds since request exist, Starting off Year 1970',
+  `ID` int(11) NOT NULL COMMENT 'Sorted IDs',
+  `isNew` tinyint(1) NOT NULL DEFAULT '1'´ COMMENT 'Will set to 0 when requested user saw the request'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -193,8 +193,8 @@ CREATE TABLE `friendships` (
 --
 
 CREATE TABLE `gauntlets` (
-  `ID` int(11) NOT NULL,
-  `level1` int(11) NOT NULL,
+  `ID` int(11) NOT NULL COMMENT 'Gauntlet ID, see https://bit.ly/2GzW8z6 for help getting correct ID',
+  `level1` int(11) NOT NULL COMMENT 'Note, Levels are sorted depending how many likes the level has.',
   `level2` int(11) NOT NULL,
   `level3` int(11) NOT NULL,
   `level4` int(11) NOT NULL,
@@ -208,41 +208,41 @@ CREATE TABLE `gauntlets` (
 --
 
 CREATE TABLE `levels` (
-  `gameVersion` int(11) NOT NULL,
-  `binaryVersion` int(11) NOT NULL DEFAULT '0',
+  `gameVersion` int(11) NOT NULL COMMENT 'Version level is made',
+  `binaryVersion` int(11) NOT NULL DEFAULT '0' COMMENT 'Version level is made',
   `userName` mediumtext COLLATE utf8_unicode_ci NOT NULL,
   `levelID` int(11) NOT NULL,
   `levelName` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `levelDesc` mediumtext COLLATE utf8_unicode_ci NOT NULL,
-  `levelVersion` int(11) NOT NULL,
+  `levelDesc` mediumtext COLLATE utf8_unicode_ci NOT NULL COMMENT 'Descriptions are Base64 encrypted too',
+  `levelVersion` int(11) NOT NULL COMMENT 'Level version itself',
   `levelLength` int(11) NOT NULL DEFAULT '0',
-  `audioTrack` int(11) NOT NULL,
-  `auto` int(11) NOT NULL,
+  `audioTrack` int(11) NOT NULL COMMENT 'Used if Main Audio tracks gets in use',
+  `auto` int(11) NOT NULL COMMENT 'Unknown Usage',
   `password` int(11) NOT NULL,
-  `original` int(11) NOT NULL,
+  `original` int(11) NOT NULL COMMENT 'Original ID, useful for copies or reuploads',
   `twoPlayer` int(11) NOT NULL DEFAULT '0',
-  `songID` int(11) NOT NULL DEFAULT '0',
+  `songID` int(11) NOT NULL DEFAULT '0' COMMENT 'Used if External Audio tracks gets in use',
   `objects` int(11) NOT NULL DEFAULT '0',
   `coins` int(11) NOT NULL DEFAULT '0',
   `requestedStars` int(11) NOT NULL DEFAULT '0',
   `extraString` mediumtext COLLATE utf8_unicode_ci NOT NULL,
   `levelString` longtext COLLATE utf8_unicode_ci,
   `levelInfo` mediumtext COLLATE utf8_unicode_ci NOT NULL,
-  `secret` mediumtext COLLATE utf8_unicode_ci NOT NULL,
+  `secret` mediumtext COLLATE utf8_unicode_ci NOT NULL COMMENT 'Unknown Usage',
   `starDifficulty` int(11) NOT NULL DEFAULT '0' COMMENT '0=N/A 10=EASY 20=NORMAL 30=HARD 40=HARDER 50=INSANE 50=AUTO 50=DEMON',
-  `downloads` int(11) NOT NULL DEFAULT '300',
-  `likes` int(11) NOT NULL DEFAULT '100',
-  `starDemon` int(1) NOT NULL DEFAULT '0',
-  `starAuto` varchar(11) COLLATE utf8_unicode_ci NOT NULL DEFAULT '0',
+  `downloads` int(11) NOT NULL DEFAULT '0' COMMENT 'Default is zero, you can change it in the SQL Mode',
+  `likes` int(11) NOT NULL DEFAULT '0' COMMENT 'Default is zero, you can change it in the SQL Mode',
+  `starDemon` int(1) NOT NULL DEFAULT '0' COMMENT 'Unknown Usage',
+  `starAuto` varchar(11) COLLATE utf8_unicode_ci NOT NULL DEFAULT '0' COMMENT 'Unknown usage',
   `starStars` int(11) NOT NULL DEFAULT '0',
-  `uploadDate` varchar(1337) COLLATE utf8_unicode_ci NOT NULL,
-  `updateDate` bigint(11) NOT NULL,
-  `rateDate` bigint(20) NOT NULL DEFAULT '0',
+  `uploadDate` varchar(1337) COLLATE utf8_unicode_ci NOT NULL COMMENT 'Seconds since level exist, Starting off Year 1970',
+  `updateDate` bigint(11) NOT NULL COMMENT 'Seconds since level update exist, Starting off Year 1970',
+  `rateDate` bigint(20) NOT NULL DEFAULT '0' COMMENT 'Seconds since rating exist, Starting off Year 1970',
   `starCoins` int(11) NOT NULL DEFAULT '0',
   `starFeatured` int(11) NOT NULL DEFAULT '0',
   `starHall` int(11) NOT NULL DEFAULT '0',
   `starEpic` int(11) NOT NULL DEFAULT '0',
-  `starDemonDiff` int(11) NOT NULL DEFAULT '0',
+  `starDemonDiff` int(11) NOT NULL DEFAULT '0' COMMENT 'ID 1 to 5 will determinate if the level is easy, medium, hard, insane or extreme demon',
   `userID` int(11) NOT NULL,
   `extID` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `unlisted` int(11) NOT NULL,
@@ -385,11 +385,11 @@ CREATE TABLE `poll` (
 --
 
 CREATE TABLE `quests` (
-  `ID` int(11) NOT NULL,
-  `type` int(11) NOT NULL,
+  `ID` int(11) NOT NULL COMMENT 'Quest ID, though it is useless since quests are randomly picked.',
+  `type` int(11) NOT NULL COMMENT '1=Orbs 2=Coins 3=Stars',
   `amount` int(11) NOT NULL,
-  `reward` int(11) NOT NULL,
-  `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL
+  `reward` int(11) NOT NULL COMMENT 'Reward amount of diamonds',
+  `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL COMMENT 'Quest name'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -411,8 +411,8 @@ CREATE TABLE `reports` (
 --
 
 CREATE TABLE `roleassign` (
-  `assignID` bigint(20) NOT NULL,
-  `roleID` bigint(20) NOT NULL,
+  `assignID` bigint(20) NOT NULL COMMENT 'Unknown Usage',
+  `roleID` bigint(20) NOT NULL COMMENT 'RoleID user gets',
   `accountID` bigint(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -461,7 +461,7 @@ CREATE TABLE `roles` (
   `modipCategory` int(11) NOT NULL DEFAULT '0',
   `isDefault` int(11) NOT NULL DEFAULT '0',
   `commentColor` varchar(11) NOT NULL DEFAULT '000,000,000',
-  `modBadgeLevel` int(11) NOT NULL
+  `modBadgeLevel` int(11) NOT NULL COMMENT '1=Normal 2=Elder'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
