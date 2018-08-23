@@ -17,7 +17,7 @@ $string["reuploadSection"] = "Przerzut";
 $string["levelReupload"] = "Przerzut poziomu";
 $string["songAdd"] = "Dodaj piosenkę";
 
-$string["browse"] = "Browse";
+$string["browse"] = "Przegląd";
 $string["statsSection"] = "Statystyki";
 $string["dailyTable"] = "Dzienne poziomy";
 $string["modActions"] = "Akcje moderatorów";
@@ -54,7 +54,7 @@ $string["stars"] = "Gwiazdki";
 $string["coins"] = "Monety";
 $string["accounts"] = "Konta";
 $string["levels"] = "Poziomy";
-$string["songs"] = "Songs";
+$string["songs"] = "Piosenki";
 $string["author"] = "Twórca";
 $string["name"] = "Nazwa";
 $string["userCoins"] = "Monety społeczności";
