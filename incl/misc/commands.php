@@ -119,7 +119,7 @@ class Commands {
 			$query->execute([':value' => "1", ':timestamp' => $uploadDate, ':id' => $accountID, ':levelID' => $levelID, ':dailytime' => $timestamp]);
 			return true;
 		}
-		if(substr($comment,0,6) == '!delet' AND $gs->checkPermission($accountID, "commandDelete")){
+		if(substr($comment,0,7) == '!delete' AND $gs->checkPermission($accountID, "commandDelete")){
 			if(!is_numeric($levelID)){
 				return false;
 			}
