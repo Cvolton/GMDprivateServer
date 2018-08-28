@@ -181,6 +181,11 @@ class mainLib {
 				$diff = 50;
 				$demon = 1;
 				break;
+			default:
+				$diffname = "N/A: " . $stars;
+				$diff = 0;
+				$demon = 0;
+				break;
 		}
 		return array('diff' => $diff, 'auto' => $auto, 'demon' => $demon, 'name' => $diffname);
 	}
