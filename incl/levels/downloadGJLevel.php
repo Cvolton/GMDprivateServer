@@ -69,11 +69,13 @@ if(!is_numeric($levelID)){
 		if($gs->checkModIPPermission("actionFreeCopy") == 1){
 			$pass = "1";
 		}
+		$xorPass = $pass;
 		if($gameVersion > 19){
 			$xor = new XORCipher();
-			$xorPass = base64_encode($xor->cipher($pass,26364));
+			if($pass != 0){
+				$xorPass = base64_encode($xor->cipher($pass,26364));
+			}
 		}else{
-			$xorPass = $pass;
 			$desc = $ep->remove(base64_decode($desc));
 		}
 		//submitting data

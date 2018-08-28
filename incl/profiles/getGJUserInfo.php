@@ -28,6 +28,9 @@ if($query->fetchColumn() > 0){
 	$query = "SELECT * FROM users WHERE extID = :extid";
 	$query = $db->prepare($query);
 	$query->execute([':extid' => $extid]);
+	if($query->rowCount() == 0){
+		exit("-1");
+	}
 	$user = $query->fetch();
 	//placeholders
 	$creatorpoints = round($user["creatorPoints"], PHP_ROUND_HALF_DOWN);
@@ -41,7 +44,11 @@ if($query->fetchColumn() > 0){
                     ) as result WHERE extID=:extid";
 	$query = $db->prepare($f);
 	$query->execute([':extid' => $extid]);
-	$rank = $query->fetchColumn();
+	if($query->rowCount() > 0){
+		$rank = $query->fetchColumn();
+	}else{
+		$rank = 0;
+	}
 	//var_dump($leaderboard);
 		//accinfo
 			$query = "SELECT youtubeurl,twitter,twitch, frS, mS, cS FROM accounts WHERE accountID = :extID";
