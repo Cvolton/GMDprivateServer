@@ -120,9 +120,11 @@ foreach($result as $daily){
 	DONE
 */
 $nocpppl = substr($nocpppl, 0, -1);
-$query4 = $db->prepare("UPDATE users SET creatorPoints = 0 WHERE userID IN ($nocpppl)");
-$query4->execute();
-echo "Reset CP of $nocpppl <br>";
+if ($nocpppl != "") {
+	$query4 = $db->prepare("UPDATE users SET creatorPoints = 0 WHERE userID IN ($nocpppl)");
+	$query4->execute();
+	echo "Reset CP of $nocpppl <br>";
+}
 foreach($people as $user => $cp){
 	echo "$user now has $cp creator points... <br>";
 	ob_flush();
