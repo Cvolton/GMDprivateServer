@@ -12,7 +12,7 @@ require "../lib/generateHash.php";
 $hash = new generateHash();
 
 //initializing variables
-$lvlstring = ""; $userstring = ""; $songsstring = ""; $lvlsmultistring = ""; $query; $str; $order = "uploadDate";
+$lvlstring; $userstring; $songsstring; $lvlsmultistring; $query; $str; $order = "uploadDate";
 $orderenabled = true;
 $params = array("NOT unlisted = 1");
 
