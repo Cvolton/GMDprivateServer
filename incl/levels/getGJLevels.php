@@ -95,6 +95,7 @@ if(!empty($_POST["gauntlet"])){
 	$actualgauntlet = $query->fetch();
 	$str = $actualgauntlet["level1"].",".$actualgauntlet["level2"].",".$actualgauntlet["level3"].",".$actualgauntlet["level4"].",".$actualgauntlet["level5"];
 	$params[] = "levelID IN ($str)";
+	$type = -1;
 }
 if(!empty($_POST["len"])){
 	$len = $ep->numbercolon($_POST["len"]);
@@ -228,6 +229,7 @@ if($order){
 $query .= " LIMIT 10 OFFSET $offset";
 //echo $query;
 $countquery = "SELECT count(*) $querybase";
+//echo $query;
 $query = $db->prepare($query);
 $query->execute();
 //echo $countquery;
