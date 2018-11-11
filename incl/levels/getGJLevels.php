@@ -154,7 +154,7 @@ if(!empty($_POST["str"])){
 	$str = $ep->remove($_POST["str"]);
 }
 if(isset($_POST["page"]) AND is_numeric($_POST["page"])){
-	$offset = $ep->number($_POST["page"]) * 10;
+	$offset = $ep->number($_POST["page"]) . "0";
 }else{
 	$offset = 0;
 }
