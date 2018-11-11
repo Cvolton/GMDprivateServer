@@ -28,7 +28,7 @@ if($mode==0){
 }else{
 	$modeColumn = "likes";
 }
-if(!empty($_POST["levelID"]) OR !$_POST["levelID"]){
+if(empty($_POST["levelID"]) OR !$_POST["levelID"]){
 	$displayLevelID = true;
 	$levelID = $ep->remove($_POST["userID"]);
 	$query = "SELECT levelID, commentID, timestamp, comment, userID, likes, isSpam, percent FROM comments WHERE userID = :levelID ORDER BY $modeColumn DESC LIMIT $count OFFSET $commentpage";
