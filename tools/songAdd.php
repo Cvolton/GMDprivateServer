@@ -7,6 +7,7 @@ $api_key = "dc467dd431fc48eb0244b0aead929ccd";
 if(!empty($_POST["songlink"])){
 $song = str_replace("www.dropbox.com","dl.dropboxusercontent.com",$_POST["songlink"]);
 if (filter_var($song, FILTER_VALIDATE_URL) == TRUE) {
+	$soundcloud = false;
 	if(strpos($song, 'soundcloud.com') !== false){
 		$soundcloud = true;
 		$songinfo = file_get_contents("https://api.soundcloud.com/resolve.json?url=".$song."&client_id=".$api_key);
