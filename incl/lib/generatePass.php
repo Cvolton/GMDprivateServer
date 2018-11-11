@@ -16,7 +16,7 @@ class generatePass
 		$query6 = $db->prepare("SELECT count(*) FROM actions WHERE type = '6' AND timestamp > :time AND value2 = :ip");
 		$query6->execute([':time' => $newtime, ':ip' => $ip]);
 		if($query6->fetchColumn() > 7){
-			return 0;
+			return -1;
 		}else{
 			$query = $db->prepare("SELECT accountID, salt, password, isAdmin FROM accounts WHERE userName LIKE :userName");
 			$query->execute([':userName' => $userName]);
