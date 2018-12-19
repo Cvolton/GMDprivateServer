@@ -93,6 +93,9 @@ if(!empty($_POST["gauntlet"])){
 	$query=$db->prepare("SELECT * FROM gauntlets WHERE ID = :gauntlet");
 	$query->execute([':gauntlet' => $gauntlet]);
 	$actualgauntlet = $query->fetch();
+	if ($actualgauntlet["sortBy"] != null) {
+		$order = $actualgauntlet["sortBy"];
+	}
 	$str = $actualgauntlet["level1"].",".$actualgauntlet["level2"].",".$actualgauntlet["level3"].",".$actualgauntlet["level4"].",".$actualgauntlet["level5"];
 	$params[] = "levelID IN ($str)";
 	$type = -1;

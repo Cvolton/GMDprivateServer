@@ -198,7 +198,8 @@ CREATE TABLE `gauntlets` (
   `level2` int(11) NOT NULL,
   `level3` int(11) NOT NULL,
   `level4` int(11) NOT NULL,
-  `level5` int(11) NOT NULL
+  `level5` int(11) NOT NULL,
+  `sortBy` varchar(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
