@@ -17,7 +17,7 @@ $string["reuploadSection"] = "Transfer";
 $string["levelReupload"] = "Bölüm Transfer Et";
 $string["songAdd"] = "Şarkı Transfer Et";
 
-$string["browse"] = "Browse";
+$string["browse"] = "Gez";
 $string["statsSection"] = "İstatistik";
 $string["dailyTable"] = "Günlük Bölümler";
 $string["modActions"] = "Mod Günlüğü";
