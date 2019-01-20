@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.7.0
+-- version 4.8.3
 -- https://www.phpmyadmin.net/
 --
--- Počítač: localhost
--- Vytvořeno: Čtv 29. bře 2018, 19:23
--- Verze serveru: 10.1.23-MariaDB-9+deb9u1
--- Verze PHP: 7.1.12-1+0~20171129100725.11+jessie~1.gbp8ded15
+-- Хост: localhost:3306
+-- Время создания: Янв 20 2019 г., 16:46
+-- Версия сервера: 10.1.37-MariaDB-cll-lve
+-- Версия PHP: 7.2.7
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -19,13 +19,13 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Databáze: `public_cvoltongdps`
+-- База данных: `bitorynx_gdprivate`
 --
 
 -- --------------------------------------------------------
 
 --
--- Struktura tabulky `acccomments`
+-- Структура таблицы `acccomments`
 --
 
 CREATE TABLE `acccomments` (
@@ -42,7 +42,7 @@ CREATE TABLE `acccomments` (
 -- --------------------------------------------------------
 
 --
--- Struktura tabulky `accounts`
+-- Структура таблицы `accounts`
 --
 
 CREATE TABLE `accounts` (
@@ -74,7 +74,7 @@ CREATE TABLE `accounts` (
 -- --------------------------------------------------------
 
 --
--- Struktura tabulky `actions`
+-- Структура таблицы `actions`
 --
 
 CREATE TABLE `actions` (
@@ -93,7 +93,7 @@ CREATE TABLE `actions` (
 -- --------------------------------------------------------
 
 --
--- Struktura tabulky `bannedips`
+-- Структура таблицы `bannedips`
 --
 
 CREATE TABLE `bannedips` (
@@ -104,7 +104,7 @@ CREATE TABLE `bannedips` (
 -- --------------------------------------------------------
 
 --
--- Struktura tabulky `blocks`
+-- Структура таблицы `blocks`
 --
 
 CREATE TABLE `blocks` (
@@ -116,7 +116,7 @@ CREATE TABLE `blocks` (
 -- --------------------------------------------------------
 
 --
--- Struktura tabulky `comments`
+-- Структура таблицы `comments`
 --
 
 CREATE TABLE `comments` (
@@ -135,7 +135,7 @@ CREATE TABLE `comments` (
 -- --------------------------------------------------------
 
 --
--- Struktura tabulky `cpshares`
+-- Структура таблицы `cpshares`
 --
 
 CREATE TABLE `cpshares` (
@@ -147,7 +147,7 @@ CREATE TABLE `cpshares` (
 -- --------------------------------------------------------
 
 --
--- Struktura tabulky `dailyfeatures`
+-- Структура таблицы `dailyfeatures`
 --
 
 CREATE TABLE `dailyfeatures` (
@@ -160,7 +160,7 @@ CREATE TABLE `dailyfeatures` (
 -- --------------------------------------------------------
 
 --
--- Struktura tabulky `friendreqs`
+-- Структура таблицы `friendreqs`
 --
 
 CREATE TABLE `friendreqs` (
@@ -175,7 +175,7 @@ CREATE TABLE `friendreqs` (
 -- --------------------------------------------------------
 
 --
--- Struktura tabulky `friendships`
+-- Структура таблицы `friendships`
 --
 
 CREATE TABLE `friendships` (
@@ -189,7 +189,7 @@ CREATE TABLE `friendships` (
 -- --------------------------------------------------------
 
 --
--- Struktura tabulky `gauntlets`
+-- Структура таблицы `gauntlets`
 --
 
 CREATE TABLE `gauntlets` (
@@ -204,7 +204,7 @@ CREATE TABLE `gauntlets` (
 -- --------------------------------------------------------
 
 --
--- Struktura tabulky `levels`
+-- Структура таблицы `levels`
 --
 
 CREATE TABLE `levels` (
@@ -230,8 +230,8 @@ CREATE TABLE `levels` (
   `levelInfo` mediumtext COLLATE utf8_unicode_ci NOT NULL,
   `secret` mediumtext COLLATE utf8_unicode_ci NOT NULL,
   `starDifficulty` int(11) NOT NULL DEFAULT '0' COMMENT '0=N/A 10=EASY 20=NORMAL 30=HARD 40=HARDER 50=INSANE 50=AUTO 50=DEMON',
-  `downloads` int(11) NOT NULL DEFAULT '300',
-  `likes` int(11) NOT NULL DEFAULT '100',
+  `downloads` int(11) NOT NULL,
+  `likes` int(11) NOT NULL,
   `starDemon` int(1) NOT NULL DEFAULT '0',
   `starAuto` varchar(11) COLLATE utf8_unicode_ci NOT NULL DEFAULT '0',
   `starStars` int(11) NOT NULL DEFAULT '0',
@@ -256,7 +256,7 @@ CREATE TABLE `levels` (
 -- --------------------------------------------------------
 
 --
--- Struktura tabulky `levelscores`
+-- Структура таблицы `levelscores`
 --
 
 CREATE TABLE `levelscores` (
@@ -272,7 +272,7 @@ CREATE TABLE `levelscores` (
 -- --------------------------------------------------------
 
 --
--- Struktura tabulky `links`
+-- Структура таблицы `links`
 --
 
 CREATE TABLE `links` (
@@ -288,7 +288,7 @@ CREATE TABLE `links` (
 -- --------------------------------------------------------
 
 --
--- Struktura tabulky `mappacks`
+-- Структура таблицы `mappacks`
 --
 
 CREATE TABLE `mappacks` (
@@ -305,7 +305,7 @@ CREATE TABLE `mappacks` (
 -- --------------------------------------------------------
 
 --
--- Struktura tabulky `messages`
+-- Структура таблицы `messages`
 --
 
 CREATE TABLE `messages` (
@@ -324,7 +324,7 @@ CREATE TABLE `messages` (
 -- --------------------------------------------------------
 
 --
--- Struktura tabulky `modactions`
+-- Структура таблицы `modactions`
 --
 
 CREATE TABLE `modactions` (
@@ -344,7 +344,7 @@ CREATE TABLE `modactions` (
 -- --------------------------------------------------------
 
 --
--- Struktura tabulky `modipperms`
+-- Структура таблицы `modipperms`
 --
 
 CREATE TABLE `modipperms` (
@@ -355,7 +355,7 @@ CREATE TABLE `modipperms` (
 -- --------------------------------------------------------
 
 --
--- Struktura tabulky `modips`
+-- Структура таблицы `modips`
 --
 
 CREATE TABLE `modips` (
@@ -369,7 +369,18 @@ CREATE TABLE `modips` (
 -- --------------------------------------------------------
 
 --
--- Struktura tabulky `poll`
+-- Структура таблицы `pages`
+--
+
+CREATE TABLE `pages` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `body` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `poll`
 --
 
 CREATE TABLE `poll` (
@@ -381,7 +392,7 @@ CREATE TABLE `poll` (
 -- --------------------------------------------------------
 
 --
--- Struktura tabulky `quests`
+-- Структура таблицы `quests`
 --
 
 CREATE TABLE `quests` (
@@ -395,7 +406,7 @@ CREATE TABLE `quests` (
 -- --------------------------------------------------------
 
 --
--- Struktura tabulky `reports`
+-- Структура таблицы `reports`
 --
 
 CREATE TABLE `reports` (
@@ -407,7 +418,7 @@ CREATE TABLE `reports` (
 -- --------------------------------------------------------
 
 --
--- Struktura tabulky `roleassign`
+-- Структура таблицы `roleassign`
 --
 
 CREATE TABLE `roleassign` (
@@ -419,7 +430,7 @@ CREATE TABLE `roleassign` (
 -- --------------------------------------------------------
 
 --
--- Struktura tabulky `roles`
+-- Структура таблицы `roles`
 --
 
 CREATE TABLE `roles` (
@@ -467,7 +478,20 @@ CREATE TABLE `roles` (
 -- --------------------------------------------------------
 
 --
--- Struktura tabulky `songs`
+-- Структура таблицы `servers`
+--
+
+CREATE TABLE `servers` (
+  `id` int(11) NOT NULL,
+  `serverIP` varchar(128) NOT NULL,
+  `serverPort` varchar(128) NOT NULL,
+  `serverName` varchar(512) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `songs`
 --
 
 CREATE TABLE `songs` (
@@ -486,7 +510,24 @@ CREATE TABLE `songs` (
 -- --------------------------------------------------------
 
 --
--- Struktura tabulky `users`
+-- Структура таблицы `suggest`
+--
+
+CREATE TABLE `suggest` (
+  `suggestBy` int(11) NOT NULL DEFAULT '0',
+  `suggestLevelId` int(11) NOT NULL DEFAULT '0',
+  `suggestDifficulty` int(11) NOT NULL DEFAULT '0' COMMENT '0 - NA 10 - easy 20 - normal 30 - hard 40 - harder 50 - insane/demon/auto',
+  `suggestStars` int(11) NOT NULL DEFAULT '0',
+  `suggestFeatured` int(11) NOT NULL DEFAULT '0',
+  `suggestAuto` int(11) NOT NULL DEFAULT '0',
+  `suggestDemon` int(11) NOT NULL DEFAULT '0',
+  `timestamp` int(11) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `users`
 --
 
 CREATE TABLE `users` (
@@ -529,18 +570,18 @@ CREATE TABLE `users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
--- Klíče pro exportované tabulky
+-- Индексы сохранённых таблиц
 --
 
 --
--- Klíče pro tabulku `acccomments`
+-- Индексы таблицы `acccomments`
 --
 ALTER TABLE `acccomments`
   ADD PRIMARY KEY (`commentID`),
   ADD KEY `userID` (`userID`);
 
 --
--- Klíče pro tabulku `accounts`
+-- Индексы таблицы `accounts`
 --
 ALTER TABLE `accounts`
   ADD PRIMARY KEY (`accountID`),
@@ -548,52 +589,52 @@ ALTER TABLE `accounts`
   ADD KEY `isAdmin` (`isAdmin`);
 
 --
--- Klíče pro tabulku `actions`
+-- Индексы таблицы `actions`
 --
 ALTER TABLE `actions`
   ADD PRIMARY KEY (`ID`);
 
 --
--- Klíče pro tabulku `bannedips`
+-- Индексы таблицы `bannedips`
 --
 ALTER TABLE `bannedips`
   ADD PRIMARY KEY (`ID`);
 
 --
--- Klíče pro tabulku `blocks`
+-- Индексы таблицы `blocks`
 --
 ALTER TABLE `blocks`
   ADD PRIMARY KEY (`ID`),
   ADD UNIQUE KEY `ID` (`ID`);
 
 --
--- Klíče pro tabulku `comments`
+-- Индексы таблицы `comments`
 --
 ALTER TABLE `comments`
   ADD PRIMARY KEY (`commentID`),
   ADD KEY `levelID` (`levelID`);
 
 --
--- Klíče pro tabulku `cpshares`
+-- Индексы таблицы `cpshares`
 --
 ALTER TABLE `cpshares`
   ADD PRIMARY KEY (`shareID`);
 
 --
--- Klíče pro tabulku `dailyfeatures`
+-- Индексы таблицы `dailyfeatures`
 --
 ALTER TABLE `dailyfeatures`
   ADD PRIMARY KEY (`feaID`);
 
 --
--- Klíče pro tabulku `friendreqs`
+-- Индексы таблицы `friendreqs`
 --
 ALTER TABLE `friendreqs`
   ADD PRIMARY KEY (`ID`),
   ADD KEY `toAccountID` (`toAccountID`);
 
 --
--- Klíče pro tabulku `friendships`
+-- Индексы таблицы `friendships`
 --
 ALTER TABLE `friendships`
   ADD PRIMARY KEY (`ID`),
@@ -603,14 +644,14 @@ ALTER TABLE `friendships`
   ADD KEY `isNew2` (`isNew2`);
 
 --
--- Klíče pro tabulku `gauntlets`
+-- Индексы таблицы `gauntlets`
 --
 ALTER TABLE `gauntlets`
   ADD PRIMARY KEY (`ID`),
   ADD KEY `level5` (`level5`);
 
 --
--- Klíče pro tabulku `levels`
+-- Индексы таблицы `levels`
 --
 ALTER TABLE `levels`
   ADD PRIMARY KEY (`levelID`),
@@ -630,88 +671,100 @@ ALTER TABLE `levels`
   ADD KEY `twoPlayer` (`twoPlayer`);
 
 --
--- Klíče pro tabulku `levelscores`
+-- Индексы таблицы `levelscores`
 --
 ALTER TABLE `levelscores`
   ADD PRIMARY KEY (`scoreID`),
   ADD KEY `levelID` (`levelID`);
 
 --
--- Klíče pro tabulku `links`
+-- Индексы таблицы `links`
 --
 ALTER TABLE `links`
   ADD PRIMARY KEY (`ID`);
 
 --
--- Klíče pro tabulku `mappacks`
+-- Индексы таблицы `mappacks`
 --
 ALTER TABLE `mappacks`
   ADD PRIMARY KEY (`ID`);
 
 --
--- Klíče pro tabulku `messages`
+-- Индексы таблицы `messages`
 --
 ALTER TABLE `messages`
   ADD PRIMARY KEY (`messageID`),
   ADD KEY `toAccountID` (`toAccountID`);
 
 --
--- Klíče pro tabulku `modactions`
+-- Индексы таблицы `modactions`
 --
 ALTER TABLE `modactions`
   ADD PRIMARY KEY (`ID`);
 
 --
--- Klíče pro tabulku `modipperms`
+-- Индексы таблицы `modipperms`
 --
 ALTER TABLE `modipperms`
   ADD PRIMARY KEY (`categoryID`);
 
 --
--- Klíče pro tabulku `modips`
+-- Индексы таблицы `modips`
 --
 ALTER TABLE `modips`
   ADD PRIMARY KEY (`ID`);
 
 --
--- Klíče pro tabulku `poll`
+-- Индексы таблицы `pages`
+--
+ALTER TABLE `pages`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Индексы таблицы `poll`
 --
 ALTER TABLE `poll`
   ADD PRIMARY KEY (`optionID`);
 
 --
--- Klíče pro tabulku `quests`
+-- Индексы таблицы `quests`
 --
 ALTER TABLE `quests`
   ADD PRIMARY KEY (`ID`);
 
 --
--- Klíče pro tabulku `reports`
+-- Индексы таблицы `reports`
 --
 ALTER TABLE `reports`
   ADD PRIMARY KEY (`ID`);
 
 --
--- Klíče pro tabulku `roleassign`
+-- Индексы таблицы `roleassign`
 --
 ALTER TABLE `roleassign`
   ADD PRIMARY KEY (`assignID`);
 
 --
--- Klíče pro tabulku `roles`
+-- Индексы таблицы `roles`
 --
 ALTER TABLE `roles`
   ADD PRIMARY KEY (`roleID`);
 
 --
--- Klíče pro tabulku `songs`
+-- Индексы таблицы `servers`
+--
+ALTER TABLE `servers`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Индексы таблицы `songs`
 --
 ALTER TABLE `songs`
   ADD PRIMARY KEY (`ID`),
   ADD KEY `name` (`name`);
 
 --
--- Klíče pro tabulku `users`
+-- Индексы таблицы `users`
 --
 ALTER TABLE `users`
   ADD PRIMARY KEY (`userID`),
@@ -730,139 +783,177 @@ ALTER TABLE `users`
   ADD KEY `isCreatorBanned` (`isCreatorBanned`);
 
 --
--- AUTO_INCREMENT pro tabulky
+-- AUTO_INCREMENT для сохранённых таблиц
 --
 
 --
--- AUTO_INCREMENT pro tabulku `acccomments`
+-- AUTO_INCREMENT для таблицы `acccomments`
 --
 ALTER TABLE `acccomments`
   MODIFY `commentID` int(11) NOT NULL AUTO_INCREMENT;
+
 --
--- AUTO_INCREMENT pro tabulku `accounts`
+-- AUTO_INCREMENT для таблицы `accounts`
 --
 ALTER TABLE `accounts`
   MODIFY `accountID` int(11) NOT NULL AUTO_INCREMENT;
+
 --
--- AUTO_INCREMENT pro tabulku `actions`
+-- AUTO_INCREMENT для таблицы `actions`
 --
 ALTER TABLE `actions`
   MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+
 --
--- AUTO_INCREMENT pro tabulku `bannedips`
+-- AUTO_INCREMENT для таблицы `bannedips`
 --
 ALTER TABLE `bannedips`
   MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+
 --
--- AUTO_INCREMENT pro tabulku `blocks`
+-- AUTO_INCREMENT для таблицы `blocks`
 --
 ALTER TABLE `blocks`
   MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+
 --
--- AUTO_INCREMENT pro tabulku `comments`
+-- AUTO_INCREMENT для таблицы `comments`
 --
 ALTER TABLE `comments`
   MODIFY `commentID` int(11) NOT NULL AUTO_INCREMENT;
+
 --
--- AUTO_INCREMENT pro tabulku `cpshares`
+-- AUTO_INCREMENT для таблицы `cpshares`
 --
 ALTER TABLE `cpshares`
   MODIFY `shareID` int(11) NOT NULL AUTO_INCREMENT;
+
 --
--- AUTO_INCREMENT pro tabulku `dailyfeatures`
+-- AUTO_INCREMENT для таблицы `dailyfeatures`
 --
 ALTER TABLE `dailyfeatures`
   MODIFY `feaID` int(11) NOT NULL AUTO_INCREMENT;
+
 --
--- AUTO_INCREMENT pro tabulku `friendreqs`
+-- AUTO_INCREMENT для таблицы `friendreqs`
 --
 ALTER TABLE `friendreqs`
   MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+
 --
--- AUTO_INCREMENT pro tabulku `friendships`
+-- AUTO_INCREMENT для таблицы `friendships`
 --
 ALTER TABLE `friendships`
   MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+
 --
--- AUTO_INCREMENT pro tabulku `gauntlets`
+-- AUTO_INCREMENT для таблицы `gauntlets`
 --
 ALTER TABLE `gauntlets`
   MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+
 --
--- AUTO_INCREMENT pro tabulku `levels`
+-- AUTO_INCREMENT для таблицы `levels`
 --
 ALTER TABLE `levels`
   MODIFY `levelID` int(11) NOT NULL AUTO_INCREMENT;
+
 --
--- AUTO_INCREMENT pro tabulku `levelscores`
+-- AUTO_INCREMENT для таблицы `levelscores`
 --
 ALTER TABLE `levelscores`
   MODIFY `scoreID` int(11) NOT NULL AUTO_INCREMENT;
+
 --
--- AUTO_INCREMENT pro tabulku `links`
+-- AUTO_INCREMENT для таблицы `links`
 --
 ALTER TABLE `links`
   MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+
 --
--- AUTO_INCREMENT pro tabulku `mappacks`
+-- AUTO_INCREMENT для таблицы `mappacks`
 --
 ALTER TABLE `mappacks`
   MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+
 --
--- AUTO_INCREMENT pro tabulku `messages`
+-- AUTO_INCREMENT для таблицы `messages`
 --
 ALTER TABLE `messages`
   MODIFY `messageID` int(11) NOT NULL AUTO_INCREMENT;
+
 --
--- AUTO_INCREMENT pro tabulku `modactions`
+-- AUTO_INCREMENT для таблицы `modactions`
 --
 ALTER TABLE `modactions`
   MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+
 --
--- AUTO_INCREMENT pro tabulku `modipperms`
+-- AUTO_INCREMENT для таблицы `modipperms`
 --
 ALTER TABLE `modipperms`
   MODIFY `categoryID` int(11) NOT NULL AUTO_INCREMENT;
+
 --
--- AUTO_INCREMENT pro tabulku `modips`
+-- AUTO_INCREMENT для таблицы `modips`
 --
 ALTER TABLE `modips`
   MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+
 --
--- AUTO_INCREMENT pro tabulku `poll`
+-- AUTO_INCREMENT для таблицы `pages`
+--
+ALTER TABLE `pages`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT для таблицы `poll`
 --
 ALTER TABLE `poll`
   MODIFY `optionID` int(11) NOT NULL AUTO_INCREMENT;
+
 --
--- AUTO_INCREMENT pro tabulku `quests`
+-- AUTO_INCREMENT для таблицы `quests`
 --
 ALTER TABLE `quests`
   MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+
 --
--- AUTO_INCREMENT pro tabulku `reports`
+-- AUTO_INCREMENT для таблицы `reports`
 --
 ALTER TABLE `reports`
   MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+
 --
--- AUTO_INCREMENT pro tabulku `roleassign`
+-- AUTO_INCREMENT для таблицы `roleassign`
 --
 ALTER TABLE `roleassign`
   MODIFY `assignID` bigint(20) NOT NULL AUTO_INCREMENT;
+
 --
--- AUTO_INCREMENT pro tabulku `roles`
+-- AUTO_INCREMENT для таблицы `roles`
 --
 ALTER TABLE `roles`
   MODIFY `roleID` bigint(11) NOT NULL AUTO_INCREMENT;
+
 --
--- AUTO_INCREMENT pro tabulku `songs`
+-- AUTO_INCREMENT для таблицы `servers`
+--
+ALTER TABLE `servers`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT для таблицы `songs`
 --
 ALTER TABLE `songs`
   MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+
 --
--- AUTO_INCREMENT pro tabulku `users`
+-- AUTO_INCREMENT для таблицы `users`
 --
 ALTER TABLE `users`
-  MODIFY `userID` int(11) NOT NULL AUTO_INCREMENT;COMMIT;
+  MODIFY `userID` int(11) NOT NULL AUTO_INCREMENT;
+COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
