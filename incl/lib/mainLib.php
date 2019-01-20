@@ -181,6 +181,11 @@ class mainLib {
 				$diff = 50;
 				$demon = 1;
 				break;
+			default:
+				$diffname = "N/A: " . $stars;
+				$diff = 0;
+				$demon = 0;
+				break;
 		}
 		return array('diff' => $diff, 'auto' => $auto, 'demon' => $demon, 'name' => $diffname);
 	}
@@ -322,6 +327,60 @@ class mainLib {
 		}
 		return $gauntletname;
 	}
+
+	function makeTime($delta)
+	{
+		if ($delta < 31536000)
+		{
+			if ($delta < 2628000)
+			{
+				if ($delta < 604800)
+				{
+					if ($delta < 86400)
+					{
+						if ($delta < 3600)
+						{
+							if ($delta < 60)
+							{
+								return $delta." second".($delta == 1 ? "" : "s");
+							}
+							else
+							{
+            					$rounded = floor($delta / 60);
+								return $rounded." minute".($rounded == 1 ? "" : "s");
+							}
+						}
+						else
+						{
+							$rounded = floor($delta / 3600);
+							return $rounded." hour".($rounded == 1 ? "" : "s");
+						}
+					}
+					else
+					{
+						$rounded = floor($delta / 86400);
+						return $rounded." day".($rounded == 1 ? "" : "s");
+					}
+				}
+				else
+				{
+					$rounded = floor($delta / 604800);
+					return $rounded." week".($rounded == 1 ? "" : "s");
+				}
+			}
+			else
+			{
+				$rounded = floor($delta / 2628000); 
+				return $rounded." month".($rounded == 1 ? "" : "s");
+			}
+		}
+		else
+		{
+			$rounded = floor($delta / 31536000);
+			return $rounded." year".($rounded == 1 ? "" : "s");
+		}
+	}
+
 	public function getUserID($extID, $userName = "Undefined") {
 		include __DIR__ . "/connection.php";
 		if(is_numeric($extID)){
@@ -654,6 +713,12 @@ class mainLib {
 		$query->execute([':value' => $this->getDiffFromStars($stars)["name"], ':timestamp' => time(), ':id' => $accountID, ':value2' => $stars, ':levelID' => $levelID]);
 		
 		
+	}
+	public function suggestLevel($accountID, $levelID, $difficulty, $stars, $feat, $auto, $demon){
+	include __DIR__ . "/connection.php";
+	$query = "INSERT INTO suggest (suggestBy, suggestLevelID, suggestDifficulty, suggestStars, suggestFeatured, suggestAuto, suggestDemon, timestamp) VALUES (:account, :level, :diff, :stars, :feat, :auto, :demon, :timestamp)";
+        $query = $db->prepare($query);
+		$query->execute([':account' => $accountID, ':level' => $levelID, ':diff' => $difficulty, ':stars' => $stars, ':feat' => $feat, ':auto' => $auto, ':demon' => $demon, ':timestamp' => time()]);
 	}
 	public function featureLevel($accountID, $levelID, $feature){
 		include __DIR__ . "/connection.php";
