@@ -33,7 +33,7 @@ echo str_pad("Level ID", 16, " ", STR_PAD_LEFT) . " | Level Name\r\n------------
 foreach($levels as $level){
 	$levelID = str_pad($level["levelID"], 16, " ", STR_PAD_LEFT);
 	$levelName = $level["levelName"];
-	echo "$levelID | $levelName\r\n"
+	echo "$levelID | $levelName\r\n";
 }
 echo "```";
 ?>

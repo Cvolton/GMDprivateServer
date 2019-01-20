@@ -15,7 +15,7 @@ if(isset($_POST["userName"]) AND isset($_POST["password"])){
 	$userName = $_POST["userName"];
 	$password = $_POST["password"];
 	$valid = $gp->isValidUsrname($userName, $password);
-	if($valid == 0){
+	if($valid != 1){
 		$dl->printLoginBoxInvalid();
 		exit();
 	}

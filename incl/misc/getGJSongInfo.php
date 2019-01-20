@@ -56,7 +56,7 @@ if($query3->rowCount() == 0) {
 			$result = explode('#',$result)[2];
 		}else{
 			$ch = curl_init(); 
-			curl_setopt($ch, CURLOPT_URL, "http://www.newgrounds.com/audio/listen/".$songid); 
+			curl_setopt($ch, CURLOPT_URL, "https://www.newgrounds.com/audio/listen/".$songid); 
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); 
 			$songinfo = curl_exec($ch); 
 			curl_close($ch);
