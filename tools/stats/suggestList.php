@@ -27,7 +27,7 @@ if(!empty($_POST["userName"]) AND !empty($_POST["password"])){
 		}
 			echo "</table>";
 		}else{
-			echo "You don't have permissons to view content on this page. <a href='suggestList.php'>Try again.</a>\n";
+			echo "You don't have permissions to view content on this page. <a href='suggestList.php'>Try again.</a>\n";
 		}
 	}else{
 		echo "Invalid account/password. <a href='suggestList.php'>Try again.</a>";
