@@ -478,19 +478,6 @@ CREATE TABLE `roles` (
 -- --------------------------------------------------------
 
 --
--- Table structure `servers`
---
-
-CREATE TABLE `servers` (
-  `id` int(11) NOT NULL,
-  `serverIP` varchar(128) NOT NULL,
-  `serverPort` varchar(128) NOT NULL,
-  `serverName` varchar(512) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
--- --------------------------------------------------------
-
---
 -- Table structure `songs`
 --
 
@@ -751,12 +738,6 @@ ALTER TABLE `roles`
   ADD PRIMARY KEY (`roleID`);
 
 --
--- Table indexes `servers`
---
-ALTER TABLE `servers`
-  ADD PRIMARY KEY (`id`);
-
---
 -- Table indexes `songs`
 --
 ALTER TABLE `songs`
@@ -935,12 +916,6 @@ ALTER TABLE `roleassign`
 --
 ALTER TABLE `roles`
   MODIFY `roleID` bigint(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `servers`
---
-ALTER TABLE `servers`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `songs`
