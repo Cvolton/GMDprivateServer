@@ -369,17 +369,6 @@ CREATE TABLE `modips` (
 -- --------------------------------------------------------
 
 --
--- Table structure `pages`
---
-
-CREATE TABLE `pages` (
-  `id` int(10) UNSIGNED NOT NULL,
-  `body` text NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
 -- Table structure `poll`
 --
 
@@ -702,12 +691,6 @@ ALTER TABLE `modips`
   ADD PRIMARY KEY (`ID`);
 
 --
--- Table indexes `pages`
---
-ALTER TABLE `pages`
-  ADD PRIMARY KEY (`id`);
-
---
 -- Table indexes `poll`
 --
 ALTER TABLE `poll`
@@ -880,12 +863,6 @@ ALTER TABLE `modipperms`
 --
 ALTER TABLE `modips`
   MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `pages`
---
-ALTER TABLE `pages`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `poll`
