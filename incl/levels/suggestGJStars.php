@@ -16,13 +16,18 @@ if($accountID != "" AND $gjp != ""){
 	$GJPCheck = new GJPCheck();
 	$gjpresult = $GJPCheck->check($gjp,$accountID);
 	if($gjpresult == 1){
-		$permState = $gs->checkPermission($accountID, "actionRateStars");
-		if($permState){
-			$difficulty = $gs->getDiffFromStars($stars);
+		$difficulty = $gs->getDiffFromStars($stars);
+		$rate = $gs->checkPermission($accountID, "actionRateStars");
+		$mod = $gs->checkPermission($accountID, "actionRequestMod");
+		if($rate){
 			$gs->rateLevel($accountID, $levelID, $stars, $difficulty["diff"], $difficulty["auto"], $difficulty["demon"]);
 			$gs->featureLevel($accountID, $levelID, $feature);
 			$gs->verifyCoinsLevel($accountID, $levelID, 1);
 			echo 1;
+		}else if(!$rate && $mod){
+			$gs->suggestLevel($accountID, $levelID, $difficulty["diff"], $stars, $feature, $difficulty["auto"], $difficulty["demon"]);
+			echo 1;
+		}
 		}else{
 			echo -1;
 		}
