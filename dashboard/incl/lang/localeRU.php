@@ -12,6 +12,7 @@ If you do not agree to these terms, remove this file from the folder that it is 
 
 TL;DR if you use this outside cvoltongdps i can delet your site kthxbye
  - Artemiy "TheFox" Aleksandrov Borisovich.
+ - Sergey "bit0r1n" Khomich
 */
 
 /*
@@ -26,17 +27,18 @@ $string["unlistedLevels"] = "Скрытые уровни";
 
 $string["modTools"] = "Меню модератора";
 $string["leaderboardBan"] = "Бан";
-$string["packCreate"] = "Создатель Пакетов Карт";
+$string["packCreate"] = "Создать набор карт";
 
-$string["reuploadSection"] = "Добавка данных";
-$string["levelReupload"] = "Добавить с другого сервера";
+$string["reuploadSection"] = "Загрузить";
+$string["levelReupload"] = "Уровень с другого сервера";
 $string["songAdd"] = "Добавить песню";
 
-$string["browse"] = "Просматривать";
+$string["browse"] = "Списки";
 $string["statsSection"] = "Статистика";
 $string["dailyTable"] = "Дневные уровни";
-$string["modActions"] = "Модераторские действия";
-$string["packTable"] = "Все Пакеты Карт";
+$string["modActions"] = "Действия модераторов";
+$string["packTable"] = "Все наборы карт";
+$string["gauntletTable"] = "Подземелья";
 $string["leaderboardTime"] = "Лидерборды";
 
 $string["language"] = "Язык";
@@ -51,11 +53,11 @@ $string["login"] = "Войти";
 */
 $string["reuploadBTN"] = "Загрузка с другого сервера";
 $string["errorGeneric"] = "Ошибка:";
-$string["tryAgainBTN"] = "Попробовать опять";
+$string["tryAgainBTN"] = "Попробовать заново";
 //songAdd.php
 $string["songAddUrlFieldLabel"] = "URL Песни: (Только прямые ссылки, ссылки Dropbox и ссылки Soundcloud)";
 $string["songAddUrlFieldPlaceholder"] = "URL Песни";
-$string["songAddAnotherBTN"] = "Ещё песня!";
+$string["songAddAnotherBTN"] = "Загрузить ещё песню";
 ///errors
 $string["songAddError-2"] = "Что-то не то с URL";
 $string["songAddError-3"] = "Уже добавлена";
@@ -64,27 +66,28 @@ $string["songAddError-4"] = "Невозможно добавить";
 /*
 	STATS
 */
-$string["ID"] = "ИД";
+$string["ID"] = "ID";
 $string["stars"] = "Звёзды";
 $string["coins"] = "Монеты";
 $string["accounts"] = "Аккаунты";
 $string["levels"] = "Уровни";
 $string["songs"] = "Песни";
-$string["author"] = "Создаватель";
+$string["author"] = "Создатель";
 $string["name"] = "Название";
-$string["userCoins"] = "Создательские Монеты";
+$string["userCoins"] = "Серебрянные монеты";
 $string["time"] = "Время";
 $string["deletedLevel"] = "Удалённый уровень";
 $string["mod"] = "Модератор";
 $string["count"] = "Число";
 $string["ratedLevels"] = "Оценнённые уровни";
-$string["lastSeen"] = "Виден прошлый раз";
+$string["lastSeen"] = "Заходил прошлый раз";
 $string["level"] = "Уровень";
 $string["pageInfo"] = "Страница %s из %s-и";
 $string["first"] = "Первая";
-$string["previous"] = "Последняя";
-$string["next"] = "Следуйщая";
+$string["previous"] = "Предыдущая";
+$string["next"] = "Следующая";
 $string["last"] = "Последняя";
+$string["go"] = "Перейти";
 //modActionsList
 $string["action"] = "Функция";
 $string["value"] = "1-е значение";
@@ -99,7 +102,7 @@ $string["modAction7"] = "Изминили создателя";
 $string["modAction8"] = "Переименовали уровень";
 $string["modAction9"] = "Изменили пароль уровня";
 $string["modAction10"] = "Изменили сложность уровня";
-$string["modAction11"] = "Поделились СП (Создательскими Поинтами)";
+$string["modAction11"] = "Поделились CP (Очки креатора)";
 $string["modAction12"] = "Опубликовали";
 $string["modAction13"] = "Изменили описание";
 $string["modAction14"] = "Включили/выключили ЛДМ";
@@ -107,4 +110,4 @@ $string["modAction15"] = "Бан по лидербордам";
 //errors
 $string["errorNoAccWithPerm"] = "Ошибка: никаких аккаунтов с возмоюностью '%s' были найдены.";
 
-//Translation done by TheFox#5812
+//Translation done by TheFox#5812 and bit0r1n#1707
