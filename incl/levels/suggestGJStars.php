@@ -31,6 +31,7 @@ if($accountID != "" AND $gjp != ""){
 		}else{
 			echo -1;
 		}
-	}else{echo -1;}
-}else{echo -1;}
+	}else{
+		echo -1;
+	}
 ?>
