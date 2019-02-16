@@ -17,7 +17,7 @@ $string["reuploadSection"] = "Przerzut";
 $string["levelReupload"] = "Przerzut poziomu";
 $string["songAdd"] = "Dodaj piosenkę";
 
-$string["browse"] = "Browse";
+$string["browse"] = "Przegląd";
 $string["statsSection"] = "Statystyki";
 $string["dailyTable"] = "Dzienne poziomy";
 $string["modActions"] = "Akcje moderatorów";
@@ -54,7 +54,7 @@ $string["stars"] = "Gwiazdki";
 $string["coins"] = "Monety";
 $string["accounts"] = "Konta";
 $string["levels"] = "Poziomy";
-$string["songs"] = "Songs";
+$string["songs"] = "Piosenki";
 $string["author"] = "Twórca";
 $string["name"] = "Nazwa";
 $string["userCoins"] = "Monety społeczności";
@@ -96,4 +96,5 @@ $string["errorNoAccWithPerm"] = "Błąd: Nie znaleziono żadnych kont z zezwolen
    exclusively for CvoltonGDPS by Tygrysek, ONLY ALLOWED FOR USE
    on CvoltonGDPS. If you would like to use it for your GDPS, please contact.
    IF I FIND YOU USING IT WITHOUT ASKING ME I WILL DESTROY YOUR HOUSE
+   Improved by Lord Zaxior#3444
 */
