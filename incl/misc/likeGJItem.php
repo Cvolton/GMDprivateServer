@@ -11,6 +11,11 @@ if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
 } else {
 	$ip = $_SERVER['REMOTE_ADDR'];
 }
+
+if(empty($_POST["gjp"])){
+	die("-1");
+}
+
 $itemID = $ep->remove($_POST["itemID"]);
 $query6 = $db->prepare("SELECT count(*) FROM actions WHERE type=:type AND value=:itemID AND value2=:ip");
 $query6->execute([':type' => $type, ':itemID' => $itemID, ':ip' => $ip]);
