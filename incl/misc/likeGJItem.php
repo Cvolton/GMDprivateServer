@@ -2,6 +2,7 @@
 chdir(dirname(__FILE__));
 include "../lib/connection.php";
 require_once "../lib/exploitPatch.php";
+require_once "../lib/GJPCheck.php";
 $ep = new exploitPatch();
 $type = $_POST["type"] + 2;
 if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
@@ -10,6 +11,16 @@ if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
 	$ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
 } else {
 	$ip = $_SERVER['REMOTE_ADDR'];
+}
+
+if(!empty($_POST["accountID"]) AND $_POST["accountID"]!="0"){
+	$id = $ep->remove($_POST["accountID"]);
+	$gjp = $ep->remove($_POST["gjp"]);
+	$GJPCheck = new GJPCheck();
+	$gjpresult = $GJPCheck->check($gjp,$id);
+	if($gjpresult != 1){
+		exit("-1");
+	}
 }
 
 if(empty($_POST["gjp"])){
