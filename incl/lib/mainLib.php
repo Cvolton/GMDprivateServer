@@ -603,15 +603,35 @@ class mainLib {
 		}
 		return false;
 	}
+	public function isCloudFlareIP($ip) {
+    	$cf_ips = array(
+	        '173.245.48.0/20',
+			'103.21.244.0/22',
+			'103.22.200.0/22',
+			'103.31.4.0/22',
+			'141.101.64.0/18',
+			'108.162.192.0/18',
+			'190.93.240.0/20',
+			'188.114.96.0/20',
+			'197.234.240.0/22',
+			'198.41.128.0/17',
+			'162.158.0.0/15',
+			'104.16.0.0/12',
+			'172.64.0.0/13',
+			'131.0.72.0/22'
+	    );
+	    foreach ($cf_ips as $cf_ip) {
+	        if (ip_in_range($ip, $cf_ip)) {
+	            return true;
+	        }
+	    }
+	    return false;
+	}
 	public function getIP(){
-		if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
-			$ip = $_SERVER['HTTP_CLIENT_IP'];
-		} elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
-			$ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
-		} else {
-			$ip = $_SERVER['REMOTE_ADDR'];
+		if (isset($_SERVER["HTTP_CF_CONNECTING_IP"]) && $this->isCloudFlareIP($_SERVER['REMOTE_ADDR'])) {
+  			return $_SERVER["HTTP_CF_CONNECTING_IP"];
 		}
-		return $ip;
+		return $_SERVER['REMOTE_ADDR'];
 	}
 	public function checkModIPPermission($permission){
 		include __DIR__ . "/connection.php";
