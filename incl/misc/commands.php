@@ -53,6 +53,15 @@ class Commands {
 			}
 			return true;
 		}
+		if(substr($comment,0,7) == '!cmtban' AND $gs->checkPermission($accountID, "commandDelete")){
+			/*
+			Do comment ban action here
+			temp_timesteamp_reason: Comment bans with reasons + timestamp
+			-10: perma ban
+			temp_timestamp: comment ban + timestamp
+			*/
+			return true;
+		}
 		if(substr($comment,0,8) == '!feature' AND $gs->checkPermission($accountID, "commandFeature")){
 			$query = $db->prepare("UPDATE levels SET starFeatured='1' WHERE levelID=:levelID");
 			$query->execute([':levelID' => $levelID]);
