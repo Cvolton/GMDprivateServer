@@ -36,3 +36,4 @@ if(isset($_POST['messages'])){ // if more than 1 message to be deleted
 		echo "-1";
 	}
 }
+?>
