@@ -1,58 +1,43 @@
-<html><head><title>Tools</title><link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,300,600,400italic,700' rel='stylesheet' type='text/css'></head><body><style>
-body
+<?php
+if(empty($_SERVER['HTTPS']) || $_SERVER['HTTPS'] == "off" and false)
 {
-  font-family: "Source Sans Pro", Arial, sans-serif;
-  font-weight: 300;
-  font-size: 16px;
-  line-height: 1.2;
-  background: #fff;
-  height: 100%;
-  position: relative;
+    $redirect = 'https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+    header('HTTP/1.1 301 Moved Permanently');
+    header('Location: ' . $redirect);
+    exit();
 }
+?><!DOCTYPE HTML>
+<html>
+	<head>
+		<title>1.9 Tools</title>
+		<?php include "../../../incl/style.php"; ?>
+		</head>
+	
+	<body>
+		<?php include "../../../incl/navigation.php"; ?>
+	
+		<div class="smain nofooter">
+			<h2>My Account</h2>
+			<p><a href="account/changePassword.php">Change Password</a><a href="account/changeUsername.php">Change Username</a><a href="newSession.php">Make Session</a></p>
+			
+			<h2>Levels</h2>
+			<p><a href="levelReupload.php">Level Reupload</a><a href="levelToGD.php">Level To GD</a><a href="stats/myUnlistedLevels.php">Unlisted Levels</a><a href="stats/mapPacks.php">Map Packs</a><a href="stats/reportedLevels.php">Reported Levels</a><a href="stats/comments.php">Level Comments</a></p>
+			
+			<h2>Songs</h2>
+			<p><a href="songAdd.php">Song Reupload</a><a href="stats/songsList.php">Song List</a></p>
+			
+			<h2>Users</h2>
+			<p><a href="stats/getUserInfo.php">Search Users</a><a href="stats/starGains.php">Star Gains</a><a href="stats/top24h.php">Top 24h</a><a href="stats/topWeek.php">Top Week</a><a href="stats/noLogIn.php">Unused Accounts</a></p>
+			
+			<h2>Other</h2>
+			<p><a href="cron/cron.php">Cron Job</a><a href="stats/serverInfo.php">Server Info</a></p>
+			
+			<h2>Moderation</h2>
+			<p><a href="stats/modActions.php">Mod Actions</a><a href="mod/leaderboardsBan.php">Leaderboards Ban</a><a href="mod/leaderboardsUnban.php">Leaderboards UnBan</a><a href="mod/sendBan.php">Send Ban</a><a href="mod/packCreate.php">Create Map Pack</a><a href="mod/editPack.php">Edit Map Pack</a><a href="mod/manageComments.php">Manage Comments</a></p>
+			
+			<h2>Administration</h2>
+			<p><a href="admin/mod.php">Set Mod Status</a><a href="super/admin.php">Set Admin Status</a></p>
+		</div>
 
-a:link
-{
-	transition: all 0.25s;
-	color:#0000ff;
-}
-a:visited
-{
-	color:#0000aa;
-}
-a:hover
-{
-	color: #ff00ff;
-}
-</style><center><h1>TOOLS</h1><hr><?php
-
-function getname($file)
-{
-	return str_replace('Mac O S', 'MacOS', str_replace('G D', 'GD', ucfirst(implode(' ', preg_split('/(?=[A-Z,0-25])/', str_replace('.php', '', $file))))));
-}
-
-function listdir($dir)
-{
-	$dirstring = array();
-	$files = scandir($dir);
-	foreach($files as $file)
-	{
-		if(pathinfo($file, PATHINFO_EXTENSION) == "php" AND $file != "index.php" AND $file != "list.php")
-		{
-			array_push($dirstring, "<b><a href='$dir/$file' class=\"link2\">".getname($file)."</a></b>");
-		}
-	}
-	return implode(' - ', $dirstring);
-}
-echo '<h2>Download:</h2>';
-echo listdir("download");
-echo '<h2>Account Management:</h2>';
-echo listdir("account");
-echo '<h2>Moderation, Reuploads, Songs & Sessions:</h2>';
-echo listdir(".");
-echo "<h2>Update:</h2>";
-echo listdir("cron");
-echo "<h2>Search, Statistics & Data:</h2>";
-echo listdir("stats");
-echo "<h2>ADMIN:</h2>";
-echo listdir("admin");
-?></ul></center></body></html>
+	</body>
+</html>
