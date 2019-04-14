@@ -20,7 +20,7 @@ class accSession
 		$accID = $result["accountID"];
 		$ip = $_SERVER["REMOTE_ADDR"];
 		$sessionStart = time();
-		$sessionEnd = $sessionStart - 172800; //session timeout (12h)
+		$sessionEnd = $sessionStart - 604800; //session timeout (1w)
 		
 		$queryDupe = $db->prepare("SELECT accountID FROM accSessions WHERE accountID = :accID AND sessionStart > :timestamp");
 		$queryDupe->execute([':accID' => $accID, ':timestamp' => $sessionEnd]);
@@ -35,11 +35,32 @@ class accSession
 		return 1;
 	}
 	
+	public function newSessionId($accountID)
+	{
+		include dirname(__FILE__)."/connection.php";
+		
+		$ip = $_SERVER["REMOTE_ADDR"];
+		$sessionStart = time();
+		$sessionEnd = $sessionStart - 604800; //session timeout (1w)
+		
+		$queryDupe = $db->prepare("SELECT accountID FROM accSessions WHERE accountID = :accountID AND sessionStart > :timestamp");
+		$queryDupe->execute([':accountID' => $accountID, ':timestamp' => $sessionEnd]);
+		if ($queryDupe->rowCount() > 0) { //if already created a session
+			$queryDelete = $db->prepare("DELETE FROM accSessions WHERE accountID = :accountID");
+			$queryDelete->execute([':accountID' => $accountID]);
+		}
+		
+		
+		$queryAdd = $db->prepare("INSERT INTO accSessions (accountID, ip, sessionStart) VALUES (:accountID, :IP, :timestamp)");
+		$queryAdd->execute([':accountID' => $accountID, ':IP' => $ip, ':timestamp' => $sessionStart]);
+		return 1;
+	}
+	
 	public function checkSession($accID)
 	{
 		include dirname(__FILE__)."/connection.php";
 		
-		$sessionEnd = time() - 172800;
+		$sessionEnd = time() - 604800;
 
 		$query = $db->prepare("SELECT accountID FROM accSessions WHERE accountID = :accID AND ip = :IP AND sessionStart > :timestamp");
 		$query->execute([':accID' => $accID, ':IP' => $_SERVER["REMOTE_ADDR"], ':timestamp' => $sessionEnd]);
@@ -53,13 +74,13 @@ class accSession
 	{
 		include dirname(__FILE__)."/connection.php";
 		
-		$sessionEnd = time() - 172800;
+		$sessionEnd = time() - 604800;
 
 		$query = $db->prepare("SELECT sessionStart FROM accSessions WHERE accountID = :accID AND ip = :IP AND sessionStart > :timestamp");
 		$query->execute([':accID' => $accID, ':IP' => $_SERVER["REMOTE_ADDR"], ':timestamp' => $sessionEnd]);
 		if ($query->rowCount() > 0)
 		{ //if session exists
-			return 172800 - (time() - $query->fetch()["sessionStart"]);
+			return 604800 - (time() - $query->fetch()["sessionStart"]);
 		}
 		return -1;
 	}
