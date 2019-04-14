@@ -6,7 +6,7 @@ require_once "../lib/exploitPatch.php";
 $ep = new exploitPatch();
 $accountID = $ep->remove($_POST["accountID"]);
 $type = $ep->remove($_POST["type"]);
-$query = "SELECT * FROM users WHERE isCreatorBanned = '0' AND creatorPoints > 0 ORDER BY creatorPoints DESC LIMIT 100";
+$query = "SELECT * FROM users WHERE isCreatorBanned = '0' AND creatorPoints > 0 ORDER BY creatorPoints DESC";
 $query = $db->prepare($query);
 $query->execute([':stars' => $stars, ':count' => $count]);
 $result = $query->fetchAll();
