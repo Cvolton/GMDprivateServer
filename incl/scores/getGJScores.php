@@ -11,9 +11,9 @@ $count = 0;
 $xi = 0;
 $lbstring = "";
 if(empty($_POST["gameVersion"])){
-	$sign = "< 20 AND gameVersion <> 0";
+	$sign = "<> 'ffff'";
 }else{
-	$sign = "> 19";
+	$sign = "<> 'ffff'";
 }
 if(!empty($_POST["accountID"])){
 	$accountID = $ep->remove($_POST["accountID"]);
@@ -35,7 +35,7 @@ if($type == "top" OR $type == "creators" OR $type == "relative")
 {
 	if($type == "top")
 	{
-		$query = "SELECT * FROM users WHERE isBanned = '0' AND gameVersion $sign AND stars > 0 ORDER BY stars DESC LIMIT 100";
+		$query = "SELECT * FROM users WHERE isBanned = '0' AND stars > 0 ORDER BY stars DESC LIMIT 100";
 	}
 	if($type == "creators")
 	{
@@ -60,7 +60,6 @@ if($type == "top" OR $type == "creators" OR $type == "relative")
 				SELECT	*	FROM users
 				WHERE stars <= :stars
 				AND isBanned = 0
-				AND gameVersion $sign
 				ORDER BY stars DESC
 				LIMIT $count
 			)
@@ -69,7 +68,6 @@ if($type == "top" OR $type == "creators" OR $type == "relative")
 				SELECT * FROM users
 				WHERE stars >= :stars
 				AND isBanned = 0
-				AND gameVersion $sign
 				ORDER BY stars ASC
 				LIMIT $count
 			)
@@ -87,7 +85,7 @@ if($type == "top" OR $type == "creators" OR $type == "relative")
 		$query->execute();
 		$f = "SELECT rank, stars FROM (
 							SELECT @rownum := @rownum + 1 AS rank, stars, extID, isBanned
-							FROM users WHERE isBanned = '0' AND gameVersion $sign ORDER BY stars DESC
+							FROM users WHERE isBanned = '0' ORDER BY stars DESC
 							) as result WHERE extID=:extid";
 		$query = $db->prepare($f);
 		$query->execute([':extid' => $extid]);
@@ -102,7 +100,9 @@ if($type == "top" OR $type == "creators" OR $type == "relative")
 			$extid = $user["extID"];
 		}
 		$xi++;
+		
 		$lbstring .= "1:".$user["userName"].":2:".$user["userID"].":13:".$user["coins"].":17:".$user["userCoins"].":6:".$xi.":9:".$user["icon"].":10:".$user["color1"].":11:".$user["color2"].":14:".$user["iconType"].":15:".$user["special"].":16:".$extid.":3:".$user["stars"].":8:".round($user["creatorPoints"],0,PHP_ROUND_HALF_DOWN).":4:".$user["demons"].":7:".$extid.":46:".$user["diamonds"]."|";
+		
 	}
 }
 
@@ -111,7 +111,7 @@ if($type == "week")
 	$starsgain = array();
 	$time = time() - 604800;
 	$xi = 0;
-	$query = $db->prepare("SELECT * FROM actions WHERE type = '9' AND timestamp > :time AND value < 750");
+	$query = $db->prepare("SELECT * FROM actions WHERE type = '9' AND timestamp > :time");
 	$query->execute([':time' => $time]);
 	$result = $query->fetchAll();
 	foreach($result as &$gain)
