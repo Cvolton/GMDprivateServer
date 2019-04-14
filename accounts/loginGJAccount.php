@@ -1,4 +1,5 @@
 <?php
+chdir(dirname(__FILE__));
 include "../incl/lib/connection.php";
 require "../incl/lib/generatePass.php";
 require_once "../incl/lib/exploitPatch.php";

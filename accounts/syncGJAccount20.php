@@ -1,4 +1,5 @@
 <?php
+chdir(dirname(__FILE__));
 //error_reporting(0);
 include "../incl/lib/connection.php";
 require "../incl/lib/generatePass.php";
@@ -30,7 +31,7 @@ if ($pass == 1) {
 		}
 	}else{
 		$saveData = file_get_contents("../data/accounts/$accountID");
-		if(file_exists("../data/accounts/keys/$accountID")){
+		/*if(file_exists("../data/accounts/keys/$accountID")){
 			if(substr($saveData,0,3) != "H4s"){
 				$protected_key_encoded = file_get_contents("../data/accounts/keys/$accountID");
 				$protected_key = KeyProtectedByPassword::loadFromAsciiSafeString($protected_key_encoded);
@@ -41,7 +42,7 @@ if ($pass == 1) {
 					exit("-2");	
 				}
 			}
-		}
+		}*/
 	}
 	echo $saveData.";21;30;a;a";
 }else{
