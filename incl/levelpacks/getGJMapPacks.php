@@ -4,6 +4,12 @@ chdir(dirname(__FILE__));
 include "../lib/connection.php";
 require_once "../lib/exploitPatch.php";
 $ep = new exploitPatch();
+
+if (!is_numeric($_POST["page"]))
+{
+	exit("-1");
+}
+
 $page = $ep->remove($_POST["page"]);
 $packpage = $page*10;
 $mappackstring = "";
