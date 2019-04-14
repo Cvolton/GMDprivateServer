@@ -45,3 +45,4 @@ incl/lib/debug.php
 
 # Error logs
 error_log*
+php_errorlog*
