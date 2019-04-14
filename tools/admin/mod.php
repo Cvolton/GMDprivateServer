@@ -3,7 +3,7 @@
 <form action="mod.php" method="post">
 Username: <input type="text" name="u"><br>
 Password: <input type="password" name="p"><br>
-AccountID: <input type="text" name="id"> <a href="../stats/getUserInfo.php" target="_blank">Get AccountID</a><br>
+AccountID (NOT UserID): <input type="text" name="id"> <a href="../stats/getUserInfo.php" target="_blank">Get AccountID</a><br>
 Set Mod: <input type="text" name="mod" value="1"> 0 = Remove Mod, 1 = Give Mod<br>
 <input type="submit" value="Go">
 </form>
@@ -29,10 +29,23 @@ if (!empty($_POST['u']) AND !empty($_POST['p']) AND !empty($_POST['id']))
 		{
 			$query = $db->prepare("UPDATE accounts SET isAdmin = :mod WHERE accountID = :accid");
 			$query->execute([':mod' => $_POST['mod'], ':accid' => $_POST['id']]);
+			$affected = $query->rowCount();
+			
+			if ($affected)
+			{
+				$q = $db->prepare("SELECT userName FROM users WHERE extID = :accid");
+				$q->execute([':accid' => $_POST['id']]);
+				
+				$username = $q->fetch()[0];
+				
+				PostToHook("Mod Update", "Mod status for $username (".$_POST['id'].") updated to: ".$_POST['mod']);
 		
-			PostToHook("Mod Update", "Account ".$_POST['id']."'s mod status updated to: ".$_POST['mod']);
-		
-			echo "SUCCESS.";
+				echo "SUCCESS. User affected: $username";
+			}
+			else
+			{
+				echo "FAILED, ZERO ROWS AFFECTED.";
+			}
 		}
 		else
 		{
