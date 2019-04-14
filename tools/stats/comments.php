@@ -1,4 +1,27 @@
-<html><head><title>Search Comments</title></head><body><h1>COMMENT SEARCH</h1><hr><p>Seperate UserIDs and words by spaces, put phrases in quotes</p><p>If you want to exclude a userid/word/phrase, put a `-` before it.</p><p>Words & phrases need to be at least 2 characters and less than 32.</p><p>Maximum of 32 total words and phrases.</p><p>e.g. <b><i>thing "my phrase" -no "-dios mio"</i></b> will search for comments:</p><ul><li><b>With</b> the word "thing"</li><li><b>With</b> the phrase "my phrase"</li><li><b>Without</b> the word "no"</li><li><b>Without</b> the phrase "dios mio"</li></ul><hr>
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>Comments</title>
+		<?php include "../../../../incl/style.php"; ?>
+	</head>
+	
+	<body>
+		<?php include "../../../../incl/navigation.php"; ?>
+		
+		<div class="smain nofooter">
+			<h1>Usage</h1>
+			<p>Seperate UserIDs and words by spaces, put phrases in quotes</p>
+			<p>If you want to exclude a userid/word/phrase, put a `-` before it.</p>
+			<p>Words & phrases need to be at least 2 characters and less than 32.</p>
+			<p>Maximum of 32 total words and phrases.</p>
+			<p>e.g. <b><i>thing "my phrase" -no "-dios mio"</i></b> will search for comments:</p>
+			<ul>
+				<li><b>With</b> the word "thing"</li>
+				<li><b>With</b> the phrase "my phrase"</li>
+				<li><b>Without</b> the word "no"</li>
+				<li><b>Without</b> the phrase "dios mio"</li>
+			</ul>
+			<hr>
 
 <?php
 
@@ -10,12 +33,14 @@ $ss[$_GET['s']] = " selected";
 $so = array();
 $so[$_GET['o']] = " selected";
 
-echo '<form action="comments.php" method="get">
-Query: <input type="text" name="q" value="'.htmlspecialchars($_GET['q']).'">
-UserIDs: <input type="text" name="u" value="'.$_GET['u'].'">
-Search By: <select name="s"><option value="0"'.$ss[0].'>Time</option><option value="1"'.$ss[1].'>Comment</option><option value="2"'.$ss[2].'>UserID</option><option value="3"'.$ss[3].'>Username</option><option value="4"'.$ss[4].'>LevelID</option><option value="5"'.$ss[5].'>Likes</option></select>
-Order: <select name="o"><option value="0"'.$so[0].'>Ascending</option><option value="1"'.$so[1].'>Descending</option></select><br>
-<input type="submit" value="Go"></form><hr>';
+echo '<form action="" method="get">
+		<input class="smain" type="text" placeholder="Query" name="q" value="'.htmlspecialchars($_GET['q']).'"><br>
+		<input class="smain" type="text" placeholder="UserIDs" name="u" value="'.$_GET['u'].'"><br>
+		Search By: <select name="s"><option value="0"'.$ss[0].'>Time</option><option value="1"'.$ss[1].'>Comment</option><option value="2"'.$ss[2].'>UserID</option><option value="3"'.$ss[3].'>Username</option><option value="4"'.$ss[4].'>LevelID</option><option value="5"'.$ss[5].'>Likes</option></select><br>
+		Order: <select name="o"><option value="0"'.$so[0].'>Ascending</option><option value="1"'.$so[1].'>Descending</option></select><br>
+		<input class="smain" type="submit" value="Go">
+	</form>
+	<hr>';
 
 if (!empty($_GET['q']))
 {
@@ -185,9 +210,9 @@ if (!empty($_GET['q']))
 		{
 		echo "<li>Comments <i>uploaded by neither</i> of the follow users: ".implode(", ", $excluids).".</li>";
 		}
-		echo "<li>Ordered by `$orderbystr` in $orderstr order.</li>";
+		echo "<li>Ordered by <i>$orderbystr</i> in <i>$orderstr</i> order.</li>";
 		
-		echo '</ul><hr><table border="1"><tr><th>Time</th><th>Comment</th><th>UserName</th><th>UserID</th><th>Likes</th><th>LevelID</th></tr>';
+		echo '</ul><hr><table><tr><th>Time</th><th>Comment</th><th>UserName</th><th>UserID</th><th>Likes</th><th>LevelID</th></tr>';
 		
 		for ($i = 0; $i < count($result); $i++)
 		{
@@ -195,7 +220,7 @@ if (!empty($_GET['q']))
 			$comment = htmlspecialchars(base64_decode($result[$i]['comment']));
 			foreach ($inclstr as $kw)
 			{
-				$comment = preg_replace("/($kw)/i","<b>$1</b>", $comment);
+				$comment = preg_replace("/($kw)/i","<u>$1</u>", $comment);
 			}
 			$username = $result[$i]['userName'];
 			$userID = $result[$i]['userID'];
@@ -208,4 +233,7 @@ if (!empty($_GET['q']))
 	}
 }
 
-?></body></html>
+?>
+		</div>
+	</body>
+</html>

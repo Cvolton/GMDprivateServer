@@ -1,8 +1,13 @@
 <html>
-<head>
-<title>LEVEL REUPLOAD</title>
-</head>
-<body>
+	<head>
+		<title>Level Reupload</title>
+		<?php include "../../../incl/style.php"; ?>
+	</head>
+	
+	<body>
+		<?php include "../../../incl/navigation.php"; ?>
+		
+		<div class="smain">
 <?php
 function chkarray($source){
 	if($source == ""){
@@ -29,13 +34,13 @@ if(!empty($_POST["levelid"])){
 	curl_close($ch);
 	if($result == "" OR $result == "-1" OR $result == "No no no"){
 		if($result==""){
-			echo "An error has occured while connecting to the server.";
+			echo "<p>Error connecting to server</p>";
 		}else if($result=="-1"){
-			echo "This level doesn't exist.";
+			echo "<p>Level doesn't exist</p>";
 		}else{
-			echo "RobTop doesn't like you or something...";
+			echo "<p>RobTop doesn't like you or something...</p>";
 		}
-		echo "<br>Error code: $result";
+		echo "<p>Error code: $result</p>";
 	}else{
 		$level = explode('#', $result)[0];
 		$resultarray = explode(':', $level);
@@ -55,7 +60,7 @@ if(!empty($_POST["levelid"])){
 			var_dump($levelarray);
 		}
 		if($levelarray["a4"] == ""){
-			echo "An error has occured.<br>Error code: ".htmlspecialchars($result,ENT_QUOTES);
+			echo "<p>An error has occured</p><p>Error code: ".htmlspecialchars($result,ENT_QUOTES)."</p>";
 		}
 		$uploadDate = time();
 		//old levelString
@@ -75,7 +80,7 @@ if(!empty($_POST["levelid"])){
 		if($query->fetchColumn() == 0){
 			$parsedurl = parse_url($url);
 			if($parsedurl["host"] == $_SERVER['SERVER_NAME']){
-				exit("You're attempting to reupload from the target server.");
+				exit("<p>You're attempting to reupload from the target server</p>");
 			}
 			if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
 				$hostname = $_SERVER['HTTP_CLIENT_IP'];
@@ -124,17 +129,24 @@ if(!empty($_POST["levelid"])){
 			$query->execute([':password' => $password, ':starDemon' => $starDemon, ':starAuto' => $starAuto, ':gameVersion' => $gameVersion, ':name' => $levelarray["a2"], ':desc' => $levelarray["a3"], ':version' => $levelarray["a5"], ':length' => $levelarray["a15"], ':audiotrack' => $levelarray["a12"], ':twoPlayer' => $twoPlayer, ':songID' => $songID, ':coins' => $coins, ':reqstar' => $reqstar, ':extraString' => $extraString, ':levelString' => "", ':originalReup' => $levelarray["a1"], ':hostname' => $hostname, ':starStars' => $starStars, ':starCoins' => $starCoins, ':starDifficulty' => $starDiff, ':userID' => $userID, ':extID' => $extID]);
 			$levelID = $db->lastInsertId();
 			file_put_contents("../data/levels/$levelID",$levelString);
-			echo "Level reuploaded, ID: $levelID<br><hr><br>";
+			echo "<p>Level reuploaded, ID: $levelID</p><br><hr><br>";
 		}else{
-			echo "This level has been already reuploaded";
+			echo "<p>This level has been already reuploaded</p>";
 		}
 	}
 }else{
-	echo '<h4><a href="linkAcc.php">LINKING YOUR ACCOUNT USING linkAcc.php RECOMMENDED</a></h4><form action="levelReupload.php" method="post">ID: <input type="text" name="levelid"><br>URL (dont change if you dont know what youre doing): <input type="text" name="server" value="http://www.boomlings.com/database/downloadGJLevel22.php"><br>Debug Mode (0=off, 1=on): <input type="text" name="debug" value="0"><br><input type="submit" value="Reupload"></form><br>Alternative servers to reupload from:<br>
-	http://www.boomlings.com/database/downloadGJLevel22.php - Robtops server<br>
-	http://pi.michaelbrabec.cz:9010/a/downloadGJLevel22.php - CvoltonGDPS<br>
-	http://teamhax.altervista.org/dbh/downloadGJLevel22.php - TeamHax GDPS';
+	echo '<form action="" method="post">
+		<input class="smain" type="text" placeholder="LevelID" name="levelid"><br>
+		<input class="smain" type="text" placeholder="URL" name="server" value="http://www.boomlings.com/database/downloadGJLevel22.php"><br>
+		<input class="smain" type="text" placeholder="Debug Mode" name="debug" value="0"><br>
+		<input class="smain" type="submit" value="Reupload">
+		</form>
+	<p>Alternative Servers:</p>
+	http://www.boomlings.com/database/downloadGJLevel22.php - RobTop\'s Official Server<br>
+	http://gdu.cloud/_______/database/downloadGJLevel22.php - GD Ultimate<br>
+	http://pi.michaelbrabec.cz:9010/a/downloadGJLevel22.php - CvoltonGDPS<br>';
 }
 ?>
-</body>
+		</div>
+	</body>
 </html>

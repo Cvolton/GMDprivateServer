@@ -1,5 +1,17 @@
-<h1>TOP LEADERBOARD PROGRESS</h1>
-<table border="1"><tr><th>#</th><th>UserID</th><th>UserName</th><th>Stars</th></tr>
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Top Week</title>
+		<?php include "../../../../incl/style.php"; ?>
+	</head>
+	
+	<body>
+		<?php include "../../../../incl/navigation.php"; ?>
+		
+		<div class="smain nofooter">
+			<h1>Top Leaderboard Progress</h1>
+			
+			<table><tr><th>#</th><th>UserID</th><th>UserName</th><th>Stars</th></tr>
 <?php
 //error_reporting(0);
 include "../../incl/lib/connection.php";
@@ -28,4 +40,7 @@ foreach ($starsgain as $userID => $stars){
 	}
 }  
 ?>
-</table>
+			</table>
+		</div>
+	</body>
+</html>

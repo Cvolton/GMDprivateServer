@@ -1,7 +1,19 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>New Map Pack</title>
+		<?php include "../../../../incl/style.php"; ?>
+	</head>
+	
+	<body>
+		<?php include "../../../../incl/navigation.php"; ?>
+		
+		<div class="smain nofooter">
 <?php
-include "../incl/lib/connection.php";
-require "../incl/lib/generatePass.php";
-require_once "../incl/lib/exploitPatch.php";
+include "../../incl/lib/connection.php";
+require "../../incl/lib/generatePass.php";
+require_once "../../incl/lib/exploitPatch.php";
+
 $ep = new exploitPatch();
 if(!empty($_POST["userName"]) AND !empty($_POST["password"]) AND !empty($_POST["packName"]) AND !empty($_POST["levels"]) AND !empty($_POST["stars"]) AND !empty($_POST["coins"]) AND !empty($_POST["color"])){
 	$userName = $ep->remove($_POST["userName"]);
@@ -17,13 +29,13 @@ if(!empty($_POST["userName"]) AND !empty($_POST["password"]) AND !empty($_POST["
 		$query = $db->prepare("SELECT accountID FROM accounts WHERE userName=:userName AND isAdmin = 1");	
 		$query->execute([':userName' => $userName]);
 		if($query->rowCount()==0){
-			echo "Account doesn't have moderator access to the server. <a href='packCreate.php'>Try again</a>";
+			echo "<p>Account doesn't have moderator access to the server</p><a href=''>Try again</a>";
 		}else{
 			if(!is_numeric($stars) OR !is_numeric($coins) OR $stars > 10 OR $coins > 2){
-				exit("Invalid stars/coins value");
+				exit("<p>Invalid stars/coins value</p>");
 			}
 			if(strlen($color) != 6){
-				exit("Unknown color value");
+				exit("<p>Unknown color value</p>");
 			}
 			$rgb = hexdec(substr($color,0,2)).
 				",".hexdec(substr($color,2,2)).
@@ -32,12 +44,12 @@ if(!empty($_POST["userName"]) AND !empty($_POST["password"]) AND !empty($_POST["
 			$lvlsarray = explode(",", $levels);
 			foreach($lvlsarray AS &$level){
 				if(!is_numeric($level)){
-					exit("$level isn't a number");
+					exit("<p>$level isn't a number</p>");
 				}
 				$query = $db->prepare("SELECT levelName FROM levels WHERE levelID=:levelID");	
 				$query->execute([':levelID' => $level]);
 				if($query->rowCount() == 0){
-					exit("Level #$level doesn't exist.");
+					exit("<p>Level #$level doesn't exist</p>");
 				}
 				$levelName = $query->fetchAll()[0]["levelName"];
 				$levelstring .= $levelName . ", ";
@@ -78,13 +90,13 @@ if(!empty($_POST["userName"]) AND !empty($_POST["password"]) AND !empty($_POST["
 					$diff = 6;
 					break;
 			}
-			echo "AccountID: $accid <br>
-				Pack Name: $packName <br>
-				Levels: $levelstring ($levels)<br>
-				Difficulty: $diffname ($diff)<br>
-				Stars: $stars <br>
-				Coins: $coins <br>
-				RGB Color: $rgb";
+			echo "<p>AccountID: $accid</p>
+				<p>Pack Name: $packName</p>
+				<p>Levels: $levelstring ($levels)</p>
+				<p>Difficulty: $diffname ($diff)</p>
+				<p>Stars: $stars</p>
+				<p>Coins: $coins</p>
+				<p>RGB Color: $rgb</p>";
 			$query = $db->prepare("INSERT INTO mappacks     (name, levels, stars, coins, difficulty, rgbcolors)
 													VALUES (:name,:levels,:stars,:coins,:difficulty,:rgbcolors)");
 			$query->execute([':name' => $packName, ':levels' => $levels, ':stars' => $stars, ':coins' => $coins, ':difficulty' => $diff, ':rgbcolors' => $rgb]);
@@ -93,17 +105,22 @@ if(!empty($_POST["userName"]) AND !empty($_POST["password"]) AND !empty($_POST["
 			$query->execute([':value' => $packName, ':timestamp' => time(), ':account' => $accid, ':levels' => $levels, ':stars' => $stars, ':coins' => $coins, ':rgb' => $rgb]);
 		}
 	}else{
-		echo "Invalid password or nonexistant account. <a href='packCreate.php'>Try again</a>";
+		echo "<p>Invalid password or nonexistant account</p><a href=''>Try again</a>";
 	}
 }else{
-	echo '<script src="incl/jscolor/jscolor.js"></script>
-		<form action="packCreate.php" method="post">Username: <input type="text" name="userName">
-		<br>Password: <input type="password" name="password">
-		<br>Pack Name: <input type="text" name="packName">
-		<br>Level IDs: <input type="text" name="levels"> (separate by commas)
-		<br>Stars: <input type="text" name="stars"> (max 10)
-		<br>Coins: <input type="text" name="coins"> (max 2)
-		<br>Color: <input name="color" class="jscolor" value="ffffff">
-		<input type="submit" value="Create"></form>';
+	echo '<script src="../incl/jscolor/jscolor.js"></script>
+			<form action="" method="post">
+				<input class="smain" type="text" placeholder="Username" name="userName"><br>
+				<input class="smain" type="password" placeholder="Password" name="password"><br>
+				<input class="smain" type="text" placeholder="Pack Name" name="packName"><br>
+				<input class="smain" type="text" placeholder="Level IDs (seperated by commas)" name="levels"><br>
+				<input class="smain" type="text" placeholder="Stars (max 10)" name="stars"><br>
+				<input class="smain" type="text" placeholder="Coins (max 2)" name="coins"><br>
+				<input placeholder="Colour" name="color" class="jscolor" value="ffffff"><br>
+				<input class="smain" type="submit" value="Create">
+			</form>';
 }
 ?>
+		</div>
+	</body>
+</html>

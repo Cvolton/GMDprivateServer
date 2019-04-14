@@ -1,3 +1,14 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>Song Add</title>
+		<?php include "../../../incl/style.php"; ?>
+	</head>
+	
+	<body>
+		<?php include "../../../incl/navigation.php"; ?>
+		
+		<div class="smain">
 <?php
 //error_reporting(0);
 include "../incl/lib/connection.php";
@@ -16,7 +27,7 @@ if (filter_var($song, FILTER_VALIDATE_URL) == TRUE) {
 			$name = $ep->remove($array->title);
 			$author = $array->user->username;
 			$author = preg_replace("/[^A-Za-z0-9 ]/", '', $author);
-			echo "Processing Soundcloud song ".htmlspecialchars($name,ENT_QUOTES)." by ".htmlspecialchars($author,ENT_QUOTES)." with the download link ".htmlspecialchars($song,ENT_QUOTES)." <br>";
+			echo "<p>Processing Soundcloud song ".htmlspecialchars($name,ENT_QUOTES)." by ".htmlspecialchars($author,ENT_QUOTES)." with the download link ".htmlspecialchars($song,ENT_QUOTES)." </p>";
 		}else{
 			if(!$array->id){
 				exit("This song is neither downloadable, nor streamable");
@@ -25,7 +36,7 @@ if (filter_var($song, FILTER_VALIDATE_URL) == TRUE) {
 			$name = $ep->remove($array->title);
 			$author = $array->user->username;
 			$author = preg_replace("/[^A-Za-z0-9 ]/", '', $author);
-			echo "This song isn't downloadable, attempting to insert it anyways<br>";
+			echo "<p>This song isn't downloadable, attempting to insert it anyways</p>";
 		}
 	}else{
 		$song = str_replace("?dl=0","",$song);
@@ -58,16 +69,23 @@ if (filter_var($song, FILTER_VALIDATE_URL) == TRUE) {
 		//$count += $query->fetchColumn();
 	}
 	if($count != 0){
-		echo "This song already exists in our database.";
+		echo "<p>This song already exists in our database</p>";
 	}else{
 	    $query = $db->prepare("INSERT INTO songs (name, authorID, authorName, size, download, hash)
 		VALUES (:name, '9', :author, :size, :download, :hash)");
 		$query->execute([':name' => $name, ':download' => $song, ':author' => $author, ':size' => $size, ':hash' => $hash]);
-		echo "Song reuploaded: <b>".$db->lastInsertId()."</b><hr>";
+		echo "<p>Song reuploaded: <b>".$db->lastInsertId()."</b><hr>";
 	}
 }else{
-	echo "The download link isn't a valid URL";
+	echo "<p>The download link isn't a valid URL</p>";
 }
 }
-	echo '<b>Soundcloud links</b> or <b>Direct links</b> or <b>Dropbox links</b> only accepted, <b><font size="5">NO YOUTUBE LINKS</font></b><br><form action="songAdd.php" method="post">Link: <input type="text" name="songlink"><br><input type="submit" value="Add Song"></form>';
+	echo '<p><b>Soundcloud links</b> or <b>Direct links</b> or <b>Dropbox links</b> only accepted, <b>NO YOUTUBE LINKS</b></p>
+			<form action="" method="post">
+				<input class="smain" type="text" placeholder="Link" name="songlink"><br>
+				<input class="smain" type="submit" value="Add Song">
+			</form>';
 ?>
+		</div>
+	</body>
+</html>

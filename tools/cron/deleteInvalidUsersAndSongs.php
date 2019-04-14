@@ -4,7 +4,7 @@ $query = $db->prepare("DELETE FROM users WHERE extID = ''");
 $query->execute();
 $query = $db->prepare("DELETE FROM songs WHERE download = ''");
 $query->execute();
-echo "Deleted invalid users and songs.<br>";
+echo "<p>Deleted invalid users and songs.</p>";
 ob_flush();
 flush();
 $query = $db->prepare("SELECT accountID, userName, registerDate FROM accounts");
@@ -41,7 +41,7 @@ foreach($tables as &$table){
 	ob_flush();
 	flush();
 }*/
-echo "<hr>Success probably";
+echo "<p>Success probably</p>";
 ob_flush();
 flush();
 ?>

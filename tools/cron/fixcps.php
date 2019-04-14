@@ -1,6 +1,6 @@
 <?php
 chdir(dirname(__FILE__));
-echo "Please wait...<br>";
+echo "<p>Please wait...</p>";
 ob_flush();
 flush();
 if(file_exists("../logs/fixcpslog.txt")){
@@ -12,7 +12,7 @@ if(file_exists("../logs/fixcpslog.txt")){
 		$remainmins = floor($remaintime / 60);
 		$remainsecs = $remainmins * 60;
 		$remainsecs = $remaintime - $remainsecs;
-		exit("Please wait $remainmins minutes and $remainsecs seconds before running ". basename($_SERVER['SCRIPT_NAME'])." again");
+		exit("<p>Please wait $remainmins minutes and $remainsecs seconds before running ". basename($_SERVER['SCRIPT_NAME'])." again</p>");
 	}
 }
 file_put_contents("../logs/fixcpslog.txt",time());
@@ -122,25 +122,27 @@ foreach($result as $daily){
 $nocpppl = substr($nocpppl, 0, -1);
 $query4 = $db->prepare("UPDATE users SET creatorPoints = 0 WHERE userID IN ($nocpppl)");
 $query4->execute();
-echo "Reset CP of $nocpppl <br>";
+echo "<p>Reset CP of ".(string)(substr_count($nocpppl, ',')+1)." accounts</p>";
+echo "<table><tr><th>UserID</th><th>Creator Points</th></tr>";
 foreach($people as $user => $cp){
-	echo "$user now has $cp creator points... <br>";
+	echo "<tr><td>$user</td><td>$cp</td></tr>";
 	ob_flush();
 	flush();
 	$query4 = $db->prepare("UPDATE users SET creatorPoints = :creatorpoints WHERE userID=:userID");
 	$query4->execute([':userID' => $user, ':creatorpoints' => $cp]);
 }
-echo "<hr>done";
+echo "</table>";
 //april fools
 $date = date("d-m");
 if($date == "01-04"){
-	$query4 = $db->prepare("UPDATE users SET creatorPoints='99999', userName='sakujes', stars='999', secret='april'");
-	$query4->execute();
+	//IN WHAT FUCKING WORLD WAS THIS A GOOD IDEA
+	//$query4 = $db->prepare("UPDATE users SET creatorPoints='99999', userName='sakujes', stars='999', secret='april'");
+	//$query4->execute();
 }else{
-	$query4 = $db->prepare("UPDATE users SET gameVersion='0', stars='0' WHERE secret='april'");
-	$query4->execute();
-	$query4 = $db->prepare("UPDATE users SET creatorPoints='0' WHERE creatorPoints='99999'");
-	$query4->execute();
+	//$query4 = $db->prepare("UPDATE users SET gameVersion='0', stars='0' WHERE secret='april'");
+	//$query4->execute();
+	//$query4 = $db->prepare("UPDATE users SET creatorPoints='0' WHERE creatorPoints='99999'");
+	//$query4->execute();
 }
 file_put_contents("../logs/cplog.txt",$cplog);
 ?>

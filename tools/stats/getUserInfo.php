@@ -1,18 +1,39 @@
-<html><body><h1>USERINFO</h1>
-<form action="getUserInfo.php" method="get">Target Username: <input type="text" name="u"><input type="submit" value="Go"></form>
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Get User Info</title>
+		<?php include "../../../../incl/style.php"; ?>
+	</head>
+
+	<body>
+		<?php include "../../../../incl/navigation.php"; ?>
+		
+		<div class="smain nofooter">
+	
+			<h1>Get User Info</h1>
+			<form action="" method="get">
+				<input class="smain" type="text" placeholder="Username" name="u"><br>
+				<input class="smain" type="submit" value="Go">
+			</form>
 <?php
 error_reporting(1);
 include "../../incl/lib/connection.php";
 
 if (!empty($_GET['u']))
 {
+	if (strlen($_GET['u']) < 2)
+	{
+		exit("<p>Username must be at least 2 characters</p>");
+	}
+	
 	$query = $db->prepare("SELECT * FROM users WHERE userName LIKE CONCAT('%', :uName, '%')");
 	$query->execute([':uName' => $_GET['u']]);
 	$users = $query->fetchAll();
 
 	$c = count($users);
-	echo "<p>Count: $c</p>";	
-	echo '<table border=1><tr><th>UserName</th><th>UserID</th><th>Stars</th><th>Is Banned</th><th>Ban Reason</th><th>AccountID</th><th>Register Date</th></tr>';
+	echo "<p>Count: $c</p>";
+	echo '<table><tr><th>UserName</th><th>UserID</th><th>Stars</th><th>Is Banned</th><th>Ban Reason</th><th>AccountID</th><th>Register Date</th></tr>';
+	$idx = 0;
 	foreach ($users as &$user)
 	{
 		$un = $user['userName'];
@@ -38,13 +59,20 @@ if (!empty($_GET['u']))
 			$time = date("d/m/y H:i:s", $q->fetch()[0]);
 		}
 		
-		$col = $ac == "" ? "FFFF00" : "00FF00";
-		$col = $ib != 0 ? "FF0000" : $col;
+
+		$col = $ac == "" ? "505000" : 0 /*"005000"*/;
+		$col = $ib != 0 ? "500000" : $col;
 		
-		echo "<tr bgcolor=\"$col\"><td>$un</td><td>$id</td><td>$st</td><td>$ib</td><td>$reason</td><td>$ac</td><td>$time</td></tr>";
+		echo $col ? "\t\t\t\t<tr style=\"background-color: #$col\">" : "\t\t\t\t<tr>";
+		
+		echo "<td>$un</td><td>$id</td><td>$st</td><td>$ib</td><td>$reason</td><td>$ac</td><td>$time</td></tr>\n";
+		
+		$idx++;
 	}
 	echo '</table>';
 }
 
 ?>
-</body></html>
+		</div>
+	</body>
+</html>

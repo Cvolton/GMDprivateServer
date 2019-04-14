@@ -1,5 +1,24 @@
-<html><head><title>Star Gains</title></head><body><h1>STAR GAINS</h1><p><b><i>NOTE: THIS MAY NOT BE 100% ACCURATE SO DON'T H4CKUSATE JUST BASED OFF OF INFO GIVEN HERE.</i></b> unless it's just like rly obvious lol</p><form action="starGains.php">UserID: <input type="text" name="id"></input><input type="submit" value="Go"></form><?php
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Star Gains</title>
+		<?php include "../../../../incl/style.php"; ?>
+	</head>
+	
+	<body>
+		<?php include "../../../../incl/navigation.php"; ?>
+		
+		<div class="smain nofooter">
+		
+			<h1>Star Gains</h1>
+			<p><i><b>NOTE:</b> THIS MAY NOT BE 100% ACCURATE, SO DON'T H4CKUSATE JUST BASED OFF OF INFO GIVEN HERE.</i> unless it's just like really obvious</p>
+			
+			<form action="">
+				<input class="smain" type="text" placeholder="UserID" name="id"><br>
+				<input type="submit" value="Go">
+			</form>
 
+<?php
 include "../../incl/lib/connection.php";
 
 if (!empty($_GET["id"]))
@@ -16,20 +35,23 @@ if (!empty($_GET["id"]))
 	$query = $db->prepare("SELECT value, timestamp FROM actions WHERE type = 9 AND value <> 0 AND account = :userid ORDER BY timestamp DESC");
 	$query->execute([':userid' => (int)$_GET["id"]]);
 
-	echo "<table border=\"1\"><tr><th>Time</th><th>Gained</th></tr>";
+	echo "<table><tr><th>Time</th><th>Gained</th></tr>";
 
 	foreach ($query->fetchAll() as &$user)
 	{
 		$stars = $user["value"];
 		$time = date("d/m/y H:i:s", $user["timestamp"]);
 		
-		$col = $stars > 750 ? "FF0000" : "00FF00";
-		$col = $stars < 0 ? "FFFF00" : $col;
+		$col = $stars > 750 ? "500000" : "005000";
+		$col = $stars < 0 ? "505000" : $col;
 		
-		echo "<tr bgcolor=\"$col\"><td>$time</td><td>$stars</td></tr>";
+		echo "<tr style=\"background-color: #$col\"><td>$time</td><td>$stars</td></tr>";
 	}
 
 	echo "</table>";
 }
 
-?></body></html>
+?>
+		</div>
+	</body>
+</html>

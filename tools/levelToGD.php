@@ -1,8 +1,13 @@
 <html>
-<head>
-<title>LEVEL REUPLOAD TO NORMAL GD</title>
-</head>
-<body>
+	<head>
+		<title>Level To GD</title>
+		<?php include "../../../incl/style.php"; ?>
+	</head>
+	
+	<body>
+		<?php include "../../../incl/navigation.php"; ?>
+		
+		<div class="smain">
 <?php
 function chkarray($source){
 	if($source == ""){
@@ -31,7 +36,7 @@ if(!empty($_POST["userhere"]) AND !empty($_POST["passhere"]) AND !empty($_POST["
 	$server = trim($_POST["server"]);
 	$pass = $generatePass->isValidUsrname($userhere, $passhere);
 	if ($pass != 1) { //verifying if valid local usr
-		exit("Wrong local username/password combination");
+		exit("<p>Wrong local username/password combination</p>");
 	}
 	$query = $db->prepare("SELECT * FROM levels WHERE levelID = :level");
 	$query->execute([':level' => $levelID]);
@@ -43,7 +48,7 @@ if(!empty($_POST["userhere"]) AND !empty($_POST["passhere"]) AND !empty($_POST["
 	$query = $db->prepare("SELECT userID FROM users WHERE extID = :ext");
 	$query->execute([':ext' => $accountID]);
 	if($query->fetchColumn() != $userID){ //verifying if lvl owned
-		exit("This level doesn't belong to the account you're trying to reupload from");
+		exit("<p>This level doesn't belong to the account you're trying to reupload from</p>");
 	}
 	$udid = "S" . mt_rand(111111111,999999999) . mt_rand(111111111,999999999) . mt_rand(111111111,999999999) . mt_rand(111111111,999999999) . mt_rand(1,9); //getting accountid
 	$sid = mt_rand(111111111,999999999) . mt_rand(11111111,99999999);
@@ -56,16 +61,16 @@ if(!empty($_POST["userhere"]) AND !empty($_POST["passhere"]) AND !empty($_POST["
 	curl_close($ch);
 	if($result == "" OR $result == "-1" OR $result == "No no no"){
 		if($result==""){
-			echo "An error has occured while connecting to the login server.";
+			echo "<p>An error has occured while connecting to the login server</p>";
 		}else if($result=="-1"){
-			echo "Login to the target server failed.";
+			echo "<p>Login to the target server failed</p>";
 		}else{
-			echo "RobTop doesn't like you or something...";
+			echo "<p>RobTop doesn't like you or something...</p>";
 		}
-		exit("<br>Error code: $result");
+		exit("<p>Error code: $result</p>");
 	}
 	if(!is_numeric($levelID)){ //checking if lvlid is numeric cuz exploits
-		exit("Invalid levelID");
+		exit("<p>Invalid levelID</p>");
 	}
 	$levelString = file_get_contents("../data/levels/$levelID"); //generating seed2
 	$seed2 = base64_encode($xc->cipher($gh->genSeed2noXor($levelString),41274));
@@ -110,29 +115,35 @@ if(!empty($_POST["userhere"]) AND !empty($_POST["passhere"]) AND !empty($_POST["
 	curl_close($ch);
 	if($result == "" OR $result == "-1" OR $result == "No no no"){
 		if($result==""){
-			echo "An error has occured while connecting to the upload server.";
+			echo "<p>An error has occured while connecting to the upload server</p>";
 		}else if($result=="-1"){
-			echo "Reuploading level failed.";
+			echo "<p>Reuploading level failed</p>";
 		}else{
-			echo "RobTop doesn't like you or something... (upload)";
+			echo "<p>RobTop doesn't like you or something... (upload)</p>";
 		}
-		exit("<br>Error code: $result");
+		exit("<p>Error code: $result</p>");
 	}
-	echo "Level reuploaded - $result";
+	echo "<p>Level reuploaded - $result</p>";
 }else{
-	echo '<form action="levelToGD.php" method="post">Your password for the target server is NOT saved, it\'s used for one-time verification purposes only.
-	<h3>CvoltonGDPS</h3>Username: <input type="text" name="userhere"><br>
-	Password: <input type="password" name="passhere"><br>
-	Level ID: <input type="text" name="levelID"><br>
-	<h3>Target server</h3>Username: <input type="text" name="usertarg"><br>
-	Password: <input type="password" name="passtarg"><br>
-	URL (dont change if you dont know what youre doing): <input type="text" name="server" value="http://www.boomlings.com/database/"><br>
-	Debug Mode (0=off, 1=on): <input type="text" name="debug" value="0"><br>
-	<input type="submit" value="Reupload"></form><br>Alternative servers to reupload to:<br>
-	http://www.boomlings.com/database/ - Robtops server<br>
-	http://pi.michaelbrabec.cz:9010/a/ - CvoltonGDPS<br>
-	http://teamhax.altervista.org/dbh/ - TeamHax GDPS';
+	echo '<form action="" method="post">
+			<p><b>Your password for the target server is NOT saved, it\'s used for one-time verification purposes only.</b></p>
+			<h3>1.9 GDPS</h3>
+			<input class="smain" type="text" placeholder="Username" name="userhere"><br>
+			<input class="smain" type="password" placeholder="Password" name="passhere"><br>
+			<input class="smain" type="text" placeholder="LevelID" name="levelID"><br>
+			<h3>Target server</h3>
+			<input class="smain" class="smain" type="text" placeholder="Username" name="usertarg"><br>
+			<input class="smain" type="password" placeholder="Password" name="passtarg"><br>
+			<input class="smain" type="text" placeholder="URL" name="server" value="http://www.boomlings.com/database/"><br>
+			<input class="smain" type="text" placeholder="Debug Mode" name="debug" value="0"><br>
+			<input class="smain" type="submit" value="Reupload">
+		</form>
+			<p>Alternative servers to reupload to:</p>
+			<p>http://www.boomlings.com/database/ - Robtops server</p>
+			<p>http://pi.michaelbrabec.cz:9010/a/ - CvoltonGDPS</p>
+			<p>http://gdu.cloud/_______/database/ - GD Ultimate</p>';
 }
 ?>
-</body>
+		</div>
+	</body>
 </html>
