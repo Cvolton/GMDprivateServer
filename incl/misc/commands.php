@@ -11,7 +11,7 @@ class Commands {
 		$commentarray = explode(' ', $comment, 5);
 		$uploadDate = time();
 		//GETTING USERINFO
-		$query2 = $db->prepare("SELECT isAdmin FROM accounts WHERE accountID = :accID");
+		$query2 = $db->prepare("SELECT isAdmin, helperBanned FROM accounts WHERE accountID = :accID");
 		$query2->execute([':accID' => $accountID]);
 		$userinfo = $query2->fetchAll()[0];
 		//LEVELINFO
@@ -24,6 +24,38 @@ class Commands {
 		$res = $queryNAME->fetchAll();
 		$aLevelName = $res[0]["levelName"];
 		$aUserName = $res[0]["userName"];
+		//HELPER COMMANDS
+		if ($userinfo["helperBanned"] == 0)
+		{
+			if (substr($comment,0,5) == '!send')
+			{
+				$diff = $commentarray[1];
+				$stars = $commentarray[2];
+				$feature = $commentarray[3];
+				
+				$rateReason = $commentarray[4];
+				if ($rateReason == "")
+					$rateReason = "None";
+				else
+					$rateReason = "\"".$rateReason."\"";
+				
+				$starStars = $commentarray[2];
+				if($starStars == "" or $starStars > 20){
+					$starStars = 0;
+				}
+				
+				if ($starFeatured) {
+					$featurestr = "Yes";
+				} else {
+					$featurestr = "No";
+				}
+				
+				$diffName = $commentarray[1];
+				
+				PostToAlt("Command - Send", "$uname sent $aLevelName by $aUserName ($levelID).\nStars: $starStars\nDifficulty: $diffName\nFeatured: $featurestr\nReason: $rateReason");
+				return true;
+			}
+		}
 		//ADMIN COMMANDS
 		if ($userinfo["isAdmin"] == 1) {
 			if(substr($comment,0,5) == '!rate'){
@@ -113,6 +145,24 @@ class Commands {
 				
 				return true;
 			}
+			if(substr($comment,0,5) == '!epic'){
+				$query = $db->prepare("UPDATE levels SET starEpic='1' WHERE levelID=:levelID");
+				$query->execute([':levelID' => $levelID]);
+				$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('4', :value, :levelID, :timestamp, :id)");
+				$query->execute([':value' => "1", ':timestamp' => $uploadDate, ':id' => $accountID, ':levelID' => $levelID]);
+				PostToHook("Command - Feature", "$uname epic'd $aLevelName by $aUserName ($levelID).");
+				
+				return true;
+			}
+			if(substr($comment,0,7) == '!unepic'){
+				$query = $db->prepare("UPDATE levels SET starEpic='0' WHERE levelID=:levelID");
+				$query->execute([':levelID' => $levelID]);
+				$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('4', :value, :levelID, :timestamp, :id)");
+				$query->execute([':value' => "0", ':timestamp' => $uploadDate, ':id' => $accountID, ':levelID' => $levelID]);
+				PostToHook("Command - Feature", "$uname unepic'd $aLevelName by $aUserName ($levelID).");
+				
+				return true;
+			}
 			if(substr($comment,0,7) == '!setacc'){
 				$query = $db->prepare("SELECT accountID FROM accounts WHERE userName = :userName LIMIT 1");
 				$query->execute([':userName' => implode(' ', array_slice($commentarray, 1))]);
@@ -186,6 +236,16 @@ class Commands {
 				$query = $db->prepare("UPDATE levels SET isCPShared='1' WHERE levelID=:levelID");
 				$query->execute([':levelID' => $levelID]);
 				$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('11', :value, :levelID, :timestamp, :id)");
+				$query->execute([':value' => $commentarray[1], ':timestamp' => $uploadDate, ':id' => $accountID, ':levelID' => $levelID]);
+				return true;
+			}
+          if(substr($comment,0,8) == '!noshare'){
+				$query = $db->prepare("DELETE FROM cpShares WHERE :levelID = levelID");
+             $query->execute([':levelID' => $levelID]);
+				$query->execute([':userID' => $targetAcc, ':levelID' => $levelID]);
+				$query = $db->prepare("UPDATE levels SET isCPShared='0' WHERE levelID=:levelID");
+				$query->execute([':levelID' => $levelID]);
+				$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('22', :value, :levelID, :timestamp, :id)");
 				$query->execute([':value' => $commentarray[1], ':timestamp' => $uploadDate, ':id' => $accountID, ':levelID' => $levelID]);
 				return true;
 			}
