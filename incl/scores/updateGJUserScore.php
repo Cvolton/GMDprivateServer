@@ -121,13 +121,7 @@ if(!empty($_POST["accountID"]) AND $_POST["accountID"]!="0"){
 }
 $userID = $gs->getUserID($id, $userName);
 $uploadDate = time();
-	if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
-		$hostname = $_SERVER['HTTP_CLIENT_IP'];
-	} elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
-		$hostname = $_SERVER['HTTP_X_FORWARDED_FOR'];
-	} else {
-		$hostname = $_SERVER['REMOTE_ADDR'];
-	}
+$hostname = $_SERVER['REMOTE_ADDR'];
 $query = $db->prepare("SELECT stars,coins,demons,userCoins,diamonds FROM users WHERE userID=:userID LIMIT 1"); //getting differences
 $query->execute([':userID' => $userID]);
 $old = $query->fetch();

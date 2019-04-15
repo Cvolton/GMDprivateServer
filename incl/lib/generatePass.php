@@ -3,13 +3,7 @@ class generatePass
 {
 	public function isValidUsrname($userName, $pass) {
 		include dirname(__FILE__)."/connection.php";
-		if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
-			$ip = $_SERVER['HTTP_CLIENT_IP'];
-		} elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
-			$ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
-		} else {
-			$ip = $_SERVER['REMOTE_ADDR'];
-		}
+		$ip = $_SERVER['REMOTE_ADDR'];
 		$newtime = time() - (60*60);
 		$query6 = $db->prepare("SELECT count(*) FROM actions WHERE type = '6' AND timestamp > :time AND value2 = :ip");
 		$query6->execute([':time' => $newtime, ':ip' => $ip]);

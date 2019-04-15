@@ -8,13 +8,9 @@ require_once "../lib/mainLib.php";
 $gs = new mainLib();
 require "../lib/generateHash.php";
 $hash = new generateHash();
-if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
-	$ip = $_SERVER['HTTP_CLIENT_IP'];
-} elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
-	$ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
-} else {
-	$ip = $_SERVER['REMOTE_ADDR'];
-}
+
+$ip = $_SERVER['REMOTE_ADDR'];
+
 //$levelID = 2632;
 if(empty($_POST["gameVersion"])){
 	$gameVersion = 1;

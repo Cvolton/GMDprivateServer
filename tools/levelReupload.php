@@ -82,13 +82,9 @@ if(!empty($_POST["levelid"])){
 			if($parsedurl["host"] == $_SERVER['SERVER_NAME']){
 				exit("<p>You're attempting to reupload from the target server</p>");
 			}
-			if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
-				$hostname = $_SERVER['HTTP_CLIENT_IP'];
-			} elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
-				$hostname = $_SERVER['HTTP_X_FORWARDED_FOR'];
-			} else {
-				$hostname = $_SERVER['REMOTE_ADDR'];
-			}
+
+			$hostname = $_SERVER['REMOTE_ADDR'];
+
 			//values
 			$twoPlayer = chkarray($levelarray["a31"]);
 			$songID = chkarray($levelarray["a35"]);

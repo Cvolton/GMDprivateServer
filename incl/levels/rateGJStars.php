@@ -12,13 +12,9 @@ if(empty($_POST["stars"]) OR empty($_POST["levelID"])){
 }
 $stars = $ep->remove($_POST["stars"]);
 $levelID = $ep->remove($_POST["levelID"]);
-if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
-	$ip = $_SERVER['HTTP_CLIENT_IP'];
-} elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
-	$ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
-} else {
-	$ip = $_SERVER['REMOTE_ADDR'];
-}
+
+$ip = $_SERVER['REMOTE_ADDR'];
+
 $query=$db->prepare("SELECT accountID FROM modips WHERE IP = :ip");
 $query->execute([":ip" => $ip]);
 $ips = $query->rowCount();

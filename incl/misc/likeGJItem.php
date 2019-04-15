@@ -4,13 +4,7 @@ include "../lib/connection.php";
 require_once "../lib/exploitPatch.php";
 $ep = new exploitPatch();
 $type = $_POST["type"] + 2;
-if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
-	$ip = $_SERVER['HTTP_CLIENT_IP'];
-} elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
-	$ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
-} else {
-	$ip = $_SERVER['REMOTE_ADDR'];
-}
+$ip = $_SERVER['REMOTE_ADDR'];
 $itemID = $ep->remove($_POST["itemID"]);
 $query6 = $db->prepare("SELECT count(*) FROM actions WHERE type=:type AND value=:itemID AND value2=:ip");
 $query6->execute([':type' => $type, ':itemID' => $itemID, ':ip' => $ip]);

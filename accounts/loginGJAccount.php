@@ -3,13 +3,9 @@ chdir(dirname(__FILE__));
 include "../incl/lib/connection.php";
 require "../incl/lib/generatePass.php";
 require_once "../incl/lib/exploitPatch.php";
-if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
-	$ip = $_SERVER['HTTP_CLIENT_IP'];
-} elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
-	$ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
-} else {
-	$ip = $_SERVER['REMOTE_ADDR'];
-}
+
+$ip = $_SERVER['REMOTE_ADDR'];
+
 $ep = new exploitPatch();
 //here im getting all the data
 $udid = $ep->remove($_POST["udid"]);
