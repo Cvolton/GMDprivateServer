@@ -104,11 +104,11 @@ if (!empty($_GET['q']))
 
 			if (substr($phrase, 0, 1) === "-" AND strlen($phrase) >= 3 AND strlen($phrase) < 32)
 			{
-				array_push($exclstr, htmlspecialchars(str_replace('-', '', $phrase)));
+				array_push($exclstr, htmlspecialchars(str_replace('-', '', $phrase), ENT_QUOTES));
 			}
 			else if (substr($phrase, 0, 1) !== "-" AND strlen($phrase) >= 2 AND strlen($phrase) < 32)
 			{
-				array_push($inclstr, htmlspecialchars($phrase));
+				array_push($inclstr, htmlspecialchars($phrase, ENT_QUOTES));
 			}
 		}
 	}
