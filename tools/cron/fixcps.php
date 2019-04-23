@@ -71,7 +71,7 @@ foreach($result as $level){
 	$query = $db->prepare("SELECT userID FROM cpshares WHERE levelID = :levelID");
 	$query->execute([':levelID' => $level["levelID"]]);
 	$sharecount = $query->rowCount() + 1;
-	$addcp = $deservedcp / $sharecount;
+	$addcp = $deservedcp;
 	$shares = $query->fetchAll();
 	foreach($shares as &$share){
 		$people[$share["userID"]] += $addcp;
