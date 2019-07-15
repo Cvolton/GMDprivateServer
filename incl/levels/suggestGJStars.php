@@ -18,13 +18,13 @@ if($accountID != "" AND $gjp != ""){
 	if($gjpresult == 1){
 		$difficulty = $gs->getDiffFromStars($stars);
 		$permRate = $gs->checkPermission($accountID, "actionRateStars");
-		$permSuggest = $gs->checkPermission($accountID, "actionRequestMod");
+		$permSuggest = $gs->getMaxValuePermission($accountID, "actionRequestMod");
 		if($permRate){
 			$gs->rateLevel($accountID, $levelID, $stars, $difficulty["diff"], $difficulty["auto"], $difficulty["demon"]);
 			$gs->featureLevel($accountID, $levelID, $feature);
 			$gs->verifyCoinsLevel($accountID, $levelID, 1);
 			echo 1;
-		}else if(!$permRate && $permSuggest){
+		}else if(!$permRate && ($permSuggest > 0)){
 			$gs->suggestLevel($accountID, $levelID, $difficulty["diff"], $stars, $feature, $difficulty["auto"], $difficulty["demon"]);
 			echo 1;
 		}else{
