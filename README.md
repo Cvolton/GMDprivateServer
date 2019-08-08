@@ -11,6 +11,7 @@ Required version of PHP: 5.4+ (tested up to 7.1.3)
 2) Import database.sql into a MySQL/MariaDB database
 3) Edit the links in GeometryDash.exe (some are base64 encoded since 2.1, remember that)
 If you have a email,You can change the [sendmail.php](/incl/lib/Mail/SendMail.php) to send verify link.
+
 And you need to change [registerGJAccount.php](/accounts/registerGJAccount.php). 
 
 ### Credits
