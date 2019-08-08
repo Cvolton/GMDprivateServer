@@ -1,6 +1,8 @@
 <?php
 include "../incl/lib/connection.php";
+include "../incl/lib/Mail/SendMail.php";
 require_once "../incl/lib/exploitPatch.php";
+$sm = new SendMail();
 $ep = new exploitPatch();
 if($_POST["userName"] != ""){
 	//here im getting all the data
@@ -19,7 +21,15 @@ if($_POST["userName"] != ""){
 		$query = $db->prepare("INSERT INTO accounts (userName, password, email, secret, saveData, registerDate, saveKey)
 		VALUES (:userName, :password, :email, :secret, '', :time, '')");
 		$query->execute([':userName' => $userName, ':password' => $hashpass, ':email' => $email, ':secret' => $secret, ':time' => time()]);
+        $link = "server.geometrydashchinese.com/accounts/active/active.php?ID=".base64_encode($email)."&Key=".$hashpass;
+        $Title = "Verify Your Account";//Mail Title
+        $content = $link;//Mail Content
+        $active = $sm->Send($email, $Title, $content);
+      if ($active == "1") {
 		echo "1";
-	}
+      } else {
+        echo "-1";
+      }
+    }
 }
 ?>
