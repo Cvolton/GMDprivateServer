@@ -11,6 +11,9 @@ Required version of PHP: 5.4+ (tested up to 7.1.3)
 2) Import database.sql into a MySQL/MariaDB database
 3) Edit the links in GeometryDash.exe (some are base64 encoded since 2.1, remember that)
 
+### Creating Geometry Dash Client For Your Private Server
+https://github.com/Cvolton/GMDprivateServer/wiki/Creating-Windows,-Android-and-IOS-Apps
+
 ### Credits
 Private Messaging system by someguy28 (even though he needed a ton of help from me... and by a ton I mean A TON)
 
