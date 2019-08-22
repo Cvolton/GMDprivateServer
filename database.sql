@@ -211,7 +211,7 @@ CREATE TABLE `levels` (
   `gameVersion` int(11) NOT NULL,
   `binaryVersion` int(11) NOT NULL DEFAULT '0',
   `userName` mediumtext COLLATE utf8_unicode_ci NOT NULL,
-  `levelID` int(11) NOT NULL,
+  `levelID` int(11) NOT NULL DEFAULT '22',
   `levelName` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `levelDesc` mediumtext COLLATE utf8_unicode_ci NOT NULL,
   `levelVersion` int(11) NOT NULL,
