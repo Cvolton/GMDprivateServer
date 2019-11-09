@@ -13,7 +13,7 @@ $result = $query->fetchAll();
 echo "Deleting unused accounts<br>";
 ob_flush();
 flush();
-foreach($result as &$account){
+/*foreach($result as &$account){
 	$query = $db->prepare("SELECT count(*) FROM users WHERE extID = :accountID");
 	$query->execute([':accountID' => $account["accountID"]]);
 	if($query->fetchColumn() == 0){
@@ -26,7 +26,7 @@ foreach($result as &$account){
 			flush();
 		}
 	}
-}
+}*/
 /*$query = $db->prepare("show tables");
 $query->execute();
 $tables = $query->fetchAll();
