@@ -42,6 +42,9 @@ $result = $query->fetchAll();
 shuffle($result);
 //var_dump($result);
 //quests
+if (empty($result[0]) || empty($result[1]) || empty($result[2])) {
+	exit("-1");
+}
 $quest1 = $quest1ID.",".$result[0]["type"].",".$result[0]["amount"].",".$result[0]["reward"].",".$result[0]["name"]."";
 $quest2 = $quest2ID.",".$result[1]["type"].",".$result[1]["amount"].",".$result[1]["reward"].",".$result[1]["name"]."";
 $quest3 = $quest3ID.",".$result[2]["type"].",".$result[2]["amount"].",".$result[2]["reward"].",".$result[2]["name"]."";
