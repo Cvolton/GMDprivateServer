@@ -809,4 +809,10 @@ class mainLib {
 		curl_close($ch);
 		return $size;
 	}
+	public function suggestLevel($accountID, $levelID, $difficulty, $stars, $feat, $auto, $demon){
+		include __DIR__ . "/connection.php";
+		$query = "INSERT INTO suggest (suggestBy, suggestLevelID, suggestDifficulty, suggestStars, suggestFeatured, suggestAuto, suggestDemon, timestamp) VALUES (:account, :level, :diff, :stars, :feat, :auto, :demon, :timestamp)";
+		$query = $db->prepare($query);
+		$query->execute([':account' => $accountID, ':level' => $levelID, ':diff' => $difficulty, ':stars' => $stars, ':feat' => $feat, ':auto' => $auto, ':demon' => $demon, ':timestamp' => time()]);
+	}
 }
