@@ -16,7 +16,7 @@ if(!empty($_POST["userName"]) AND !empty($_POST["password"])){
 		$accountID = $query->fetchColumn();
 		if($query->rowCount()==0){
 			echo "Invalid account/password. <a href='suggestList.php'>Try again.</a>";
-		}else if($gs->checkPermission($accountID, "actionRateStars") || $gs->checkPermission($accountID, "commandRate")){
+		}else if($gs->checkPermission($accountID, "toolSuggestlist")){
 			$accountID = $query->fetchColumn();
 			$query = $db->prepare("SELECT suggestBy,suggestLevelId,suggestDifficulty,suggestStars,suggestFeatured,suggestAuto,suggestDemon,timestamp FROM suggest ORDER BY timestamp DESC");
 			$query->execute();
