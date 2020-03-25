@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<title>Welcome to use GMDprivateServer</title>
+		<link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
+		<script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
+		<script src="https://cdn.staticfile.org/popper.js/1.15.0/umd/popper.min.js"></script>
+		<script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	</head>
+	<body class="bg-secondary">
+	  <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+	    <a class="navbar-brand" href="/setup">GMDprivateServer</a>
+	    <ul class="navbar-nav">
+	      <li class="nav-item"><a class="nav-link" href="//github.com/Cvolton/GMDprivateServer">Github</a></li>
+	    </ul>
+	  </nav>
+	  <div class="container"><br><br>
+	  	<div class="jumbotron">
+	  		<h3 class="text-center">Welcome to use GMDprivateServer</h3><hr>
+	  		<h4 class="text-center">Database</h4><br>
+	  		<p class="db_error text-center"></p>
+	  		<input type="text" class="form-control col-md-6 mx-auto text-center" value="localhost" placeholder="server" name="db_server"><br>
+			<input type="text" class="form-control col-md-6 mx-auto text-center" placeholder="userName" name="db_userName"><br>
+			<input type="password" class="form-control col-md-6 mx-auto text-center" placeholder="password" name="db_password"><br>
+			<input type="text" class="form-control col-md-6 mx-auto text-center" placeholder="databaseName" name="db_name"><br>
+			<center><input type="submit" class="btn btn-dark col-md-4 mx-auto db_submit_btn" value="submit"></center>
+	  	</div>
+	  </div>
+	  <script>
+		$(".db_submit_btn").click(function() {
+			$(".db_submit_btn").attr("disabled", "true");
+			var s = $("[name='db_server']").val();
+	  		var u = $("[name='db_userName']").val();
+	  		var p = $("[name='db_password']").val();
+	  		var n = $("[name='db_name']").val();
+	  		$.post("/setup/API/db.php", {
+	  			server: s,
+	  			userName: u,
+	  			password: p,
+	  			databaseName: n,
+	  		}, function(data, status) {
+	  			$(".db_submit_btn").attr("disabled", false);
+	  			console.log("db.php: "+data);
+	  			if (status == "success") {
+	  				if (data == "OK") {
+	  					ok();
+	  				} else {
+	  					if (data == "-1") {
+	  						$(".db_error").text("missing parammeter.");
+	  					} else if (data.split("|")[0] == "-2") {
+	  						$(".db_error").html("connection failed.<br>error: "+data.split("|")[1]);
+	  					} else {
+	  						console.log("somthing went wrong");
+	  					}
+	  				}
+	  			} else {
+	  				console.log("somthing went wrong");
+	  			}
+	  		});
+	  		
+	  		function ok() {
+	  			$(".db_submit_btn").attr("disabled", "true");
+	  			$.get("/setup/API/OK.php", function(data, status) {
+	  				$(".db_submit_btn").attr("disabled", false);
+	  				if (status == "success") {
+	  					if (data == "ready") {
+	  						alert("Setup Done! Now you'll goto dashboard");
+	  						location.href = "/dashboard";
+	  					} else {
+	  						console.log("somthing went wrong");
+	  					}
+	  				} else {
+	  					console.log("somthing went wrong");
+	  				}
+	  			});
+	  		}
+		});
+	  </script>
+	</body>
+</html>
