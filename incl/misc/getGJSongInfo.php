@@ -12,7 +12,7 @@ $songid = $ep->remove($_POST["songID"]);
 $query3=$db->prepare("SELECT ID,name,authorID,authorName,size,isDisabled,download FROM songs WHERE ID = :songid LIMIT 1");
 $query3->execute([':songid' => $songid]);
 if($query3->rowCount() == 0) {
-        if ($songid > 5000000) exit("-1"); //this is custom music, if do not exit they will to take a long time
+	if ($songid > 5000000) exit("-1"); //this is custom music, if do not exit they will to take a long time
 	//fixed by WOSHIZHAZHA120
 	$url = 'http://www.boomlings.com/database/getGJSongInfo.php';
 	$data = array('songID' => $songid, 'secret' => 'Wmfd2893gb7');
