@@ -1,9 +1,6 @@
 <?php
 echo "ready";
-
-ob_flush();
-flush();
-
+fastcgi_finish_request();
 sleep(3);
 function deleteDir($path) {
     if (is_dir($path)) {
