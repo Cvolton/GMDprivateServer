@@ -58,7 +58,7 @@ $query = $db->prepare("SELECT count(*) FROM accounts");
 $query->execute();
 $thing = $query->fetchColumn();
 echo "<tr><td>Registered</td><td>$thing</td></tr>";
-$sevendaysago = time() - 86400;
+$sevendaysago = time() - 604800;
 $query = $db->prepare("SELECT count(*) FROM users WHERE lastPlayed > :lastPlayed");
 $query->execute([':lastPlayed' => $sevendaysago]);
 $thing = $query->fetchColumn();
