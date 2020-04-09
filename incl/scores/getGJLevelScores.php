@@ -12,7 +12,6 @@ $gjp = $ep->remove($_POST["gjp"]);
 $accountID = $ep->remove($_POST["accountID"]);
 $levelID = $ep->remove($_POST["levelID"]);
 $percent = $ep->remove($_POST["percent"]);
-if ($percent == "0") exit("-1");
 $uploadDate = time();
 if(isset($_POST["s1"])){
 	$attempts = $_POST["s1"] - 8354;
@@ -43,6 +42,10 @@ if($query2->rowCount() == 0) {
 	}else{
 		$query = $db->prepare("SELECT count(*) FROM levelscores WHERE percent=:percent AND uploadDate=:uploadDate AND accountID=:accountID AND levelID=:levelID AND coins = :coins AND attempts = :attempts");
 	}
+}
+if ($percent == "0") {
+	$query = $db->prepare("SELECT count(*) FROM levelscores WHERE percent=:percent AND uploadDate=:uploadDate AND accountID=:accountID AND levelID=:levelID AND coins = :coins AND attempts = :attempts"); // if percent is 0
+	//fixed by WOSHIZHAZHA120
 }
 $GJPCheck = new GJPCheck();
 $gjpresult = $GJPCheck->check($gjp,$accountID);
