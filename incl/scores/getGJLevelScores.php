@@ -12,6 +12,7 @@ $gjp = $ep->remove($_POST["gjp"]);
 $accountID = $ep->remove($_POST["accountID"]);
 $levelID = $ep->remove($_POST["levelID"]);
 $percent = $ep->remove($_POST["percent"]);
+if ($percent == "0") exit("-1");
 $uploadDate = time();
 if(isset($_POST["s1"])){
 	$attempts = $_POST["s1"] - 8354;
