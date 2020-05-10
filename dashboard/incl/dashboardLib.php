@@ -163,6 +163,7 @@ class dashboardLib{
 							<a class="dropdown-item" href="lang/switchLang.php?lang=RU">Русский</a>
 							<a class="dropdown-item" href="lang/switchLang.php?lang=TH">ภาษาไทย</a>
 							<a class="dropdown-item" href="lang/switchLang.php?lang=TR">Türkçe</a>
+							<a class="dropdown-item" href="lang/switchLang.php?lang=FI">Suomi</a>
 							<a class="dropdown-item" href="lang/switchLang.php?lang=test">translTest</a>
 						</div>';
 		if(isset($_SESSION["accountID"]) AND $_SESSION["accountID"] != 0){
