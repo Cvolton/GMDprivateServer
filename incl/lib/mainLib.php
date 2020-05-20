@@ -815,4 +815,53 @@ class mainLib {
 		$query = $db->prepare($query);
 		$query->execute([':account' => $accountID, ':level' => $levelID, ':diff' => $difficulty, ':stars' => $stars, ':feat' => $feat, ':auto' => $auto, ':demon' => $demon, ':timestamp' => time()]);
 	}
+	
+	public function timeDelay($time) {
+		if (!is_numeric($time)) {
+			return "unknown times";
+		}
+		$seconds = (time() - ($time));
+		$years = 0; $months = 0; $days = 0; $hours = 0; $minutes = 0; 
+
+		if ($seconds < 60) {
+			return $seconds." seconds";
+		}
+		while ($seconds > 59) {
+			$seconds -= 60;
+			$minutes += 1;
+		}
+
+		if ($minutes < 60) {
+			return $minutes." minutes";
+		}
+		while ($minutes > 59) {
+			$minutes -= 60;
+			$hours += 1;
+		}
+
+		if ($hours < 24) {
+			return $hours." hours";
+		}
+		while ($hours > 23) {
+			$hours -= 24;
+			$days += 1;
+		}
+
+		if ($days < 31) {
+			return $days." days";
+		}
+		while ($days > 30) {
+			$days -= 31;
+			$months += 1;
+		}
+
+		if ($months < 12) {
+			return $months." months";
+		}
+		while ($months > 12) {
+			$months -= 12;
+			$years += 1;
+		}
+		return $years." years";
+	}
 }
