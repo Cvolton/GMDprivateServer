@@ -818,6 +818,7 @@ class mainLib {
 	
 	public function voteLevel($accountID, $levelID, $difficulty, $demon){
 		include __DIR__ . "/connection.php";
+		include __DIR__ . "/../../config/difVote.php";
 		
 		$permState = $this->checkPermission($accountID, "actionRateDifficulty");
 		$power = 0;
@@ -840,17 +841,17 @@ class mainLib {
 		$query = $db->prepare("INSERT INTO difvote (levelID, userID, difficulty, demon, timestamp) VALUES (:level, :account, :diff, :demon, :timestamp)");
 		$query->execute([':account' => $accountID, ':level' => $levelID, ':diff' => $difficulty, ':demon' => $demon, ':timestamp' => time()]);
 		if ($power == 1) {
-			$query = $db->prepare("INSERT INTO difvote (levelID, userID, difficulty, demon, timestamp, isPower) VALUES (:level, :account, :diff, :demon, :timestamp, 1)");
-			$query->execute([':account' => $accountID, ':level' => $levelID, ':diff' => $difficulty, ':demon' => $demon, ':timestamp' => time()]);
-			$query = $db->prepare("INSERT INTO difvote (levelID, userID, difficulty, demon, timestamp, isPower) VALUES (:level, :account, :diff, :demon, :timestamp, 1)");
-			$query->execute([':account' => $accountID, ':level' => $levelID, ':diff' => $difficulty, ':demon' => $demon, ':timestamp' => time()]);
+			for ($loop = 1; $loop < $powerRate; $loop++) {
+				$query = $db->prepare("INSERT INTO difvote (levelID, userID, difficulty, demon, timestamp, isPower) VALUES (:level, :account, :diff, :demon, :timestamp, 1)");
+				$query->execute([':account' => $accountID, ':level' => $levelID, ':diff' => $difficulty, ':demon' => $demon, ':timestamp' => time()]);
+			}
 		}
 		
 		if ($isDemon == 0 || $demon == 0) {
 			$query = $db->prepare("SELECT Count(*) as count FROM difvote WHERE levelID = :level");
 			$query->execute([':level' => $levelID]);
 			$isVoted = $query->fetchColumn();
-			if ($isVoted > 2) {
+			if ($isVoted >= $minimumVotes) {
 				$query = $db->prepare("SELECT AVG(difficulty) AS diff FROM difvote WHERE levelID = :level");
 				$query->execute([':level' => $levelID]);
 				$result = $query->fetchColumn();
@@ -867,7 +868,7 @@ class mainLib {
 			$query = $db->prepare("SELECT Count(*) as count FROM difvote WHERE demon != 0 AND levelID = :level");
 			$query->execute([':level' => $levelID]);
 			$isVoted = $query->fetchColumn();
-			if ($isVoted > 2) {
+			if ($isVoted >= $minimumVotes) {
 				$query = $db->prepare("SELECT AVG(demon) AS diff FROM difvote WHERE demon != 0 AND levelID = :level");
 				$query->execute([':level' => $levelID]);
 				$result = $query->fetchColumn();
