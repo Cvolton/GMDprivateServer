@@ -815,4 +815,82 @@ class mainLib {
 		$query = $db->prepare($query);
 		$query->execute([':account' => $accountID, ':level' => $levelID, ':diff' => $difficulty, ':stars' => $stars, ':feat' => $feat, ':auto' => $auto, ':demon' => $demon, ':timestamp' => time()]);
 	}
+	
+	public function voteLevel($accountID, $levelID, $difficulty, $demon){
+		include __DIR__ . "/connection.php";
+		
+		$permState = $this->checkPermission($accountID, "actionRateDifficulty");
+		$power = 0;
+		if ($permState) {
+			$power = 1;
+		}
+		
+		$query = $db->prepare("SELECT starDemon, starDemonDiff FROM levels WHERE levelID = :level");
+		$query->execute([':level' => $levelID]);
+		$result1 = $query->fetch();
+		if ($query->rowCount() > 0) {
+			$isDemon = $result1['starDemon'];
+			if ($power == 0 && $isDemon == 1 && ($result1['starDemonDiff']-$demon >= 30 || $result1['starDemonDiff']-$demon <= -30)) {
+				return;
+			}
+		} else {
+			$isDemon = 0;
+		}
+		
+		$query = $db->prepare("INSERT INTO difvote (levelID, userID, difficulty, demon, timestamp) VALUES (:level, :account, :diff, :demon, :timestamp)");
+		$query->execute([':account' => $accountID, ':level' => $levelID, ':diff' => $difficulty, ':demon' => $demon, ':timestamp' => time()]);
+		if ($power == 1) {
+			$query = $db->prepare("INSERT INTO difvote (levelID, userID, difficulty, demon, timestamp, isPower) VALUES (:level, :account, :diff, :demon, :timestamp, 1)");
+			$query->execute([':account' => $accountID, ':level' => $levelID, ':diff' => $difficulty, ':demon' => $demon, ':timestamp' => time()]);
+			$query = $db->prepare("INSERT INTO difvote (levelID, userID, difficulty, demon, timestamp, isPower) VALUES (:level, :account, :diff, :demon, :timestamp, 1)");
+			$query->execute([':account' => $accountID, ':level' => $levelID, ':diff' => $difficulty, ':demon' => $demon, ':timestamp' => time()]);
+		}
+		
+		if ($isDemon == 0 || $demon == 0) {
+			$query = $db->prepare("SELECT Count(*) as count FROM difvote WHERE levelID = :level");
+			$query->execute([':level' => $levelID]);
+			$isVoted = $query->fetchColumn();
+			if ($isVoted > 2) {
+				$query = $db->prepare("SELECT AVG(difficulty) AS diff FROM difvote WHERE levelID = :level");
+				$query->execute([':level' => $levelID]);
+				$result = $query->fetchColumn();
+				$diff = round($result, -1);
+				$auto = 0;
+				if ($diff == 0) {
+					$auto = 1;
+				}
+				
+				$query = $db->prepare("UPDATE levels SET starAuto=:auto, starDifficulty=:diff WHERE levelID=:levelID");	
+				$query->execute([':auto' => $auto, ':diff' => $diff, ':levelID'=>$levelID]);
+			}
+		} else {
+			$query = $db->prepare("SELECT Count(*) as count FROM difvote WHERE demon != 0 AND levelID = :level");
+			$query->execute([':level' => $levelID]);
+			$isVoted = $query->fetchColumn();
+			if ($isVoted > 2) {
+				$query = $db->prepare("SELECT AVG(demon) AS diff FROM difvote WHERE demon != 0 AND levelID = :level");
+				$query->execute([':level' => $levelID]);
+				$result = $query->fetchColumn();
+				$demon_face = 0;
+				if ($result >= 10 && $result < 18) {
+					$demon_face = 3;
+				}
+				else if ($result >= 18 && $result < 26) {
+					$demon_face = 4;
+				}
+				else if ($result >= 26 && $result < 34) {
+					$demon_face = 2;
+				}
+				else if ($result >= 34 && $result < 42) {
+					$demon_face = 5;
+				}
+				else if ($result >= 42 && $result <= 50) {
+					$demon_face = 6;
+				}
+				
+				$query = $db->prepare("UPDATE levels SET starDemonDiff=:diff WHERE levelID=:levelID");	
+				$query->execute([':diff' => $demon_face, ':levelID'=>$levelID]);
+			}
+		}
+	}
 }

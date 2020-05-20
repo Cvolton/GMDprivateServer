@@ -160,6 +160,22 @@ CREATE TABLE `dailyfeatures` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `difvote`
+--
+
+CREATE TABLE `difvote` (
+  `id` int(11) NOT NULL,
+  `levelID` int(11) NOT NULL,
+  `userID` int(11) NOT NULL,
+  `difficulty` int(11) NOT NULL,
+  `demon` int(11) NOT NULL,
+  `timestamp` int(11) NOT NULL,
+  `isPower` int(11) NOT NULL DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `friendreqs`
 --
 
@@ -807,6 +823,12 @@ ALTER TABLE `cpshares`
 --
 ALTER TABLE `dailyfeatures`
   MODIFY `feaID` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `difvote`
+--
+ALTER TABLE `dailyfeatures`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `friendreqs`
