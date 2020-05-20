@@ -50,7 +50,7 @@ $query->execute([':levelID' => $levelID]);
 $result = $query->fetchAll();
 foreach($result as &$comment1) {
 	if($comment1["commentID"]!=""){
-		$uploadDate = date("d/m/Y G.i", $comment1["timestamp"]);
+		$uploadDate = $gs->timeDelay($comment1["timestamp"]);
 		$actualcomment = $comment1["comment"];
 		if($gameVersion < 20){
 			$actualcomment = base64_decode($actualcomment);

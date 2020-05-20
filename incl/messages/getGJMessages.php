@@ -5,6 +5,8 @@ include "../lib/connection.php";
 require_once "../lib/GJPCheck.php";
 require_once "../lib/exploitPatch.php";
 $ep = new exploitPatch();
+require_once "../lib/mainLib.php";
+$mainLib = new mainLib();
 $msgstring = "";
 $userid = 1337;
 //code begins
@@ -37,7 +39,7 @@ if($msgcount == 0){
 }
 foreach ($result as &$message1) {
 	if($message1["messageID"]!=""){
-		$uploadDate = date("d/m/Y G.i", $message1["timestamp"]);
+		$uploadDate = $mainLib->timeDelay($message1["timestamp"]);
 		if($getSent == 1){
 			$accountID = $message1["toAccountID"];
 		}else{
