@@ -60,8 +60,9 @@ if(!is_numeric($levelID)){
 														(:type,:itemID, :time, :ip)");
 			$query6->execute([':type' => 7, ':itemID' => $levelID, ':time' => time(), ':ip' => $ip]);
 		}
-		$uploadDate = $gs->timeDelay($result["uploadDate"]);
-		$updateDate = $gs->timeDelay($result["updateDate"]);
+		//getting the days since uploaded... or outputting the date in Y-M-D format at least for now...
+		$uploadDate = date("d-m-Y G-i", $result["uploadDate"]);
+		$updateDate = date("d-m-Y G-i", $result["updateDate"]);
 		//password xor
 		$pass = $result["password"];
 		$desc = $result["levelDesc"];
