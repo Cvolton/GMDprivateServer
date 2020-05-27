@@ -30,16 +30,16 @@ if(!empty($_POST["accountID"]) AND $_POST["accountID"]!="0"){
 	if($gjpresult == 0){
 		exit("-1");
 	}
+	
+	if($cmds->doCommands($id, $comment, $levelID)){
+		exit("-10");
+	}
 }else{
 	$id = $ep->remove($_POST["udid"]);
 	$register = 0;
 	if(is_numeric($id)){
 		exit("-1");
 	}
-}
-
-if($cmds->doCommands($id, $comment, $levelID)){
-	exit("-10");
 }
 
 $queryChk = $db->prepare("SELECT * FROM accounts WHERE accountID = :accID AND isAdmin = 1");
