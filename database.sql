@@ -830,7 +830,7 @@ ALTER TABLE `gauntlets`
 -- AUTO_INCREMENT for table `levels`
 --
 ALTER TABLE `levels`
-  MODIFY `levelID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `levelID` int(11) NOT NULL, AUTO_INCREMENT = 22;
 
 --
 -- AUTO_INCREMENT for table `levelscores`
@@ -908,7 +908,7 @@ ALTER TABLE `roles`
 -- AUTO_INCREMENT for table `songs`
 --
 ALTER TABLE `songs`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `ID` int(11) NOT NULL, AUTO_INCREMENT = 5000000;
 
 --
 -- AUTO_INCREMENT for table `suggest`
