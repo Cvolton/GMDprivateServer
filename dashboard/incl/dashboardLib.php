@@ -179,17 +179,17 @@ class dashboardLib{
 						<i class=\"fa fa-download\" aria-hidden=\"true\"></i> $localizedDownloadSelection
 					</a>
 					<div class=\"dropdown-menu\" aria-labelledby=\"navbarDropdownMenuLink\">";
-		if($isWinLink){
+		if($winDownloadLink){
 			$downloadCode .= "<a class=\"dropdown-item\" href=$winDownloadLink> $localizedForWindows</a>";
 		}
-		if($isAndrLink){
+		if($andrDownloadLink){
 			$downloadCode .= "<a class=\"dropdown-item\" href=$andrDownloadLink> $localizedForAndroid</a>";
 		}
-		if($isMacosLink){
+		if($macosDownloadLink){
 			$downloadCode .= "<a class=\"dropdown-item\" href=$macosDownloadLink> $localizedForMacos</a>";
 		}
 		$downloadCode .= "</div></li>";
-		if($isWinLink || $isAndrLink || $isMacosLink){
+		if($winDownloadLink || $andrDownloadLink || $macosDownloadLink){
 			echo $downloadCode;
 		}
 		if(isset($_SESSION["accountID"]) AND $_SESSION["accountID"] != 0){
