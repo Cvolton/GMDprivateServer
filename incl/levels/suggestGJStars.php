@@ -26,12 +26,12 @@ if($accountID != "" AND $gjp != ""){
 			$gs->suggestLevel($accountID, $levelID, $difficulty["diff"], $stars, $feature, $difficulty["auto"], $difficulty["demon"]);
 			echo 1;
 		}else{
-			echo -1;
+			echo -2;
 		}
 	}else{
-		echo -1;
+		echo -2;
 	}
 }else{
-	echo -1;
+	echo -2;
 }
 ?>
