@@ -13,10 +13,7 @@ if($accountID != "" AND $gjp != ""){
 	$gjpresult = $GJPCheck->check($gjp,$accountID);
 	if($gjpresult == 1){
 		if ($gs->getMaxValuePermission($accountID,"actionRequestMod") == 1) { // checks if they have mod
-		$permState = $gs->getMaxValuePermission($accountID,"modBadgeLevel"); // checks mod badge level so it knows what to show
-		/*if ($permState == 0) { 
-			exit();	//this makes the req have an infinite loop, remove the comment to enable the infinite loop
-		}*/					   
+		$permState = $gs->getMaxValuePermission($accountID,"modBadgeLevel"); // checks mod badge level so it knows what to show					   
 		if ($permState >= 2){ // if the mod badge level is higher than 2, it will still show elder mod message
 			exit("2");
 		}
