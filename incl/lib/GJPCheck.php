@@ -3,10 +3,10 @@ class GJPCheck {
 	public function check($gjp, $accountID) {
 		include dirname(__FILE__)."/connection.php";
 		include dirname(__FILE__)."/../../config/security.php";
-		include dirname(__FILE__)."/mainLib.php";
-		$ml = new mainLib()
+		include_once dirname(__FILE__)."/mainLib.php";
+		$ml = new mainLib();
 		if($sessionGrants){
-			$ip = $ml->getIP()
+			$ip = $ml->getIP();
 			$query = $db->prepare("SELECT count(*) FROM actions WHERE type = 10 AND value = :accountID AND value2 = :ip AND timestamp > :timestamp");
 			$query->execute([':accountID' => $accountID, ':ip' => $ip, ':timestamp' => time() - 3600]);
 			if($query->fetchColumn() > 0){
@@ -22,7 +22,7 @@ class GJPCheck {
 		$gjpdecode = $xor->cipher($gjpdecode,37526);
 		$generatePass = new generatePass();
 		if($generatePass->isValid($accountID, $gjpdecode) == 1 AND $sessionGrants){
-			$ip = $ml->getIP()
+			$ip = $ml->getIP();
 			$query = $db->prepare("INSERT INTO actions (type, value, value2, timestamp) VALUES (10, :accountID, :ip, :timestamp)");
 			$query->execute([':accountID' => $accountID, ':ip' => $ip, ':timestamp' => time()]);
 		}
