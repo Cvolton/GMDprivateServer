@@ -3,15 +3,15 @@ class GJPCheck {
 	public function check($gjp, $accountID) {
 		include dirname(__FILE__)."/connection.php";
 		include dirname(__FILE__)."/../../config/security.php";
+		include dirname(__FILE__)."/mainLib.php";
+		$ml = new mainLib()
 		if($sessionGrants){
-			if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
-				$ip = $_SERVER['HTTP_CLIENT_IP'];
-			} elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
-				$ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
-			} else {
-				$ip = $_SERVER['REMOTE_ADDR'];
-			}
-			if ($_SESSION["ip"] == $ip) {
+			$value = $accountID
+			$value .= "|"
+			$value .= $ml->getIP()
+			$query = $db->prepare("SELECT count(*) FROM actions WHERE type = 10 AND value = :accountID AND timestamp > :timestamp");
+			$query->execute([':accountID' => $value, ':timestamp' => time() - 3600]);
+			if($query->fetchColumn() > 0){
 				return 1;
 			}
 		}
@@ -24,8 +24,11 @@ class GJPCheck {
 		$gjpdecode = $xor->cipher($gjpdecode,37526);
 		$generatePass = new generatePass();
 		if($generatePass->isValid($accountID, $gjpdecode) == 1 AND $sessionGrants){
+			$value = $accountID
+			$value .= "|"
+			$value .= $ml->getIP()
 			$query = $db->prepare("INSERT INTO actions (type, value, timestamp) VALUES (10, :accountID, :timestamp)");
-			$query->execute([':accountID' => $accountID, ':timestamp' => time()]);
+			$query->execute([':accountID' => $value, ':timestamp' => time()]);
 		}
 		return $generatePass->isValid($accountID, $gjpdecode);
 	}
