@@ -18,9 +18,9 @@ if($id != "" AND $gjp != ""){
 		if ($permState == 0) {
 			exit(-1); //fix infinite req loop
 		}
-		if ($permState != 1 || $permState != 0){ // if the mod badge level is higher than 2, it will still show elder mod badge
+		if ($permState >= 2){ // if the mod badge level is higher than 2, it will still show elder mod message
 			echo 2;
-			exit();
+			exit(); //exit(2) doesnt work for some reason
 		}
 		echo $permState; }
 	}else{
