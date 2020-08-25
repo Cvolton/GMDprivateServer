@@ -1,11 +1,10 @@
 <?php
 chdir(dirname(__FILE__));
 //error_reporting(0);
-include "../lib/connection.php";
 require_once "../lib/GJPCheck.php";
 require_once "../lib/exploitPatch.php";
 $ep = new exploitPatch();
-require_once "../lib/mainLib.php";
+require_once "../lib/mainLib.php"; //mainlib is also connection.php
 $gs = new mainLib();
 $gjp = $ep->remove($_POST["gjp"]);
 $id = $ep->remove($_POST["accountID"]);
