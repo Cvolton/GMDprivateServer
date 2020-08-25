@@ -15,9 +15,6 @@ if($id != "" AND $gjp != ""){
 	if($gjpresult == 1){
 		if ($gs->getMaxValuePermission($id,"actionRequestMod") == 1) { // checks if they have mod
 		$permState = $gs->getMaxValuePermission($id,"modBadgeLevel"); // checks mod badge level so it knows what to show
-		if ($permState == 0) {
-			exit(-1); //fix infinite req loop
-		}
 		if ($permState >= 2){ // if the mod badge level is higher than 2, it will still show elder mod message
 			exit("2");
 		}
