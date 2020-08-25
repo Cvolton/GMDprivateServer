@@ -6,11 +6,9 @@ class GJPCheck {
 		include dirname(__FILE__)."/mainLib.php";
 		$ml = new mainLib()
 		if($sessionGrants){
-			$value = $accountID
-			$value .= "|"
-			$value .= $ml->getIP()
-			$query = $db->prepare("SELECT count(*) FROM actions WHERE type = 10 AND value = :accountID AND timestamp > :timestamp");
-			$query->execute([':accountID' => $value, ':timestamp' => time() - 3600]);
+			$ip = $ml->getIP()
+			$query = $db->prepare("SELECT count(*) FROM actions WHERE type = 10 AND value = :accountID AND value2 = :ip AND timestamp > :timestamp");
+			$query->execute([':accountID' => $accountID, ':ip' => $ip, ':timestamp' => time() - 3600]);
 			if($query->fetchColumn() > 0){
 				return 1;
 			}
@@ -24,11 +22,9 @@ class GJPCheck {
 		$gjpdecode = $xor->cipher($gjpdecode,37526);
 		$generatePass = new generatePass();
 		if($generatePass->isValid($accountID, $gjpdecode) == 1 AND $sessionGrants){
-			$value = $accountID
-			$value .= "|"
-			$value .= $ml->getIP()
-			$query = $db->prepare("INSERT INTO actions (type, value, timestamp) VALUES (10, :accountID, :timestamp)");
-			$query->execute([':accountID' => $value, ':timestamp' => time()]);
+			$ip = $ml->getIP()
+			$query = $db->prepare("INSERT INTO actions (type, value, value2, timestamp) VALUES (10, :accountID, :ip, :timestamp)");
+			$query->execute([':accountID' => $accountID, ':ip' => $ip, ':timestamp' => time()]);
 		}
 		return $generatePass->isValid($accountID, $gjpdecode);
 	}
