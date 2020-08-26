@@ -108,11 +108,11 @@ if(!empty($_POST["levelid"])){
 			}
 			$targetUserID = chkarray($levelarray["a6"]);
 			//linkacc
-			$query = $db->prepare("SELECT accountID, userID FROM links WHERE targetUserID=:target");
-			$query->execute([':target' => $targetUserID]);
+			$query = $db->prepare("SELECT accountID, userID FROM links WHERE targetUserID=:target AND server=:url");
+			$query->execute([':target' => $targetUserID, ':url' => $parsedurl["host"]]);
 			if($query->rowCount() == 0){
-				$userID = 388;
-				$extID = 263;
+				$userID = 0;
+				$extID = 0;
 			}else{
 				$userInfo = $query->fetchAll()[0];
 				$userID = $userInfo["userID"];
