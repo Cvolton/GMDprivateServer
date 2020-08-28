@@ -1,6 +1,6 @@
 <?php
 include "../../incl/lib/connection.php";
-require_once "../../incl/lib/exploitPatch.php";
+require "../../incl/lib/exploitPatch.php";
 $exploit_patch = new exploitPatch();
 // catching all the input
 $username = $exploit_patch->remove($_POST["username"]);
