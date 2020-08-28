@@ -16,6 +16,7 @@ function chkarray($source){
 include "../incl/lib/connection.php";
 require "../incl/lib/XORCipher.php";
 include "../config/reuploadLimits.php";
+include "../config/reuploadAcc.php";
 $xc = new XORCipher();
 if ($level_reupload == -1) {
 	exit("Level reuploading to this GDPS is disabled.");
@@ -116,8 +117,8 @@ if(!empty($_POST["levelid"])){
 			$query->execute([':target' => $targetUserID, ':url' => $parsedurl["host"]]);
 			if($query->rowCount() == 0){
 				if ($level_reupload == 0){
-					$userID = 0;
-					$extID = 0;
+					$userID = $reupUID;
+					$extID = $reupAID;
 				}else{
 					exit("Please link your account at <a href='linkAcc.php'>here</a> and to the same server you gave(if you didn\'t change the URL box just link your account) before reuploading.");
 				}
