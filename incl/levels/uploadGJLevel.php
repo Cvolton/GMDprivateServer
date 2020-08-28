@@ -8,14 +8,15 @@ require_once "../lib/mainLib.php";
 include "../../config/rateLimits.php";
 $mainLib = new mainLib();
 $ep = new exploitPatch();
+$hostname = $mainLib->getIP();
 if ($levelsUploaded != 0) { //Rate Limit
-	$query = $db->prepare("SELECT count(*) FROM actions WHERE type = 16 AND value = 'Level Upload' AND timestamp > :timestamp");
+	$query = $db->prepare("SELECT count(*) FROM actions WHERE type = 17 AND value = 'Level Upload' AND timestamp > :timestamp");
 	$query->execute([':timestamp' => time() - $levelsDuration]);
 	if ($query->fetchColumn() >= $levelsUploaded) {
-		$query = $db->prepare("SELECT count(*) FROM actions WHERE type = 16 AND value = 'Level Uploading Disabled' AND timestamp > :timestamp");
+		$query = $db->prepare("SELECT count(*) FROM actions WHERE type = 17 AND value = 'Level Uploading Disabled' AND timestamp > :timestamp");
 		$query->execute([':timestamp' => time() - $disableLevelUploadTime]);
 		if ($query->fetchColumn() == 0) {
-			$query = $db->prepare("INSERT INTO actions (type, value, timestamp) VALUES (16, 'Level Uploading Disabled', :timestamp)");
+			$query = $db->prepare("INSERT INTO actions (type, value, timestamp) VALUES (17, 'Level Uploading Disabled', :timestamp)");
 			$query->execute([':timestamp' => time()]);
 		}
 		exit("-1");
@@ -152,7 +153,7 @@ if($levelString != "" AND $levelName != ""){
 		file_put_contents("../../data/levels/$levelID",$levelString);
 		echo $levelID;
 	}
-	$query = $db->prepare("INSERT INTO actions (type, value, timestamp) VALUES (16, 'Level Upload', :timestamp)");
+	$query = $db->prepare("INSERT INTO actions (type, value, timestamp) VALUES (17, 'Level Upload', :timestamp)");
 	$query->execute([':timestamp' => time()]); 
 }else{
 	echo -1;

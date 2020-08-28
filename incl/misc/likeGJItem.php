@@ -15,13 +15,13 @@ if($query6->fetchColumn() > 2){
 	exit("-1");
 }
 if ($likesDone != 0) { //Rate Limit
-	$query = $db->prepare("SELECT count(*) FROM actions WHERE type = 16 AND value = 'Liked Something' AND timestamp > :timestamp");
+	$query = $db->prepare("SELECT count(*) FROM actions WHERE type = 17 AND value = 'Liked Something' AND timestamp > :timestamp");
 	$query->execute([':timestamp' => time() - $likesDuration]);
 	if ($query->fetchColumn() >= $likesDone) {
-		$query = $db->prepare("SELECT count(*) FROM actions WHERE type = 16 AND value = 'Liking Disabled' AND timestamp > :timestamp");
+		$query = $db->prepare("SELECT count(*) FROM actions WHERE type = 17 AND value = 'Liking Disabled' AND timestamp > :timestamp");
 		$query->execute([':timestamp' => time() - $disableLikeTime]);
 		if ($query->fetchColumn() == 0) {
-			$query = $db->prepare("INSERT INTO actions (type, value, timestamp) VALUES (16, 'Liking Disabled', :timestamp)");
+			$query = $db->prepare("INSERT INTO actions (type, value, timestamp) VALUES (17, 'Liking Disabled', :timestamp)");
 			$query->execute([':timestamp' => time()]);
 		}
 		exit("-1");
@@ -54,7 +54,7 @@ if($_POST["like"]==1){
 }
 $query2=$db->prepare("UPDATE $table SET likes = :likes WHERE $column = :itemID");
 $query2->execute([':itemID' => $itemID, ':likes' => $likes]);
-$query = $db->prepare("INSERT INTO actions (type, value, timestamp) VALUES (16, 'Liked Something', :timestamp)");
+$query = $db->prepare("INSERT INTO actions (type, value, timestamp) VALUES (17, 'Liked Something', :timestamp)");
 $query->execute([':timestamp' => time()]);
 echo "1";
 ?>
