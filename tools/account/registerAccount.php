@@ -10,7 +10,7 @@ $email = $exploit_patch->remove($_POST["email"]);
 $repeat_email = $exploit_patch->remove($_POST["repeatemail"]);
 $secret = "";
 // here begins the checks
-if($username != "" AND $email != "" AND $password != "" AND $repeat_password != ""){
+if($username != "" AND $email != "" AND $password != ""){
 	if(strlen($username) < 3){
 		// bru choose a longer username
 		echo '<body style="background-color:grey;">Username should be more than 3 characters.<br><br><form action="registerAccount.php" method="post">Username: <input type="text" name="username" maxlength=15><br>Password: <input type="password" name="password" maxlength=20><br>Repeat Password: <input type="password" name="repeatpassword" maxlength=20><br>Email: <input type="email" name="email" maxlength=50><br>Repeat Email: <input type="email" name="repeatemail" maxlength=50><br><input type="submit" value="Register"></form></body>';
@@ -29,7 +29,7 @@ if($username != "" AND $email != "" AND $password != "" AND $repeat_password != 
 			if($password != $repeat_password){
 				// this is when the passwords do not match
 				echo '<body style="background-color:grey;">Passwords do not match.<br><br><form action="registerAccount.php" method="post">Username: <input type="text" name="username" maxlength=15><br>Password: <input type="password" name="password" maxlength=20><br>Repeat Password: <input type="password" name="repeatpassword" maxlength=20><br>Email: <input type="email" name="email" maxlength=50><br>Repeat Email: <input type="email" name="repeatemail" maxlength=50><br><input type="submit" value="Register"></form></body>';
-			}elseif($password != $repeat_password){
+			}elseif($email != $repeat_email){
 				// this is when the emails dont match
 				echo '<body style="background-color:grey;">Emails do not match.<br><br><form action="registerAccount.php" method="post">Username: <input type="text" name="username" maxlength=15><br>Password: <input type="password" name="password" maxlength=20><br>Repeat Password: <input type="password" name="repeatpassword" maxlength=20><br>Email: <input type="email" name="email" maxlength=50><br>Repeat Email: <input type="email" name="repeatemail" maxlength=50><br><input type="submit" value="Register"></form></body>';
 			}else{
