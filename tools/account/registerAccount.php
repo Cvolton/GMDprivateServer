@@ -12,7 +12,7 @@ $secret = "";
 // here begins the checks
 if($username != "" AND $email != "" AND $password != ""){
 	if(strlen($username) < 3){
-		// bru choose a longer username
+		// choose a longer username
 		echo '<body style="background-color:grey;">Username should be more than 3 characters.<br><br><form action="registerAccount.php" method="post">Username: <input type="text" name="username" maxlength=15><br>Password: <input type="password" name="password" maxlength=20><br>Repeat Password: <input type="password" name="repeatpassword" maxlength=20><br>Email: <input type="email" name="email" maxlength=50><br>Repeat Email: <input type="email" name="repeatemail" maxlength=50><br><input type="submit" value="Register"></form></body>';
 	}elseif(strlen($password) < 6){
 		// just why did you want to give a short password? do you wanna be hacked?
@@ -33,14 +33,13 @@ if($username != "" AND $email != "" AND $password != ""){
 				// this is when the emails dont match
 				echo '<body style="background-color:grey;">Emails do not match.<br><br><form action="registerAccount.php" method="post">Username: <input type="text" name="username" maxlength=15><br>Password: <input type="password" name="password" maxlength=20><br>Repeat Password: <input type="password" name="repeatpassword" maxlength=20><br>Email: <input type="email" name="email" maxlength=50><br>Repeat Email: <input type="email" name="repeatemail" maxlength=50><br><input type="submit" value="Register"></form></body>';
 			}else{
-				// hashing your password and sending it to intelligent cat... jk this just hashes your password
+				// hashing your password and registering your account
 				$hashpass = password_hash($password, PASSWORD_DEFAULT);
 				$query2 = $db->prepare("INSERT INTO accounts (userName, password, email, secret, saveData, registerDate, saveKey)
 				VALUES (:userName, :password, :email, :secret, '', :time, '')");
 				$query2->execute([':userName' => $username, ':password' => $hashpass, ':email' => $email, ':secret' => $secret, ':time' => time()]);
 				// there you go, you are registered.
 				echo "Account registred. No e-mail verification required, you can login. <a href='..'>Go back to tools</a>";
-				// wait why did i make it yanderedev style? oh yeah because im a damn skid
 			}
 		}
 	}
