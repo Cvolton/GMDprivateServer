@@ -1,7 +1,6 @@
 <hr>
 <?php
 include "../../incl/lib/connection.php";
-require_once "../../incl/lib/mainLib.php";
 echo "Initializing autoban";
 ob_flush();
 flush();
