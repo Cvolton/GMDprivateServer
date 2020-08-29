@@ -39,7 +39,7 @@ if(!empty($_POST["username"]) AND !empty($_POST["email"]) AND !empty($_POST["rep
 				VALUES (:userName, :password, :email, :secret, '', :time, '')");
 				$query2->execute([':userName' => $username, ':password' => $hashpass, ':email' => $email, ':secret' => $secret, ':time' => time()]);
 				// there you go, you are registered.
-				echo "Account registred. No e-mail verification required, you can login. <a href='..'>Go back to tools</a>";
+				echo "<body style='background-color:grey;'>Account registred. No e-mail verification required, you can login. <a href='..'>Go back to tools</a></body>";
 			}
 		}
 	}
