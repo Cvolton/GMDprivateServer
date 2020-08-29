@@ -1,1 +1,3 @@
-4:This server is based on|4:CvoltonGDPS|4:See github.com/cvolton/GMDprivateServer#3:0:20
+<?php
+include "incl/misc/getTopArtists.php";
+?>
