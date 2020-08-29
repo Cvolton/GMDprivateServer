@@ -28,9 +28,8 @@ if($redirect == 1) {
 	echo $result;
 } else {
 	// select
-	$querywhat = "SELECT authorName FROM songs WHERE (authorName NOT LIKE '%Reupload%') GROUP BY authorName ORDER BY COUNT(authorName) DESC LIMIT 20 OFFSET $offset"; // offset couldn't be used in prepare statement for some very odd reason
-	$query = $db->prepare($querywhat);
-	$query->execute();
+	$query = $db->prepare("SELECT authorName FROM songs WHERE (authorName NOT LIKE '%Reupload%') GROUP BY authorName ORDER BY COUNT(authorName) DESC LIMIT 20 OFFSET :off");
+	$query->execute([':off' => $offset]);
 	$res = $query->fetchAll();
 	// count
 	$countquery = $db->prepare("SELECT count(DISTINCT(authorName)) FROM songs WHERE (authorName NOT LIKE '%Reupload%')");
