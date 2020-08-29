@@ -15,6 +15,7 @@ function chkarray($source){
 //error_reporting(0);
 include "../incl/lib/connection.php";
 require "../incl/lib/XORCipher.php";
+require "../config/reuploadAcc.php";
 $xc = new XORCipher();
 if(!empty($_POST["levelid"])){
 	$levelID = $_POST["levelid"];
@@ -108,11 +109,11 @@ if(!empty($_POST["levelid"])){
 			}
 			$targetUserID = chkarray($levelarray["a6"]);
 			//linkacc
-			$query = $db->prepare("SELECT accountID, userID FROM links WHERE targetUserID=:target");
-			$query->execute([':target' => $targetUserID]);
+			$query = $db->prepare("SELECT accountID, userID FROM links WHERE targetUserID=:target AND server=:url");
+			$query->execute([':target' => $targetUserID, ':url' => $parsedurl["host"]]);
 			if($query->rowCount() == 0){
-				$userID = 388;
-				$extID = 263;
+				$userID = $reupUID;
+				$extID = $reupAID;
 			}else{
 				$userInfo = $query->fetchAll()[0];
 				$userID = $userInfo["userID"];
