@@ -12,10 +12,11 @@ class Commands {
 		return false;
 	}
 	public function doCommands($accountID, $comment, $levelID) {
+		chdir(dirname(__FILE__));
 		foreach (glob("cmd/*.php") as $filename) {
     		include $filename;
 		}
-		include dirname(__FILE__)."/../lib/connection.php";
+		include "../lib/connection.php";
 		include "../../config/commands.php";
 		require_once "../lib/exploitPatch.php";
 		require_once "../lib/mainLib.php";

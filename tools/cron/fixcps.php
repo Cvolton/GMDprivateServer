@@ -43,7 +43,7 @@ foreach($result as $user){
 	$query3 = $db->prepare("SELECT count(*) FROM levels WHERE userID = :userID AND starEpic != 0 AND isCPShared = 0");
 	$query3->execute([':userID' => $userID]);
 	$cpgain = $query3->fetchColumn();
-	$cpgain = $cpgain * $epicCP
+	$cpgain = $cpgain * $epicCP;
 	$creatorpoints = $creatorpoints + $cpgain + $cpgain;
 	$cplog .= $user["userName"] . " - " . $creatorpoints . "\r\n";
 	//getting magic lvls count if its manual
@@ -51,7 +51,7 @@ foreach($result as $user){
 		$query3 = $db->prepare("SELECT count(*) FROM levels WHERE userID = :userID AND starMagic != 0 AND isCPShared = 0");
 		$query3->execute([':userID' => $userID]);
 		$cpgain = $query3->fetchColumn();
-		$cpgain = $cpgain * $magicCP
+		$cpgain = $cpgain * $magicCP;
 		$creatorpoints = $creatorpoints + $cpgain + $cpgain + $cpgain;
 		$cplog .= $user["userName"] . " - " . $creatorpoints . "\r\n";
 	}
