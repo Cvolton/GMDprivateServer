@@ -16,7 +16,7 @@ class Commands {
     		include $filename;
 		}
 		include dirname(__FILE__)."/../lib/connection.php";
-		include "../../config/commands.php"
+		include "../../config/commands.php";
 		require_once "../lib/exploitPatch.php";
 		require_once "../lib/mainLib.php";
 		$ep = new exploitPatch();
