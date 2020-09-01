@@ -55,7 +55,7 @@ foreach($result as $daily){
 	$result = $query->fetchAll();
 	foreach($result as $level){
 		$stars += $level["starStars"];
-		$demons += $level["starDemon"]
+		$demons += $level["starDemon"];
 	}
 }
 //counting stars
