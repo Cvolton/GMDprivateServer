@@ -31,37 +31,37 @@ class Commands {
 		$targetExtID = $query2->fetchColumn();
 		//ADMIN COMMANDS
 		if(substr($comment, 0, 4 + $prefixLen) == $prefix.'rate' AND $gs->checkPermission($accountID, "commandRate") AND $commandRate == 1){
-			rate($uploadDate, $gs, $commentarray, $accountID, $levelID);
+			return rate($uploadDate, $gs, $commentarray, $accountID, $levelID);
 		}
 		if(substr($comment, 0, 7 + $prefixLen) == $prefix.'feature' AND $gs->checkPermission($accountID, "commandFeature") AND $commandFeature == 1){
-			feature($uploadDate, $accountID, $levelID);
+			return feature($uploadDate, $accountID, $levelID);
 		}
 		if(substr($comment, 0, 4 + $prefixLen) == $prefix.'epic' AND $gs->checkPermission($accountID, "commandEpic") AND $commandEpic == 1){
-			epic($uploadDate, $accountID, $levelID);
+			return epic($uploadDate, $accountID, $levelID);
 		}
 		if(substr($comment, 0, 6 + $prefixLen) == $prefix.'unepic' AND $gs->checkPermission($accountID, "commandUnepic") AND $commandUnepic == 1){
-			unepic($uploadDate, $accountID, $levelID);
+			return unepic($uploadDate, $accountID, $levelID);
 		}
 		if(substr($comment, 0, 5 + $prefixLen) == $prefix.'magic' AND $gs->checkPermission($accountID, "commandMagic") AND $commandMagic == 1 AND $isMagicSectionManual = 1){
-			magic($uploadDate, $accountID, $levelID);
+			return magic($uploadDate, $accountID, $levelID);
 		}
 		if(substr($comment, 0, 7 + $prefixLen) == $prefix.'unmagic' AND $gs->checkPermission($accountID, "commandUnmagic") AND $commandUnmagic == 1 AND $isMagicSectionManual = 1){
-			unmagic($uploadDate, $accountID, $levelID);
+			return unmagic($uploadDate, $accountID, $levelID);
 		}
 		if(substr($comment, 0, 11 + $prefixLen) == $prefix.'verifycoins' AND $gs->checkPermission($accountID, "commandVerifycoins") AND $commandVerifyCoins == 1){
-			verifycoins($uploadDate, $accountID, $levelID);
+			return verifycoins($uploadDate, $accountID, $levelID);
 		}
 		if(substr($comment, 0, 5 + $prefixLen) == $prefix.'daily' AND $gs->checkPermission($accountID, "commandDaily") AND $commandDaily == 1){
-			daily($uploadDate, $accountID, $levelID);
+			return daily($uploadDate, $accountID, $levelID);
 		}
 		if(substr($comment, 0, 6 + $prefixLen) == $prefix.'weekly' AND $gs->checkPermission($accountID, "commandWeekly") AND $commandWeekly == 1){
-			weekly($uploadDate, $accountID, $levelID);
+			return weekly($uploadDate, $accountID, $levelID);
 		}
 		if(substr($comment, 0, 5 + $prefixLen) == $prefix.'delet' AND ($gs->checkPermission($accountID, "commandDelete") OR $accountID == $targetExtID) AND $commandDelete == 1){
-			delete($uploadDate, $accountID, $levelID);
+			return delete($uploadDate, $accountID, $levelID);
 		}
 		if(substr($comment, 0, 6 + $prefixLen) == $prefix.'setacc' AND $gs->checkPermission($accountID, "commandSetacc") AND $commandSetAcc == 1){
-			setacc($commentarray, $uploadDate, $accountID, $levelID);
+			return setacc($commentarray, $uploadDate, $accountID, $levelID);
 		}
 		
 		//NON-ADMIN COMMANDS
