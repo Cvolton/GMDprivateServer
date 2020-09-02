@@ -16,8 +16,8 @@ class Commands {
 		foreach (glob("cmd/*.php") as $filename) {
     		include $filename;
 		}
-		include dirname(__FILE__)."../lib/connection.php";
-		include dirname(__FILE__)."../../config/commands.php";
+		include dirname(__FILE__)."/../lib/connection.php";
+		include dirname(__FILE__)."/../../config/commands.php";
 		require_once "../lib/exploitPatch.php";
 		require_once "../lib/mainLib.php";
 		$ep = new exploitPatch();
