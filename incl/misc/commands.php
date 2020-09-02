@@ -24,7 +24,7 @@ class Commands {
 		$gs = new mainLib();
 		$commentarray = explode(' ', $comment);
 		$uploadDate = time();
-		$prefixLen = len($prefix);
+		$prefixLen = strlen($prefix);
 		//LEVEL INFO
 		$query2 = $db->prepare("SELECT extID FROM levels WHERE levelID = :id");
 		$query2->execute([':id' => $levelID]);
