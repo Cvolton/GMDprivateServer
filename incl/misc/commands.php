@@ -1,9 +1,10 @@
 <?php
 class Commands {
 	public function ownCommand($comment, $command, $accountID, $targetExtID){
+		include "../../config/commands.php";
 		require_once "../lib/mainLib.php";
 		$gs = new mainLib();
-		$commandInComment = strtolower("!".$command);
+		$commandInComment = strtolower($prefix.$command);
 		$commandInPerms = ucfirst(strtolower($command));
 		$commandlength = strlen($commandInComment);
 		if(substr($comment,0,$commandlength) == $commandInComment AND (($gs->checkPermission($accountID, "command".$commandInPerms."All") OR ($targetExtID == $accountID AND $gs->checkPermission($accountID, "command".$commandInPerms."Own"))))){
