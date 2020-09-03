@@ -1,6 +1,6 @@
 <?php
 function weekly($uploadDate, $accountID, $levelID) {
-    include dirname(__FILE__)."/../lib/connection.php";
+    include dirname(__FILE__)."/../../lib/connection.php";
     $query = $db->prepare("SELECT count(*) FROM dailyfeatures WHERE levelID = :level AND type = 1");
 	$query->execute([':level' => $levelID]);
 	if($query->fetchColumn() != 0){

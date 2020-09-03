@@ -1,6 +1,6 @@
 <?php
 function setacc($commentarray, $uploadDate, $accountID, $levelID) {
-    include dirname(__FILE__)."/../lib/connection.php";
+    include dirname(__FILE__)."/../../lib/connection.php";
     $query = $db->prepare("SELECT accountID FROM accounts WHERE userName = :userName OR accountID = :userName LIMIT 1");
 	$query->execute([':userName' => $commentarray[1]]);
 	if($query->rowCount() == 0){

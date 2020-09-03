@@ -1,6 +1,6 @@
 <?php
 function rate($uploadDate, $gs, $commentarray, $accountID, $levelID) {
-    include dirname(__FILE__)."/../lib/connection.php";
+    include dirname(__FILE__)."/../../lib/connection.php";
     $starStars = $commentarray[2];
     if($starStars == ""){
         $starStars = 0;

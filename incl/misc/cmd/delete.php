@@ -1,6 +1,6 @@
 <?php
 function delete($uploadDate, $accountID, $levelID) {
-    include dirname(__FILE__)."/../lib/connection.php";
+    include dirname(__FILE__)."/../../lib/connection.php";
     if(!is_numeric($levelID)){
         return false;
     }

@@ -1,6 +1,6 @@
 <?php
 function feature($uploadDate, $accountID, $levelID) {
-    include dirname(__FILE__)."/../lib/connection.php";
+    include dirname(__FILE__)."/../../lib/connection.php";
     $query = $db->prepare("UPDATE levels SET starFeatured='1' WHERE levelID=:levelID");
     $query->execute([':levelID' => $levelID]);
     $query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('2', :value, :levelID, :timestamp, :id)");
