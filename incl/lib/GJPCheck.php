@@ -7,7 +7,7 @@ class GJPCheck {
 		$ml = new mainLib();
 		if($sessionGrants){
 			$ip = $ml->getIP();
-			$query = $db->prepare("SELECT count(*) FROM actions WHERE type = 17 AND value = :accountID AND value2 = :ip AND timestamp > :timestamp");
+			$query = $db->prepare("SELECT count(*) FROM actions WHERE type = 16 AND value = :accountID AND value2 = :ip AND timestamp > :timestamp");
 			$query->execute([':accountID' => $accountID, ':ip' => $ip, ':timestamp' => time() - 3600]);
 			if($query->fetchColumn() > 0){
 				return 1;
@@ -23,7 +23,7 @@ class GJPCheck {
 		$generatePass = new generatePass();
 		if($generatePass->isValid($accountID, $gjpdecode) == 1 AND $sessionGrants){
 			$ip = $ml->getIP();
-			$query = $db->prepare("INSERT INTO actions (type, value, value2, timestamp) VALUES (17, :accountID, :ip, :timestamp)");
+			$query = $db->prepare("INSERT INTO actions (type, value, value2, timestamp) VALUES (16, :accountID, :ip, :timestamp)");
 			$query->execute([':accountID' => $accountID, ':ip' => $ip, ':timestamp' => time()]);
 		}
 		return $generatePass->isValid($accountID, $gjpdecode);

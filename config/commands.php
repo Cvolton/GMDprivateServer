@@ -6,11 +6,13 @@ $commandRate = 1;
 $commandFeature = 1;
 $commandEpic = 1;
 $commandUnepic = 1;
+$commandMagic = 1;
 $commandVerifyCoins = 1;
 $commandDaily = 1;
 $commandWeekly = 1;
 $commandDelete = 1;
 $commandSetAcc = 1;
+// Non-Admin Commands, recommended to be left on at 1
 $commandRename = 1;
 $commandPass = 1;
 $commandSong = 1;
