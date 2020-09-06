@@ -5,7 +5,6 @@ $prefix = "!"; // prefix for your in-game commands
 $commandRate = 1;
 $commandFeature = 1;
 $commandEpic = 1;
-$commandUnepic = 1;
 $commandMagic = 1;
 $commandVerifyCoins = 1;
 $commandDaily = 1;
