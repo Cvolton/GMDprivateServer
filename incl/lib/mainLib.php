@@ -628,6 +628,15 @@ class mainLib {
 	    return false;
 	}
 	public function getIP(){
+		include __DIR__ . "../../config/security.php";
+        if ($IPChecking == 0) {
+			if (isset($_POST["userID"])) {
+				return $_POST["userID"];
+			}
+			if (isset($_POST["accountID"])) {
+				return $_POST["accountID"];
+			}
+		}
 		if (isset($_SERVER["HTTP_CF_CONNECTING_IP"]) && $this->isCloudFlareIP($_SERVER['REMOTE_ADDR'])) {
   			return $_SERVER["HTTP_CF_CONNECTING_IP"];
 		}
