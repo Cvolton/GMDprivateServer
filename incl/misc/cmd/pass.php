@@ -1,7 +1,8 @@
 <?php
 function pass($comment, $uploadDate, $accountID, $levelID) {
 	include dirname(__FILE__)."/../../lib/connection.php";
-    $pass = $ep->remove(str_replace("!pass ", "", $comment));
+	include "../../../config/commands.php";
+    $pass = $ep->remove(str_replace($prefix."pass ", "", $comment));
 	if(is_numeric($pass)){
 		$pass = sprintf("%06d", $pass);
 		if($pass == "000000"){

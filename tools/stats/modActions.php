@@ -95,7 +95,7 @@ foreach($result as &$action){
 			$actionname = $action["type"];
 			break;
 		}
-	if($action["type"] == 2 OR $action["type"] == 3 OR $action["type"] == 4 OR $action["type"] == 15){
+	if($action["type"] == 2 OR $action["type"] == 3 OR $action["type"] == 4 OR $action["type"] == 15 OR $action["type"] == 16){
 		if($action["value"] == 1){
 			$value = "True";
 		}else{
