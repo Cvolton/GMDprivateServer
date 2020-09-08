@@ -17,6 +17,8 @@ include "../incl/lib/connection.php";
 require "../incl/lib/XORCipher.php";
 require "../config/reuploadAcc.php";
 $xc = new XORCipher();
+require "../incl/lib/mainLib.php";
+$gs = new mainLib();
 if(!empty($_POST["levelid"])){
 	$levelID = $_POST["levelid"];
 	$levelID = preg_replace("/[^0-9]/", '', $levelID);
@@ -77,13 +79,7 @@ if(!empty($_POST["levelid"])){
 			if($parsedurl["host"] == $_SERVER['SERVER_NAME']){
 				exit("You're attempting to reupload from the target server.");
 			}
-			if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
-				$hostname = $_SERVER['HTTP_CLIENT_IP'];
-			} elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
-				$hostname = $_SERVER['HTTP_X_FORWARDED_FOR'];
-			} else {
-				$hostname = $_SERVER['REMOTE_ADDR'];
-			}
+			$hostname = $gs->getIP();
 			//values
 			$twoPlayer = chkarray($levelarray["a31"]);
 			$songID = chkarray($levelarray["a35"]);

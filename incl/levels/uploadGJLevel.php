@@ -107,13 +107,7 @@ if(!empty($_POST["accountID"]) AND $_POST["accountID"]!="0"){
 		exit("-1");
 	}
 }
-if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
-	$hostname = $_SERVER['HTTP_CLIENT_IP'];
-} elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
-	$hostname = $_SERVER['HTTP_X_FORWARDED_FOR'];
-} else {
-	$hostname = $_SERVER['REMOTE_ADDR'];
-}
+$hostname = $mainLib->getIP();
 $userID = $mainLib->getUserID($id, $userName);
 $uploadDate = time();
 $query = $db->prepare("SELECT count(*) FROM levels WHERE uploadDate > :time AND (userID = :userID OR hostname = :ip)");
