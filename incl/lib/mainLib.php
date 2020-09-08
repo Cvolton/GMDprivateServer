@@ -628,11 +628,8 @@ class mainLib {
 	    return false;
 	}
 	public function getIP(){
-		include __DIR__ . "../../config/security.php";
-        if ($IPChecking == 0) {
-			if (isset($_POST["userID"])) {
-				return $_POST["userID"];
-			}
+		include __DIR__ . "/../../config/security.php";
+		if ($IPchecking == 0) {
 			if (isset($_POST["accountID"])) {
 				return $_POST["accountID"];
 			}

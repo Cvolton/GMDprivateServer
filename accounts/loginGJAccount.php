@@ -4,14 +4,10 @@ require "../incl/lib/generatePass.php";
 $generatePass = new generatePass();
 require_once "../incl/lib/exploitPatch.php";
 $ep = new exploitPatch();
+require_once "../incl/lib/mainLib.php";
+$gs = new mainLib();
 //here im getting all the data
-if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
-	$ip = $_SERVER['HTTP_CLIENT_IP'];
-} elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
-	$ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
-} else {
-	$ip = $_SERVER['REMOTE_ADDR'];
-}
+$ip = $gs->getIP();
 $udid = $ep->remove($_POST["udid"]);
 $userName = $ep->remove($_POST["userName"]);
 $password = $ep->remove($_POST["password"]);
