@@ -44,7 +44,7 @@ foreach($result as $user){
 	$query3->execute([':userID' => $userID]);
 	$cpgain = $query3->fetchColumn();
 	$cpgain = $cpgain * $epicCP;
-	$creatorpoints = $creatorpoints + $cpgain + $cpgain;
+	$creatorpoints = $creatorpoints + $cpgain;
 	$cplog .= $user["userName"] . " - " . $creatorpoints . "\r\n";
 	//getting magic lvls count if its manual
 	if ($isMagicSectionManual == 1) {
@@ -52,7 +52,7 @@ foreach($result as $user){
 		$query3->execute([':userID' => $userID]);
 		$cpgain = $query3->fetchColumn();
 		$cpgain = $cpgain * $magicCP;
-		$creatorpoints = $creatorpoints + $cpgain + $cpgain + $cpgain;
+		$creatorpoints = $creatorpoints + $cpgain;
 		$cplog .= $user["userName"] . " - " . $creatorpoints . "\r\n";
 	}
 	//inserting cp value
