@@ -1,4 +1,5 @@
 <?php
-$cloudSaveEncryption = 0; //0 = password string replacement, 1 = cloud save encryption (password dependant)
-$sessionGrants = 1; //0 = GJP check is done every time; 1 = GJP check is done once per hour; drastically improves performance, slightly descreases security; DO NOT SET TO 1 IN 7M.PL GDPSES
+$cloudSaveEncryption = 0; // 0 = password string replacement, 1 = cloud save encryption (password dependant)
+$sessionGrants = 1; // 0 = GJP check is done every time; 1 = GJP check is done once per hour; drastically improves performance, slightly descreases security
+$accountIDasIP = 1; // 0 = replaces client's IP with his accountID; 1 = always uses client's IP
 ?>
