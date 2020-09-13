@@ -17,7 +17,6 @@ include "../incl/lib/connection.php";
 require "../incl/lib/XORCipher.php";
 require "../config/reuploadAcc.php";
 include "../config/reuploadLimits.php";
-include "../config/reuploadAcc.php";
 $xc = new XORCipher();
 if ($level_reupload == -1) {
 	exit("Level reuploading to this GDPS is disabled.");
