@@ -2,6 +2,7 @@
 //header
 chdir(dirname(__FILE__));
 include "../lib/connection.php";
+include "../../config/levels.php";
 require_once "../lib/GJPCheck.php";
 require_once "../lib/exploitPatch.php";
 $ep = new exploitPatch();
@@ -192,7 +193,11 @@ if($type==16){ //HALL OF FAME
 	$order = "rateDate DESC,uploadDate";
 }
 if($type==7){ //MAGIC
-	$params[] = "objects > 9999";
+	if ($isMagicSectionManual == 1) {
+		$params[] = "NOT starMagic = 0";
+	} else {
+		$params[] = "objects > 9999";
+	}
 }
 if($type==10){ //MAP PACKS
 	$order = false;

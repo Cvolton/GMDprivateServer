@@ -63,10 +63,8 @@ if ($pass == 1) {
 	$extID = $result["extID"];
 	$query = $db->prepare("UPDATE `users` SET `orbs` = :orbs, `completedLvls` = :lvls WHERE extID = :extID");
 	$query->execute([':orbs' => $orbs, ':extID' => $extID, ':lvls' => $lvls]);
-	echo "1";
-}
-else
-{
-	echo -1;
+	exit("1");
+} else {
+	exit("-1");
 }
 ?>

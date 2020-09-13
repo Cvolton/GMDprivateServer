@@ -37,6 +37,25 @@ $query->execute();
 $result = $query->fetchAll();
 foreach($result as $gauntlet){
 	foreach($gauntlet as $level){
+		$query = $db->prepare("SELECT starStars, starDemon FROM levels WHERE levelID = :levelid");
+		$query->execute([':levelid' => $level]);
+		$result = $query->fetchColumn();
+		$stars += $result["starStars"];
+		$demons += $result["starDemon"];
+	}
+}
+// daily and weekly stars and demons
+$query = $db->prepare("SELECT levelID FROM dailyfeatures WHERE timestamp < :time");
+$query->execute([':time' => time()]);
+$result = $query->fetchAll();
+foreach($result as $daily){
+	//getting lvls
+	$query = $db->prepare("SELECT userID, levelID FROM levels WHERE levelID = :levelID");
+	$query->execute([':levelID' => $daily["levelID"]]);
+	$result = $query->fetchAll();
+	foreach($result as $level){
+		$stars += $level["starStars"];
+		$demons += $level["starDemon"];
 		$query = $db->prepare("SELECT starStars FROM levels WHERE levelID = :levelid");
 		$query->execute([':levelid' => $level]);
 		$result = $query->fetchColumn();
