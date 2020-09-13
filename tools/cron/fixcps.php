@@ -21,6 +21,7 @@ $cplog = "";
 $people = array();
 $nocpppl = "";
 include "../../incl/lib/connection.php";
+include "../../config/levels.php";
 $query = $db->prepare("SELECT userID, userName FROM users");
 $query->execute();
 $result = $query->fetchAll();
@@ -42,8 +43,18 @@ foreach($result as $user){
 	$query3 = $db->prepare("SELECT count(*) FROM levels WHERE userID = :userID AND starEpic != 0 AND isCPShared = 0");
 	$query3->execute([':userID' => $userID]);
 	$cpgain = $query3->fetchColumn();
-	$creatorpoints = $creatorpoints + $cpgain + $cpgain;
+	$cpgain = $cpgain * $epicCP;
+	$creatorpoints = $creatorpoints + $cpgain;
 	$cplog .= $user["userName"] . " - " . $creatorpoints . "\r\n";
+	//getting magic lvls count if its manual
+	if ($isMagicSectionManual == 1) {
+		$query3 = $db->prepare("SELECT count(*) FROM levels WHERE userID = :userID AND starMagic != 0 AND isCPShared = 0");
+		$query3->execute([':userID' => $userID]);
+		$cpgain = $query3->fetchColumn();
+		$cpgain = $cpgain * $magicCP;
+		$creatorpoints = $creatorpoints + $cpgain;
+		$cplog .= $user["userName"] . " - " . $creatorpoints . "\r\n";
+	}
 	//inserting cp value
 	if($creatorpoints != 0){
 		$people[$userID] = $creatorpoints;
@@ -54,7 +65,7 @@ foreach($result as $user){
 /*
 	CP SHARING
 */
-$query = $db->prepare("SELECT levelID, userID, starStars, starFeatured, starEpic FROM levels WHERE isCPShared = 1");
+$query = $db->prepare("SELECT levelID, userID, starStars, starFeatured, starEpic, starMagic FROM levels WHERE isCPShared = 1");
 $query->execute();
 $result = $query->fetchAll();
 foreach($result as $level){
@@ -66,7 +77,10 @@ foreach($result as $level){
 		$deservedcp++;
 	}
 	if($level["starEpic"] != 0){
-		$deservedcp += 2;
+		$deservedcp += $epicCP;
+	}
+	if($isMagicSectionManual == 1 AND $level["starMagic"] != 0){
+		$deservedcp += $magicCP;
 	}
 	$query = $db->prepare("SELECT userID FROM cpshares WHERE levelID = :levelID");
 	$query->execute([':levelID' => $level["levelID"]]);
