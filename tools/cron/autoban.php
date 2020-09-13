@@ -56,6 +56,10 @@ foreach($result as $daily){
 	foreach($result as $level){
 		$stars += $level["starStars"];
 		$demons += $level["starDemon"];
+		$query = $db->prepare("SELECT starStars FROM levels WHERE levelID = :levelid");
+		$query->execute([':levelid' => $level]);
+		$result = $query->fetchColumn();
+		$stars += $result["starStars"];
 	}
 }
 //counting stars
