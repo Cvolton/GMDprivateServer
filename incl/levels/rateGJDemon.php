@@ -16,7 +16,7 @@ $levelID = $ep->remove($_POST["levelID"]);
 $id = $ep->remove($_POST["accountID"]);
 $GJPCheck = new GJPCheck();
 $gjpresult = $GJPCheck->check($gjp,$id);
-if($gs->checkPermission($id, "actionRateDemon") == false){
+if($gs->checkPermission($id, "actionRateDemon") == false OR $gjpresult != 1){
 	exit("-1");
 }
 $auto = 0;
