@@ -51,6 +51,7 @@ if($query->rowCount() > 0){
 }else{
 	$rank = 0;
 }
+if ($user['isBanned'] != 0) $rank = 0;
 //var_dump($leaderboard);
 	//accinfo
 		$query = "SELECT youtubeurl,twitter,twitch, frS, mS, cS FROM accounts WHERE accountID = :extID";
