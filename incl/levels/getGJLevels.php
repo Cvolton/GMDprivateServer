@@ -180,8 +180,20 @@ if($type==3){ //TRENDING
 	$params[] = "uploadDate > $uploadDate ";
 	$order = "likes";
 }
-if($type==5){
-	$params[] = "userID = '$str'";
+if($type==5){ //PLAYER LEVELS
+	if (isset($_POST["accountID"])) {
+		$accountID = $ep->remove($_POST["accountID"]);
+		$query5=$db->prepare("SELECT userID FROM users WHERE extID = :accountID");
+		$query5->execute([':accountID' => $accountID]);
+		$userID = $query5->fetchColumn();
+		if ($userID == $str) { //MY LEVELS
+			$params = array("userID = '$str'");
+		} else { //ANOTHER PLAYER LEVELS
+			$params[] = "userID = '$str'";
+		}
+	} else { //ANOTHER PLAYER LEVELS
+		$params[] = "userID = '$str'";
+	}
 }
 if($type==6 OR $type==17){ //featured
 	$params[] = "NOT starFeatured = 0";
