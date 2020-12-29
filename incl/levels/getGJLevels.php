@@ -185,7 +185,7 @@ if($type==5){
 }
 if($type==6 OR $type==17){ //featured
 	$params[] = "NOT starFeatured = 0";
-	$order = "rateDate DESC,uploadDate";
+	$order = "starFeatured DESC,uploadDate";
 }
 if($type==16){ //HALL OF FAME
 	$params[] = "NOT starEpic = 0";
