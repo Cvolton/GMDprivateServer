@@ -54,10 +54,14 @@ class Commands {
 			return true;
 		}
 		if(substr($comment,0,8) == '!feature' AND $gs->checkPermission($accountID, "commandFeature")){
-			$query = $db->prepare("UPDATE levels SET starFeatured='1' WHERE levelID=:levelID");
-			$query->execute([':levelID' => $levelID]);
+			$starFeatured = $commentarray[1];
+		if ($commentarray[1] == ""){
+			$starFeatured = "1";
+		}
+			$query = $db->prepare("UPDATE levels SET starFeatured=:starFeatured WHERE levelID=:levelID");
+			$query->execute([':levelID' => $levelID, ':starFeatured' => $starFeatured]);
 			$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('2', :value, :levelID, :timestamp, :id)");
-			$query->execute([':value' => "1", ':timestamp' => $uploadDate, ':id' => $accountID, ':levelID' => $levelID]);
+			$query->execute([':value' => $starFeatured, ':timestamp' => $uploadDate, ':id' => $accountID, ':levelID' => $levelID]);
 			return true;
 		}
 		if(substr($comment,0,5) == '!epic' AND $gs->checkPermission($accountID, "commandEpic")){
