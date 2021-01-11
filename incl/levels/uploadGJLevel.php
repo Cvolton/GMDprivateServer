@@ -5,8 +5,23 @@ include "../lib/connection.php";
 require_once "../lib/GJPCheck.php";
 require_once "../lib/exploitPatch.php";
 require_once "../lib/mainLib.php";
+include "../../config/rateLimits.php";
 $mainLib = new mainLib();
 $ep = new exploitPatch();
+$hostname = $mainLib->getIP();
+if ($levelsUploaded != 0) { //Rate Limit
+	$query = $db->prepare("SELECT count(*) FROM actions WHERE type = 17 AND value = 'Level Upload' AND timestamp > :timestamp");
+	$query->execute([':timestamp' => time() - $levelsDuration]);
+	if ($query->fetchColumn() >= $levelsUploaded) {
+		$query = $db->prepare("SELECT count(*) FROM actions WHERE type = 17 AND value = 'Level Uploading Disabled' AND timestamp > :timestamp");
+		$query->execute([':timestamp' => time() - $disableLevelUploadTime]);
+		if ($query->fetchColumn() == 0) {
+			$query = $db->prepare("INSERT INTO actions (type, value, timestamp) VALUES (17, 'Level Uploading Disabled', :timestamp)");
+			$query->execute([':timestamp' => time()]);
+		}
+		exit("-1");
+	} 
+}
 //here im getting all the data
 $gjp = $ep->remove($_POST["gjp"]);
 $gameVersion = $ep->remove($_POST["gameVersion"]);
@@ -94,11 +109,9 @@ if(!empty($_POST["ldm"])){
 }
 $accountID = "";
 if(!empty($_POST["udid"])){
-	$id = $ep->remove($_POST["udid"]);
-	if(is_numeric($id)){
-		exit("-1");
+    exit("-1");
 	}
-}
+	
 if(!empty($_POST["accountID"]) AND $_POST["accountID"]!="0"){
 	$id = $ep->remove($_POST["accountID"]);
 	$GJPCheck = new GJPCheck();
@@ -106,7 +119,6 @@ if(!empty($_POST["accountID"]) AND $_POST["accountID"]!="0"){
 	if($gjpresult != 1){
 		exit("-1");
 	}
-}
 if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
 	$hostname = $_SERVER['HTTP_CLIENT_IP'];
 } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
@@ -141,7 +153,10 @@ if($levelString != "" AND $levelName != ""){
 		file_put_contents("../../data/levels/$levelID",$levelString);
 		echo $levelID;
 	}
+	$query = $db->prepare("INSERT INTO actions (type, value, timestamp) VALUES (17, 'Level Upload', :timestamp)");
+	$query->execute([':timestamp' => time()]); 
 }else{
 	echo -1;
+} 
 }
 ?>
