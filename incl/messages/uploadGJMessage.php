@@ -15,6 +15,9 @@ $subject =  $ep->remove($_POST["subject"]);
 $toAccountID =  $ep->number($_POST["toAccountID"]);
 $body =  $ep->remove($_POST["body"]);
 $accID =  $ep->number($_POST["accountID"]);
+if($accID == $toAccountID){
+	exit("-1");
+}
 $query3 = "SELECT userName FROM users WHERE extID = :accID ORDER BY userName DESC";
 $query3 = $db->prepare($query3);
 $query3->execute([':accID' => $accID]);

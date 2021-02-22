@@ -10,6 +10,9 @@ if(!empty($_POST["accountID"]) AND !empty($_POST["gjp"]) AND !empty($_POST["targ
 	$accountID = $ep->remove($_POST["accountID"]);
 	$gjp = $ep->remove($_POST["gjp"]);
 	$targetAccountID = $ep->remove($_POST["targetAccountID"]);
+	if($accountID == $targetAccountID){
+		exit("-1");
+	}
 	//GJPCheck
 	$GJPCheck = new GJPCheck();
 	$gjpresult = $GJPCheck->check($gjp,$accountID);
