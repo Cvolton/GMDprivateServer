@@ -328,56 +328,14 @@ class mainLib {
 		return $gauntletname;
 	}
 
-	function makeTime($delta)
-	{
-		if ($delta < 31536000)
-		{
-			if ($delta < 2628000)
-			{
-				if ($delta < 604800)
-				{
-					if ($delta < 86400)
-					{
-						if ($delta < 3600)
-						{
-							if ($delta < 60)
-							{
-								return $delta." second".($delta == 1 ? "" : "s");
-							}
-							else
-							{
-                        					$rounded = floor($delta / 60);
-								return $rounded." minute".($rounded == 1 ? "" : "s");
-							}
-						}
-						else
-						{
-							$rounded = floor($delta / 3600);
-							return $rounded." hour".($rounded == 1 ? "" : "s");
-						}
-					}
-					else
-					{
-						$rounded = floor($delta / 86400);
-						return $rounded." day".($rounded == 1 ? "" : "s");
-					}
-				}
-				else
-				{
-					$rounded = floor($delta / 604800);
-					return $rounded." week".($rounded == 1 ? "" : "s");
-				}
-			}
-			else
-			{
-				$rounded = floor($delta / 2628000); 
-				return $rounded." month".($rounded == 1 ? "" : "s");
-			}
-		}
-		else
-		{
-			$rounded = floor($delta / 31536000);
-			return $rounded." year".($rounded == 1 ? "" : "s");
+	function makeTime($time) {
+		$time = time() - $time; // to get the time since that moment
+		$time = ($time < 1) ? 1 : $time;
+		$tokens = array (31536000 => 'year', 2592000 => 'month', 604800 => 'week', 86400 => 'day', 3600 => 'hour', 60 => 'minute', 1 => 'second');
+		foreach ($tokens as $unit => $text) {
+			if ($time < $unit) continue;
+			$numberOfUnits = floor($time / $unit);
+			return $numberOfUnits . ' ' . $text . (($numberOfUnits > 1) ? 's' : '');
 		}
 	}
 
@@ -754,15 +712,15 @@ class mainLib {
 	public function songReupload($url){
 		require __DIR__ . "/../../incl/lib/connection.php";
 		require __DIR__ . "/../../incl/lib/exploitPatch.php";
-		include __DIR__ . "/../../config/songAdd.php";
+		include __DIR__ . "/../../config/misc.php";
 		$ep = new exploitPatch();
 		$song = str_replace("www.dropbox.com","dl.dropboxusercontent.com",$url);
 		if (filter_var($song, FILTER_VALIDATE_URL) == TRUE) {
 			if(strpos($song, 'soundcloud.com') !== false){
-				$songinfo = file_get_contents("https://api.soundcloud.com/resolve.json?url=".$song."&client_id=".$api_key);
+				$songinfo = file_get_contents("https://api.soundcloud.com/resolve.json?url=".$song."&client_id=".$soundcloudAPIKey);
 				$array = json_decode($songinfo);
 				if($array->downloadable == true){
-					$song = trim($array->download_url . "?client_id=".$api_key);
+					$song = trim($array->download_url . "?client_id=".$soundcloudAPIKey);
 					$name = $ep->remove($array->title);
 					$author = $array->user->username;
 					$author = preg_replace("/[^A-Za-z0-9 ]/", '', $author);
@@ -770,7 +728,7 @@ class mainLib {
 					if(!$array->id){
 						return "-4";
 					}
-					$song = trim("https://api.soundcloud.com/tracks/".$array->id."/stream?client_id=".$api_key);
+					$song = trim("https://api.soundcloud.com/tracks/".$array->id."/stream?client_id=".$soundcloudAPIKey);
 					$name = $ep->remove($array->title);
 					$author = $array->user->username;
 					$author = preg_replace("/[^A-Za-z0-9 ]/", '', $author);

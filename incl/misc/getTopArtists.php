@@ -2,7 +2,7 @@
 chdir(dirname(__FILE__));
 require "../lib/connection.php";
 require "../lib/exploitPatch.php";
-require "../../config/topArtists.php";
+require "../../config/misc.php";
 $ep = new exploitPatch();
 $str = "";
 
@@ -14,7 +14,7 @@ if(isset($_POST["page"]) AND is_numeric($_POST["page"])){
 }
 
 
-if($redirect == 1) {
+if($topArtistsRedirectsMainGD == 1) {
 	// send result
 	$url = "http://boomlings.com/database/getGJTopArtists.php";
 	$request = "page=$offset&secret=Wmfd2893gb7";

@@ -3,17 +3,17 @@
 include "../incl/lib/connection.php";
 require_once "../incl/lib/exploitPatch.php";
 $ep = new exploitPatch();
-$api_key = "dc467dd431fc48eb0244b0aead929ccd";
+include "../config/misc.php";
 if(!empty($_POST["songlink"])){
 $song = str_replace("www.dropbox.com","dl.dropboxusercontent.com",$_POST["songlink"]);
 if (filter_var($song, FILTER_VALIDATE_URL) == TRUE) {
 	$soundcloud = false;
 	if(strpos($song, 'soundcloud.com') !== false){
 		$soundcloud = true;
-		$songinfo = file_get_contents("https://api.soundcloud.com/resolve.json?url=".$song."&client_id=".$api_key);
+		$songinfo = file_get_contents("https://api.soundcloud.com/resolve.json?url=".$song."&client_id=".$soundcloudAPIKey);
 		$array = json_decode($songinfo);
 		if($array->downloadable == true){
-			$song = trim($array->download_url . "?client_id=".$api_key);
+			$song = trim($array->download_url . "?client_id=".$soundcloudAPIKey);
 			$name = $ep->remove($array->title);
 			$author = $array->user->username;
 			$author = preg_replace("/[^A-Za-z0-9 ]/", '', $author);
@@ -22,7 +22,7 @@ if (filter_var($song, FILTER_VALIDATE_URL) == TRUE) {
 			if(!$array->id){
 				exit("This song is neither downloadable, nor streamable");
 			}
-			$song = trim("https://api.soundcloud.com/tracks/".$array->id."/stream?client_id=".$api_key);
+			$song = trim("https://api.soundcloud.com/tracks/".$array->id."/stream?client_id=".$soundcloudAPIKey);
 			$name = $ep->remove($array->title);
 			$author = $array->user->username;
 			$author = preg_replace("/[^A-Za-z0-9 ]/", '', $author);
