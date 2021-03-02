@@ -19,7 +19,7 @@ if($gjpresult == 1){
 	$request = $query->fetch();
 	$reqAccountID = $request["accountID"];
 	$toAccountID = $request["toAccountID"];
-	if($toAccountID != $accountID){
+	if($toAccountID != $accountID OR $reqAccountID == $accountID){
 		exit("-1");
 	}
 	$query = $db->prepare("INSERT INTO friendships (person1, person2, isNew1, isNew2)
