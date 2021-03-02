@@ -12,6 +12,9 @@ if(empty($_POST["accountID"]) OR empty($_POST["toAccountID"])){
 $accountID = $ep->number($_POST["accountID"]);
 $gjp = $ep->remove($_POST["gjp"]);
 $toAccountID = $ep->number($_POST["toAccountID"]);
+if ($toAccountID == $accountID) {
+	exit("-1");
+}
 $comment = $ep->remove($_POST["comment"]);
 $uploadDate = time();
 $blocked = $db->query("SELECT ID FROM `blocks` WHERE person1 = $toAccountID AND person2 = $accountID")->fetchAll(PDO::FETCH_COLUMN);
