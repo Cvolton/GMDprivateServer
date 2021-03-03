@@ -29,7 +29,7 @@ if(!empty($_POST["accountID"]) AND $_POST["accountID"]!="0"){
 	$register = 1;
 	$GJPCheck = new GJPCheck();
 	$gjpresult = $GJPCheck->check($gjp,$id);
-	if($gjpresult == 0){
+	if($gjpresult != 1){
 		exit("-1");
 	}
 }else{
