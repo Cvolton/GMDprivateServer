@@ -22,6 +22,7 @@ $levelName = $ep->remove($_POST["levelName"]);
 $levelName = $ep->charclean($levelName);
 $levelDesc = $ep->remove($_POST["levelDesc"]);
 $levelDesc = str_replace('-', '+', $levelDesc);
+$levelDesc = str_replace('_', '/', $levelDesc);
 $rawDesc = base64_decode($levelDesc);
 if (strpos($rawDesc, '<c') !== false) {
 	$tags = substr_count($rawDesc, '<c');
@@ -31,6 +32,7 @@ if (strpos($rawDesc, '<c') !== false) {
 			$rawDesc .= '</c>';
 		}
 		$levelDesc = str_replace('+', '-', base64_encode($rawDesc));
+		$levelDesc = str_replace('/', '_', $levelDesc);
 	}
 }
 if($gameVersion < 20){
