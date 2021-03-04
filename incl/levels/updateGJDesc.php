@@ -25,6 +25,7 @@ if (isset($_POST['udid']) && !empty($_POST['udid'])) {
 	}
 }
 $levelDesc = str_replace('-', '+', $levelDesc);
+$levelDesc = str_replace('_', '/', $levelDesc);
 $rawDesc = base64_decode($levelDesc);
 if (strpos($rawDesc, '<c') !== false) {
 	$tags = substr_count($rawDesc, '<c');
@@ -34,6 +35,7 @@ if (strpos($rawDesc, '<c') !== false) {
 			$rawDesc .= '</c>';
 		}
 		$levelDesc = str_replace('+', '-', base64_encode($rawDesc));
+		$levelDesc = str_replace('/', '_', $levelDesc);
 	}
 }
 $query = $db->prepare("UPDATE levels SET levelDesc=:levelDesc WHERE levelID=:levelID AND extID=:extID");
