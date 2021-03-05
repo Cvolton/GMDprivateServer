@@ -5,21 +5,16 @@ include "../../incl/lib/connection.php";
 $query = $db->prepare("SELECT roleID, roleName FROM roles WHERE priority > 0 ORDER BY priority DESC");
 $query->execute();
 $result = $query->fetchAll();
-foreach($result as &$role){
-	echo "<h1>" . $role["roleName"] . "</h1>";
-	$query = $db->prepare("SELECT accountID FROM roleassign WHERE roleID = :roleID");
-	$query->execute([':roleID' => $role["roleID"]]);
-	$accounts = $query->fetchAll();
-	echo '<table border="1"><tr><th>User</th><th>Last time online</th></tr>';
-	foreach($accounts as &$user){
-		$query = $db->prepare("SELECT userName, lastPlayed FROM users WHERE extID = :id");
-		$query->execute([':id' => $user["accountID"]]);
-		$account = $query->fetch();
-		$time = date("d/m/Y G:i:s", $account["lastPlayed"]);
-		$username = htmlspecialchars($account["userName"], ENT_QUOTES);
-		echo "<tr><td>".$username."</td><td>$time</td></tr>";
+foreach ($result as $role) {
+	echo "<h2>" . $role['roleName'] . "</h2>";
+	$query2 = $db->prepare("SELECT users.userName, users.lastPlayed FROM roleassign INNER JOIN users ON roleassign.accountID = users.extID WHERE roleassign.roleID = :roleID");
+	$query2->execute([':roleID' => $role["roleID"]]);
+	$account = $query2->fetchAll();
+	echo '<table border="1"><tr><th>User</th><th>Last Online</th></tr>';
+	foreach ($account as $user) {
+		$time = date("d/m/Y G:i:s", $user["lastPlayed"]);
+		$username = htmlspecialchars($user["userName"], ENT_QUOTES);
+		echo "<tr><td>" . $username . "</td><td>$time</td></tr>";
 	}
 	echo "</table>";
 }
-?>
-</table>
