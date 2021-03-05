@@ -25,17 +25,21 @@ include "../../incl/lib/connection.php";
 $query = $db->prepare("UPDATE users
 	LEFT JOIN
 	(
-	    SELECT starredTable.userID, (IFNULL(starredTable.starred, 0) + IFNULL(featuredTable.featured, 0) + (IFNULL(epicTable.epic,0)*2)) as CP FROM (
+	    SELECT usersTable.userID, (IFNULL(starredTable.starred, 0) + IFNULL(featuredTable.featured, 0) + (IFNULL(epicTable.epic,0)*2)) as CP FROM (
+            SELECT userID FROM users
+        ) AS usersTable
+        LEFT JOIN
+        (
 	        SELECT count(*) as starred, userID FROM levels WHERE starStars != 0 AND isCPShared = 0 GROUP BY(userID) 
-	    ) AS starredTable
+	    ) AS starredTable ON usersTable.userID = starredTable.userID
 	    LEFT JOIN
 	    (
 	        SELECT count(*) as featured, userID FROM levels WHERE starFeatured != 0 AND isCPShared = 0 GROUP BY(userID) 
-	    ) AS featuredTable ON starredTable.userID = featuredTable.userID
+	    ) AS featuredTable ON usersTable.userID = featuredTable.userID
 	    LEFT JOIN
 	    (
 	        SELECT count(*) as epic, userID FROM levels WHERE starEpic != 0 AND isCPShared = 0 GROUP BY(userID) 
-	    ) AS epicTable ON starredTable.userID = epicTable.userID
+	    ) AS epicTable ON usersTable.userID = epicTable.userID
 	) calculated
 	ON users.userID = calculated.userID
 	SET users.creatorPoints = IFNULL(calculated.CP, 0)");
