@@ -7,13 +7,13 @@ $query->execute();
 echo "Deleted invalid users and songs.<br>";
 ob_flush();
 flush();
-$query = $db->prepare("SELECT accountID, userName, registerDate FROM accounts");
+/*$query = $db->prepare("SELECT accountID, userName, registerDate FROM accounts");
 $query->execute();
 $result = $query->fetchAll();
 echo "Deleting unused accounts<br>";
 ob_flush();
 flush();
-/*foreach($result as &$account){
+foreach($result as &$account){
 	$query = $db->prepare("SELECT count(*) FROM users WHERE extID = :accountID");
 	$query->execute([':accountID' => $account["accountID"]]);
 	if($query->fetchColumn() == 0){
@@ -41,7 +41,7 @@ foreach($tables as &$table){
 	ob_flush();
 	flush();
 }*/
-echo "<hr>Success probably";
+echo "<hr>";
 ob_flush();
 flush();
 ?>

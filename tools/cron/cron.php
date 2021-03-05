@@ -19,5 +19,6 @@ flush();
 include "fixnames.php";
 ob_flush();
 flush();
+echo "CRON done";
 file_put_contents("../logs/cronlastrun.txt",time());
 ?>

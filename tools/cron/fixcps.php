@@ -111,8 +111,6 @@ foreach($result as $daily){
 */
 foreach($people as $user => $cp){
 	echo "$user now has $cp creator points... <br>";
-	ob_flush();
-	flush();
 	$query4 = $db->prepare("UPDATE users SET creatorPoints = (creatorpoints + :creatorpoints) WHERE userID=:userID");
 	$query4->execute([':userID' => $user, ':creatorpoints' => $cp]);
 }

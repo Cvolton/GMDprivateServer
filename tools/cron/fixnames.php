@@ -4,7 +4,7 @@ if($date == "01-04"){
 	exit();
 }
 chdir(dirname(__FILE__));
-echo "Please wait...<br>";
+echo "Setting user names to account names<br>";
 ob_flush();
 flush();
 set_time_limit(0);
