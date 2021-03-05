@@ -21,14 +21,19 @@ $levelID = $ep->remove($_POST["levelID"]);
 $levelName = $ep->remove($_POST["levelName"]);
 $levelName = $ep->charclean($levelName);
 $levelDesc = $ep->remove($_POST["levelDesc"]);
-$levelDesc = str_replace('-', '+', $levelDesc); //make it not bug when decoded
-$rawDesc = base64_decode($levelDesc); // decoded
-if (strpos($rawDesc, '<c') !== false) { // check tags
-    $tags = substr_count($rawDesc, '<c'); // count tags
-    for ($i = 0; $i < $tags; $i++) { // add a end tag for each tag
-        $rawDesc .= '</c>';
-    }
-    $levelDesc = str_replace('+', '-', base64_encode($rawDesc)); // encode it back to base64
+$levelDesc = str_replace('-', '+', $levelDesc);
+$levelDesc = str_replace('_', '/', $levelDesc);
+$rawDesc = base64_decode($levelDesc);
+if (strpos($rawDesc, '<c') !== false) {
+	$tags = substr_count($rawDesc, '<c');
+	if ($tags > substr_count($rawDesc, '</c>')) {
+		$tags = $tags - substr_count($rawDesc, '</c>');
+		for ($i = 0; $i < $tags; $i++) {
+			$rawDesc .= '</c>';
+		}
+		$levelDesc = str_replace('+', '-', base64_encode($rawDesc));
+		$levelDesc = str_replace('/', '_', $levelDesc);
+	}
 }
 if($gameVersion < 20){
 	$levelDesc = base64_encode($levelDesc);
