@@ -12,7 +12,7 @@ require "../lib/generateHash.php";
 $hash = new generateHash();
 
 //initializing variables
-$lvlstring = ""; $userstring = ""; $songsstring = ""; $lvlsmultistring = ""; $str = ""; $order = "uploadDate";
+$lvlstring = ""; $userstring = ""; $songsstring = ""; $lvlsmultistring = []; $str = ""; $order = "uploadDate";
 $orderenabled = true;
 $params = array("NOT unlisted = 1");
 
@@ -240,7 +240,7 @@ $result = $query->fetchAll();
 $levelcount = $query->rowCount();
 foreach($result as &$level1) {
 	if($level1["levelID"]!=""){
-		$lvlsmultistring .= $level1["levelID"].",";
+		$lvlsmultistring[] = $level1["levelID"];
 		if(!empty($gauntlet)){
 			$lvlstring .= "44:$gauntlet:";
 		}
@@ -255,7 +255,6 @@ foreach($result as &$level1) {
 	}
 }
 $lvlstring = substr($lvlstring, 0, -1);
-$lvlsmultistring = substr($lvlsmultistring, 0, -1);
 $userstring = substr($userstring, 0, -1);
 $songsstring = substr($songsstring, 0, -3);
 echo $lvlstring."#".$userstring;

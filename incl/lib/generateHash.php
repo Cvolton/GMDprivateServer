@@ -1,8 +1,7 @@
 <?php
 //credits to pavlukivan for decoding and to IAD for most of genSolo
 class generateHash {
-	public function genMulti($lvlsmultistring) {
-		$lvlsarray = explode(",", $lvlsmultistring);
+	public function genMulti($lvlsarray) {
 		include dirname(__FILE__)."/connection.php";
 		$hash = "";
 		foreach($lvlsarray as $id){
