@@ -16,7 +16,6 @@ function chkarray($source){
 include "../incl/lib/connection.php";
 require "../incl/lib/XORCipher.php";
 require "../config/reuploadAcc.php";
-$xc = new XORCipher();
 if(!empty($_POST["levelid"])){
 	$levelID = $_POST["levelid"];
 	$levelID = preg_replace("/[^0-9]/", '', $levelID);
@@ -92,7 +91,11 @@ if(!empty($_POST["levelid"])){
 			$extraString = chkarray($levelarray["a36"]);
 			$starStars = chkarray($levelarray["a18"]);
 			$isLDM = chkarray($levelarray["a40"]);
-			$password = chkarray($xc->cipher(base64_decode($levelarray["a27"]),26364));
+			$password = chkarray($levelarray["a27"]);
+			if($password != "0"){
+				$xc = new XORCipher();
+				$password = $xc->cipher(base64_decode($password),26364);
+			}
 			$starCoins = 0;
 			$starDiff = 0;
 			$starDemon = 0;
