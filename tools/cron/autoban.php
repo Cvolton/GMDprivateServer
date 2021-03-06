@@ -40,7 +40,7 @@ foreach($result as $gauntlet){
 		$query = $db->prepare("SELECT starStars FROM levels WHERE levelID = :levelid");
 		$query->execute([':levelid' => $level]);
 		$result = $query->fetchColumn();
-		$stars += $result["starStars"];
+		$stars += $result;
 	}
 }
 //counting stars

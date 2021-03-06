@@ -2,9 +2,6 @@
 chdir(dirname(__FILE__));
 set_time_limit(0);
 include "../../incl/lib/connection.php";
-$query = $db->prepare("SELECT ID FROM songs");
-$query->execute();
-$result = $query->fetchAll();
 //var_dump($result);
 //getting accounts
 echo "Calculating levelsCount for songs";
