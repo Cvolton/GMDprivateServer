@@ -512,7 +512,7 @@ class mainLib {
 		if (isset($_SERVER['HTTP_CF_CONNECTING_IP']) && $this->isCloudFlareIP($_SERVER['REMOTE_ADDR'])) //CLOUDFLARE REVERSE PROXY SUPPORT
   			return $_SERVER['HTTP_CF_CONNECTING_IP'];
 		if(isset($_SERVER['HTTP_X_FORWARDED_FOR']) && ipInRange::ipv4_in_range($_SERVER['REMOTE_ADDR'], '127.0.0.0/8')) //LOCALHOST REVERSE PROXY SUPPORT (7m.pl)
-			$_SERVER['HTTP_X_FORWARDED_FOR'];
+			return $_SERVER['HTTP_X_FORWARDED_FOR'];
 		return $_SERVER['REMOTE_ADDR'];
 	}
 	public function checkModIPPermission($permission){
