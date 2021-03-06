@@ -1,4 +1,5 @@
 <?php
+include __DIR__ . "/ip_in_range.php";
 class mainLib {
 	public function getAudioTrack($id) {
 		$songs = ["Stereo Madness by ForeverBound",
@@ -501,7 +502,7 @@ class mainLib {
 			'131.0.72.0/22'
 	    );
 	    foreach ($cf_ips as $cf_ip) {
-	        if (ip_in_range($ip, $cf_ip)) {
+	        if (ipInRange::ipv4_in_range($ip, $cf_ip)) {
 	            return true;
 	        }
 	    }
@@ -510,7 +511,7 @@ class mainLib {
 	public function getIP(){
 		if (isset($_SERVER['HTTP_CF_CONNECTING_IP']) && $this->isCloudFlareIP($_SERVER['REMOTE_ADDR'])) //CLOUDFLARE REVERSE PROXY SUPPORT
   			return $_SERVER['HTTP_CF_CONNECTING_IP'];
-		if(isset($_SERVER['HTTP_X_FORWARDED_FOR']) && ip_in_range($_SERVER['REMOTE_ADDR'], '127.0.0.0/8')) //LOCALHOST REVERSE PROXY SUPPORT (7m.pl)
+		if(isset($_SERVER['HTTP_X_FORWARDED_FOR']) && ipInRange::ipv4_in_range($_SERVER['REMOTE_ADDR'], '127.0.0.0/8')) //LOCALHOST REVERSE PROXY SUPPORT (7m.pl)
 			$_SERVER['HTTP_X_FORWARDED_FOR'];
 		return $_SERVER['REMOTE_ADDR'];
 	}
