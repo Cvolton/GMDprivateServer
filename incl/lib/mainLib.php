@@ -11,7 +11,7 @@ class mainLib {
 			"Time Machine by Waterflame",
 			"Cycles by DJVI",
 			"xStep by DJVI",
-			"Clutterfunk by Waterflame";,
+			"Clutterfunk by Waterflame",
 			"Theory of Everything by DJ Nate",
 			"Electroman Adventures by Waterflame",
 			"Club Step by DJ Nate",
@@ -35,7 +35,7 @@ class mainLib {
 			"Striker by Waterflame",
 			"Embers by Dex Arson",
 			"Round 1 by Dex Arson",
-			"Monster Dance Off by F-777"]
+			"Monster Dance Off by F-777"];
 		if($id < 0 || $id >= count($songs))
 			return "Unknown by DJVI";
 		return $songs[$id];
@@ -202,7 +202,7 @@ class mainLib {
 		return array($starDifficulty, $starDemon, $starAuto);
 	}
 	public function getGauntletName($id){
-		$gauntlets = ["Unknown", "Fire", "Ice", "Poison", "Shadow", "Lava", "Bonus", "Chaos", "Demon", "Time", "Crystal", "Magic", "Spike", "Monster", "Doom", "Death"]
+		$gauntlets = ["Unknown", "Fire", "Ice", "Poison", "Shadow", "Lava", "Bonus", "Chaos", "Demon", "Time", "Crystal", "Magic", "Spike", "Monster", "Doom", "Death"];
 		if($id < 0 || $id >= count($songs))
 			return $gauntlets[0];
 		return $gauntlets[$id];
