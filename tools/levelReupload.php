@@ -16,7 +16,7 @@ function chkarray($source){
 include "../incl/lib/connection.php";
 require "../incl/lib/XORCipher.php";
 require "../config/reuploadAcc.php";
-require_once "../lib/mainLib.php";
+require_once "../incl/lib/mainLib.php";
 $gs = new mainLib();
 if(!empty($_POST["levelid"])){
 	$levelID = $_POST["levelid"];

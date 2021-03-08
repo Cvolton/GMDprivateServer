@@ -4,7 +4,7 @@ require "../incl/lib/generatePass.php";
 $generatePass = new generatePass();
 require_once "../incl/lib/exploitPatch.php";
 $ep = new exploitPatch();
-require_once "../lib/mainLib.php";
+require_once "../incl/lib/mainLib.php";
 $gs = new mainLib();
 //here im getting all the data
 $ip = $gs->getIP();
