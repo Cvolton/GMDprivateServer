@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Feb 05, 2020 at 01:25 AM
--- Server version: 10.3.17-MariaDB-0+deb10u1
--- PHP Version: 7.3.11-1~deb10u1
+-- Generation Time: Mar 13, 2021 at 09:39 PM
+-- Server version: 10.3.27-MariaDB-0+deb10u1
+-- PHP Version: 7.3.27-1~deb10u1
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -573,7 +573,10 @@ ALTER TABLE `accounts`
 --
 ALTER TABLE `actions`
   ADD PRIMARY KEY (`ID`),
-  ADD KEY `type` (`type`);
+  ADD KEY `type` (`type`),
+  ADD KEY `value` (`value`),
+  ADD KEY `value2` (`value2`),
+  ADD KEY `timestamp` (`timestamp`);
 
 --
 -- Indexes for table `bannedips`
