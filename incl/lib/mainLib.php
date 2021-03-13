@@ -204,7 +204,7 @@ class mainLib {
 	}
 	public function getGauntletName($id){
 		$gauntlets = ["Unknown", "Fire", "Ice", "Poison", "Shadow", "Lava", "Bonus", "Chaos", "Demon", "Time", "Crystal", "Magic", "Spike", "Monster", "Doom", "Death"];
-		if($id < 0 || $id >= count($songs))
+		if($id < 0 || $id >= count($gauntlets))
 			return $gauntlets[0];
 		return $gauntlets[$id];
 	}
