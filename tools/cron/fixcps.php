@@ -1,4 +1,5 @@
 <?php
+error_reporting(E_ALL);
 chdir(dirname(__FILE__));
 echo "Please wait...<br>";
 ob_flush();
@@ -19,38 +20,31 @@ file_put_contents("../logs/fixcpslog.txt",time());
 set_time_limit(0);
 $cplog = "";
 $people = array();
-$nocpppl = "";
 include "../../incl/lib/connection.php";
-$query = $db->prepare("SELECT userID, userName FROM users");
-$query->execute();
-$result = $query->fetchAll();
 //getting users
-foreach($result as $user){
-	$userID = $user["userID"];
-	//getting starred lvls count
-	$query2 = $db->prepare("SELECT count(*) FROM levels WHERE userID = :userID AND starStars != 0 AND isCPShared = 0");
-	$query2->execute([':userID' => $userID]);
-	$creatorpoints = $query2->fetchColumn();
-	$cplog .= $user["userName"] . " - " . $creatorpoints . "\r\n";
-	//getting featured lvls count
-	$query3 = $db->prepare("SELECT count(*) FROM levels WHERE userID = :userID AND starFeatured != 0 AND isCPShared = 0");
-	$query3->execute([':userID' => $userID]);
-	$cpgain = $query3->fetchColumn();
-	$creatorpoints = $creatorpoints + $cpgain;
-	$cplog .= $user["userName"] . " - " . $creatorpoints . "\r\n";
-	//getting epic lvls count
-	$query3 = $db->prepare("SELECT count(*) FROM levels WHERE userID = :userID AND starEpic != 0 AND isCPShared = 0");
-	$query3->execute([':userID' => $userID]);
-	$cpgain = $query3->fetchColumn();
-	$creatorpoints = $creatorpoints + $cpgain + $cpgain;
-	$cplog .= $user["userName"] . " - " . $creatorpoints . "\r\n";
-	//inserting cp value
-	if($creatorpoints != 0){
-		$people[$userID] = $creatorpoints;
-	}else{
-		$nocpppl .= $userID.",";
-	}
-}
+$query = $db->prepare("UPDATE users
+	LEFT JOIN
+	(
+	    SELECT usersTable.userID, (IFNULL(starredTable.starred, 0) + IFNULL(featuredTable.featured, 0) + (IFNULL(epicTable.epic,0)*2)) as CP FROM (
+            SELECT userID FROM users
+        ) AS usersTable
+        LEFT JOIN
+        (
+	        SELECT count(*) as starred, userID FROM levels WHERE starStars != 0 AND isCPShared = 0 GROUP BY(userID) 
+	    ) AS starredTable ON usersTable.userID = starredTable.userID
+	    LEFT JOIN
+	    (
+	        SELECT count(*) as featured, userID FROM levels WHERE starFeatured != 0 AND isCPShared = 0 GROUP BY(userID) 
+	    ) AS featuredTable ON usersTable.userID = featuredTable.userID
+	    LEFT JOIN
+	    (
+	        SELECT count(*) as epic, userID FROM levels WHERE starEpic != 0 AND isCPShared = 0 GROUP BY(userID) 
+	    ) AS epicTable ON usersTable.userID = epicTable.userID
+	) calculated
+	ON users.userID = calculated.userID
+	SET users.creatorPoints = IFNULL(calculated.CP, 0)");
+$query->execute();
+echo "Calculated base CP<br>";
 /*
 	CP SHARING
 */
@@ -119,17 +113,9 @@ foreach($result as $daily){
 /*
 	DONE
 */
-$nocpppl = substr($nocpppl, 0, -1);
-if ($nocpppl != "") {
-	$query4 = $db->prepare("UPDATE users SET creatorPoints = 0 WHERE userID IN ($nocpppl)");
-	$query4->execute();
-	echo "Reset CP of $nocpppl <br>";
-}
 foreach($people as $user => $cp){
 	echo "$user now has $cp creator points... <br>";
-	ob_flush();
-	flush();
-	$query4 = $db->prepare("UPDATE users SET creatorPoints = :creatorpoints WHERE userID=:userID");
+	$query4 = $db->prepare("UPDATE users SET creatorPoints = (creatorpoints + :creatorpoints) WHERE userID=:userID");
 	$query4->execute([':userID' => $user, ':creatorpoints' => $cp]);
 }
 echo "<hr>done";

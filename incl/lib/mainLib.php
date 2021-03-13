@@ -1,117 +1,45 @@
 <?php
+include __DIR__ . "/ip_in_range.php";
 class mainLib {
 	public function getAudioTrack($id) {
-		switch($id){
-			case 0:
-				return "Stereo Madness by ForeverBound";
-				break;
-			case 1:
-				return "Back on Track by DJVI";
-				break;
-			case 2:
-				return "Polargeist by Step";
-				break;
-			case 3:
-				return "Dry Out by DJVI";
-				break;
-			case 4:
-				return "Base after Base by DJVI";
-				break;
-			case 5:
-				return "Can't Let Go by DJVI";
-				break;
-			case 6:
-				return "Jumper by Waterflame";
-				break;
-			case 7:
-				return "Time Machine by Waterflame";
-				break;
-			case 8:
-				return "Cycles by DJVI";
-				break;
-			case 9:
-				return "xStep by DJVI";
-				break;
-			case 10:
-				return "Clutterfunk by Waterflame";
-				break;
-			case 11:
-				return "Theory of Everything by DJ Nate";
-				break;
-			case 12:
-				return "Electroman Adventures by Waterflame";
-				break;
-			case 13:
-				return "Club Step by DJ Nate";
-				break;
-			case 14:
-				return "Electrodynamix by DJ Nate";
-				break;
-			case 15:
-				return "Hexagon Force by Waterflame";
-				break;
-			case 16:
-				return "Blast Processing by Waterflame";
-				break;
-			case 17:
-				return "Theory of Everything 2 by DJ Nate";
-				break;
-			case 18:
-				return "Geometrical Dominator by Waterflame";
-				break;
-			case 19:
-				return "Deadlocked by F-777";
-				break;
-			case 20:
-				return "Fingerbang by MDK";
-				break;
-			case 21:
-				return "The Seven Seas by F-777";
-				break;
-			case 22:
-				return "Viking Arena by F-777";
-				break;
-			case 23:
-				return "Airborne Robots by F-777";
-				break;
-			case 24:
-				return "Secret by RobTopGames";
-				break;
-			case 25:
-				return "Payload by Dex Arson";
-				break;
-			case 26:
-				return "Beast Mode by Dex Arson";
-				break;
-			case 27:
-				return "Machina by Dex Arson";
-				break;
-			case 28:
-				return "Years by Dex Arson";
-				break;
-			case 29:
-				return "Frontlines by Dex Arson";
-				break;
-			case 30:
-				return "Space Pirates by Waterflame";
-				break;
-			case 31:
-				return "Striker by Waterflame";
-				break;
-			case 32:
-				return "Embers by Dex Arson";
-				break;
-			case 33:
-				return "Round 1 by Dex Arson";
-				break;
-			case 34:
-				return "Monster Dance Off by F-777";
-				break;
-			default:
-				return "Unknown by DJVI";
-				break;
-			
-		}
+		$songs = ["Stereo Madness by ForeverBound",
+			"Back on Track by DJVI",
+			"Polargeist by Step",
+			"Dry Out by DJVI",
+			"Base after Base by DJVI",
+			"Can't Let Go by DJVI",
+			"Jumper by Waterflame",
+			"Time Machine by Waterflame",
+			"Cycles by DJVI",
+			"xStep by DJVI",
+			"Clutterfunk by Waterflame",
+			"Theory of Everything by DJ Nate",
+			"Electroman Adventures by Waterflame",
+			"Club Step by DJ Nate",
+			"Electrodynamix by DJ Nate",
+			"Hexagon Force by Waterflame",
+			"Blast Processing by Waterflame",
+			"Theory of Everything 2 by DJ Nate",
+			"Geometrical Dominator by Waterflame",
+			"Deadlocked by F-777",
+			"Fingerbang by MDK",
+			"The Seven Seas by F-777",
+			"Viking Arena by F-777",
+			"Airborne Robots by F-777",
+			"Secret by RobTopGames",
+			"Payload by Dex Arson",
+			"Beast Mode by Dex Arson",
+			"Machina by Dex Arson",
+			"Years by Dex Arson",
+			"Frontlines by Dex Arson",
+			"Space Pirates by Waterflame",
+			"Striker by Waterflame",
+			"Embers by Dex Arson",
+			"Round 1 by Dex Arson",
+			"Monster Dance Off by F-777"];
+		if($id < 0 || $id >= count($songs))
+			return "Unknown by DJVI";
+		return $songs[$id];
 	}
 	public function getDifficulty($diff,$auto,$demon) {
 		if($auto != 0){
@@ -275,57 +203,10 @@ class mainLib {
 		return array($starDifficulty, $starDemon, $starAuto);
 	}
 	public function getGauntletName($id){
-		switch($id){
-		case 1:
-			$gauntletname = "Fire";
-			break;
-		case 2:
-			$gauntletname = "Ice";
-			break;
-		case 3:
-			$gauntletname = "Poison";
-			break;
-		case 4:
-			$gauntletname = "Shadow";
-			break;
-		case 5:
-			$gauntletname = "Lava";
-			break;
-		case 6:
-			$gauntletname = "Bonus";
-			break;
-		case 7:
-			$gauntletname = "Chaos";
-			break;
-		case 8:
-			$gauntletname = "Demon";
-			break;
-		case 9:
-			$gauntletname = "Time";
-			break;
-		case 10:
-			$gauntletname = "Crystal";
-			break;
-		case 11:
-			$gauntletname = "Magic";
-			break;
-		case 12:
-			$gauntletname = "Spike";
-			break;
-		case 13:
-			$gauntletname = "Monster";
-			break;
-		case 14:
-			$gauntletname = "Doom";
-			break;
-		case 15:
-			$gauntletname = "Death";
-			break;
-		default:
-			$gauntletname = "Unknown";
-			break;
-		}
-		return $gauntletname;
+		$gauntlets = ["Unknown", "Fire", "Ice", "Poison", "Shadow", "Lava", "Bonus", "Chaos", "Demon", "Time", "Crystal", "Magic", "Spike", "Monster", "Doom", "Death"];
+		if($id < 0 || $id >= count($gauntlets))
+			return $gauntlets[0];
+		return $gauntlets[$id];
 	}
 
 	function makeTime($time) {
@@ -579,16 +460,17 @@ class mainLib {
 			'131.0.72.0/22'
 	    );
 	    foreach ($cf_ips as $cf_ip) {
-	        if (ip_in_range($ip, $cf_ip)) {
+	        if (ipInRange::ipv4_in_range($ip, $cf_ip)) {
 	            return true;
 	        }
 	    }
 	    return false;
 	}
 	public function getIP(){
-		if (isset($_SERVER["HTTP_CF_CONNECTING_IP"]) && $this->isCloudFlareIP($_SERVER['REMOTE_ADDR'])) {
-  			return $_SERVER["HTTP_CF_CONNECTING_IP"];
-		}
+		if (isset($_SERVER['HTTP_CF_CONNECTING_IP']) && $this->isCloudFlareIP($_SERVER['REMOTE_ADDR'])) //CLOUDFLARE REVERSE PROXY SUPPORT
+  			return $_SERVER['HTTP_CF_CONNECTING_IP'];
+		if(isset($_SERVER['HTTP_X_FORWARDED_FOR']) && ipInRange::ipv4_in_range($_SERVER['REMOTE_ADDR'], '127.0.0.0/8')) //LOCALHOST REVERSE PROXY SUPPORT (7m.pl)
+			return $_SERVER['HTTP_X_FORWARDED_FOR'];
 		return $_SERVER['REMOTE_ADDR'];
 	}
 	public function checkModIPPermission($permission){

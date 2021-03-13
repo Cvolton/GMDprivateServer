@@ -12,7 +12,7 @@ require "../lib/generateHash.php";
 $hash = new generateHash();
 
 //initializing variables
-$lvlstring = ""; $userstring = ""; $songsstring = ""; $lvlsmultistring = ""; $str = ""; $order = "uploadDate";
+$lvlstring = ""; $userstring = ""; $songsstring = ""; $lvlsmultistring = []; $str = ""; $order = "uploadDate";
 $orderenabled = true;
 $params = array("NOT unlisted = 1");
 
@@ -159,64 +159,67 @@ if(isset($_POST["page"]) AND is_numeric($_POST["page"])){
 }else{
 	$offset = 0;
 }
-if($type==0 OR $type==15){ //most liked, changed to 15 in GDW for whatever reason
-	$order = "likes";
-	if(!empty($str)){
-		if(is_numeric($str)){
-			$params = array("levelID = '$str'");
-		}else{
-			$params[] = "levelName LIKE '%$str%'";
+switch($type){
+	case 0:
+	case 15: //most liked, changed to 15 in GDW for whatever reason
+		$order = "likes";
+		if(!empty($str)){
+			if(is_numeric($str)){
+				$params = array("levelID = '$str'");
+			}else{
+				$params[] = "levelName LIKE '%$str%'";
+			}
 		}
-	}
+		break;
+	case 1:
+		$order = "downloads";
+		break;
+	case 2:
+		$order = "likes";
+		break;
+	case 3: //TRENDING
+		$uploadDate = time() - (7 * 24 * 60 * 60);
+		$params[] = "uploadDate > $uploadDate ";
+		$order = "likes";
+		break;
+	case 5:
+		$params[] = "userID = '$str'";
+		break;
+	case 6:
+	case 17: //featured
+		$params[] = "NOT starFeatured = 0";
+		$order = "rateDate DESC,uploadDate";
+		break;
+	case 16: //HALL OF FAME
+		$params[] = "NOT starEpic = 0";
+		$order = "rateDate DESC,uploadDate";
+		break;
+	case 7: //MAGIC
+		$params[] = "objects > 9999";
+		break;
+	case 10: //MAP PACKS
+		$order = false;
+		$params[] = "levelID IN ($str)";
+		break;
+	case 11: //AWARDED
+		$params[] = "NOT starStars = 0";
+		$order = "rateDate DESC,uploadDate";
+		break;
+	case 12: //FOLLOWED
+		$followed = $ep->numbercolon($_POST["followed"]);
+		$params[] = "extID IN ($followed)";
+		break;
+	case 13: //FRIENDS
+		$accountID = $ep->remove($_POST["accountID"]);
+		$gjp = $ep->remove($_POST["gjp"]);
+		$gjpresult = $GJPCheck->check($gjp,$accountID);
+		if($gjpresult == 1){
+			$peoplearray = $gs->getFriends($accountID);
+			$whereor = implode(",", $peoplearray);
+			$params[] = "extID IN ($whereor)";
+		}
+		break;
 }
-if($type==1){
-	$order = "downloads";
-}
-if($type==2){
-	$order = "likes";
-}
-if($type==3){ //TRENDING
-	$uploadDate = time() - (7 * 24 * 60 * 60);
-	$params[] = "uploadDate > $uploadDate ";
-	$order = "likes";
-}
-if($type==5){
-	$params[] = "userID = '$str'";
-}
-if($type==6 OR $type==17){ //featured
-	$params[] = "NOT starFeatured = 0";
-	$order = "rateDate DESC,uploadDate";
-}
-if($type==16){ //HALL OF FAME
-	$params[] = "NOT starEpic = 0";
-	$order = "rateDate DESC,uploadDate";
-}
-if($type==7){ //MAGIC
-	$params[] = "objects > 9999";
-}
-if($type==10){ //MAP PACKS
-	$order = false;
-	$params[] = "levelID IN ($str)";
-}
-if($type==11){ //AWARDED
-	$params[] = "NOT starStars = 0";
-	$order = "rateDate DESC,uploadDate";
-}
-if($type==12){ //FOLLOWED
-	$followed = $ep->numbercolon($_POST["followed"]);
-	$params[] = "extID IN ($followed)";
-}
-if($type==13){ //FRIENDS
-	$accountID = $ep->remove($_POST["accountID"]);
-	$gjp = $ep->remove($_POST["gjp"]);
-	$gjpresult = $GJPCheck->check($gjp,$accountID);
-	if($gjpresult == 1){
-		$peoplearray = $gs->getFriends($accountID);
-		$whereor = implode(",", $peoplearray);
-		$params[] = "extID IN ($whereor)";
-	}
-}
-
 //ACTUAL QUERY EXECUTION
 $querybase = "FROM levels";
 if(!empty($params)){
@@ -240,7 +243,7 @@ $result = $query->fetchAll();
 $levelcount = $query->rowCount();
 foreach($result as &$level1) {
 	if($level1["levelID"]!=""){
-		$lvlsmultistring .= $level1["levelID"].",";
+		$lvlsmultistring[] = $level1["levelID"];
 		if(!empty($gauntlet)){
 			$lvlstring .= "44:$gauntlet:";
 		}
@@ -255,7 +258,6 @@ foreach($result as &$level1) {
 	}
 }
 $lvlstring = substr($lvlstring, 0, -1);
-$lvlsmultistring = substr($lvlsmultistring, 0, -1);
 $userstring = substr($userstring, 0, -1);
 $songsstring = substr($songsstring, 0, -3);
 echo $lvlstring."#".$userstring;

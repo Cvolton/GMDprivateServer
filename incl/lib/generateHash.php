@@ -1,26 +1,14 @@
 <?php
 //credits to pavlukivan for decoding and to IAD for most of genSolo
 class generateHash {
-	public function genMulti($lvlsmultistring) {
-		$lvlsarray = explode(",", $lvlsmultistring);
+	public function genMulti($lvlsarray) {
 		include dirname(__FILE__)."/connection.php";
 		$hash = "";
 		foreach($lvlsarray as $id){
-			//moving levels into the new system
-			if(!is_numeric($id)){
-				exit("-1");
-			}
-			$query=$db->prepare("SELECT levelString, levelID, starStars, starCoins FROM levels WHERE levelID = :id");
+			$query=$db->prepare("SELECT levelID, starStars, starCoins FROM levels WHERE levelID = :id");
 			$query->execute([':id' => $id]);
 			$result2 = $query->fetchAll();
 			$result = $result2[0];
-			$levelString = $result["levelString"];
-			if(!file_exists(dirname(__FILE__)."/../../data/levels/$id")){
-				file_put_contents(dirname(__FILE__)."/../../data/levels/$id",$levelString);
-				$query = $db->prepare("UPDATE levels SET levelString = '' WHERE levelID = :levelID");
-				$query->execute([':levelID' => $id]);
-			}
-			//generating the hash
 			$hash = $hash . $result["levelID"][0].$result["levelID"][strlen($result["levelID"])-1].$result["starStars"].$result["starCoins"];
 		}
 		return sha1($hash . "xI25fpAapCQg");

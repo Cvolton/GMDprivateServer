@@ -7,6 +7,8 @@ require_once "../lib/exploitPatch.php";
 require_once "../lib/mainLib.php";
 $mainLib = new mainLib();
 $ep = new exploitPatch();
+require_once "../lib/mainLib.php";
+$gs = new mainLib();
 //here im getting all the data
 $gjp = $ep->remove($_POST["gjp"]);
 $gameVersion = $ep->remove($_POST["gameVersion"]);
@@ -21,6 +23,20 @@ $levelID = $ep->remove($_POST["levelID"]);
 $levelName = $ep->remove($_POST["levelName"]);
 $levelName = $ep->charclean($levelName);
 $levelDesc = $ep->remove($_POST["levelDesc"]);
+$levelDesc = str_replace('-', '+', $levelDesc);
+$levelDesc = str_replace('_', '/', $levelDesc);
+$rawDesc = base64_decode($levelDesc);
+if (strpos($rawDesc, '<c') !== false) {
+	$tags = substr_count($rawDesc, '<c');
+	if ($tags > substr_count($rawDesc, '</c>')) {
+		$tags = $tags - substr_count($rawDesc, '</c>');
+		for ($i = 0; $i < $tags; $i++) {
+			$rawDesc .= '</c>';
+		}
+		$levelDesc = str_replace('+', '-', base64_encode($rawDesc));
+		$levelDesc = str_replace('/', '_', $levelDesc);
+	}
+}
 if($gameVersion < 20){
 	$levelDesc = base64_encode($levelDesc);
 }
@@ -107,13 +123,7 @@ if(!empty($_POST["accountID"]) AND $_POST["accountID"]!="0"){
 		exit("-1");
 	}
 }
-if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
-	$hostname = $_SERVER['HTTP_CLIENT_IP'];
-} elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
-	$hostname = $_SERVER['HTTP_X_FORWARDED_FOR'];
-} else {
-	$hostname = $_SERVER['REMOTE_ADDR'];
-}
+$hostname = $gs->getIP();
 $userID = $mainLib->getUserID($id, $userName);
 $uploadDate = time();
 $query = $db->prepare("SELECT count(*) FROM levels WHERE uploadDate > :time AND (userID = :userID OR hostname = :ip)");

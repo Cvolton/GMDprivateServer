@@ -14,28 +14,21 @@ if(file_exists("../logs/fixfrndlog.txt")){
 }
 file_put_contents("../logs/fixfrndlog.txt",time());
 set_time_limit(0);
-$frndlog = "";
 include "../../incl/lib/connection.php";
-$query = $db->prepare("SELECT accountID, userName FROM accounts");
+echo "Calculating the amount of friends everyone has";
+$query = $db->prepare("UPDATE accounts
+	LEFT JOIN
+	(
+	    SELECT a.person, (IFNULL(a.friends, 0) + IFNULL(b.friends, 0)) AS friends FROM (
+	        SELECT count(*) as friends, person1 AS person FROM friendships GROUP BY(person1) 
+	    ) AS a
+	    JOIN
+	    (
+	        SELECT count(*) as friends, person2 AS person FROM friendships GROUP BY(person2) 
+	    ) AS b ON a.person = b.person
+	) calculated
+	ON accounts.accountID = calculated.person
+	SET accounts.friendsCount = IFNULL(calculated.friends, 0)");
 $query->execute();
-$result = $query->fetchAll();
-//getting accounts
-foreach($result as $account){
-	//getting friends count
-	$me = $account["accountID"];
-	$query2 = $db->prepare("SELECT count(*) FROM friendships WHERE person1 = :me OR person2 = :me");
-	$query2->execute([':me' => $me]);
-	$friendscount = $query2->fetchColumn();
-	$frndlog .= $account["userName"] . " - " . $friendscount . "\r\n";
-	//inserting friends count value
-	if($friendscount != 0){
-		echo htmlspecialchars($account["userName"],ENT_QUOTES) . " now has $friendscount friends... <br>";
-		ob_flush();
-		flush();
-		$query4 = $db->prepare("UPDATE accounts SET friendsCount=:friendscount WHERE accountID=:me");
-		$query4->execute([':friendscount' => $friendscount, ':me' => $me]);
-	}
-}
-file_put_contents("../logs/frndlog.txt",$frndlog);
 echo "<hr>";
 ?>
