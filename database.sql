@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Mar 13, 2021 at 09:39 PM
+-- Generation Time: Mar 13, 2021 at 11:05 PM
 -- Server version: 10.3.27-MariaDB-0+deb10u1
 -- PHP Version: 7.3.27-1~deb10u1
 
@@ -235,8 +235,8 @@ CREATE TABLE `levels` (
   `starDemon` int(1) NOT NULL DEFAULT 0,
   `starAuto` varchar(11) COLLATE utf8_unicode_ci NOT NULL DEFAULT '0',
   `starStars` int(11) NOT NULL DEFAULT 0,
-  `uploadDate` varchar(1337) COLLATE utf8_unicode_ci NOT NULL,
-  `updateDate` bigint(11) NOT NULL,
+  `uploadDate` bigint(20) NOT NULL,
+  `updateDate` bigint(20) NOT NULL,
   `rateDate` bigint(20) NOT NULL DEFAULT 0,
   `starCoins` int(11) NOT NULL DEFAULT 0,
   `starFeatured` int(11) NOT NULL DEFAULT 0,
@@ -558,7 +558,8 @@ CREATE TABLE `users` (
 --
 ALTER TABLE `acccomments`
   ADD PRIMARY KEY (`commentID`),
-  ADD KEY `userID` (`userID`);
+  ADD KEY `userID` (`userID`),
+  ADD KEY `timestamp` (`timestamp`);
 
 --
 -- Indexes for table `accounts`
@@ -566,7 +567,11 @@ ALTER TABLE `acccomments`
 ALTER TABLE `accounts`
   ADD PRIMARY KEY (`accountID`),
   ADD UNIQUE KEY `userName` (`userName`),
-  ADD KEY `isAdmin` (`isAdmin`);
+  ADD KEY `isAdmin` (`isAdmin`),
+  ADD KEY `frS` (`frS`),
+  ADD KEY `discordID` (`discordID`),
+  ADD KEY `discordLinkReq` (`discordLinkReq`),
+  ADD KEY `friendsCount` (`friendsCount`);
 
 --
 -- Indexes for table `actions`
@@ -589,33 +594,42 @@ ALTER TABLE `bannedips`
 --
 ALTER TABLE `blocks`
   ADD PRIMARY KEY (`ID`),
-  ADD UNIQUE KEY `ID` (`ID`);
+  ADD UNIQUE KEY `ID` (`ID`),
+  ADD KEY `person1` (`person1`),
+  ADD KEY `person2` (`person2`);
 
 --
 -- Indexes for table `comments`
 --
 ALTER TABLE `comments`
   ADD PRIMARY KEY (`commentID`),
-  ADD KEY `levelID` (`levelID`);
+  ADD KEY `levelID` (`levelID`),
+  ADD KEY `userID` (`userID`),
+  ADD KEY `likes` (`likes`);
 
 --
 -- Indexes for table `cpshares`
 --
 ALTER TABLE `cpshares`
-  ADD PRIMARY KEY (`shareID`);
+  ADD PRIMARY KEY (`shareID`),
+  ADD KEY `levelID` (`levelID`);
 
 --
 -- Indexes for table `dailyfeatures`
 --
 ALTER TABLE `dailyfeatures`
-  ADD PRIMARY KEY (`feaID`);
+  ADD PRIMARY KEY (`feaID`),
+  ADD KEY `type` (`type`),
+  ADD KEY `timestamp` (`timestamp`);
 
 --
 -- Indexes for table `friendreqs`
 --
 ALTER TABLE `friendreqs`
   ADD PRIMARY KEY (`ID`),
-  ADD KEY `toAccountID` (`toAccountID`);
+  ADD KEY `toAccountID` (`toAccountID`),
+  ADD KEY `accountID` (`accountID`),
+  ADD KEY `uploadDate` (`uploadDate`);
 
 --
 -- Indexes for table `friendships`
@@ -652,20 +666,39 @@ ALTER TABLE `levels`
   ADD KEY `songID` (`songID`),
   ADD KEY `audioTrack` (`audioTrack`),
   ADD KEY `levelLength` (`levelLength`),
-  ADD KEY `twoPlayer` (`twoPlayer`);
+  ADD KEY `twoPlayer` (`twoPlayer`),
+  ADD KEY `starDemon` (`starDemon`),
+  ADD KEY `starAuto` (`starAuto`),
+  ADD KEY `extID` (`extID`),
+  ADD KEY `uploadDate` (`uploadDate`),
+  ADD KEY `updateDate` (`updateDate`),
+  ADD KEY `starCoins` (`starCoins`),
+  ADD KEY `coins` (`coins`),
+  ADD KEY `password` (`password`),
+  ADD KEY `originalReup` (`originalReup`),
+  ADD KEY `original` (`original`),
+  ADD KEY `unlisted` (`unlisted`),
+  ADD KEY `isCPShared` (`isCPShared`),
+  ADD KEY `gameVersion` (`gameVersion`),
+  ADD KEY `rateDate` (`rateDate`),
+  ADD KEY `objects` (`objects`);
 
 --
 -- Indexes for table `levelscores`
 --
 ALTER TABLE `levelscores`
   ADD PRIMARY KEY (`scoreID`),
-  ADD KEY `levelID` (`levelID`);
+  ADD KEY `levelID` (`levelID`),
+  ADD KEY `accountID` (`accountID`);
 
 --
 -- Indexes for table `links`
 --
 ALTER TABLE `links`
-  ADD PRIMARY KEY (`ID`);
+  ADD PRIMARY KEY (`ID`),
+  ADD KEY `targetUserID` (`targetUserID`),
+  ADD KEY `targetAccountID` (`targetAccountID`),
+  ADD KEY `server` (`server`);
 
 --
 -- Indexes for table `mappacks`
@@ -678,13 +711,17 @@ ALTER TABLE `mappacks`
 --
 ALTER TABLE `messages`
   ADD PRIMARY KEY (`messageID`),
-  ADD KEY `toAccountID` (`toAccountID`);
+  ADD KEY `toAccountID` (`toAccountID`),
+  ADD KEY `accID` (`accID`);
 
 --
 -- Indexes for table `modactions`
 --
 ALTER TABLE `modactions`
-  ADD PRIMARY KEY (`ID`);
+  ADD PRIMARY KEY (`ID`),
+  ADD KEY `account` (`account`),
+  ADD KEY `type` (`type`),
+  ADD KEY `value3` (`value3`);
 
 --
 -- Indexes for table `modipperms`
@@ -696,7 +733,9 @@ ALTER TABLE `modipperms`
 -- Indexes for table `modips`
 --
 ALTER TABLE `modips`
-  ADD PRIMARY KEY (`ID`);
+  ADD PRIMARY KEY (`ID`),
+  ADD KEY `accountID` (`accountID`),
+  ADD KEY `IP` (`IP`);
 
 --
 -- Indexes for table `poll`
@@ -714,32 +753,40 @@ ALTER TABLE `quests`
 -- Indexes for table `reports`
 --
 ALTER TABLE `reports`
-  ADD PRIMARY KEY (`ID`);
+  ADD PRIMARY KEY (`ID`),
+  ADD KEY `levelID` (`levelID`),
+  ADD KEY `hostname` (`hostname`);
 
 --
 -- Indexes for table `roleassign`
 --
 ALTER TABLE `roleassign`
-  ADD PRIMARY KEY (`assignID`);
+  ADD PRIMARY KEY (`assignID`),
+  ADD KEY `roleID` (`roleID`),
+  ADD KEY `accountID` (`accountID`);
 
 --
 -- Indexes for table `roles`
 --
 ALTER TABLE `roles`
-  ADD PRIMARY KEY (`roleID`);
+  ADD PRIMARY KEY (`roleID`),
+  ADD KEY `priority` (`priority`),
+  ADD KEY `toolModactions` (`toolModactions`);
 
 --
 -- Indexes for table `songs`
 --
 ALTER TABLE `songs`
   ADD PRIMARY KEY (`ID`),
-  ADD KEY `name` (`name`);
+  ADD KEY `name` (`name`),
+  ADD KEY `authorName` (`authorName`);
 
 --
 -- Indexes for table `suggest`
 --
 ALTER TABLE `suggest`
-  ADD PRIMARY KEY (`ID`);
+  ADD PRIMARY KEY (`ID`),
+  ADD KEY `timestamp` (`timestamp`);
 
 --
 -- Indexes for table `users`
@@ -758,7 +805,10 @@ ALTER TABLE `users`
   ADD KEY `orbs` (`orbs`),
   ADD KEY `completedLvls` (`completedLvls`),
   ADD KEY `isBanned` (`isBanned`),
-  ADD KEY `isCreatorBanned` (`isCreatorBanned`);
+  ADD KEY `isCreatorBanned` (`isCreatorBanned`),
+  ADD KEY `extID` (`extID`),
+  ADD KEY `IP` (`IP`),
+  ADD KEY `isRegistered` (`isRegistered`);
 
 --
 -- AUTO_INCREMENT for dumped tables
