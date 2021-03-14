@@ -61,8 +61,8 @@ if(!is_numeric($levelID)){
 			$query6->execute([':type' => 7, ':itemID' => $levelID, ':time' => time(), ':ip' => $ip]);
 		}
 		//getting the days since uploaded... or outputting the date in Y-M-D format at least for now...
-		$uploadDate = date("d-m-Y G-i", $result["uploadDate"]);
-		$updateDate = date("d-m-Y G-i", $result["updateDate"]);
+		$uploadDate = mainLib::makeTime(time() - $result["uploadDate"]);
+		$updateDate = mainLib::makeTime(time() - $result["updateDate"]);
 		//password xor
 		$pass = $result["password"];
 		$desc = $result["levelDesc"];
