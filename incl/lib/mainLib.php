@@ -362,7 +362,7 @@ class mainLib {
 		//findind the channel id
 		$data = array("recipient_id" => $receiver);                                                                    
 		$data_string = json_encode($data);
-		$url = "https://discordapp.com/api/v6/users/@me/channels";
+		$url = "https://discord.com/api/v8/users/@me/channels";
 		//echo $url;
 		$crl = curl_init($url);
 		$headr = array();
@@ -380,7 +380,7 @@ class mainLib {
 		//sending the msg
 		$data = array("content" => $message);                                                                    
 		$data_string = json_encode($data);
-		$url = "https://discordapp.com/api/v6/channels/".$channelID."/messages";
+		$url = "https://discord.com/api/v8/channels/".$channelID."/messages";
 		//echo $url;
 		$crl = curl_init($url);
 		$headr = array();
@@ -398,7 +398,7 @@ class mainLib {
 	public function getDiscordAcc($discordID){
 		include __DIR__ . "/../../config/discord.php";
 		///getting discord acc info
-		$url = "https://discordapp.com/api/v6/users/".$discordID;
+		$url = "https://discord.com/api/v8/users/".$discordID;
 		$crl = curl_init($url);
 		$headr = array();
 		$headr['User-Agent'] = 'CvoltonGDPS (http://pi.michaelbrabec.cz:9010, 1.0)';
