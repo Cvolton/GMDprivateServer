@@ -88,7 +88,8 @@ if(!empty($_POST["noStar"])){
 	$params[] = "starStars = 0";
 }
 if(!empty($_POST["gauntlet"])){
-	$order = false;
+	$ordergauntlet = true;
+	$order = "starStars";
 	$gauntlet = $ep->remove($_POST["gauntlet"]);
 	$query=$db->prepare("SELECT * FROM gauntlets WHERE ID = :gauntlet");
 	$query->execute([':gauntlet' => $gauntlet]);
@@ -227,7 +228,11 @@ if(!empty($params)){
 }
 $query = "SELECT * $querybase ";
 if($order){
-	$query .= "ORDER BY $order DESC";
+	if($ordergauntlet){
+		$query .= "ORDER BY $order ASC";
+	}else{
+		$query .= "ORDER BY $order DESC";
+	}
 }
 $query .= " LIMIT 10 OFFSET $offset";
 //echo $query;
