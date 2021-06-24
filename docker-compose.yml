@@ -11,6 +11,8 @@ services:
       MYSQL_USER: robtop
       MYSQL_PASSWORD: geometrydash
       MYSQL_DATABASE: geometrydash
+    volumes:
+      - "./database.sql:/docker-entrypoint-initdb.d/database.sql:ro"
     expose:
       - 3306
   adminer:
