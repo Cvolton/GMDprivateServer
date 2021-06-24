@@ -1,0 +1,20 @@
+services:
+  gdps:
+    build: .
+    ports:
+      - 80:80
+  db:
+    image: mariadb
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: something
+      MYSQL_USER: robtop
+      MYSQL_PASSWORD: geometrydash
+      MYSQL_DATABASE: geometrydash
+    expose:
+      - 3306
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
