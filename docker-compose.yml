@@ -3,6 +3,9 @@ services:
     build: .
     ports:
       - 80:80
+    volumes:
+      # persists the levels and backups on the host machine
+      - "/etc/gdps/data:/var/www/html/database/data"
   db:
     image: mariadb
     restart: always
@@ -13,8 +16,8 @@ services:
       MYSQL_DATABASE: geometrydash
     volumes:
       - "./database.sql:/docker-entrypoint-initdb.d/database.sql:ro"
-      - "/data/gdps:/var/lib/mysql"
       # persists the database at /data/gdps on the host machine
+      - "/etc/gdps/mysql:/var/lib/mysql"
     expose:
       - 3306
   adminer:
