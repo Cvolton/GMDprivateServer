@@ -13,6 +13,8 @@ services:
       MYSQL_DATABASE: geometrydash
     volumes:
       - "./database.sql:/docker-entrypoint-initdb.d/database.sql:ro"
+      - "/data/gdps:/var/lib/mysql"
+      # persists the database at /data/gdps on the host machine
     expose:
       - 3306
   adminer:
