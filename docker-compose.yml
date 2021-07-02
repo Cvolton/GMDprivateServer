@@ -1,0 +1,27 @@
+services:
+  gdps:
+    build: .
+    ports:
+      - 80:80
+    volumes:
+      # persists the levels and backups on the host machine
+      - "/etc/gdps/data:/var/www/html/database/data"
+  db:
+    image: mariadb
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: something
+      MYSQL_USER: robtop
+      MYSQL_PASSWORD: geometrydash
+      MYSQL_DATABASE: geometrydash
+    volumes:
+      - "./database.sql:/docker-entrypoint-initdb.d/database.sql:ro"
+      # persists the database at /data/gdps on the host machine
+      - "/etc/gdps/mysql:/var/lib/mysql"
+    expose:
+      - 3306
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
