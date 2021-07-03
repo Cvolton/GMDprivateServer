@@ -1,6 +1,6 @@
 <h1>Actions Count</h1>
 <table border="1">
-<tr><th>Moderator</th><th>Count</th><th>Levels rated</th><th>Last time online</th></tr>
+<tr><th>Moderator</th><th>Count</th><th>Levels suggested</th><th>Levels rated</th><th>Last time online</th></tr>
 <?php
 //error_reporting(0);
 include "../../incl/lib/connection.php";
@@ -23,14 +23,77 @@ foreach($result as &$mod){
 	$query = $db->prepare("SELECT count(*) FROM modactions WHERE account = :id AND type = '1'");
 	$query->execute([':id' => $mod["accountID"]]);
 	$lvlcount = $query->fetchColumn();
-	echo "<tr><td>".$mod["userName"]."</td><td>".$actionscount."</td><td>".$lvlcount."</td><td>".$time."</td></tr>";
+	$query = $db->prepare("SELECT count(*) FROM suggest WHERE suggestBy = :id");
+	$query->execute([':id' => $mod["accountID"]]);
+	$suggestcount = $query->fetchColumn();
+	$actionscount += $suggestcount;
+	echo "<tr><td>".$mod["userName"]."</td><td>".$actionscount."</td><td>".$suggestcount."</td><td>".$lvlcount."</td><td>".$time."</td></tr>";
 }
 ?>
 </table>
 <h1>Actions Log</h1>
+<form action="modActions.php" method="post">
+	Search: <input type="text" name="field" placeholder="Enter field">
+	<br>Search Type: <select name="type">
+		<option value="1">Moderator</option>
+		<option value="2">Level ID</option>
+	</select>
+	<br>Sort By: <select name="order">
+		<option value="1">Newest</option>
+		<option value="2">Oldest</option>
+	</select>
+	<input type="submit" value="Search">
+</form>
 <table border="1"><tr><th>Moderator</th><th>Action</th><th>Value</th><th>Value2</th><th>LevelID</th><th>Time</th></tr>
 <?php
-$query = $db->prepare("SELECT * FROM modactions ORDER BY ID DESC");
+require "../../incl/lib/exploitPatch.php";
+$ep = new exploitPatch();
+if (!empty($_POST['type'])) {
+	$type = $ep->number($_POST['type']);
+} else {
+	$type = 2;
+}
+switch ($type) {
+	case 1:
+		$searchType = "account";
+		break;
+	case 2:
+		$searchType = "value3";
+		break;
+	default:
+		$searchType = "value3";
+		break;
+}
+if (!empty($_POST['order'])) {
+	$order = $ep->number($_POST['order']);
+} else {
+	$order = 1;
+}
+switch ($order) {
+	case 1:
+		$searchOrder = "timestamp DESC";
+		break;
+	case 2:
+		$searchOrder = "timestamp ASC";
+		break;
+	default:
+		$searchOrder = "timestamp DESC";
+		break;
+}
+if (!empty($_POST['field'])) {
+	$field = $ep->remove($_POST['field']);
+} else {
+	$field = "";
+}
+if($field == ""){
+	$query = $db->prepare("SELECT * FROM modactions ORDER BY ".$searchOrder." LIMIT 5000");
+}else{
+	if($type == 1){
+		$query = $db->prepare("SELECT * FROM modactions WHERE ".$searchType." = ".$gs->getAccountIDFromName($field)." ORDER BY ".$searchOrder." LIMIT 5000");
+	}else{
+		$query = $db->prepare("SELECT * FROM modactions WHERE ".$searchType." = ".$field." AND CASE type WHEN 5 THEN value2 < ".time()." ELSE 1 END ORDER BY ".$searchOrder." LIMIT 5000");
+	}
+}
 $query->execute();
 $result = $query->fetchAll();
 foreach($result as &$action){
