@@ -108,6 +108,6 @@ $string["modAction13"] = "Изменили описание";
 $string["modAction14"] = "Включили/выключили ЛДМ";
 $string["modAction15"] = "Бан по лидербордам";
 //errors
-$string["errorNoAccWithPerm"] = "Ошибка: никаких аккаунтов с возмоюностью '%s' были найдены.";
+$string["errorNoAccWithPerm"] = "Ошибка: никаких аккаунтов с возможностью '%s' были найдены.";
 
 //Translation done by TheFox#5812 and bit0r1n#1707
