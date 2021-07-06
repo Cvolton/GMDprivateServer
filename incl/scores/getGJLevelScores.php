@@ -7,6 +7,7 @@ require_once "../lib/exploitPatch.php";
 $ep = new exploitPatch();
 require_once "../lib/mainLib.php";
 $gs = new mainLib();
+include "../../config/misc.php";
 //here im getting all the data
 $gjp = $ep->remove($_POST["gjp"]);
 $accountID = $ep->remove($_POST["accountID"]);
@@ -24,18 +25,13 @@ if(isset($_POST["s9"])){
 	$coins = 0;
 }
 
-
-
-
-
 //UPDATING SCORE
 $userID = $gs->getUserID($accountID);
 $query2 = $db->prepare("SELECT percent FROM levelscores WHERE accountID = :accountID AND levelID = :levelID");
 $query2->execute([':accountID' => $accountID, ':levelID' => $levelID]);
 $oldPercent = $query2->fetchColumn();
 if($query2->rowCount() == 0) {
-	$query = $db->prepare("INSERT INTO levelscores (accountID, levelID, percent, uploadDate, coins, attempts)
-	VALUES (:accountID, :levelID, :percent, :uploadDate, :coins, :attempts)");
+	$query = $db->prepare("INSERT INTO levelscores (accountID, levelID, percent, uploadDate, coins, attempts) VALUES (:accountID, :levelID, :percent, :uploadDate, :coins, :attempts)");
 } else {
 	if($oldPercent <= $percent){
 		$query = $db->prepare("UPDATE levelscores SET percent=:percent, uploadDate=:uploadDate, coins=:coins, attempts=:attempts WHERE accountID=:accountID AND levelID=:levelID");
@@ -52,8 +48,6 @@ if($gjpresult == 1){
 		$query->execute([':accountID' => $accountID]);
 	}
 }
-
-
 
 //GETTING SCORES
 if(!isset($_POST["type"])){
@@ -82,8 +76,6 @@ switch($type){
 		break;
 }
 
-
-
 $query2->execute($query2args);
 $result = $query2->fetchAll();
 foreach ($result as &$score) {
@@ -92,7 +84,11 @@ foreach ($result as &$score) {
 	$query2->execute([':extID' => $extID]);
 	$user = $query2->fetchAll();
 	$user = $user[0];
-	$time = date("d/m/Y G.i", $score["uploadDate"]);
+	if ($timestampType == 0) {
+		$time = $gs->makeTime($score["uploadDate"]);
+	} else {
+		$time = date("d/m/Y G.i", $score["uploadDate"]);
+	}
 	if($user["isBanned"]==0){
 		if($score["percent"] == 100){
 			$place = 1;

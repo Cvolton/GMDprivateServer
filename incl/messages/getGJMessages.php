@@ -5,8 +5,10 @@ include "../lib/connection.php";
 require_once "../lib/GJPCheck.php";
 require_once "../lib/exploitPatch.php";
 $ep = new exploitPatch();
+include "../../config/misc.php";
+require_once "../lib/mainLib.php";
+$gs = new mainLib();
 $msgstring = "";
-$userid = 1337;
 //code begins
 $toAccountID = $ep->remove($_POST["accountID"]);
 $gjp = $ep->remove($_POST["gjp"]);
@@ -37,7 +39,11 @@ if($msgcount == 0){
 }
 foreach ($result as &$message1) {
 	if($message1["messageID"]!=""){
-		$uploadDate = date("d/m/Y G.i", $message1["timestamp"]);
+		if ($timestampType == 0) {
+			$uploadDate = $gs->makeTime($message1["timestamp"]);
+		} else {
+			$uploadDate = date("d/m/Y G.i", $message1["timestamp"]);
+		}
 		if($getSent == 1){
 			$accountID = $message1["toAccountID"];
 		}else{

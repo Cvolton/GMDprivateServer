@@ -6,6 +6,7 @@ require_once "../lib/exploitPatch.php";
 $ep = new exploitPatch();
 require_once "../lib/mainLib.php";
 $gs = new mainLib();
+include "../../config/misc.php";
 $commentstring = "";
 $accountid = $ep->remove($_POST["accountID"]);
 $page = $ep->remove($_POST["page"]);
@@ -23,7 +24,11 @@ $countquery->execute([':userID' => $userID]);
 $commentcount = $countquery->fetchColumn();
 foreach($result as &$comment1) {
 	if($comment1["commentID"]!=""){
-		$uploadDate = date("d/m/Y G:i", $comment1["timestamp"]);
+		if ($timestampType == 0) {
+			$uploadDate = $gs->makeTime($comment1["timestamp"]);
+		} else {
+			$uploadDate = date("d/m/Y G:i", $comment1["timestamp"]);
+		}
 		$commentstring .= "2~".$comment1["comment"]."~3~".$comment1["userID"]."~4~".$comment1["likes"]."~5~0~7~".$comment1["isSpam"]."~9~".$uploadDate."~6~".$comment1["commentID"]."|";
 	}
 }

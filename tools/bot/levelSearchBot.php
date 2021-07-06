@@ -5,12 +5,12 @@ require_once "../../incl/lib/exploitPatch.php";
 $ep = new exploitPatch();
 require_once "../../incl/lib/mainLib.php";
 $gs = new mainLib();
+include "../../config/misc.php";
 $str = $ep->remove($_GET["str"]);
 $difficulty = "";
 $original = "";
 //getting level data
 echo "***SHOWING RESULT FOR $str***\r\n";
-include "../../incl/lib/connection.php";
 $query = $db->prepare("(SELECT * FROM levels WHERE levelID = :str) UNION (SELECT * FROM levels WHERE levelName LIKE CONCAT('%', :str, '%') ORDER BY likes DESC LIMIT 1)"); //getting level info
 $query->execute([':str' => $str]);
 //checking if exists
@@ -45,8 +45,13 @@ if($levelInfo["starEpic"] != 0){
 //getting length
 $length = $gs->getLength($levelInfo["levelLength"]);
 //times
-$uploadDate = date("d-m-Y G-i", $levelInfo["uploadDate"]);
-$updateDate = date("d-m-Y G-i", $levelInfo["updateDate"]);
+if ($timestampType == 0) {
+	$uploadDate = $gs->makeTime($levelInfo["uploadDate"]);
+	$updateDate = $gs->makeTime($levelInfo["updateDate"]);
+} else {
+	$uploadDate = date("d-m-Y G-i", $levelInfo["uploadDate"]);
+	$updateDate = date("d-m-Y G-i", $levelInfo["updateDate"]);
+}
 //getting original level
 if($levelInfo["original"] != 0){
 	$original .= "\r\n**Original:** " . $levelInfo["original"] ."";

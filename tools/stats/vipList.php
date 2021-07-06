@@ -2,6 +2,9 @@
 <?php
 //error_reporting(0);
 include "../../incl/lib/connection.php";
+require_once "../../incl/lib/mainLib.php";
+$gs = new mainLib();
+include "../../config/misc.php";
 $query = $db->prepare("SELECT roleID, roleName FROM roles WHERE priority > 0 ORDER BY priority DESC");
 $query->execute();
 $result = $query->fetchAll();
@@ -15,6 +18,6 @@ foreach ($result as $role) {
 		$time = date("d/m/Y G:i:s", $user["lastPlayed"]);
 		$username = htmlspecialchars($user["userName"], ENT_QUOTES);
 		echo "<tr><td>" . $username . "</td><td>$time</td></tr>";
-	}
+  }
 	echo "</table>";
 }

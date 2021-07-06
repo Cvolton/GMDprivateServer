@@ -8,7 +8,7 @@ require_once "../lib/mainLib.php";
 $gs = new mainLib();
 require "../lib/generateHash.php";
 $hash = new generateHash();
-//$levelID = 2632;
+include "../../config/misc.php";
 if(empty($_POST["gameVersion"])){
 	$gameVersion = 1;
 }else{
@@ -56,13 +56,16 @@ if(!is_numeric($levelID)){
 		if($query6->fetchColumn() < 2){
 			$query2=$db->prepare("UPDATE levels SET downloads = downloads + 1 WHERE levelID = :levelID");
 			$query2->execute([':levelID' => $levelID]);
-			$query6 = $db->prepare("INSERT INTO actions (type, value, timestamp, value2) VALUES 
-														(:type,:itemID, :time, :ip)");
+			$query6 = $db->prepare("INSERT INTO actions (type, value, timestamp, value2) VALUES (:type, :itemID, :time, :ip)");
 			$query6->execute([':type' => 7, ':itemID' => $levelID, ':time' => time(), ':ip' => $ip]);
 		}
-		//getting the days since uploaded... or outputting the date in Y-M-D format at least for now...
-		$uploadDate = date("d-m-Y G-i", $result["uploadDate"]);
-		$updateDate = date("d-m-Y G-i", $result["updateDate"]);
+		if ($timestampType == 0) {
+			$uploadDate = $gs->makeTime($result["uploadDate"]);
+			$updateDate = $gs->makeTime($result["updateDate"]);
+		} else {
+			$uploadDate = date("d-m-Y G-i", $result["uploadDate"]);
+			$updateDate = date("d-m-Y G-i", $result["updateDate"]);
+		}
 		//password xor
 		$pass = $result["password"];
 		$desc = $result["levelDesc"];

@@ -6,6 +6,7 @@ require_once "../lib/GJPCheck.php";
 $ep = new exploitPatch();
 require_once "../lib/mainLib.php";
 $gs = new mainLib();
+include "../../config/misc.php";
 $appendix = "";
 $gjp = $ep->remove($_POST["gjp"]);
 $extid = $ep->number($_POST["targetAccountID"]);
@@ -96,7 +97,11 @@ if($me==$extid){
 		$query->execute([':extid' => $extid, ':me' => $me]);
 		$INCrequests = $query->rowCount();
 		$INCrequestinfo = $query->fetch();
-		$uploaddate = date("d/m/Y G.i", $INCrequestinfo["uploadDate"]);;
+		if ($timestampType == 0) {
+			$uploaddate = $gs->makeTime($INCrequestinfo["uploadDate"]);
+		} else {
+			$uploaddate = date("d/m/Y G.i", $INCrequestinfo["uploadDate"]);
+		}
 		if($INCrequests > 0){
 			$friendstate=3;
 		}
