@@ -82,7 +82,7 @@ $string["count"] = "Число";
 $string["ratedLevels"] = "Оценнённые уровни";
 $string["lastSeen"] = "Заходил в последний раз";
 $string["level"] = "Уровень";
-$string["pageInfo"] = "Страница %s из %s-и";
+$string["pageInfo"] = "Страница %s из %s";
 $string["first"] = "Первая";
 $string["previous"] = "Предыдущая";
 $string["next"] = "Следующая";
@@ -92,22 +92,22 @@ $string["go"] = "Перейти";
 $string["action"] = "Функция";
 $string["value"] = "1-е значение";
 $string["value2"] = "2-е значение";
-$string["modAction1"] = "Оценили уровень";
-$string["modAction2"] = "Убрали/добавили к Звёздным Уровням";
-$string["modAction3"] = "Проверили монеты";
-$string["modAction4"] = "Убрали/Добавили к Эпик Уровням";
-$string["modAction5"] = "Сделали дневным уровнем";
-$string["modAction6"] = "Удалили уровень";
-$string["modAction7"] = "Изминили создателя";
-$string["modAction8"] = "Переименовали уровень";
-$string["modAction9"] = "Изменили пароль уровня";
-$string["modAction10"] = "Изменили сложность уровня";
+$string["modAction1"] = "Уровень оценён";
+$string["modAction2"] = "Изменен статус звёздного уровня";
+$string["modAction3"] = "Монеты проверены";
+$string["modAction4"] = "Изменен статус эпичного уровня";
+$string["modAction5"] = "Сделан дневным уровнем";
+$string["modAction6"] = "Уровень удалён";
+$string["modAction7"] = "Создатель сменился";
+$string["modAction8"] = "Уровень переименован";
+$string["modAction9"] = "Пароль уровня сменен";
+$string["modAction10"] = "Сложность уровня сменена";
 $string["modAction11"] = "Поделились CP (Очки креатора)";
 $string["modAction12"] = "Опубликовали";
 $string["modAction13"] = "Изменили описание";
-$string["modAction14"] = "Включили/выключили ЛДМ";
-$string["modAction15"] = "Бан по лидербордам";
+$string["modAction14"] = "Статус LDM изменен";
+$string["modAction15"] = "Бан в списках лидеров";
 //errors
-$string["errorNoAccWithPerm"] = "Ошибка: никаких аккаунтов с возмоюностью '%s' были найдены.";
+$string["errorNoAccWithPerm"] = "Ошибка: никаких аккаунтов с возможностью '%s' были найдены.";
 
-//Translation done by TheFox#5812 and bit0r1n#1707
+//Translation done by TheFox#5812 and bit0r1n#2007
