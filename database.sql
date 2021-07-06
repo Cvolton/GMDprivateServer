@@ -884,7 +884,8 @@ ALTER TABLE `gauntlets`
 -- AUTO_INCREMENT for table `levels`
 --
 ALTER TABLE `levels`
-  MODIFY `levelID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `levelID` int(11) NOT NULL AUTO_INCREMENT,
+  AUTO_INCREMENT=128;
 
 --
 -- AUTO_INCREMENT for table `levelscores`
