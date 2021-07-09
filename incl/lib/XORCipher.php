@@ -31,19 +31,6 @@ class XORCipher {
 		return $this->ascii2text(array_map(function($v) { return $v ^ 32; }, $key));
 	}
 
-	public function plaintext($cipher, $key) {
-		$key = $this->text2ascii($key);
-		$cipher = $this->text2ascii($cipher);
-		$keysize = count($key);
-		$input_size = count($cipher);
-		$plaintext = "";
-		
-		for ($i = 0; $i < $input_size; $i++)
-			$plaintext .= chr($cipher[$i] ^ $key[$i % $keysize]);
-
-		return $plaintext;
-	}
-
 	private function text2ascii($text) {
 		return array_map('ord', str_split($text));
 	}
