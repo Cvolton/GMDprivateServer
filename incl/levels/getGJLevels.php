@@ -13,7 +13,7 @@ $hash = new generateHash();
 
 //initializing variables
 $lvlstring = ""; $userstring = ""; $songsstring = ""; $lvlsmultistring = []; $str = ""; $order = "uploadDate";
-$orderenabled = true;
+$orderenabled = true; $ordergauntlet = false;
 $params = array("NOT unlisted = 1");
 
 if(!empty($_POST["gameVersion"])){
