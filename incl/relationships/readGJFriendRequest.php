@@ -15,7 +15,7 @@ $gjpresult = $GJPCheck->check($gjp,$accountID);
 if($gjpresult == 1){
 	$query=$db->prepare("UPDATE friendreqs SET isNew='0' WHERE ID = :requestID AND toAccountID = :targetAcc");
 	$query->execute([':requestID' => $requestID, ':targetAcc' => $accountID]);
-	echo "-1";
+	echo "1";
 }else{
 	echo "-1";
 }
