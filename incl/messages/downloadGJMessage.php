@@ -28,7 +28,7 @@ if($gjpresult == 1){
 	$query=$db->prepare("SELECT userName,userID,extID FROM users WHERE extID = :accountID");
 	$query->execute([':accountID' => $accountID]);
 	$result12 = $query->fetch();
-	$uploadDate = date("d/m/Y G.i", $result["timestamp"]);
+	$uploadDate = mainLib::makeTime(time() - $result["timestamp"]);
 	echo "6:".$result12["userName"].":3:".$result12["userID"].":2:".$result12["extID"].":1:".$result["messageID"].":4:".$result["subject"].":8:".$result["isNew"].":9:".$isSender.":5:".$result["body"].":7:".$uploadDate."";
 }else{
 	echo -1;
