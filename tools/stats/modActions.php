@@ -10,38 +10,38 @@ $accounts = implode(",",$gs->getAccountsWithPermission("toolModactions"));
 if($accounts == ""){
 	exit("Error: No accounts with the 'toolModactions' permission have been found");
 }
-$query = $db->prepare("SELECT accountID, userName FROM accounts WHERE accountID IN ($accounts) ORDER BY userName ASC");
+$query = $db->prepare("SELECT accounts.accountID, accounts.userName, users.lastPlayed FROM accounts INNER JOIN users ON users.extID = accounts.accountID WHERE accountID IN ($accounts) ORDER BY userName ASC");
 $query->execute();
 $result = $query->fetchAll();
 foreach($result as &$mod){
-	$query = $db->prepare("SELECT lastPlayed FROM users WHERE extID = :id");
-	$query->execute([':id' => $mod["accountID"]]);
-	$time = date("d/m/Y G:i:s", $query->fetchColumn());
+	$time = date("d/m/Y G:i:s", $mod['lastPlayed']);
+	//TODO: optimize the count queries
 	$query = $db->prepare("SELECT count(*) FROM modactions WHERE account = :id");
 	$query->execute([':id' => $mod["accountID"]]);
 	$actionscount = $query->fetchColumn();
 	$query = $db->prepare("SELECT count(*) FROM modactions WHERE account = :id AND type = '1'");
 	$query->execute([':id' => $mod["accountID"]]);
 	$lvlcount = $query->fetchColumn();
-	echo "<tr><td>".$mod["userName"]."</td><td>".$actionscount."</td><td>".$lvlcount."</td><td>".$time."</td></tr>";
+	echo "<tr><td>${mod["userName"]}</td><td>${actionscount}</td><td>${lvlcount}</td><td>${time}</td></tr>";
 }
 ?>
 </table>
 <h1>Actions Log</h1>
 <table border="1"><tr><th>Moderator</th><th>Action</th><th>Value</th><th>Value2</th><th>LevelID</th><th>Time</th></tr>
 <?php
-$query = $db->prepare("SELECT * FROM modactions ORDER BY ID DESC");
+$query = $db->prepare("SELECT modactions.*, accounts.userName FROM modactions INNER JOIN accounts ON modactions.account = accounts.accountID ORDER BY ID DESC");
 $query->execute();
 $result = $query->fetchAll();
 foreach($result as &$action){
 	//detecting mod
-	$account = $action["account"];
+	/*$account = $action["account"];
 	$query = $db->prepare("SELECT userName FROM accounts WHERE accountID = :id");
 	$query->execute([':id'=>$account]);
-	$account = $query->fetchColumn();
+	$account = $query->fetchColumn();*/
 	//detecting action
 	$value = $action["value"];
 	$value2 = $action["value2"];
+	$account = $action["userName"];
 	switch($action["type"]){
 		case 1:
 			$actionname = "Rated a level";

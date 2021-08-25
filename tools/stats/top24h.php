@@ -6,26 +6,12 @@ include "../../incl/lib/connection.php";
 $starsgain = array();
 $time = time() - 86400;
 $x = 0;
-$query = $db->prepare("SELECT * FROM actions WHERE type = '9' AND timestamp > :time");
+$query = $db->prepare("SELECT users.userID, SUM(actions.value) AS stars, users.userName FROM actions INNER JOIN users ON actions.account = users.userID WHERE type = '9' AND timestamp > :time AND users.isBanned = 0 GROUP BY(users.userID)");
 $query->execute([':time' => $time]);
 $result = $query->fetchAll();
 foreach($result as &$gain){
-	if(!empty($starsgain[$gain["account"]])){
-		$starsgain[$gain["account"]] += $gain["value"];
-	}else{
-		$starsgain[$gain["account"]] = $gain["value"];
-	}
+	$x++;
+	echo "<tr><td>$x</td><td>${gain['userID']}</td><td>${gain['userName']}</td><td>${gain['stars']}</td></tr>";
 }
-arsort($starsgain);
-foreach ($starsgain as $userID => $stars){
-	$query = $db->prepare("SELECT userName, isBanned FROM users WHERE userID = :userID");
-	$query->execute([':userID' => $userID]);
-	$userinfo = $query->fetchAll()[0];
-	$username = htmlspecialchars($userinfo["userName"], ENT_QUOTES);
-	if($userinfo["isBanned"] == 0){
-		$x++;
-		echo "<tr><td>$x</td><td>$userID</td><td>$username</td><td>$stars</td></tr>";
-	}
-}  
 ?>
 </table>

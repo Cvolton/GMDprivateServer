@@ -1,21 +1,14 @@
-<table border="1"><tr><th>LevelID</th><th>Reported</th></tr>
+<table border="1"><tr><th>LevelID</th><th>Level Name</th><th>Reported</th></tr>
 <?php
 //error_reporting(0);
 include "../../incl/lib/connection.php";
 $array = array();
-$query = $db->prepare("SELECT levelID FROM reports");
+$query = $db->prepare("SELECT levels.levelID, levels.levelName, count(*) AS reportsCount FROM reports INNER JOIN levels ON reports.levelID = levels.levelID GROUP BY levels.levelID ORDER BY reportsCount DESC");
 $query->execute();
 $result = $query->fetchAll();
 foreach($result as &$report){
-	if(!empty($array[$report["levelID"]])){
-		$array[$report["levelID"]]++;
-	}else{
-		$array[$report["levelID"]] = 1;
-	}
-}
-arsort($array);
-foreach($array as $id => $count){
-	echo "<tr><td>".$id."</td><td>".$count." times</td></tr>";
+	$levelName = html_special_chars(${report['levelName']});
+	echo "<tr><td>${report['levelID']}</td><td>$levelName</td><td>${report['reportsCount']} times</td></tr>";
 }
 ?>
 </table>
