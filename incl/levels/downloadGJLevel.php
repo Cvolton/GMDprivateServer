@@ -46,7 +46,7 @@ if(!is_numeric($levelID)){
 	}
 	//downloading the level
 	if($daily == 1)
-		$query=$db->prepare("SELECT levels.*, users.userName, users.extID FROM levels JOIN users ON levels.userID = users.userID WHERE levelID = :levelID");
+		$query=$db->prepare("SELECT levels.*, users.userName, users.extID FROM levels LEFT JOIN users ON levels.userID = users.userID WHERE levelID = :levelID");
 	else
 		$query=$db->prepare("SELECT * FROM levels WHERE levelID = :levelID");
 

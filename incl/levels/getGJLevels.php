@@ -222,7 +222,7 @@ switch($type){
 		break;
 }
 //ACTUAL QUERY EXECUTION
-$querybase = "FROM levels JOIN songs ON levels.songID = songs.ID JOIN users ON levels.userID = users.userID";
+$querybase = "FROM levels LEFT JOIN songs ON levels.songID = songs.ID LEFT JOIN users ON levels.userID = users.userID";
 if(!empty($params)){
 	$querybase .= " WHERE (" . implode(" ) AND ( ", $params) . ")";
 }
