@@ -325,34 +325,30 @@ class mainLib {
 			return 0;
 		}
 	}
-	public function getUserString($userID) {
+	public function getUserString($userdata) {
 		include __DIR__ . "/connection.php";
-		$query = $db->prepare("SELECT userName, extID FROM users WHERE userID = :id");
+		/*$query = $db->prepare("SELECT userName, extID FROM users WHERE userID = :id");
 		$query->execute([':id' => $userID]);
-		$userdata = $query->fetch();
-		if(is_numeric($userdata["extID"])){
-			$extID = $userdata["extID"];
-		}else{
-			$extID = 0;
-		}
-		return $userID . ":" . $userdata["userName"] . ":" . $extID;
+		$userdata = $query->fetch();*/
+		$extID = is_numeric($userdata['extID']) ? $userdata['extID'] : 0;
+		return "${userdata['userID']}:${userdata['userName']}:${extID}";
 	}
-	public function getSongString($songID){
+	public function getSongString($song){
 		include __DIR__ . "/connection.php";
-		$query3=$db->prepare("SELECT ID,name,authorID,authorName,size,isDisabled,download FROM songs WHERE ID = :songid LIMIT 1");
-		$query3->execute([':songid' => $songID]);
-		if($query3->rowCount() == 0){
+		/*$query3=$db->prepare("SELECT ID,name,authorID,authorName,size,isDisabled,download FROM songs WHERE ID = :songid LIMIT 1");
+		$query3->execute([':songid' => $songID]);*/
+		if($song['ID'] == 0 || empty($song['ID'])){
 			return false;
 		}
-		$result4 = $query3->fetch();
-		if($result4["isDisabled"] == 1){
+		//$song = $query3->fetch();
+		if($song["isDisabled"] == 1){
 			return false;
 		}
-		$dl = $result4["download"];
+		$dl = $song["download"];
 		if(strpos($dl, ':') !== false){
 			$dl = urlencode($dl);
 		}
-		return "1~|~".$result4["ID"]."~|~2~|~".str_replace("#", "", $result4["name"])."~|~3~|~".$result4["authorID"]."~|~4~|~".$result4["authorName"]."~|~5~|~".$result4["size"]."~|~6~|~~|~10~|~".$dl."~|~7~|~~|~8~|~1";
+		return "1~|~".$song["ID"]."~|~2~|~".str_replace("#", "", $song["name"])."~|~3~|~".$song["authorID"]."~|~4~|~".$song["authorName"]."~|~5~|~".$song["size"]."~|~6~|~~|~10~|~".$dl."~|~7~|~~|~8~|~1";
 	}
 	public function sendDiscordPM($receiver, $message){
 		include __DIR__ . "/../../config/discord.php";

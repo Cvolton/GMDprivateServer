@@ -45,7 +45,11 @@ if(!is_numeric($levelID)){
 			$daily = 0;
 	}
 	//downloading the level
-	$query=$db->prepare("SELECT * FROM levels WHERE levelID = :levelID");
+	if($daily == 1)
+		$query=$db->prepare("SELECT levels.*, users.userName, users.extID FROM levels JOIN users ON levels.userID = users.userID WHERE levelID = :levelID");
+	else
+		$query=$db->prepare("SELECT * FROM levels WHERE levelID = :levelID");
+
 	$query->execute([':levelID' => $levelID]);
 	$lvls = $query->rowCount();
 	if($lvls!=0){
@@ -101,11 +105,7 @@ if(!is_numeric($levelID)){
 		$somestring = $result["userID"].",".$result["starStars"].",".$result["starDemon"].",".$result["levelID"].",".$result["starCoins"].",".$result["starFeatured"].",".$pass.",".$feaID;
 		$response .= $hash->genSolo2($somestring) . "#";
 		if($daily == 1){
-			$extID = $gs->getExtID($result["userID"]);
-			if(!is_numeric($extID)){
-				$extID = 0;
-			}
-			$response .= $gs->getUserString($result["userID"]);
+			$response .= $gs->getUserString($result);
 		}else{
 			$response .= $somestring;
 		}
