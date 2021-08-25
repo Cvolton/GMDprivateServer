@@ -12,7 +12,7 @@ if(!empty($_POST["userName"]) AND !empty($_POST["password"]) AND !empty($_POST["
 	$levels = $ep->remove($_POST["levels"]);
 	$stars = $ep->remove($_POST["stars"]);
 	$coins = $ep->remove($_POST["coins"]);
-	$color = $ep->remove($_POST["color"]);
+	$color = preg_replace('/[^0-9A-Fa-f]/', '', $_POST['color']);
 	$generatePass = new generatePass();
 	$pass = $generatePass->isValidUsrname($userName, $password);
 	if ($pass == 1) {
@@ -98,14 +98,13 @@ if(!empty($_POST["userName"]) AND !empty($_POST["password"]) AND !empty($_POST["
 		echo "Invalid password or nonexistant account. <a href='packCreate.php'>Try again</a>";
 	}
 }else{
-	echo '<script src="incl/jscolor/jscolor.js"></script>
-		<form action="packCreate.php" method="post">Username: <input type="text" name="userName">
+	echo '<form action="packCreate.php" method="post">Username: <input type="text" name="userName">
 		<br>Password: <input type="password" name="password">
 		<br>Pack Name: <input type="text" name="packName">
 		<br>Level IDs: <input type="text" name="levels"> (separate by commas)
 		<br>Stars: <input type="text" name="stars"> (max 10)
 		<br>Coins: <input type="text" name="coins"> (max 2)
-		<br>Color: <input name="color" class="jscolor" value="ffffff">
+		<br>Color: <input type="color" name="color" value="#ffffff">
 		<input type="submit" value="Create"></form>';
 }
 ?>

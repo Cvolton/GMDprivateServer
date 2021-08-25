@@ -39,8 +39,7 @@ if(!empty($_POST["userName"]) AND !empty($_POST["password"]) AND !empty($_POST["
         echo "Invalid password or nonexistant account. <a href='addQuest.php'>Try again</a>";
     }
 }else{
-	echo '<script src="incl/jscolor/jscolor.js"></script>
-		<form action="addQuests.php" method="post">Username: <input type="text" name="userName">
+	echo '<form action="addQuests.php" method="post">Username: <input type="text" name="userName">
 		<br>Password: <input type="password" name="password">
 		<br>Quest Type: <select name="type">
 			<option value="1">Orbs</option>
