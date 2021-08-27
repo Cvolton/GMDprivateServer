@@ -88,6 +88,9 @@ foreach($result as &$action){
 		case 15:
 			$actionname = "Un/banned a user";
 			break;
+		case 16:
+			$actionname = "Song ID change";
+			break;
 		default:
 			$actionname = $action["type"];
 			break;
