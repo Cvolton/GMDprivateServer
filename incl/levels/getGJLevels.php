@@ -184,7 +184,7 @@ switch($type){
 		$order = "likes";
 		break;
 	case 5:
-		$params[] = "userID = '$str'";
+		$params[] = "levels.userID = '$str'";
 		break;
 	case 6:
 	case 17: //featured
@@ -208,7 +208,7 @@ switch($type){
 		break;
 	case 12: //FOLLOWED
 		$followed = $ep->numbercolon($_POST["followed"]);
-		$params[] = "extID IN ($followed)";
+		$params[] = "users.extID IN ($followed)";
 		break;
 	case 13: //FRIENDS
 		$accountID = $ep->remove($_POST["accountID"]);
@@ -217,7 +217,7 @@ switch($type){
 		if($gjpresult == 1){
 			$peoplearray = $gs->getFriends($accountID);
 			$whereor = implode(",", $peoplearray);
-			$params[] = "extID IN ($whereor)";
+			$params[] = "users.extID IN ($whereor)";
 		}
 		break;
 }
