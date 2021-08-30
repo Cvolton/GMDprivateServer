@@ -3,6 +3,11 @@
 <tr><th>Difficulty</th><th>Total</th><th>Unrated</th><th>Rated</th><th>Featured</th><th>Epic</th></tr>
 <?php
 include "../../incl/lib/connection.php";
+include "../../incl/lib/mainLib.php";
+$gs = new mainLib();
+
+$start_time = microtime(true);
+
 function genLvlRow($params, $params2, $params3, $params4){
 	include "../../incl/lib/connection.php";
 	$query = $db->prepare("SELECT count(*) FROM levels ".$params4." ".$params2);
@@ -22,16 +27,51 @@ function genLvlRow($params, $params2, $params3, $params4){
 	$row .= "<td>".$query->fetchColumn()."</td></tr>";
 	return $row;
 }
-//error_reporting(0);
+
+function generateQuery($groupBy, $requirements){
+	$queryString = "
+		SELECT total.${groupBy}, total.amount AS total, unrated.amount AS unrated, rated.amount AS rated, featured.amount AS featured, epic.amount AS epic
+		FROM(
+			(SELECT ${groupBy}, count(*) AS amount FROM levels WHERE ${requirements} GROUP BY(${groupBy})) total
+			JOIN
+			(SELECT ${groupBy}, count(*) AS amount FROM levels WHERE ${requirements} AND starStars = 0 GROUP BY(${groupBy})) unrated
+			ON total.${groupBy} = unrated.${groupBy}
+			JOIN
+			(SELECT ${groupBy}, count(*) AS amount FROM levels WHERE ${requirements} AND starStars <> 0 GROUP BY(${groupBy})) rated
+			ON total.${groupBy} = rated.${groupBy}
+			JOIN
+			(SELECT ${groupBy}, count(*) AS amount FROM levels WHERE ${requirements} AND starFeatured <> 0 GROUP BY(${groupBy})) featured
+			ON total.${groupBy} = featured.${groupBy}
+			JOIN
+			(SELECT ${groupBy}, count(*) AS amount FROM levels WHERE ${requirements} AND starEpic <> 0 GROUP BY(${groupBy})) epic
+			ON total.${groupBy} = epic.${groupBy}
+		) GROUP BY(total.${groupBy})
+	";
+	return $queryString;
+}
+
+function fetchQuery($db, $groupBy, $requirements){
+	$query = $db->prepare(generateQuery($groupBy, $requirements));
+	$query->execute();
+	return $query->fetchAll();
+}
+
+
 echo genLvlRow("","","Total", "");
-echo genLvlRow("AND","starDifficulty = 0 AND starDemon = 0 AND starAuto = 0 AND unlisted = 0", "N/A", "WHERE");
-echo genLvlRow("AND","starAuto = 1  AND unlisted = 0", "Auto", "WHERE");
-echo genLvlRow("AND","starDifficulty = 10 AND starDemon = 0 AND starAuto = 0 AND unlisted = 0", "Easy", "WHERE");
-echo genLvlRow("AND","starDifficulty = 20 AND starDemon = 0 AND starAuto = 0 AND unlisted = 0", "Normal", "WHERE");
-echo genLvlRow("AND","starDifficulty = 30 AND starDemon = 0 AND starAuto = 0 AND unlisted = 0", "Hard", "WHERE");
-echo genLvlRow("AND","starDifficulty = 40 AND starDemon = 0 AND starAuto = 0 AND unlisted = 0", "Harder", "WHERE");
-echo genLvlRow("AND","starDifficulty = 50 AND starDemon = 0 AND starAuto = 0 AND unlisted = 0", "Insane", "WHERE");
-echo genLvlRow("AND","starDemon = 1", "Demon", "WHERE");
+foreach(fetchQuery($db, 'starAuto', 'starAuto = 1') as &$row){
+	$diffName = $gs->getDifficulty(50, 1, 0);
+	echo "<tr><td>${diffName}</td><td>${row['total']}</td><td>${row['unrated']}</td><td>${row['rated']}</td><td>${row['featured']}</td><td>${row['epic']}</td></tr>";
+}
+
+foreach(fetchQuery($db, 'starDifficulty', 'starAuto = 0 AND starDemon = 0') as &$row){
+	$diffName = $gs->getDifficulty($row['starDifficulty'], 0, 0);
+	echo "<tr><td>${diffName}</td><td>${row['total']}</td><td>${row['unrated']}</td><td>${row['rated']}</td><td>${row['featured']}</td><td>${row['epic']}</td></tr>";
+}
+
+foreach(fetchQuery($db, 'starDemon', 'starDemon = 1') as &$row){
+	$diffName = $gs->getDifficulty(50, 0, 1);
+	echo "<tr><td>${diffName}</td><td>${row['total']}</td><td>${row['unrated']}</td><td>${row['rated']}</td><td>${row['featured']}</td><td>${row['epic']}</td></tr>";
+}
 ?>
 </table>
 <h1>Demons</h1>
@@ -39,13 +79,15 @@ echo genLvlRow("AND","starDemon = 1", "Demon", "WHERE");
 <tr><th>Difficulty</th><th>Total</th><th>Unrated</th><th>Rated</th><th>Featured</th><th>Epic</th></tr>
 <?php
 echo genLvlRow("AND","starDemon = 1", "Total", "WHERE");
-echo genLvlRow("AND","starDemon = 1 AND starDemonDiff = 3", "Easy", "WHERE");
-echo genLvlRow("AND","starDemon = 1 AND starDemonDiff = 4", "Medium", "WHERE");
-echo genLvlRow("AND","starDemon = 1 AND starDemonDiff = 0", "Hard", "WHERE");
-echo genLvlRow("AND","starDemon = 1 AND starDemonDiff = 5", "Insane", "WHERE");
-echo genLvlRow("AND","starDemon = 1 AND starDemonDiff = 6", "Extreme", "WHERE");
+$query = $db->prepare(generateQuery('starDemonDiff', 'starDemon = 1'));
+$query->execute();
+foreach($query->fetchAll() as &$row){
+	$diffName = $gs->getDemonDiff($row['starDemonDiff']);
+	echo "<tr><td>${diffName}</td><td>${row['total']}</td><td>${row['unrated']}</td><td>${row['rated']}</td><td>${row['featured']}</td><td>${row['epic']}</td></tr>";
+}
 ?>
 </table>
+
 <h1>Accounts</h1>
 <table border="1">
 <tr><th>Type</th><th>Count</th>
@@ -65,3 +107,5 @@ $thing = $query->fetchColumn();
 echo "<tr><td>Active</td><td>$thing</td></tr>";
 ?>
 </table>
+<?php
+echo (microtime(true) - $start_time);

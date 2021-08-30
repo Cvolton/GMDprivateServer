@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Mar 13, 2021 at 11:05 PM
+-- Generation Time: Aug 30, 2021 at 11:37 PM
 -- Server version: 10.3.27-MariaDB-0+deb10u1
 -- PHP Version: 7.3.27-1~deb10u1
 
@@ -233,7 +233,7 @@ CREATE TABLE `levels` (
   `downloads` int(11) NOT NULL DEFAULT 300,
   `likes` int(11) NOT NULL DEFAULT 100,
   `starDemon` int(1) NOT NULL DEFAULT 0,
-  `starAuto` varchar(11) COLLATE utf8_unicode_ci NOT NULL DEFAULT '0',
+  `starAuto` tinyint(4) NOT NULL DEFAULT 0,
   `starStars` int(11) NOT NULL DEFAULT 0,
   `uploadDate` bigint(20) NOT NULL,
   `updateDate` bigint(20) NOT NULL,
@@ -365,18 +365,6 @@ CREATE TABLE `modips` (
   `accountID` int(11) NOT NULL,
   `modipCategory` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `poll`
---
-
-CREATE TABLE `poll` (
-  `accountID` int(11) NOT NULL,
-  `pollOption` varchar(255) NOT NULL,
-  `optionID` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -738,12 +726,6 @@ ALTER TABLE `modips`
   ADD KEY `IP` (`IP`);
 
 --
--- Indexes for table `poll`
---
-ALTER TABLE `poll`
-  ADD PRIMARY KEY (`optionID`);
-
---
 -- Indexes for table `quests`
 --
 ALTER TABLE `quests`
@@ -927,12 +909,6 @@ ALTER TABLE `modipperms`
 --
 ALTER TABLE `modips`
   MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `poll`
---
-ALTER TABLE `poll`
-  MODIFY `optionID` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `quests`
