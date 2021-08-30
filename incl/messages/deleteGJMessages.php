@@ -8,8 +8,7 @@ if(isset($_POST['messageID'])){$messageID = $ep->remove($_POST["messageID"]);}
 $accountID = $ep->remove($_POST["accountID"]);
 if(isset($_POST['messages'])){
 	$messageID = "0";
-	$messages = $ep->remove($_POST["messages"]);
-	$messages = preg_replace('/[^0-9,]/', '', $messages);
+	$messages = $ep->numbercolon($_POST["messages"]);
 	$gjp = $ep->remove($_POST["gjp"]);
 	$GJPCheck = new GJPCheck();
 	$gjpresult = $GJPCheck->check($gjp,$accountID);
