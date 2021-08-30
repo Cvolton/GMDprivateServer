@@ -6,84 +6,75 @@ require_once "../lib/exploitPatch.php";
 $ep = new exploitPatch();
 require_once "../lib/mainLib.php";
 $gs = new mainLib();
-$binaryVersion = $ep->remove($_POST["binaryVersion"]);
-$gameVersion = $ep->remove($_POST["gameVersion"]);
+
 $commentstring = "";
 $userstring = "";
 $users = array();
-if(isset($_POST["mode"])){
-	$mode = $ep->remove($_POST["mode"]);
-}else{
-	$mode = 0;
-}
-if(isset($_POST["count"]) AND is_numeric($_POST["count"])){
-	$count = $ep->remove($_POST["count"]);
-}else{
-	$count = 10;
-}
-$page = $ep->remove($_POST["page"]);
+
+$binaryVersion = isset($_POST['binaryVersion']) ? $ep->remove($_POST["binaryVersion"]) : 0;
+$gameVersion = isset($_POST['gameVersion']) ? $ep->remove($_POST["gameVersion"]) : 0;
+$mode = isset($_POST["mode"]) ? $ep->remove($_POST["mode"]) : 0;
+$count = (isset($_POST["count"]) AND is_numeric($_POST["count"])) ? $ep->remove($_POST["count"]) : 10;
+$page = isset($_POST['page']) ? $ep->remove($_POST["page"]) : 0;
+
 $commentpage = $page*$count;
-if($mode==0){
+
+if($mode==0)
 	$modeColumn = "commentID";
-}else{
+else
 	$modeColumn = "likes";
-}
-if(empty($_POST["levelID"]) OR !$_POST["levelID"]){
-	$displayLevelID = true;
-	$levelID = $ep->remove($_POST["userID"]);
-	$query = "SELECT levelID, commentID, timestamp, comment, userID, likes, isSpam, percent FROM comments WHERE userID = :levelID ORDER BY $modeColumn DESC LIMIT $count OFFSET $commentpage";
-	$countquery = "SELECT count(*) FROM comments WHERE userID = :levelID";
-}else{
+
+if(isset($_POST['levelID'])){
+	$filterColumn = 'levelID';
 	$displayLevelID = false;
-	$levelID = $ep->remove($_POST["levelID"]);
-	$query = "SELECT levelID, commentID, timestamp, comment, userID, likes, isSpam, percent FROM comments WHERE levelID = :levelID ORDER BY $modeColumn DESC LIMIT $count OFFSET $commentpage";
-	$countquery = "SELECT count(*) FROM comments WHERE levelID = :levelID";
+	$filterID = $ep->remove($_POST["levelID"]);
 }
+elseif(isset($_POST['userID'])){
+	$filterColumn = 'userID';
+	$displayLevelID = true;
+	$filterID = $ep->remove($_POST["userID"]);
+}
+else
+	exit(-1);
+
+$countquery = "SELECT count(*) FROM comments WHERE ${filterColumn} = :filterID";
 $countquery = $db->prepare($countquery);
-$countquery->execute([':levelID' => $levelID]);
+$countquery->execute([':filterID' => $filterID]);
 $commentcount = $countquery->fetchColumn();
 if($commentcount == 0){
 	exit("-2");
 }
+
+$query = "SELECT comments.levelID, comments.commentID, comments.timestamp, comments.comment, comments.userID, comments.likes, comments.isSpam, comments.percent, users.userName, users.icon, users.color1, users.color2, users.iconType, users.special, users.extID FROM comments LEFT JOIN users ON comments.userID = users.userID WHERE comments.${filterColumn} = :filterID ORDER BY comments.${modeColumn} DESC LIMIT ${count} OFFSET ${commentpage}";
 $query = $db->prepare($query);
-$query->execute([':levelID' => $levelID]);
+$query->execute([':filterID' => $filterID]);
 $result = $query->fetchAll();
+$visiblecount = $query->rowCount();
+
 foreach($result as &$comment1) {
 	if($comment1["commentID"]!=""){
 		$uploadDate = date("d/m/Y G.i", $comment1["timestamp"]);
-		$actualcomment = $comment1["comment"];
-		if($gameVersion < 20){
-			$actualcomment = base64_decode($actualcomment);
-		}
-		if($displayLevelID){
-			$commentstring .= "1~".$comment1["levelID"]."~";
-		}
-		$commentstring .= "2~".$actualcomment."~3~".$comment1["userID"]."~4~".$comment1["likes"]."~5~0~7~".$comment1["isSpam"]."~9~".$uploadDate."~6~".$comment1["commentID"]."~10~".$comment1["percent"];
-		$query12 = $db->prepare("SELECT userID, userName, icon, color1, color2, iconType, special, extID FROM users WHERE userID = :userID");
-		$query12->execute([':userID' => $comment1["userID"]]);
-		if ($query12->rowCount() > 0) {
-			$user = $query12->fetchAll()[0];
-			if(is_numeric($user["extID"])){
-				$extID = $user["extID"];
-			}else{
-				$extID = 0;
-			}
-			if(!in_array($user["userID"], $users)){
-				$users[] = $user["userID"];
-				$userstring .=  $user["userID"] . ":" . $user["userName"] . ":" . $extID . "|";
-			}
+		$commentText = ($gameVersion < 20) ? base64_decode($comment1["comment"]) : $comment1["comment"];
+		if($displayLevelID) $commentstring .= "1~".$comment1["levelID"]."~";
+		$commentstring .= "2~".$commentText."~3~".$comment1["userID"]."~4~".$comment1["likes"]."~5~0~7~".$comment1["isSpam"]."~9~".$uploadDate."~6~".$comment1["commentID"]."~10~".$comment1["percent"];
+		if ($comment1['userName']) { //TODO: get rid of queries caused by getMaxValuePermission and getAccountCommentColor
+			$extID = is_numeric($comment1["extID"]) ? $comment1["extID"] : 0;
 			if($binaryVersion > 31){
-				$commentstring .= "~11~".$gs->getMaxValuePermission($extID, "modBadgeLevel")."~12~".$gs->getAccountCommentColor($extID).":1~".$user["userName"]."~7~1~9~".$user["icon"]."~10~".$user["color1"]."~11~".$user["color2"]."~14~".$user["iconType"]."~15~".$user["special"]."~16~".$user["extID"];
+				$commentstring .= "~11~".$gs->getMaxValuePermission($extID, "modBadgeLevel")."~12~".$gs->getAccountCommentColor($extID).":1~".$comment1["userName"]."~7~1~9~".$comment1["icon"]."~10~".$comment1["color1"]."~11~".$comment1["color2"]."~14~".$comment1["iconType"]."~15~".$comment1["special"]."~16~".$comment1["extID"];
+			}elseif(!in_array($comment1["userID"], $users)){
+				$users[] = $comment1["userID"];
+				$userstring .=  $comment1["userID"] . ":" . $comment1["userName"] . ":" . $extID . "|";
 			}
 			$commentstring .= "|";
 		}
 	}
 }
+
 $commentstring = substr($commentstring, 0, -1);
 $userstring = substr($userstring, 0, -1);
 echo $commentstring;
 if($binaryVersion < 32){
 	echo "#$userstring";
 }
-echo "#".$commentcount.":".$commentpage.":10";
+echo "#${commentcount}:${commentpage}:${visiblecount}";
 ?>
