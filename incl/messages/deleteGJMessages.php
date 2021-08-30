@@ -7,7 +7,6 @@ $ep = new exploitPatch();
 if(isset($_POST['messageID'])){$messageID = $ep->remove($_POST["messageID"]);}
 $accountID = $ep->remove($_POST["accountID"]);
 if(isset($_POST['messages'])){
-	$messageID = "0";
 	$messages = $ep->numbercolon($_POST["messages"]);
 	$gjp = $ep->remove($_POST["gjp"]);
 	$GJPCheck = new GJPCheck();
