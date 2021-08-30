@@ -1,7 +1,7 @@
 <?php
 class generatePass
 {
-	public function isValidUsrname($userName, $pass) {
+	public function isValid($accid, $pass) {
 		include dirname(__FILE__)."/connection.php";
 		require_once dirname(__FILE__)."/mainLib.php";
 		$gs = new mainLib();
@@ -12,8 +12,8 @@ class generatePass
 		if($query6->fetchColumn() > 7){
 			return -1;
 		}else{
-			$query = $db->prepare("SELECT accountID, salt, password, isAdmin FROM accounts WHERE userName LIKE :userName");
-			$query->execute([':userName' => $userName]);
+			$query = $db->prepare("SELECT accountID, salt, password, isAdmin FROM accounts WHERE accountID = :accid");
+			$query->execute([':accid' => $accid]);
 			if($query->rowCount() == 0){
 				return 0;
 			}
@@ -40,37 +40,36 @@ class generatePass
 				if ($hashed_pass == $result['password']) {
 					$pass = password_hash($pass, PASSWORD_DEFAULT);
 					//updating hash
-					$query = $db->prepare("UPDATE accounts SET password=:password WHERE userName=:userName");
-					$query->execute([':userName' => $userName, ':password' => $pass]);
+					$query = $db->prepare("UPDATE accounts SET password=:password WHERE accountID=:accid");
+					$query->execute([':accid' => $accid, ':password' => $pass]);
 					return 1;
 				} else {
 					if($md5pass == $result['password']){
 						$pass = password_hash($pass, PASSWORD_DEFAULT);
 						//updating hash
-						$query = $db->prepare("UPDATE accounts SET password=:password WHERE userName=:userName");
-						$query->execute([':userName' => $userName, ':password' => $pass]);
+						$query = $db->prepare("UPDATE accounts SET password=:password WHERE accountID=:accid");
+						$query->execute([':accid' => $accid, ':password' => $pass]);
 						return 1;
 					} else {
 						$query6 = $db->prepare("INSERT INTO actions (type, value, timestamp, value2) VALUES 
-																	('6',:username,:time,:ip)");
-						$query6->execute([':username' => $userName, ':time' => time(), ':ip' => $ip]);
+																	('6',:accid,:time,:ip)");
+						$query6->execute([':accid' => $accid, ':time' => time(), ':ip' => $ip]);
 						return 0;
 					}
 				}
 			}
 		}
 	}
-	public function isValid($accid, $pass){
+	public function isValidUsrname($userName, $pass){
 		include dirname(__FILE__)."/connection.php";
-		$query = $db->prepare("SELECT userName FROM accounts WHERE accountID = :accid");
-		$query->execute([':accid' => $accid]);
+		$query = $db->prepare("SELECT accountID FROM accounts WHERE userName LIKE :userName");
+		$query->execute([':userName' => $userName]);
 		if($query->rowCount() == 0){
 			return 0;
 		}
 		$result = $query->fetch();
-		$userName = $result["userName"];
-		$generatePass = new generatePass();
-		return $generatePass->isValidUsrname($userName, $pass);
+		$accID = $result["accountID"];
+		return $this->isValid($accID, $pass);
 	}
 }
 ?>
