@@ -71,9 +71,9 @@ foreach($result as &$comment1) {
 }
 
 $commentstring = substr($commentstring, 0, -1);
-$userstring = substr($userstring, 0, -1);
 echo $commentstring;
 if($binaryVersion < 32){
+	$userstring = substr($userstring, 0, -1);
 	echo "#$userstring";
 }
 echo "#${commentcount}:${commentpage}:${visiblecount}";
