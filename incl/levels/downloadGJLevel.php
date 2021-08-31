@@ -55,14 +55,14 @@ if(!is_numeric($levelID)){
 	if($lvls!=0){
 		$result = $query->fetch();
 		//adding the download
-		$query6 = $db->prepare("SELECT count(*) FROM actions WHERE type=:type AND value=:itemID AND value2=:ip");
-		$query6->execute([':type' => 7, ':itemID' => $levelID, ':ip' => $ip]);
+		$query6 = $db->prepare("SELECT count(*) FROM actions_downloads WHERE levelID=:levelID AND ip=INET6_ATON(:ip)");
+		$query6->execute([':levelID' => $levelID, ':ip' => $ip]);
 		if($query6->fetchColumn() < 2){
 			$query2=$db->prepare("UPDATE levels SET downloads = downloads + 1 WHERE levelID = :levelID");
 			$query2->execute([':levelID' => $levelID]);
-			$query6 = $db->prepare("INSERT INTO actions (type, value, timestamp, value2) VALUES 
-														(:type,:itemID, :time, :ip)");
-			$query6->execute([':type' => 7, ':itemID' => $levelID, ':time' => time(), ':ip' => $ip]);
+			$query6 = $db->prepare("INSERT INTO actions_downloads (levelID, ip) VALUES 
+														(:levelID,INET6_ATON(:ip))");
+			$query6->execute([':levelID' => $levelID, ':ip' => $ip]);
 		}
 		//getting the days since uploaded... or outputting the date in Y-M-D format at least for now...
 		$uploadDate = date("d-m-Y G-i", $result["uploadDate"]);
