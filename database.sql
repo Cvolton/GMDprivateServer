@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Aug 30, 2021 at 11:37 PM
--- Server version: 10.3.27-MariaDB-0+deb10u1
--- PHP Version: 7.3.27-1~deb10u1
+-- Generation Time: Aug 31, 2021 at 02:50 AM
+-- Server version: 10.3.29-MariaDB-0+deb10u1
+-- PHP Version: 7.3.29-1~deb10u1
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -88,6 +88,34 @@ CREATE TABLE `actions` (
   `value5` int(11) NOT NULL DEFAULT 0,
   `value6` int(11) NOT NULL DEFAULT 0,
   `account` int(11) NOT NULL DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `actions_downloads`
+--
+
+CREATE TABLE `actions_downloads` (
+  `id` int(11) NOT NULL,
+  `levelID` int(11) NOT NULL,
+  `ip` varbinary(16) NOT NULL,
+  `uploadDate` datetime NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `actions_likes`
+--
+
+CREATE TABLE `actions_likes` (
+  `id` int(11) NOT NULL,
+  `itemID` int(11) NOT NULL,
+  `type` int(11) NOT NULL,
+  `isLike` tinyint(4) NOT NULL,
+  `ip` varbinary(16) NOT NULL,
+  `uploadDate` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -572,6 +600,20 @@ ALTER TABLE `actions`
   ADD KEY `timestamp` (`timestamp`);
 
 --
+-- Indexes for table `actions_downloads`
+--
+ALTER TABLE `actions_downloads`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `levelID` (`levelID`,`ip`,`uploadDate`) USING BTREE;
+
+--
+-- Indexes for table `actions_likes`
+--
+ALTER TABLE `actions_likes`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `levelID` (`itemID`,`type`,`isLike`,`ip`,`uploadDate`) USING BTREE;
+
+--
 -- Indexes for table `bannedips`
 --
 ALTER TABLE `bannedips`
@@ -813,6 +855,18 @@ ALTER TABLE `accounts`
 --
 ALTER TABLE `actions`
   MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `actions_downloads`
+--
+ALTER TABLE `actions_downloads`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `actions_likes`
+--
+ALTER TABLE `actions_likes`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `bannedips`
