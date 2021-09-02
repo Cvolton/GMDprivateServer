@@ -55,7 +55,7 @@ if(!empty($_POST["original"]) AND $_POST["original"]==1){
 	$params[] = "original = 0";
 }
 if(!empty($_POST["coins"]) AND $_POST["coins"]==1){
-		$params[] = "starCoins = 1 AND NOT coins = 0";
+		$params[] = "starCoins = 1 AND NOT level.coins = 0";
 }
 if(!empty($_POST["epic"]) AND $_POST["epic"]==1){
 	$params[] = "starEpic = 1";
