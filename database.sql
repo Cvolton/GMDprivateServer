@@ -471,6 +471,7 @@ CREATE TABLE `roles` (
   `actionRateDifficulty` int(11) NOT NULL DEFAULT 0,
   `actionRequestMod` int(11) NOT NULL DEFAULT 0,
   `actionSuggestRating` int(11) NOT NULL DEFAULT 0,
+  `toolCommentban` int(11) NOT NULL DEFAULT 0,
   `toolLeaderboardsban` int(11) NOT NULL DEFAULT 0,
   `toolPackcreate` int(11) NOT NULL DEFAULT 0,
   `toolQuestsCreate` int(11) NOT NULL DEFAULT 0,
@@ -562,7 +563,10 @@ CREATE TABLE `users` (
   `chest1count` int(11) NOT NULL DEFAULT 0,
   `chest2count` int(11) NOT NULL DEFAULT 0,
   `isBanned` int(11) NOT NULL DEFAULT 0,
-  `isCreatorBanned` int(11) NOT NULL DEFAULT 0
+  `isCreatorBanned` int(11) NOT NULL DEFAULT 0,
+  `commentBanDuration int(11) NOT NULL DEFAULT 0,
+   `commentBanTime int(11) NOT NULL DEFAULT 0,
+  `commentBanReason varchar(100) NOT NULL DEFAULT 0,
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --

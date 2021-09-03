@@ -46,6 +46,15 @@ if($cmds->doCommands($id, $decodecomment, $levelID)){
 	exit("-1");
 }
 if($id != "" AND $comment != ""){
+	//ban comments
+	$ban_query = $db->prepare("SELECT commentBanTime, commentBanDuration, commentBanReason FROM users WHERE userID = :userID");
+	$ban_query->execute([':userID' => $userID]);
+	$ban_result = $ban_query->fetch();
+	if ($ban_result['commentBanTime'] + $ban_result['commentBanDuration'] > $uploadDate) {
+		echo "temp_".($ban_result['commentBanTime'] + $ban_result['commentBanDuration'] - $uploadDate)."_".$ban_result['commentBanReason'];
+		return;
+	}
+			
 	$query = $db->prepare("INSERT INTO comments (userName, comment, levelID, userID, timeStamp, percent) VALUES (:userName, :comment, :levelID, :userID, :uploadDate, :percent)");
 	if($register == 1){
 		$query->execute([':userName' => $userName, ':comment' => $comment, ':levelID' => $levelID, ':userID' => $userID, ':uploadDate' => $uploadDate, ':percent' => $percent]);
