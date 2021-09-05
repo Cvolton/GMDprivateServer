@@ -6,7 +6,6 @@ require_once "../lib/GJPCheck.php";
 require_once "../lib/exploitPatch.php";
 require_once "../lib/mainLib.php";
 require_once "../misc/commands.php";
-$cmds = new Commands();
 $mainLib = new mainLib();
 $ep = new exploitPatch();
 $userName = $ep->remove($_POST["userName"]);
@@ -17,7 +16,7 @@ $uploadDate = time();
 //usercheck
 if($accountID != "" AND $comment != ""){
 	$decodecomment = base64_decode($comment);
-	if($cmds->doProfileCommands($accountID, $decodecomment)){
+	if(Commands::doProfileCommands($accountID, $decodecomment)){
 		exit("-1");
 	}
 	$query = $db->prepare("INSERT INTO acccomments (userName, comment, userID, timeStamp)

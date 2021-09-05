@@ -1,6 +1,6 @@
 <?php
 class Commands {
-	public function ownCommand($comment, $command, $accountID, $targetExtID){
+	public static function ownCommand($comment, $command, $accountID, $targetExtID){
 		require_once "../lib/mainLib.php";
 		$gs = new mainLib();
 		$commandInComment = strtolower("!".$command);
@@ -11,7 +11,7 @@ class Commands {
 		}
 		return false;
 	}
-	public function doCommands($accountID, $comment, $levelID) {
+	public static function doCommands($accountID, $comment, $levelID) {
 		include dirname(__FILE__)."/../lib/connection.php";
 		require_once "../lib/exploitPatch.php";
 		require_once "../lib/mainLib.php";
@@ -152,7 +152,7 @@ class Commands {
 
 		
 	//NON-ADMIN COMMANDS
-		if($this->ownCommand($comment, "rename", $accountID, $targetExtID)){
+		if(self::ownCommand($comment, "rename", $accountID, $targetExtID)){
 			$name = $ep->remove(str_replace("!rename ", "", $comment));
 			$query = $db->prepare("UPDATE levels SET levelName=:levelName WHERE levelID=:levelID");
 			$query->execute([':levelID' => $levelID, ':levelName' => $name]);
@@ -160,7 +160,7 @@ class Commands {
 			$query->execute([':value' => $name, ':timestamp' => $uploadDate, ':id' => $accountID, ':levelID' => $levelID]);
 			return true;
 		}
-		if($this->ownCommand($comment, "pass", $accountID, $targetExtID)){
+		if(self::ownCommand($comment, "pass", $accountID, $targetExtID)){
 			$pass = $ep->remove(str_replace("!pass ", "", $comment));
 			if(is_numeric($pass)){
 				$pass = sprintf("%06d", $pass);
@@ -175,7 +175,7 @@ class Commands {
 				return true;
 			}
 		}
-		if($this->ownCommand($comment, "song", $accountID, $targetExtID)){
+		if(self::ownCommand($comment, "song", $accountID, $targetExtID)){
 			$song = $ep->remove(str_replace("!song ", "", $comment));
 			if(is_numeric($song)){
 				$query = $db->prepare("UPDATE levels SET songID=:song WHERE levelID=:levelID");
@@ -185,7 +185,7 @@ class Commands {
 				return true;
 			}
 		}
-		if($this->ownCommand($comment, "description", $accountID, $targetExtID)){
+		if(self::ownCommand($comment, "description", $accountID, $targetExtID)){
 			$desc = base64_encode($ep->remove(str_replace("!description ", "", $comment)));
 			$query = $db->prepare("UPDATE levels SET levelDesc=:desc WHERE levelID=:levelID");
 			$query->execute([':levelID' => $levelID, ':desc' => $desc]);
@@ -193,21 +193,21 @@ class Commands {
 			$query->execute([':value' => $desc, ':timestamp' => $uploadDate, ':id' => $accountID, ':levelID' => $levelID]);
 			return true;
 		}
-		if($this->ownCommand($comment, "public", $accountID, $targetExtID)){
+		if(self::ownCommand($comment, "public", $accountID, $targetExtID)){
 			$query = $db->prepare("UPDATE levels SET unlisted='0' WHERE levelID=:levelID");
 			$query->execute([':levelID' => $levelID]);
 			$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('12', :value, :levelID, :timestamp, :id)");
 			$query->execute([':value' => "0", ':timestamp' => $uploadDate, ':id' => $accountID, ':levelID' => $levelID]);
 			return true;
 		}
-		if($this->ownCommand($comment, "unlist", $accountID, $targetExtID)){
+		if(self::ownCommand($comment, "unlist", $accountID, $targetExtID)){
 			$query = $db->prepare("UPDATE levels SET unlisted='1' WHERE levelID=:levelID");
 			$query->execute([':levelID' => $levelID]);
 			$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('12', :value, :levelID, :timestamp, :id)");
 			$query->execute([':value' => "1", ':timestamp' => $uploadDate, ':id' => $accountID, ':levelID' => $levelID]);
 			return true;
 		}
-		if($this->ownCommand($comment, "sharecp", $accountID, $targetExtID)){
+		if(self::ownCommand($comment, "sharecp", $accountID, $targetExtID)){
 			$query = $db->prepare("SELECT userID FROM users WHERE userName = :userName ORDER BY isRegistered DESC LIMIT 1");
 			$query->execute([':userName' => $commentarray[1]]);
 			$targetAcc = $query->fetchColumn();
@@ -220,14 +220,14 @@ class Commands {
 			$query->execute([':value' => $commentarray[1], ':timestamp' => $uploadDate, ':id' => $accountID, ':levelID' => $levelID]);
 			return true;
 		}
-		if($this->ownCommand($comment, "ldm", $accountID, $targetExtID)){
+		if(self::ownCommand($comment, "ldm", $accountID, $targetExtID)){
 			$query = $db->prepare("UPDATE levels SET isLDM='1' WHERE levelID=:levelID");
 			$query->execute([':levelID' => $levelID]);
 			$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('14', :value, :levelID, :timestamp, :id)");
 			$query->execute([':value' => "1", ':timestamp' => $uploadDate, ':id' => $accountID, ':levelID' => $levelID]);
 			return true;
 		}
-		if($this->ownCommand($comment, "unldm", $accountID, $targetExtID)){
+		if(self::ownCommand($comment, "unldm", $accountID, $targetExtID)){
 			$query = $db->prepare("UPDATE levels SET isLDM='0' WHERE levelID=:levelID");
 			$query->execute([':levelID' => $levelID]);
 			$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('14', :value, :levelID, :timestamp, :id)");
@@ -236,7 +236,7 @@ class Commands {
 		}
 		return false;
 	}
-	public function doProfileCommands($accountID, $command){
+	public static function doProfileCommands($accountID, $command){
 		include dirname(__FILE__)."/../lib/connection.php";
 		require_once "../lib/exploitPatch.php";
 		require_once "../lib/mainLib.php";
