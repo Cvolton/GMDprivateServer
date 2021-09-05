@@ -155,16 +155,14 @@ class mainLib {
 			case 4:
 				return "Medium";
 				break;
-			case 0:
-			case 1:
-			case 2:
-				return "Hard";
-				break;
 			case 5:
 				return "Insane";
 				break;
 			case 6:
 				return "Extreme";
+				break;
+			default:
+				return "Hard";
 				break;
 		}
 	}
