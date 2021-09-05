@@ -89,8 +89,7 @@ if(!empty($_POST["levelid"])){
 			$isLDM = chkarray($levelarray["a40"]);
 			$password = chkarray($levelarray["a27"]);
 			if($password != "0"){
-				$xc = new XORCipher();
-				$password = $xc->cipher(base64_decode($password),26364);
+				$password = XORCipher::cipher(base64_decode($password),26364);
 			}
 			$starCoins = 0;
 			$starDiff = 0;

@@ -15,7 +15,6 @@ function chkarray($source){
 //error_reporting(0);
 include "../incl/lib/connection.php";
 require "../incl/lib/XORCipher.php";
-$xc = new XORCipher();
 require_once "../incl/lib/generatePass.php";
 $generatePass = new generatePass();
 require_once "../incl/lib/exploitPatch.php";
@@ -67,9 +66,9 @@ if(!empty($_POST["userhere"]) AND !empty($_POST["passhere"]) AND !empty($_POST["
 		exit("Invalid levelID");
 	}
 	$levelString = file_get_contents("../data/levels/$levelID"); //generating seed2
-	$seed2 = base64_encode($xc->cipher(GenerateHash::genSeed2noXor($levelString),41274));
+	$seed2 = base64_encode(XORCipher::cipher(GenerateHash::genSeed2noXor($levelString),41274));
 	$accountID = explode(",",$result)[0]; //and finally reuploading
-	$gjp = base64_encode($xc->cipher($passtarg,37526));
+	$gjp = base64_encode(XORCipher::cipher($passtarg,37526));
 	$post = ['gameVersion' => $levelInfo["gameVersion"], 
 	'binaryVersion' => $levelInfo["binaryVersion"], 
 	'gdw' => "0", 

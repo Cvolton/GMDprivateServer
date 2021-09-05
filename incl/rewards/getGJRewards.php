@@ -8,7 +8,6 @@ require "../lib/GJPCheck.php";
 require "../lib/generateHash.php";
 require_once "../lib/exploitPatch.php";
 $ep = new exploitPatch();
-$XORCipher = new XORCipher();
 $accountID = ($_POST["accountID"] != 0) ? GJPCheck::getAccountIDOrDie() : 0;
 $udid = $ep->remove($_POST["udid"]);
 if(is_numeric($udid)){
@@ -41,7 +40,7 @@ if ($query->rowCount() == 0) {
 }
 $user = $result[0];
 $userid = $user["userID"];
-$chk = $XORCipher->cipher(base64_decode(substr($chk, 5)),59182);
+$chk = XORCipher::cipher(base64_decode(substr($chk, 5)),59182);
 //rewards
 	//Time left
 	$currenttime = time();
@@ -77,7 +76,7 @@ $chk = $XORCipher->cipher(base64_decode(substr($chk, 5)),59182);
 		$query->execute([':chest2count' => $chest2count, ':userID' => $userid, ':currenttime' => $currenttime]);
 		$chest2left = $chest2wait;
 	}
-	$string = base64_encode($XORCipher->cipher("1:".$userid.":".$chk.":".$udid.":".$accountID.":".$chest1left.":".$chest1stuff.":".$chest1count.":".$chest2left.":".$chest2stuff.":".$chest2count.":".$rewardType."",59182));
+	$string = base64_encode(XORCipher::cipher("1:".$userid.":".$chk.":".$udid.":".$accountID.":".$chest1left.":".$chest1stuff.":".$chest1count.":".$chest2left.":".$chest2stuff.":".$chest2count.":".$rewardType."",59182));
 	$string = str_replace("/","_",$string);
 	$string = str_replace("+","-",$string);
 $hash = GenerateHash::genSolo4($string);

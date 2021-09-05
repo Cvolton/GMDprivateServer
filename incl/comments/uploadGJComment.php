@@ -3,7 +3,6 @@ chdir(dirname(__FILE__));
 include "../lib/connection.php";
 require_once "../lib/mainLib.php";
 $mainLib = new mainLib();
-require_once "../lib/XORCipher.php";
 require_once "../lib/GJPCheck.php";
 require_once "../lib/exploitPatch.php";
 $ep = new exploitPatch();
