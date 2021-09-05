@@ -1,6 +1,6 @@
 <?php
-class songReup {
-	public function reup($result) {
+class SongReup {
+	public static function reup($result) {
 		include dirname(__FILE__)."/connection.php";
 		$resultfixed = str_replace("~", "", $result);
 		$resultarray = explode('|', $resultfixed);
