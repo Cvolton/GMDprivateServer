@@ -1,6 +1,6 @@
 <?php
 class GJPCheck {
-	public function check($gjp, $accountID) {
+	public static function check($gjp, $accountID) {
 		include dirname(__FILE__)."/connection.php";
 		include dirname(__FILE__)."/../../config/security.php";
 		include_once dirname(__FILE__)."/mainLib.php";
@@ -27,6 +27,29 @@ class GJPCheck {
 			$query->execute([':accountID' => $accountID, ':ip' => $ip, ':timestamp' => time()]);
 		}
 		return $generatePass->isValid($accountID, $gjpdecode);
+	}
+
+	public static function validateGJPOrDie($gjp, $accountID){
+		if(self::check($gjp, $accountID) != 1)
+			exit("-1");
+	}
+
+	/*
+		Gets accountID and from the POST parameters and validates if the provided GJP matches
+	*/
+	public static function getAccountIDOrDie(){
+		require_once "../lib/exploitPatch.php";
+		$ep = new exploitPatch();
+
+		if(empty($_POST['accountID']) || empty($_POST['gjp']))
+			exit("-1");
+
+		$accountID = $ep->remove($_POST["accountID"]);
+		$gjp = $ep->remove($_POST["gjp"]);
+
+		self::validateGJPOrDie($gjp, $accountID);
+
+		return $accountID;
 	}
 }
 ?>

@@ -1,4 +1,5 @@
 <?php
+//TODO: see how much of this can be replaced by mainlib functions
 chdir(dirname(__FILE__));
 include "../lib/connection.php";
 include "../../config/dailyChests.php";
@@ -9,19 +10,13 @@ require_once "../lib/exploitPatch.php";
 $ep = new exploitPatch();
 $XORCipher = new XORCipher();
 $generateHash = new generateHash();
-$accountID = $ep->remove($_POST["accountID"]);
+$accountID = ($_POST["accountID"] != 0) ? GJPCheck::getAccountIDOrDie() : 0;
 $udid = $ep->remove($_POST["udid"]);
 if(is_numeric($udid)){
 	exit("-1");
 }
 $chk = $ep->remove($_POST["chk"]);
-$gjp = $ep->remove($_POST["gjp"]);
 $rewardType = $ep->remove($_POST["rewardType"]);
-$GJPCheck = new GJPCheck();
-$gjpresult = $GJPCheck->check($gjp,$accountID);
-if($gjpresult !== 1 AND $accountID !== 0){
-	exit("-1");
-}
 $query=$db->prepare("select * from users where extID = ?");
 if($accountID != 0){
 	$query->execute(array($accountID));

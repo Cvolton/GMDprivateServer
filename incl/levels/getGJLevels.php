@@ -7,7 +7,6 @@ require_once "../lib/exploitPatch.php";
 $ep = new exploitPatch();
 require_once "../lib/mainLib.php";
 $gs = new mainLib();
-$GJPCheck = new GJPCheck();
 require "../lib/generateHash.php";
 $hash = new generateHash();
 
@@ -152,6 +151,7 @@ switch($diff){
 		break;
 }
 //TYPE DETECTION
+//TODO: the 2 non-friend types that send GJP in 2.11
 if(!empty($_POST["str"])){
 	$str = $ep->remove($_POST["str"]);
 }
@@ -211,14 +211,10 @@ switch($type){
 		$params[] = "users.extID IN ($followed)";
 		break;
 	case 13: //FRIENDS
-		$accountID = $ep->remove($_POST["accountID"]);
-		$gjp = $ep->remove($_POST["gjp"]);
-		$gjpresult = $GJPCheck->check($gjp,$accountID);
-		if($gjpresult == 1){
-			$peoplearray = $gs->getFriends($accountID);
-			$whereor = implode(",", $peoplearray);
-			$params[] = "users.extID IN ($whereor)";
-		}
+		$accountID = GJPCheck::getAccountIDOrDie();
+		$peoplearray = $gs->getFriends($accountID);
+		$whereor = implode(",", $peoplearray);
+		$params[] = "users.extID IN ($whereor)";
 		break;
 }
 //ACTUAL QUERY EXECUTION

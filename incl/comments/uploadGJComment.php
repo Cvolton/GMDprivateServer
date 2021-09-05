@@ -25,13 +25,7 @@ if(!empty($_POST["percent"])){
 	$percent = 0;
 }
 if(!empty($_POST["accountID"]) AND $_POST["accountID"]!="0"){
-	$id = $ep->remove($_POST["accountID"]);
-	$register = 1;
-	$GJPCheck = new GJPCheck();
-	$gjpresult = $GJPCheck->check($gjp,$id);
-	if($gjpresult != 1){
-		exit("-1");
-	}
+	$id = GJPCheck::getAccountIDOrDie();
 }else{
 	$id = $ep->remove($_POST["udid"]);
 	$register = 0;

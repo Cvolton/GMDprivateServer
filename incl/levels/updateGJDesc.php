@@ -17,12 +17,7 @@ if (isset($_POST['udid']) && !empty($_POST['udid'])) {
 		exit("-1");
 	}
 } else {
-	$id = $ep->remove($_POST["accountID"]);
-	$gjp = $ep->remove($_POST["gjp"]);
-	$gjpresult = $GJPCheck->check($gjp, $id);
-	if ($gjpresult != 1) {
-		exit("-1");
-	}
+	$id = GJPCheck::getAccountIDOrDie();
 }
 $levelDesc = str_replace('-', '+', $levelDesc);
 $levelDesc = str_replace('_', '/', $levelDesc);

@@ -50,11 +50,7 @@ if(!empty($_POST["udid"]) AND $gameVersion < 20)
 }
 elseif(!empty($_POST["accountID"]) AND $_POST["accountID"]!="0")
 {
-	$id = $ep->remove($_POST["accountID"]);
-	$gjp = $ep->remove($_POST["gjp"]);
-	$GJPCheck = new GJPCheck(); //gjp check
-	$gjpresult = $GJPCheck->check($gjp,$id);
-	if($gjpresult != 1) exit("-1");
+	$id = GJPCheck::getAccountIDOrDie();
 }
 else
 {

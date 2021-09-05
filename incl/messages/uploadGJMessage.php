@@ -7,14 +7,13 @@ require_once "../lib/exploitPatch.php";
 $ep = new exploitPatch();
 require_once "../lib/mainLib.php";
 $gs = new mainLib();
-$gjp =  $ep->remove($_POST["gjp"]);
 $gameVersion =  $ep->remove($_POST["gameVersion"]);
 $binaryVersion =  $ep->remove($_POST["binaryVersion"]);
 $secret =  $ep->remove($_POST["secret"]);
 $subject =  $ep->remove($_POST["subject"]);
 $toAccountID =  $ep->number($_POST["toAccountID"]);
 $body =  $ep->remove($_POST["body"]);
-$accID =  $ep->number($_POST["accountID"]);
+$accID =  GJPCheck::getAccountIDOrDie();
 if($accID == $toAccountID){
 	exit("-1");
 }
@@ -35,12 +34,10 @@ $friend = $db->query("SELECT ID FROM `friendships` WHERE (person1 = $accID AND p
 $query = $db->prepare("INSERT INTO messages (subject, body, accID, userID, userName, toAccountID, secret, timestamp)
 VALUES (:subject, :body, :accID, :userID, :userName, :toAccountID, :secret, :uploadDate)");
 
-$GJPCheck = new GJPCheck();
-$gjpresult = $GJPCheck->check($gjp,$id);
 if (!empty($mSOnly[0]) and $mSOnly[0] == 2) {
     echo -1;
 } else {
-    if ($gjpresult == 1 and empty($blocked[0]) and (empty($mSOnly[0]) || !empty($friend[0]))) {
+    if (empty($blocked[0]) and (empty($mSOnly[0]) || !empty($friend[0]))) {
         $query->execute([':subject' => $subject, ':body' => $body, ':accID' => $id, ':userID' => $userID, ':userName' => $userName, ':toAccountID' => $toAccountID, ':secret' => $secret, ':uploadDate' => $uploadDate]);
         echo 1;
     } else {

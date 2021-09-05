@@ -16,13 +16,7 @@ if(empty($_POST["gameVersion"])){
 	$sign = "> 19";
 }
 if(!empty($_POST["accountID"])){
-	$accountID = $ep->remove($_POST["accountID"]);
-	$gjp = $ep->remove($_POST["gjp"]);
-	$GJPCheck = new GJPCheck(); //gjp check
-	$gjpresult = $GJPCheck->check($gjp,$accountID);
-	if($gjpresult != 1){
-		exit("-1");
-	}
+	$accountID = GJPCheck::getAccountIDOrDie();
 }else{
 	$accountID = $ep->remove($_POST["udid"]);
 	if(is_numeric($accountID)){

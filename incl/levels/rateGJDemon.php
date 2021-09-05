@@ -13,10 +13,8 @@ if(!isset($_POST["gjp"]) OR !isset($_POST["rating"]) OR !isset($_POST["levelID"]
 $gjp = $ep->remove($_POST["gjp"]);
 $rating = $ep->remove($_POST["rating"]);
 $levelID = $ep->remove($_POST["levelID"]);
-$id = $ep->remove($_POST["accountID"]);
-$GJPCheck = new GJPCheck();
-$gjpresult = $GJPCheck->check($gjp,$id);
-if($gs->checkPermission($id, "actionRateDemon") == false OR $gjpresult != 1){
+$id = GJPCheck::getAccountIDOrDie();
+if($gs->checkPermission($id, "actionRateDemon") == false){
 	exit("-1");
 }
 $auto = 0;

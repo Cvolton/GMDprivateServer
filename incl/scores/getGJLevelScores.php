@@ -7,9 +7,8 @@ require_once "../lib/exploitPatch.php";
 $ep = new exploitPatch();
 require_once "../lib/mainLib.php";
 $gs = new mainLib();
-//here im getting all the data
-$gjp = $ep->remove($_POST["gjp"]);
-$accountID = $ep->remove($_POST["accountID"]);
+
+$accountID = GJPCheck::getAccountIDOrDie();
 $levelID = $ep->remove($_POST["levelID"]);
 $percent = $ep->remove($_POST["percent"]);
 $uploadDate = time();
@@ -23,10 +22,6 @@ if(isset($_POST["s9"])){
 }else{
 	$coins = 0;
 }
-
-
-
-
 
 //UPDATING SCORE
 $userID = $gs->getUserID($accountID);

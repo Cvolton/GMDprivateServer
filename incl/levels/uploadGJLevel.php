@@ -17,11 +17,9 @@ if(!empty($_POST["binaryVersion"])){
 }else{
 	$binaryVersion = 0;
 }
-$userName = $ep->remove($_POST["userName"]);
-$userName = $ep->charclean($userName);
+$userName = $ep->charclean($_POST["userName"]);
 $levelID = $ep->remove($_POST["levelID"]);
-$levelName = $ep->remove($_POST["levelName"]);
-$levelName = $ep->charclean($levelName);
+$levelName = $ep->charclean($_POST["levelName"]);
 $levelDesc = $ep->remove($_POST["levelDesc"]);
 $levelDesc = str_replace('-', '+', $levelDesc);
 $levelDesc = str_replace('_', '/', $levelDesc);
@@ -116,12 +114,7 @@ if(!empty($_POST["udid"])){
 	}
 }
 if(!empty($_POST["accountID"]) AND $_POST["accountID"]!="0"){
-	$id = $ep->remove($_POST["accountID"]);
-	$GJPCheck = new GJPCheck();
-	$gjpresult = $GJPCheck->check($gjp,$id);
-	if($gjpresult != 1){
-		exit("-1");
-	}
+	$id = GJPCheck::getAccountIDOrDie();
 }
 $hostname = $gs->getIP();
 $userID = $mainLib->getUserID($id, $userName);
