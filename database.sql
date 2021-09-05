@@ -471,6 +471,7 @@ CREATE TABLE `roles` (
   `actionRateDifficulty` int(11) NOT NULL DEFAULT 0,
   `actionRequestMod` int(11) NOT NULL DEFAULT 0,
   `actionSuggestRating` int(11) NOT NULL DEFAULT 0,
+  `actionDeleteComment` int(11) NOT NULL DEFAULT 0,
   `toolLeaderboardsban` int(11) NOT NULL DEFAULT 0,
   `toolPackcreate` int(11) NOT NULL DEFAULT 0,
   `toolQuestsCreate` int(11) NOT NULL DEFAULT 0,
