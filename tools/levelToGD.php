@@ -16,7 +16,6 @@ function chkarray($source){
 include "../incl/lib/connection.php";
 require "../incl/lib/XORCipher.php";
 require_once "../incl/lib/generatePass.php";
-$generatePass = new generatePass();
 require_once "../incl/lib/exploitPatch.php";
 $ep = new exploitPatch();
 require_once "../incl/lib/generateHash.php";
@@ -27,7 +26,7 @@ if(!empty($_POST["userhere"]) AND !empty($_POST["passhere"]) AND !empty($_POST["
 	$passtarg = $ep->remove($_POST["passtarg"]);
 	$levelID = $ep->remove($_POST["levelID"]);
 	$server = trim($_POST["server"]);
-	$pass = $generatePass->isValidUsrname($userhere, $passhere);
+	$pass = GeneratePass::isValidUsrname($userhere, $passhere);
 	if ($pass != 1) { //verifying if valid local usr
 		exit("Wrong local username/password combination");
 	}

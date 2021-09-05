@@ -8,8 +8,7 @@ $userName = $ep->remove($_POST["userName"]);
 $newusr = $ep->remove($_POST["newusr"]);
 $password = $ep->remove($_POST["password"]);
 if($userName != "" AND $newusr != "" AND $password != ""){
-	$generatePass = new generatePass();
-	$pass = $generatePass->isValidUsrname($userName, $password);
+	$pass = GeneratePass::isValidUsrname($userName, $password);
 	if ($pass == 1) {
 		$query = $db->prepare("UPDATE accounts SET username=:newusr WHERE userName=:userName");	
 		$query->execute([':newusr' => $newusr, ':userName' => $userName]);

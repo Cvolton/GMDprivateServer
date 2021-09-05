@@ -13,8 +13,7 @@ $oldpass = $_POST["oldpassword"];
 $newpass = $_POST["newpassword"];
 $salt = "";
 if($userName != "" AND $newpass != "" AND $oldpass != ""){
-$generatePass = new generatePass();
-$pass = $generatePass->isValidUsrname($userName, $oldpass);
+$pass = GeneratePass::isValidUsrname($userName, $oldpass);
 if ($pass == 1) {
 	//creating pass hash
 	$passhash = password_hash($newpass, PASSWORD_DEFAULT);

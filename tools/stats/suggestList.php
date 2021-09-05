@@ -8,8 +8,7 @@ $gs = new mainLib();
 if(!empty($_POST["userName"]) AND !empty($_POST["password"])){
 	$userName = $ep->remove($_POST["userName"]);
 	$password = $ep->remove($_POST["password"]);
-	$generatePass = new generatePass();
-	$pass = $generatePass->isValidUsrname($userName, $password);
+	$pass = GeneratePass::isValidUsrname($userName, $password);
 	if ($pass == 1) {
 		$query = $db->prepare("SELECT accountID FROM accounts WHERE userName=:userName");	
 		$query->execute([':userName' => $userName]);

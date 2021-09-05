@@ -1,7 +1,7 @@
 <?php
-class generatePass
+class GeneratePass
 {
-	public function isValid($accid, $pass) {
+	public static function isValid($accid, $pass) {
 		include dirname(__FILE__)."/connection.php";
 		require_once dirname(__FILE__)."/mainLib.php";
 		$gs = new mainLib();
@@ -60,7 +60,7 @@ class generatePass
 			}
 		}
 	}
-	public function isValidUsrname($userName, $pass){
+	public static function isValidUsrname($userName, $pass){
 		include dirname(__FILE__)."/connection.php";
 		$query = $db->prepare("SELECT accountID FROM accounts WHERE userName LIKE :userName");
 		$query->execute([':userName' => $userName]);
@@ -69,7 +69,7 @@ class generatePass
 		}
 		$result = $query->fetch();
 		$accID = $result["accountID"];
-		return $this->isValid($accID, $pass);
+		return self::isValid($accID, $pass);
 	}
 }
 ?>

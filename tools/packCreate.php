@@ -13,8 +13,7 @@ if(!empty($_POST["userName"]) AND !empty($_POST["password"]) AND !empty($_POST["
 	$stars = $ep->remove($_POST["stars"]);
 	$coins = $ep->remove($_POST["coins"]);
 	$color = preg_replace('/[^0-9A-Fa-f]/', '', $_POST['color']);
-	$generatePass = new generatePass();
-	$pass = $generatePass->isValidUsrname($userName, $password);
+	$pass = GeneratePass::isValidUsrname($userName, $password);
 	if ($pass == 1) {
 		$query = $db->prepare("SELECT accountID FROM accounts WHERE userName=:userName");	
 		$query->execute([':userName' => $userName]);

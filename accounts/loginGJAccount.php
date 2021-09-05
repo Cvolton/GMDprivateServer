@@ -1,7 +1,6 @@
 <?php
 include "../incl/lib/connection.php";
 require "../incl/lib/generatePass.php";
-$generatePass = new generatePass();
 require_once "../incl/lib/exploitPatch.php";
 $ep = new exploitPatch();
 require_once "../incl/lib/mainLib.php";
@@ -26,7 +25,7 @@ if($query6->fetchColumn() > 5){
 	exit("-12");
 }*/
 //authenticating
-$pass = $generatePass->isValidUsrname($userName, $password);
+$pass = GeneratePass::isValidUsrname($userName, $password);
 if ($pass == 1) { //success
 	//userID
 	$query2 = $db->prepare("SELECT userID FROM users WHERE extID = :id");

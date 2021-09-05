@@ -12,8 +12,7 @@ if(!empty($_POST["userName"]) AND !empty($_POST["password"]) AND !empty($_POST["
 	$password = $ep->remove($_POST["password"]);
 	$levelID = $ep->remove($_POST["levelID"]);
 	$timestamp = $ep->remove($_POST["timestamp"]);
-	$generatePass = new generatePass();
-	$pass = $generatePass->isValidUsrname($userName, $password);
+	$pass = GeneratePass::isValidUsrname($userName, $password);
 
 	if ($pass == 1) {
 		$query = $db->prepare("SELECT accountID FROM accounts WHERE userName=:userName");	

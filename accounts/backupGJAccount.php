@@ -17,8 +17,7 @@ $ep = new exploitPatch();
 $userName = $ep->remove($_POST["userName"]);
 $password = $_POST["password"];
 $saveData = $ep->remove($_POST["saveData"]);
-$generatePass = new generatePass();
-$pass = $generatePass->isValidUsrname($userName, $password);
+$pass = GeneratePass::isValidUsrname($userName, $password);
 if ($pass == 1) {
 	$saveDataArr = explode(";",$saveData); //splitting ccgamemanager and cclocallevels
 	$saveData = str_replace("-","+",$saveDataArr[0]); //decoding

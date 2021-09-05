@@ -19,13 +19,13 @@ class GJPCheck {
 		$gjpdecode = str_replace("-","+",$gjpdecode);
 		$gjpdecode = base64_decode($gjpdecode);
 		$gjpdecode = XORCipher::cipher($gjpdecode,37526);
-		$generatePass = new generatePass();
-		if($generatePass->isValid($accountID, $gjpdecode) == 1 AND $sessionGrants){
+		$validationResult = GeneratePass::isValid($accountID, $gjpdecode);
+		if($validationResult == 1 AND $sessionGrants){
 			$ip = $ml->getIP();
 			$query = $db->prepare("INSERT INTO actions (type, value, value2, timestamp) VALUES (16, :accountID, :ip, :timestamp)");
 			$query->execute([':accountID' => $accountID, ':ip' => $ip, ':timestamp' => time()]);
 		}
-		return $generatePass->isValid($accountID, $gjpdecode);
+		return $validationResult;
 	}
 
 	public static function validateGJPOrDie($gjp, $accountID){

@@ -14,8 +14,7 @@ $ep = new exploitPatch();
 $userName = $ep->remove($_POST["userName"]);
 $password = $_POST["password"];
 $secret = "";
-$generatePass = new generatePass();
-$pass = $generatePass->isValidUsrname($userName, $password);
+$pass = GeneratePass::isValidUsrname($userName, $password);
 if ($pass == 1) {
 	$query = $db->prepare("select accountID, saveData from accounts where userName = :userName");
 	$query->execute([':userName' => $userName]);
