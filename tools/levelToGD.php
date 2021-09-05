@@ -21,7 +21,6 @@ $generatePass = new generatePass();
 require_once "../incl/lib/exploitPatch.php";
 $ep = new exploitPatch();
 require_once "../incl/lib/generateHash.php";
-$gh = new generateHash();
 if(!empty($_POST["userhere"]) AND !empty($_POST["passhere"]) AND !empty($_POST["usertarg"]) AND !empty($_POST["passtarg"]) AND !empty($_POST["levelID"])){
 	$userhere = $ep->remove($_POST["userhere"]);
 	$passhere = $ep->remove($_POST["passhere"]);
@@ -68,7 +67,7 @@ if(!empty($_POST["userhere"]) AND !empty($_POST["passhere"]) AND !empty($_POST["
 		exit("Invalid levelID");
 	}
 	$levelString = file_get_contents("../data/levels/$levelID"); //generating seed2
-	$seed2 = base64_encode($xc->cipher($gh->genSeed2noXor($levelString),41274));
+	$seed2 = base64_encode($xc->cipher(GenerateHash::genSeed2noXor($levelString),41274));
 	$accountID = explode(",",$result)[0]; //and finally reuploading
 	$gjp = base64_encode($xc->cipher($passtarg,37526));
 	$post = ['gameVersion' => $levelInfo["gameVersion"], 

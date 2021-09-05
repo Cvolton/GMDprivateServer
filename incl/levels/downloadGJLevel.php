@@ -7,7 +7,6 @@ $ep = new exploitPatch();
 require_once "../lib/mainLib.php";
 $gs = new mainLib();
 require "../lib/generateHash.php";
-$hash = new generateHash();
 //$levelID = 2632;
 if(empty($_POST["gameVersion"])){
 	$gameVersion = 1;
@@ -100,10 +99,10 @@ if(!is_numeric($levelID)){
 			$response .= ":41:".$feaID;
 		}
 		//2.02 stuff
-		$response .= "#" . $hash->genSolo($levelstring) . "#";
+		$response .= "#" . GenerateHash::genSolo($levelstring) . "#";
 		//2.1 stuff
 		$somestring = $result["userID"].",".$result["starStars"].",".$result["starDemon"].",".$result["levelID"].",".$result["starCoins"].",".$result["starFeatured"].",".$pass.",".$feaID;
-		$response .= $hash->genSolo2($somestring) . "#";
+		$response .= GenerateHash::genSolo2($somestring) . "#";
 		if($daily == 1){
 			$response .= $gs->getUserString($result);
 		}else{

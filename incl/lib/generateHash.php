@@ -1,7 +1,7 @@
 <?php
 //credits to pavlukivan for decoding and to IAD for most of genSolo
-class generateHash {
-	public function genMulti($lvlsarray) {
+class GenerateHash {
+	public static function genMulti($lvlsarray) {
 		include dirname(__FILE__)."/connection.php";
 		$hash = "";
 		foreach($lvlsarray as $id){
@@ -13,7 +13,7 @@ class generateHash {
 		}
 		return sha1($hash . "xI25fpAapCQg");
 	}
-	public function genSolo($levelstring) {
+	public static function genSolo($levelstring) {
 		$hash = "aaaaa";
 		$len = strlen($levelstring);
 		$divided = intval($len/40);
@@ -25,16 +25,16 @@ class generateHash {
 		}
 		return sha1($hash . "xI25fpAapCQg");
 	}
-	public function genSolo2($lvlsmultistring) {
+	public static function genSolo2($lvlsmultistring) {
 		return sha1($lvlsmultistring . "xI25fpAapCQg");
 	}
-	public function genSolo3($lvlsmultistring) {
+	public static function genSolo3($lvlsmultistring) {
 		return sha1($lvlsmultistring . "oC36fpYaPtdg");
 	}
-	public function genSolo4($lvlsmultistring){
+	public static function genSolo4($lvlsmultistring){
 		return sha1($lvlsmultistring . "pC26fpYaQCtg");
 	}
-	public function genPack($lvlsmultistring) {
+	public static function genPack($lvlsmultistring) {
 		$lvlsarray = explode(",", $lvlsmultistring);
 		include dirname(__FILE__)."/connection.php";
 		$hash = "";
@@ -47,7 +47,7 @@ class generateHash {
 		}
 		return sha1($hash . "xI25fpAapCQg");
 	}
-	public function genSeed2noXor($levelstring) {
+	public static function genSeed2noXor($levelstring) {
 		$hash = "aaaaa";
 		$len = strlen($levelstring);
 		$divided = intval($len/50);

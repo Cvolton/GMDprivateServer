@@ -9,7 +9,6 @@ require "../lib/generateHash.php";
 require_once "../lib/exploitPatch.php";
 $ep = new exploitPatch();
 $XORCipher = new XORCipher();
-$generateHash = new generateHash();
 $accountID = ($_POST["accountID"] != 0) ? GJPCheck::getAccountIDOrDie() : 0;
 $udid = $ep->remove($_POST["udid"]);
 if(is_numeric($udid)){
@@ -81,6 +80,6 @@ $chk = $XORCipher->cipher(base64_decode(substr($chk, 5)),59182);
 	$string = base64_encode($XORCipher->cipher("1:".$userid.":".$chk.":".$udid.":".$accountID.":".$chest1left.":".$chest1stuff.":".$chest1count.":".$chest2left.":".$chest2stuff.":".$chest2count.":".$rewardType."",59182));
 	$string = str_replace("/","_",$string);
 	$string = str_replace("+","-",$string);
-$hash = $generateHash->genSolo4($string);
+$hash = GenerateHash::genSolo4($string);
 echo "SaKuJ".$string . "|".$hash;
 ?>

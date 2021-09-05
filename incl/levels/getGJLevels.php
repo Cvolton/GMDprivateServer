@@ -8,7 +8,6 @@ $ep = new exploitPatch();
 require_once "../lib/mainLib.php";
 $gs = new mainLib();
 require "../lib/generateHash.php";
-$hash = new generateHash();
 
 //initializing variables
 $lvlstring = ""; $userstring = ""; $songsstring = ""; $lvlsmultistring = []; $str = ""; $order = "uploadDate";
@@ -267,5 +266,5 @@ if($gameVersion > 18){
 }
 echo "#".$totallvlcount.":".$offset.":10";
 echo "#";
-echo $hash->genMulti($lvlsmultistring);
+echo GenerateHash::genMulti($lvlsmultistring);
 ?>

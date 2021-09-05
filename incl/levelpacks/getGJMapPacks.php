@@ -3,6 +3,7 @@ chdir(dirname(__FILE__));
 //error_reporting(0);
 include "../lib/connection.php";
 require_once "../lib/exploitPatch.php";
+require "../lib/generateHash.php";
 $ep = new exploitPatch();
 $page = $ep->remove($_POST["page"]);
 $packpage = $page*10;
@@ -28,7 +29,5 @@ $lvlsmultistring = substr($lvlsmultistring, 0, -1);
 echo $mappackstring;
 echo "#".$totalpackcount.":".$packpage.":10";
 echo "#";
-require "../lib/generateHash.php";
-$hash = new generateHash();
-echo $hash->genPack($lvlsmultistring);
+echo GenerateHash::genPack($lvlsmultistring);
 ?>
