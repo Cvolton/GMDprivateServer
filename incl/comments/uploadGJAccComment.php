@@ -5,7 +5,7 @@ include "../lib/connection.php";
 require_once "../lib/GJPCheck.php";
 require_once "../lib/exploitPatch.php";
 require_once "../lib/mainLib.php";
-require_once "../misc/commands.php";
+require_once "../lib/commands.php";
 $mainLib = new mainLib();
 $ep = new exploitPatch();
 $userName = $ep->remove($_POST["userName"]);

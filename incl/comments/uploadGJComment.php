@@ -9,7 +9,7 @@ require_once "../lib/XORCipher.php";
 require_once "../lib/GJPCheck.php";
 require_once "../lib/exploitPatch.php";
 $ep = new exploitPatch();
-require_once "../misc/commands.php";
+require_once "../lib/commands.php";
 $gjp = $ep->remove($_POST["gjp"]);
 $userName = $ep->remove($_POST["userName"]);
 $comment = $ep->remove($_POST["comment"]);
