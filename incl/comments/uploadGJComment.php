@@ -8,19 +8,14 @@ require_once "../lib/GJPCheck.php";
 require_once "../lib/exploitPatch.php";
 $ep = new exploitPatch();
 require_once "../lib/commands.php";
-$gjp = $ep->remove($_POST["gjp"]);
-$userName = $ep->remove($_POST["userName"]);
-$comment = $ep->remove($_POST["comment"]);
-$gameversion = $_POST["gameVersion"];
-if($gameversion < 20){
-	$comment = base64_encode($comment);
-}
-$levelID = $ep->remove($_POST["levelID"]);
-if(!empty($_POST["percent"])){
-	$percent = $ep->remove($_POST["percent"]);
-}else{
-	$percent = 0;
-}
+
+$userName = $ep->remove($_POST['userName']);
+$gameVersion = !empty($_POST['gameVersion']) ? $ep->number($_POST['gameVersion']) : 0;
+$comment = $ep->remove($_POST['comment']);
+$comment = ($gameVersion < 20) ? base64_encode($comment) : $comment;
+$levelID = $ep->number($_POST["levelID"]);
+$percent = !empty($_POST["percent"]) ? $ep->remove($_POST["percent"]) : 0;
+
 if(!empty($_POST["accountID"]) AND $_POST["accountID"]!="0"){
 	$id = GJPCheck::getAccountIDOrDie();
 }else{
