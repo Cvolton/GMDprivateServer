@@ -1,7 +1,5 @@
 <?php
 chdir(dirname(__FILE__));
-ini_set('display_errors', 1); 
-error_reporting(E_ALL);
 include "../lib/connection.php";
 require_once "../lib/mainLib.php";
 $mainLib = new mainLib();
