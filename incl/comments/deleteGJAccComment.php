@@ -4,6 +4,8 @@ include "../lib/connection.php";
 require_once "../lib/GJPCheck.php";
 require_once "../lib/exploitPatch.php";
 $ep = new exploitPatch();
+require_once "../lib/mainLib.php"; //this is connection.php too
+$gs = new mainLib();
 $commentID = $ep->remove($_POST["commentID"]);
 $accountID = GJPCheck::getAccountIDOrDie();
 
@@ -13,7 +15,11 @@ $query2->execute([':accountID' => $accountID]);
 if ($query2->rowCount() > 0) {
 	$userID = $query2->fetchColumn();
 }
-$query = $db->prepare("DELETE FROM acccomments WHERE commentID=:commentID AND userID=:userID LIMIT 1");
-$query->execute([':userID' => $userID, ':commentID' => $commentID]);
+if($gs->checkPermission($accountID, "actionDeleteComment") == 1) {
+	$query = $db->prepare("DELETE FROM acccomments WHERE commentID = :commentID LIMIT 1");
+	$query->execute([':commentID' => $commentID]);
+}else{
+	$query = $db->prepare("DELETE FROM acccomments WHERE commentID=:commentID AND userID=:userID LIMIT 1");
+	$query->execute([':userID' => $userID, ':commentID' => $commentID]);
+}
 echo "1";
-?>
