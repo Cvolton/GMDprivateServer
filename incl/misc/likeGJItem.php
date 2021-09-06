@@ -2,7 +2,6 @@
 chdir(dirname(__FILE__));
 include "../lib/connection.php";
 require_once "../lib/exploitPatch.php";
-$ep = new exploitPatch();
 require_once "../lib/mainLib.php";
 $gs = new mainLib();
 
@@ -10,7 +9,7 @@ if(!isset($_POST['itemID']))
 	exit(-1);
 
 $type = isset($_POST['type']) ? $_POST['type'] : 1;
-$itemID = $ep->remove($_POST['itemID']);
+$itemID = ExploitPatch::remove($_POST['itemID']);
 $isLike = isset($_POST['like']) ? $_POST['like'] : 1;
 $ip = $gs->getIP();
 

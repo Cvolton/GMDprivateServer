@@ -4,17 +4,16 @@ chdir(dirname(__FILE__));
 include "../lib/connection.php";
 require_once "../lib/GJPCheck.php";
 require_once "../lib/exploitPatch.php";
-$ep = new exploitPatch();
 //here im getting all the data
 if(empty($_POST["toAccountID"])){
 	exit("-1");
 }
 $accountID = GJPCheck::getAccountIDOrDie();
-$toAccountID = $ep->number($_POST["toAccountID"]);
+$toAccountID = ExploitPatch::number($_POST["toAccountID"]);
 if ($toAccountID == $accountID) {
 	exit("-1");
 }
-$comment = $ep->remove($_POST["comment"]);
+$comment = ExploitPatch::remove($_POST["comment"]);
 $uploadDate = time();
 $blocked = $db->query("SELECT ID FROM `blocks` WHERE person1 = $toAccountID AND person2 = $accountID")->fetchAll(PDO::FETCH_COLUMN);
 $frSOnly = $db->query("SELECT frS FROM `accounts` WHERE accountID = $toAccountID AND frS = 1")->fetchAll(PDO::FETCH_COLUMN);

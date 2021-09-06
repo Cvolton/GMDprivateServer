@@ -4,14 +4,13 @@ require "../incl/lib/generatePass.php";
 require "../incl/lib/exploitPatch.php";
 require "../incl/lib/mainLib.php";
 $gs = new mainLib();
-$ep = new exploitPatch();
 if(!empty($_POST["userName"]) AND !empty($_POST["password"]) AND !empty($_POST["packName"]) AND !empty($_POST["levels"]) AND !empty($_POST["stars"]) AND !empty($_POST["coins"]) AND !empty($_POST["color"])){
-	$userName = $ep->remove($_POST["userName"]);
-	$password = $ep->remove($_POST["password"]);
-	$packName = $ep->remove($_POST["packName"]);
-	$levels = $ep->remove($_POST["levels"]);
-	$stars = $ep->remove($_POST["stars"]);
-	$coins = $ep->remove($_POST["coins"]);
+	$userName = ExploitPatch::remove($_POST["userName"]);
+	$password = ExploitPatch::remove($_POST["password"]);
+	$packName = ExploitPatch::remove($_POST["packName"]);
+	$levels = ExploitPatch::remove($_POST["levels"]);
+	$stars = ExploitPatch::remove($_POST["stars"]);
+	$coins = ExploitPatch::remove($_POST["coins"]);
 	$color = preg_replace('/[^0-9A-Fa-f]/', '', $_POST['color']);
 	$pass = GeneratePass::isValidUsrname($userName, $password);
 	if ($pass == 1) {

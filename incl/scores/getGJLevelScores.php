@@ -4,13 +4,12 @@ chdir(dirname(__FILE__));
 include "../lib/connection.php";
 require_once "../lib/GJPCheck.php";
 require_once "../lib/exploitPatch.php";
-$ep = new exploitPatch();
 require_once "../lib/mainLib.php";
 $gs = new mainLib();
 
 $accountID = GJPCheck::getAccountIDOrDie();
-$levelID = $ep->remove($_POST["levelID"]);
-$percent = $ep->remove($_POST["percent"]);
+$levelID = ExploitPatch::remove($_POST["levelID"]);
+$percent = ExploitPatch::remove($_POST["percent"]);
 $uploadDate = time();
 if(isset($_POST["s1"])){
 	$attempts = $_POST["s1"] - 8354;

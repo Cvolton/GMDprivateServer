@@ -1,12 +1,11 @@
 <?php
 include "../incl/lib/connection.php";
 require_once "../incl/lib/exploitPatch.php";
-$ep = new exploitPatch();
 if($_POST["userName"] != ""){
 	//here im getting all the data
-	$userName = $ep->remove($_POST["userName"]);
-	$password = $ep->remove($_POST["password"]);
-	$email = $ep->remove($_POST["email"]);
+	$userName = ExploitPatch::remove($_POST["userName"]);
+	$password = ExploitPatch::remove($_POST["password"]);
+	$email = ExploitPatch::remove($_POST["email"]);
 	$secret = "";
 	//checking if name is taken
 	$query2 = $db->prepare("SELECT count(*) FROM accounts WHERE userName LIKE :userName");

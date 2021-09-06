@@ -3,14 +3,13 @@ chdir(dirname(__FILE__));
 include "../lib/connection.php";
 require_once "../lib/exploitPatch.php";
 require_once "../lib/GJPCheck.php";
-$ep = new exploitPatch();
 $reqstring = "";
-$getSent = !empty($_POST["getSent"]) ? $ep->remove($_POST["getSent"]) : 0;
+$getSent = !empty($_POST["getSent"]) ? ExploitPatch::remove($_POST["getSent"]) : 0;
 if(empty($_POST["accountID"]) OR (!isset($_POST["page"]) OR !is_numeric($_POST["page"])) OR empty($_POST["gjp"])){
 	exit("-1");
 }
 $accountID = GJPCheck::getAccountIDOrDie();
-$page = $ep->number($_POST["page"]);
+$page = ExploitPatch::number($_POST["page"]);
 $offset = $page*10;
 if($getSent == 0){
 	$query = "SELECT accountID, toAccountID, uploadDate, ID, comment, isNew FROM friendreqs WHERE toAccountID = :accountID LIMIT 10 OFFSET $offset";

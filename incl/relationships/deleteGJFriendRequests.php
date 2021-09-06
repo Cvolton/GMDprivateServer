@@ -3,12 +3,11 @@ chdir(dirname(__FILE__));
 include "../lib/connection.php";
 require_once "../lib/GJPCheck.php";
 require_once "../lib/exploitPatch.php";
-$ep = new exploitPatch();
 if(empty($_POST["targetAccountID"])){
 	exit("-1");
 }
 $accountID = GJPCheck::getAccountIDOrDie();
-$targetAccountID = $ep->remove($_POST["targetAccountID"]);
+$targetAccountID = ExploitPatch::remove($_POST["targetAccountID"]);
 //REMOVING THE REQUEST
 if(!empty($_POST["isSender"]) AND $_POST["isSender"] == 1){
 		$query = $db->prepare("DELETE from friendreqs WHERE accountID=:accountID AND toAccountID=:targetAccountID LIMIT 1");

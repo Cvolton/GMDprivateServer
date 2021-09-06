@@ -8,9 +8,8 @@ include_once "../incl/lib/defuse-crypto.phar";
 use Defuse\Crypto\KeyProtectedByPassword;
 use Defuse\Crypto\Crypto;
 use Defuse\Crypto\Key;
-$ep = new exploitPatch();
 //here im getting all the data
-$userName = $ep->remove($_GET["userName"]);
+$userName = ExploitPatch::remove($_GET["userName"]);
 $password = $_GET["password"];
 $pass = GeneratePass::isValidUsrname($userName, $password);
 if ($pass == 1) {

@@ -3,12 +3,11 @@ chdir(dirname(__FILE__));
 include "../lib/connection.php";
 require "../lib/GJPCheck.php";
 require_once "../lib/exploitPatch.php";
-$ep = new exploitPatch();
 if(empty($_POST["requestID"])){
 	exit("-1");
 }
 $accountID = GJPCheck::getAccountIDOrDie();
-$requestID = $ep->remove($_POST["requestID"]);
+$requestID = ExploitPatch::remove($_POST["requestID"]);
 
 //TODO: what happens if request does not exist?
 $query = $db->prepare("SELECT accountID, toAccountID FROM friendreqs WHERE ID = :requestID");

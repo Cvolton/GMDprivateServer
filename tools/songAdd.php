@@ -2,7 +2,6 @@
 //error_reporting(0);
 include "../incl/lib/connection.php";
 require_once "../incl/lib/exploitPatch.php";
-$ep = new exploitPatch();
 $api_key = "dc467dd431fc48eb0244b0aead929ccd";
 if(!empty($_POST["songlink"])){
 $song = str_replace("www.dropbox.com","dl.dropboxusercontent.com",$_POST["songlink"]);
@@ -14,7 +13,7 @@ if (filter_var($song, FILTER_VALIDATE_URL) == TRUE) {
 		$array = json_decode($songinfo);
 		if($array->downloadable == true){
 			$song = trim($array->download_url . "?client_id=".$api_key);
-			$name = $ep->remove($array->title);
+			$name = ExploitPatch::remove($array->title);
 			$author = $array->user->username;
 			$author = preg_replace("/[^A-Za-z0-9 ]/", '', $author);
 			echo "Processing Soundcloud song ".htmlspecialchars($name,ENT_QUOTES)." by ".htmlspecialchars($author,ENT_QUOTES)." with the download link ".htmlspecialchars($song,ENT_QUOTES)." <br>";
@@ -23,7 +22,7 @@ if (filter_var($song, FILTER_VALIDATE_URL) == TRUE) {
 				exit("This song is neither downloadable, nor streamable");
 			}
 			$song = trim("https://api.soundcloud.com/tracks/".$array->id."/stream?client_id=".$api_key);
-			$name = $ep->remove($array->title);
+			$name = ExploitPatch::remove($array->title);
 			$author = $array->user->username;
 			$author = preg_replace("/[^A-Za-z0-9 ]/", '', $author);
 			echo "This song isn't downloadable, attempting to insert it anyways<br>";
@@ -36,7 +35,7 @@ if (filter_var($song, FILTER_VALIDATE_URL) == TRUE) {
 		$name = str_replace(".webm", "", $name);
 		$name = str_replace(".mp4", "", $name);
 		$name = urldecode($name);
-		$name = $ep->remove($name);
+		$name = ExploitPatch::remove($name);
 		$author = "Reupload";
 	}
 	$ch = curl_init($song);

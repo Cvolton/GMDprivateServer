@@ -6,21 +6,20 @@ require_once "../lib/GJPCheck.php";
 require_once "../lib/exploitPatch.php";
 require_once "../lib/mainLib.php";
 $mainLib = new mainLib();
-$ep = new exploitPatch();
 require_once "../lib/mainLib.php";
 $gs = new mainLib();
 //here im getting all the data
-$gjp = $ep->remove($_POST["gjp"]);
-$gameVersion = $ep->remove($_POST["gameVersion"]);
+$gjp = ExploitPatch::remove($_POST["gjp"]);
+$gameVersion = ExploitPatch::remove($_POST["gameVersion"]);
 if(!empty($_POST["binaryVersion"])){
-	$binaryVersion = $ep->remove($_POST["binaryVersion"]);	
+	$binaryVersion = ExploitPatch::remove($_POST["binaryVersion"]);	
 }else{
 	$binaryVersion = 0;
 }
-$userName = $ep->charclean($_POST["userName"]);
-$levelID = $ep->remove($_POST["levelID"]);
-$levelName = $ep->charclean($_POST["levelName"]);
-$levelDesc = $ep->remove($_POST["levelDesc"]);
+$userName = ExploitPatch::charclean($_POST["userName"]);
+$levelID = ExploitPatch::remove($_POST["levelID"]);
+$levelName = ExploitPatch::charclean($_POST["levelName"]);
+$levelDesc = ExploitPatch::remove($_POST["levelDesc"]);
 $levelDesc = str_replace('-', '+', $levelDesc);
 $levelDesc = str_replace('_', '/', $levelDesc);
 $rawDesc = base64_decode($levelDesc);
@@ -38,16 +37,16 @@ if (strpos($rawDesc, '<c') !== false) {
 if($gameVersion < 20){
 	$levelDesc = base64_encode($levelDesc);
 }
-$levelVersion = $ep->remove($_POST["levelVersion"]);
-$levelLength = $ep->remove($_POST["levelLength"]);
-$audioTrack = $ep->remove($_POST["audioTrack"]);
+$levelVersion = ExploitPatch::remove($_POST["levelVersion"]);
+$levelLength = ExploitPatch::remove($_POST["levelLength"]);
+$audioTrack = ExploitPatch::remove($_POST["audioTrack"]);
 if(!empty($_POST["auto"])){
-	$auto = $ep->remove($_POST["auto"]);
+	$auto = ExploitPatch::remove($_POST["auto"]);
 }else{
 	$auto = 0;
 }
 if(isset($_POST["password"])){
-	$password = $ep->remove($_POST["password"]);
+	$password = ExploitPatch::remove($_POST["password"]);
 }else{
 	$password = 1;
 	if($gameVersion > 17){
@@ -55,60 +54,60 @@ if(isset($_POST["password"])){
 	}
 }
 if(!empty($_POST["original"])){
-	$original = $ep->remove($_POST["original"]);
+	$original = ExploitPatch::remove($_POST["original"]);
 }else{
 	$original = 0;
 }
 if(!empty($_POST["twoPlayer"])){
-	$twoPlayer = $ep->remove($_POST["twoPlayer"]);
+	$twoPlayer = ExploitPatch::remove($_POST["twoPlayer"]);
 }else{
 	$twoPlayer = 0;
 }
 if(!empty($_POST["songID"])){
-	$songID = $ep->remove($_POST["songID"]);
+	$songID = ExploitPatch::remove($_POST["songID"]);
 }else{
 	$songID = 0;
 }
 if(!empty($_POST["objects"])){
-	$objects = $ep->remove($_POST["objects"]);
+	$objects = ExploitPatch::remove($_POST["objects"]);
 }else{
 	$objects = 0;
 }
 if(!empty($_POST["coins"])){
-	$coins = $ep->remove($_POST["coins"]);
+	$coins = ExploitPatch::remove($_POST["coins"]);
 }else{
 	$coins = 0;
 }
 if(!empty($_POST["requestedStars"])){
-	$requestedStars = $ep->remove($_POST["requestedStars"]);
+	$requestedStars = ExploitPatch::remove($_POST["requestedStars"]);
 }else{
 	$requestedStars = 0;
 }
 if(!empty($_POST["extraString"])){
-	$extraString = $ep->remove($_POST["extraString"]);
+	$extraString = ExploitPatch::remove($_POST["extraString"]);
 }else{
 	$extraString = "29_29_29_40_29_29_29_29_29_29_29_29_29_29_29_29";
 }
-$levelString = $ep->remove($_POST["levelString"]);
+$levelString = ExploitPatch::remove($_POST["levelString"]);
 if(!empty($_POST["levelInfo"])){
-	$levelInfo = $ep->remove($_POST["levelInfo"]);
+	$levelInfo = ExploitPatch::remove($_POST["levelInfo"]);
 }else{
 	$levelInfo = 0;
 }
-$secret = $ep->remove($_POST["secret"]);
+$secret = ExploitPatch::remove($_POST["secret"]);
 if(!empty($_POST["unlisted"])){
-	$unlisted = $ep->remove($_POST["unlisted"]);
+	$unlisted = ExploitPatch::remove($_POST["unlisted"]);
 }else{
 	$unlisted = 0;
 }
 if(!empty($_POST["ldm"])){
-	$ldm = $ep->remove($_POST["ldm"]);
+	$ldm = ExploitPatch::remove($_POST["ldm"]);
 }else{
 	$ldm = 0;
 }
 $accountID = "";
 if(!empty($_POST["udid"])){
-	$id = $ep->remove($_POST["udid"]);
+	$id = ExploitPatch::remove($_POST["udid"]);
 	if(is_numeric($id)){
 		exit("-1");
 	}

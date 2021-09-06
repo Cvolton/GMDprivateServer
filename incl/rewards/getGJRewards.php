@@ -7,14 +7,13 @@ require "../lib/XORCipher.php";
 require "../lib/GJPCheck.php";
 require "../lib/generateHash.php";
 require_once "../lib/exploitPatch.php";
-$ep = new exploitPatch();
 $accountID = ($_POST["accountID"] != 0) ? GJPCheck::getAccountIDOrDie() : 0;
-$udid = $ep->remove($_POST["udid"]);
+$udid = ExploitPatch::remove($_POST["udid"]);
 if(is_numeric($udid)){
 	exit("-1");
 }
-$chk = $ep->remove($_POST["chk"]);
-$rewardType = $ep->remove($_POST["rewardType"]);
+$chk = ExploitPatch::remove($_POST["chk"]);
+$rewardType = ExploitPatch::remove($_POST["rewardType"]);
 $query=$db->prepare("select * from users where extID = ?");
 if($accountID != 0){
 	$query->execute(array($accountID));

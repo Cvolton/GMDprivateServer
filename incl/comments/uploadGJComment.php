@@ -5,20 +5,19 @@ require_once "../lib/mainLib.php";
 $mainLib = new mainLib();
 require_once "../lib/GJPCheck.php";
 require_once "../lib/exploitPatch.php";
-$ep = new exploitPatch();
 require_once "../lib/commands.php";
 
-$userName = $ep->remove($_POST['userName']);
-$gameVersion = !empty($_POST['gameVersion']) ? $ep->number($_POST['gameVersion']) : 0;
-$comment = $ep->remove($_POST['comment']);
+$userName = ExploitPatch::remove($_POST['userName']);
+$gameVersion = !empty($_POST['gameVersion']) ? ExploitPatch::number($_POST['gameVersion']) : 0;
+$comment = ExploitPatch::remove($_POST['comment']);
 $comment = ($gameVersion < 20) ? base64_encode($comment) : $comment;
-$levelID = $ep->number($_POST["levelID"]);
-$percent = !empty($_POST["percent"]) ? $ep->remove($_POST["percent"]) : 0;
+$levelID = ExploitPatch::number($_POST["levelID"]);
+$percent = !empty($_POST["percent"]) ? ExploitPatch::remove($_POST["percent"]) : 0;
 
 if(!empty($_POST["accountID"]) AND $_POST["accountID"]!="0"){
 	$id = GJPCheck::getAccountIDOrDie();
 }else{
-	$id = $ep->remove($_POST["udid"]);
+	$id = ExploitPatch::remove($_POST["udid"]);
 	$register = 0;
 	if(is_numeric($id)){
 		exit("-1");

@@ -3,10 +3,9 @@ chdir(dirname(__FILE__));
 include "../lib/connection.php";
 require_once "../lib/GJPCheck.php";
 require_once "../lib/exploitPatch.php";
-$ep = new exploitPatch();
 
 $accountID = GJPCheck::getAccountIDOrDie();
-$messageID = $ep->remove($_POST["messageID"]);
+$messageID = ExploitPatch::remove($_POST["messageID"]);
 
 $query=$db->prepare("SELECT accID, toAccountID, timestamp, userName, messageID, subject, isNew, body FROM messages WHERE messageID = :messageID AND (accID = :accID OR toAccountID = :accID) LIMIT 1");
 $query->execute([':messageID' => $messageID, ':accID' => $accountID]);

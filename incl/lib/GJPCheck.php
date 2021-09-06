@@ -38,13 +38,12 @@ class GJPCheck {
 	*/
 	public static function getAccountIDOrDie(){
 		require_once "../lib/exploitPatch.php";
-		$ep = new exploitPatch();
-
+		
 		if(empty($_POST['accountID']) || empty($_POST['gjp']))
 			exit("-1");
 
-		$accountID = $ep->remove($_POST["accountID"]);
-		$gjp = $ep->remove($_POST["gjp"]);
+		$accountID = ExploitPatch::remove($_POST["accountID"]);
+		$gjp = ExploitPatch::remove($_POST["gjp"]);
 
 		self::validateGJPOrDie($gjp, $accountID);
 

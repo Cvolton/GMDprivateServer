@@ -4,11 +4,10 @@ chdir(dirname(__FILE__));
 include "../lib/connection.php";
 require_once "../lib/GJPCheck.php";
 require_once "../lib/exploitPatch.php";
-$ep = new exploitPatch();
 $msgstring = "";
 //code begins
 $toAccountID = GJPCheck::getAccountIDOrDie();
-$page = $ep->remove($_POST["page"]);
+$page = ExploitPatch::remove($_POST["page"]);
 $offset = $page * 10;
 
 if(!isset($_POST["getSent"]) OR $_POST["getSent"] != 1){

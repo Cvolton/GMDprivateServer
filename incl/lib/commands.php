@@ -15,8 +15,7 @@ class Commands {
 		include dirname(__FILE__)."/../lib/connection.php";
 		require_once "../lib/exploitPatch.php";
 		require_once "../lib/mainLib.php";
-		$ep = new exploitPatch();
-		$gs = new mainLib();
+				$gs = new mainLib();
 		$commentarray = explode(' ', $comment);
 		$uploadDate = time();
 		//LEVELINFO
@@ -153,7 +152,7 @@ class Commands {
 		
 	//NON-ADMIN COMMANDS
 		if(self::ownCommand($comment, "rename", $accountID, $targetExtID)){
-			$name = $ep->remove(str_replace("!rename ", "", $comment));
+			$name = ExploitPatch::remove(str_replace("!rename ", "", $comment));
 			$query = $db->prepare("UPDATE levels SET levelName=:levelName WHERE levelID=:levelID");
 			$query->execute([':levelID' => $levelID, ':levelName' => $name]);
 			$query = $db->prepare("INSERT INTO modactions (type, value, timestamp, account, value3) VALUES ('8', :value, :timestamp, :id, :levelID)");
@@ -161,7 +160,7 @@ class Commands {
 			return true;
 		}
 		if(self::ownCommand($comment, "pass", $accountID, $targetExtID)){
-			$pass = $ep->remove(str_replace("!pass ", "", $comment));
+			$pass = ExploitPatch::remove(str_replace("!pass ", "", $comment));
 			if(is_numeric($pass)){
 				$pass = sprintf("%06d", $pass);
 				if($pass == "000000"){
@@ -176,7 +175,7 @@ class Commands {
 			}
 		}
 		if(self::ownCommand($comment, "song", $accountID, $targetExtID)){
-			$song = $ep->remove(str_replace("!song ", "", $comment));
+			$song = ExploitPatch::remove(str_replace("!song ", "", $comment));
 			if(is_numeric($song)){
 				$query = $db->prepare("UPDATE levels SET songID=:song WHERE levelID=:levelID");
 				$query->execute([':levelID' => $levelID, ':song' => $song]);
@@ -186,7 +185,7 @@ class Commands {
 			}
 		}
 		if(self::ownCommand($comment, "description", $accountID, $targetExtID)){
-			$desc = base64_encode($ep->remove(str_replace("!description ", "", $comment)));
+			$desc = base64_encode(ExploitPatch::remove(str_replace("!description ", "", $comment)));
 			$query = $db->prepare("UPDATE levels SET levelDesc=:desc WHERE levelID=:levelID");
 			$query->execute([':levelID' => $levelID, ':desc' => $desc]);
 			$query = $db->prepare("INSERT INTO modactions (type, value, timestamp, account, value3) VALUES ('13', :value, :timestamp, :id, :levelID)");
@@ -240,8 +239,7 @@ class Commands {
 		include dirname(__FILE__)."/../lib/connection.php";
 		require_once "../lib/exploitPatch.php";
 		require_once "../lib/mainLib.php";
-		$ep = new exploitPatch();
-		$gs = new mainLib();
+				$gs = new mainLib();
 		if(substr($command, 0, 8) == '!discord'){
 			if(substr($command, 9, 6) == "accept"){
 				$query = $db->prepare("UPDATE accounts SET discordID = discordLinkReq, discordLinkReq = '0' WHERE accountID = :accountID AND discordLinkReq <> 0");

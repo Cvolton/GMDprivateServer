@@ -2,14 +2,13 @@
 include "../incl/lib/connection.php";
 require "../incl/lib/generatePass.php";
 require_once "../incl/lib/exploitPatch.php";
-$ep = new exploitPatch();
 require_once "../incl/lib/mainLib.php";
 $gs = new mainLib();
 //here im getting all the data
 $ip = $gs->getIP();
-$udid = $ep->remove($_POST["udid"]);
-$userName = $ep->remove($_POST["userName"]);
-$password = $ep->remove($_POST["password"]);
+$udid = ExploitPatch::remove($_POST["udid"]);
+$userName = ExploitPatch::remove($_POST["userName"]);
+$password = ExploitPatch::remove($_POST["password"]);
 //registering
 $query = $db->prepare("SELECT accountID FROM accounts WHERE userName LIKE :userName");
 $query->execute([':userName' => $userName]);

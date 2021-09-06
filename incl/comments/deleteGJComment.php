@@ -3,10 +3,9 @@ chdir(dirname(__FILE__));
 include "../lib/connection.php";
 require_once "../lib/GJPCheck.php";
 require_once "../lib/exploitPatch.php";
-$ep = new exploitPatch();
 require_once "../lib/mainLib.php"; //this is connection.php too
 $gs = new mainLib();
-$commentID = $ep->remove($_POST["commentID"]);
+$commentID = ExploitPatch::remove($_POST["commentID"]);
 $accountID = GJPCheck::getAccountIDOrDie();
 
 //TODO: optimize these queries, there's surely a way

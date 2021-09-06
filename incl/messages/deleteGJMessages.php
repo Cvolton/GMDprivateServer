@@ -5,11 +5,10 @@ chdir(dirname(__FILE__));
 include "../lib/connection.php";
 require_once "../lib/GJPCheck.php";
 require_once "../lib/exploitPatch.php";
-$ep = new exploitPatch();
-if(isset($_POST['messageID'])){$messageID = $ep->remove($_POST["messageID"]);}
+if(isset($_POST['messageID'])){$messageID = ExploitPatch::remove($_POST["messageID"]);}
 $accountID = GJPCheck::getAccountIDOrDie();
 if(isset($_POST['messages'])){
-	$messages = $ep->numbercolon($_POST["messages"]);
+	$messages = ExploitPatch::numbercolon($_POST["messages"]);
 	$query = $db->prepare("DELETE FROM messages WHERE messageID IN (".$messages.") AND accID=:accountID LIMIT 10");
 	$query->execute([':accountID' => $accountID]);
 	$query = $db->prepare("DELETE FROM messages WHERE messageID IN (".$messages.") AND toAccountID=:accountID LIMIT 10");

@@ -3,13 +3,12 @@ chdir(dirname(__FILE__));
 include "../lib/connection.php";
 require_once "../lib/exploitPatch.php";
 require_once "../lib/GJPCheck.php";
-$ep = new exploitPatch();
 require_once "../lib/mainLib.php";
 $gs = new mainLib();
 
 $appendix = "";
-$gjp = $ep->remove($_POST["gjp"]);
-$extid = $ep->number($_POST["targetAccountID"]);
+$gjp = ExploitPatch::remove($_POST["gjp"]);
+$extid = ExploitPatch::number($_POST["targetAccountID"]);
 $me = !empty($_POST["accountID"]) ? GJPCheck::getAccountIDOrDie() : 0;
 //checking who has blocked them
 $query = "SELECT count(*) FROM blocks WHERE (person1 = :extid AND person2 = :me) OR (person2 = :extid AND person1 = :me)";

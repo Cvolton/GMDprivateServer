@@ -5,9 +5,8 @@ require_once "../lib/GJPCheck.php";
 require_once "../lib/exploitPatch.php";
 require_once "../lib/mainLib.php";
 $mainLib = new mainLib();
-$ep = new exploitPatch();
 
-$levelID = $ep->remove($_POST["levelID"]);
+$levelID = ExploitPatch::remove($_POST["levelID"]);
 $accountID = GJPCheck::getAccountIDOrDie();
 
 if(!is_numeric($levelID)){

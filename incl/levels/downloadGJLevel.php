@@ -3,7 +3,6 @@ chdir(dirname(__FILE__));
 include "../lib/connection.php";
 require "../lib/XORCipher.php";
 require_once "../lib/exploitPatch.php";
-$ep = new exploitPatch();
 require_once "../lib/mainLib.php";
 $gs = new mainLib();
 require "../lib/generateHash.php";
@@ -11,13 +10,13 @@ require "../lib/generateHash.php";
 if(empty($_POST["gameVersion"])){
 	$gameVersion = 1;
 }else{
-	$gameVersion = $ep->remove($_POST["gameVersion"]);
+	$gameVersion = ExploitPatch::remove($_POST["gameVersion"]);
 }
 if(empty($_POST["levelID"])){
 	exit("-1");
 }
 $ip = $gs->getIP();
-$levelID = $ep->remove($_POST["levelID"]);
+$levelID = ExploitPatch::remove($_POST["levelID"]);
 $feaID = 0;
 if(!is_numeric($levelID)){
 	echo -1;
@@ -76,7 +75,7 @@ if(!is_numeric($levelID)){
 		if($gameVersion > 19 && $pass != 0){
 			$xorPass = base64_encode(XORCipher::cipher($pass,26364));
 		}else{
-			$desc = $ep->remove(base64_decode($desc));
+			$desc = ExploitPatch::remove(base64_decode($desc));
 		}
 		//submitting data
 		if(file_exists("../../data/levels/$levelID")){

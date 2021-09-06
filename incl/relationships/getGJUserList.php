@@ -4,12 +4,11 @@ chdir(dirname(__FILE__));
 include "../lib/connection.php";
 require_once "../lib/GJPCheck.php";
 require_once "../lib/exploitPatch.php";
-$ep = new exploitPatch();
 if(!isset($_POST["type"]) OR !is_numeric($_POST["type"])){
 	exit("-1");
 }
 $accountID = GJPCheck::getAccountIDOrDie();
-$type = $ep->remove($_POST["type"]);
+$type = ExploitPatch::remove($_POST["type"]);
 $people = "";
 $peoplestring = "";
 $new = array();

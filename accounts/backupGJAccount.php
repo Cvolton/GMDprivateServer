@@ -12,11 +12,10 @@ require_once "../incl/lib/exploitPatch.php";
 use Defuse\Crypto\KeyProtectedByPassword;
 use Defuse\Crypto\Crypto;
 use Defuse\Crypto\Key;*/
-$ep = new exploitPatch();
 //here im getting all the data
-$userName = $ep->remove($_POST["userName"]);
+$userName = ExploitPatch::remove($_POST["userName"]);
 $password = $_POST["password"];
-$saveData = $ep->remove($_POST["saveData"]);
+$saveData = ExploitPatch::remove($_POST["saveData"]);
 $pass = GeneratePass::isValidUsrname($userName, $password);
 if ($pass == 1) {
 	$saveDataArr = explode(";",$saveData); //splitting ccgamemanager and cclocallevels
@@ -39,7 +38,7 @@ if ($pass == 1) {
 		$saveData = str_replace("/","_",$saveData);
 		$saveData = $saveData . ";" . $saveDataArr[1]; //merging ccgamemanager and cclocallevels
 	/*}else if($cloudSaveEncryption == 1){
-		$saveData = $ep->remove($_POST["saveData"]);
+		$saveData = ExploitPatch::remove($_POST["saveData"]);
 		$protected_key = KeyProtectedByPassword::createRandomPasswordProtectedKey($password);
 		$protected_key_encoded = $protected_key->saveToAsciiSafeString();
 		$user_key = $protected_key->unlockKey($password);

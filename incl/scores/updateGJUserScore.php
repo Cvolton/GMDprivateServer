@@ -4,7 +4,6 @@ chdir(dirname(__FILE__));
 include "../lib/connection.php";
 require_once "../lib/GJPCheck.php";
 require_once "../lib/exploitPatch.php";
-$ep = new exploitPatch();
 require_once "../lib/mainLib.php";
 $gs = new mainLib();
 
@@ -15,37 +14,37 @@ if(!isset($_POST["userName"]) OR !isset($_POST["secret"]) OR !isset($_POST["star
 	exit("-1");
 }
 
-$userName = $ep->charclean($_POST["userName"]);
-$secret = $ep->remove($_POST["secret"]);
-$stars = $ep->remove($_POST["stars"]);
-$demons = $ep->remove($_POST["demons"]);
-$icon = $ep->remove($_POST["icon"]);
-$color1 = $ep->remove($_POST["color1"]);
-$color2 = $ep->remove($_POST["color2"]);
+$userName = ExploitPatch::charclean($_POST["userName"]);
+$secret = ExploitPatch::remove($_POST["secret"]);
+$stars = ExploitPatch::remove($_POST["stars"]);
+$demons = ExploitPatch::remove($_POST["demons"]);
+$icon = ExploitPatch::remove($_POST["icon"]);
+$color1 = ExploitPatch::remove($_POST["color1"]);
+$color2 = ExploitPatch::remove($_POST["color2"]);
 
-$gameVersion = !empty($_POST["gameVersion"]) ? $ep->remove($_POST["gameVersion"]) : 1;
-$binaryVersion = !empty($_POST["binaryVersion"]) ? $ep->remove($_POST["binaryVersion"]) : 1;
-$coins = !empty($_POST["coins"]) ? $ep->remove($_POST["coins"]) : 0;
-$iconType = !empty($_POST["iconType"]) ? $ep->remove($_POST["iconType"]) : 0;
-$userCoins = !empty($_POST["userCoins"]) ? $ep->remove($_POST["userCoins"]) : 0;
-$special = !empty($_POST["special"]) ? $ep->remove($_POST["special"]) : 0;
-$accIcon = !empty($_POST["accIcon"]) ? $ep->remove($_POST["accIcon"]) : 0;
-$accShip = !empty($_POST["accShip"]) ? $ep->remove($_POST["accShip"]) : 0;
-$accBall = !empty($_POST["accBall"]) ? $ep->remove($_POST["accBall"]) : 0;
-$accBird = !empty($_POST["accBird"]) ? $ep->remove($_POST["accBird"]) : 0;
-$accDart = !empty($_POST["accDart"]) ? $ep->remove($_POST["accDart"]) : 0;
-$accRobot = !empty($_POST["accRobot"]) ? $ep->remove($_POST["accRobot"]) : 0;
-$accGlow = !empty($_POST["accGlow"]) ? $ep->remove($_POST["accGlow"]) : 0;
-$accSpider = !empty($_POST["accSpider"]) ? $ep->remove($_POST["accSpider"]) : 0;
-$accExplosion = !empty($_POST["accExplosion"]) ? $ep->remove($_POST["accExplosion"]) : 0;
-$diamonds = !empty($_POST["diamonds"]) ? $ep->remove($_POST["diamonds"]) : 0;
+$gameVersion = !empty($_POST["gameVersion"]) ? ExploitPatch::remove($_POST["gameVersion"]) : 1;
+$binaryVersion = !empty($_POST["binaryVersion"]) ? ExploitPatch::remove($_POST["binaryVersion"]) : 1;
+$coins = !empty($_POST["coins"]) ? ExploitPatch::remove($_POST["coins"]) : 0;
+$iconType = !empty($_POST["iconType"]) ? ExploitPatch::remove($_POST["iconType"]) : 0;
+$userCoins = !empty($_POST["userCoins"]) ? ExploitPatch::remove($_POST["userCoins"]) : 0;
+$special = !empty($_POST["special"]) ? ExploitPatch::remove($_POST["special"]) : 0;
+$accIcon = !empty($_POST["accIcon"]) ? ExploitPatch::remove($_POST["accIcon"]) : 0;
+$accShip = !empty($_POST["accShip"]) ? ExploitPatch::remove($_POST["accShip"]) : 0;
+$accBall = !empty($_POST["accBall"]) ? ExploitPatch::remove($_POST["accBall"]) : 0;
+$accBird = !empty($_POST["accBird"]) ? ExploitPatch::remove($_POST["accBird"]) : 0;
+$accDart = !empty($_POST["accDart"]) ? ExploitPatch::remove($_POST["accDart"]) : 0;
+$accRobot = !empty($_POST["accRobot"]) ? ExploitPatch::remove($_POST["accRobot"]) : 0;
+$accGlow = !empty($_POST["accGlow"]) ? ExploitPatch::remove($_POST["accGlow"]) : 0;
+$accSpider = !empty($_POST["accSpider"]) ? ExploitPatch::remove($_POST["accSpider"]) : 0;
+$accExplosion = !empty($_POST["accExplosion"]) ? ExploitPatch::remove($_POST["accExplosion"]) : 0;
+$diamonds = !empty($_POST["diamonds"]) ? ExploitPatch::remove($_POST["diamonds"]) : 0;
 
 if(empty($_POST["udid"]) AND empty($_POST["accountID"]))
 	exit("-1");
 
 if(!empty($_POST["udid"]) AND $gameVersion < 20) 
 {
-	$id = $ep->remove($_POST["udid"]);
+	$id = ExploitPatch::remove($_POST["udid"]);
 	if(is_numeric($id)) exit("-1");
 }
 elseif(!empty($_POST["accountID"]) AND $_POST["accountID"]!="0")

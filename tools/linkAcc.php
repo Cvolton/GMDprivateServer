@@ -8,12 +8,11 @@
 include "../incl/lib/connection.php";
 require_once "../incl/lib/generatePass.php";
 require_once "../incl/lib/exploitPatch.php";
-$ep = new exploitPatch();
 if(!empty($_POST["userhere"]) AND !empty($_POST["passhere"]) AND !empty($_POST["usertarg"]) AND !empty($_POST["passtarg"])){
-	$userhere = $ep->remove($_POST["userhere"]);
-	$passhere = $ep->remove($_POST["passhere"]);
-	$usertarg = $ep->remove($_POST["usertarg"]);
-	$passtarg = $ep->remove($_POST["passtarg"]);
+	$userhere = ExploitPatch::remove($_POST["userhere"]);
+	$passhere = ExploitPatch::remove($_POST["passhere"]);
+	$usertarg = ExploitPatch::remove($_POST["usertarg"]);
+	$passtarg = ExploitPatch::remove($_POST["passtarg"]);
 	$pass = GeneratePass::isValidUsrname($userhere, $passhere);
 	//echo $pass;
 	if ($pass == 1) {

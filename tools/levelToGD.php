@@ -17,14 +17,13 @@ include "../incl/lib/connection.php";
 require "../incl/lib/XORCipher.php";
 require_once "../incl/lib/generatePass.php";
 require_once "../incl/lib/exploitPatch.php";
-$ep = new exploitPatch();
 require_once "../incl/lib/generateHash.php";
 if(!empty($_POST["userhere"]) AND !empty($_POST["passhere"]) AND !empty($_POST["usertarg"]) AND !empty($_POST["passtarg"]) AND !empty($_POST["levelID"])){
-	$userhere = $ep->remove($_POST["userhere"]);
-	$passhere = $ep->remove($_POST["passhere"]);
-	$usertarg = $ep->remove($_POST["usertarg"]);
-	$passtarg = $ep->remove($_POST["passtarg"]);
-	$levelID = $ep->remove($_POST["levelID"]);
+	$userhere = ExploitPatch::remove($_POST["userhere"]);
+	$passhere = ExploitPatch::remove($_POST["passhere"]);
+	$usertarg = ExploitPatch::remove($_POST["usertarg"]);
+	$passtarg = ExploitPatch::remove($_POST["passtarg"]);
+	$levelID = ExploitPatch::remove($_POST["levelID"]);
 	$server = trim($_POST["server"]);
 	$pass = GeneratePass::isValidUsrname($userhere, $passhere);
 	if ($pass != 1) { //verifying if valid local usr

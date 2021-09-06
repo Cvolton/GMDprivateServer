@@ -4,16 +4,15 @@ include "../lib/connection.php";
 require "../lib/XORCipher.php";
 require "../lib/generateHash.php";
 require_once "../lib/exploitPatch.php";
-$ep = new exploitPatch();
 require_once "../lib/mainLib.php";
 $gs = new mainLib();
 $usedids = array();
-$accountID = $ep->remove($_POST["accountID"]);
-$udid = $ep->remove($_POST["udid"]);
+$accountID = ExploitPatch::remove($_POST["accountID"]);
+$udid = ExploitPatch::remove($_POST["udid"]);
 if(is_numeric($udid)){
 	exit("-1");
 }
-$chk = $ep->remove($_POST["chk"]);
+$chk = ExploitPatch::remove($_POST["chk"]);
 if($accountID != 0){
 	$userID = $gs->getUserID($accountID);
 }else{
