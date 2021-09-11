@@ -105,16 +105,7 @@ if(!empty($_POST["ldm"])){
 }else{
 	$ldm = 0;
 }
-$accountID = "";
-if(!empty($_POST["udid"])){
-	$id = ExploitPatch::remove($_POST["udid"]);
-	if(is_numeric($id)){
-		exit("-1");
-	}
-}
-if(!empty($_POST["accountID"]) AND $_POST["accountID"]!="0"){
-	$id = GJPCheck::getAccountIDOrDie();
-}
+$id = $gs->getIDFromPost();
 $hostname = $gs->getIP();
 $userID = $mainLib->getUserID($id, $userName);
 $uploadDate = time();

@@ -259,7 +259,26 @@ class mainLib {
 			return $rounded." year".($rounded == 1 ? "" : "s");
 		}
 	}
+	public function getIDFromPost(){
+		include __DIR__ . "/../../config/security.php";
+		include_once __DIR . "/exploitPatch.php";
+		include_once __DIR . "/GJPCheck.php";
 
+		if(!empty($_POST["udid"]) AND $gameVersion < 20 AND $unregisteredSubmissions) 
+		{
+			$id = ExploitPatch::remove($_POST["udid"]);
+			if(is_numeric($id)) exit("-1");
+		}
+		elseif(!empty($_POST["accountID"]) AND $_POST["accountID"]!="0")
+		{
+			$id = GJPCheck::getAccountIDOrDie();
+		}
+		else
+		{
+			exit("-1");
+		}
+		return $id;
+	}
 	public function getUserID($extID, $userName = "Undefined") {
 		include __DIR__ . "/connection.php";
 		if(is_numeric($extID)){

@@ -42,20 +42,7 @@ $diamonds = !empty($_POST["diamonds"]) ? ExploitPatch::remove($_POST["diamonds"]
 if(empty($_POST["udid"]) AND empty($_POST["accountID"]))
 	exit("-1");
 
-if(!empty($_POST["udid"]) AND $gameVersion < 20) 
-{
-	$id = ExploitPatch::remove($_POST["udid"]);
-	if(is_numeric($id)) exit("-1");
-}
-elseif(!empty($_POST["accountID"]) AND $_POST["accountID"]!="0")
-{
-	$id = GJPCheck::getAccountIDOrDie();
-}
-else
-{
-	exit("-1");
-}
-
+$id = $gs->getIDFromPost();
 $userID = $gs->getUserID($id, $userName);
 $uploadDate = time();
 $hostname = $gs->getIP();

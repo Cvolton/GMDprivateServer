@@ -14,15 +14,8 @@ $comment = ($gameVersion < 20) ? base64_encode($comment) : $comment;
 $levelID = ExploitPatch::number($_POST["levelID"]);
 $percent = !empty($_POST["percent"]) ? ExploitPatch::remove($_POST["percent"]) : 0;
 
-if(!empty($_POST["accountID"]) AND $_POST["accountID"]!="0"){
-	$id = GJPCheck::getAccountIDOrDie();
-}else{
-	$id = ExploitPatch::remove($_POST["udid"]);
-	$register = 0;
-	if(is_numeric($id)){
-		exit("-1");
-	}
-}
+$id = $mainLib->getIDFromPost();
+$register = is_numeric($id);
 $userID = $mainLib->getUserID($id, $userName);
 $uploadDate = time();
 $decodecomment = base64_decode($comment);
@@ -31,9 +24,10 @@ if(Commands::doCommands($id, $decodecomment, $levelID)){
 }
 if($id != "" AND $comment != ""){
 	$query = $db->prepare("INSERT INTO comments (userName, comment, levelID, userID, timeStamp, percent) VALUES (:userName, :comment, :levelID, :userID, :uploadDate, :percent)");
-	if($register == 1){
-		$query->execute([':userName' => $userName, ':comment' => $comment, ':levelID' => $levelID, ':userID' => $userID, ':uploadDate' => $uploadDate, ':percent' => $percent]);
-		echo 1;
+	$query->execute([':userName' => $userName, ':comment' => $comment, ':levelID' => $levelID, ':userID' => $userID, ':uploadDate' => $uploadDate, ':percent' => $percent]);
+	echo 1;
+	if($register){
+		//TODO: improve this
 		if($percent != 0){
 			$query2 = $db->prepare("SELECT percent FROM levelscores WHERE accountID = :accountID AND levelID = :levelID");
 			$query2->execute([':accountID' => $id, ':levelID' => $levelID]);
@@ -48,9 +42,6 @@ if($id != "" AND $comment != ""){
 				}
 			}
 		}
-	}else{
-		$query->execute([':userName' => $userName, ':comment' => $comment, ':levelID' => $levelID, ':userID' => $userID, ':uploadDate' => $uploadDate, ':percent' => $percent]);
-		echo 1;
 	}
 }else{
 	echo -1;
