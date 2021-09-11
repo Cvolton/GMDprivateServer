@@ -360,7 +360,7 @@ class mainLib {
 		//echo $url;
 		$crl = curl_init($url);
 		$headr = array();
-		$headr['User-Agent'] = 'CvoltonGDPS (http://pi.michaelbrabec.cz:9010, 1.0)';
+		$headr['User-Agent'] = 'GMDprivateServer (https://github.com/Cvolton/GMDprivateServer, 1.0)';
 		curl_setopt($crl, CURLOPT_CUSTOMREQUEST, "POST");                                                                     
 		curl_setopt($crl, CURLOPT_POSTFIELDS, $data_string);
 		$headr[] = 'Content-type: application/json';
@@ -378,7 +378,7 @@ class mainLib {
 		//echo $url;
 		$crl = curl_init($url);
 		$headr = array();
-		$headr['User-Agent'] = 'CvoltonGDPS (http://pi.michaelbrabec.cz:9010, 1.0)';
+		$headr['User-Agent'] = 'GMDprivateServer (https://github.com/Cvolton/GMDprivateServer, 1.0)';
 		curl_setopt($crl, CURLOPT_CUSTOMREQUEST, "POST");                                                                     
 		curl_setopt($crl, CURLOPT_POSTFIELDS, $data_string);
 		$headr[] = 'Content-type: application/json';
@@ -395,7 +395,7 @@ class mainLib {
 		$url = "https://discord.com/api/v8/users/".$discordID;
 		$crl = curl_init($url);
 		$headr = array();
-		$headr['User-Agent'] = 'CvoltonGDPS (http://pi.michaelbrabec.cz:9010, 1.0)';
+		$headr['User-Agent'] = 'GMDprivateServer (https://github.com/Cvolton/GMDprivateServer, 1.0)';
 		$headr[] = 'Content-type: application/json';
 		$headr[] = 'Authorization: Bot '.$bottoken;
 		curl_setopt($crl, CURLOPT_HTTPHEADER,$headr);

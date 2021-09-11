@@ -5,12 +5,7 @@
 <body>
 <?php
 function chkarray($source){
-	if($source == ""){
-		$target = "0";
-	}else{
-		$target = $source;
-	}
-	return $target;
+	return $source == "" ? "0" : $target;
 }
 //error_reporting(0);
 include "../incl/lib/connection.php";
@@ -60,12 +55,13 @@ if(!empty($_POST["userhere"]) AND !empty($_POST["passhere"]) AND !empty($_POST["
 		}
 		exit("<br>Error code: $result");
 	}
-	if(!is_numeric($levelID)){ //checking if lvlid is numeric cuz exploits
+	if(!is_numeric($levelID)){ //checking if the level id is numeric due to possible exploits
 		exit("Invalid levelID");
 	}
-	$levelString = file_get_contents("../data/levels/$levelID"); //generating seed2
+	//TODO: move all file_get_contents calls like this to a separate function
+	$levelString = file_get_contents("../data/levels/$levelID");
 	$seed2 = base64_encode(XORCipher::cipher(GenerateHash::genSeed2noXor($levelString),41274));
-	$accountID = explode(",",$result)[0]; //and finally reuploading
+	$accountID = explode(",",$result)[0];
 	$gjp = base64_encode(XORCipher::cipher($passtarg,37526));
 	$post = ['gameVersion' => $levelInfo["gameVersion"], 
 	'binaryVersion' => $levelInfo["binaryVersion"], 
@@ -117,7 +113,7 @@ if(!empty($_POST["userhere"]) AND !empty($_POST["passhere"]) AND !empty($_POST["
 	echo "Level reuploaded - $result";
 }else{
 	echo '<form action="levelToGD.php" method="post">Your password for the target server is NOT saved, it\'s used for one-time verification purposes only.
-	<h3>CvoltonGDPS</h3>Username: <input type="text" name="userhere"><br>
+	<h3>This server</h3>Username: <input type="text" name="userhere"><br>
 	Password: <input type="password" name="passhere"><br>
 	Level ID: <input type="text" name="levelID"><br>
 	<h3>Target server</h3>Username: <input type="text" name="usertarg"><br>
