@@ -350,7 +350,7 @@ class mainLib {
 	}
 	public function sendDiscordPM($receiver, $message){
 		include __DIR__ . "/../../config/discord.php";
-		if($discordEnabled != 1){
+		if(!$discordEnabled){
 			return false;
 		}
 		//findind the channel id

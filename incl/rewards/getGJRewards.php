@@ -50,9 +50,12 @@ $chk = XORCipher::cipher(base64_decode(substr($chk, 5)),59182);
 	$chest2time = $user["chest2time"];
 	$chest1diff = $currenttime - $chest1time;
 	$chest2diff = $currenttime - $chest2time;
+
+	$chest1items = isset($chest1items)) ? $chest1items : [1, 2, 3, 4, 5, 6];
+	$chest2items = isset($chest2items)) ? $chest2items : [1, 2, 3, 4, 5, 6];
 	//stuff
-	$chest1stuff = rand($chest1minOrbs, $chest1maxOrbs).",".rand($chest1minDiamonds, $chest1maxDiamonds).",".rand($chest1minShards, $chest1maxShards).",".rand($chest1minKeys, $chest1maxKeys)."";
-	$chest2stuff = rand($chest2minOrbs, $chest2maxOrbs).",".rand($chest2minDiamonds, $chest2maxDiamonds).",".rand($chest2minShards, $chest2maxShards).",".rand($chest2minKeys, $chest2maxKeys)."";
+	$chest1stuff = rand($chest1minOrbs, $chest1maxOrbs).",".rand($chest1minDiamonds, $chest1maxDiamonds).",".$chest1items[array_rand($chest1items)].",".rand($chest1minKeys, $chest1maxKeys)."";
+	$chest2stuff = rand($chest2minOrbs, $chest2maxOrbs).",".rand($chest2minDiamonds, $chest2maxDiamonds).",".$chest1items[array_rand($chest1items)].",".rand($chest2minKeys, $chest2maxKeys)."";
 	//echo $chest1diff ."sakujesvole".$chest2diff;
 	$chest1left = max(0,$chest1wait - $chest1diff);
 	$chest2left = max(0,$chest2wait - $chest2diff);
