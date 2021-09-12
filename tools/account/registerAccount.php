@@ -35,8 +35,8 @@ if(!empty($_POST["username"]) AND !empty($_POST["email"]) AND !empty($_POST["rep
 			}else{
 				// hashing your password and registering your account
 				$hashpass = password_hash($password, PASSWORD_DEFAULT);
-				$query2 = $db->prepare("INSERT INTO accounts (userName, password, email, secret, registerDate)
-				VALUES (:userName, :password, :email, :secret, :time)");
+				$query2 = $db->prepare("INSERT INTO accounts (userName, password, email, registerDate)
+				VALUES (:userName, :password, :email, :time)");
 				$query2->execute([':userName' => $username, ':password' => $hashpass, ':email' => $email, ':secret' => $secret, ':time' => time()]);
 				// there you go, you are registered.
 				echo "<body style='background-color:grey;'>Account registred. No e-mail verification required, you can login. <a href='..'>Go back to tools</a></body>";
