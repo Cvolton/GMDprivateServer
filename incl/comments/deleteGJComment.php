@@ -8,7 +8,6 @@ $gs = new mainLib();
 $commentID = ExploitPatch::remove($_POST["commentID"]);
 $accountID = GJPCheck::getAccountIDOrDie();
 
-//TODO: optimize these queries, there's surely a way
 $userID = $gs->getUserID($accountID);
 $query = $db->prepare("DELETE FROM comments WHERE commentID=:commentID AND userID=:userID LIMIT 1");
 $query->execute([':commentID' => $commentID, ':userID' => $userID]);
