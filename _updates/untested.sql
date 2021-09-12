@@ -6,3 +6,4 @@ ALTER TABLE `accounts` DROP `blocked`;
 ALTER TABLE `accounts` DROP `saveKey`;
 ALTER TABLE `accounts` DROP `saveData`;
 ALTER TABLE `accounts` DROP `userID`;
+ALTER TABLE `accounts` DROP `secret`;

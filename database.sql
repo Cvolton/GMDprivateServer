@@ -49,7 +49,6 @@ CREATE TABLE `accounts` (
   `userName` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `password` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `email` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `secret` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'unused',
   `accountID` int(11) NOT NULL,
   `isAdmin` int(11) NOT NULL DEFAULT 0,
   `mS` int(11) NOT NULL DEFAULT 0,
