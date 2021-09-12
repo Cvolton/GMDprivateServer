@@ -1,15 +1,14 @@
 <?php
 include "../../incl/lib/connection.php";
 require "../../incl/lib/exploitPatch.php";
-$exploit_patch = new exploitPatch();
 // here begins the checks
 if(!empty($_POST["username"]) AND !empty($_POST["email"]) AND !empty($_POST["repeatemail"]) AND !empty($_POST["password"]) AND !empty($_POST["repeatpassword"])){
 	// catching all the input
-	$username = $exploit_patch->remove($_POST["username"]);
-	$password = $exploit_patch->remove($_POST["password"]);
-	$repeat_password = $exploit_patch->remove($_POST["repeatpassword"]);
-	$email = $exploit_patch->remove($_POST["email"]);
-	$repeat_email = $exploit_patch->remove($_POST["repeatemail"]);
+	$username = ExploitPatch::remove($_POST["username"]);
+	$password = ExploitPatch::remove($_POST["password"]);
+	$repeat_password = ExploitPatch::remove($_POST["repeatpassword"]);
+	$email = ExploitPatch::remove($_POST["email"]);
+	$repeat_email = ExploitPatch::remove($_POST["repeatemail"]);
 	$secret = "";
 	if(strlen($username) < 3){
 		// choose a longer username
