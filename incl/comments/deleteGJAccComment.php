@@ -8,12 +8,7 @@ $gs = new mainLib();
 $commentID = ExploitPatch::remove($_POST["commentID"]);
 $accountID = GJPCheck::getAccountIDOrDie();
 
-//TODO: replace this with the respective MainLib function
-$query2 = $db->prepare("SELECT userID FROM users WHERE extID = :accountID");
-$query2->execute([':accountID' => $accountID]);
-if ($query2->rowCount() > 0) {
-	$userID = $query2->fetchColumn();
-}
+$userID = $gs->getUserID($accountID);
 if($gs->checkPermission($accountID, "actionDeleteComment") == 1) {
 	$query = $db->prepare("DELETE FROM acccomments WHERE commentID = :commentID LIMIT 1");
 	$query->execute([':commentID' => $commentID]);
