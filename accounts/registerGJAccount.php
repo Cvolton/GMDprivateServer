@@ -15,8 +15,8 @@ if($_POST["userName"] != ""){
 		echo "-2";
 	}else{
 		$hashpass = password_hash($password, PASSWORD_DEFAULT);
-		$query = $db->prepare("INSERT INTO accounts (userName, password, email, secret, saveData, registerDate, saveKey)
-		VALUES (:userName, :password, :email, :secret, '', :time, '')");
+		$query = $db->prepare("INSERT INTO accounts (userName, password, email, secret, registerDate)
+		VALUES (:userName, :password, :email, :secret, :time)");
 		$query->execute([':userName' => $userName, ':password' => $hashpass, ':email' => $email, ':secret' => $secret, ':time' => time()]);
 		echo "1";
 	}

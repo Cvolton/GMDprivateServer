@@ -19,14 +19,8 @@ if ($pass == 1) {
 	$query->execute([':userName' => $userName]);
 	$account = $query->fetch();
 	$accountID = $account["accountID"];
-	if(!is_numeric($accountID)){
+	if(!is_numeric($accountID) || !file_exists("../data/accounts/$accountID")){
 		exit("-1");
-	}
-	if(!file_exists("../data/accounts/$accountID")){
-			$saveData = $account["saveData"];
-		if(substr($saveData,0,4) == "SDRz"){
-			$saveData = base64_decode($saveData);
-		}
 	}else{
 		$saveData = file_get_contents("../data/accounts/$accountID");
 		if(file_exists("../data/accounts/keys/$accountID") && substr($saveData,0,3) != "H4s"){

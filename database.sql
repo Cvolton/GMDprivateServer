@@ -51,12 +51,7 @@ CREATE TABLE `accounts` (
   `email` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `secret` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'unused',
   `accountID` int(11) NOT NULL,
-  `saveData` longtext COLLATE utf8_unicode_ci NOT NULL,
   `isAdmin` int(11) NOT NULL DEFAULT 0,
-  `userID` int(11) NOT NULL DEFAULT 0,
-  `friends` varchar(1024) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'unused',
-  `blockedBy` varchar(1024) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'unused',
-  `blocked` varchar(1024) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'unused',
   `mS` int(11) NOT NULL DEFAULT 0,
   `frS` int(11) NOT NULL DEFAULT 0,
   `cS` int(11) NOT NULL DEFAULT 0,
@@ -66,7 +61,6 @@ CREATE TABLE `accounts` (
   `salt` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
   `registerDate` int(11) NOT NULL DEFAULT 0,
   `friendsCount` int(11) NOT NULL DEFAULT 0,
-  `saveKey` blob NOT NULL,
   `discordID` bigint(20) NOT NULL DEFAULT 0,
   `discordLinkReq` bigint(20) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
