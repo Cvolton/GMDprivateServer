@@ -9,7 +9,6 @@ if(!empty($_POST["username"]) AND !empty($_POST["email"]) AND !empty($_POST["rep
 	$repeat_password = ExploitPatch::remove($_POST["repeatpassword"]);
 	$email = ExploitPatch::remove($_POST["email"]);
 	$repeat_email = ExploitPatch::remove($_POST["repeatemail"]);
-	$secret = "";
 	if(strlen($username) < 3){
 		// choose a longer username
 		echo '<body style="background-color:grey;">Username should be more than 3 characters.<br><br><form action="registerAccount.php" method="post">Username: <input type="text" name="username" maxlength=15><br>Password: <input type="password" name="password" maxlength=20><br>Repeat Password: <input type="password" name="repeatpassword" maxlength=20><br>Email: <input type="email" name="email" maxlength=50><br>Repeat Email: <input type="email" name="repeatemail" maxlength=50><br><input type="submit" value="Register"></form></body>';
@@ -36,7 +35,7 @@ if(!empty($_POST["username"]) AND !empty($_POST["email"]) AND !empty($_POST["rep
 				$hashpass = password_hash($password, PASSWORD_DEFAULT);
 				$query2 = $db->prepare("INSERT INTO accounts (userName, password, email, registerDate)
 				VALUES (:userName, :password, :email, :time)");
-				$query2->execute([':userName' => $username, ':password' => $hashpass, ':email' => $email, ':secret' => $secret, ':time' => time()]);
+				$query2->execute([':userName' => $username, ':password' => $hashpass, ':email' => $email,':time' => time()]);
 				// there you go, you are registered.
 				echo "<body style='background-color:grey;'>Account registred. No e-mail verification required, you can login. <a href='..'>Go back to tools</a></body>";
 			}
