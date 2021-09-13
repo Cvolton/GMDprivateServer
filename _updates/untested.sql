@@ -7,3 +7,5 @@ ALTER TABLE `accounts` DROP `saveKey`;
 ALTER TABLE `accounts` DROP `saveData`;
 ALTER TABLE `accounts` DROP `userID`;
 ALTER TABLE `accounts` DROP `secret`;
+
+ALTER TABLE `accounts` ADD `isActive` BOOLEAN NOT NULL DEFAULT FALSE AFTER `discordLinkReq`;

@@ -62,6 +62,7 @@ CREATE TABLE `accounts` (
   `friendsCount` int(11) NOT NULL DEFAULT 0,
   `discordID` bigint(20) NOT NULL DEFAULT 0,
   `discordLinkReq` bigint(20) NOT NULL DEFAULT 0
+  `isActive` BOOLEAN NOT NULL DEFAULT FALSE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
