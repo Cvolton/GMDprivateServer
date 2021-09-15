@@ -15,10 +15,9 @@ $password = $_POST["password"];
 $secret = "";
 $pass = GeneratePass::isValidUsrname($userName, $password);
 if ($pass == 1) {
-	$query = $db->prepare("select accountID, saveData from accounts where userName = :userName");
+	$query = $db->prepare("SELECT accountID FROM accounts WHERE userName = :userName");
 	$query->execute([':userName' => $userName]);
-	$account = $query->fetch();
-	$accountID = $account["accountID"];
+	$accountID = $query->fetchColumn();
 	if(!is_numeric($accountID) || !file_exists("../data/accounts/$accountID")){
 		exit("-1");
 	}else{
