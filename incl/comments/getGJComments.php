@@ -27,11 +27,14 @@ if(isset($_POST['levelID'])){
 	$filterColumn = 'levelID';
 	$displayLevelID = false;
 	$filterID = ExploitPatch::remove($_POST["levelID"]);
+	$userListJoin = $userListWhere = "";
 }
 elseif(isset($_POST['userID'])){
 	$filterColumn = 'userID';
 	$displayLevelID = true;
 	$filterID = ExploitPatch::remove($_POST["userID"]);
+	$userListJoin = "INNER JOIN levels ON comments.levelID = levels.levelID";
+	$userListWhere = "AND levels.unlisted = 0";
 }
 else
 	exit(-1);
@@ -44,7 +47,8 @@ if($commentcount == 0){
 	exit("-2");
 }
 
-$query = "SELECT comments.levelID, comments.commentID, comments.timestamp, comments.comment, comments.userID, comments.likes, comments.isSpam, comments.percent, users.userName, users.icon, users.color1, users.color2, users.iconType, users.special, users.extID FROM comments LEFT JOIN users ON comments.userID = users.userID WHERE comments.${filterColumn} = :filterID ORDER BY comments.${modeColumn} DESC LIMIT ${count} OFFSET ${commentpage}";
+
+$query = "SELECT comments.levelID, comments.commentID, comments.timestamp, comments.comment, comments.userID, comments.likes, comments.isSpam, comments.percent, users.userName, users.icon, users.color1, users.color2, users.iconType, users.special, users.extID FROM comments LEFT JOIN users ON comments.userID = users.userID ${userListAdditional} WHERE comments.${filterColumn} = :filterID ${userListWhere} ORDER BY comments.${modeColumn} DESC LIMIT ${count} OFFSET ${commentpage}";
 $query = $db->prepare($query);
 $query->execute([':filterID' => $filterID]);
 $result = $query->fetchAll();
