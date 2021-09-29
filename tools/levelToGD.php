@@ -118,12 +118,12 @@ if(!empty($_POST["userhere"]) AND !empty($_POST["passhere"]) AND !empty($_POST["
 	Level ID: <input type="text" name="levelID"><br>
 	<h3>Target server</h3>Username: <input type="text" name="usertarg"><br>
 	Password: <input type="password" name="passtarg"><br>
-	URL (dont change if you dont know what youre doing): <input type="text" name="server" value="http://www.boomlings.com/database/"><br>
-	Debug Mode (0=off, 1=on): <input type="text" name="debug" value="0"><br>
-	<input type="submit" value="Reupload"></form><br>Alternative servers to reupload to:<br>
-	http://www.boomlings.com/database/ - Robtops server<br>
-	http://pi.michaelbrabec.cz:9010/a/ - CvoltonGDPS<br>
-	http://teamhax.altervista.org/dbh/ - TeamHax GDPS';
+	<details>
+		<summary>Advanced options</summary>
+		URL: <input type="text" name="server" value="http://www.boomlings.com/database/"><br>
+		Debug Mode (0=off, 1=on): <input type="text" name="debug" value="0"><br>
+	</details>
+	<input type="submit" value="Reupload"></form>';
 }
 ?>
 </body>
