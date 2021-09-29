@@ -38,7 +38,7 @@ $string["reuploadBTN"] = "Reuploadovat";
 $string["errorGeneric"] = "Došlo k chybě:";
 $string["tryAgainBTN"] = "Zkusit znovu";
 //songAdd.php
-$string["songAddUrlFieldLabel"] = "Adresa URL Songu: (Pouze přímý odkaz, odkaz na Dropbox nebo na Soundcloud)";
+$string["songAddUrlFieldLabel"] = "Adresa URL Songu: (Pouze přímý odkaz nebo odkaz na Dropbox)";
 $string["songAddUrlFieldPlaceholder"] = "Adresa URL Songu";
 $string["songAddAnotherBTN"] = "Další song";
 ///errors

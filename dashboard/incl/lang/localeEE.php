@@ -38,7 +38,7 @@ $string["reuploadBTN"] = "Reupload";
 $string["errorGeneric"] = "Tekkis viga:";
 $string["tryAgainBTN"] = "Proovi jälle";
 //songAdd.php
-$string["songAddUrlFieldLabel"] = "Laulu URL: (Direct, Dropbox või Soundcloud lingid ainult)";
+$string["songAddUrlFieldLabel"] = "Laulu URL: (Direct või Dropbox lingid ainult)";
 $string["songAddUrlFieldPlaceholder"] = "LauluURL";
 $string["songAddAnotherBTN"] = "Teine laul";
 ///errors

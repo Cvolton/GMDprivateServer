@@ -650,33 +650,13 @@ class mainLib {
 	}
 	public function songReupload($url){
 		require __DIR__ . "/../../incl/lib/connection.php";
-		require __DIR__ . "/../../incl/lib/exploitPatch.php";
-		include __DIR__ . "/../../config/songAdd.php";
-				$song = str_replace("www.dropbox.com","dl.dropboxusercontent.com",$url);
-		if (filter_var($song, FILTER_VALIDATE_URL) == TRUE) {
-			if(strpos($song, 'soundcloud.com') !== false){
-				$songinfo = file_get_contents("https://api.soundcloud.com/resolve.json?url=".$song."&client_id=".$api_key);
-				$array = json_decode($songinfo);
-				if($array->downloadable == true){
-					$song = trim($array->download_url . "?client_id=".$api_key);
-					$name = ExploitPatch::remove($array->title);
-					$author = $array->user->username;
-					$author = preg_replace("/[^A-Za-z0-9 ]/", '', $author);
-				}else{
-					if(!$array->id){
-						return "-4";
-					}
-					$song = trim("https://api.soundcloud.com/tracks/".$array->id."/stream?client_id=".$api_key);
-					$name = ExploitPatch::remove($array->title);
-					$author = $array->user->username;
-					$author = preg_replace("/[^A-Za-z0-9 ]/", '', $author);
-				}
-			}else{
-				$song = str_replace(["?dl=0","?dl=1"],"",$song);
-				$song = trim($song);
-				$name = ExploitPatch::remove(urldecode(str_replace([".mp3",".webm",".mp4",".wav"], "", basename($song))));
-				$author = "Reupload";
-			}
+		require_once __DIR__ . "/../../incl/lib/exploitPatch.php";
+		$song = str_replace("www.dropbox.com","dl.dropboxusercontent.com",$url);
+		if (filter_var($song, FILTER_VALIDATE_URL) == TRUE && substr($song, 0, 4) == "http") {
+			$song = str_replace(["?dl=0","?dl=1"],"",$song);
+			$song = trim($song);
+			$name = ExploitPatch::remove(urldecode(str_replace([".mp3",".webm",".mp4",".wav"], "", basename($song))));
+			$author = "Reupload";
 			$size = $this->getFileSize($song);
 			$size = round($size / 1024 / 1024, 2);
 			$hash = "";

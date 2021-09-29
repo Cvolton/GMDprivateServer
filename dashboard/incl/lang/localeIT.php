@@ -38,7 +38,7 @@ $string["reuploadBTN"] = "Reupload";
 $string["errorGeneric"] = "Si è verificato un errore:";
 $string["tryAgainBTN"] = "Riprova";
 //songAdd.php
-$string["songAddUrlFieldLabel"] = "URL canzone (solo link Direct, Dropbox or Soundcloud)";
+$string["songAddUrlFieldLabel"] = "URL canzone (solo link Direct or Dropbox)";
 $string["songAddUrlFieldPlaceholder"] = "URL canzone";
 $string["songAddAnotherBTN"] = "Altra canzone";
 ///errors

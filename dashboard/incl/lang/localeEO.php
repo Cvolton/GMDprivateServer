@@ -38,7 +38,7 @@ $string["reuploadBTN"] = "Re Alŝuti";
 $string["errorGeneric"] = "Eraro Havas Okazita:";
 $string["tryAgainBTN"] = "Provu Denove";
 //songAdd.php
-$string["songAddUrlFieldLabel"] = "Kanto URL: (Rekta Ligilo, Dropbox aŭ Soundcloud nur)";
+$string["songAddUrlFieldLabel"] = "Kanto URL: (Rekta Ligilo aŭ Dropbox nur)";
 $string["songAddUrlFieldPlaceholder"] = "Kanto URL";
 $string["songAddAnotherBTN"] = "Alia Kanto";
 ///errors
