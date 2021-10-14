@@ -37,14 +37,11 @@ if($query2->rowCount() == 0) {
 		$query = $db->prepare("SELECT count(*) FROM levelscores WHERE percent=:percent AND uploadDate=:uploadDate AND accountID=:accountID AND levelID=:levelID AND coins = :coins AND attempts = :attempts");
 	}
 }
-$GJPCheck = new GJPCheck();
-$gjpresult = $GJPCheck->check($gjp,$accountID);
-if($gjpresult == 1){
-	$query->execute([':accountID' => $accountID, ':levelID' => $levelID, ':percent' => $percent, ':uploadDate' => $uploadDate, ':coins' => $coins, ':attempts' => $attempts]);
-	if($percent > 100){
-		$query = $db->prepare("UPDATE users SET isBanned=1 WHERE extID = :accountID");
-		$query->execute([':accountID' => $accountID]);
-	}
+
+$query->execute([':accountID' => $accountID, ':levelID' => $levelID, ':percent' => $percent, ':uploadDate' => $uploadDate, ':coins' => $coins, ':attempts' => $attempts]);
+if($percent > 100){
+	$query = $db->prepare("UPDATE users SET isBanned=1 WHERE extID = :accountID");
+	$query->execute([':accountID' => $accountID]);
 }
 
 
