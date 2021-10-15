@@ -1,16 +1,20 @@
 <?php
+include "../../config/security.php";
 include "../../incl/lib/connection.php";
 require "../../incl/lib/exploitPatch.php";
-$exploit_patch = new exploitPatch();
+
+if(!isset($preactivateAccounts)){
+	$preactivateAccounts = true;
+}
+
 // here begins the checks
 if(!empty($_POST["username"]) AND !empty($_POST["email"]) AND !empty($_POST["repeatemail"]) AND !empty($_POST["password"]) AND !empty($_POST["repeatpassword"])){
 	// catching all the input
-	$username = $exploit_patch->remove($_POST["username"]);
-	$password = $exploit_patch->remove($_POST["password"]);
-	$repeat_password = $exploit_patch->remove($_POST["repeatpassword"]);
-	$email = $exploit_patch->remove($_POST["email"]);
-	$repeat_email = $exploit_patch->remove($_POST["repeatemail"]);
-	$secret = "";
+	$username = ExploitPatch::remove($_POST["username"]);
+	$password = ExploitPatch::remove($_POST["password"]);
+	$repeat_password = ExploitPatch::remove($_POST["repeatpassword"]);
+	$email = ExploitPatch::remove($_POST["email"]);
+	$repeat_email = ExploitPatch::remove($_POST["repeatemail"]);
 	if(strlen($username) < 3){
 		// choose a longer username
 		echo '<body style="background-color:grey;">Username should be more than 3 characters.<br><br><form action="registerAccount.php" method="post">Username: <input type="text" name="username" maxlength=15><br>Password: <input type="password" name="password" maxlength=20><br>Repeat Password: <input type="password" name="repeatpassword" maxlength=20><br>Email: <input type="email" name="email" maxlength=50><br>Repeat Email: <input type="email" name="repeatemail" maxlength=50><br><input type="submit" value="Register"></form></body>';
@@ -35,11 +39,12 @@ if(!empty($_POST["username"]) AND !empty($_POST["email"]) AND !empty($_POST["rep
 			}else{
 				// hashing your password and registering your account
 				$hashpass = password_hash($password, PASSWORD_DEFAULT);
-				$query2 = $db->prepare("INSERT INTO accounts (userName, password, email, secret, saveData, registerDate, saveKey)
-				VALUES (:userName, :password, :email, :secret, '', :time, '')");
-				$query2->execute([':userName' => $username, ':password' => $hashpass, ':email' => $email, ':secret' => $secret, ':time' => time()]);
+				$query2 = $db->prepare("INSERT INTO accounts (userName, password, email, registerDate, isActive)
+				VALUES (:userName, :password, :email, :time, :isActive)");
+				$query2->execute([':userName' => $username, ':password' => $hashpass, ':email' => $email,':time' => time(), ':isActive' => $preactivateAccounts ? 1 : 0]);
 				// there you go, you are registered.
-				echo "<body style='background-color:grey;'>Account registred. No e-mail verification required, you can login. <a href='..'>Go back to tools</a></body>";
+				$activationInfo = $preactivateAccounts ? "No e-mail verification required, you can login." : "<a href='activateAccount.php'>Click here to activate it.</a>";
+				echo "<body style='background-color:grey;'>Account registred. ${activationInfo} <a href='..'>Go back to tools</a></body>";
 			}
 		}
 	}

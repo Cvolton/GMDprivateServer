@@ -4,16 +4,14 @@ require "../incl/lib/generatePass.php";
 require "../incl/lib/exploitPatch.php";
 require "../incl/lib/mainLib.php";
 $gs = new mainLib();
-$ep = new exploitPatch();
 if(!empty($_POST["userName"]) AND !empty($_POST["password"]) AND !empty($_POST["type"]) AND !empty($_POST["amount"]) AND !empty($_POST["reward"]) AND !empty($_POST["names"])){
-	$userName = $ep->remove($_POST["userName"]);
-	$password = $ep->remove($_POST["password"]);
-	$type = $ep->number($_POST["type"]);
-	$amount = $ep->number($_POST["amount"]);
-    $reward = $ep->number($_POST["reward"]);
-    $name = $ep->remove($_POST["names"]);
-	$generatePass = new generatePass();
-	$pass = $generatePass->isValidUsrname($userName, $password);
+	$userName = ExploitPatch::remove($_POST["userName"]);
+	$password = ExploitPatch::remove($_POST["password"]);
+	$type = ExploitPatch::number($_POST["type"]);
+	$amount = ExploitPatch::number($_POST["amount"]);
+    $reward = ExploitPatch::number($_POST["reward"]);
+    $name = ExploitPatch::remove($_POST["names"]);
+	$pass = GeneratePass::isValidUsrname($userName, $password);
 	if ($pass == 1) {
 		$query = $db->prepare("SELECT accountID FROM accounts WHERE userName=:userName");	
 		$query->execute([':userName' => $userName]);

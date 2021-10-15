@@ -4,12 +4,9 @@ chdir(dirname(__FILE__));
 include "../lib/connection.php";
 require_once "../lib/GJPCheck.php";
 require_once "../lib/exploitPatch.php";
-$ep = new exploitPatch();
 require_once "../lib/mainLib.php";
 $gs = new mainLib();
-$GJPCheck = new GJPCheck();
 require "../lib/generateHash.php";
-$hash = new generateHash();
 
 //initializing variables
 $lvlstring = ""; $userstring = ""; $songsstring = ""; $lvlsmultistring = []; $str = ""; $order = "uploadDate";
@@ -17,7 +14,7 @@ $orderenabled = true; $ordergauntlet = false;
 $params = array("NOT unlisted = 1");
 
 if(!empty($_POST["gameVersion"])){
-	$gameVersion = $ep->number($_POST["gameVersion"]);
+	$gameVersion = ExploitPatch::number($_POST["gameVersion"]);
 }else{
 	$gameVersion = 0;
 }
@@ -25,18 +22,18 @@ if(!is_numeric($gameVersion)){
 	exit("-1");
 }
 if($gameVersion == 20){
-	$binaryVersion = $ep->number($_POST["binaryVersion"]);
+	$binaryVersion = ExploitPatch::number($_POST["binaryVersion"]);
 	if($binaryVersion > 27){
 		$gameVersion++;
 	}
 }
 if(!empty($_POST["type"])){
-	$type = $ep->number($_POST["type"]);
+	$type = ExploitPatch::number($_POST["type"]);
 }else{
 	$type = 0;
 }
 if(!empty($_POST["diff"])){
-	$diff = $ep->numbercolon($_POST["diff"]);
+	$diff = ExploitPatch::numbercolon($_POST["diff"]);
 }else{
 	$diff = "-";
 }
@@ -61,20 +58,20 @@ if(!empty($_POST["epic"]) AND $_POST["epic"]==1){
 	$params[] = "starEpic = 1";
 }
 if(!empty($_POST["uncompleted"]) AND $_POST["uncompleted"]==1){
-	$completedLevels = $ep->numbercolon($_POST["completedLevels"]);
+	$completedLevels = ExploitPatch::numbercolon($_POST["completedLevels"]);
 	$params[] = "NOT levelID IN ($completedLevels)";
 }
 if(!empty($_POST["onlyCompleted"]) AND $_POST["onlyCompleted"]==1){
-	$completedLevels = $ep->numbercolon($_POST["completedLevels"]);
+	$completedLevels = ExploitPatch::numbercolon($_POST["completedLevels"]);
 	$params[] = "levelID IN ($completedLevels)";
 }
 if(!empty($_POST["song"])){
 	if(empty($_POST["customSong"])){
-		$song = $ep->number($_POST["song"]);
+		$song = ExploitPatch::number($_POST["song"]);
 		$song = $song -1;
 		$params[] = "audioTrack = '$song' AND songID = 0";
 	}else{
-		$song = $ep->number($_POST["song"]);
+		$song = ExploitPatch::number($_POST["song"]);
 		$params[] = "songID = '$song'";
 	}
 }
@@ -90,7 +87,7 @@ if(!empty($_POST["noStar"])){
 if(!empty($_POST["gauntlet"])){
 	$ordergauntlet = true;
 	$order = "starStars";
-	$gauntlet = $ep->remove($_POST["gauntlet"]);
+	$gauntlet = ExploitPatch::remove($_POST["gauntlet"]);
 	$query=$db->prepare("SELECT * FROM gauntlets WHERE ID = :gauntlet");
 	$query->execute([':gauntlet' => $gauntlet]);
 	$actualgauntlet = $query->fetch();
@@ -99,7 +96,7 @@ if(!empty($_POST["gauntlet"])){
 	$type = -1;
 }
 if(!empty($_POST["len"])){
-	$len = $ep->numbercolon($_POST["len"]);
+	$len = ExploitPatch::numbercolon($_POST["len"]);
 }else{
 	$len = "-";
 }
@@ -117,7 +114,7 @@ switch($diff){
 		break;
 	case -2:
 		if(!empty($_POST["demonFilter"])){
-			$demonFilter = $ep->number($_POST["demonFilter"]);
+			$demonFilter = ExploitPatch::number($_POST["demonFilter"]);
 		}else{
 			$demonFilter = 0;
 		}
@@ -152,11 +149,12 @@ switch($diff){
 		break;
 }
 //TYPE DETECTION
+//TODO: the 2 non-friend types that send GJP in 2.11
 if(!empty($_POST["str"])){
-	$str = $ep->remove($_POST["str"]);
+	$str = ExploitPatch::remove($_POST["str"]);
 }
 if(isset($_POST["page"]) AND is_numeric($_POST["page"])){
-	$offset = $ep->number($_POST["page"]) . "0";
+	$offset = ExploitPatch::number($_POST["page"]) . "0";
 }else{
 	$offset = 0;
 }
@@ -207,18 +205,14 @@ switch($type){
 		$order = "rateDate DESC,uploadDate";
 		break;
 	case 12: //FOLLOWED
-		$followed = $ep->numbercolon($_POST["followed"]);
+		$followed = ExploitPatch::numbercolon($_POST["followed"]);
 		$params[] = "users.extID IN ($followed)";
 		break;
 	case 13: //FRIENDS
-		$accountID = $ep->remove($_POST["accountID"]);
-		$gjp = $ep->remove($_POST["gjp"]);
-		$gjpresult = $GJPCheck->check($gjp,$accountID);
-		if($gjpresult == 1){
-			$peoplearray = $gs->getFriends($accountID);
-			$whereor = implode(",", $peoplearray);
-			$params[] = "users.extID IN ($whereor)";
-		}
+		$accountID = GJPCheck::getAccountIDOrDie();
+		$peoplearray = $gs->getFriends($accountID);
+		$whereor = implode(",", $peoplearray);
+		$params[] = "users.extID IN ($whereor)";
 		break;
 }
 //ACTUAL QUERY EXECUTION
@@ -271,5 +265,5 @@ if($gameVersion > 18){
 }
 echo "#".$totallvlcount.":".$offset.":10";
 echo "#";
-echo $hash->genMulti($lvlsmultistring);
+echo GenerateHash::genMulti($lvlsmultistring);
 ?>

@@ -7,22 +7,16 @@ $GJPCheck = new GJPCheck();
 require_once "../lib/exploitPatch.php";
 require_once "../lib/mainLib.php";
 $mainLib = new mainLib();
-$ep = new exploitPatch();
 //here im getting all the data
-$levelDesc = $ep->remove($_POST["levelDesc"]);
-$levelID = $ep->remove($_POST["levelID"]);
+$levelDesc = ExploitPatch::remove($_POST["levelDesc"]);
+$levelID = ExploitPatch::remove($_POST["levelID"]);
 if (isset($_POST['udid']) && !empty($_POST['udid'])) {
-	$id = $ep->remove($_POST["udid"]);
+	$id = ExploitPatch::remove($_POST["udid"]);
 	if (is_numeric($id)) {
 		exit("-1");
 	}
 } else {
-	$id = $ep->remove($_POST["accountID"]);
-	$gjp = $ep->remove($_POST["gjp"]);
-	$gjpresult = $GJPCheck->check($gjp, $id);
-	if ($gjpresult != 1) {
-		exit("-1");
-	}
+	$id = GJPCheck::getAccountIDOrDie();
 }
 $levelDesc = str_replace('-', '+', $levelDesc);
 $levelDesc = str_replace('_', '/', $levelDesc);

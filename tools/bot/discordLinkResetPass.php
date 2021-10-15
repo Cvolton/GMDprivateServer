@@ -2,7 +2,7 @@
 include "../../config/discord.php";
 require "../../incl/lib/mainLib.php";
 $gs = new mainLib();
-if($discordEnabled != 1){
+if(!$discordEnabled){
 	exit("Discord integration is disabled.");
 }
 if($_GET["secret"] != $secret){

@@ -2,8 +2,7 @@
 //error_reporting(0);
 include_once "../../incl/lib/connection.php";
 require_once "../../incl/lib/exploitPatch.php";
-$ep = new exploitPatch();
-$str = $ep->remove($_GET["str"]);
+$str = ExploitPatch::remove($_GET["str"]);
 $string = "";
 echo "***SHOWING RESULTS FOR $str***\r\n";
 include "../../incl/lib/connection.php";

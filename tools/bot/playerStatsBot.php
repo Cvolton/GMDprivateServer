@@ -1,10 +1,9 @@
 <?php
 include "../../incl/lib/connection.php";
 require_once "../../incl/lib/exploitPatch.php";
-$ep = new exploitPatch();
 require_once "../../incl/lib/mainLib.php";
 $gs = new mainLib();
-$playername = $ep->remove($_GET["player"]);
+$playername = ExploitPatch::remove($_GET["player"]);
 //checking who has blocked him
 $query = "SELECT * FROM users WHERE userName = :userName OR userID = :userName ORDER BY stars DESC LIMIT 1";
 $query = $db->prepare($query);

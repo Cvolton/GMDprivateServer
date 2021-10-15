@@ -3,31 +3,22 @@ chdir(dirname(__FILE__));
 include "../lib/connection.php";
 require_once "../lib/exploitPatch.php";
 require_once "../lib/GJPCheck.php";
-$ep = new exploitPatch();
-$GJPCheck = new GJPCheck();
 $reqstring = "";
-if(!empty($_POST["getSent"])){
-	$getSent = $ep->remove($_POST["getSent"]);
-}else{
-	$getSent = 0;
-}
+$getSent = !empty($_POST["getSent"]) ? ExploitPatch::remove($_POST["getSent"]) : 0;
 if(empty($_POST["accountID"]) OR (!isset($_POST["page"]) OR !is_numeric($_POST["page"])) OR empty($_POST["gjp"])){
 	exit("-1");
 }
-$accountID = $ep->remove($_POST["accountID"]);
-$page = $ep->remove($_POST["page"]);
-$gjp = $ep->remove($_POST["gjp"]);
-$gjpresult = $GJPCheck->check($gjp,$accountID);
-if($gjpresult != 1){
-	exit("-1");
-}
+$accountID = GJPCheck::getAccountIDOrDie();
+$page = ExploitPatch::number($_POST["page"]);
 $offset = $page*10;
 if($getSent == 0){
 	$query = "SELECT accountID, toAccountID, uploadDate, ID, comment, isNew FROM friendreqs WHERE toAccountID = :accountID LIMIT 10 OFFSET $offset";
 	$countquery = "SELECT count(*) FROM friendreqs WHERE toAccountID = :accountID";
-}else if($getSent == 1){
+}elseif($getSent == 1){
 	$query = "SELECT * FROM friendreqs WHERE accountID = :accountID LIMIT 10 OFFSET $offset";
 	$countquery = "SELECT count(*) FROM friendreqs WHERE accountID = :accountID";
+}else{
+	exit("-1");
 }
 $query = $db->prepare($query);
 $query->execute([':accountID' => $accountID]);
@@ -60,5 +51,5 @@ foreach($result as &$request) {
 }
 $reqstring = substr($reqstring, 0, -1);
 echo $reqstring;
-echo "#".$reqcount.":".$offset.":10";
+echo "#${reqcount}:${offset}:10";
 ?>

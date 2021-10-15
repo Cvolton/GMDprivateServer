@@ -1,7 +1,7 @@
 <?php
-class generatePass
+class GeneratePass
 {
-	public function isValid($accid, $pass) {
+	public static function isValid($accid, $pass) {
 		include dirname(__FILE__)."/connection.php";
 		require_once dirname(__FILE__)."/mainLib.php";
 		$gs = new mainLib();
@@ -12,7 +12,7 @@ class generatePass
 		if($query6->fetchColumn() > 7){
 			return -1;
 		}else{
-			$query = $db->prepare("SELECT accountID, salt, password, isAdmin FROM accounts WHERE accountID = :accid");
+			$query = $db->prepare("SELECT accountID, salt, password, isAdmin, isActive FROM accounts WHERE accountID = :accid");
 			$query->execute([':accid' => $accid]);
 			if($query->rowCount() == 0){
 				return 0;
@@ -30,7 +30,7 @@ class generatePass
 					}
 					$query6->execute([':hostname' => $ip, ':id' => $result["accountID"], ':modipCategory' => $modipCategory]);
 				}
-				return 1;
+				return $result['isActive'] ? 1 : -2;
 			}else{
 				$md5pass = md5($pass . "epithewoihewh577667675765768rhtre67hre687cvolton5gw6547h6we7h6wh");
 				CRYPT_BLOWFISH or die ('-2');
@@ -42,14 +42,14 @@ class generatePass
 					//updating hash
 					$query = $db->prepare("UPDATE accounts SET password=:password WHERE accountID=:accid");
 					$query->execute([':accid' => $accid, ':password' => $pass]);
-					return 1;
+					return $result['isActive'] ? 1 : -2;
 				} else {
 					if($md5pass == $result['password']){
 						$pass = password_hash($pass, PASSWORD_DEFAULT);
 						//updating hash
 						$query = $db->prepare("UPDATE accounts SET password=:password WHERE accountID=:accid");
 						$query->execute([':accid' => $accid, ':password' => $pass]);
-						return 1;
+						return $result['isActive'] ? 1 : -2;
 					} else {
 						$query6 = $db->prepare("INSERT INTO actions (type, value, timestamp, value2) VALUES 
 																	('6',:accid,:time,:ip)");
@@ -60,7 +60,7 @@ class generatePass
 			}
 		}
 	}
-	public function isValidUsrname($userName, $pass){
+	public static function isValidUsrname($userName, $pass){
 		include dirname(__FILE__)."/connection.php";
 		$query = $db->prepare("SELECT accountID FROM accounts WHERE userName LIKE :userName");
 		$query->execute([':userName' => $userName]);
@@ -69,7 +69,7 @@ class generatePass
 		}
 		$result = $query->fetch();
 		$accID = $result["accountID"];
-		return $this->isValid($accID, $pass);
+		return self::isValid($accID, $pass);
 	}
 }
 ?>

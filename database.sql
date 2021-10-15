@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Aug 31, 2021 at 02:50 AM
+-- Generation Time: Oct 15, 2021 at 02:16 PM
 -- Server version: 10.3.29-MariaDB-0+deb10u1
 -- PHP Version: 7.3.29-1~deb10u1
 
@@ -49,14 +49,8 @@ CREATE TABLE `accounts` (
   `userName` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `password` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `email` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `secret` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'unused',
   `accountID` int(11) NOT NULL,
-  `saveData` longtext COLLATE utf8_unicode_ci NOT NULL,
   `isAdmin` int(11) NOT NULL DEFAULT 0,
-  `userID` int(11) NOT NULL DEFAULT 0,
-  `friends` varchar(1024) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'unused',
-  `blockedBy` varchar(1024) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'unused',
-  `blocked` varchar(1024) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'unused',
   `mS` int(11) NOT NULL DEFAULT 0,
   `frS` int(11) NOT NULL DEFAULT 0,
   `cS` int(11) NOT NULL DEFAULT 0,
@@ -66,9 +60,9 @@ CREATE TABLE `accounts` (
   `salt` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
   `registerDate` int(11) NOT NULL DEFAULT 0,
   `friendsCount` int(11) NOT NULL DEFAULT 0,
-  `saveKey` blob NOT NULL,
   `discordID` bigint(20) NOT NULL DEFAULT 0,
-  `discordLinkReq` bigint(20) NOT NULL DEFAULT 0
+  `discordLinkReq` bigint(20) NOT NULL DEFAULT 0,
+  `isActive` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -471,6 +465,7 @@ CREATE TABLE `roles` (
   `actionRateDifficulty` int(11) NOT NULL DEFAULT 0,
   `actionRequestMod` int(11) NOT NULL DEFAULT 0,
   `actionSuggestRating` int(11) NOT NULL DEFAULT 0,
+  `actionDeleteComment` int(11) NOT NULL DEFAULT 0,
   `toolLeaderboardsban` int(11) NOT NULL DEFAULT 0,
   `toolPackcreate` int(11) NOT NULL DEFAULT 0,
   `toolQuestsCreate` int(11) NOT NULL DEFAULT 0,
@@ -587,7 +582,8 @@ ALTER TABLE `accounts`
   ADD KEY `frS` (`frS`),
   ADD KEY `discordID` (`discordID`),
   ADD KEY `discordLinkReq` (`discordLinkReq`),
-  ADD KEY `friendsCount` (`friendsCount`);
+  ADD KEY `friendsCount` (`friendsCount`),
+  ADD KEY `isActive` (`isActive`);
 
 --
 -- Indexes for table `actions`

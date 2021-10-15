@@ -31,7 +31,7 @@ $string["reuploadBTN"] = "Reupload";
 $string["errorGeneric"] = "Kesalahan terjadi:";
 $string["tryAgainBTN"] = "Coba lagi";
 //songAdd.php
-$string["songAddUrlFieldLabel"] = "URL Lagu: (Hanya tautan langsung, Dropbox, dan Soundcloud yang diperbolehkan)";
+$string["songAddUrlFieldLabel"] = "URL Lagu: (Hanya tautan langsung, dan Dropbox yang diperbolehkan)";
 $string["songAddUrlFieldPlaceholder"] = "URL Lagu";
 $string["songAddAnotherBTN"] = "Lagu Lainnya";
 ///errors

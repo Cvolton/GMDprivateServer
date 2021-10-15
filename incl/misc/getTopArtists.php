@@ -3,11 +3,10 @@ chdir(dirname(__FILE__));
 require "../lib/connection.php";
 require "../lib/exploitPatch.php";
 require "../../config/topArtists.php";
-$ep = new exploitPatch();
 $str = "";
 
 if(isset($_POST["page"]) AND is_numeric($_POST["page"])){
-	$offset = $ep->number($_POST["page"]) . "0";
+	$offset = ExploitPatch::number($_POST["page"]) . "0";
 	$offset = $offset*2; // ask robtop
 }else{
 	$offset = 0;

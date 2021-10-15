@@ -4,7 +4,6 @@ include "../../incl/lib/connection.php";
 require "../incl/dashboardLib.php";
 $dl = new dashboardLib();
 require "../../incl/lib/generatePass.php";
-$gp = new generatePass();
 require "../../incl/lib/mainLib.php";
 $gs = new mainLib();
 if(isset($_SESSION["accountID"]) AND $_SESSION["accountID"] != 0){
@@ -14,7 +13,7 @@ if(isset($_SESSION["accountID"]) AND $_SESSION["accountID"] != 0){
 if(isset($_POST["userName"]) AND isset($_POST["password"])){
 	$userName = $_POST["userName"];
 	$password = $_POST["password"];
-	$valid = $gp->isValidUsrname($userName, $password);
+	$valid = GeneratePass::isValidUsrname($userName, $password);
 	if($valid != 1){
 		$dl->printLoginBoxInvalid();
 		exit();

@@ -17,9 +17,8 @@
 	<?php
 	include "../../incl/lib/connection.php";
 	require "../../incl/lib/exploitPatch.php";
-	$ep = new exploitPatch();
 	if (isset($_POST['type']) == true) {
-		$type = $ep->number($_POST['type']);
+		$type = ExploitPatch::number($_POST['type']);
 	} else {
 		$type = 2;
 	}
@@ -35,7 +34,7 @@
 			break;
 	}
 	if (isset($_POST['name']) == true) {
-		$name = $ep->remove($_POST['name']);
+		$name = ExploitPatch::remove($_POST['name']);
 	} else {
 		$name = 'reupload';
 	}

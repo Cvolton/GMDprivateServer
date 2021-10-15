@@ -38,7 +38,7 @@ $string["reuploadBTN"] = "Αναδιμοσίευση";
 $string["errorGeneric"] = "Υπάρχει κάποιο πρόβλημα:";
 $string["tryAgainBTN"] = "Δοκιμάστε ξανά";
 //songAdd.php
-$string["songAddUrlFieldLabel"] = "URL Τραγουδιού: (Μόνο σύνδεσμοι Direct, Dropbox ή Soundcloud)";
+$string["songAddUrlFieldLabel"] = "URL Τραγουδιού: (Μόνο σύνδεσμοι Direct ή Dropbox)";
 $string["songAddUrlFieldPlaceholder"] = "URL Τραγουδιού";
 $string["songAddAnotherBTN"] = "Κι άλλο τραγούδι";
 ///errors

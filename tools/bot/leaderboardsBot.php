@@ -2,9 +2,8 @@
 //error_reporting(0);
 include "../../incl/lib/connection.php";
 require_once "../../incl/lib/exploitPatch.php";
-$ep = new exploitPatch();
-$type = strtolower($ep->remove($_GET["type"]));
-$page = $ep->remove($_GET["page"]);
+$type = strtolower(ExploitPatch::remove($_GET["type"]));
+$page = ExploitPatch::remove($_GET["page"]);
 $page = $db->quote($page);
 $page = str_replace("'", "", $page);
 if($page == ""){

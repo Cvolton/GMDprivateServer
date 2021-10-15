@@ -3,22 +3,20 @@ chdir(dirname(__FILE__));
 include "../lib/connection.php";
 require "../lib/XORCipher.php";
 require_once "../lib/exploitPatch.php";
-$ep = new exploitPatch();
 require_once "../lib/mainLib.php";
 $gs = new mainLib();
 require "../lib/generateHash.php";
-$hash = new generateHash();
 //$levelID = 2632;
 if(empty($_POST["gameVersion"])){
 	$gameVersion = 1;
 }else{
-	$gameVersion = $ep->remove($_POST["gameVersion"]);
+	$gameVersion = ExploitPatch::remove($_POST["gameVersion"]);
 }
 if(empty($_POST["levelID"])){
 	exit("-1");
 }
 $ip = $gs->getIP();
-$levelID = $ep->remove($_POST["levelID"]);
+$levelID = ExploitPatch::remove($_POST["levelID"]);
 $feaID = 0;
 if(!is_numeric($levelID)){
 	echo -1;
@@ -74,13 +72,10 @@ if(!is_numeric($levelID)){
 			$pass = "1";
 		}
 		$xorPass = $pass;
-		if($gameVersion > 19){
-			$xor = new XORCipher();
-			if($pass != 0){
-				$xorPass = base64_encode($xor->cipher($pass,26364));
-			}
+		if($gameVersion > 19 && $pass != 0){
+			$xorPass = base64_encode(XORCipher::cipher($pass,26364));
 		}else{
-			$desc = $ep->remove(base64_decode($desc));
+			$desc = ExploitPatch::remove(base64_decode($desc));
 		}
 		//submitting data
 		if(file_exists("../../data/levels/$levelID")){
@@ -100,10 +95,10 @@ if(!is_numeric($levelID)){
 			$response .= ":41:".$feaID;
 		}
 		//2.02 stuff
-		$response .= "#" . $hash->genSolo($levelstring) . "#";
+		$response .= "#" . GenerateHash::genSolo($levelstring) . "#";
 		//2.1 stuff
 		$somestring = $result["userID"].",".$result["starStars"].",".$result["starDemon"].",".$result["levelID"].",".$result["starCoins"].",".$result["starFeatured"].",".$pass.",".$feaID;
-		$response .= $hash->genSolo2($somestring) . "#";
+		$response .= GenerateHash::genSolo2($somestring) . "#";
 		if($daily == 1){
 			$response .= $gs->getUserString($result);
 		}else{

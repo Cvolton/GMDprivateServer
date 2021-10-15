@@ -142,6 +142,10 @@ class mainLib {
 	public function getGameVersion($version) {
 		if($version > 17){
 			return $version / 10;
+		}elseif($version == 11){
+			return "1.8";
+		}elseif($version == 10){
+			return "1.7";
 		}else{
 			$version--;
 			return "1.$version";
@@ -155,16 +159,14 @@ class mainLib {
 			case 4:
 				return "Medium";
 				break;
-			case 0:
-			case 1:
-			case 2:
-				return "Hard";
-				break;
 			case 5:
 				return "Insane";
 				break;
 			case 6:
 				return "Extreme";
+				break;
+			default:
+				return "Hard";
 				break;
 		}
 	}
@@ -261,7 +263,26 @@ class mainLib {
 			return $rounded." year".($rounded == 1 ? "" : "s");
 		}
 	}
+	public function getIDFromPost(){
+		include __DIR__ . "/../../config/security.php";
+		include_once __DIR__ . "/exploitPatch.php";
+		include_once __DIR__ . "/GJPCheck.php";
 
+		if(!empty($_POST["udid"]) AND $_POST['gameVersion'] < 20 AND $unregisteredSubmissions) 
+		{
+			$id = ExploitPatch::remove($_POST["udid"]);
+			if(is_numeric($id)) exit("-1");
+		}
+		elseif(!empty($_POST["accountID"]) AND $_POST["accountID"]!="0")
+		{
+			$id = GJPCheck::getAccountIDOrDie();
+		}
+		else
+		{
+			exit("-1");
+		}
+		return $id;
+	}
 	public function getUserID($extID, $userName = "Undefined") {
 		include __DIR__ . "/connection.php";
 		if(is_numeric($extID)){
@@ -352,7 +373,7 @@ class mainLib {
 	}
 	public function sendDiscordPM($receiver, $message){
 		include __DIR__ . "/../../config/discord.php";
-		if($discordEnabled != 1){
+		if(!$discordEnabled){
 			return false;
 		}
 		//findind the channel id
@@ -362,7 +383,7 @@ class mainLib {
 		//echo $url;
 		$crl = curl_init($url);
 		$headr = array();
-		$headr['User-Agent'] = 'CvoltonGDPS (http://pi.michaelbrabec.cz:9010, 1.0)';
+		$headr['User-Agent'] = 'GMDprivateServer (https://github.com/Cvolton/GMDprivateServer, 1.0)';
 		curl_setopt($crl, CURLOPT_CUSTOMREQUEST, "POST");                                                                     
 		curl_setopt($crl, CURLOPT_POSTFIELDS, $data_string);
 		$headr[] = 'Content-type: application/json';
@@ -380,7 +401,7 @@ class mainLib {
 		//echo $url;
 		$crl = curl_init($url);
 		$headr = array();
-		$headr['User-Agent'] = 'CvoltonGDPS (http://pi.michaelbrabec.cz:9010, 1.0)';
+		$headr['User-Agent'] = 'GMDprivateServer (https://github.com/Cvolton/GMDprivateServer, 1.0)';
 		curl_setopt($crl, CURLOPT_CUSTOMREQUEST, "POST");                                                                     
 		curl_setopt($crl, CURLOPT_POSTFIELDS, $data_string);
 		$headr[] = 'Content-type: application/json';
@@ -397,7 +418,7 @@ class mainLib {
 		$url = "https://discord.com/api/v8/users/".$discordID;
 		$crl = curl_init($url);
 		$headr = array();
-		$headr['User-Agent'] = 'CvoltonGDPS (http://pi.michaelbrabec.cz:9010, 1.0)';
+		$headr['User-Agent'] = 'GMDprivateServer (https://github.com/Cvolton/GMDprivateServer, 1.0)';
 		$headr[] = 'Content-type: application/json';
 		$headr[] = 'Authorization: Bot '.$bottoken;
 		curl_setopt($crl, CURLOPT_HTTPHEADER,$headr);
@@ -633,34 +654,13 @@ class mainLib {
 	}
 	public function songReupload($url){
 		require __DIR__ . "/../../incl/lib/connection.php";
-		require __DIR__ . "/../../incl/lib/exploitPatch.php";
-		include __DIR__ . "/../../config/songAdd.php";
-		$ep = new exploitPatch();
+		require_once __DIR__ . "/../../incl/lib/exploitPatch.php";
 		$song = str_replace("www.dropbox.com","dl.dropboxusercontent.com",$url);
-		if (filter_var($song, FILTER_VALIDATE_URL) == TRUE) {
-			if(strpos($song, 'soundcloud.com') !== false){
-				$songinfo = file_get_contents("https://api.soundcloud.com/resolve.json?url=".$song."&client_id=".$api_key);
-				$array = json_decode($songinfo);
-				if($array->downloadable == true){
-					$song = trim($array->download_url . "?client_id=".$api_key);
-					$name = $ep->remove($array->title);
-					$author = $array->user->username;
-					$author = preg_replace("/[^A-Za-z0-9 ]/", '', $author);
-				}else{
-					if(!$array->id){
-						return "-4";
-					}
-					$song = trim("https://api.soundcloud.com/tracks/".$array->id."/stream?client_id=".$api_key);
-					$name = $ep->remove($array->title);
-					$author = $array->user->username;
-					$author = preg_replace("/[^A-Za-z0-9 ]/", '', $author);
-				}
-			}else{
-				$song = str_replace(["?dl=0","?dl=1"],"",$song);
-				$song = trim($song);
-				$name = $ep->remove(urldecode(str_replace([".mp3",".webm",".mp4",".wav"], "", basename($song))));
-				$author = "Reupload";
-			}
+		if (filter_var($song, FILTER_VALIDATE_URL) == TRUE && substr($song, 0, 4) == "http") {
+			$song = str_replace(["?dl=0","?dl=1"],"",$song);
+			$song = trim($song);
+			$name = ExploitPatch::remove(urldecode(str_replace([".mp3",".webm",".mp4",".wav"], "", basename($song))));
+			$author = "Reupload";
 			$size = $this->getFileSize($song);
 			$size = round($size / 1024 / 1024, 2);
 			$hash = "";

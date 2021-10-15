@@ -4,14 +4,12 @@ chdir(dirname(__FILE__));
 include "../lib/connection.php";
 require_once "../lib/GJPCheck.php";
 require_once "../lib/exploitPatch.php";
-$ep = new exploitPatch();
 require_once "../lib/mainLib.php";
 $gs = new mainLib();
-//here im getting all the data
-$gjp = $ep->remove($_POST["gjp"]);
-$accountID = $ep->remove($_POST["accountID"]);
-$levelID = $ep->remove($_POST["levelID"]);
-$percent = $ep->remove($_POST["percent"]);
+
+$accountID = GJPCheck::getAccountIDOrDie();
+$levelID = ExploitPatch::remove($_POST["levelID"]);
+$percent = ExploitPatch::remove($_POST["percent"]);
 $uploadDate = time();
 if(isset($_POST["s1"])){
 	$attempts = $_POST["s1"] - 8354;
@@ -23,10 +21,6 @@ if(isset($_POST["s9"])){
 }else{
 	$coins = 0;
 }
-
-
-
-
 
 //UPDATING SCORE
 $userID = $gs->getUserID($accountID);
@@ -43,14 +37,11 @@ if($query2->rowCount() == 0) {
 		$query = $db->prepare("SELECT count(*) FROM levelscores WHERE percent=:percent AND uploadDate=:uploadDate AND accountID=:accountID AND levelID=:levelID AND coins = :coins AND attempts = :attempts");
 	}
 }
-$GJPCheck = new GJPCheck();
-$gjpresult = $GJPCheck->check($gjp,$accountID);
-if($gjpresult == 1){
-	$query->execute([':accountID' => $accountID, ':levelID' => $levelID, ':percent' => $percent, ':uploadDate' => $uploadDate, ':coins' => $coins, ':attempts' => $attempts]);
-	if($percent > 100){
-		$query = $db->prepare("UPDATE users SET isBanned=1 WHERE extID = :accountID");
-		$query->execute([':accountID' => $accountID]);
-	}
+
+$query->execute([':accountID' => $accountID, ':levelID' => $levelID, ':percent' => $percent, ':uploadDate' => $uploadDate, ':coins' => $coins, ':attempts' => $attempts]);
+if($percent > 100){
+	$query = $db->prepare("UPDATE users SET isBanned=1 WHERE extID = :accountID");
+	$query->execute([':accountID' => $accountID]);
 }
 
 

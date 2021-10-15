@@ -6,6 +6,10 @@ Supported version of Geometry Dash: 1.0 - 2.11 (so any version of Geometry Dash 
 
 Required version of PHP: 5.4+ (tested up to 7.3.11)
 
+### Branches
+- master - This is the main version of the server.
+- untested - This branch contains the newest breaking changes. Note that this branch has virtually no support and therefore you're on your own if stuff breaks.
+
 ### Setup
 1) Upload the files on a webserver
 2) Import database.sql into a MySQL/MariaDB database

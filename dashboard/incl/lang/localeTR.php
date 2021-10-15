@@ -38,7 +38,7 @@ $string["reuploadBTN"] = "Transfer Et";
 $string["errorGeneric"] = "Hata:";
 $string["tryAgainBTN"] = "Tekrar Dene";
 //songAdd.php
-$string["songAddUrlFieldLabel"] = "Şarkı Linki: (Direkt, Soundcloud veya DropBox. YOUTUBE LINKI ÇALIŞMAZ!)";
+$string["songAddUrlFieldLabel"] = "Şarkı Linki: (Direkt veya DropBox. YOUTUBE LINKI ÇALIŞMAZ!)";
 $string["songAddUrlFieldPlaceholder"] = "Şarkı Linki";
 $string["songAddAnotherBTN"] = "Daha Fazla";
 ///errors

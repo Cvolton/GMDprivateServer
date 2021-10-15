@@ -7,15 +7,13 @@
 //error_reporting(-1);
 include "../incl/lib/connection.php";
 require_once "../incl/lib/generatePass.php";
-$generatePass = new generatePass();
 require_once "../incl/lib/exploitPatch.php";
-$ep = new exploitPatch();
 if(!empty($_POST["userhere"]) AND !empty($_POST["passhere"]) AND !empty($_POST["usertarg"]) AND !empty($_POST["passtarg"])){
-	$userhere = $ep->remove($_POST["userhere"]);
-	$passhere = $ep->remove($_POST["passhere"]);
-	$usertarg = $ep->remove($_POST["usertarg"]);
-	$passtarg = $ep->remove($_POST["passtarg"]);
-	$pass = $generatePass->isValidUsrname($userhere, $passhere);
+	$userhere = ExploitPatch::remove($_POST["userhere"]);
+	$passhere = ExploitPatch::remove($_POST["passhere"]);
+	$usertarg = ExploitPatch::remove($_POST["usertarg"]);
+	$passtarg = ExploitPatch::remove($_POST["passtarg"]);
+	$pass = GeneratePass::isValidUsrname($userhere, $passhere);
 	//echo $pass;
 	if ($pass == 1) {
 		$url = $_POST["server"];
@@ -74,10 +72,19 @@ if(!empty($_POST["userhere"]) AND !empty($_POST["passhere"]) AND !empty($_POST["
 		echo "Invalid local username/password combination.";
 	}
 }else{
-	echo '<form action="linkAcc.php" method="post">Your password for the target server is NOT saved, it\'s used for one-time verification purposes only.<h3>CvoltonGDPS</h3>Username: <input type="text" name="userhere"><br>Password: <input type="password" name="passhere"><br><h3>Target server</h3>Username: <input type="text" name="usertarg"><br>Password: <input type="password" name="passtarg"><br>URL (dont change if you dont know what youre doing): <input type="text" name="server" value="http://www.boomlings.com/database/accounts/loginGJAccount.php"><br>Debug Mode (0=off, 1=on): <input type="text" name="debug" value="0"><br><input type="submit" value="Link Accounts"></form><br>Alternative servers to link to:<br>
-	http://www.boomlings.com/database/accounts/loginGJAccount.php - Robtops server<br>
-	http://pi.michaelbrabec.cz:9010/a/accounts/loginGJAccount.php - CvoltonGDPS<br>
-	http://teamhax.altervista.org/dbh/accounts/loginGJAccount.php - TeamHax GDPS';
+	echo '<form action="linkAcc.php" method="post">Your password for the target server is NOT saved, it\'s used for one-time verification purposes only.
+	<h3>This server</h3>
+	Username: <input type="text" name="userhere"><br>
+	Password: <input type="password" name="passhere"><br>
+	<h3>Target server</h3>
+	Username: <input type="text" name="usertarg"><br>
+	Password: <input type="password" name="passtarg"><br>
+	<details>
+		<summary>Advanced options</summary>
+		URL: <input type="text" name="server" value="http://www.boomlings.com/database/accounts/loginGJAccount.php"><br>
+		Debug Mode (0=off, 1=on): <input type="text" name="debug" value="0"><br>
+	</details>
+	<input type="submit" value="Link Accounts"></form>';
 }
 ?>
 </body>

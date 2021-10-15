@@ -9,26 +9,17 @@ include_once "../incl/lib/defuse-crypto.phar";
 use Defuse\Crypto\KeyProtectedByPassword;
 use Defuse\Crypto\Crypto;
 use Defuse\Crypto\Key;
-$ep = new exploitPatch();
 //here im getting all the data
-$userName = $ep->remove($_POST["userName"]);
+$userName = ExploitPatch::remove($_POST["userName"]);
 $password = $_POST["password"];
 $secret = "";
-$generatePass = new generatePass();
-$pass = $generatePass->isValidUsrname($userName, $password);
+$pass = GeneratePass::isValidUsrname($userName, $password);
 if ($pass == 1) {
-	$query = $db->prepare("select accountID, saveData from accounts where userName = :userName");
+	$query = $db->prepare("SELECT accountID FROM accounts WHERE userName = :userName");
 	$query->execute([':userName' => $userName]);
-	$account = $query->fetch();
-	$accountID = $account["accountID"];
-	if(!is_numeric($accountID)){
+	$accountID = $query->fetchColumn();
+	if(!is_numeric($accountID) || !file_exists("../data/accounts/$accountID")){
 		exit("-1");
-	}
-	if(!file_exists("../data/accounts/$accountID")){
-			$saveData = $account["saveData"];
-		if(substr($saveData,0,4) == "SDRz"){
-			$saveData = base64_decode($saveData);
-		}
 	}else{
 		$saveData = file_get_contents("../data/accounts/$accountID");
 		if(file_exists("../data/accounts/keys/$accountID") && substr($saveData,0,3) != "H4s"){

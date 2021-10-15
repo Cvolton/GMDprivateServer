@@ -1,5 +1,4 @@
 <?php
-//error_reporting(0);
 include "../incl/lib/connection.php";
 require "../incl/lib/generatePass.php";
 require_once "../incl/lib/exploitPatch.php";
@@ -8,12 +7,10 @@ include_once "../incl/lib/defuse-crypto.phar";
 use Defuse\Crypto\KeyProtectedByPassword;
 use Defuse\Crypto\Crypto;
 use Defuse\Crypto\Key;
-$ep = new exploitPatch();
-//here im getting all the data
-$userName = $ep->remove($_GET["userName"]);
+
+$userName = ExploitPatch::remove($_GET["userName"]);
 $password = $_GET["password"];
-$generatePass = new generatePass();
-$pass = $generatePass->isValidUsrname($userName, $password);
+$pass = GeneratePass::isValidUsrname($userName, $password);
 if ($pass == 1) {
 	$query = $db->prepare("select accountID, saveData from accounts where userName = :userName");
 	$query->execute([':userName' => $userName]);
@@ -23,10 +20,7 @@ if ($pass == 1) {
 		exit("unknown account");
 	}
 	if(!file_exists("../data/accounts/$accountID")){
-			$saveData = $account["saveData"];
-		if(substr($saveData,0,4) == "SDRz"){
-			$saveData = base64_decode($saveData);
-		}
+		exit("save data not found")
 	}else{
 		$saveData = file_get_contents("../data/accounts/$accountID");
 		if(file_exists("../data/accounts/keys/$accountID")){

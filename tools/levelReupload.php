@@ -89,8 +89,7 @@ if(!empty($_POST["levelid"])){
 			$isLDM = chkarray($levelarray["a40"]);
 			$password = chkarray($levelarray["a27"]);
 			if($password != "0"){
-				$xc = new XORCipher();
-				$password = $xc->cipher(base64_decode($password),26364);
+				$password = XORCipher::cipher(base64_decode($password),26364);
 			}
 			$starCoins = 0;
 			$starDiff = 0;
@@ -130,10 +129,14 @@ if(!empty($_POST["levelid"])){
 		}
 	}
 }else{
-	echo '<h4><a href="linkAcc.php">LINKING YOUR ACCOUNT USING linkAcc.php RECOMMENDED</a></h4><form action="levelReupload.php" method="post">ID: <input type="text" name="levelid"><br>URL (dont change if you dont know what youre doing): <input type="text" name="server" value="http://www.boomlings.com/database/downloadGJLevel22.php"><br>Debug Mode (0=off, 1=on): <input type="text" name="debug" value="0"><br><input type="submit" value="Reupload"></form><br>Alternative servers to reupload from:<br>
-	http://www.boomlings.com/database/downloadGJLevel22.php - Robtops server<br>
-	http://pi.michaelbrabec.cz:9010/a/downloadGJLevel22.php - CvoltonGDPS<br>
-	http://teamhax.altervista.org/dbh/downloadGJLevel22.php - TeamHax GDPS';
+	echo '<h4><a href="linkAcc.php">LINKING YOUR ACCOUNT USING linkAcc.php RECOMMENDED</a></h4>
+		<form action="levelReupload.php" method="post">ID: <input type="text" name="levelid"><br>
+		<details>
+		    <summary>Advanced options</summary>
+		    URL: <input type="text" name="server" value="http://www.boomlings.com/database/downloadGJLevel22.php"><br>
+			Debug Mode (0=off, 1=on): <input type="text" name="debug" value="0"><br>
+		</details>
+		<input type="submit" value="Reupload"></form>';
 }
 ?>
 </body>

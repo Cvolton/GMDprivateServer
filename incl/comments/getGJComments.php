@@ -3,7 +3,6 @@ chdir(dirname(__FILE__));
 //error_reporting(0);
 include "../lib/connection.php";
 require_once "../lib/exploitPatch.php";
-$ep = new exploitPatch();
 require_once "../lib/mainLib.php";
 $gs = new mainLib();
 
@@ -11,11 +10,11 @@ $commentstring = "";
 $userstring = "";
 $users = array();
 
-$binaryVersion = isset($_POST['binaryVersion']) ? $ep->remove($_POST["binaryVersion"]) : 0;
-$gameVersion = isset($_POST['gameVersion']) ? $ep->remove($_POST["gameVersion"]) : 0;
-$mode = isset($_POST["mode"]) ? $ep->remove($_POST["mode"]) : 0;
-$count = (isset($_POST["count"]) AND is_numeric($_POST["count"])) ? $ep->remove($_POST["count"]) : 10;
-$page = isset($_POST['page']) ? $ep->remove($_POST["page"]) : 0;
+$binaryVersion = isset($_POST['binaryVersion']) ? ExploitPatch::remove($_POST["binaryVersion"]) : 0;
+$gameVersion = isset($_POST['gameVersion']) ? ExploitPatch::remove($_POST["gameVersion"]) : 0;
+$mode = isset($_POST["mode"]) ? ExploitPatch::remove($_POST["mode"]) : 0;
+$count = (isset($_POST["count"]) AND is_numeric($_POST["count"])) ? ExploitPatch::remove($_POST["count"]) : 10;
+$page = isset($_POST['page']) ? ExploitPatch::remove($_POST["page"]) : 0;
 
 $commentpage = $page*$count;
 
@@ -27,12 +26,16 @@ else
 if(isset($_POST['levelID'])){
 	$filterColumn = 'levelID';
 	$displayLevelID = false;
-	$filterID = $ep->remove($_POST["levelID"]);
+	$filterID = ExploitPatch::remove($_POST["levelID"]);
+	$userListJoin = $userListWhere = $userListColumns = "";
 }
 elseif(isset($_POST['userID'])){
 	$filterColumn = 'userID';
 	$displayLevelID = true;
-	$filterID = $ep->remove($_POST["userID"]);
+	$filterID = ExploitPatch::remove($_POST["userID"]);
+	$userListColumns = ", levels.unlisted";
+	$userListJoin = "INNER JOIN levels ON comments.levelID = levels.levelID";
+	$userListWhere = "AND levels.unlisted = 0";
 }
 else
 	exit(-1);
@@ -45,7 +48,8 @@ if($commentcount == 0){
 	exit("-2");
 }
 
-$query = "SELECT comments.levelID, comments.commentID, comments.timestamp, comments.comment, comments.userID, comments.likes, comments.isSpam, comments.percent, users.userName, users.icon, users.color1, users.color2, users.iconType, users.special, users.extID FROM comments LEFT JOIN users ON comments.userID = users.userID WHERE comments.${filterColumn} = :filterID ORDER BY comments.${modeColumn} DESC LIMIT ${count} OFFSET ${commentpage}";
+
+$query = "SELECT comments.levelID, comments.commentID, comments.timestamp, comments.comment, comments.userID, comments.likes, comments.isSpam, comments.percent, users.userName, users.icon, users.color1, users.color2, users.iconType, users.special, users.extID FROM comments LEFT JOIN users ON comments.userID = users.userID ${userListJoin} WHERE comments.${filterColumn} = :filterID ${userListWhere} ORDER BY comments.${modeColumn} DESC LIMIT ${count} OFFSET ${commentpage}";
 $query = $db->prepare($query);
 $query->execute([':filterID' => $filterID]);
 $result = $query->fetchAll();

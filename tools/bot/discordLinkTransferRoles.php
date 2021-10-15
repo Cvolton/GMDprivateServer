@@ -1,7 +1,7 @@
 <?php
 include "../../config/discord.php";
 include "../../incl/lib/connection.php";
-if($discordEnabled != 1){
+if(!$discordEnabled){
 	exit("Discord integration is disabled.");
 }
 if($_GET["secret"] != $secret){
