@@ -1,6 +1,12 @@
 <?php
+include "../../config/security.php";
 include "../../incl/lib/connection.php";
 require "../../incl/lib/exploitPatch.php";
+
+if(!isset($preactivateAccounts)){
+	$preactivateAccounts = true;
+}
+
 // here begins the checks
 if(!empty($_POST["username"]) AND !empty($_POST["email"]) AND !empty($_POST["repeatemail"]) AND !empty($_POST["password"]) AND !empty($_POST["repeatpassword"])){
 	// catching all the input
@@ -33,11 +39,12 @@ if(!empty($_POST["username"]) AND !empty($_POST["email"]) AND !empty($_POST["rep
 			}else{
 				// hashing your password and registering your account
 				$hashpass = password_hash($password, PASSWORD_DEFAULT);
-				$query2 = $db->prepare("INSERT INTO accounts (userName, password, email, registerDate)
-				VALUES (:userName, :password, :email, :time)");
-				$query2->execute([':userName' => $username, ':password' => $hashpass, ':email' => $email,':time' => time()]);
+				$query2 = $db->prepare("INSERT INTO accounts (userName, password, email, registerDate, isActive)
+				VALUES (:userName, :password, :email, :time, :isActive)");
+				$query2->execute([':userName' => $username, ':password' => $hashpass, ':email' => $email,':time' => time(), ':isActive' => $preactivateAccounts ? 1 : 0]);
 				// there you go, you are registered.
-				echo "<body style='background-color:grey;'>Account registred. No e-mail verification required, you can login. <a href='..'>Go back to tools</a></body>";
+				$activationInfo = $preactivateAccounts ? "No e-mail verification required, you can login." : "<a href='activateAccount.php'>Click here to activate it.</a>";
+				echo "<body style='background-color:grey;'>Account registred. ${activationInfo} <a href='..'>Go back to tools</a></body>";
 			}
 		}
 	}
