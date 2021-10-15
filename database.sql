@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Aug 31, 2021 at 02:50 AM
+-- Generation Time: Oct 15, 2021 at 02:16 PM
 -- Server version: 10.3.29-MariaDB-0+deb10u1
 -- PHP Version: 7.3.29-1~deb10u1
 
@@ -61,8 +61,8 @@ CREATE TABLE `accounts` (
   `registerDate` int(11) NOT NULL DEFAULT 0,
   `friendsCount` int(11) NOT NULL DEFAULT 0,
   `discordID` bigint(20) NOT NULL DEFAULT 0,
-  `discordLinkReq` bigint(20) NOT NULL DEFAULT 0
-  `isActive` BOOLEAN NOT NULL DEFAULT FALSE
+  `discordLinkReq` bigint(20) NOT NULL DEFAULT 0,
+  `isActive` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -582,7 +582,8 @@ ALTER TABLE `accounts`
   ADD KEY `frS` (`frS`),
   ADD KEY `discordID` (`discordID`),
   ADD KEY `discordLinkReq` (`discordLinkReq`),
-  ADD KEY `friendsCount` (`friendsCount`);
+  ADD KEY `friendsCount` (`friendsCount`),
+  ADD KEY `isActive` (`isActive`);
 
 --
 -- Indexes for table `actions`
