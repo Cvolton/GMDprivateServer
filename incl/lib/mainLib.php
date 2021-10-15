@@ -142,6 +142,10 @@ class mainLib {
 	public function getGameVersion($version) {
 		if($version > 17){
 			return $version / 10;
+		}elseif($version == 11){
+			return "1.8";
+		}elseif($version == 10){
+			return "1.7";
 		}else{
 			$version--;
 			return "1.$version";
