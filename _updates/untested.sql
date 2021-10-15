@@ -9,3 +9,4 @@ ALTER TABLE `accounts` DROP `userID`;
 ALTER TABLE `accounts` DROP `secret`;
 
 ALTER TABLE `accounts` ADD `isActive` BOOLEAN NOT NULL DEFAULT FALSE AFTER `discordLinkReq`;
+ALTER TABLE `accounts` ADD INDEX(`isActive`);
