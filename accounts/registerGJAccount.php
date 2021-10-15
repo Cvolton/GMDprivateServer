@@ -1,6 +1,12 @@
 <?php
+include "../config/security.php";
 include "../incl/lib/connection.php";
 require_once "../incl/lib/exploitPatch.php";
+
+if(!isset($preactivateAccounts)){
+	$preactivateAccounts = true;
+}
+
 if($_POST["userName"] != ""){
 	//here im getting all the data
 	$userName = ExploitPatch::remove($_POST["userName"]);
@@ -15,9 +21,9 @@ if($_POST["userName"] != ""){
 		echo "-2";
 	}else{
 		$hashpass = password_hash($password, PASSWORD_DEFAULT);
-		$query = $db->prepare("INSERT INTO accounts (userName, password, email, registerDate)
-		VALUES (:userName, :password, :email, :time)");
-		$query->execute([':userName' => $userName, ':password' => $hashpass, ':email' => $email, ':time' => time()]);
+		$query = $db->prepare("INSERT INTO accounts (userName, password, email, registerDate, isActive)
+		VALUES (:userName, :password, :email, :time, :isActive)");
+		$query->execute([':userName' => $userName, ':password' => $hashpass, ':email' => $email, ':time' => time(), ':isActive' => $preactivateAccounts ? 1 : 0]);
 		echo "1";
 	}
 }
