@@ -659,6 +659,12 @@ class mainLib {
 		if (filter_var($song, FILTER_VALIDATE_URL) == TRUE && substr($song, 0, 4) == "http") {
 			$song = str_replace(["?dl=0","?dl=1"],"",$song);
 			$song = trim($song);
+			$query = $db->prepare("SELECT count(*) FROM songs WHERE download = :download");
+			$query->execute([':download' => $song]);	
+			$count = $query->fetchColumn();
+			if($count != 0){
+				return "-3";
+			}
 			$name = ExploitPatch::remove(urldecode(str_replace([".mp3",".webm",".mp4",".wav"], "", basename($song))));
 			$author = "Reupload";
 			$info = $this->getFileInfo($song);
@@ -667,17 +673,10 @@ class mainLib {
 				return "-4";
 			$size = round($size / 1024 / 1024, 2);
 			$hash = "";
-			$query = $db->prepare("SELECT count(*) FROM songs WHERE download = :download");
-			$query->execute([':download' => $song]);	
-			$count = $query->fetchColumn();
-			if($count != 0){
-				return "-3";
-			}else{
-				$query = $db->prepare("INSERT INTO songs (name, authorID, authorName, size, download, hash)
-				VALUES (:name, '9', :author, :size, :download, :hash)");
-				$query->execute([':name' => $name, ':download' => $song, ':author' => $author, ':size' => $size, ':hash' => $hash]);
-				return $db->lastInsertId();
-			}
+			$query = $db->prepare("INSERT INTO songs (name, authorID, authorName, size, download, hash)
+			VALUES (:name, '9', :author, :size, :download, :hash)");
+			$query->execute([':name' => $name, ':download' => $song, ':author' => $author, ':size' => $size, ':hash' => $hash]);
+			return $db->lastInsertId();
 		}else{
 			return "-2";
 		}
