@@ -661,7 +661,10 @@ class mainLib {
 			$song = trim($song);
 			$name = ExploitPatch::remove(urldecode(str_replace([".mp3",".webm",".mp4",".wav"], "", basename($song))));
 			$author = "Reupload";
-			$size = $this->getFileSize($song);
+			$info = $this->getFileInfo($song);
+			$size = $info['size'];
+			if(!empty($info['type']) && substr($info['type'], 0, 6 != "audio/"))
+				return "-4";
 			$size = round($size / 1024 / 1024, 2);
 			$hash = "";
 			$query = $db->prepare("SELECT count(*) FROM songs WHERE download = :download");
@@ -679,15 +682,16 @@ class mainLib {
 			return "-2";
 		}
 	}
-	public function getFileSize($url){
+	public function getFileInfo($url){
 		$ch = curl_init($url);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
 		curl_setopt($ch, CURLOPT_HEADER, TRUE);
 		curl_setopt($ch, CURLOPT_NOBODY, TRUE);
 		$data = curl_exec($ch);
 		$size = curl_getinfo($ch, CURLINFO_CONTENT_LENGTH_DOWNLOAD);
+		$mime = curl_getinfo($ch, CURLINFO_CONTENT_TYPE);
 		curl_close($ch);
-		return $size;
+		return ['size' => $size, 'type' => $mime];
 	}
 	public function suggestLevel($accountID, $levelID, $difficulty, $stars, $feat, $auto, $demon){
 		include __DIR__ . "/connection.php";
