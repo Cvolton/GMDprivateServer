@@ -663,7 +663,7 @@ class mainLib {
 			$author = "Reupload";
 			$info = $this->getFileInfo($song);
 			$size = $info['size'];
-			if(!empty($info['type']) && substr($info['type'], 0, 6 != "audio/"))
+			if(substr($info['type'], 0, 6) != "audio/")
 				return "-4";
 			$size = round($size / 1024 / 1024, 2);
 			$hash = "";
@@ -686,10 +686,13 @@ class mainLib {
 		$ch = curl_init($url);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
 		curl_setopt($ch, CURLOPT_HEADER, TRUE);
-		curl_setopt($ch, CURLOPT_NOBODY, TRUE);
+		//curl_setopt($ch, CURLOPT_NOBODY, TRUE);
+		curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE);
+		curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 2);
 		$data = curl_exec($ch);
 		$size = curl_getinfo($ch, CURLINFO_CONTENT_LENGTH_DOWNLOAD);
 		$mime = curl_getinfo($ch, CURLINFO_CONTENT_TYPE);
+		//$status = curl_getinfo($ch, CURLINFO_RESPONSE_CODE);
 		curl_close($ch);
 		return ['size' => $size, 'type' => $mime];
 	}
