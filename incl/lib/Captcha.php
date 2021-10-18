@@ -19,7 +19,6 @@ class Captcha {
             'secret' => $hCaptchaSecret,
             'response' => $_POST['h-captcha-response']
         );
-        var_dump($_POST);
 		$verify = curl_init();
 		curl_setopt($verify, CURLOPT_URL, "https://hcaptcha.com/siteverify");
 		curl_setopt($verify, CURLOPT_POST, true);
