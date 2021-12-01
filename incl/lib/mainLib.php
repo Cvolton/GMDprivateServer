@@ -659,35 +659,41 @@ class mainLib {
 		if (filter_var($song, FILTER_VALIDATE_URL) == TRUE && substr($song, 0, 4) == "http") {
 			$song = str_replace(["?dl=0","?dl=1"],"",$song);
 			$song = trim($song);
-			$name = ExploitPatch::remove(urldecode(str_replace([".mp3",".webm",".mp4",".wav"], "", basename($song))));
-			$author = "Reupload";
-			$size = $this->getFileSize($song);
-			$size = round($size / 1024 / 1024, 2);
-			$hash = "";
 			$query = $db->prepare("SELECT count(*) FROM songs WHERE download = :download");
 			$query->execute([':download' => $song]);	
 			$count = $query->fetchColumn();
 			if($count != 0){
 				return "-3";
-			}else{
-				$query = $db->prepare("INSERT INTO songs (name, authorID, authorName, size, download, hash)
-				VALUES (:name, '9', :author, :size, :download, :hash)");
-				$query->execute([':name' => $name, ':download' => $song, ':author' => $author, ':size' => $size, ':hash' => $hash]);
-				return $db->lastInsertId();
 			}
+			$name = ExploitPatch::remove(urldecode(str_replace([".mp3",".webm",".mp4",".wav"], "", basename($song))));
+			$author = "Reupload";
+			$info = $this->getFileInfo($song);
+			$size = $info['size'];
+			if(substr($info['type'], 0, 6) != "audio/")
+				return "-4";
+			$size = round($size / 1024 / 1024, 2);
+			$hash = "";
+			$query = $db->prepare("INSERT INTO songs (name, authorID, authorName, size, download, hash)
+			VALUES (:name, '9', :author, :size, :download, :hash)");
+			$query->execute([':name' => $name, ':download' => $song, ':author' => $author, ':size' => $size, ':hash' => $hash]);
+			return $db->lastInsertId();
 		}else{
 			return "-2";
 		}
 	}
-	public function getFileSize($url){
+	public function getFileInfo($url){
 		$ch = curl_init($url);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
 		curl_setopt($ch, CURLOPT_HEADER, TRUE);
-		curl_setopt($ch, CURLOPT_NOBODY, TRUE);
+		//curl_setopt($ch, CURLOPT_NOBODY, TRUE);
+		curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE);
+		curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 2);
 		$data = curl_exec($ch);
 		$size = curl_getinfo($ch, CURLINFO_CONTENT_LENGTH_DOWNLOAD);
+		$mime = curl_getinfo($ch, CURLINFO_CONTENT_TYPE);
+		//$status = curl_getinfo($ch, CURLINFO_RESPONSE_CODE);
 		curl_close($ch);
-		return $size;
+		return ['size' => $size, 'type' => $mime];
 	}
 	public function suggestLevel($accountID, $levelID, $difficulty, $stars, $feat, $auto, $demon){
 		include __DIR__ . "/connection.php";
