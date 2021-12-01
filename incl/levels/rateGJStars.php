@@ -13,7 +13,5 @@ $permState = $gs->checkPermission($accountID, "actionRateStars");
 if($permState){
 	$difficulty = $gs->getDiffFromStars($stars);
 	$gs->rateLevel($accountID, $levelID, 0, $difficulty["diff"], $difficulty["auto"], $difficulty["demon"]);
-	echo 1;
-}else{
-	echo -1;
 }
+echo 1;
