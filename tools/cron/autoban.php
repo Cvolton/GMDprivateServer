@@ -6,7 +6,7 @@ ob_flush();
 flush();
 //note: this needs a better algorithm
 $query = $db->prepare("
-	SELECT 10+FLOOR(coins.coins*1.25) as coins, 3+FLOOR(levels.demons*1.0625) as demons, 200+FLOOR((levels.stars+gauntlets.stars+mappacks.stars)*1.25) as stars FROM
+	SELECT 10+IFNULL(FLOOR(coins.coins*1.25),0) as coins, 3+IFNULL(FLOOR(levels.demons*1.0625),0) as demons, 200+FLOOR((IFNULL(levels.stars,0)+IFNULL(gauntlets.stars,0)+IFNULL(mappacks.stars,0))*1.25) as stars FROM
 		(SELECT SUM(coins) as coins FROM levels WHERE starCoins <> 0) coins
 	JOIN
 		(SELECT SUM(starDemon) as demons, SUM(starStars) as stars FROM levels) levels
