@@ -22,6 +22,7 @@ $levelName = ExploitPatch::charclean($_POST["levelName"]);
 $levelDesc = ExploitPatch::remove($_POST["levelDesc"]);
 $levelDesc = str_replace('-', '+', $levelDesc);
 $levelDesc = str_replace('_', '/', $levelDesc);
+//TODO: move description fixing code to a function
 $rawDesc = base64_decode($levelDesc);
 if (strpos($rawDesc, '<c') !== false) {
 	$tags = substr_count($rawDesc, '<c');
