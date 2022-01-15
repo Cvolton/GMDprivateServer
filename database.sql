@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jan 15, 2022 at 10:50 PM
+-- Generation Time: Jan 15, 2022 at 10:58 PM
 -- Server version: 10.3.31-MariaDB-0+deb10u1
 -- PHP Version: 7.3.31-1~deb10u1
 
@@ -274,7 +274,7 @@ CREATE TABLE `levels` (
   `isDeleted` int(11) NOT NULL DEFAULT 0,
   `isLDM` int(11) NOT NULL DEFAULT 0,
   `unlisted2` int(11) NOT NULL DEFAULT 0,
-  `wt0` int(11) NOT NULL DEFAULT 0,
+  `wt` int(11) NOT NULL DEFAULT 0,
   `wt2` int(11) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
