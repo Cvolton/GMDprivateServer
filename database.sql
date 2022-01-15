@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Oct 15, 2021 at 02:16 PM
--- Server version: 10.3.29-MariaDB-0+deb10u1
--- PHP Version: 7.3.29-1~deb10u1
+-- Generation Time: Jan 15, 2022 at 10:50 PM
+-- Server version: 10.3.31-MariaDB-0+deb10u1
+-- PHP Version: 7.3.31-1~deb10u1
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -272,7 +272,10 @@ CREATE TABLE `levels` (
   `hostname` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `isCPShared` int(11) NOT NULL DEFAULT 0,
   `isDeleted` int(11) NOT NULL DEFAULT 0,
-  `isLDM` int(11) NOT NULL DEFAULT 0
+  `isLDM` int(11) NOT NULL DEFAULT 0,
+  `unlisted2` int(11) NOT NULL DEFAULT 0,
+  `wt0` int(11) NOT NULL DEFAULT 0,
+  `wt2` int(11) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -707,7 +710,8 @@ ALTER TABLE `levels`
   ADD KEY `isCPShared` (`isCPShared`),
   ADD KEY `gameVersion` (`gameVersion`),
   ADD KEY `rateDate` (`rateDate`),
-  ADD KEY `objects` (`objects`);
+  ADD KEY `objects` (`objects`),
+  ADD KEY `unlisted2` (`unlisted2`);
 
 --
 -- Indexes for table `levelscores`
