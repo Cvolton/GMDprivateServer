@@ -4,9 +4,9 @@ require "../../incl/lib/generatePass.php";
 require "../../incl/lib/Captcha.php";
 require_once "../../incl/lib/exploitPatch.php";
 //here im getting all the data
-$userName = ExploitPatch::remove($_POST["userName"]);
-$password = ExploitPatch::remove($_POST["password"]);
-if($userName != "" AND $password != ""){
+if(!empty($_POST["userName"]) && !empty($_POST["password"])){
+	$userName = ExploitPatch::remove($_POST["userName"]);
+	$password = ExploitPatch::remove($_POST["password"]);
 	if(!Captcha::validateCaptcha())
 		exit("Invalid captcha response");
 	$pass = GeneratePass::isValidUsrname($userName, $password);
