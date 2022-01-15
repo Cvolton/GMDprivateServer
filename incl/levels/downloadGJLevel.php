@@ -17,6 +17,8 @@ if(empty($_POST["levelID"])){
 }
 $ip = $gs->getIP();
 $levelID = ExploitPatch::remove($_POST["levelID"]);
+$binaryVersion = !empty($_POST["binaryVersion"]) ? ExploitPatch::remove($_POST["levelID"]) : 0;
+//TODO: inc, extras
 $feaID = 0;
 if(!is_numeric($levelID)){
 	echo -1;
@@ -107,7 +109,12 @@ if(!is_numeric($levelID)){
 		$response .= GenerateHash::genSolo2($somestring) . "#";
 		if($daily == 1){
 			$response .= $gs->getUserString($result);
-		}else{
+		}elseif($binaryVersion == 30){
+			/*
+				This was only part of the response for a brief time prior to GD 2.1's relase.
+				This binary version corresponds to the original release of Geometry Dash World.
+				It is currently unknown if it's required, so it is left in for now.
+			*/
 			$response .= $somestring;
 		}
 		echo $response;
