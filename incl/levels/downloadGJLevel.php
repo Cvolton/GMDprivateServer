@@ -106,16 +106,16 @@ if(!is_numeric($levelID)){
 		$response .= "#" . GenerateHash::genSolo($levelstring) . "#";
 		//2.1 stuff
 		$somestring = $result["userID"].",".$result["starStars"].",".$result["starDemon"].",".$result["levelID"].",".$result["starCoins"].",".$result["starFeatured"].",".$pass.",".$feaID;
-		$response .= GenerateHash::genSolo2($somestring) . "#";
+		$response .= GenerateHash::genSolo2($somestring);
 		if($daily == 1){
-			$response .= $gs->getUserString($result);
+			$response .= "#" . $gs->getUserString($result);
 		}elseif($binaryVersion == 30){
 			/*
 				This was only part of the response for a brief time prior to GD 2.1's relase.
 				This binary version corresponds to the original release of Geometry Dash World.
 				It is currently unknown if it's required, so it is left in for now.
 			*/
-			$response .= $somestring;
+			$response .= "#" . $somestring;
 		}
 		echo $response;
 	}else{
