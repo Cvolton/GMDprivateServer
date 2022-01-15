@@ -7,7 +7,7 @@ require_once "../lib/GJPCheck.php";
 require_once "../lib/exploitPatch.php";
 require_once "../lib/commands.php";
 
-$userName = ExploitPatch::remove($_POST['userName']);
+$userName = !empty($_POST['userName']) ? ExploitPatch::remove($_POST['userName']) : "";
 $gameVersion = !empty($_POST['gameVersion']) ? ExploitPatch::number($_POST['gameVersion']) : 0;
 $comment = ExploitPatch::remove($_POST['comment']);
 $comment = ($gameVersion < 20) ? base64_encode($comment) : $comment;
