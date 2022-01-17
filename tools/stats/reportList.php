@@ -7,7 +7,7 @@ $query = $db->prepare("SELECT levels.levelID, levels.levelName, count(*) AS repo
 $query->execute();
 $result = $query->fetchAll();
 foreach($result as &$report){
-	$levelName = html_special_chars(${report['levelName']});
+	$levelName = htmlspecialchars($report['levelName'], ENT_QUOTES);
 	echo "<tr><td>${report['levelID']}</td><td>$levelName</td><td>${report['reportsCount']} times</td></tr>";
 }
 ?>
