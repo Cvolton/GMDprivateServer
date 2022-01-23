@@ -35,9 +35,9 @@ $query = $db->prepare("
 $query->execute();
 $levelstuff = $query->fetch();
 $stars = $levelstuff['stars']; $coins = $levelstuff['coins']; $demons = $levelstuff['demons']; 
-$query = $db->prepare("UPDATE users SET isBanned = '1' WHERE stars > :stars OR demons > :demons OR coins > :coins OR stars < 0 OR demons < 0 OR coins < 0 OR userCoins < 0 OR diamonds < 0");
+$query = $db->prepare("UPDATE users SET isBanned = '1' WHERE stars > :stars OR demons > :demons OR userCoins > :coins OR stars < 0 OR demons < 0 OR coins < 0 OR userCoins < 0 OR diamonds < 0");
 $query->execute([':stars' => $stars, ':demons' => $demons, ':coins' => $coins]);
-$query = $db->prepare("SELECT userID, userName FROM users WHERE stars > :stars OR demons > :demons OR coins > :coins OR stars < 0 OR demons < 0 OR coins < 0 OR userCoins < 0 OR diamonds < 0");
+$query = $db->prepare("SELECT userID, userName FROM users WHERE stars > :stars OR demons > :demons OR userCoins > :coins OR stars < 0 OR demons < 0 OR coins < 0 OR userCoins < 0 OR diamonds < 0");
 $query->execute([':stars' => $stars, ':demons' => $demons, ':coins' => $coins]);
 $result = $query->fetchAll();
 foreach($result as $user){
