@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jan 15, 2022 at 10:58 PM
--- Server version: 10.3.31-MariaDB-0+deb10u1
--- PHP Version: 7.3.31-1~deb10u1
+-- Generation Time: Feb 20, 2022 at 02:46 PM
+-- Server version: 10.5.13-MariaDB-0ubuntu0.21.10.1
+-- PHP Version: 7.4.28
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
