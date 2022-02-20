@@ -51,6 +51,7 @@ if($query3->rowCount() == 0) {
 		$ch = curl_init($url);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+		curl_setopt($ch, CURLOPT_PROTOCOLS, CURLPROTO_HTTP | CURLPROTO_HTTPS);
 		$result = curl_exec($ch);
 		curl_close($ch);
 		if(substr_count($result, "1~|~".$songid."~|~2") != 0){

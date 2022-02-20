@@ -22,6 +22,7 @@ if($redirect == 1) {
 	$ch = curl_init($url);
 	curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+	curl_setopt($ch, CURLOPT_PROTOCOLS, CURLPROTO_HTTP | CURLPROTO_HTTPS);
 	$robsult = curl_exec($ch);
 	curl_close($ch);
 	echo $robsult;
