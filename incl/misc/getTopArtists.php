@@ -15,7 +15,7 @@ if(isset($_POST["page"]) AND is_numeric($_POST["page"])){
 
 if($redirect == 1) {
 	// send result
-	$url = "http://boomlings.com/database/getGJTopArtists.php";
+	$url = "http://www.boomlings.com/database/getGJTopArtists.php";
 	$request = "page=$offset&secret=Wmfd2893gb7";
 	parse_str($request, $post);
 	// post
