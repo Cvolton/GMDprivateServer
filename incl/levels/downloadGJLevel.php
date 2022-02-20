@@ -17,6 +17,8 @@ if(empty($_POST["levelID"])){
 }
 $ip = $gs->getIP();
 $levelID = ExploitPatch::remove($_POST["levelID"]);
+$binaryVersion = !empty($_POST["binaryVersion"]) ? ExploitPatch::remove($_POST["levelID"]) : 0;
+//TODO: inc, extras
 $feaID = 0;
 if(!is_numeric($levelID)){
 	echo -1;
@@ -51,6 +53,12 @@ if(!is_numeric($levelID)){
 	$query->execute([':levelID' => $levelID]);
 	$lvls = $query->rowCount();
 	if($lvls!=0){
+		//Verifying friends only unlisted
+		if($result["unlisted2"] != 0){
+
+		}
+
+
 		$result = $query->fetch();
 		//adding the download
 		$query6 = $db->prepare("SELECT count(*) FROM actions_downloads WHERE levelID=:levelID AND ip=INET6_ATON(:ip)");
@@ -90,7 +98,7 @@ if(!is_numeric($levelID)){
 				$levelstring = str_replace("+","-",$levelstring);
 			}
 		}
-		$response = "1:".$result["levelID"].":2:".$result["levelName"].":3:".$desc.":4:".$levelstring.":5:".$result["levelVersion"].":6:".$result["userID"].":8:10:9:".$result["starDifficulty"].":10:".$result["downloads"].":11:1:12:".$result["audioTrack"].":13:".$result["gameVersion"].":14:".$result["likes"].":17:".$result["starDemon"].":43:".$result["starDemonDiff"].":25:".$result["starAuto"].":18:".$result["starStars"].":19:".$result["starFeatured"].":42:".$result["starEpic"].":45:".$result["objects"].":15:".$result["levelLength"].":30:".$result["original"].":31:".$result['twoPlayer'].":28:".$uploadDate. ":29:".$updateDate. ":35:".$result["songID"].":36:".$result["extraString"].":37:".$result["coins"].":38:".$result["starCoins"].":39:".$result["requestedStars"].":46:1:47:2:48:1:40:".$result["isLDM"].":27:$xorPass";
+		$response = "1:".$result["levelID"].":2:".$result["levelName"].":3:".$desc.":4:".$levelstring.":5:".$result["levelVersion"].":6:".$result["userID"].":8:10:9:".$result["starDifficulty"].":10:".$result["downloads"].":11:1:12:".$result["audioTrack"].":13:".$result["gameVersion"].":14:".$result["likes"].":17:".$result["starDemon"].":43:".$result["starDemonDiff"].":25:".$result["starAuto"].":18:".$result["starStars"].":19:".$result["starFeatured"].":42:".$result["starEpic"].":45:".$result["objects"].":15:".$result["levelLength"].":30:".$result["original"].":31:".$result['twoPlayer'].":28:".$uploadDate. ":29:".$updateDate. ":35:".$result["songID"].":36:".$result["extraString"].":37:".$result["coins"].":38:".$result["starCoins"].":39:".$result["requestedStars"].":46:".$result["wt"].":47:".$result["wt2"].":48:1:40:".$result["isLDM"].":27:$xorPass";
 		if($daily == 1){
 			$response .= ":41:".$feaID;
 		}
@@ -98,11 +106,16 @@ if(!is_numeric($levelID)){
 		$response .= "#" . GenerateHash::genSolo($levelstring) . "#";
 		//2.1 stuff
 		$somestring = $result["userID"].",".$result["starStars"].",".$result["starDemon"].",".$result["levelID"].",".$result["starCoins"].",".$result["starFeatured"].",".$pass.",".$feaID;
-		$response .= GenerateHash::genSolo2($somestring) . "#";
+		$response .= GenerateHash::genSolo2($somestring);
 		if($daily == 1){
-			$response .= $gs->getUserString($result);
-		}else{
-			$response .= $somestring;
+			$response .= "#" . $gs->getUserString($result);
+		}elseif($binaryVersion == 30){
+			/*
+				This was only part of the response for a brief time prior to GD 2.1's relase.
+				This binary version corresponds to the original release of Geometry Dash World.
+				It is currently unknown if it's required, so it is left in for now.
+			*/
+			$response .= "#" . $somestring;
 		}
 		echo $response;
 	}else{

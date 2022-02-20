@@ -13,6 +13,9 @@ if($_POST["userName"] != ""){
 	$password = ExploitPatch::remove($_POST["password"]);
 	$email = ExploitPatch::remove($_POST["email"]);
 	$secret = "";
+	//checking if username is within the GD length limit
+	if(strlen($userName) > 20)
+		exit("-4");
 	//checking if name is taken
 	$query2 = $db->prepare("SELECT count(*) FROM accounts WHERE userName LIKE :userName");
 	$query2->execute([':userName' => $userName]);

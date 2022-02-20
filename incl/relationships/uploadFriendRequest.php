@@ -19,7 +19,7 @@ $blocked = $db->query("SELECT ID FROM `blocks` WHERE person1 = $toAccountID AND 
 $frSOnly = $db->query("SELECT frS FROM `accounts` WHERE accountID = $toAccountID AND frS = 1")->fetchAll(PDO::FETCH_COLUMN);
 $query = $db->prepare("SELECT count(*) FROM friendreqs WHERE (accountID=:accountID AND toAccountID=:toAccountID) OR (toAccountID=:accountID AND accountID=:toAccountID)");
 $query->execute([':accountID' => $accountID, ':toAccountID' => $toAccountID]);
-if($query->fetchColumn() == 0 and ($empty($blocked[0]) and empty($frSOnly[0]))){
+if($query->fetchColumn() == 0 and empty($blocked[0]) and empty($frSOnly[0])){
 	$query = $db->prepare("INSERT INTO friendreqs (accountID, toAccountID, comment, uploadDate)
 	VALUES (:accountID, :toAccountID, :comment, :uploadDate)");
 	$query->execute([':accountID' => $accountID, ':toAccountID' => $toAccountID, ':comment' => $comment, ':uploadDate' => $uploadDate]);

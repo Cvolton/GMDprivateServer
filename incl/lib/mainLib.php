@@ -175,7 +175,7 @@ class mainLib {
 		$starAuto = 0;
 		$starDemon = 0;
 		switch ($name) {
-			case "na":
+			default:
 				$starDifficulty = 0;
 				break;
 			case "easy":
