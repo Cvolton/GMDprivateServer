@@ -7,7 +7,6 @@ require_once "../lib/mainLib.php";
 $gs = new mainLib();
 
 $appendix = "";
-$gjp = ExploitPatch::remove($_POST["gjp"]);
 $extid = ExploitPatch::number($_POST["targetAccountID"]);
 $me = !empty($_POST["accountID"]) ? GJPCheck::getAccountIDOrDie() : 0;
 //checking who has blocked them
