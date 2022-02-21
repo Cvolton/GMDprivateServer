@@ -53,13 +53,13 @@ if(!is_numeric($levelID)){
 	$query->execute([':levelID' => $levelID]);
 	$lvls = $query->rowCount();
 	if($lvls!=0){
+		$result = $query->fetch();
+
 		//Verifying friends only unlisted
 		if($result["unlisted2"] != 0){
-
+			//TODO
 		}
 
-
-		$result = $query->fetch();
 		//adding the download
 		$query6 = $db->prepare("SELECT count(*) FROM actions_downloads WHERE levelID=:levelID AND ip=INET6_ATON(:ip)");
 		$query6->execute([':levelID' => $levelID, ':ip' => $ip]);
