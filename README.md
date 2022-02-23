@@ -4,7 +4,7 @@ Basically a Geometry Dash Server Emulator
 
 Supported version of Geometry Dash: 1.0 - 2.11 (so any version of Geometry Dash works, as of writing this [February 02, 2020])
 
-Required version of PHP: 5.4+ (tested up to 7.3.11)
+Required version of PHP: 5.5+ (tested up to 7.3.11)
 
 PHP 8.0 and newer are currently unsupported.
 
