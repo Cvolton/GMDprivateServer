@@ -184,8 +184,8 @@ switch($type){
 	case 5:
 		$params[] = "levels.userID = '$str'";
 		break;
-	case 6:
-	case 17: //featured
+	case 6: //featured
+	case 17: //featured GDW //TODO: make this list of daily levels
 		$params[] = "NOT starFeatured = 0";
 		$order = "rateDate DESC,uploadDate";
 		break;
@@ -197,6 +197,7 @@ switch($type){
 		$params[] = "objects > 9999";
 		break;
 	case 10: //MAP PACKS
+	case 19: //unknown but same as map packs (on real GD type 10 has star rated filter and 19 doesn't)
 		$order = false;
 		$params[] = "levelID IN ($str)";
 		break;
