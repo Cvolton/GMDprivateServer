@@ -4,9 +4,9 @@
 </head>
 <body>
 <?php
-function chkarray($source){
+function chkarray($source, $default = 0){
 	if($source == ""){
-		$target = "0";
+		$target = $default;
 	}else{
 		$target = $source;
 	}
@@ -85,7 +85,7 @@ if(!empty($_POST["levelid"])){
 			$songID = chkarray($levelarray["a35"]);
 			$coins = chkarray($levelarray["a37"]);
 			$reqstar = chkarray($levelarray["a39"]);
-			$extraString = chkarray($levelarray["a36"]);
+			$extraString = chkarray($levelarray["a36"], "");
 			$starStars = chkarray($levelarray["a18"]);
 			$isLDM = chkarray($levelarray["a40"]);
 			$password = chkarray($levelarray["a27"]);
