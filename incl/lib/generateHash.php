@@ -9,7 +9,8 @@ class GenerateHash {
 			$query->execute([':id' => $id]);
 			$result2 = $query->fetchAll();
 			$result = $result2[0];
-			$hash = $hash . $result["levelID"][0].$result["levelID"][strlen($result["levelID"])-1].$result["starStars"].$result["starCoins"];
+			$idstring = strval($result["levelID"]);
+			$hash = $hash . $idstring[0].$idstring[strlen($idstring)-1].$result["starStars"].$result["starCoins"];
 		}
 		return sha1($hash . "xI25fpAapCQg");
 	}
