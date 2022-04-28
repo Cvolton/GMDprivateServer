@@ -26,10 +26,12 @@ if(!empty($_POST["accountID"])){
 $type = ExploitPatch::remove($_POST["type"]);
 if($type == "top" OR $type == "creators" OR $type == "relative"){
 	if($type == "top"){
-		$query = "SELECT * FROM users WHERE isBanned = '0' AND gameVersion $sign AND stars > 0 ORDER BY stars DESC LIMIT 100";
+		$query = $db->prepare("SELECT * FROM users WHERE isBanned = '0' AND gameVersion $sign AND stars > 0 ORDER BY stars DESC LIMIT 100");
+		$query->execute();
 	}
 	if($type == "creators"){
-		$query = "SELECT * FROM users WHERE isCreatorBanned = '0' AND creatorPoints > 0 ORDER BY creatorPoints DESC LIMIT 100";
+		$query = $db->prepare("SELECT * FROM users WHERE isCreatorBanned = '0' AND creatorPoints > 0 ORDER BY creatorPoints DESC LIMIT 100");
+		$query->execute();
 	}
 	if($type == "relative"){
 		$query = "SELECT * FROM users WHERE extID = :accountID";
@@ -44,7 +46,7 @@ if($type == "top" OR $type == "creators" OR $type == "relative"){
 			$count = 50;
 		}
 		$count = floor($count / 2);
-		$query = "SELECT	A.* FROM	(
+		$query = $db->prepare("SELECT	A.* FROM	(
 			(
 				SELECT	*	FROM users
 				WHERE stars <= :stars
@@ -63,10 +65,9 @@ if($type == "top" OR $type == "creators" OR $type == "relative"){
 				LIMIT $count
 			)
 		) as A
-		ORDER BY A.stars DESC";
+		ORDER BY A.stars DESC");
+		$query->execute([':stars' => $stars]);
 	}
-	$query = $db->prepare($query);
-	$query->execute([':stars' => $stars, ':count' => $count]);
 	$result = $query->fetchAll();
 	if($type == "relative"){
 		$user = $result[0];
