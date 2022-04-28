@@ -86,8 +86,8 @@ if($me==$extid){
 		$query->execute([':extid' => $extid, ':me' => $me]);
 		$INCrequests = $query->rowCount();
 		$INCrequestinfo = $query->fetch();
-		$uploaddate = date("d/m/Y G.i", $INCrequestinfo["uploadDate"]);;
 		if($INCrequests > 0){
+			$uploaddate = date("d/m/Y G.i", $INCrequestinfo["uploadDate"]);
 			$friendstate=3;
 		}
 	//check if OUTCOMING friend request
