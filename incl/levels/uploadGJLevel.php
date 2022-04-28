@@ -54,7 +54,7 @@ $levelString = ExploitPatch::remove($_POST["levelString"]);
 $levelInfo = !empty($_POST["levelInfo"]) ? ExploitPatch::remove($_POST["levelInfo"]) : "";
 //TODO: optionally utilize the 2.2 parameter instead
 $unlisted = !empty($_POST["unlisted1"]) ? ExploitPatch::remove($_POST["unlisted1"]) : 
-	!empty($_POST["unlisted"]) ? ExploitPatch::remove($_POST["unlisted"]) : 0;
+	(!empty($_POST["unlisted"]) ? ExploitPatch::remove($_POST["unlisted"]) : 0);
 $unlisted2 = !empty($_POST["unlisted2"]) ? ExploitPatch::remove($_POST["unlisted2"]) : $unlisted;
 $ldm = !empty($_POST["ldm"]) ? ExploitPatch::remove($_POST["ldm"]) : 0;
 $wt = !empty($_POST["wt"]) ? ExploitPatch::remove($_POST["wt"]) : 0;
