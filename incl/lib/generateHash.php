@@ -44,7 +44,8 @@ class GenerateHash {
 			$query->execute([':id' => $id]);
 			$result2 = $query->fetchAll();
 			$result = $result2[0];
-			$hash = $hash . $result["ID"][0].$result["ID"][strlen($result["ID"])-1].$result["stars"].$result["coins"];
+			$idstring = strval($result["ID"]);
+			$hash = $hash . $idstring[0].$idstring[strlen($idstring)-1].$result["stars"].$result["coins"];
 		}
 		return sha1($hash . "xI25fpAapCQg");
 	}
