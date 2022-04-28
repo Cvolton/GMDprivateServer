@@ -16,7 +16,7 @@ if($userName != "" AND $newusr != "" AND $password != ""){
 		if($query->rowCount()==0){
 			echo "Invalid password or nonexistant account. <a href='changeUsername.php'>Try again</a>";
 		}else{
-			echo "Username changed. <a href='accountManagement.php'>Go back to account management</a>";
+			echo "Username changed. <a href='..'>Go back to tools</a>";
 		}
 	}else{
 		echo "Invalid password or nonexistant account. <a href='changeUsername.php'>Try again</a>";
