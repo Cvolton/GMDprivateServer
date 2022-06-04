@@ -83,7 +83,7 @@ if(!is_numeric($levelID)){
 		if($gameVersion > 19 && $pass != 0){
 			$xorPass = base64_encode(XORCipher::cipher($pass,26364));
 		}else{
-			$desc = ExploitPatch::remove(base64_decode($desc));
+			$desc = base64_encode(ExploitPatch::remove(base64_decode($desc)));
 		}
 		//submitting data
 		if(file_exists("../../data/levels/$levelID")){
