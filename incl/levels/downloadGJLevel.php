@@ -80,8 +80,8 @@ if(!is_numeric($levelID)){
 			$pass = "1";
 		}
 		$xorPass = $pass;
-		if($gameVersion > 19 && $pass != 0){
-			$xorPass = base64_encode(XORCipher::cipher($pass,26364));
+		if($gameVersion > 19){
+			if($pass != 0) $xorPass = base64_encode(XORCipher::cipher($pass,26364));
 		}else{
 			$desc = ExploitPatch::remove(base64_decode($desc));
 		}
