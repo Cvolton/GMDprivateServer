@@ -6,7 +6,6 @@ require_once "../lib/exploitPatch.php";
 require_once "../lib/mainLib.php";
 $gs = new mainLib();
 require "../lib/generateHash.php";
-//$levelID = 2632;
 if(empty($_POST["gameVersion"])){
 	$gameVersion = 1;
 }else{
@@ -20,13 +19,12 @@ $inc = !empty($_POST["inc"]) && $_POST["inc"];
 $ip = $gs->getIP();
 $levelID = ExploitPatch::remove($_POST["levelID"]);
 $binaryVersion = !empty($_POST["binaryVersion"]) ? ExploitPatch::remove($_POST["levelID"]) : 0;
-//TODO: inc, extras
 $feaID = 0;
 if(!is_numeric($levelID)){
 	echo -1;
 }else{
 	switch($levelID){
-		case -1:
+		case -1: //Daily level
 			$query = $db->prepare("SELECT feaID, levelID FROM dailyfeatures WHERE timestamp < :time AND type = 0 ORDER BY timestamp DESC LIMIT 1");
 			$query->execute([':time' => time()]);
 			$result = $query->fetch();
@@ -34,13 +32,23 @@ if(!is_numeric($levelID)){
 			$feaID = $result["feaID"];
 			$daily = 1;
 			break;
-		case -2:
+		case -2: //Weekly level
 			$query = $db->prepare("SELECT feaID, levelID FROM dailyfeatures WHERE timestamp < :time AND type = 1 ORDER BY timestamp DESC LIMIT 1");
 			$query->execute([':time' => time()]);
 			$result = $query->fetch();
 			$levelID = $result["levelID"];
 			$feaID = $result["feaID"];
 			$feaID = $feaID + 100001;
+			$daily = 1;
+			break;
+		case -3: //Event level
+			$query = $db->prepare("SELECT feaID, levelID FROM dailyfeatures WHERE timestamp < :time AND type = 2 ORDER BY timestamp DESC LIMIT 1");
+			$query->execute([':time' => time()]);
+			$result = $query->fetch();
+			$levelID = $result["levelID"];
+			$feaID = $result["feaID"];
+			//The feaID range for event levels on real GD is currently unknown, as there haven't been any yet. As such, offsetting this is to be implemented in the future
+			//$feaID = $feaID + 100001;
 			$daily = 1;
 			break;
 		default:
