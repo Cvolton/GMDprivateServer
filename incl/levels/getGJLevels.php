@@ -12,6 +12,7 @@ require "../lib/generateHash.php";
 $lvlstring = ""; $userstring = ""; $songsstring = ""; $lvlsmultistring = []; $str = ""; $order = "uploadDate";
 $orderenabled = true; $ordergauntlet = false;
 $params = array("NOT unlisted = 1");
+$morejoins = "";
 
 if(!empty($_POST["gameVersion"])){
 	$gameVersion = ExploitPatch::number($_POST["gameVersion"]);
@@ -215,13 +216,25 @@ switch($type){
 		$whereor = implode(",", $peoplearray);
 		$params[] = "users.extID IN ($whereor)";
 		break;
+	case 21: //DAILY SAFE
+		$morejoins = "INNER JOIN dailyfeatures ON levels.levelID = dailyfeatures.levelID";
+		$params[] = "dailyfeatures.type = 0";
+		$order = "dailyfeatures.feaID DESC";
+	case 22: //WEEKLY SAFE
+		$morejoins = "INNER JOIN dailyfeatures ON levels.levelID = dailyfeatures.levelID";
+		$params[] = "dailyfeatures.type = 1";
+		$order = "dailyfeatures.feaID DESC";
+	case 23: //EVENT SAFE (assumption)
+		$morejoins = "INNER JOIN dailyfeatures ON levels.levelID = dailyfeatures.levelID";
+		$params[] = "dailyfeatures.type = 2";
+		$order = "dailyfeatures.feaID DESC";
 }
 //ACTUAL QUERY EXECUTION
 $querybase = "FROM levels LEFT JOIN songs ON levels.songID = songs.ID LEFT JOIN users ON levels.userID = users.userID";
 if(!empty($params)){
 	$querybase .= " WHERE (" . implode(" ) AND ( ", $params) . ")";
 }
-$query = "SELECT levels.*, songs.ID, songs.name, songs.authorID, songs.authorName, songs.size, songs.isDisabled, songs.download, users.userName, users.extID $querybase ";
+$query = "SELECT levels.*, songs.ID, songs.name, songs.authorID, songs.authorName, songs.size, songs.isDisabled, songs.download, users.userName, users.extID $querybase $morejoins ";
 if($order){
 	if($ordergauntlet){
 		$query .= "ORDER BY $order ASC";
