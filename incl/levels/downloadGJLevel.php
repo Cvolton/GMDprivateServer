@@ -15,6 +15,8 @@ if(empty($_POST["gameVersion"])){
 if(empty($_POST["levelID"])){
 	exit("-1");
 }
+$extras = !empty($_POST["extras"]) && $_POST["extras"];
+$inc = !empty($_POST["inc"]) && $_POST["inc"];
 $ip = $gs->getIP();
 $levelID = ExploitPatch::remove($_POST["levelID"]);
 $binaryVersion = !empty($_POST["binaryVersion"]) ? ExploitPatch::remove($_POST["levelID"]) : 0;
@@ -63,7 +65,7 @@ if(!is_numeric($levelID)){
 		//adding the download
 		$query6 = $db->prepare("SELECT count(*) FROM actions_downloads WHERE levelID=:levelID AND ip=INET6_ATON(:ip)");
 		$query6->execute([':levelID' => $levelID, ':ip' => $ip]);
-		if($query6->fetchColumn() < 2){
+		if($inc && $query6->fetchColumn() < 2){
 			$query2=$db->prepare("UPDATE levels SET downloads = downloads + 1 WHERE levelID = :levelID");
 			$query2->execute([':levelID' => $levelID]);
 			$query6 = $db->prepare("INSERT INTO actions_downloads (levelID, ip) VALUES 
@@ -99,9 +101,8 @@ if(!is_numeric($levelID)){
 			}
 		}
 		$response = "1:".$result["levelID"].":2:".$result["levelName"].":3:".$desc.":4:".$levelstring.":5:".$result["levelVersion"].":6:".$result["userID"].":8:10:9:".$result["starDifficulty"].":10:".$result["downloads"].":11:1:12:".$result["audioTrack"].":13:".$result["gameVersion"].":14:".$result["likes"].":17:".$result["starDemon"].":43:".$result["starDemonDiff"].":25:".$result["starAuto"].":18:".$result["starStars"].":19:".$result["starFeatured"].":42:".$result["starEpic"].":45:".$result["objects"].":15:".$result["levelLength"].":30:".$result["original"].":31:".$result['twoPlayer'].":28:".$uploadDate. ":29:".$updateDate. ":35:".$result["songID"].":36:".$result["extraString"].":37:".$result["coins"].":38:".$result["starCoins"].":39:".$result["requestedStars"].":46:".$result["wt"].":47:".$result["wt2"].":48:1:40:".$result["isLDM"].":27:$xorPass";
-		if($daily == 1){
-			$response .= ":41:".$feaID;
-		}
+		if($daily == 1) $response .= ":41:".$feaID;
+		if($extras) $response .= ":26:" . $result["levelInfo"];
 		//2.02 stuff
 		$response .= "#" . GenerateHash::genSolo($levelstring) . "#";
 		//2.1 stuff
