@@ -219,18 +219,21 @@ switch($type){
 	case 21: //DAILY SAFE
 		$morejoins = "INNER JOIN dailyfeatures ON levels.levelID = dailyfeatures.levelID";
 		$params[] = "dailyfeatures.type = 0";
-		$order = "dailyfeatures.feaID DESC";
+		$order = "dailyfeatures.feaID";
+		break;
 	case 22: //WEEKLY SAFE
 		$morejoins = "INNER JOIN dailyfeatures ON levels.levelID = dailyfeatures.levelID";
 		$params[] = "dailyfeatures.type = 1";
-		$order = "dailyfeatures.feaID DESC";
+		$order = "dailyfeatures.feaID";
+		break;
 	case 23: //EVENT SAFE (assumption)
 		$morejoins = "INNER JOIN dailyfeatures ON levels.levelID = dailyfeatures.levelID";
 		$params[] = "dailyfeatures.type = 2";
-		$order = "dailyfeatures.feaID DESC";
+		$order = "dailyfeatures.feaID";
+		break;
 }
 //ACTUAL QUERY EXECUTION
-$querybase = "FROM levels LEFT JOIN songs ON levels.songID = songs.ID LEFT JOIN users ON levels.userID = users.userID";
+$querybase = "FROM levels LEFT JOIN songs ON levels.songID = songs.ID LEFT JOIN users ON levels.userID = users.userID $morejoins";
 if(!empty($params)){
 	$querybase .= " WHERE (" . implode(" ) AND ( ", $params) . ")";
 }
