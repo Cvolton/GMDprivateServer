@@ -1,6 +1,20 @@
 <?php
 class GeneratePass
 {
+	public static function GJP2fromPassword($pass) {
+		return sha1($pass . "mI29fmAnxgTs");
+	}
+
+	public static function GJP2hash($pass) {
+		return password_hash(GeneratePass::GJP2fromPassword($pass), PASSWORD_DEFAULT);
+	}
+
+	public static function assignGJP2($accid, $pass) {
+		include dirname(__FILE__)."/connection.php";
+		$query = $db->prepare("UPDATE accounts SET gjp2 = :gjp2 WHERE accountID = :id");
+		$query->execute(["gjp2" => GeneratePass::GJP2hash($pass), ":id" => $accid]);
+	}
+
 	public static function isValid($accid, $pass) {
 		include dirname(__FILE__)."/connection.php";
 		require_once dirname(__FILE__)."/mainLib.php";
@@ -12,13 +26,15 @@ class GeneratePass
 		if($query6->fetchColumn() > 7){
 			return -1;
 		}else{
-			$query = $db->prepare("SELECT accountID, salt, password, isAdmin, isActive FROM accounts WHERE accountID = :accid");
+			$query = $db->prepare("SELECT accountID, salt, password, isActive, gjp2 FROM accounts WHERE accountID = :accid");
 			$query->execute([':accid' => $accid]);
 			if($query->rowCount() == 0){
 				return 0;
 			}
 			$result = $query->fetch();
 			if(password_verify($pass, $result["password"])){
+				if(!$result["gjp2"]) GeneratePass::assignGJP2($accid, $pass);
+
 				$modipCategory = $gs->getMaxValuePermission($result["accountID"], "modipCategory");
 				if($modipCategory > 0){ //modIPs
 					$query4 = $db->prepare("SELECT count(*) FROM modips WHERE accountID = :id");

@@ -2,6 +2,7 @@
 include "../../config/security.php";
 include "../../incl/lib/connection.php";
 require "../../incl/lib/exploitPatch.php";
+require "../../incl/lib/generatePass.php";
 
 if(!isset($preactivateAccounts)){
 	$preactivateAccounts = true;
@@ -39,9 +40,9 @@ if(!empty($_POST["username"]) AND !empty($_POST["email"]) AND !empty($_POST["rep
 			}else{
 				// hashing your password and registering your account
 				$hashpass = password_hash($password, PASSWORD_DEFAULT);
-				$query2 = $db->prepare("INSERT INTO accounts (userName, password, email, registerDate, isActive)
-				VALUES (:userName, :password, :email, :time, :isActive)");
-				$query2->execute([':userName' => $username, ':password' => $hashpass, ':email' => $email,':time' => time(), ':isActive' => $preactivateAccounts ? 1 : 0]);
+				$query2 = $db->prepare("INSERT INTO accounts (userName, password, email, registerDate, isActive, gjp2)
+				VALUES (:userName, :password, :email, :time, :isActive, :gjp2)");
+				$query2->execute([':userName' => $username, ':password' => $hashpass, ':email' => $email,':time' => time(), ':isActive' => $preactivateAccounts ? 1 : 0, ':gjp2' => GeneratePass::GJP2hash($password), PASSWORD_DEFAULT)]);
 				// there you go, you are registered.
 				$activationInfo = $preactivateAccounts ? "No e-mail verification required, you can login." : "<a href='activateAccount.php'>Click here to activate it.</a>";
 				echo "<body style='background-color:grey;'>Account registred. ${activationInfo} <a href='..'>Go back to tools</a></body>";

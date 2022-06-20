@@ -2,6 +2,7 @@
 include "../config/security.php";
 include "../incl/lib/connection.php";
 require_once "../incl/lib/exploitPatch.php";
+require "../incl/lib/generatePass.php";
 
 if(!isset($preactivateAccounts)){
 	$preactivateAccounts = true;
@@ -24,9 +25,10 @@ if($_POST["userName"] != ""){
 		echo "-2";
 	}else{
 		$hashpass = password_hash($password, PASSWORD_DEFAULT);
-		$query = $db->prepare("INSERT INTO accounts (userName, password, email, registerDate, isActive)
+		$gjp2 = GeneratePass::GJP2hash($password);
+		$query = $db->prepare("INSERT INTO accounts (userName, password, email, registerDate, isActive, gjp2)
 		VALUES (:userName, :password, :email, :time, :isActive)");
-		$query->execute([':userName' => $userName, ':password' => $hashpass, ':email' => $email, ':time' => time(), ':isActive' => $preactivateAccounts ? 1 : 0]);
+		$query->execute([':userName' => $userName, ':password' => $hashpass, ':email' => $email, ':time' => time(), ':isActive' => $preactivateAccounts ? 1 : 0, ':gjp2' => $gjp2]);
 		echo "1";
 	}
 }

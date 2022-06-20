@@ -18,6 +18,7 @@ if ($pass == 1) {
 	$passhash = password_hash($newpass, PASSWORD_DEFAULT);
 	$query = $db->prepare("UPDATE accounts SET password=:password, salt=:salt WHERE userName=:userName");	
 	$query->execute([':password' => $passhash, ':userName' => $userName, ':salt' => $salt]);
+	GeneratePass::assignGJP2($accid, $pass);
 	echo "Password changed. <a href='..'>Go back to tools</a>";
 	//decrypting save
 	$query = $db->prepare("SELECT accountID FROM accounts WHERE userName=:userName");	
