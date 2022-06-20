@@ -10,14 +10,21 @@ use Defuse\Crypto\KeyProtectedByPassword;
 use Defuse\Crypto\Crypto;
 use Defuse\Crypto\Key;
 //here im getting all the data
-$userName = ExploitPatch::remove($_POST["userName"]);
-$password = $_POST["password"];
-$secret = "";
-$pass = GeneratePass::isValidUsrname($userName, $password);
-if ($pass == 1) {
+$password = !empty($_POST["password"]) ? $_POST["password"] : "";
+
+if(empty($_POST["accountID"])) {
+	$userName = ExploitPatch::remove($_POST["userName"]);
 	$query = $db->prepare("SELECT accountID FROM accounts WHERE userName = :userName");
 	$query->execute([':userName' => $userName]);
 	$accountID = $query->fetchColumn();
+} else {
+	$accountID = ExploitPatch::remove($_POST["accountID"]);
+}
+
+$pass = 0;
+if(!empty($_POST["password"])) $pass = GeneratePass::isValid($accountID, $_POST["password"]);
+elseif(!empty($_POST["gjp2"])) $pass = GeneratePass::isGJP2Valid($accountID, $_POST["gjp2"]);
+if ($pass == 1) {
 	if(!is_numeric($accountID) || !file_exists("../data/accounts/$accountID")){
 		exit("-1");
 	}else{

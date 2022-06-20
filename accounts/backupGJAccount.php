@@ -14,9 +14,24 @@ use Defuse\Crypto\Crypto;
 use Defuse\Crypto\Key;*/
 //here im getting all the data
 $userName = ExploitPatch::remove($_POST["userName"]);
-$password = $_POST["password"];
+$password = !empty($_POST["password"]) ? $_POST["password"] : "";
 $saveData = ExploitPatch::remove($_POST["saveData"]);
-$pass = GeneratePass::isValidUsrname($userName, $password);
+
+if(empty($_POST["accountID"])) {
+	$query = $db->prepare("SELECT accountID FROM accounts WHERE userName = :userName");
+	$query->execute([':userName' => $userName]);
+	$accountID = $query->fetchColumn();
+} else {
+	$accountID = ExploitPatch::remove($_POST["accountID"]);
+}
+
+if(!is_numeric($accountID)){
+	exit("-1");
+}
+
+$pass = 0;
+if(!empty($_POST["password"])) $pass = GeneratePass::isValid($accountID, $_POST["password"]);
+elseif(!empty($_POST["gjp2"])) $pass = GeneratePass::isGJP2Valid($accountID, $_POST["gjp2"]);
 if ($pass == 1) {
 	$saveDataArr = explode(";",$saveData); //splitting ccgamemanager and cclocallevels
 	$saveData = str_replace("-","+",$saveDataArr[0]); //decoding
@@ -46,12 +61,6 @@ if ($pass == 1) {
 	}*/
 	//$query = $db->prepare("UPDATE `accounts` SET `saveData` = :saveData WHERE userName = :userName");
 	//$query->execute([':saveData' => $saveData, ':userName' => $userName]);
-	$query = $db->prepare("SELECT accountID FROM accounts WHERE userName = :userName");
-	$query->execute([':userName' => $userName]);
-	$accountID = $query->fetchColumn();
-	if(!is_numeric($accountID)){
-		exit("-1");
-	}
 	file_put_contents("../data/accounts/$accountID",$saveData);
 	file_put_contents("../data/accounts/keys/$accountID","");
 	$query = $db->prepare("SELECT extID FROM users WHERE userName = :userName LIMIT 1");
