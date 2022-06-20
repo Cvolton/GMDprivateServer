@@ -577,6 +577,12 @@ class mainLib {
 		}
 		return $friendsarray;
 	}
+	public function isFriends($accountID, $targetAccountID) {
+		include __DIR__ . "/connection.php";
+		$query = $db->prepare("SELECT count(*) FROM friendships WHERE person1 = :accountID AND person2 = :targetAccountID OR person1 = :targetAccountID AND person2 = :accountID");
+		$query->execute([':accountID' => $accountID, ':targetAccountID' => $targetAccountID]);
+		return $query->fetchColumn() > 0;
+	}
 	public function getMaxValuePermission($accountID, $permission){
 		include __DIR__ . "/connection.php";
 		$maxvalue = 0;

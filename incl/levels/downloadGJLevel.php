@@ -6,6 +6,7 @@ require_once "../lib/exploitPatch.php";
 require_once "../lib/mainLib.php";
 $gs = new mainLib();
 require "../lib/generateHash.php";
+require "../lib/GJPCheck.php";
 if(empty($_POST["gameVersion"])){
 	$gameVersion = 1;
 }else{
@@ -67,7 +68,8 @@ if(!is_numeric($levelID)){
 
 		//Verifying friends only unlisted
 		if($result["unlisted2"] != 0){
-			//TODO
+			$accountID = GJPCheck::getAccountIDOrDie();
+			if(! ($result["extID"] == $accountID || $gs->isFriends($accountID, $result["extID"])) ) exit("-1");
 		}
 
 		//adding the download
