@@ -8,7 +8,6 @@ $gs = new mainLib();
 $ip = $gs->getIP();
 $udid = ExploitPatch::remove($_POST["udid"]);
 $userName = ExploitPatch::remove($_POST["userName"]);
-$password = ExploitPatch::remove($_POST["password"]);
 //registering
 $query = $db->prepare("SELECT accountID FROM accounts WHERE userName LIKE :userName");
 $query->execute([':userName' => $userName]);
@@ -16,15 +15,10 @@ if($query->rowCount() == 0){
 	exit("-1");
 }
 $id = $query->fetchColumn();
-//rate limiting
-$newtime = time() - 3600;
-/*$query6 = $db->prepare("SELECT count(*) FROM actions WHERE type = '1' AND timestamp > :time AND value2 = :ip");
-$query6->execute([':time' => $newtime, ':ip' => $ip]);
-if($query6->fetchColumn() > 5){
-	exit("-12");
-}*/
-//authenticating
-$pass = GeneratePass::isValidUsrname($userName, $password);
+
+$pass = 0;
+if(!empty($_POST["password"])) $pass = GeneratePass::isValidUsrname($userName, $_POST["password"]);
+elseif(!empty($_POST["gjp2"])) $pass = GeneratePass::isGJP2ValidUsrname($userName, $_POST["gjp2"]);
 if ($pass == 1) { //success
 	//userID
 	$query2 = $db->prepare("SELECT userID FROM users WHERE extID = :id");
