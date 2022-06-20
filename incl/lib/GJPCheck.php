@@ -1,9 +1,12 @@
 <?php
+require_once dirname(__FILE__)."/XORCipher.php";
+require_once dirname(__FILE__)."/generatePass.php";
+include_once dirname(__FILE__)."/mainLib.php";
+
 class GJPCheck {
 	public static function check($gjp, $accountID) {
 		include dirname(__FILE__)."/connection.php";
 		include dirname(__FILE__)."/../../config/security.php";
-		include_once dirname(__FILE__)."/mainLib.php";
 		$ml = new mainLib();
 		if($sessionGrants){
 			$ip = $ml->getIP();
@@ -13,8 +16,6 @@ class GJPCheck {
 				return 1;
 			}
 		}
-		require_once dirname(__FILE__)."/XORCipher.php";
-		require_once dirname(__FILE__)."/generatePass.php";
 		$gjpdecode = str_replace("_","/",$gjp);
 		$gjpdecode = str_replace("-","+",$gjpdecode);
 		$gjpdecode = base64_decode($gjpdecode);
@@ -33,19 +34,25 @@ class GJPCheck {
 			exit("-1");
 	}
 
-	/*
-		Gets accountID and from the POST parameters and validates if the provided GJP matches
-	*/
+	public static function validateGJP2OrDie($gjp2, $accountID){
+		if(GeneratePass::isGJP2Valid($accountID, $gjp2) != 1)
+			exit("-1");
+	}
+
+	/**
+	 * Gets accountID and from the POST parameters and validates if the provided GJP matches
+	 *
+	 * @return     The account id
+	 */
 	public static function getAccountIDOrDie(){
 		require_once "../lib/exploitPatch.php";
 		
-		if(empty($_POST['accountID']) || empty($_POST['gjp']))
-			exit("-1");
+		if(empty($_POST['accountID'])) exit("-1");
 
 		$accountID = ExploitPatch::remove($_POST["accountID"]);
-		$gjp = ExploitPatch::remove($_POST["gjp"]);
 
-		self::validateGJPOrDie($gjp, $accountID);
+		if(!empty($_POST['gjp'])) self::validateGJPOrDie($_POST['gjp'], $accountID);
+		elseif(!empty($_POST['gjp2'])) self::validateGJP2OrDie($_POST['gjp2'], $accountID);
 
 		return $accountID;
 	}
