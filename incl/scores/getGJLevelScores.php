@@ -4,6 +4,7 @@ chdir(dirname(__FILE__));
 include "../lib/connection.php";
 require_once "../lib/GJPCheck.php";
 require_once "../lib/exploitPatch.php";
+require_once "../lib/XORCipher.php";
 require_once "../lib/mainLib.php";
 $gs = new mainLib();
 
@@ -11,34 +12,32 @@ $accountID = GJPCheck::getAccountIDOrDie();
 $levelID = ExploitPatch::remove($_POST["levelID"]);
 $percent = ExploitPatch::remove($_POST["percent"]);
 $uploadDate = time();
-if(isset($_POST["s1"])){
-	$attempts = $_POST["s1"] - 8354;
-}else{
-	$attempts = 0;
-}
-if(isset($_POST["s9"])){
-	$coins = $_POST["s9"] - 5819;
-}else{
-	$coins = 0;
-}
 
+$attempts = !empty($_POST["s1"]) ? $_POST["s1"] - 8354 : 0;
+$clicks = !empty($_POST["s2"]) ? $_POST["s2"] - 3991 : 0;
+$time = !empty($_POST["s3"]) ? $_POST["s3"] - 4085 : 0;
+
+$progresses = !empty($_POST["s6"]) ? XORCipher::cipher(base64_decode(str_replace("_","/",str_replace("-","+",$_POST["s6"]))),41274) : 0;
+$coins = !empty($_POST["s9"]) ? $_POST["s9"] - 5819 : 0;
+$dailyID = !empty($_POST["s10"]) ? $_POST["s10"] : 0;
 //UPDATING SCORE
 $userID = $gs->getUserID($accountID);
-$query2 = $db->prepare("SELECT percent FROM levelscores WHERE accountID = :accountID AND levelID = :levelID");
+$condition = ($dailyID > 0) ? ">" : "=";
+$query2 = $db->prepare("SELECT percent FROM levelscores WHERE accountID = :accountID AND levelID = :levelID AND dailyID $condition 0");
 $query2->execute([':accountID' => $accountID, ':levelID' => $levelID]);
 $oldPercent = $query2->fetchColumn();
 if($query2->rowCount() == 0) {
-	$query = $db->prepare("INSERT INTO levelscores (accountID, levelID, percent, uploadDate, coins, attempts)
-	VALUES (:accountID, :levelID, :percent, :uploadDate, :coins, :attempts)");
+	$query = $db->prepare("INSERT INTO levelscores (accountID, levelID, percent, uploadDate, coins, attempts, clicks, time, progresses, dailyID)
+	VALUES (:accountID, :levelID, :percent, :uploadDate, :coins, :attempts, :clicks, :time, :progresses, :dailyID)");
 } else {
 	if($oldPercent <= $percent){
-		$query = $db->prepare("UPDATE levelscores SET percent=:percent, uploadDate=:uploadDate, coins=:coins, attempts=:attempts WHERE accountID=:accountID AND levelID=:levelID");
+		$query = $db->prepare("UPDATE levelscores SET percent=:percent, uploadDate=:uploadDate, coins=:coins, attempts=:attempts, clicks=:clicks, time=:time, progresses=:progresses, dailyID=:dailyID WHERE accountID=:accountID AND levelID=:levelID AND dailyID $condition 0");
 	}else{
-		$query = $db->prepare("SELECT count(*) FROM levelscores WHERE percent=:percent AND uploadDate=:uploadDate AND accountID=:accountID AND levelID=:levelID AND coins = :coins AND attempts = :attempts");
+		$query = $db->prepare("SELECT count(*) FROM levelscores WHERE percent=:percent AND uploadDate=:uploadDate AND accountID=:accountID AND levelID=:levelID AND coins = :coins AND attempts = :attempts AND clicks = :clicks AND time = :time AND progresses = :progresses AND dailyID = :dailyID");
 	}
 }
 
-$query->execute([':accountID' => $accountID, ':levelID' => $levelID, ':percent' => $percent, ':uploadDate' => $uploadDate, ':coins' => $coins, ':attempts' => $attempts]);
+$query->execute([':accountID' => $accountID, ':levelID' => $levelID, ':percent' => $percent, ':uploadDate' => $uploadDate, ':coins' => $coins, ':attempts' => $attempts, ':clicks' => $clicks, ':time' => $time, ':progresses' => $progresses, ':dailyID' => $dailyID]);
 if($percent > 100){
 	$query = $db->prepare("UPDATE users SET isBanned=1 WHERE extID = :accountID");
 	$query->execute([':accountID' => $accountID]);
@@ -57,15 +56,15 @@ switch($type){
 		$friends = $gs->getFriends($accountID);
 		$friends[] = $accountID;
 		$friends = implode(",",$friends);
-		$query2 = $db->prepare("SELECT accountID, uploadDate, percent, coins FROM levelscores WHERE levelID = :levelID AND accountID IN ($friends) ORDER BY percent DESC");
+		$query2 = $db->prepare("SELECT accountID, uploadDate, percent, coins FROM levelscores WHERE dailyID $condition 0 AND levelID = :levelID AND accountID IN ($friends) ORDER BY percent DESC");
 		$query2args = [':levelID' => $levelID];
 		break;
 	case 1:
-		$query2 = $db->prepare("SELECT accountID, uploadDate, percent, coins FROM levelscores WHERE levelID = :levelID ORDER BY percent DESC");
+		$query2 = $db->prepare("SELECT accountID, uploadDate, percent, coins FROM levelscores WHERE dailyID $condition 0 AND levelID = :levelID ORDER BY percent DESC");
 		$query2args = [':levelID' => $levelID];
 		break;
 	case 2:
-		$query2 = $db->prepare("SELECT accountID, uploadDate, percent, coins FROM levelscores WHERE levelID = :levelID AND uploadDate > :time ORDER BY percent DESC");
+		$query2 = $db->prepare("SELECT accountID, uploadDate, percent, coins FROM levelscores WHERE dailyID $condition 0 AND levelID = :levelID AND uploadDate > :time ORDER BY percent DESC");
 		$query2args = [':levelID' => $levelID, ':time' => time() - 604800];
 		break;
 	default:
