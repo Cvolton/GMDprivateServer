@@ -14,7 +14,6 @@ class GeneratePass
 	public static function assignGJP2($accid, $pass) {
 		include dirname(__FILE__)."/connection.php";
 
-		$ip = $gs->getIP();
 		$query = $db->prepare("UPDATE accounts SET gjp2 = :gjp2 WHERE accountID = :id");
 		$query->execute(["gjp2" => self::GJP2hash($pass), ":id" => $accid]);
 	}
