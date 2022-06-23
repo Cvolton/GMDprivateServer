@@ -1,4 +1,5 @@
 <?php
+
 chdir(dirname(__FILE__));
 //error_reporting(0);
 include "../lib/connection.php";
@@ -13,8 +14,8 @@ $subject =  ExploitPatch::remove($_POST["subject"]);
 $toAccountID =  ExploitPatch::number($_POST["toAccountID"]);
 $body =  ExploitPatch::remove($_POST["body"]);
 $accID =  GJPCheck::getAccountIDOrDie();
-if($accID == $toAccountID){
-	exit("-1");
+if ($accID == $toAccountID) {
+    exit("-1");
 }
 $query3 = "SELECT userName FROM users WHERE extID = :accID ORDER BY userName DESC";
 $query3 = $db->prepare($query3);
@@ -43,4 +44,3 @@ if (!empty($mSOnly[0]) and $mSOnly[0] == 2) {
         echo -1;
     }
 }
-?>

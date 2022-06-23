@@ -1,4 +1,5 @@
 <?php
+
 chdir(dirname(__FILE__));
 set_time_limit(0);
 include "../../incl/lib/connection.php";
@@ -14,4 +15,3 @@ $query = $db->prepare("UPDATE songs
 	SET songs.levelsCount = IFNULL(calculated.levelsCount, 0)");
 $query->execute();
 echo "<hr>";
-?>

@@ -1,6 +1,6 @@
 <?php
 /*
-	NAVBAR
+    NAVBAR
 */
 $string["homeNavbar"] = "Startseite";
 
@@ -32,7 +32,7 @@ $string["logout"] = "Ausloggen";
 $string["login"] = "Einloggen";
 
 /*
-	REUPLOAD
+    REUPLOAD
 */
 $string["reuploadBTN"] = "Hochladen!";
 $string["errorGeneric"] = "Ein Fehler ist aufgetreten:";
@@ -47,7 +47,7 @@ $string["songAddError-3"] = "Dieser Song wurde schon Hochgeladen.";
 $string["songAddError-4"] = "Dieser Song ist nicht Hochladebar. Versuch eine andere Datei/Song hochzuladen.";
 
 /*
-	STATS
+    STATS
 */
 $string["ID"] = "Level ID";
 $string["stars"] = "Sterne Bewertet";

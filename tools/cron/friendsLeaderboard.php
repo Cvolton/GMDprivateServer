@@ -1,18 +1,19 @@
 <?php
+
 chdir(dirname(__FILE__));
-if(file_exists("../logs/fixfrndlog.txt")){
-	$cptime = file_get_contents("../logs/fixfrndlog.txt");
-	$newtime = time() - 30;
-	if($cptime > $newtime){
-		$remaintime = time() - $cptime;
-		$remaintime = 30 - $remaintime;
-		$remainmins = floor($remaintime / 60);
-		$remainsecs = $remainmins * 60;
-		$remainsecs = $remaintime - $remainsecs;
-		exit("Please wait $remainmins minutes and $remainsecs seconds before running ". basename($_SERVER['SCRIPT_NAME'])." again");
-	}
+if (file_exists("../logs/fixfrndlog.txt")) {
+    $cptime = file_get_contents("../logs/fixfrndlog.txt");
+    $newtime = time() - 30;
+    if ($cptime > $newtime) {
+        $remaintime = time() - $cptime;
+        $remaintime = 30 - $remaintime;
+        $remainmins = floor($remaintime / 60);
+        $remainsecs = $remainmins * 60;
+        $remainsecs = $remaintime - $remainsecs;
+        exit("Please wait $remainmins minutes and $remainsecs seconds before running ". basename($_SERVER['SCRIPT_NAME'])." again");
+    }
 }
-file_put_contents("../logs/fixfrndlog.txt",time());
+file_put_contents("../logs/fixfrndlog.txt", time());
 set_time_limit(0);
 include "../../incl/lib/connection.php";
 echo "Calculating the amount of friends everyone has";
@@ -31,4 +32,3 @@ $query = $db->prepare("UPDATE accounts
 	SET accounts.friendsCount = IFNULL(calculated.friends, 0)");
 $query->execute();
 echo "<hr>";
-?>

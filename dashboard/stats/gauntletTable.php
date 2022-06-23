@@ -1,44 +1,45 @@
 <?php
+
 session_start();
 require "../incl/dashboardLib.php";
 $dl = new dashboardLib();
 require "../../incl/lib/mainLib.php";
 $gs = new mainLib();
 /*
-	generating packtable
+    generating packtable
 */
 include "../../incl/lib/connection.php";
-if(isset($_GET["page"]) AND is_numeric($_GET["page"]) AND $_GET["page"] > 0){
-	$page = ($_GET["page"] - 1) * 10;
-	$actualpage = $_GET["page"];
-}else{
-	$page = 0;
-	$actualpage = 1;
+if (isset($_GET["page"]) and is_numeric($_GET["page"]) and $_GET["page"] > 0) {
+    $page = ($_GET["page"] - 1) * 10;
+    $actualpage = $_GET["page"];
+} else {
+    $page = 0;
+    $actualpage = 1;
 }
 $x = $page + 1;
 $gauntlettable = "";
 $query = $db->prepare("SELECT * FROM gauntlets ORDER BY ID ASC LIMIT 10 OFFSET $page");
 $query->execute();
 $result = $query->fetchAll();
-foreach($result as &$gauntlet){
-	$lvlarray = array();
-	for ($y = 1; $y < 6; $y++) {
-		$lvlarray[] = $gauntlet["level".$y];
-	}
-	$lvltable = "";
-	foreach($lvlarray as &$lvl){
-		$query = $db->prepare("SELECT levelID,levelName,starStars,userID,coins FROM levels WHERE levelID = :levelID");
-		$query->execute([':levelID' => $lvl]);
-		$level = $query->fetch();
-		$lvltable .= "<tr>
+foreach ($result as &$gauntlet) {
+    $lvlarray = array();
+    for ($y = 1; $y < 6; $y++) {
+        $lvlarray[] = $gauntlet["level".$y];
+    }
+    $lvltable = "";
+    foreach ($lvlarray as &$lvl) {
+        $query = $db->prepare("SELECT levelID,levelName,starStars,userID,coins FROM levels WHERE levelID = :levelID");
+        $query->execute([':levelID' => $lvl]);
+        $level = $query->fetch();
+        $lvltable .= "<tr>
 						<td>".$level["levelID"]."</td>
 						<td>".$level["levelName"]."</td>
 						<td>".$gs->getUserName($level["userID"])."</td>
 						<td>".$level["starStars"]."</td>
 						<td>".$level["coins"]."</td>
 					</tr>";
-	}
-	$gauntlettable .= "<tr>
+    }
+    $gauntlettable .= "<tr>
 					<th scope='row'>$x</th>
 					<td>".$gs->getGauntletName($gauntlet["ID"]).'</td>
 					<td><a class="dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -62,11 +63,11 @@ foreach($result as &$gauntlet){
 						</div>
 					</td>
 					</tr>';
-	$x++;
-	echo "</td></tr>";
+    $x++;
+    echo "</td></tr>";
 }
 /*
-	bottom row
+    bottom row
 */
 //getting count
 $query = $db->prepare("SELECT count(*) FROM gauntlets");
@@ -74,8 +75,8 @@ $query->execute();
 $gauntletcount = $query->fetchColumn();
 $pagecount = ceil($gauntletcount / 10);
 $bottomrow = $dl->generateBottomRow($pagecount, $actualpage);
-/* 
-	printing
+/*
+    printing
 */
 $dl->printPage('<table class="table table-inverse">
   <thead>
@@ -90,4 +91,3 @@ $dl->printPage('<table class="table table-inverse">
   </tbody>
 </table>'
 .$bottomrow, true, "stats");
-?>

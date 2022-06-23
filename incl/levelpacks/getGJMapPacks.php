@@ -1,4 +1,5 @@
 <?php
+
 chdir(dirname(__FILE__));
 //error_reporting(0);
 include "../lib/connection.php";
@@ -12,13 +13,13 @@ $query = $db->prepare("SELECT colors2,rgbcolors,ID,name,levels,stars,coins,diffi
 $query->execute();
 $result = $query->fetchAll();
 $packcount = $query->rowCount();
-foreach($result as &$mappack) {
-	$lvlsmultistring .= $mappack["ID"] . ",";
-	$colors2 = $mappack["colors2"];
-	if($colors2 == "none" OR $colors2 == ""){
-		$colors2 = $mappack["rgbcolors"];
-	}
-	$mappackstring .= "1:".$mappack["ID"].":2:".$mappack["name"].":3:".$mappack["levels"].":4:".$mappack["stars"].":5:".$mappack["coins"].":6:".$mappack["difficulty"].":7:".$mappack["rgbcolors"].":8:".$colors2."|";
+foreach ($result as &$mappack) {
+    $lvlsmultistring .= $mappack["ID"] . ",";
+    $colors2 = $mappack["colors2"];
+    if ($colors2 == "none" or $colors2 == "") {
+        $colors2 = $mappack["rgbcolors"];
+    }
+    $mappackstring .= "1:".$mappack["ID"].":2:".$mappack["name"].":3:".$mappack["levels"].":4:".$mappack["stars"].":5:".$mappack["coins"].":6:".$mappack["difficulty"].":7:".$mappack["rgbcolors"].":8:".$colors2."|";
 }
 $query = $db->prepare("SELECT count(*) FROM mappacks");
 $query->execute();
@@ -29,4 +30,3 @@ echo $mappackstring;
 echo "#".$totalpackcount.":".$packpage.":10";
 echo "#";
 echo GenerateHash::genPack($lvlsmultistring);
-?>

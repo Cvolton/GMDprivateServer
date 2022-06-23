@@ -1,6 +1,6 @@
 <?php
 /*
-	NAVBAR
+    NAVBAR
 */
 $string["homeNavbar"] = "Home";
 
@@ -32,7 +32,7 @@ $string["logout"] = "Esci";
 $string["login"] = "Accedi";
 
 /*
-	REUPLOAD
+    REUPLOAD
 */
 $string["reuploadBTN"] = "Reupload";
 $string["errorGeneric"] = "Si è verificato un errore:";
@@ -47,7 +47,7 @@ $string["songAddError-3"] = "Questa canzone è giá stata ripubblicata";
 $string["songAddError-4"] = "Questa canzone non è ripubblicabile";
 
 /*
-	STATS
+    STATS
 */
 $string["ID"] = "ID";
 $string["stars"] = "Stelle";

@@ -1,6 +1,6 @@
 <?php
 /*
-	NAVBAR
+    NAVBAR
 */
 $string["homeNavbar"] = "Início";
 
@@ -32,7 +32,7 @@ $string["logout"] = "Sair";
 $string["login"] = "Entrar";
 
 /*
-	REUPLOAD
+    REUPLOAD
 */
 $string["reuploadBTN"] = "Transferir";
 $string["errorGeneric"] = "Um erro ocorreu:";
@@ -47,7 +47,7 @@ $string["songAddError-3"] = "Esta música já foi transferida";
 $string["songAddError-4"] = "Não é possível transferir esta música";
 
 /*
-	STATS
+    STATS
 */
 $string["ID"] = "ID";
 $string["stars"] = "Estrelas";

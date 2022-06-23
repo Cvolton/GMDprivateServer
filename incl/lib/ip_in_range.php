@@ -33,14 +33,14 @@
 * 21 May 2012
 */
 
-class ipInRange {
-
-
+class ipInRange
+{
     // decbin32
     // In order to simplify working with IP addresses (in binary) and their
     // netmasks, it is easier to ensure that the binary strings are padded
     // with zeros out to 32 characters - IP addresses are 32 bit numbers
-    public static function decbin32 ($dec) {
+    public static function decbin32($dec)
+    {
         return str_pad(decbin($dec), 32, '0', STR_PAD_LEFT);
     }
 
@@ -54,7 +54,8 @@ class ipInRange {
     // The function will return true if the supplied IP is within the range.
     // Note little validation is done on the range inputs - it expects you to
     // use one of the above 3 formats.
-    public static function ipv4_in_range($ip, $range) {
+    public static function ipv4_in_range($ip, $range)
+    {
         if (strpos($range, '/') !== false) {
             // $range is in IP/NETMASK format
             list($range, $netmask) = explode('/', $range, 2);
@@ -62,14 +63,16 @@ class ipInRange {
                 // $netmask is a 255.255.0.0 format
                 $netmask = str_replace('*', '0', $netmask);
                 $netmask_dec = ip2long($netmask);
-                return ( (ip2long($ip) & $netmask_dec) == (ip2long($range) & $netmask_dec) );
+                return ((ip2long($ip) & $netmask_dec) == (ip2long($range) & $netmask_dec));
             } else {
                 // $netmask is a CIDR size block
                 // fix the range argument
                 $x = explode('.', $range);
-                while(count($x)<4) $x[] = '0';
-                list($a,$b,$c,$d) = $x;
-                $range = sprintf("%u.%u.%u.%u", empty($a)?'0':$a, empty($b)?'0':$b,empty($c)?'0':$c,empty($d)?'0':$d);
+                while (count($x)<4) {
+                    $x[] = '0';
+                }
+                list($a, $b, $c, $d) = $x;
+                $range = sprintf("%u.%u.%u.%u", empty($a) ? '0' : $a, empty($b) ? '0' : $b, empty($c) ? '0' : $c, empty($d) ? '0' : $d);
                 $range_dec = ip2long($range);
                 $ip_dec = ip2long($ip);
 
@@ -93,16 +96,17 @@ class ipInRange {
 
             if (strpos($range, '-')!==false) { // A-B format
                 list($lower, $upper) = explode('-', $range, 2);
-                $lower_dec = (float)sprintf("%u",ip2long($lower));
-                $upper_dec = (float)sprintf("%u",ip2long($upper));
-                $ip_dec = (float)sprintf("%u",ip2long($ip));
-                return ( ($ip_dec>=$lower_dec) && ($ip_dec<=$upper_dec) );
+                $lower_dec = (float)sprintf("%u", ip2long($lower));
+                $upper_dec = (float)sprintf("%u", ip2long($upper));
+                $ip_dec = (float)sprintf("%u", ip2long($ip));
+                return (($ip_dec>=$lower_dec) && ($ip_dec<=$upper_dec));
             }
             return false;
         }
     }
 
-    public static function ip2long6($ip) {
+    public static function ip2long6($ip)
+    {
         if (substr_count($ip, '::')) {
             $ip = str_replace('::', str_repeat(':0000', 8 - substr_count($ip, ':')) . ':', $ip);
         }
@@ -119,7 +123,7 @@ class ipInRange {
     // Get the ipv6 full format and return it as a decimal value.
     public static function get_ipv6_full($ip)
     {
-        $pieces = explode ("/", $ip, 2);
+        $pieces = explode("/", $ip, 2);
         $left_piece = $pieces[0];
         $right_piece = $pieces[1];
 
@@ -130,7 +134,7 @@ class ipInRange {
 
         // Pad out the shorthand entries.
         $main_ip_pieces = explode(":", $main_ip_piece);
-        foreach($main_ip_pieces as $key=>$val) {
+        foreach ($main_ip_pieces as $key=>$val) {
             $main_ip_pieces[$key] = str_pad($main_ip_pieces[$key], 4, "0", STR_PAD_LEFT);
         }
 
@@ -145,8 +149,7 @@ class ipInRange {
                 $main_ip_pieces[$i] = "0000";
             }
             $main_ip_pieces[7] = $last_piece;
-        }
-        else {
+        } else {
             // Build the full form of the IPV6 address
             for ($i = $size; $i < 8; $i++) {
                 $main_ip_pieces[$i] = "0000";
@@ -166,7 +169,7 @@ class ipInRange {
     // Returns true if the IPV6 address, $ip,  is within the range from $range_ip.  False otherwise.
     public static function ipv6_in_range($ip, $range_ip)
     {
-        $pieces = explode ("/", $range_ip, 2);
+        $pieces = explode("/", $range_ip, 2);
         $left_piece = $pieces[0];
         $right_piece = $pieces[1];
 
@@ -177,7 +180,7 @@ class ipInRange {
 
         // Pad out the shorthand entries.
         $main_ip_pieces = explode(":", $main_ip_piece);
-        foreach($main_ip_pieces as $key=>$val) {
+        foreach ($main_ip_pieces as $key=>$val) {
             $main_ip_pieces[$key] = str_pad($main_ip_pieces[$key], 4, "0", STR_PAD_LEFT);
         }
 
@@ -197,8 +200,7 @@ class ipInRange {
                 $last[$i] = "ffff";
             }
             $main_ip_pieces[7] = $last_piece;
-        }
-        else {
+        } else {
             // Build the full form of the IPV6 address
             for ($i = $size; $i < 8; $i++) {
                 $first[$i] = "0000";
@@ -214,4 +216,3 @@ class ipInRange {
         return $in_range;
     }
 }
-?>

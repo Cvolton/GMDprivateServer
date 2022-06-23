@@ -1,17 +1,19 @@
 <?php
+
 chdir(dirname(__FILE__));
 //error_reporting(0);
 include "../lib/connection.php";
 require_once "../lib/GJPCheck.php";
 require_once "../lib/exploitPatch.php";
 
-if(empty($_POST["targetAccountID"]))
-	exit("-1");
+if (empty($_POST["targetAccountID"])) {
+    exit("-1");
+}
 
 $accountID = GJPCheck::getAccountIDOrDie();
 $targetAccountID = ExploitPatch::remove($_POST["targetAccountID"]);
-if($accountID == $targetAccountID){
-	exit("-1");
+if ($accountID == $targetAccountID) {
+    exit("-1");
 }
 
 $query = $db->prepare("INSERT INTO blocks (person1, person2) VALUES (:accountID, :targetAccountID)");

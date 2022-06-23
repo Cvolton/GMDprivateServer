@@ -1,10 +1,10 @@
 <?php
 /*
-	QUESTS
+    QUESTS
 */
 //NOW SET IN THE QUESTS TABLE IN THE MYSQL DATABASE
 /*
-	REWARDS
+    REWARDS
 */
 //SMALL CHEST
 $chest1minOrbs = 200;
@@ -25,4 +25,3 @@ $chest2maxKeys = 6;
 //REWARD TIMES (in seconds)
 $chest1wait = 3600;
 $chest2wait = 14400;
-?>

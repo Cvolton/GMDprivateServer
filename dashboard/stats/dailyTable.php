@@ -1,4 +1,5 @@
 <?php
+
 session_start();
 require "../incl/dashboardLib.php";
 $dl = new dashboardLib();
@@ -6,14 +7,14 @@ require "../../incl/lib/mainLib.php";
 $gs = new mainLib();
 require "../../incl/lib/connection.php";
 /*
-	generating dailytable
+    generating dailytable
 */
-if(isset($_GET["page"]) AND is_numeric($_GET["page"]) AND $_GET["page"] > 0){
-	$page = ($_GET["page"] - 1) * 10;
-	$actualpage = $_GET["page"];
-}else{
-	$page = 0;
-	$actualpage = 1;
+if (isset($_GET["page"]) and is_numeric($_GET["page"]) and $_GET["page"] > 0) {
+    $page = ($_GET["page"] - 1) * 10;
+    $actualpage = $_GET["page"];
+} else {
+    $page = 0;
+    $actualpage = 1;
 }
 $dailytable = "";
 //getting data
@@ -25,18 +26,18 @@ $query->execute([':time' => time()]);
 $dailycount = $query->fetchColumn();
 $x = $dailycount - $page;
 //printing data
-foreach($result as &$daily){
-	//getting level data
-	$query = $db->prepare("SELECT levelName,userID,starStars,coins FROM levels WHERE levelID = :levelID");
-	$query->execute([':levelID' => $daily["levelID"]]);
-	$level = $query->fetch();
-	if($query->rowCount() == 0){
-		$level["levelName"] = $dl->getLocalizedString("deletedLevel");
-		$level["userID"] = 0;
-		$level["starStars"] = -1;
-		$level["coins"] = -1;
-	}
-	$dailytable .= '<tr>
+foreach ($result as &$daily) {
+    //getting level data
+    $query = $db->prepare("SELECT levelName,userID,starStars,coins FROM levels WHERE levelID = :levelID");
+    $query->execute([':levelID' => $daily["levelID"]]);
+    $level = $query->fetch();
+    if ($query->rowCount() == 0) {
+        $level["levelName"] = $dl->getLocalizedString("deletedLevel");
+        $level["userID"] = 0;
+        $level["starStars"] = -1;
+        $level["coins"] = -1;
+    }
+    $dailytable .= '<tr>
 					<th scope="row">'.$x.'</th>
 					<td>'.$daily["levelID"].'</th>
 					<td>'.$level["levelName"].'</td>
@@ -45,16 +46,16 @@ foreach($result as &$daily){
 					<td>'.$level["coins"].'</td>
 					<td>'.$dl->convertToDate($daily["timestamp"]).'</td>
 				</tr>';
-	$x--;
-	echo "</td></tr>";
+    $x--;
+    echo "</td></tr>";
 }
 /*
-	bottom row
+    bottom row
 */
 $pagecount = ceil($dailycount / 10);
 $bottomrow = $dl->generateBottomRow($pagecount, $actualpage);
-/* 
-	printing
+/*
+    printing
 */
 $dl->printPage('<table class="table table-inverse">
 	<thead>
@@ -73,4 +74,3 @@ $dl->printPage('<table class="table table-inverse">
 	</tbody>
 </table>'
 .$bottomrow, true, "stats");
-?>

@@ -2,13 +2,13 @@
 /*
            DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
                    Version 2, December 2004
- 
+
 Copyright (C) 2022 Galster-dev <contact@galster.dev>
 
 Everyone is permitted to copy and distribute verbatim or modified
 copies of this license document, and changing it is allowed as long
 as the name is changed.
- 
+
            DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
   TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
 
@@ -16,7 +16,7 @@ as the name is changed.
 */
 // Перевод бай Ададим Влад-и-Мерович БойшеВИЧ Платин
 /*
-	NAVBAR
+    NAVBAR
 */
 $string["homeNavbar"] = "Домой";
 
@@ -48,7 +48,7 @@ $string["logout"] = "Выйти";
 $string["login"] = "Войти";
 
 /*
-	REUPLOAD
+    REUPLOAD
 */
 $string["reuploadBTN"] = "Перезалив";
 $string["errorGeneric"] = "Произошла ошибка:";
@@ -63,7 +63,7 @@ $string["songAddError-3"] = "Этот трек уже был загружен";
 $string["songAddError-4"] = "Этот трек нельзя загрузить";
 
 /*
-	STATS
+    STATS
 */
 $string["ID"] = "ID";
 $string["stars"] = "Звёзды";

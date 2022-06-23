@@ -9,9 +9,9 @@ $x = 0;
 $query = $db->prepare("SELECT users.userID, SUM(actions.value) AS stars, users.userName FROM actions INNER JOIN users ON actions.account = users.userID WHERE type = '9' AND timestamp > :time AND users.isBanned = 0 GROUP BY(users.userID)");
 $query->execute([':time' => $time]);
 $result = $query->fetchAll();
-foreach($result as &$gain){
-	$x++;
-	echo "<tr><td>$x</td><td>${gain['userID']}</td><td>${gain['userName']}</td><td>${gain['stars']}</td></tr>";
+foreach ($result as &$gain) {
+    $x++;
+    echo "<tr><td>$x</td><td>${gain['userID']}</td><td>${gain['userName']}</td><td>${gain['stars']}</td></tr>";
 }
 ?>
 </table>
