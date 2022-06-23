@@ -1,6 +1,6 @@
 <?php
 /*
-	NAVBAR
+    NAVBAR
 */
 $string["homeNavbar"] = "Αρχική";
 
@@ -32,7 +32,7 @@ $string["logout"] = "Αποσύνδεση";
 $string["login"] = "Σύνδεση";
 
 /*
-	REUPLOAD
+    REUPLOAD
 */
 $string["reuploadBTN"] = "Αναδιμοσίευση";
 $string["errorGeneric"] = "Υπάρχει κάποιο πρόβλημα:";
@@ -47,7 +47,7 @@ $string["songAddError-3"] = "Το τραγούδι έχει αναδημοσιε
 $string["songAddError-4"] = "Το τραγούδι δέν γίνεται να αναδημοσιευθεί";
 
 /*
-	STATS
+    STATS
 */
 $string["ID"] = "ID";
 $string["stars"] = "Αστέρια";

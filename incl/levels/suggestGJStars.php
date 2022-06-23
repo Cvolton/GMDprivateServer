@@ -1,4 +1,5 @@
 <?php
+
 //error_reporting(0);
 chdir(dirname(__FILE__));
 include "../lib/connection.php";
@@ -14,15 +15,14 @@ $levelID = ExploitPatch::remove($_POST["levelID"]);
 $accountID = GJPCheck::getAccountIDOrDie();
 $difficulty = $gs->getDiffFromStars($stars);
 
-if($gs->checkPermission($accountID, "actionRateStars")){
-	$gs->rateLevel($accountID, $levelID, $stars, $difficulty["diff"], $difficulty["auto"], $difficulty["demon"]);
-	$gs->featureLevel($accountID, $levelID, $feature);
-	$gs->verifyCoinsLevel($accountID, $levelID, 1);
-	echo 1;
-}else if($gs->checkPermission($accountID, "actionSuggestRating")){
-	$gs->suggestLevel($accountID, $levelID, $difficulty["diff"], $stars, $feature, $difficulty["auto"], $difficulty["demon"]);
-	echo 1;
-}else{
-	echo -2;
+if ($gs->checkPermission($accountID, "actionRateStars")) {
+    $gs->rateLevel($accountID, $levelID, $stars, $difficulty["diff"], $difficulty["auto"], $difficulty["demon"]);
+    $gs->featureLevel($accountID, $levelID, $feature);
+    $gs->verifyCoinsLevel($accountID, $levelID, 1);
+    echo 1;
+} elseif ($gs->checkPermission($accountID, "actionSuggestRating")) {
+    $gs->suggestLevel($accountID, $levelID, $difficulty["diff"], $stars, $feature, $difficulty["auto"], $difficulty["demon"]);
+    echo 1;
+} else {
+    echo -2;
 }
-?>

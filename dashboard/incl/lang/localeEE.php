@@ -1,6 +1,6 @@
 <?php
 /*
-	NAVBAR
+    NAVBAR
 */
 $string["homeNavbar"] = "Koduleht";
 
@@ -32,7 +32,7 @@ $string["logout"] = "Logi välja";
 $string["login"] = "Logi sisse";
 
 /*
-	REUPLOAD
+    REUPLOAD
 */
 $string["reuploadBTN"] = "Reupload";
 $string["errorGeneric"] = "Tekkis viga:";
@@ -47,7 +47,7 @@ $string["songAddError-3"] = "Seda laulu on juba üles laetud";
 $string["songAddError-4"] = "Seda laulu ei saa üles laadida";
 
 /*
-	STATS
+    STATS
 */
 $string["ID"] = "ID";
 $string["stars"] = "Tähed";

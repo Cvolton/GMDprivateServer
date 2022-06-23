@@ -1,27 +1,29 @@
 <?php
 
 /*
-	Adapted from https://github.com/sathoro/php-xor-cipher
+    Adapted from https://github.com/sathoro/php-xor-cipher
 */
-class XORCipher {
+class XORCipher
+{
+    public static function cipher($plaintext, $key)
+    {
+        $key = self::text2ascii($key);
+        $plaintext = self::text2ascii($plaintext);
 
-	public static function cipher($plaintext, $key) {
-		$key = self::text2ascii($key);
-		$plaintext = self::text2ascii($plaintext);
+        $keysize = count($key);
+        $input_size = count($plaintext);
 
-		$keysize = count($key);
-		$input_size = count($plaintext);
+        $cipher = "";
 
-		$cipher = "";
-		
-		for ($i = 0; $i < $input_size; $i++)
-			$cipher .= chr($plaintext[$i] ^ $key[$i % $keysize]);
+        for ($i = 0; $i < $input_size; $i++) {
+            $cipher .= chr($plaintext[$i] ^ $key[$i % $keysize]);
+        }
 
-		return $cipher;
-	}
+        return $cipher;
+    }
 
-	private static function text2ascii($text) {
-		return array_map('ord', str_split($text));
-	}
-
+    private static function text2ascii($text)
+    {
+        return array_map('ord', str_split($text));
+    }
 }

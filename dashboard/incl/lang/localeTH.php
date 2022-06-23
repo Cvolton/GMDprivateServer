@@ -1,6 +1,6 @@
 <?php
 /*
-	NAVBAR
+    NAVBAR
 */
 $string["homeNavbar"] = "หน้าหลัก";
 
@@ -32,7 +32,7 @@ $string["logout"] = "ออกจากระบบ";
 $string["login"] = "เข้าสู่ระบบ";
 
 /*
-	REUPLOAD
+    REUPLOAD
 */
 $string["reuploadBTN"] = "อัพโหลดใหม่";
 $string["errorGeneric"] = "ข้อผิดพลาด :";
@@ -47,7 +47,7 @@ $string["songAddError-3"] = "เพลงนี้ถูกอัพโหลด
 $string["songAddError-4"] = "เพลงนี้ไม่สามารถใช้ในการอัพโหลดใหม่ได้";
 
 /*
-	STATS
+    STATS
 */
 $string["ID"] = "ไอดี";
 $string["stars"] = "ให้ดาว";

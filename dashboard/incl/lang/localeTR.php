@@ -1,6 +1,6 @@
 <?php
 /*
-	NAVBAR
+    NAVBAR
 */
 $string["homeNavbar"] = "Ana Sayfa";
 
@@ -32,7 +32,7 @@ $string["logout"] = "Çıkış";
 $string["login"] = "Giriş";
 
 /*
-	REUPLOAD
+    REUPLOAD
 */
 $string["reuploadBTN"] = "Transfer Et";
 $string["errorGeneric"] = "Hata:";
@@ -47,7 +47,7 @@ $string["songAddError-3"] = "Bu şarkı zaten transfer edilmiş";
 $string["songAddError-4"] = "Bu şarkı transfer edilemez";
 
 /*
-	STATS
+    STATS
 */
 $string["ID"] = "ID";
 $string["stars"] = "Yıldız";

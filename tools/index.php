@@ -1,14 +1,15 @@
 <a href="../dashboard">Check out the dashboard beta here</a>
 <?php
-function listdir($dir){
-	$dirstring = "";
-	$files = scandir($dir);
-	foreach($files as $file) {
-		if(pathinfo($file, PATHINFO_EXTENSION) == "php" AND $file != "index.php"){
-			$dirstring .= "<li><a href='$dir/$file'>$file</a></li>";
-		}
-	}
-	return $dirstring;
+function listdir($dir)
+{
+    $dirstring = "";
+    $files = scandir($dir);
+    foreach ($files as $file) {
+        if (pathinfo($file, PATHINFO_EXTENSION) == "php" and $file != "index.php") {
+            $dirstring .= "<li><a href='$dir/$file'>$file</a></li>";
+        }
+    }
+    return $dirstring;
 }
 echo '<h1>Account management tools:</h1><ul>';
 echo listdir("account");

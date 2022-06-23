@@ -1,6 +1,6 @@
 <?php
 /*
-	NAVBAR
+    NAVBAR
 */
 $string["homeNavbar"] = "Inicio";
 
@@ -32,7 +32,7 @@ $string["logout"] = "Cerrar sesión";
 $string["login"] = "Iniciar sesión";
 
 /*
-	REUPLOAD
+    REUPLOAD
 */
 $string["reuploadBTN"] = "Resubir";
 $string["errorGeneric"] = "Un error ha occurido:";
@@ -47,7 +47,7 @@ $string["songAddError-3"] = "Esta canción ya ha sido resubida";
 $string["songAddError-4"] = "Esta canción no se puede resubir";
 
 /*
-	STATS
+    STATS
 */
 $string["ID"] = "ID";
 $string["stars"] = "Estrellas";
@@ -60,7 +60,7 @@ $string["name"] = "Nombre";
 $string["userCoins"] = "Monedas de usuario";
 $string["time"] = "Tiempo";
 $string["deletedLevel"] = "Nivel eliminado";
-$string["mod"] = "Moderador";	
+$string["mod"] = "Moderador";
 $string["count"] = "Número de acciones";
 $string["ratedLevels"] = "Niveles que ha dado estrellas";
 $string["lastSeen"] = "Última vez conectado";

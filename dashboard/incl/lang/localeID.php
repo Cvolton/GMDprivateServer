@@ -1,6 +1,6 @@
 <?php
 /*
-	NAVBAR
+    NAVBAR
 */
 $string["homeNavbar"] = "Beranda";
 $string["accountManagement"] = "Manajemen Akun";
@@ -25,7 +25,7 @@ $string["loginHeader"] = "Selamat Datang, %s";
 $string["logout"] = "Keluar";
 $string["login"] = "Masuk";
 /*
-	REUPLOAD
+    REUPLOAD
 */
 $string["reuploadBTN"] = "Reupload";
 $string["errorGeneric"] = "Kesalahan terjadi:";
@@ -39,7 +39,7 @@ $string["songAddError-2"] = "URL tidak valid";
 $string["songAddError-3"] = "Lagu ini sudah direupload";
 $string["songAddError-4"] = "Lagu ini tidak dapat direupload";
 /*
-	STATS
+    STATS
 */
 $string["ID"] = "ID";
 $string["stars"] = "Bintang";

@@ -1,6 +1,6 @@
 <?php
 /*
-	NAVBAR
+    NAVBAR
 */
 $string["homeNavbar"] = "Domů";
 
@@ -32,7 +32,7 @@ $string["logout"] = "Odhlásit se";
 $string["login"] = "Přihlásit se";
 
 /*
-	REUPLOAD
+    REUPLOAD
 */
 $string["reuploadBTN"] = "Reuploadovat";
 $string["errorGeneric"] = "Došlo k chybě:";
@@ -47,7 +47,7 @@ $string["songAddError-3"] = "Tento song se již na tomto serveru nachází";
 $string["songAddError-4"] = "Tento song nelze reuploadovat";
 
 /*
-	STATS
+    STATS
 */
 $string["ID"] = "ID";
 $string["stars"] = "Hvězdy";

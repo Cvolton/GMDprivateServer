@@ -1,4 +1,5 @@
 <?php
+
 chdir(dirname(__FILE__));
 //error_reporting(0);
 include "../lib/connection.php";
@@ -7,11 +8,10 @@ require_once "../lib/exploitPatch.php";
 require_once "../lib/mainLib.php";
 $gs = new mainLib();
 
-if(!isset($_POST["userName"]) OR !isset($_POST["secret"]) OR !isset($_POST["stars"])
-	OR !isset($_POST["demons"]) OR !isset($_POST["icon"]) OR !isset($_POST["color1"])
-	OR !isset($_POST["color2"]))
-{
-	exit("-1");
+if (!isset($_POST["userName"]) or !isset($_POST["secret"]) or !isset($_POST["stars"])
+    or !isset($_POST["demons"]) or !isset($_POST["icon"]) or !isset($_POST["color1"])
+    or !isset($_POST["color2"])) {
+    exit("-1");
 }
 
 $userName = ExploitPatch::charclean($_POST["userName"]);
@@ -39,8 +39,9 @@ $accSpider = !empty($_POST["accSpider"]) ? ExploitPatch::remove($_POST["accSpide
 $accExplosion = !empty($_POST["accExplosion"]) ? ExploitPatch::remove($_POST["accExplosion"]) : 0;
 $diamonds = !empty($_POST["diamonds"]) ? ExploitPatch::remove($_POST["diamonds"]) : 0;
 
-if(empty($_POST["udid"]) AND empty($_POST["accountID"]))
-	exit("-1");
+if (empty($_POST["udid"]) and empty($_POST["accountID"])) {
+    exit("-1");
+}
 
 $id = $gs->getIDFromPost();
 $userID = $gs->getUserID($id, $userName);
@@ -63,4 +64,3 @@ $query2 = $db->prepare("INSERT INTO actions (type, value, timestamp, account, va
 $query2->execute([':timestamp' => time(), ':stars' => $starsdiff, ':account' => $userID, ':coinsd' => $coindiff, ':demon' => $demondiff, ':usrco' => $ucdiff, ':diamond' => $diadiff]);
 
 echo $userID;
-?>

@@ -1,6 +1,6 @@
 <?php
 /*
-	NAVBAR
+    NAVBAR
 */
 $string["homeNavbar"] = "Hejmo";
 
@@ -31,8 +31,8 @@ $string["loginHeader"] = "Bonvenon, %s";
 $string["logout"] = "Elsaluti";
 $string["login"] = "Ensalutu";
 
-/* 
-	REUPLOAD
+/*
+    REUPLOAD
 */
 $string["reuploadBTN"] = "Re Alŝuti";
 $string["errorGeneric"] = "Eraro Havas Okazita:";
@@ -47,7 +47,7 @@ $string["songAddError-3"] = "Ĉi tiu kanto jam estis alŝutita";
 $string["songAddError-4"] = "Ĉi tiu kanto ne estas alŝutebla";
 
 /*
-	STATS
+    STATS
 */
 $string["ID"] = "ID";
 $string["stars"] = "Steloj";

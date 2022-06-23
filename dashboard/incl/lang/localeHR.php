@@ -1,6 +1,6 @@
 <?php
 /*
-	NAVBAR
+    NAVBAR
 */
 $string["homeNavbar"] = "Početna stranica";
 
@@ -32,7 +32,7 @@ $string["logout"] = "Odjavi se";
 $string["login"] = "Prijavi se";
 
 /*
-	REUPLOAD
+    REUPLOAD
 */
 $string["reuploadBTN"] = "Presjedanje";
 $string["errorGeneric"] = "Dogodila se greška:";
@@ -47,7 +47,7 @@ $string["songAddError-3"] = "Ova je pjesma već uploadana";
 $string["songAddError-4"] = "Nije mogući upload ove pjesme";
 
 /*
-	STATS
+    STATS
 */
 $string["ID"] = "ID";
 $string["stars"] = "Zvijezde";

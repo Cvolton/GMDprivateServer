@@ -1,7 +1,8 @@
 <?php
+
 $date = date("d-m");
-if($date == "01-04"){
-	exit();
+if ($date == "01-04") {
+    exit();
 }
 chdir(dirname(__FILE__));
 echo "Setting user names to account names<br>";
