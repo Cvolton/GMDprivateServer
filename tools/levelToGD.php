@@ -4,9 +4,6 @@
 </head>
 <body>
 <?php
-function chkarray($source){
-	return $source == "" ? "0" : $target;
-}
 //error_reporting(0);
 include "../incl/lib/connection.php";
 require "../incl/lib/XORCipher.php";
