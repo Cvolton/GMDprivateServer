@@ -7,6 +7,6 @@ $reupAID = 71; // The AccountID of the account. Also known as extID in the "user
   Create a new account on the GDPS and edit the UserID and AccountID accordingly
   in the users table. 
   
-  Image example of getting the IDs can be found here: http://i.ryadev.xyz/f3qu3.png
+  Image example of getting the IDs can be found here: https://i.imgur.com/9Nkb9WK.png
 */
 ?>
