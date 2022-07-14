@@ -185,7 +185,7 @@ switch($type){
 		$params[] = "levels.userID = '$str'";
 		break;
 	case 6: //featured
-	case 17: //featured GDW //TODO: make this list of daily levels
+	case 17: //featured GDW 
 		$params[] = "NOT starFeatured = 0";
 		$order = "rateDate DESC,uploadDate";
 		break;
@@ -214,6 +214,12 @@ switch($type){
 		$peoplearray = $gs->getFriends($accountID);
 		$whereor = implode(",", $peoplearray);
 		$params[] = "users.extID IN ($whereor)";
+		break;
+	case 21: //THE SAFE - DAILY
+		//TODO: make this list of daily levels
+		break;
+	case 22: //THE SAFE - WEEKLY
+		//TODO: make this a past list of weekly levels
 		break;
 }
 //ACTUAL QUERY EXECUTION
