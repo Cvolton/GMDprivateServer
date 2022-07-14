@@ -20,7 +20,7 @@ $userID = $mainLib->getUserID($id, $userName);
 $uploadDate = time();
 $decodecomment = base64_decode($comment);
 if(Commands::doCommands($id, $decodecomment, $levelID)){
-	exit("-1");
+	exit("temp_0_Executed command successfully!");
 }
 if($id != "" AND $comment != ""){
 	$query = $db->prepare("INSERT INTO comments (userName, comment, levelID, userID, timeStamp, percent) VALUES (:userName, :comment, :levelID, :userID, :uploadDate, :percent)");
