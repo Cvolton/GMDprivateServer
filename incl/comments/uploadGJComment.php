@@ -24,13 +24,6 @@ if(Commands::doCommands($id, $decodecomment, $levelID)){
 } else {
 	exit("temp_0_Failed to execute command!");
 }
-//banning
-$query2 = $db->prepare("SELECT accountID FROM `accounts` WHERE `isBanned` = '1' AND userName = :userName");
-$query2->execute([':userName' => $userName]);
-if($query2->rowCount() == 1){
-	exit("-10");
-}
-
 if($id != "" AND $comment != ""){
 	//ban comments
 	$ban_query = $db->prepare("SELECT commentBanTime, commentBanDuration, commentBanReason FROM users WHERE userID = :userID");
