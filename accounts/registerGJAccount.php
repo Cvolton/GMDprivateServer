@@ -27,8 +27,8 @@ if($_POST["userName"] != ""){
 		$hashpass = password_hash($password, PASSWORD_DEFAULT);
 		$gjp2 = GeneratePass::GJP2hash($password);
 		$query = $db->prepare("INSERT INTO accounts (userName, password, email, registerDate, isActive, gjp2)
-		VALUES (:userName, :password, :email, :time, :isActive)");
-		$query->execute([':userName' => $userName, ':password' => $hashpass, ':email' => $email, ':time' => time(), ':isActive' => $preactivateAccounts ? 1 : 0, ':gjp2' => $gjp2]);
+		VALUES (:userName, :password, :email, :time, :isActive, :gjp)");
+		$query->execute([':userName' => $userName, ':password' => $hashpass, ':email' => $email, ':time' => time(), ':isActive' => $preactivateAccounts ? 1 : 0, ':gjp' => $gjp2]);
 		echo "1";
 	}
 }
