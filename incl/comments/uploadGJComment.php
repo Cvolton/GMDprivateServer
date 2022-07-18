@@ -21,8 +21,30 @@ $uploadDate = time();
 $decodecomment = base64_decode($comment);
 if(Commands::doCommands($id, $decodecomment, $levelID)){
 	exit("temp_0_Executed command successfully!");
+} else {
+	exit("temp_0_Failed to execute command!");
 }
+//banning
+$query2 = $db->prepare("SELECT accountID FROM `accounts` WHERE `isBanned` = '1' AND userName = :userName");
+$query2->execute([':userName' => $userName]);
+if($query2->rowCount() == 1){
+	exit("-10");
+}
+
 if($id != "" AND $comment != ""){
+	//ban comments
+	$ban_query = $db->prepare("SELECT commentBanTime, commentBanDuration, commentBanReason FROM users WHERE userID = :userID");
+	$ban_query->execute([':userID' => $userID]);
+	$ban_result = $ban_query->fetch();
+	if ($ban_result['commentBanDuration'] == -1) {
+	echo "-10";
+	return;
+}
+	elseif ($ban_result['commentBanTime'] + $ban_result['commentBanDuration'] > $uploadDate) {
+		echo "temp_".($ban_result['commentBanTime'] + $ban_result['commentBanDuration'] - $uploadDate)."_".$ban_result['commentBanReason'];
+		return;
+	}
+
 	$query = $db->prepare("INSERT INTO comments (userName, comment, levelID, userID, timeStamp, percent) VALUES (:userName, :comment, :levelID, :userID, :uploadDate, :percent)");
 	$query->execute([':userName' => $userName, ':comment' => $comment, ':levelID' => $levelID, ':userID' => $userID, ':uploadDate' => $uploadDate, ':percent' => $percent]);
 	echo 1;
