@@ -2,7 +2,7 @@
 include "../incl/lib/connection.php";
 require "../incl/lib/generatePass.php";
 require "../incl/lib/exploitPatch.php";
-require "../incl/lib/mainLib.php";
+require_once "../incl/lib/mainLib.php";
 $gs = new mainLib();
 if(!empty($_POST["userName"]) AND !empty($_POST["password"]) AND !empty($_POST["packName"]) AND !empty($_POST["levels"]) AND !empty($_POST["stars"]) AND !empty($_POST["coins"]) AND !empty($_POST["color"])){
 	$userName = ExploitPatch::remove($_POST["userName"]);
