@@ -105,6 +105,6 @@ $string["modAction12"] = "Изменил(-а) публичность";
 $string["modAction13"] = "Изменил(-а) описание уровня";
 $string["modAction14"] = "Переключил(-а) LDM";
 $string["modAction15"] = "Заблокировал(-а)/Разблокировал(-а) в таблице лидеров";
-$string["modAction15"] = "Изменил(-а) трек";
+$string["modAction16"] = "Изменил(-а) трек";
 //errors
 $string["errorNoAccWithPerm"] = "Ошибка: аккаунтов с привилегией '%s' не найдено";
