@@ -89,6 +89,6 @@ $string["modAction12"] = "Un/published";
 $string["modAction13"] = "Changed level description";
 $string["modAction14"] = "Enabled/disabled LDM";
 $string["modAction15"] = "Leaderboard un/banned";
-$string["modAction15"] = "Song ID change";
+$string["modAction16"] = "Song ID change";
 //errors
 $string["errorNoAccWithPerm"] = "Error: No accounts with the '%s' permission have been found";
