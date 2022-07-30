@@ -5,6 +5,10 @@ class dashboardLib{
 		echo '<!DOCTYPE html>
 				<html lang="en">
 					<head>
+						<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+						<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+						<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+						<link rel="manifest" href="/site.webmanifest">
 						<meta charset="utf-8">';
 		if($isSubdirectory){
 			echo '<base href="../">';
@@ -16,10 +20,32 @@ class dashboardLib{
 						<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
 						<link async rel="stylesheet" href="incl/cvolton.css">
 						<link async rel="stylesheet" href="incl/font-awesome-4.7.0/css/font-awesome.min.css">
-						<title>[Beta] GDPS Dashboard</title>
+						<title>GDPS</title>
+
 						<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">';
 		echo '		</head>
 				<body>';
+	}
+	public function getLocalizedString($stringName){
+		if(!isset($_COOKIE["lang"]) OR !ctype_alpha($_COOKIE["lang"])){
+			$lang = "EN";
+		}else{
+			$lang = $_COOKIE["lang"];
+		}
+		$locale = __DIR__ . "/lang/locale".$lang.".php";
+		if(file_exists($locale)){
+			include $locale;
+		}else{
+			include __DIR__ . "/lang/localeRU.php";
+		}
+		if($lang == "TEST"){
+			return "lnf:$stringName";
+		}
+		if(isset($string[$stringName])){
+			return $string[$stringName];
+		}else{
+			return "lnf:$stringName";
+		}
 	}
 	public function printBoxBody(){
 		echo '<div class="container container-box">
@@ -34,6 +60,11 @@ class dashboardLib{
 		$this->printBoxFooter();
 		$this->printFooter();
 	}
+	public function printSong($content, $active = "", $isSubdirectory = true){
+		$this->printHeader($isSubdirectory);
+		$this->printNavbar($active);
+		echo "$content";
+	}
 	public function printBoxFooter(){
 		echo '</div></div></div>';
 	}
@@ -42,7 +73,7 @@ class dashboardLib{
 		</html>';
 	}
 	public function printLoginBox($content){
-		$this->printBox("<h1>Login</h1>".$content);
+		$this->printBox("<h1 id='center'>".$this->getLocalizedString("loginBox")."</h1>".$content);
 	}
 	public function printLoginBoxInvalid(){
 		$this->printLoginBox("<p>Invalid username or password. <a href=''>Click here to try again.</a>");
@@ -75,15 +106,15 @@ class dashboardLib{
 				$statsActive = "active";
 				break;
 		}
-		echo '<nav class="navbar navbar-expand-lg navbar-dark menubar">
-			<a class="navbar-brand" href="index.php">GDPS</a>
+		echo '<nav id="navbarepta" class="navbar navbar-expand-lg navbar-dark menubar">
+			<a class="navbar-brand" href=""><img src="icon.png"></a>
 			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
 				<span class="navbar-toggler-icon"></span>
 			</button>
 			<div class="collapse navbar-collapse" id="navbarNavDropdown">
 				<ul class="navbar-nav">
 					<li class="nav-item '.$homeActive.' ">
-						<a class="nav-link" href="index.php">
+						<a class="nav-link" href="">
 							<i class="fa fa-home" aria-hidden="true"></i> '.$this->getLocalizedString("homeNavbar").'
 						</a>
 					</li>';
@@ -92,9 +123,8 @@ class dashboardLib{
 							<i class="fa fa-folder-open" aria-hidden="true"></i> '.$this->getLocalizedString("browse").'
 						</a>
 						<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-							<a class="dropdown-item" href="#">'.$this->getLocalizedString("accounts").' (N)</a>
-							<a class="dropdown-item" href="#">'.$this->getLocalizedString("levels").' (N)</a>
-							<a class="dropdown-item" href="stats/modActionsList.php">'.$this->getLocalizedString("modActions").'</a>
+							<a class="dropdown-item" href="stats/accountsList.php">'.$this->getLocalizedString("accounts").'</a>
+							<a class="dropdown-item" href="stats/levelsList.php">'.$this->getLocalizedString("levels").'</a>
 							<a class="dropdown-item" href="stats/packTable.php">'.$this->getLocalizedString("packTable").'</a>
 							<a class="dropdown-item" href="stats/gauntletTable.php">'.$this->getLocalizedString("gauntletTable").'</a>';
 		if(isset($_SESSION["accountID"]) AND $_SESSION["accountID"] != 0){
@@ -104,34 +134,39 @@ class dashboardLib{
 							<i class="fa fa-user" aria-hidden="true"></i> '.$this->getLocalizedString("accountManagement").'
 						</a>
 						<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-							<a class="dropdown-item" href="../tools/account/changePassword.php">'.$this->getLocalizedString("changePassword").' (T)</a>
-							<a class="dropdown-item" href="../tools/account/changeUsername.php">'.$this->getLocalizedString("changeUsername").' (T)</a>
+							<a class="dropdown-item" href="account/changePassword.php">'.$this->getLocalizedString("changePassword").'</a>
+							<a class="dropdown-item" href="account/changeUsername.php">'.$this->getLocalizedString("changeUsername").'</a>
 							<a class="dropdown-item" href="account/unlisted.php">'.$this->getLocalizedString("unlistedLevels").'</a>
+							<a class="dropdown-item" href="stats/manageSongs.php">'.$this->getLocalizedString("manageSongs").'</a>
 						</div>
-					</li>' . $browse . '<a class="dropdown-item" href="../tools/stats/songList.php">'.$this->getLocalizedString("songs").' (T)</a></div></li>';
+					</li>' . $browse . '<a class="dropdown-item" href="stats/songList.php">'.$this->getLocalizedString("songs").'</a></div></li>
+					<li class="nav-item dropdown '.$reuploadActive.'">
+						<a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							<i class="fa fa-upload" aria-hidden="true"></i> '.$this->getLocalizedString("reuploadSection").'
+						</a>
+						<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+							<a class="dropdown-item" href="songs/">'.$this->getLocalizedString("songAdd").'</a>
+							<a class="dropdown-item" href="reupload/songAdd.php">'.$this->getLocalizedString("songLink").'</a>
+						</div>
+					</li>';
 			if($gs->checkPermission($_SESSION["accountID"], "dashboardModTools")){
 				echo '<li class="nav-item dropdown '.$modActive.'">
 						<a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 							<i class="fa fa-wrench" aria-hidden="true"></i> '.$this->getLocalizedString("modTools").'
 						</a>
 						<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-							<a class="dropdown-item" href="../tools/leaderboardsBan.php">'.$this->getLocalizedString("leaderboardBan").' (T)</a>
-							<a class="dropdown-item" href="../tools/packCreate.php">'.$this->getLocalizedString("packManage").' (T)</a>
+							<a class="dropdown-item" href="stats/leaderboardsBan.php">'.$this->getLocalizedString("leaderboardBan").'</a>
+							<a class="dropdown-item" href="levels/packCreate.php">'.$this->getLocalizedString("packManage").'</a>
+							<a class="dropdown-item" href="levels/gauntletCreate.php">'.$this->getLocalizedString("gauntletManage").'</a>
+							<a class="dropdown-item" href="stats/unlistedMod.php">'.$this->getLocalizedString("unlistedMod").'</a>
+							<a class="dropdown-item" href="stats/suggestList.php">'.$this->getLocalizedString("suggestLevels").'</a>
 						</div>
 					</li>';
 			}
 		}else{
 			echo $browse . "</div></li>";
 		}
-		echo '		<li class="nav-item dropdown '.$reuploadActive.'">
-						<a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-							<i class="fa fa-upload" aria-hidden="true"></i> '.$this->getLocalizedString("reuploadSection").'
-						</a>
-						<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-							<a class="dropdown-item" href="../tools/levelReupload.php">'.$this->getLocalizedString("levelReupload").' (T) (note: gonna be both gdps to gd and gd to gdps)</a>
-							<a class="dropdown-item" href="reupload/songAdd.php">'.$this->getLocalizedString("songAdd").'</a>
-						</div>
-					</li>
+		echo '		
 					<li class="nav-item dropdown '.$statsActive.'">
 						<a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 							<i class="fa fa-bar-chart" aria-hidden="true"></i> '.$this->getLocalizedString("statsSection").'
@@ -139,7 +174,8 @@ class dashboardLib{
 						<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
 							<a class="dropdown-item" href="stats/dailyTable.php">'.$this->getLocalizedString("dailyTable").'</a>
 							<a class="dropdown-item" href="stats/modActions.php">'.$this->getLocalizedString("modActions").'</a>
-							<a class="dropdown-item" href="../tools/stats/top24h.php">'.$this->getLocalizedString("leaderboardTime").' (T)</a>
+							<a class="dropdown-item" href="stats/modActionsList.php">'.$this->getLocalizedString("modActionsList").'</a>
+							<a class="dropdown-item" href="stats/top24h.php">'.$this->getLocalizedString("leaderboardTime").'</a>
 						</div>
 					</li>
 				</ul>
@@ -149,21 +185,17 @@ class dashboardLib{
 							<i class="fa fa-language" aria-hidden="true"></i> '.$this->getLocalizedString("language").'
 						</a>
 						<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-							<a class="dropdown-item" href="lang/switchLang.php?lang=CS">Česky</a>
-							<a class="dropdown-item" href="lang/switchLang.php?lang=DE">Deutsch</a>
-							<a class="dropdown-item" href="lang/switchLang.php?lang=EE">Eesti</a>
-							<a class="dropdown-item" href="lang/switchLang.php?lang=EN">English</a>
-							<a class="dropdown-item" href="lang/switchLang.php?lang=EO">Esperanto</a>
-							<a class="dropdown-item" href="lang/switchLang.php?lang=ES">Español</a>
-							<a class="dropdown-item" href="lang/switchLang.php?lang=GR">Ελληνικά</a>
-							<a class="dropdown-item" href="lang/switchLang.php?lang=HR">Hrvatski</a>
-							<a class="dropdown-item" href="lang/switchLang.php?lang=IT">Italiano</a>
-							<a class="dropdown-item" href="lang/switchLang.php?lang=PT">Português</a>
-							<a class="dropdown-item" href="lang/switchLang.php?lang=RU">Русский</a>
-							<a class="dropdown-item" href="lang/switchLang.php?lang=TH">ภาษาไทย</a>
-							<a class="dropdown-item" href="lang/switchLang.php?lang=TR">Türkçe</a>
-							<a class="dropdown-item" href="lang/switchLang.php?lang=test">translTest</a>
-						</div>';
+							<a class="dropdown-item" id="langload" href="lang/switchLang.php?lang=RU">Русский</a>
+							<a class="dropdown-item" id="langload" href="lang/switchLang.php?lang=EN">English</a>
+						</div>
+					<li class="nav-item dropdown">
+						<a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							<i class="fa fa-download" aria-hidden="true"></i> '.$this->getLocalizedString("download").'
+						</a>
+						<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+							<a class="dropdown-item" id="langload" href="download/GDPS.zip">'.$this->getLocalizedString("forwindows").'</a>
+							<a class="dropdown-item" id="langload" href="download/GDPS.apk">'.$this->getLocalizedString("forandroid").'</a>
+				</div>';
 		if(isset($_SESSION["accountID"]) AND $_SESSION["accountID"] != 0){
 			$userName = $gs->getAccountName($_SESSION["accountID"]);
 			echo'<li class="nav-item dropdown">
@@ -182,13 +214,13 @@ class dashboardLib{
 						<a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 							<i class="fa fa-sign-in" aria-hidden="true"></i> '.$this->getLocalizedString("login").'
 						</a>
-						<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink" style="padding:17px;">
+						<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink" style="padding: 15px 15px 0px 15px;">
 									<form action="login/login.php" method="post">
 										<div class="form-group">
-											<input type="text" class="form-control login-input" id="usernameField" name="userName" placeholder="Username">
+											<input type="text" class="form-control login-input" id="usernameField" name="userName" placeholder="'.$this->getLocalizedString("username").'">
 										</div>
 										<div class="form-group">
-											<input type="password" class="form-control login-input" id="passwordField" name="password" placeholder="Password">
+											<input type="password" class="form-control login-input" id="passwordField" name="password" placeholder="'.$this->getLocalizedString("password").'">
 										</div>
 										<button type="submit" class="btn btn-primary btn-block">'.$this->getLocalizedString("login").'</button>
 									</form>
@@ -214,26 +246,22 @@ class dashboardLib{
 			setcookie("lang", "EN", 2147483647, "/");
 		}
 	}
-	public function getLocalizedString($stringName){
-		if(!isset($_COOKIE["lang"]) OR !ctype_alpha($_COOKIE["lang"])){
-			$lang = "EN";
-		}else{
-			$lang = $_COOKIE["lang"];
-		}
-		$locale = __DIR__ . "/lang/locale".$lang.".php";
-		if(file_exists($locale)){
-			include $locale;
-		}else{
-			include __DIR__ . "/lang/localeEN.php";
-		}
-		if($lang == "TEST"){
-			return "lnf:$stringName";
-		}
-		if(isset($string[$stringName])){
-			return $string[$stringName];
-		}else{
-			return "lnf:$stringName";
-		}
+	public function hex2RGB($hexStr, $returnAsString = false, $seperator = ',') {
+    $hexStr = preg_replace("/[^0-9A-Fa-f]/", '', $hexStr);
+    $rgbArray = array();
+    if (strlen($hexStr) == 6) {
+        $colorVal = hexdec($hexStr);
+        $rgbArray['red'] = 0xFF & ($colorVal >> 0x10);
+        $rgbArray['green'] = 0xFF & ($colorVal >> 0x8);
+        $rgbArray['blue'] = 0xFF & $colorVal;
+    } elseif (strlen($hexStr) == 3) {
+        $rgbArray['red'] = hexdec(str_repeat(substr($hexStr, 0, 1), 2));
+        $rgbArray['green'] = hexdec(str_repeat(substr($hexStr, 1, 1), 2));
+        $rgbArray['blue'] = hexdec(str_repeat(substr($hexStr, 2, 1), 2));
+    } else {
+        return false;
+    }
+    return $returnAsString ? implode($seperator, $rgbArray) : $rgbArray; 
 	}
 	public function convertToDate($timestamp){
 		return date("d/m/Y G:i:s", $timestamp);
@@ -245,10 +273,10 @@ class dashboardLib{
 		$bottomrow .= '<a id="first" href="'.strtok($_SERVER["REQUEST_URI"],'?').'?page=1" class="btn btn-outline-secondary"><i class="fa fa-backward" aria-hidden="true"></i> '.$this->getLocalizedString("first").'</a><a id="prev" href="'.strtok($_SERVER["REQUEST_URI"],'?').'?page='. $pageminus .'" class="btn btn-outline-secondary"><i class="fa fa-chevron-left" aria-hidden="true"></i> '.$this->getLocalizedString("previous").'</a>';
 		//updated to ".."
 		$bottomrow .= '<a class="btn btn-outline-secondary" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">..</a>
-			<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink" style="padding:17px;">
+			<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink" style="padding:17px 17px 4px 17px;">
 				<form action="" method="get">
 					<div class="form-group">
-						<input type="text" class="form-control" name="page" placeholder="#">';
+						<input type="text" class="form-control" name="page" placeholder="'.$this->getLocalizedString("page").'">';
 		foreach($_GET as $key => $param){
 			if($key != "page"){
 				$bottomrow .= '<input type="hidden" name="'.$key.'" value="'.$param.'">';
@@ -314,3 +342,5 @@ class dashboardLib{
 		return $chart;
 	}
 }
+?>
+<link rel="stylesheet" href="../incl/cvolton.css">

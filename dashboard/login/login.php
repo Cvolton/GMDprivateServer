@@ -7,7 +7,9 @@ require "../../incl/lib/generatePass.php";
 require_once "../../incl/lib/mainLib.php";
 $gs = new mainLib();
 if(isset($_SESSION["accountID"]) AND $_SESSION["accountID"] != 0){
-	$dl->printLoginBox("<p>You are already logged in. <a href='..'>Click here to continue</a></p>");
+	$dl->printLoginBox('<h3>'.$dl->getLocalizedString("loginAlready").'</h3>
+	<form class="form__inner" method="post" action="../dashboard">
+	<button type="submit" class="btn-primary" >'.$dl->getLocalizedString("clickHere").'</button>');
 	exit();
 }
 if(isset($_POST["userName"]) AND isset($_POST["password"])){
@@ -20,7 +22,7 @@ if(isset($_POST["userName"]) AND isset($_POST["password"])){
 	}
 	$accountID = $gs->getAccountIDFromName($userName);
 	if($accountID == 0){
-		$dl->printLoginBoxError("Invalid accountID");
+		$dl->printLoginBoxError($dl->getLocalizedString("invalidid"));
 		exit();
 	}
 	$_SESSION["accountID"] = $accountID;
@@ -29,21 +31,21 @@ if(isset($_POST["userName"]) AND isset($_POST["password"])){
 	}elseif(isset($_SERVER["HTTP_REFERER"])){
 		header('Location: ' . $_SERVER["HTTP_REFERER"]);
 	}
-	$dl->printLoginBox("<p>You are now logged in. <a href='..'>Please click here to continue.</a></p>");
+	$dl->printLoginBox("<p>".$dl->getLocalizedString("loginSuccess")." <a href=''>".$dl->getLocalizedString("clickHere")."</a></p>");
 }else{
 	$loginbox = '<form action="" method="post">
 							<div class="form-group">
 								<label for="usernameField">Username</label>
-								<input type="text" class="form-control" id="usernameField" name="userName" placeholder="Enter username">
+								<input type="text" class="form-control login-input" id="usernameField" name="userName" placeholder="'.$dl->getLocalizedString("enterUsername").'">
 							</div>
 							<div class="form-group">
 								<label for="passwordField">Password</label>
-								<input type="password" class="form-control" id="passwordField" name="password" placeholder="Password">
+								<input type="password" class="form-control" id="passwordField" name="password" placeholder="'.$dl->getLocalizedString("enterPassword").'">
 							</div>';
 	if(isset($_SERVER["HTTP_REFERER"])){
 		$loginbox .= '<input type="hidden" name="ref" value="'.$_SERVER["HTTP_REFERER"].'">';
 	}
-	$loginbox .= '<button type="submit" class="btn btn-primary">Log In</button>
+	$loginbox .= '<button type="submit" class="btn btn-primary">'.$dl->getLocalizedString("login").'</button>
 						</form>';
 	$dl->printLoginBox($loginbox);
 }

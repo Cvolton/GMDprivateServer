@@ -31,28 +31,28 @@ foreach($result as &$gauntlet){
 		$query->execute([':levelID' => $lvl]);
 		$level = $query->fetch();
 		$lvltable .= "<tr>
-						<td>".$level["levelID"]."</td>
-						<td>".$level["levelName"]."</td>
-						<td>".$gs->getUserName($level["userID"])."</td>
-						<td>".$level["starStars"]."</td>
-						<td>".$level["coins"]."</td>
+						<td class='tcell'>".$level["levelID"]."</td>
+						<td class='tcell'>".$level["levelName"]."</td>
+						<td class='tcell'>".$gs->getUserName($level["userID"])."</td>
+						<td class='tcell'>".$level["starStars"]."</td>
+						<td class='tcell'>".$level["coins"]."</td>
 					</tr>";
 	}
 	$gauntlettable .= "<tr>
 					<th scope='row'>$x</th>
 					<td>".$gs->getGauntletName($gauntlet["ID"]).'</td>
 					<td><a class="dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-							Show
+							'.$dl->getLocalizedString("show").'
 						</a>
-						<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink"  style="padding:17px;">
-							<table class="table">
+						<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink"  style="padding:17px 17px 0px 17px;">
+							<table class="table" id="kek">
 								<thead>
 									<tr>
-										<th>'.$dl->getLocalizedString("ID").'</th>
-										<th>'.$dl->getLocalizedString("name").'</th>
-										<th>'.$dl->getLocalizedString("author").'</th>
-										<th>'.$dl->getLocalizedString("stars").'</th>
-										<th>'.$dl->getLocalizedString("userCoins").'</th>
+										<th class="tcell">'.$dl->getLocalizedString("ID").'</th>
+										<th class="tcell">'.$dl->getLocalizedString("name").'</th>
+										<th class="tcell">'.$dl->getLocalizedString("author").'</th>
+										<th class="tcell">'.$dl->getLocalizedString("stars").'</th>
+										<th class="tcell">'.$dl->getLocalizedString("userCoins").'</th>
 									</tr>
 								</thead>
 								<tbody>

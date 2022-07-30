@@ -46,9 +46,7 @@ foreach($months as &$month){
 	}
 }
 
-$dl->printPage('<p>Welcome to the GDPS dashboard. Please choose a tool above.
-				<br>DISCLAIMER: THIS AREA IS UNDER HEAVY DEVELOPEMENT, DON\'T EXPECT MUCH STUFF TO WORK
-				<br>Legend: (N) = Not Working, (T) = Links to the legacy tool version
+$dl->printPage('<p id="bruh">'.$dl->getLocalizedString("welcome").'
 				<br>
 					<div class="chart-container" style="position: relative; height:30vh; width:80vw">
 						<canvas id="levelsChart"></canvas>
@@ -57,5 +55,5 @@ $dl->printPage('<p>Welcome to the GDPS dashboard. Please choose a tool above.
 					<div class="chart-container" style="position: relative; height:30vh; width:80vw">
 						<canvas id="levelsChart2"></canvas>
 					</div>
-				</p>' . $dl->generateLineChart("levelsChart","Levels Uploaded",$chartdata) . $dl->generateLineChart("levelsChart2","Levels Uploaded",$levelsChart2), false);
+				</p>' . $dl->generateLineChart("levelsChart","".$dl->getLocalizedString('levelsWeek')."",$chartdata) . $dl->generateLineChart("levelsChart2","".$dl->getLocalizedString('levels3Months')."",$levelsChart2), false);
 ?>

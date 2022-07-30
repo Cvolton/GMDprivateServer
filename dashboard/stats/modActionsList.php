@@ -32,6 +32,9 @@ foreach($result as &$action){
 			$value2 = date("d/m/Y G:i:s", $value2);
 		}
 	}
+	if($action["type"] == 15) {
+		$value = $gs->getAccountName($value);
+	}
 	$actionname = $dl->getLocalizedString("modAction".$action["type"]);
 	if($action["type"] == 2 OR $action["type"] == 3 OR $action["type"] == 4){
 		if($action["value"] == 1){
