@@ -63,6 +63,7 @@ $string["changeNickTitle"] = "Смена никнейма";
 $string["changedNick"] = "Никнейм успешно сменён! Вам нужно заново войти в ваш аккаунт.";
 $string["wrongNick"] = "Неверный никнейм!";
 $string["sameNick"] = "Введённые вами никнеймы одинаковые!";
+$string["alreadyUsedNick"] = "Введённый вами никнейм уже занят!";
 $string["changeNickDesc"] = "Здесь вы можете сменить свой никнейм!";
 $string["oldNick"] = "Старый никнейм";
 $string["newNick"] = "Новый никнейм";
