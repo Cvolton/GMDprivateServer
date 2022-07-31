@@ -34,13 +34,6 @@ CREATE TABLE `acccomments` (
   `isSpam` int(11) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
---
--- Дамп данных таблицы `acccomments`
---
-
-INSERT INTO `acccomments` (`userID`, `userName`, `comment`, `secret`, `commentID`, `timestamp`, `likes`, `isSpam`) VALUES
-(4, 'MegaSa1nt', 'c2hhZG93IHByaXZldCEh', 'unused', 4, 1658653847, 0, 0);
-
 -- --------------------------------------------------------
 
 --
