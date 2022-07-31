@@ -43,6 +43,19 @@ if($_POST["oldnickname"] != "" AND $_POST["newnickname"] != "" AND $_POST["passw
 	$pass = GeneratePass::isValidUsrname($userName, $pass);
 	$salt = "";
 if ($pass == 1) {
+	$query = $db->prepare("SELECT count(*) FROM accounts WHERE userName=:userName");
+	$query->execute([':userName' => $newnick]);
+	$count = $query->fetchColumn();
+	if($count > 0){
+			$dl->printSong('<div class="form">
+				<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
+				<form class="form__inner" method="post" action="">
+				<p>'.$dl->getLocalizedString("alreadyUsedNick").'</p>
+				<button type="submit" class="btn-primary">'.$dl->getLocalizedString("tryAgainBTN").'</button>
+				</form>
+				</div>');
+				die();
+	}
 	$query = $db->prepare("UPDATE accounts SET userName=:userName, salt=:salt WHERE accountID=:accountid");	
 	$query->execute([':userName' => $newnick, ':salt' => $salt, ':accountid' => $accID]);
 	$query = $db->prepare("UPDATE users SET userName=:userName WHERE extID=:accountid");
