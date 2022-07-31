@@ -84,11 +84,12 @@ $string["modAction7"] = "(7)Sahip Değiştirildi";
 $string["modAction8"] = "(8)Bölüm İsmi Değiştirildi";
 $string["modAction9"] = "(9)Bölüm Şifresi Değiştirildi";
 $string["modAction10"] = "(10)Demon Seviyedi Değiştirildi";
-$string["modAction11"] = "(11)CP Paylaşıldı/Paylaşılmadı";
+$string["modAction11"] = "(11)CP Paylaşıldı";
 $string["modAction12"] = "(12)Bölüm Açıldı/Kapatıldı";
 $string["modAction13"] = "(13)Bölüm Açıklaması Değiştirildi";
 $string["modAction14"] = "(14)LDM Açıldı/Açılmadı";
 $string["modAction15"] = "(15)Kullanıcı Banlandı/Unbanlandı";
+$string["modAction16"] = "(16)Şarkı ID Değiştirme";
 //errors
 $string["errorNoAccWithPerm"] = "HATA: '%s' adlı hesabın bu sisteme erişimi yok.";
 
