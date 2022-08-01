@@ -3,7 +3,7 @@
 	NAVBAR
 */
 $string["homeNavbar"] = "Домой";
-$string["welcome"] = "Добро пожаловать на GDPS!";
+$string["welcome"] = "Добро пожаловать на GreenCatsServer!";
 $string["levelsWeek"] = "Выложено уровней за неделю";
 $string["levels3Months"] = "Выложено уровней за 3 месяца";
 
@@ -92,6 +92,16 @@ $string["level3"] = "3 уровень";
 $string["level4"] = "4 уровень";
 $string["level5"] = "5 уровень";
 
+$string["addQuest"] = "Добавить квест";
+$string["addQuestDesc"] = "Здесь вы можете создать квест!";
+$string["questName"] = "Название квеста";
+$string["questAmount"] = "Необходимое кол-во";
+$string["questReward"] = "Награда";
+$string["questCreate"] = "Создать квест";
+$string["invalidPost"] = "Неверные данные!";
+$string["fewMoreQuests"] = "Советуем вам создать ещё несколько квестов.";
+$string["oneMoreQuest?"] = "Ещё один квест?";
+
 /*
 	REUPLOAD
 */
@@ -100,6 +110,7 @@ $string["reuploadBTN"] = "Загрузить";
 $string["errorGeneric"] = "Произошла ошибка!";
 $string["tryAgainBTN"] = "Попробуйте ещё раз";
 //songAdd.php
+$string["songAddDesc"] = "Здесь вы можете добавить свою песню!";
 $string["songAddUrlFieldLabel"] = "Ссылка на песню. (Прямая, Dropbox. YouTube не работает)";
 $string["songAddUrlFieldPlaceholder"] = "Ссылка на песню";
 $string["songAddNameFieldPlaceholder"] = "Название песни";
@@ -127,6 +138,7 @@ $string["page"] = "Страница";
 	STATS
 */
 $string["ID"] = "ID";
+$string["orbs"] = "Орбы";
 $string["stars"] = "Звёзды";
 $string["coins"] = "Монеты";
 $string["accounts"] = "Аккаунты";

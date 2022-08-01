@@ -3,7 +3,7 @@
 	NAVBAR
 */
 $string["homeNavbar"] = "Home";
-$string["welcome"] = "Welcome to GDPS!";
+$string["welcome"] = "Welcome to GreenCatsServer!";
 $string["levelsWeek"] = "Levels uploaded in a week";
 $string["levels3Months"] = "Levels uploaded in 3 months";
 
@@ -44,14 +44,14 @@ $string["loginHeader"] = "Welcome, %s!";
 $string["logout"] = "Logout";
 $string["login"] = "Login";
 $string["loginBox"] = "Login to account";
-$string["loginSuccess"] = "You successfully logged in to your account!";
+$string["loginSuccess"] = "You successfully login to your account!";
 $string["loginAlready"] = "You already logged in!";
 $string["clickHere"] = "Dashboard";
 $string["enterUsername"] = "Enter nickname";
 $string["enterPassword"] = "Enter password";
 
 $string["changePassTitle"] = "Change password";
-$string["changedPass"] = "Password successfully changed! You need to login to your account again.";
+$string["changedPass"] = "Password successfully changed! You need to login to you account again.";
 $string["wrongPass"] = "Wrong password!";
 $string["samePass"] = "Passwords you entered are the same!";
 $string["changePassDesc"] = "Here you can change your password!";
@@ -60,7 +60,7 @@ $string["newPassword"] = "New password";
 $string["confirmNew"] = "Confirm password";
 
 $string["changeNickTitle"] = "Change nickname";
-$string["changedNick"] = "Nickname successfully changed! You need to login to your account again.";
+$string["changedNick"] = "Nickname successfully changed! You need to login to you account again.";
 $string["wrongNick"] = "Wrong nickname!";
 $string["sameNick"] = "Nicknames you entered are the same!";
 $string["alreadyUsedNick"] = "Nickname you entered is already taken!";
@@ -213,7 +213,7 @@ $string["modAction19"] = "Changed song";
 $string["Kish!"] = "Go away!";
 $string["noPermission"] = "You don't have permission!";
 $string["noLogin?"] = "You are not logged into your account!";
-$string["LoginBtn"] = "Login to account";
+$string["LoginBtn"] = "Login into account";
 $string["dashboard"] = "Dashboard";
 //errors
 $string["errorNoAccWithPerm"] = "Error: No accounts with the '%s' permission have been found";

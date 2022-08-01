@@ -20,7 +20,7 @@ class dashboardLib{
 						<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
 						<link async rel="stylesheet" href="incl/cvolton.css">
 						<link async rel="stylesheet" href="incl/font-awesome-4.7.0/css/font-awesome.min.css">
-						<title>GDPS</title>
+						<title>GreenCatsServer</title>
 
 						<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">';
 		echo '		</head>
@@ -136,7 +136,7 @@ class dashboardLib{
 						<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
 							<a class="dropdown-item" href="account/changePassword.php">'.$this->getLocalizedString("changePassword").'</a>
 							<a class="dropdown-item" href="account/changeUsername.php">'.$this->getLocalizedString("changeUsername").'</a>
-							<a class="dropdown-item" href="stats/unlisted.php">'.$this->getLocalizedString("unlistedLevels").'</a>
+							<a class="dropdown-item" href="account/unlisted.php">'.$this->getLocalizedString("unlistedLevels").'</a>
 							<a class="dropdown-item" href="stats/manageSongs.php">'.$this->getLocalizedString("manageSongs").'</a>
 						</div>
 					</li>' . $browse . '<a class="dropdown-item" href="stats/songList.php">'.$this->getLocalizedString("songs").'</a></div></li>
@@ -160,6 +160,7 @@ class dashboardLib{
 							<a class="dropdown-item" href="levels/gauntletCreate.php">'.$this->getLocalizedString("gauntletManage").'</a>
 							<a class="dropdown-item" href="stats/unlistedMod.php">'.$this->getLocalizedString("unlistedMod").'</a>
 							<a class="dropdown-item" href="stats/suggestList.php">'.$this->getLocalizedString("suggestLevels").'</a>
+							<a class="dropdown-item" href="stats/addQuests.php">'.$this->getLocalizedString("addQuest").'</a>
 						</div>
 					</li>';
 			}
@@ -193,8 +194,8 @@ class dashboardLib{
 							<i class="fa fa-download" aria-hidden="true"></i> '.$this->getLocalizedString("download").'
 						</a>
 						<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-							<a class="dropdown-item" id="langload" href="download/GDPS.zip">'.$this->getLocalizedString("forwindows").'</a>
-							<a class="dropdown-item" id="langload" href="download/GDPS.apk">'.$this->getLocalizedString("forandroid").'</a>
+							<a class="dropdown-item" id="langload" href="download/GreenCatsServer.zip">'.$this->getLocalizedString("forwindows").'</a>
+							<a class="dropdown-item" id="langload" href="download/GreenCatsServer.apk">'.$this->getLocalizedString("forandroid").'</a>
 				</div>';
 		if(isset($_SESSION["accountID"]) AND $_SESSION["accountID"] != 0){
 			$userName = $gs->getAccountName($_SESSION["accountID"]);

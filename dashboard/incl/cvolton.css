@@ -199,7 +199,8 @@ body {
     width: 100%;
 }
 select,
-option {
+option,
+.quest {
 	 display: grid;
 	 grid-template-columns: 3fr;
     border-radius: 500px;
@@ -210,7 +211,10 @@ option {
     font-size: 13px;
     background: #141414;
     color: #c0c0c0;
-	margin: 0px 5px 0px 5px;
+	margin: 0px 4px 0px 4px;
+}
+.number {
+	margin: 0px 2px 0px 2px;
 }
 
 .dropdown-menu {
