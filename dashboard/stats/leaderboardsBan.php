@@ -30,11 +30,19 @@ if(!empty($_POST["userID"])) {
     </form>
 </div>');
 			die();
-		}
-			$query = $db->prepare("UPDATE users SET isBanned = 1, isCreatorBanned = 1 WHERE extID = :id");
+		}	$query = $db->prepare("SELECT isBanned FROM users WHERE extID=:id");
 			$query->execute([':id' => $userID]);
-			$success = $dl->getLocalizedString("player"). ' <b>' .$nickname.'</b> '.$dl->getLocalizedString("accid").' <b>'.$userID.'</b> '.$dl->getLocalizedString("banned");
-			if($query->rowCount() != 0){
+			$banned = $query->fetchColumn();
+			if($banned != 0) {
+				$ban = $db->prepare("UPDATE users SET isBanned = 0, isCreatorBanned = 0 WHERE extID = :id");
+				$ban->execute([':id' => $userID]);
+				$success = $dl->getLocalizedString("player"). ' <b>' .$nickname.'</b> '.$dl->getLocalizedString("accid").' <b>'.$userID.'</b> '.$dl->getLocalizedString("unbanned");
+			} else {
+				$ban = $db->prepare("UPDATE users SET isBanned = 1, isCreatorBanned = 1 WHERE extID = :id");
+				$ban->execute([':id' => $userID]);
+				$success = $dl->getLocalizedString("player"). ' <b>' .$nickname.'</b> '.$dl->getLocalizedString("accid").' <b>'.$userID.'</b> '.$dl->getLocalizedString("banned");
+			}
+			if($ban->rowCount() != 0){
 				$dl->printSong('<div class="form">
     <h1>'.$dl->getLocalizedString("banUserPlace").'</h1>
 	<p id="bruh">'.$success.'</p>
@@ -54,8 +62,8 @@ if(!empty($_POST["userID"])) {
 			}
 			$query = $db->prepare("INSERT INTO modactions  (type, value, value2, timestamp, account) 
 													VALUES ('15',:userID, '1',  :timestamp,:account)");
-	$query->execute([':userID' => $userID, ':timestamp' => time(), ':account' => $accountID]);}
-	 else {
+	$query->execute([':userID' => $userID, ':timestamp' => time(), ':account' => $accountID]);
+	} else {
 		$dl->printSong('<div class="form">
     <h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 	<p id="bruh">'.$dl->getLocalizedString("noPermission").'</p>

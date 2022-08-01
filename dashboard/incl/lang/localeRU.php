@@ -194,6 +194,7 @@ $string["coins0"] = "монета";
 
 $string["accid"] = "с ID аккаунта";
 $string["banned"] = "был успешно забанен!";
+$string["unbanned"] = "был успешно разбанен!";
 $string["nothingFound"] = "Такой пользователь не найден!";
 $string["ban"] = "Забанить";
 $string["banUserID"] = "Никнейм или ID игрока";

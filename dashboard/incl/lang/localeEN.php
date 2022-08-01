@@ -182,6 +182,7 @@ $string["coins0"] = "coin";
 
 $string["accid"] = "with account ID";
 $string["banned"] = "was successfully banned!";
+$string["unbanned"] = "was successfully unbanned!";
 $string["ban"] = "Ban";
 $string["nothingFound"] = "This player doesn't exist!";
 $string["banUserID"] = "Nickname or account ID";
