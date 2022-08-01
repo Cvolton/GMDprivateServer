@@ -136,7 +136,7 @@ class dashboardLib{
 						<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
 							<a class="dropdown-item" href="account/changePassword.php">'.$this->getLocalizedString("changePassword").'</a>
 							<a class="dropdown-item" href="account/changeUsername.php">'.$this->getLocalizedString("changeUsername").'</a>
-							<a class="dropdown-item" href="account/unlisted.php">'.$this->getLocalizedString("unlistedLevels").'</a>
+							<a class="dropdown-item" href="stats/unlisted.php">'.$this->getLocalizedString("unlistedLevels").'</a>
 							<a class="dropdown-item" href="stats/manageSongs.php">'.$this->getLocalizedString("manageSongs").'</a>
 						</div>
 					</li>' . $browse . '<a class="dropdown-item" href="stats/songList.php">'.$this->getLocalizedString("songs").'</a></div></li>
