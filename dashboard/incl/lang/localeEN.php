@@ -3,7 +3,7 @@
 	NAVBAR
 */
 $string["homeNavbar"] = "Home";
-$string["welcome"] = "Welcome to GDPS!";
+$string["welcome"] = "Welcome to GreenCatsServer!";
 $string["levelsWeek"] = "Levels uploaded in a week";
 $string["levels3Months"] = "Levels uploaded in 3 months";
 
@@ -211,6 +211,7 @@ $string["modAction16"] = "Song ID change";
 $string["modAction17"] = "Created a Map Pack";
 $string["modAction18"] = "Created a Gauntlet";
 $string["modAction19"] = "Changed song";
+$string["modAction25"] = "Created a quest";
 $string["Kish!"] = "Go away!";
 $string["noPermission"] = "You don't have permission!";
 $string["noLogin?"] = "You are not logged into your account!";
