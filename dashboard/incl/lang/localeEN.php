@@ -47,7 +47,7 @@ $string["loginBox"] = "Login to account";
 $string["loginSuccess"] = "You successfully login to your account!";
 $string["loginAlready"] = "You already logged in!";
 $string["clickHere"] = "Dashboard";
-$string["enterUsername"] = "Enter nickname";
+$string["enterUsername"] = "Enter username";
 $string["enterPassword"] = "Enter password";
 
 $string["changePassTitle"] = "Change password";
@@ -59,14 +59,14 @@ $string["oldPassword"] = "Old password";
 $string["newPassword"] = "New password";
 $string["confirmNew"] = "Confirm password";
 
-$string["changeNickTitle"] = "Change nickname";
-$string["changedNick"] = "Nickname successfully changed! You need to login to you account again.";
-$string["wrongNick"] = "Wrong nickname!";
-$string["sameNick"] = "Nicknames you entered are the same!";
-$string["alreadyUsedNick"] = "Nickname you entered is already taken!";
-$string["changeNickDesc"] = "Here you can change your nickname!";
-$string["oldNick"] = "Old nickname";
-$string["newNick"] = " New nickname";
+$string["changeNickTitle"] = "Change username";
+$string["changedNick"] = "Username successfully changed! You need to login to you account again.";
+$string["wrongNick"] = "Wrong username!";
+$string["sameNick"] = "Usernames you entered are the same!";
+$string["alreadyUsedNick"] = "Username you entered is already taken!";
+$string["changeNickDesc"] = "Here you can change your username!";
+$string["oldNick"] = "Old username";
+$string["newNick"] = " New username";
 $string["password"] = "Password";
 
 $string["packCreate"] = "Create a Map Pack";
@@ -91,6 +91,17 @@ $string["level2"] = "2 level";
 $string["level3"] = "3 level";
 $string["level4"] = "4 level";
 $string["level5"] = "5 level";
+
+$string["addQuest"] = "Add quest";
+$string["addQuestDesc"] = "Here you can create a quest!";
+$string["questName"] = "Quest name";
+$string["questAmount"] = "Required amount";
+$string["questReward"] = "Reward";
+$string["questCreate"] = "Create a quest";
+$string["questsSuccess"] = "You successfully created a quest";
+$string["invalidPost"] = "Invalid data!";
+$string["fewMoreQuests"] = "It's reccomend to create a few more quests.";
+$string["oneMoreQuest?"] = "One more quest?";
 
 /*
 	REUPLOAD
@@ -127,6 +138,7 @@ $string["page"] = "Page";
 	STATS
 */
 $string["ID"] = "ID";
+$string["orbs"] = "Orbs";
 $string["stars"] = "Stars";
 $string["coins"] = "Coins";
 $string["accounts"] = "Accounts";
@@ -135,7 +147,7 @@ $string["songs"] = "Songs";
 $string["author"] = "Creator";
 $string["name"] = "Name";
 $string["date"] = "Date";
-$string["username"] = "Nickname";
+$string["username"] = "Username";
 $string["accountID"] = "Account ID";
 $string["registerDate"] = "Register date";
 $string["levelAuthor"] = "Level author";
@@ -185,7 +197,7 @@ $string["banned"] = "was successfully banned!";
 $string["unbanned"] = "was successfully unbanned!";
 $string["ban"] = "Ban";
 $string["nothingFound"] = "This player doesn't exist!";
-$string["banUserID"] = "Nickname or account ID";
+$string["banUserID"] = "Username or account ID";
 $string["banUserPlace"] = "Ban a user";
 $string["banYourself"] = "You can't ban yourself!"; 
 $string["banYourSelfBtn!"] = "Ban someone else";

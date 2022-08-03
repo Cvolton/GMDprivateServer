@@ -98,6 +98,7 @@ $string["questName"] = "Название квеста";
 $string["questAmount"] = "Необходимое кол-во";
 $string["questReward"] = "Награда";
 $string["questCreate"] = "Создать квест";
+$string["questsSuccess"] = "Вы успешно создали квест";
 $string["invalidPost"] = "Неверные данные!";
 $string["fewMoreQuests"] = "Советуем вам создать ещё несколько квестов.";
 $string["oneMoreQuest?"] = "Ещё один квест?";
