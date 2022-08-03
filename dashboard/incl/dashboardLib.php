@@ -195,8 +195,8 @@ class dashboardLib{
 							<i class="fa fa-download" aria-hidden="true"></i> '.$this->getLocalizedString("download").'
 						</a>
 						<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-							<a class="dropdown-item" id="langload" href="download/GreenCatsServer.zip">'.$this->getLocalizedString("forwindows").'</a>
-							<a class="dropdown-item" id="langload" href="download/GreenCatsServer.apk">'.$this->getLocalizedString("forandroid").'</a>
+							<a class="dropdown-item" id="langload" href="download/GDPS.zip">'.$this->getLocalizedString("forwindows").'</a>
+							<a class="dropdown-item" id="langload" href="download/GDPS.apk">'.$this->getLocalizedString("forandroid").'</a>
 				</div>';
 		if(isset($_SESSION["accountID"]) AND $_SESSION["accountID"] != 0){
 			$userName = $gs->getAccountName($_SESSION["accountID"]);
