@@ -21,7 +21,6 @@ $string["leaderboardBan"] = "Забанить пользователя";
 $string["unlistedMod"] = "Cкрытые уровни";
 
 $string["reuploadSection"] = "Загрузка на сервер";
-$string["levelReupload"] = "Перенести уровень";
 $string["songAdd"] = "Добавить песню";
 $string["songLink"] = "Добавить песню по ссылке";
 $string["packManage"] = "Управление Мап-Паками";
@@ -49,6 +48,18 @@ $string["loginAlready"] = "Вы уже вошли в аккаунт!";
 $string["clickHere"] = "Панель сервера";
 $string["enterUsername"] = "Введите ваш никнейм";
 $string["enterPassword"] = "Введите ваш пароль";
+
+$string["register"] = "Зарегистрироваться";
+$string["registerAcc"] = "Регистрация аккаунта";
+$string["registerDesc"] = "Зарегистрируйте свой аккаунт!";
+$string["repeatpassword"] = "Повторите пароль";
+$string["email"] = "Почта";
+$string["repeatemail"] = "Повторите почту";
+$string["smallNick"] = "Никнейм слишком короткий!";
+$string["smallPass"] = "Пароль слишком короткий!";
+$string["passDontMatch"] = "Пароли не совпадают!";
+$string["emailDontMatch"] = "Почты не совпадают!";
+$string["registered"] = "Вы успешно зарегистрировали аккаунт!";
 
 $string["changePassTitle"] = "Смена пароля";
 $string["changedPass"] = "Пароль успешно сменён! Вам нужно заново войти в ваш аккаунт.";
@@ -102,6 +113,19 @@ $string["questsSuccess"] = "Вы успешно создали квест";
 $string["invalidPost"] = "Неверные данные!";
 $string["fewMoreQuests"] = "Советуем вам создать ещё несколько квестов.";
 $string["oneMoreQuest?"] = "Ещё один квест?";
+
+$string["levelReupload"] = "Перенести уровень";
+$string["levelReuploadDesc"] = "Здесь вы можете перенести свой уровень с любого сервера!";
+$string["advanced"] = "Дополнительные параметры";
+$string["errorConnection"] = "Ошибка соединения с сервером!";
+$string["levelNotFound"] = "Такой уровень не найден!";
+$string["robtopLol"] = "RobTop тебя не любит :с";
+$string["sameServers"] = "Выбранные вами сервера одинаковые!";
+$string["levelReuploaded"] = "Уровень перенесён! ID уровня:";
+$string["oneMoreLevel?"] = "Ещё один уровень?";
+$string["levelAlreadyReuploaded"] = "Уровень уже перенесён!";
+$string["server"] = "Сервер";
+$string["levelID"] = "ID уровня";
 
 /*
 	REUPLOAD

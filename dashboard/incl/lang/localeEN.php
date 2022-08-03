@@ -21,7 +21,6 @@ $string["leaderboardBan"] = "Ban a user";
 $string["unlistedMod"] = "Unlisted levels";
 
 $string["reuploadSection"] = "Reupload";
-$string["levelReupload"] = "Level reupload";
 $string["songAdd"] = "Add a song";
 $string["songLink"] = "Add a song by link";
 $string["packManage"] = "Manage Map Packs";
@@ -47,8 +46,20 @@ $string["loginBox"] = "Login to account";
 $string["loginSuccess"] = "You successfully login to your account!";
 $string["loginAlready"] = "You already logged in!";
 $string["clickHere"] = "Dashboard";
-$string["enterUsername"] = "Enter username";
+$string["enterUsername"] = "Enter Username";
 $string["enterPassword"] = "Enter password";
+
+$string["register"] = "Register";
+$string["registerAcc"] = "Account registration";
+$string["registerDesc"] = "Register your account!";
+$string["repeatpassword"] = "Repeat password";
+$string["email"] = "Email";
+$string["repeatemail"] = "Repeat email";
+$string["smallNick"] = "Username is too small!";
+$string["smallPass"] = "Password is too small!";
+$string["passDontMatch"] = "Passwords don't match!";
+$string["emailDontMatch"] = "Emails don't match";
+$string["registered"] = "You successfully registered an account!";
 
 $string["changePassTitle"] = "Change password";
 $string["changedPass"] = "Password successfully changed! You need to login to you account again.";
@@ -59,14 +70,14 @@ $string["oldPassword"] = "Old password";
 $string["newPassword"] = "New password";
 $string["confirmNew"] = "Confirm password";
 
-$string["changeNickTitle"] = "Change username";
+$string["changeNickTitle"] = "Change Username";
 $string["changedNick"] = "Username successfully changed! You need to login to you account again.";
-$string["wrongNick"] = "Wrong username!";
+$string["wrongNick"] = "Wrong Username!";
 $string["sameNick"] = "Usernames you entered are the same!";
 $string["alreadyUsedNick"] = "Username you entered is already taken!";
-$string["changeNickDesc"] = "Here you can change your username!";
-$string["oldNick"] = "Old username";
-$string["newNick"] = " New username";
+$string["changeNickDesc"] = "Here you can change your Username!";
+$string["oldNick"] = "Old Username";
+$string["newNick"] = " New Username";
 $string["password"] = "Password";
 
 $string["packCreate"] = "Create a Map Pack";
@@ -103,6 +114,19 @@ $string["invalidPost"] = "Invalid data!";
 $string["fewMoreQuests"] = "It's reccomend to create a few more quests.";
 $string["oneMoreQuest?"] = "One more quest?";
 
+$string["levelReupload"] = "Reupload level";
+$string["levelReuploadDesc"] = "Here you can reupload a level from any server!";
+$string["advanced"] = "Advanced options";
+$string["errorConnection"] = "Connection error!";
+$string["levelNotFound"] = "This level doesn't exist!";
+$string["robtopLol"] = "RobTop doesn't like you :c";
+$string["sameServers"] = "Host server and the target server are the same!";
+$string["levelReuploaded"] = "Level reuploaded! Level ID:";
+$string["oneMoreLevel?"] = "One more level?";
+$string["levelAlreadyReuploaded"] = "Level already reuploaded!";
+$string["server"] = "Server";
+$string["levelID"] = "Level ID";
+
 /*
 	REUPLOAD
 */
@@ -111,6 +135,7 @@ $string["reuploadBTN"] = "Upload";
 $string["errorGeneric"] = "Error appeared!";
 $string["tryAgainBTN"] = "Try again";
 //songAdd.php
+$string["songAddDesc"] = "Here you can add your song!";
 $string["songAddUrlFieldLabel"] = "Song URL: (Direct or Dropbox links only)";
 $string["songAddUrlFieldPlaceholder"] = "Song URL";
 $string["songAddNameFieldPlaceholder"] = "Name";

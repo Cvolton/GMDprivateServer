@@ -15,7 +15,7 @@
     justify-items: left;
     color: white;
     width: 10%;
-    margin-left: -22%;
+    margin-left: -42% !important;
 }
 
 .table .table {
@@ -44,6 +44,13 @@
     background: #141414;
     color: gray;
 }
+
+.details .field input {
+  display: block;
+  min-width: 130%;
+  width: 130%;
+} 
+
 
 .form__create > div {
     display: flex;
@@ -78,6 +85,10 @@ p {
 	text-align:center;
 	margin:0px;
 	width:100%;
+}
+summary {
+	color: white;
+	font-size:15px;
 }
 
 #bruh{

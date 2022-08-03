@@ -136,7 +136,7 @@ class dashboardLib{
 						<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
 							<a class="dropdown-item" href="account/changePassword.php">'.$this->getLocalizedString("changePassword").'</a>
 							<a class="dropdown-item" href="account/changeUsername.php">'.$this->getLocalizedString("changeUsername").'</a>
-							<a class="dropdown-item" href="account/unlisted.php">'.$this->getLocalizedString("unlistedLevels").'</a>
+							<a class="dropdown-item" href="stats/unlisted.php">'.$this->getLocalizedString("unlistedLevels").'</a>
 							<a class="dropdown-item" href="stats/manageSongs.php">'.$this->getLocalizedString("manageSongs").'</a>
 						</div>
 					</li>' . $browse . '<a class="dropdown-item" href="stats/songList.php">'.$this->getLocalizedString("songs").'</a></div></li>
@@ -147,6 +147,7 @@ class dashboardLib{
 						<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
 							<a class="dropdown-item" href="songs/">'.$this->getLocalizedString("songAdd").'</a>
 							<a class="dropdown-item" href="reupload/songAdd.php">'.$this->getLocalizedString("songLink").'</a>
+							<a class="dropdown-item" href="levels/levelReupload.php">'.$this->getLocalizedString("levelReupload").'</a>
 						</div>
 					</li>';
 			if($gs->checkPermission($_SESSION["accountID"], "dashboardModTools")){
@@ -223,7 +224,10 @@ class dashboardLib{
 										<div class="form-group">
 											<input type="password" class="form-control login-input" id="passwordField" name="password" placeholder="'.$this->getLocalizedString("password").'">
 										</div>
-										<button type="submit" class="btn btn-primary btn-block">'.$this->getLocalizedString("login").'</button>
+										<div><button type="submit" class="btn btn-primary btn-block">'.$this->getLocalizedString("login").'</button>
+										</form><form action="login/register.php" style="margin-left:25px; width:80%; margin-top:10px">
+										<button type="submit"class="btn btn-primary btn-block">'.$this->getLocalizedString("register").'</button>
+										</div>
 									</form>
 						</div>';
 		}		
