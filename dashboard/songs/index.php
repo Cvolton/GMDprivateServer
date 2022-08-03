@@ -31,7 +31,9 @@ if ($_FILES && $_FILES['filename']['error'] == UPLOAD_ERR_OK) {
             if ($author == null) {$author = "Reupload";}
             $servername = $_SERVER['SERVER_NAME'];
 			$accountID = $_SESSION["accountID"];
-            $song = "http://$servername/database/dashboard/songs/$db_fid.mp3";
+			$pathpart1 = str_replace($_SERVER['DOCUMENT_ROOT'], '',__FILE__);
+			$pathpart2 = str_replace(basename(__FILE__), '', $pathpart1);
+            $song = "http://".$servername."".$pathpart2."".$db_fid.".mp3";
             $query = $db->prepare("INSERT INTO songs (ID, name, authorID, authorName, size, download, hash, reuploadTime, reuploadID) VALUES (:id, :name, '9', :author, :size, :download, :hash, :reuploadTime, :reuploadID)");
             $query->execute([':id' => $db_fid, ':name' => $name, ':download' => $song, ':author' => $author, ':size' => $size, ':hash' => $hash, ':reuploadTime' => time(), ':reuploadID' => $accountID]);
 			
@@ -56,6 +58,7 @@ if ($_FILES && $_FILES['filename']['error'] == UPLOAD_ERR_OK) {
 	$dl->printSong('<div class="form">
     <h1>'.$dl->getLocalizedString("songAdd").'</h1>
     <form class="form__inner" method="post" action="" enctype="multipart/form-data">
+		<p>'.$dl->getLocalizedString("songAddDesc").'</p>
         <div class="btn-song" id="upload"><input type="file" name="filename" size="10" accept=".mp3, .ogg, .mpeg"></div>
         <div class="field"><input type="text" name="author" placeholder="'.$dl->getLocalizedString("songAddAuthorFieldPlaceholder").'"></div>
         <div class="field"><input type="text" name="name" placeholder="'.$dl->getLocalizedString("songAddNameFieldPlaceholder").'"></div>
@@ -65,11 +68,11 @@ if ($_FILES && $_FILES['filename']['error'] == UPLOAD_ERR_OK) {
 }
 } else {
 	$dl->printSong('<div class="form">
-    <h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
-	<form class="form__inner" method="post" action="../dashboard/login/login.php">
-	<p>'.$dl->getLocalizedString("noLogin?").'</p>
-	        <button type="submit" class="btn-song">'.$dl->getLocalizedString("LoginBtn").'</button>
-    </form>
-</div>');
+		<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
+		<form class="form__inner" method="post" action="../dashboard/login/login.php">
+		<p>'.$dl->getLocalizedString("noLogin?").'</p>
+		<button type="submit" class="btn-song">'.$dl->getLocalizedString("LoginBtn").'</button>
+		</form>
+	</div>');
 }
 ?>
