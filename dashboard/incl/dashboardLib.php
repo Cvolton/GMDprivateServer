@@ -1,6 +1,8 @@
 <?php
+$gdps = "GDPS";
 class dashboardLib{
 	public function printHeader($isSubdirectory = true){
+		global $gdps;
 		$this->handleLangStart();
 		echo '<!DOCTYPE html>
 				<html lang="en">
@@ -20,7 +22,7 @@ class dashboardLib{
 						<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
 						<link async rel="stylesheet" href="incl/cvolton.css">
 						<link async rel="stylesheet" href="incl/font-awesome-4.7.0/css/font-awesome.min.css">
-						<title>GDPS</title>
+						<title>'.$gdps.'</title>
 
 						<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">';
 		echo '		</head>
@@ -82,6 +84,7 @@ class dashboardLib{
 		$this->printLoginBox("<p>An error has occured: $content. <a href=''>Click here to try again.</a>");
 	}
 	public function printNavbar($active){
+		global $gdps;
 		require_once __DIR__."/../../incl/lib/mainLib.php";
 		$gs = new mainLib();
 		$homeActive = "";
@@ -146,8 +149,8 @@ class dashboardLib{
 						</a>
 						<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
 							<a class="dropdown-item" href="songs/">'.$this->getLocalizedString("songAdd").'</a>
-							<a class="dropdown-item" href="reupload/songAdd.php">'.$this->getLocalizedString("songLink").'</a>
-							<a class="dropdown-item" href="levels/levelReupload.php">'.$this->getLocalizedString("levelReupload").'</a>
+							<a class="dropdown-item" href="reupload/songAdd.php">'.$this->getLocalizedString("songLink").'</a>';
+								echo '<a class="dropdown-item" href="levels/levelReupload.php">'.$this->getLocalizedString("levelReupload").'</a>
 						</div>
 					</li>';
 			if($gs->checkPermission($_SESSION["accountID"], "dashboardModTools")){
@@ -189,15 +192,24 @@ class dashboardLib{
 						<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
 							<a class="dropdown-item" id="langload" href="lang/switchLang.php?lang=RU">Русский</a>
 							<a class="dropdown-item" id="langload" href="lang/switchLang.php?lang=EN">English</a>
-						</div>
+						</div>';
+						if(!empty(glob("../download/*.*")) OR !empty(glob("download/*.*"))) {
+							echo '
 					<li class="nav-item dropdown">
 						<a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 							<i class="fa fa-download" aria-hidden="true"></i> '.$this->getLocalizedString("download").'
 						</a>
-						<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-							<a class="dropdown-item" id="langload" href="download/GDPS.zip">'.$this->getLocalizedString("forwindows").'</a>
-							<a class="dropdown-item" id="langload" href="download/GDPS.apk">'.$this->getLocalizedString("forandroid").'</a>
-				</div>';
+						<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">';
+						if(file_exists("download/".$gdps.".zip")) 
+							echo '<a class="dropdown-item" id="langload" href="download/'.$gdps.'.zip">'.$this->getLocalizedString("forwindows").'</a>';
+						if(file_exists("download/".$gdps.".apk")) 
+							echo '<a class="dropdown-item" id="langload" href="download/'.$gdps.'.apk">'.$this->getLocalizedString("forandroid").'</a>';
+						if(file_exists("download/".$gdps.".dmg")) 
+							echo '<a class="dropdown-item" id="langload" href="download/'.$gdps.'.apk">'.$this->getLocalizedString("formac").'</a>';
+						if(file_exists("download/".$gdps.".ipa")) 
+							echo '<a class="dropdown-item" id="langload" href="download/'.$gdps.'.apk">'.$this->getLocalizedString("forios").'</a>
+						</div>';
+						}
 		if(isset($_SESSION["accountID"]) AND $_SESSION["accountID"] != 0){
 			$userName = $gs->getAccountName($_SESSION["accountID"]);
 			echo'<li class="nav-item dropdown">

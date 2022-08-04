@@ -37,6 +37,8 @@ $string["leaderboardTime"] = "Leaderboards progress";
 $string["download"] = "Download";
 $string["forwindows"] = "For Windows";
 $string["forandroid"] = "For Android";
+$string["formac"] = "For Mac";
+$string["forios"] = "For iOS";
 $string["language"] = "Language";
 
 $string["loginHeader"] = "Welcome, %s!";
@@ -126,6 +128,7 @@ $string["oneMoreLevel?"] = "One more level?";
 $string["levelAlreadyReuploaded"] = "Level already reuploaded!";
 $string["server"] = "Server";
 $string["levelID"] = "Level ID";
+$string["pageDisabled"] = "This page is disabled!";
 
 /*
 	REUPLOAD

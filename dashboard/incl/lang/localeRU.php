@@ -37,6 +37,8 @@ $string["leaderboardTime"] = "Таблица лидеров за 24 часа";
 $string["download"] = "Скачать";
 $string["forwindows"] = "Для Windows";
 $string["forandroid"] = "Для Android";
+$string["formac"] = "Для Mac";
+$string["forios"] = "Для iOS";
 $string["language"] = "Язык";
 
 $string["loginHeader"] = "Приветствуем, %s!";
@@ -126,6 +128,7 @@ $string["oneMoreLevel?"] = "Ещё один уровень?";
 $string["levelAlreadyReuploaded"] = "Уровень уже перенесён!";
 $string["server"] = "Сервер";
 $string["levelID"] = "ID уровня";
+$string["pageDisabled"] = "Эта страница отключена!";
 
 /*
 	REUPLOAD
