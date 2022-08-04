@@ -1,5 +1,5 @@
 <?php
-include_once __DIR__ . "/ip_in_range.php";
+include __DIR__ . "/ip_in_range.php";
 class mainLib {
 	public function getAudioTrack($id) {
 		$songs = ["Stereo Madness by ForeverBound",
@@ -134,9 +134,6 @@ class mainLib {
 			case 4:
 				return "XL";
 				break;
-			case 5:
-				return "Platformer";
-				break;
 			default:
 				return "Unknown";
 				break;
@@ -208,7 +205,7 @@ class mainLib {
 		return array($starDifficulty, $starDemon, $starAuto);
 	}
 	public function getGauntletName($id){
-		$gauntlets = ["Unknown", "Fire", "Ice", "Poison", "Shadow", "Lava", "Bonus", "Chaos", "Demon", "Time", "Crystal", "Magic", "Spike", "Monster", "Doom", "Death", 'Forest', 'Rune', 'Force', 'Spooky', 'Dragon', 'Water', 'Haunted', 'Acid', 'Witch', 'Power', 'Potion', 'Snake', 'Toxic', 'Halloween', 'Treasure', 'Ghost', 'Spider', 'Gem', 'Inferno', 'Portal', 'Strange', 'Fantasy', 'Christmas', 'Surprise', 'Mystery', 'Cursed', 'Cyborg', 'Castle', 'Grave', 'Temple', 'World', 'Galaxy', 'Universe', 'Discord', 'Split'];
+		$gauntlets = ["Unknown", "Fire", "Ice", "Poison", "Shadow", "Lava", "Bonus", "Chaos", "Demon", "Time", "Crystal", "Magic", "Spike", "Monster", "Doom", "Death"];
 		if($id < 0 || $id >= count($gauntlets))
 			return $gauntlets[0];
 		return $gauntlets[$id];
@@ -293,7 +290,7 @@ class mainLib {
 		}else{
 			$register = 0;
 		}
-		$query = $db->prepare("SELECT userID FROM users WHERE extID LIKE BINARY :id");
+		$query = $db->prepare("SELECT userID FROM users WHERE extID = :id");
 		$query->execute([':id' => $extID]);
 		if ($query->rowCount() > 0) {
 			$userID = $query->fetchColumn();
@@ -307,8 +304,6 @@ class mainLib {
 		return $userID;
 	}
 	public function getAccountName($accountID) {
-		if(!is_numeric($accountID)) return false;
-
 		include __DIR__ . "/connection.php";
 		$query = $db->prepare("SELECT userName FROM accounts WHERE accountID = :id");
 		$query->execute([':id' => $accountID]);
@@ -468,8 +463,6 @@ class mainLib {
 		return $accountlist;
 	}
 	public function checkPermission($accountID, $permission){
-		if(!is_numeric($accountID)) return false;
-
 		include __DIR__ . "/connection.php";
 		//isAdmin check
 		$query = $db->prepare("SELECT isAdmin FROM accounts WHERE accountID = :accountID");
@@ -563,8 +556,6 @@ class mainLib {
 		return false;
 	}
 	public function getFriends($accountID){
-		if(!is_numeric($accountID)) return false;
-
 		include __DIR__ . "/connection.php";
 		$friendsarray = array();
 		$query = "SELECT person1,person2 FROM friendships WHERE person1 = :accountID OR person2 = :accountID"; //selecting friendships
@@ -587,16 +578,12 @@ class mainLib {
 		return $friendsarray;
 	}
 	public function isFriends($accountID, $targetAccountID) {
-		if(!is_numeric($accountID) || !is_numeric($targetAccountID)) return false;
-
 		include __DIR__ . "/connection.php";
 		$query = $db->prepare("SELECT count(*) FROM friendships WHERE person1 = :accountID AND person2 = :targetAccountID OR person1 = :targetAccountID AND person2 = :accountID");
 		$query->execute([':accountID' => $accountID, ':targetAccountID' => $targetAccountID]);
 		return $query->fetchColumn() > 0;
 	}
 	public function getMaxValuePermission($accountID, $permission){
-		if(!is_numeric($accountID)) return false;
-
 		include __DIR__ . "/connection.php";
 		$maxvalue = 0;
 		$query = $db->prepare("SELECT roleID FROM roleassign WHERE accountID = :accountID");
@@ -620,8 +607,6 @@ class mainLib {
 		return $maxvalue;
 	}
 	public function getAccountCommentColor($accountID){
-		if(!is_numeric($accountID)) return false;
-
 		include __DIR__ . "/connection.php";
 		$query = $db->prepare("SELECT roleID FROM roleassign WHERE accountID = :accountID");
 		$query->execute([':accountID' => $accountID]);
@@ -648,8 +633,6 @@ class mainLib {
 		return "255,255,255";
 	}
 	public function rateLevel($accountID, $levelID, $stars, $difficulty, $auto, $demon){
-		if(!is_numeric($accountID)) return false;
-
 		include __DIR__ . "/connection.php";
 		//lets assume the perms check is done properly before
 		$query = "UPDATE levels SET starDemon=:demon, starAuto=:auto, starDifficulty=:diff, starStars=:stars, rateDate=:now WHERE levelID=:levelID";
@@ -661,40 +644,15 @@ class mainLib {
 		
 		
 	}
-	public function featureLevel($accountID, $levelID, $state) {
-		if(!is_numeric($accountID)) return false;
-		switch($state) {
-	            case 0:
-	                $feature = 0;
-	                $epic = 0;
-	                break;
-	            case 1:
-	                $feature = 1;
-	                $epic = 0;
-	                break;
-	            case 2: // Stole from TheJulfor
-	                $feature = 1;
-	                $epic = 1;
-	                break;
-	            case 3:
-	                $feature = 1;
-	                $epic = 2;
-	                break;
-	            case 4:
-	                $feature = 1;
-	                $epic = 3;
-	                break;
-	        }
+	public function featureLevel($accountID, $levelID, $feature){
 		include __DIR__ . "/connection.php";
-		$query = "UPDATE levels SET starFeatured=:feature, starEpic=:epic, rateDate=:now WHERE levelID=:levelID";
+		$query = "UPDATE levels SET starFeatured=:feature, rateDate=:now WHERE levelID=:levelID";
 		$query = $db->prepare($query);	
-		$query->execute([':feature' => $feature, ':epic' => $epic, ':levelID' => $levelID, ':now' => time()]);
+		$query->execute([':feature' => $feature, ':levelID'=>$levelID, ':now' => time()]);
 		$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('2', :value, :levelID, :timestamp, :id)");
-		$query->execute([':value' => $state, ':timestamp' => time(), ':id' => $accountID, ':levelID' => $levelID]);
+		$query->execute([':value' => $feature, ':timestamp' => time(), ':id' => $accountID, ':levelID' => $levelID]);
 	}
 	public function verifyCoinsLevel($accountID, $levelID, $coins){
-		if(!is_numeric($accountID)) return false;
-
 		include __DIR__ . "/connection.php";
 		$query = "UPDATE levels SET starCoins=:coins WHERE levelID=:levelID";
 		$query = $db->prepare($query);	
@@ -703,7 +661,7 @@ class mainLib {
 		$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('3', :value, :levelID, :timestamp, :id)");
 		$query->execute([':value' => $coins, ':timestamp' => time(), ':id' => $accountID, ':levelID' => $levelID]);
 	}
-	public function songReupload($url){
+	public function songReupload($url, $author, $name){
 		require __DIR__ . "/../../incl/lib/connection.php";
 		require_once __DIR__ . "/../../incl/lib/exploitPatch.php";
 		$song = str_replace("www.dropbox.com","dl.dropboxusercontent.com",$url);
@@ -716,17 +674,17 @@ class mainLib {
 			if($count != 0){
 				return "-3";
 			}
-			$name = ExploitPatch::remove(urldecode(str_replace([".mp3",".webm",".mp4",".wav"], "", basename($song))));
-			$author = "Reupload";
+			if(empty($name)) $name = ExploitPatch::remove(urldecode(str_replace([".mp3",".webm",".mp4",".wav"], "", basename($song))));
+			if(empty($author)) $author = "Reupload";
 			$info = $this->getFileInfo($song);
 			$size = $info['size'];
 			if(substr($info['type'], 0, 6) != "audio/")
 				return "-4";
 			$size = round($size / 1024 / 1024, 2);
 			$hash = "";
-			$query = $db->prepare("INSERT INTO songs (name, authorID, authorName, size, download, hash)
-			VALUES (:name, '9', :author, :size, :download, :hash)");
-			$query->execute([':name' => $name, ':download' => $song, ':author' => $author, ':size' => $size, ':hash' => $hash]);
+			$query = $db->prepare("INSERT INTO songs (name, authorID, authorName, size, download, hash, reuploadTime)
+			VALUES (:name, '9', :author, :size, :download, :hash, :time)");
+			$query->execute([':name' => $name, ':download' => $song, ':author' => $author, ':size' => $size, ':hash' => $hash, ':time' => time()]);
 			return $db->lastInsertId();
 		}else{
 			return "-2";
@@ -748,37 +706,9 @@ class mainLib {
 		return ['size' => $size, 'type' => $mime];
 	}
 	public function suggestLevel($accountID, $levelID, $difficulty, $stars, $feat, $auto, $demon){
-		if(!is_numeric($accountID)) return false;
-		
 		include __DIR__ . "/connection.php";
 		$query = "INSERT INTO suggest (suggestBy, suggestLevelID, suggestDifficulty, suggestStars, suggestFeatured, suggestAuto, suggestDemon, timestamp) VALUES (:account, :level, :diff, :stars, :feat, :auto, :demon, :timestamp)";
 		$query = $db->prepare($query);
 		$query->execute([':account' => $accountID, ':level' => $levelID, ':diff' => $difficulty, ':stars' => $stars, ':feat' => $feat, ':auto' => $auto, ':demon' => $demon, ':timestamp' => time()]);
-	}
-	public function getListOwner($listID) {
-		if(!is_numeric($listID)) return false;
-		include __DIR__ . "/connection.php";
-		$query = $db->prepare('SELECT accountID FROM lists WHERE listID = :id');
-		$query->execute([':id' => $listID]);
-		return $query->fetchColumn();
-	}
-	public function getListLevels($listID) {
-		if(!is_numeric($listID)) return false;
-		include __DIR__ . "/connection.php";
-		$query = $db->prepare('SELECT listlevels FROM lists WHERE listID = :id');
-		$query->execute([':id' => $listID]);
-		return $query->fetchColumn();
-	}
-	public function getListDiffName($diff) {
-		if($diff == -1) return 'N/A';
-		$diffs = ['Auto', 'Easy', 'Normal', 'Hard', 'Harder', 'Extreme', 'Easy Demon', 'Medium Demon', 'Hard Demon', 'Insane Demon', 'Extreme Demon'];
-		return $diffs[$diff];
-	}
-	public function getListName($listID) {
-		if(!is_numeric($listID)) return false;
-		include __DIR__ . "/connection.php";
-		$query = $db->prepare('SELECT listName FROM lists WHERE listID = :id');
-		$query->execute([':id' => $listID]);
-		return $query->fetchColumn();
 	}
 }

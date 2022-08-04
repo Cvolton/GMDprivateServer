@@ -8,7 +8,7 @@ require_once "../../incl/lib/mainLib.php";
 $gs = new mainLib();
 if(isset($_SESSION["accountID"]) AND $_SESSION["accountID"] != 0){
 if(!empty($_POST["url"])){
-	$songID = $gs->songReupload($_POST["url"]);
+	$songID = $gs->songReupload($_POST["url"], $_POST["author"], $_POST["name"]);
 	if($songID < 0){
 		$errorDesc = $dl->getLocalizedString("songAddError$songID");
 		$dl->printSong('<div class="form">
@@ -33,6 +33,8 @@ if(!empty($_POST["url"])){
     <form class="form__inner" method="post" action="">
 		<p>'.$dl->getLocalizedString("songAddUrlFieldLabel").'</p>
         <div class="field"><input type="text" name="url" placeholder="'.$dl->getLocalizedString("songAddUrlFieldPlaceholder").'"></div>
+		<div class="field"><input type="text" name="author" placeholder="'.$dl->getLocalizedString("songAddAuthorFieldPlaceholder").'"></div>
+		<div class="field"><input type="text" name="name" placeholder="'.$dl->getLocalizedString("songAddNameFieldPlaceholder").'"></div>
         <button type="submit" class="btn-song">'.$dl->getLocalizedString("reuploadBTN").'</button>
     </form>
 </div>');

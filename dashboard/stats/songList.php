@@ -24,6 +24,7 @@ $x = $page + 1;
 foreach($result as &$action){
 	$songsid = $action["ID"];
 	$time = $dl->convertToDate($action["reuploadTime"]);
+	if($time <= 1) $time = "Newgrounds";
 	$author = $action["authorName"];
 	$name = $action["name"];
 	$size = $action["size"];
