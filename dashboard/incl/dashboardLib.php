@@ -205,9 +205,9 @@ class dashboardLib{
 						if(file_exists("download/".$gdps.".apk")) 
 							echo '<a class="dropdown-item" id="langload" href="download/'.$gdps.'.apk">'.$this->getLocalizedString("forandroid").'</a>';
 						if(file_exists("download/".$gdps.".dmg")) 
-							echo '<a class="dropdown-item" id="langload" href="download/'.$gdps.'.apk">'.$this->getLocalizedString("formac").'</a>';
+							echo '<a class="dropdown-item" id="langload" href="download/'.$gdps.'.dmg">'.$this->getLocalizedString("formac").'</a>';
 						if(file_exists("download/".$gdps.".ipa")) 
-							echo '<a class="dropdown-item" id="langload" href="download/'.$gdps.'.apk">'.$this->getLocalizedString("forios").'</a>
+							echo '<a class="dropdown-item" id="langload" href="download/'.$gdps.'.ipa">'.$this->getLocalizedString("forios").'</a>
 						</div>';
 						}
 		if(isset($_SESSION["accountID"]) AND $_SESSION["accountID"] != 0){
