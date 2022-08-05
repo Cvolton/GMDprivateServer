@@ -19,6 +19,7 @@ if($gs->checkPermission($accountID, "actionRateStars")){
 	$gs->featureLevel($accountID, $levelID, $feature);
 	$gs->verifyCoinsLevel($accountID, $levelID, 1);
 	echo 1;
+	include "../../tools/cron/cron.php";
 }else if($gs->checkPermission($accountID, "actionSuggestRating")){
 	$gs->suggestLevel($accountID, $levelID, $difficulty["diff"], $stars, $feature, $difficulty["auto"], $difficulty["demon"]);
 	echo 1;
