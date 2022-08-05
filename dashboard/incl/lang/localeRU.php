@@ -3,7 +3,7 @@
 	NAVBAR
 */
 $string["homeNavbar"] = "Домой";
-$string["welcome"] = "Добро пожаловать на GreenCatsServer!";
+$string["welcome"] = "Добро пожаловать на GDPS!";
 $string["levelsWeek"] = "Выложено уровней за неделю";
 $string["levels3Months"] = "Выложено уровней за 3 месяца";
 

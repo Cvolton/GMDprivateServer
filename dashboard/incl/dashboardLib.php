@@ -1,5 +1,5 @@
 <?php
-$gdps = "GreenCatsServer";
+$gdps = "GDPS";
 class dashboardLib{
 	public function printHeader($isSubdirectory = true){
 		global $gdps;
