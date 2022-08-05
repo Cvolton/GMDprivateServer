@@ -8,7 +8,7 @@ require_once "../../incl/lib/mainLib.php";
 $gs = new mainLib();
 if(isset($_SESSION["accountID"]) AND $_SESSION["accountID"] != 0){
 if(!empty($_POST["url"])){
-	$songID = $gs->songReupload($_POST["url"], $_POST["author"], $_POST["name"]);
+	$songID = $gs->songReupload($_POST["url"], $_POST["author"], $_POST["name"], $_SESSION["accountID"]);
 	if($songID < 0){
 		$errorDesc = $dl->getLocalizedString("songAddError$songID");
 		$dl->printSong('<div class="form">
