@@ -207,6 +207,14 @@ class dashboardLib{
 						if(file_exists("download/".$gdps.".dmg")) 
 							echo '<a class="dropdown-item" id="langload" href="download/'.$gdps.'.dmg">'.$this->getLocalizedString("formac").'</a>';
 						if(file_exists("download/".$gdps.".ipa")) 
+							echo '<a class="dropdown-item" id="langload" href="download/'.$gdps.'.ipa">'.$this->getLocalizedString("forios").'</a>';
+						if(file_exists("../download/".$gdps.".zip")) 
+							echo '<a class="dropdown-item" id="langload" href="download/'.$gdps.'.zip">'.$this->getLocalizedString("forwindows").'</a>';
+						if(file_exists("../download/".$gdps.".apk")) 
+							echo '<a class="dropdown-item" id="langload" href="download/'.$gdps.'.apk">'.$this->getLocalizedString("forandroid").'</a>';
+						if(file_exists("../download/".$gdps.".dmg")) 
+							echo '<a class="dropdown-item" id="langload" href="download/'.$gdps.'.dmg">'.$this->getLocalizedString("formac").'</a>';
+						if(file_exists("../download/".$gdps.".ipa")) 
 							echo '<a class="dropdown-item" id="langload" href="download/'.$gdps.'.ipa">'.$this->getLocalizedString("forios").'</a>
 						</div>';
 						}
