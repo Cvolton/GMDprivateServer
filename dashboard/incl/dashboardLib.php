@@ -1,5 +1,5 @@
 <?php
-$gdps = "GDPS";
+$gdps = "GreenCatsServer";
 class dashboardLib{
 	public function printHeader($isSubdirectory = true){
 		global $gdps;
@@ -78,7 +78,7 @@ class dashboardLib{
 		$this->printBox("<h1 id='center'>".$this->getLocalizedString("loginBox")."</h1>".$content);
 	}
 	public function printLoginBoxInvalid(){
-		$this->printLoginBox("<p>Invalid username or password. <a href=''>Click here to try again.</a>");
+		$this->printLoginBox("<p>".$this->getLocalizedString("wrongNickOrPass")."");
 	}
 	public function printLoginBoxError($content){
 		$this->printLoginBox("<p>An error has occured: $content. <a href=''>Click here to try again.</a>");

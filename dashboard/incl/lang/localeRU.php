@@ -3,7 +3,7 @@
 	NAVBAR
 */
 $string["homeNavbar"] = "Домой";
-$string["welcome"] = "Добро пожаловать на GDPS!";
+$string["welcome"] = "Добро пожаловать на GreenCatsServer!";
 $string["levelsWeek"] = "Выложено уровней за неделю";
 $string["levels3Months"] = "Выложено уровней за 3 месяца";
 
@@ -44,6 +44,8 @@ $string["language"] = "Язык";
 $string["loginHeader"] = "Приветствуем, %s!";
 $string["logout"] = "Выйти";
 $string["login"] = "Войти";
+$string["wrongNickOrPass"] = "Неверный никнейм или пароль!";
+$string["invalidid"] = "Неверный ID!";
 $string["loginBox"] = "Вход в аккаунт";
 $string["loginSuccess"] = "Вы успешно вошли в аккаунт!";
 $string["loginAlready"] = "Вы уже вошли в аккаунт!";
@@ -129,6 +131,14 @@ $string["levelAlreadyReuploaded"] = "Уровень уже перенесён!";
 $string["server"] = "Сервер";
 $string["levelID"] = "ID уровня";
 $string["pageDisabled"] = "Эта страница отключена!";
+
+$string["activateAccount"] = "Активация аккаунта";
+$string["activateDesc"] = "Активируйте свой аккаунт!";
+$string["activated"] = "Ваш аккаунт успешно активирован!";
+$string["alreadyActivated"] = "Ваш аккаунт уже активирован!";
+$string["maybeActivate"] = "Возможно, вы не активировали свой аккаунт.";
+$string["activate"] = "Активировать";
+$string["activateDisabled"] = "Активация аккаунта не требуется!";
 
 /*
 	REUPLOAD

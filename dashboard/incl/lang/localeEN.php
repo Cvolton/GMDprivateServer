@@ -3,7 +3,7 @@
 	NAVBAR
 */
 $string["homeNavbar"] = "Home";
-$string["welcome"] = "Welcome to GDPS!";
+$string["welcome"] = "Welcome to GreenCatsServer!";
 $string["levelsWeek"] = "Levels uploaded in a week";
 $string["levels3Months"] = "Levels uploaded in 3 months";
 
@@ -44,6 +44,8 @@ $string["language"] = "Language";
 $string["loginHeader"] = "Welcome, %s!";
 $string["logout"] = "Logout";
 $string["login"] = "Login";
+$string["wrongNickOrPass"] = "Wrong username or password!";
+$string["invalidid"] = "Invalid ID!";
 $string["loginBox"] = "Login to account";
 $string["loginSuccess"] = "You successfully login to your account!";
 $string["loginAlready"] = "You already logged in!";
@@ -129,6 +131,14 @@ $string["levelAlreadyReuploaded"] = "Level already reuploaded!";
 $string["server"] = "Server";
 $string["levelID"] = "Level ID";
 $string["pageDisabled"] = "This page is disabled!";
+
+$string["activateAccount"] = "Account activation";
+$string["activateDesc"] = "Activate your account!";
+$string["activated"] = "Your account has been successfully activated!";
+$string["alreadyActivated"] = "Your account is already activated";
+$string["maybeActivate"] = "Maybe you didn't activated your account yet.";
+$string["activate"] = "Activate";
+$string["activateDisabled"] = "Account activation is disabled!";
 
 /*
 	REUPLOAD
