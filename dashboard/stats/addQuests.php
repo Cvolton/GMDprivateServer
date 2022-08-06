@@ -1,5 +1,6 @@
 <?php
 session_start();
+require "../../incl/lib/Captcha.php";
 include "../../incl/lib/connection.php";
 require "../../incl/lib/generatePass.php";
 require "../../incl/lib/exploitPatch.php";
@@ -9,6 +10,16 @@ include "../incl/dashboardLib.php";
 $dl = new dashboardLib();
 if($gs->checkPermission($_SESSION["accountID"], "toolQuestsCreate")) {
 if(!empty($_POST["type"]) AND !empty($_POST["amount"]) AND !empty($_POST["reward"]) AND !empty($_POST["names"])){
+	if(!Captcha::validateCaptcha()) {
+		$dl->printSong('<div class="form">
+			<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
+			<form class="form__inner" method="post" action="">
+			<p>'.$dl->getLocalizedString("invalidCaptcha").'</p>
+			<button type="submit" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
+			</form>
+		</div>');
+	die();
+	}
 	$type = ExploitPatch::number($_POST["type"]);
 	$amount = ExploitPatch::number($_POST["amount"]);
     $reward = ExploitPatch::number($_POST["reward"]);
@@ -64,9 +75,12 @@ if(!empty($_POST["type"]) AND !empty($_POST["amount"]) AND !empty($_POST["reward
 		<input class="number" type="number" name="amount" placeholder="'.$dl->getLocalizedString("questAmount").'">
 		<input class="number" type="number" name="reward" placeholder="'.$dl->getLocalizedString("questReward").'">
 		</div>
+		');
+		Captcha::displayCaptcha();
+        echo '
         <button  type="submit" class="btn-song">'.$dl->getLocalizedString("questCreate").'</button>
     </form>
-</div>');
+</div>';
 }
 } else {
 	$dl->printSong('<div class="form">

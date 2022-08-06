@@ -1,5 +1,6 @@
 <?php
 session_start();
+require "../../incl/lib/Captcha.php";
 include "../../incl/lib/connection.php";
 include_once "../../config/security.php";
 require "../../incl/lib/generatePass.php";
@@ -16,6 +17,16 @@ $ep = new exploitPatch();
 error_reporting(E_ERROR | E_PARSE);
 if(isset($_SESSION["accountID"]) AND $_SESSION["accountID"] != 0){
 if($_POST["oldpassword"] != "" AND $_POST["newpassword"] != "" AND $_POST["newpassword"] == $_POST["newpassconfirm"]) {
+	if(!Captcha::validateCaptcha()) {
+		$dl->printSong('<div class="form">
+			<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
+			<form class="form__inner" method="post" action="">
+			<p>'.$dl->getLocalizedString("invalidCaptcha").'</p>
+			<button type="submit" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
+			</form>
+		</div>');
+		die();
+	}
 	$userName = $gs->getAccountName($_SESSION["accountID"]);
 	$oldpass = $_POST["oldpassword"];
 	$newpass = $_POST["newpassword"];
@@ -80,9 +91,11 @@ if ($pass == 1) {
         <div class="field"><input type="password" name="oldpassword" placeholder="'.$dl->getLocalizedString("oldPassword").'"></div>
         <div class="field"><input type="password" name="newpassword" placeholder="'.$dl->getLocalizedString("newPassword").'"></div>
 		<div class="field"><input type="password" name="newpassconfirm" placeholder="'.$dl->getLocalizedString("confirmNew").'"></div>
-        <button type="submit" class="btn-song">'.$dl->getLocalizedString("changePassword").'</button>
+		');
+		Captcha::displayCaptcha();
+        echo '<button style="margin-top:5px" type="submit" class="btn-song">'.$dl->getLocalizedString("changePassword").'</button>
     </form>
-</div>');
+</div>';
 }} else {
 	$dl->printSong('<div class="form">
     <h1>'.$dl->getLocalizedString("errorGeneric").'</h1>

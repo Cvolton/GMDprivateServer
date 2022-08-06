@@ -1,5 +1,6 @@
 <?php
 session_start();
+require "../../incl/lib/Captcha.php";
 require "../../incl/lib/connection.php";
 require "../incl/dashboardLib.php";
 $dl = new dashboardLib();
@@ -9,6 +10,16 @@ include "../../incl/lib/connection.php";
 include "../../incl/lib/exploitPatch.php";
 $ep = new exploitPatch();
 if($gs->checkPermission($_SESSION["accountID"], "dashboardLevelPackCreate")){
+		if(!Captcha::validateCaptcha()) {
+			$dl->printSong('<div class="form">
+				<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
+				<form class="form__inner" method="post" action="">
+				<p>'.$dl->getLocalizedString("invalidCaptcha").'</p>
+				<button type="submit" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
+				</form>
+			</div>');
+		die();
+		}
 	$query = $db->prepare("SELECT levelID, levelName, starStars FROM levels");
 	$query->execute();
 	$result = $query->fetchAll();
@@ -116,6 +127,9 @@ if(!empty($_POST["packName"])) {
         ' . $options . '
     </select>
     </div>
+	');
+		Captcha::displayCaptcha();
+        echo '
         <button type="submit" class="btn-primary">' . $dl->getLocalizedString("packCreate") . '</button>
     </form>
     </div>
@@ -135,7 +149,7 @@ if(!empty($_POST["packName"])) {
             request.send(formData);
 
         });
-    </script>');
+    </script>';
 }
 } else
 	$dl->printSong('<div class="form">

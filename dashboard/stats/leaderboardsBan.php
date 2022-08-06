@@ -1,5 +1,6 @@
 <?php
 session_start();
+require "../../incl/lib/Captcha.php";
 include "../../incl/lib/connection.php";
 require "../../incl/lib/generatePass.php";
 require_once "../../incl/lib/exploitPatch.php";
@@ -10,6 +11,16 @@ $dl = new dashboardLib();
 error_reporting(E_ERROR | E_PARSE);
 if(!empty($_POST["userID"])) {
 	if($gs->checkPermission($_SESSION["accountID"], "dashboardModTools")){
+		if(!Captcha::validateCaptcha()) {
+			$dl->printSong('<div class="form">
+				<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
+				<form class="form__inner" method="post" action="">
+				<p>'.$dl->getLocalizedString("invalidCaptcha").'</p>
+				<button type="submit" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
+				</form>
+			</div>');
+		die();
+		}
 		$userName = $gs->getAccountName($_SESSION["accountID"]);
 		$userID = ExploitPatch::remove($_POST["userID"]);
 		$query = $db->prepare("SELECT accountID FROM accounts WHERE userName=:userName");	
@@ -79,9 +90,12 @@ $dl->printSong('<div class="form">
 	<h2>'.$dl->getLocalizedString("banDesc").'</h2>
     <form class="form__inner" method="post" action="">
         <div class="field"><input type="text" name="userID" placeholder="'.$dl->getLocalizedString("banUserID").'"></div>
+		');
+		Captcha::displayCaptcha();
+        echo '
         <button type="submit" class="btn-primary">'.$dl->getLocalizedString("ban").'</button>
     </form>
-</div>');
+</div>';
 }
 ?>
 <link rel="stylesheet" href="../incl/cvolton.css">

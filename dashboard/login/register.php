@@ -1,5 +1,6 @@
 <?php
 session_start();
+require "../../incl/lib/Captcha.php";
 include "../../config/security.php";
 include "../../incl/lib/connection.php";
 require "../../incl/lib/exploitPatch.php";
@@ -12,6 +13,16 @@ if(!isset($preactivateAccounts)){
 
 // here begins the checks
 if(!empty($_POST["username"]) AND !empty($_POST["email"]) AND !empty($_POST["repeatemail"]) AND !empty($_POST["password"]) AND !empty($_POST["repeatpassword"])){
+	if(!Captcha::validateCaptcha()) {
+		$dl->printSong('<div class="form">
+			<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
+			<form class="form__inner" method="post" action="">
+			<p>'.$dl->getLocalizedString("invalidCaptcha").'</p>
+			<button type="submit" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
+			</form>
+		</div>');
+	die();
+	}
 	$username = ExploitPatch::remove($_POST["username"]);
 	$password = ExploitPatch::remove($_POST["password"]);
 	$repeat_password = ExploitPatch::remove($_POST["repeatpassword"]);
@@ -89,9 +100,12 @@ if(!empty($_POST["username"]) AND !empty($_POST["email"]) AND !empty($_POST["rep
 		<div class="field"><input type="password" name="repeatpassword" placeholder="'.$dl->getLocalizedString("repeatpassword").'"></div>
 		<div class="field"><input type="email" name="email" placeholder="'.$dl->getLocalizedString("email").'"></div>
 		<div class="field"><input type="email" name="repeatemail" placeholder="'.$dl->getLocalizedString("repeatemail").'"></div>
+		');
+		Captcha::displayCaptcha();
+        echo '
         <button type="submit" class="btn-song">'.$dl->getLocalizedString("register").'</button>
     </form>
-</div>');
+</div>';
 }
 } else {
 	$dl->printSong('<div class="form">

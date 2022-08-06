@@ -1,6 +1,7 @@
 <?php
 session_start();
 //error_reporting(0);
+require "../../incl/lib/Captcha.php";
 include "../../incl/lib/connection.php";
 require_once "../incl/dashboardLib.php";
 $dl = new dashboardLib();
@@ -8,6 +9,16 @@ require_once "../../incl/lib/mainLib.php";
 $gs = new mainLib();
 if(isset($_SESSION["accountID"]) AND $_SESSION["accountID"] != 0){
 if(!empty($_POST["url"])){
+	if(!Captcha::validateCaptcha()) {
+		$dl->printSong('<div class="form">
+			<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
+			<form class="form__inner" method="post" action="">
+			<p>'.$dl->getLocalizedString("invalidCaptcha").'</p>
+			<button type="submit" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
+			</form>
+		</div>');
+		die();
+	}
 	$songID = $gs->songReupload($_POST["url"], $_POST["author"], $_POST["name"], $_SESSION["accountID"]);
 	if($songID < 0){
 		$errorDesc = $dl->getLocalizedString("songAddError$songID");
@@ -35,9 +46,11 @@ if(!empty($_POST["url"])){
         <div class="field"><input type="text" name="url" placeholder="'.$dl->getLocalizedString("songAddUrlFieldPlaceholder").'"></div>
 		<div class="field"><input type="text" name="author" placeholder="'.$dl->getLocalizedString("songAddAuthorFieldPlaceholder").'"></div>
 		<div class="field"><input type="text" name="name" placeholder="'.$dl->getLocalizedString("songAddNameFieldPlaceholder").'"></div>
-        <button type="submit" class="btn-song">'.$dl->getLocalizedString("reuploadBTN").'</button>
+		');
+		Captcha::displayCaptcha();
+        echo '<button type="submit" class="btn-song">'.$dl->getLocalizedString("reuploadBTN").'</button>
     </form>
-</div>');
+</div>';
 }
 } else {
 	$dl->printSong('<div class="form">

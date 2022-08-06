@@ -1,5 +1,6 @@
 <?php
 session_start();
+require "../../incl/lib/Captcha.php";
 include "../../incl/lib/connection.php";
 require_once "../../incl/lib/exploitPatch.php";
 $ep = new exploitPatch();
@@ -8,6 +9,16 @@ $dl = new dashboardLib();
 error_reporting(E_ERROR | E_PARSE);
 if(isset($_SESSION["accountID"]) AND $_SESSION["accountID"] != 0){
 if ($_FILES && $_FILES['filename']['error'] == UPLOAD_ERR_OK) {
+	if(!Captcha::validateCaptcha()) {
+		$dl->printSong('<div class="form">
+			<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
+			<form class="form__inner" method="post" action="">
+			<p>'.$dl->getLocalizedString("invalidCaptcha").'</p>
+			<button type="submit" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
+			</form>
+		</div>');
+		die();
+	} else {
     $file_type = $_FILES['filename']['type'];
     $allowed = array("audio/mpeg", "audio/ogg", "audio/mp3");
 
@@ -54,6 +65,7 @@ if ($_FILES && $_FILES['filename']['error'] == UPLOAD_ERR_OK) {
 		<button type="submit" class="btn-primary">'.$dl->getLocalizedString("songAddAnotherBTN").'</button>
 	  </form>');
 }
+}
 } else {
 	$dl->printSong('<div class="form">
     <h1>'.$dl->getLocalizedString("songAdd").'</h1>
@@ -61,10 +73,9 @@ if ($_FILES && $_FILES['filename']['error'] == UPLOAD_ERR_OK) {
 		<p>'.$dl->getLocalizedString("songAddDesc").'</p>
         <div class="btn-song" id="upload"><input type="file" name="filename" size="10" accept=".mp3, .ogg, .mpeg"></div>
         <div class="field"><input type="text" name="author" placeholder="'.$dl->getLocalizedString("songAddAuthorFieldPlaceholder").'"></div>
-        <div class="field"><input type="text" name="name" placeholder="'.$dl->getLocalizedString("songAddNameFieldPlaceholder").'"></div>
-        <button type="submit" class="btn-song">'.$dl->getLocalizedString("reuploadBTN").'</button>
-    </form>
-</div>');
+        <div class="field"><input type="text" name="name" placeholder="'.$dl->getLocalizedString("songAddNameFieldPlaceholder").'"></div>');
+Captcha::displayCaptcha();
+echo '<button style="margin-top:5px;margin-bottom:5px" type="submit" class="btn-song">'.$dl->getLocalizedString("reuploadBTN").'</button></form>';
 }
 } else {
 	$dl->printSong('<div class="form">

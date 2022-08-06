@@ -170,6 +170,7 @@ $string["songAddError-5"] = "Song size is higher than 12 megabytes";
 $string["songAddError-6"] = "Something went wrong while uploading a song! :с";
 $string["songAddError-7"] = "You can only upload audio!";
 
+$string["invalidCaptcha"] = "Invalid captcha response!";
 $string["page"] = "Page";
 
 /*

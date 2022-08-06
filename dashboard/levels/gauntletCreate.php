@@ -1,5 +1,6 @@
 <?php
 session_start();
+require "../../incl/lib/Captcha.php";
 require "../../incl/lib/connection.php";
 require "../incl/dashboardLib.php";
 $dl = new dashboardLib();
@@ -14,6 +15,16 @@ if($gs->checkPermission($_SESSION["accountID"], "dashboardLevelPackCreate")){
 	$query->execute();
 	$result = $query->fetchAll();
 if($_POST["checkbox_data"] == 'on') {
+		if(!Captcha::validateCaptcha()) {
+			$dl->printSong('<div class="form">
+				<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
+				<form class="form__inner" method="post" action="">
+				<p>'.$dl->getLocalizedString("invalidCaptcha").'</p>
+				<button type="submit" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
+				</form>
+			</div>');
+		die();
+		}
 	$accountID = $_SESSION["accountID"];
 	if ($_POST['level_1'] == $_POST['level_2'] ||
     $_POST['level_1'] == $_POST['level_3'] ||
@@ -104,6 +115,9 @@ if($_POST["checkbox_data"] == 'on') {
     </select>
     </div>
 	<div class="checkbox"><input class="checkbox" type="checkbox" name="checkbox_data" required>'.$dl->getLocalizedString("checkbox").'</div>
+	');
+		Captcha::displayCaptcha();
+        echo '
         <button type="submit" class="btn-primary">' . $dl->getLocalizedString("gauntletCreate") . '</button>
     </form>
     </div>
@@ -122,7 +136,7 @@ if($_POST["checkbox_data"] == 'on') {
     request.open("POST", "/");
     request.send(formData);
 });
-    </script>');
+    </script>';
 }
 } else
 	$dl->printSong('<div class="form">

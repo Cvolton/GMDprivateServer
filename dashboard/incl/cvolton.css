@@ -6,6 +6,10 @@
     display: none !important;
 }
 
+.h-captcha {
+	justify-self: center;
+}
+
 .field {
     display: grid;
     width: 100%;

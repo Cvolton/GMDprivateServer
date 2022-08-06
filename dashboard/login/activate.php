@@ -1,5 +1,6 @@
 <?php
 session_start();
+require "../../incl/lib/Captcha.php";
 include "../../incl/lib/connection.php";
 require "../../incl/lib/generatePass.php";
 require_once "../../incl/lib/exploitPatch.php";
@@ -10,6 +11,16 @@ $dl = new dashboardLib();
 if($preactivateAccounts == false) {
 if(!isset($_SESSION["accountID"]) OR $_SESSION["accountID"] == 0){
 if(!empty($_POST["userName"]) && !empty($_POST["password"])){
+	if(!Captcha::validateCaptcha()) {
+		$dl->printSong('<div class="form">
+			<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
+			<form class="form__inner" method="post" action="">
+			<p>'.$dl->getLocalizedString("invalidCaptcha").'</p>
+			<button type="submit" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
+			</form>
+		</div>');
+	die();
+	}
 	$userName = ExploitPatch::remove($_POST["userName"]);
 	$password = ExploitPatch::remove($_POST["password"]);
 	$pass = GeneratePass::isValidUsrname($userName, $password);
@@ -45,8 +56,11 @@ if(!empty($_POST["userName"]) && !empty($_POST["password"])){
 		<p>'.$dl->getLocalizedString("activateDesc").'</p>
 		<div class="field"><input type="text" name="userName" placeholder="'.$dl->getLocalizedString("enterUsername").'"></div>
 		<div class="field"><input type="password" name="password" placeholder="'.$dl->getLocalizedString("enterPassword").'"></div>
+		');
+		Captcha::displayCaptcha();
+        echo '
 		<button type="submit" class="btn btn-primary">'.$dl->getLocalizedString("activate").'</button>
-	</form></div>');
+	</form></div>';
 }
 } else {
 	$dl->printSong('<div class="form">
