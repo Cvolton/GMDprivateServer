@@ -10,6 +10,10 @@ include "../../incl/lib/connection.php";
 include "../../incl/lib/exploitPatch.php";
 $ep = new exploitPatch();
 if($gs->checkPermission($_SESSION["accountID"], "dashboardLevelPackCreate")){
+	$query = $db->prepare("SELECT levelID, levelName, starStars FROM levels");
+	$query->execute();
+	$result = $query->fetchAll();
+if(!empty($_POST["packName"])) {
 		if(!Captcha::validateCaptcha()) {
 			$dl->printSong('<div class="form">
 				<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
@@ -20,10 +24,6 @@ if($gs->checkPermission($_SESSION["accountID"], "dashboardLevelPackCreate")){
 			</div>');
 		die();
 		}
-	$query = $db->prepare("SELECT levelID, levelName, starStars FROM levels");
-	$query->execute();
-	$result = $query->fetchAll();
-if(!empty($_POST["packName"])) {
 	$accountID = $_SESSION["accountID"];
 	if($_POST['level_1'] == $_POST['level_3'] OR $_POST['level_3'] == $_POST['level_2'] OR $_POST['level_1'] == $_POST['level_2']) {
 		$dl->printSong('<div class="form">
