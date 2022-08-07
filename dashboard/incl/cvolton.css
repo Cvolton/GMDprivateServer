@@ -255,7 +255,7 @@ option,
 }
 
 .dropdown-menu {
-    display: block;
+    display: none;
     opacity: 0;
     visibility: hidden;
     border-radius: 30px;
