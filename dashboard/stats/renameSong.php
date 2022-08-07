@@ -15,7 +15,7 @@ if($gs->checkPermission($_SESSION["accountID"], "dashboardManageSongs")){
 		$query->execute();
 		$query = $db->prepare("INSERT INTO modactions (type, value, value2, value3, timestamp, account) VALUES ('19', ".$author.", ".$name.", ".$sid." , :timestamp, :account)");
 		$query->execute([':timestamp' => time(), ':account' => $_SESSION["accountID"]]);
-		header('Location: ' . $_SERVER["HTTP_REFERER"]);
+		header('Location: songList.php?author='.$author.'&name='.$name.'');
 	} else {
 		die(-1);
 	}

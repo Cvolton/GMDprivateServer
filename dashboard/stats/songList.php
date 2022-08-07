@@ -15,7 +15,16 @@ if(isset($_GET["page"]) AND is_numeric($_GET["page"]) AND $_GET["page"] > 0){
 	$page = 0;
 	$actualpage = 1;
 }
-$table = '<table class="table table-inverse"><tr><th>#</th><th>'.$dl->getLocalizedString("songIDw").'</th><th>'.$dl->getLocalizedString("songAuthor").'</th><th>'.$dl->getLocalizedString("name").'</th><th>'.$dl->getLocalizedString("size").'</th><th>'.$dl->getLocalizedString("time").'</th></tr>';
+if(!empty($_GET["author"]) AND !empty($_GET["name"])) {
+	$notify = "block"; 
+	$an = $_GET["author"];
+	$nn = $_GET["name"];
+} else { 
+	$notify = "none";
+	$an = 0;
+	$nn = 0;
+}
+$table = '<div class="notifyblue" style="display:'.$notify.'">'.$dl->getLocalizedString("renamedSong").' <b>'.$an.'</b> - <b>'.$nn.'</b>!</div><table class="table table-inverse"><tr><th>#</th><th>'.$dl->getLocalizedString("songIDw").'</th><th>'.$dl->getLocalizedString("songAuthor").'</th><th>'.$dl->getLocalizedString("name").'</th><th>'.$dl->getLocalizedString("size").'</th><th>'.$dl->getLocalizedString("time").'</th></tr>';
 
 $query = $db->prepare("SELECT * FROM songs ORDER BY ID ASC LIMIT 10 OFFSET $page");
 $query->execute();
@@ -32,8 +41,8 @@ foreach($result as &$action){
 								<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink"  style="padding:17px 17px 0px 17px; top:0%;">
 									 <form class="form__inner" method="post" action="">
 										<div class="field" style="display:none"><input type="hidden" name="ID" value="'.$songsid.'"></div>
-										<div class="field"><input type="text" name="author" placeholder="'.$author.'"></div>
-										<div class="field"><input type="text" name="name" placeholder="'.$name.'"></div>
+										<div class="field"><input type="text" name="author" value="'.$author.'" placeholder="'.$author.'"></div>
+										<div class="field"><input type="text" name="name" value="'.$name.'" placeholder="'.$name.'"></div>
 										<button type="submit" class="btn-song">'.$dl->getLocalizedString("change").'</button>
 									</form>
 								</div>

@@ -14,16 +14,18 @@ if($accID == 0){
 	if($songid == 0){
 		die("hacker");
 	}
-	$query = $db->prepare("SELECT ID FROM songs WHERE reuploadID = ".$accID." AND ID = ".$songid."");
+	$query = $db->prepare("SELECT ID, authorName, name FROM songs WHERE reuploadID = ".$accID." AND ID = ".$songid."");
 	$query->execute();
-	$rowCount = $query->fetchAll();
-	if(count($rowCount) == 0) {
+	$rowCount = $query->fetch();
+	if(empty($rowCount)) {
 		die("ahahahha loooooh");
 	} else {
+			$author = $rowCount["authorName"];
+			$name = $rowCount["name"];
 		$query = $db->prepare("DELETE FROM songs WHERE  reuploadID = ".$accID." AND ID = ".$songid."");
 		$query->execute();
-		unlink("../songs/".$songid.".mp3");
-		header('Location: ' . $_SERVER["HTTP_REFERER"]);
+		if(file_exists("../songs/".$songid.".mp3")) unlink("../songs/".$songid.".mp3");
+		header('Location: manageSongs.php?author='.$author.'&name='.$name.'');
 	}
 }
 ?>

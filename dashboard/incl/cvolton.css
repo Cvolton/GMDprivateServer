@@ -2,7 +2,7 @@
     font-family: 'Google Sans', 'Calibri Light', 'Arial';
 }
 
-#ads {
+#ads, .adsbygoogle, #ads_bottom_static {
     display: none !important;
 }
 
@@ -13,6 +13,28 @@
 .field {
     display: grid;
     width: 100%;
+}
+
+.notify {
+	width: 100%;
+	background: rgba(244,141,138, 0.2);
+	border: 2px solid #e76161;
+	border-radius: 20px;
+	margin: 0px 0px 20px 0px;
+	padding-top: 20px;
+	padding-bottom: 20px;
+	text-align: center;
+}
+
+.notifyblue {
+	width: 100%;
+	background: rgba(29,133,240, 0.2);
+	border: 2px solid #016bfc;
+	border-radius: 20px;
+	margin: 0px 0px 20px 0px;
+	padding-top: 20px;
+	padding-bottom: 20px;
+	text-align: center;
 }
 
 .checkbox {
