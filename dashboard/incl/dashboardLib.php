@@ -167,6 +167,7 @@ class dashboardLib{
 							<a class="dropdown-item" href="stats/unlistedMod.php">'.$this->getLocalizedString("unlistedMod").'</a>
 							<a class="dropdown-item" href="stats/suggestList.php">'.$this->getLocalizedString("suggestLevels").'</a>
 							<a class="dropdown-item" href="stats/addQuests.php">'.$this->getLocalizedString("addQuest").'</a>
+							<a class="dropdown-item" href="stats/reportMod.php">'.$this->getLocalizedString("reportMod").'</a>
 						</div>
 					</li>';
 			}
