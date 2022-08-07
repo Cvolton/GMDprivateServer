@@ -1,5 +1,6 @@
 <?php
-$gdps = "GDPS";
+$gdps = "GDPS"; // used to title and download
+$lrEnabled = 1; // 1 = level reupload enabled, 0 = disabled
 class dashboardLib{
 	public function printHeader($isSubdirectory = true){
 		global $gdps;
@@ -85,6 +86,7 @@ class dashboardLib{
 	}
 	public function printNavbar($active){
 		global $gdps;
+		global $lrEnabled;
 		require_once __DIR__."/../../incl/lib/mainLib.php";
 		$gs = new mainLib();
 		$homeActive = "";
@@ -150,7 +152,7 @@ class dashboardLib{
 						<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
 							<a class="dropdown-item" href="songs/">'.$this->getLocalizedString("songAdd").'</a>
 							<a class="dropdown-item" href="reupload/songAdd.php">'.$this->getLocalizedString("songLink").'</a>';
-								echo '<a class="dropdown-item" href="levels/levelReupload.php">'.$this->getLocalizedString("levelReupload").'</a>
+								if($lrEnabled == 1) echo '<a class="dropdown-item" href="levels/levelReupload.php">'.$this->getLocalizedString("levelReupload").'</a>
 						</div>
 					</li>';
 			if($gs->checkPermission($_SESSION["accountID"], "dashboardModTools")){

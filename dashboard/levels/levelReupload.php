@@ -3,8 +3,8 @@ session_start();
 require "../../incl/lib/Captcha.php";
 include "../incl/dashboardLib.php";
 $dl = new dashboardLib();
-$enabled = 0; // 1 = level reupload enabled, 0 = disabled
-if($enabled == 1) {
+global $lrEnabled;
+if($lrEnabled == 1) {
 function chkarray($source, $default = 0){
 	if($source == ""){
 		$target = $default;
