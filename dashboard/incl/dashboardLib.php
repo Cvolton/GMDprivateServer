@@ -112,7 +112,7 @@ class dashboardLib{
 				break;
 		}
 		echo '<nav id="navbarepta" class="navbar navbar-expand-lg navbar-dark menubar">
-			<a class="navbar-brand" href=""><img src="icon.png"></a>
+			<a class="navbar-brand" href=""><img style="width:32px" src="icon.png"></a>
 			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
 				<span class="navbar-toggler-icon"></span>
 			</button>
