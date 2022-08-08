@@ -21,7 +21,17 @@ if(!empty($_POST["url"])){
 	}
 	$songID = $gs->songReupload($_POST["url"], $_POST["author"], $_POST["name"], $_SESSION["accountID"]);
 	if($songID < 0){
-		$errorDesc = $dl->getLocalizedString("songAddError$songID");
+		$existed = str_replace('-3', '', $songID);
+		if($songID != $existed) {
+					$dl->printSong('<div class="form">
+		<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
+		<form class="form__inner" method="post" action="">
+						<p>'.$dl->getLocalizedString("songAddError-3").' '.$existed.'</p>
+						<a class="btn btn-primary btn-block" href="'.$_SERVER["REQUEST_URI"].'">'.$dl->getLocalizedString("tryAgainBTN").'</a>
+				</form>
+				</div>');
+				die();
+		}
 		$dl->printSong('<div class="form">
 		<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 		<form class="form__inner" method="post" action="">

@@ -166,7 +166,7 @@ $string["delete"] = "Удалить";
 $string["change"] = "Изменить";
 ///errors
 $string["songAddError-2"] = "Неправильный URL (возможно, ссылка не прямая).";
-$string["songAddError-3"] = "Песня уже загружена!";
+$string["songAddError-3"] = "Песня уже загружена под ID:";
 $string["songAddError-4"] = "Эту песню нельзя загрузить :с";
 $string["songAddError-5"] = "Песня весит больше 12 мегабайт!";
 $string["songAddError-6"] = "Что-то случилось при загрузке песни! :с";

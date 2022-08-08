@@ -166,7 +166,7 @@ $string["delete"] = "Delete";
 $string["change"] = "Change";
 ///errors
 $string["songAddError-2"] = "Invalid URL";
-$string["songAddError-3"] = "This song has been reuploaded already";
+$string["songAddError-3"] = "This song has been reuploaded already with ID:";
 $string["songAddError-4"] = "This song isn't reuploadable";
 $string["songAddError-5"] = "Song size is higher than 12 megabytes";
 $string["songAddError-6"] = "Something went wrong while uploading a song! :с";
