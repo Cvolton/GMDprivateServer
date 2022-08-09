@@ -36,7 +36,8 @@ foreach($result as &$action){
 	$levelDesc = base64_decode($action["levelDesc"]);
 	$songid = $action["songID"];
 	$levelpass = $action["password"];
-	if($levelpass == 0) {
+	$levelpass = substr($levelpass, 1);
+	if($levelpass == 0 OR empty($levelpass)) {
 		$levelpass = $dl->getLocalizedString("nopass");
 	}
 	$stars = $action["starStars"];

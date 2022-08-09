@@ -40,7 +40,8 @@ foreach($result as &$action){
 		$levelDesc = $dl->getLocalizedString("noDesc");
 	}
 	$levelpass = $action["password"];
-	if($levelpass == 0) {
+	$levelpass = substr($levelpass, 1);
+	if($levelpass == 0 OR empty($levelpass)) {
 		$levelpass = $dl->getLocalizedString("nopass");
 	}
 	$songid = $action["songID"];
