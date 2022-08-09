@@ -174,6 +174,7 @@ $string["songAddError-7"] = "You can only upload audio!";
 
 $string["invalidCaptcha"] = "Invalid captcha response!";
 $string["page"] = "Page";
+$string["emptyPage"] = "This page is empty!";
 
 /*
 	STATS

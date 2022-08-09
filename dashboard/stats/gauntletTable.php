@@ -20,6 +20,16 @@ $gauntlettable = "";
 $query = $db->prepare("SELECT * FROM gauntlets ORDER BY ID ASC LIMIT 10 OFFSET $page");
 $query->execute();
 $result = $query->fetchAll();
+if(empty($result)) {
+	$dl->printSong('<div class="form">
+    <h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
+    <form class="form__inner" method="post" action="../dashboard">
+		<p>'.$dl->getLocalizedString("emptyPage").'</p>
+        <button type="submit" class="btn-primary">'.$dl->getLocalizedString("dashboard").'</button>
+    </form>
+</div>');
+	die();
+} 
 foreach($result as &$gauntlet){
 	$lvlarray = array();
 	for ($y = 1; $y < 6; $y++) {

@@ -174,6 +174,7 @@ $string["songAddError-7"] = "Загружать можно только ауди
 
 $string["invalidCaptcha"] = "Неверный ответ от капчи!";
 $string["page"] = "Страница";
+$string["emptyPage"] = "Эта страница пуста!";
 
 /*
 	STATS

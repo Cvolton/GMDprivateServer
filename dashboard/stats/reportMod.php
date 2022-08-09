@@ -31,7 +31,17 @@ $table = '<table class="table table-inverse">
 $query = $db->prepare("SELECT levels.levelID, levels.levelName, count(*) AS reportsCount FROM reports INNER JOIN levels ON reports.levelID = levels.levelID GROUP BY levels.levelID ORDER BY reportsCount DESC");
 $query->execute();
 $result = $query->fetchAll();
-$x = 1;
+$x = $page + 1;
+if(empty($result)) {
+	$dl->printSong('<div class="form">
+    <h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
+    <form class="form__inner" method="post" action="../dashboard">
+		<p>'.$dl->getLocalizedString("emptyPage").'</p>
+        <button type="submit" class="btn-primary">'.$dl->getLocalizedString("dashboard").'</button>
+    </form>
+</div>');
+	die();
+} 
 foreach($result as &$report){
 	$levelName = htmlspecialchars($report['levelName'], ENT_QUOTES);
 	if($report['reportsCount'] == 1) $reports = $report['reportsCount'].' '.$dl->getLocalizedString("time0");

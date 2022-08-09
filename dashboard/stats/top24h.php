@@ -19,6 +19,16 @@ $query = $db->prepare("SELECT users.userID, SUM(actions.value) AS stars, users.u
 $query->execute([':time' => $time]);
 $result = $query->fetchAll();
 $x = $page + 1;
+if(empty($result)) {
+	$dl->printSong('<div class="form">
+    <h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
+    <form class="form__inner" method="post" action="../dashboard">
+		<p>'.$dl->getLocalizedString("emptyPage").'</p>
+        <button type="submit" class="btn-primary">'.$dl->getLocalizedString("dashboard").'</button>
+    </form>
+</div>');
+	die();
+} 
 foreach($result as &$action){
 	$userid = $action["userID"];
 	$username = $action["userName"];
