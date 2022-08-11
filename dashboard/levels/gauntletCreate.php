@@ -65,7 +65,17 @@ if($_POST["checkbox_data"] == 'on') {
 			</div>');
 		die();
 	}
-	$levels = $_POST['level_1'] . ',' . $_POST['level_2'] . ',' . $_POST['level_3']. ',' . $_POST['level_4']. ',' . $_POST['level_5'];
+	if(!is_numeric($_POST['level_1']) OR !is_numeric($_POST['level_2']) OR !is_numeric($_POST['level_3']) OR !is_numeric($_POST['level_4']) OR !is_numeric($_POST['level_5'])) {
+	$dl->printSong('<div class="form">
+			<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
+			<form class="form__inner" method="post" action="">
+			<p>'.$dl->getLocalizedString("invalidPost").'</p>
+	        <button type="submit" class="btn-primary">'.$dl->getLocalizedString("tryAgainBTN").'</button>
+			</form>
+			</div>');
+		die();
+	}
+	$levels = ExploitPatch::remove($_POST['level_1']) . ',' . ExploitPatch::remove($_POST['level_2']) . ',' . ExploitPatch::remove($_POST['level_3']). ',' . ExploitPatch::remove($_POST['level_4']). ',' . ExploitPatch::remove($_POST['level_5']);
 	$query = $db->prepare("INSERT INTO gauntlets (level1, level2, level3, level4, level5) VALUES (:l1, :l2, :l3, :l4, :l5)");
 	$query->execute([':l1' => $_POST["level_1"], ':l2' => $_POST["level_2"], ':l3' => $_POST["level_3"], ':l4' => $_POST["level_4"], ':l5' => $_POST["level_5"]]);
 	$query = $db->prepare("INSERT INTO modactions  (type, value, timestamp, account) VALUES ('18',:value,:timestamp,:account)");

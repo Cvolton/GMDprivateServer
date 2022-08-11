@@ -29,8 +29,8 @@ if($_POST["oldnickname"] != "" AND $_POST["newnickname"] != "" AND $_POST["passw
 	}
 	$userName = $gs->getAccountName($_SESSION["accountID"]);
 	$accID = $_SESSION["accountID"];
-	$oldnick = $_POST["oldnickname"];
-	$newnick = $_POST["newnickname"];
+	$oldnick = ExploitPatch::remove($_POST["oldnickname"]);
+	$newnick = ExploitPatch::remove($_POST["newnickname"]);
 	if($oldnick != $userName){
 		$dl->printSong('<div class="form">
 		<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>

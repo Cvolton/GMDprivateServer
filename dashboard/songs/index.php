@@ -8,7 +8,7 @@ require "../incl/dashboardLib.php";
 $dl = new dashboardLib();
 error_reporting(E_ERROR | E_PARSE);
 if(isset($_SESSION["accountID"]) AND $_SESSION["accountID"] != 0){
-if ($_FILES && $_FILES['filename']['error'] == UPLOAD_ERR_OK) {
+if($_FILES && $_FILES['filename']['error'] == UPLOAD_ERR_OK) {
 	if(!Captcha::validateCaptcha()) {
 		$dl->printSong('<div class="form">
 			<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
@@ -22,12 +22,12 @@ if ($_FILES && $_FILES['filename']['error'] == UPLOAD_ERR_OK) {
     $file_type = $_FILES['filename']['type'];
     $allowed = array("audio/mpeg", "audio/ogg", "audio/mp3");
 
-    if (!in_array($file_type, $allowed)) {
+    if(!in_array($file_type, $allowed)) {
         $db_fid = -7;
     } else {
         $maxsize = 12582912;
 
-        if ($_FILES['filename']['size'] >= $maxsize) {
+        if($_FILES['filename']['size'] >= $maxsize) {
             $db_fid = -5;
         } else {
             $length = 10;
@@ -36,10 +36,10 @@ if ($_FILES && $_FILES['filename']['error'] == UPLOAD_ERR_OK) {
             $size = ($_FILES['filename']['size'] / 1048576);
             $size = round($size, 2);
             $hash = "";
-            $name = $ep->remove($_POST['name']);
-            $author = $ep->remove($_POST['author']);
-            if ($name == null) {$name = "Unnamed";}
-            if ($author == null) {$author = "Reupload";}
+            $name = ExploitPatch::remove($_POST['name']);
+            $author = ExploitPatch::remove($_POST['author']);
+            if($name == null) $name = "Unnamed";
+            if($author == null) $author = "Reupload";
             $servername = $_SERVER['SERVER_NAME'];
 			$accountID = $_SESSION["accountID"];
 			$pathpart1 = str_replace($_SERVER['DOCUMENT_ROOT'], '',__FILE__);

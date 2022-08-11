@@ -7,7 +7,7 @@ require "../../incl/lib/mainLib.php";
 $gs = new mainLib();
 include "../../incl/lib/connection.php";
 $accID = $_SESSION["accountID"];
-$songid = $_GET["ID"];
+$songid = ExploitPatch::remove($_GET["ID"]);
 if($accID == 0){
 	die("voidi v akk geniy");
 } else {

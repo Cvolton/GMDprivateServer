@@ -35,11 +35,21 @@ if(!empty($_POST["packName"])) {
 </div>');
 		die();
 	}
-	$name = $ep->remove($_POST["packName"]);
-	$color = $dl->hex2RGB($_POST["color"], true);
-	$stars = $_POST["stars"];
-	$coins = $_POST["coins"];
-	$levels = $_POST['level_1'] . ',' . $_POST['level_2'] . ',' . $_POST['level_3'];
+	$name = ExploitPatch::remove($_POST["packName"]);
+	$color = ExploitPatch::remove($dl->hex2RGB($_POST["color"], true));
+	$stars = ExploitPatch::remove($_POST["stars"]);
+	$coins = ExploitPatch::remove($_POST["coins"]);
+	if(!is_numeric($_POST['level_1']) OR !is_numeric($_POST['level_2']) OR !is_numeric($_POST['level_3'])) {
+	$dl->printSong('<div class="form">
+			<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
+			<form class="form__inner" method="post" action="">
+			<p>'.$dl->getLocalizedString("invalidPost").'</p>
+	        <button type="submit" class="btn-primary">'.$dl->getLocalizedString("tryAgainBTN").'</button>
+			</form>
+			</div>');
+		die();
+	}
+	$levels = ExploitPatch::remove($_POST['level_1']) . ',' . ExploitPatch::remove($_POST['level_2']) . ',' . ExploitPatch::remove($_POST['level_3']);
 	switch($stars){
 				case 1:
 					$diffname = "Auto";
