@@ -147,6 +147,17 @@ $string["alreadyMod"] = "This player is already a moderator!";
 $string["addedMod"] = "You successfully granted a moderator to player";
 $string["addModOneMore"] = "One more moderator?";
 
+$string["shareCPTitle"] = "Share Creator Points";
+$string["shareCPDesc"] = "Here you can share Creator Points with player!";
+$string["shareCP"] = "Share";
+$string["alreadyShared"] = "This level already shared CP to this player!";
+$string["shareToAuthor"] = "You tried to share CP to level author!";
+$string["userIsBanned"] = "This player is banned!";
+$string["shareCPSuccess"] = "You successfully shared Creator Points of level";
+$string["shareCPSuccess2"] = "to player";
+$string["updateCron"] = "Maybe you should update Creator Points.";
+$string["shareCPOneMore"] = "One more share?";
+
 /*
 	REUPLOAD
 */

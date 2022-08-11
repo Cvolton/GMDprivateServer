@@ -97,7 +97,7 @@
 }
 
 form p,
-p {
+p{
     font-size: 20px;
     color: #c0c0c0;
 	text-align:center;
@@ -105,13 +105,14 @@ p {
 	width:100%;
 }
 
-p {
+.a {
     font-size: 20px;
-    color: #c0c0c0;
 	text-align:center;
 	margin:0px;
 	width:100%;
 }
+
+
 summary {
 	color: white;
 	font-size:15px;
@@ -268,6 +269,7 @@ option,
     border: 1px solid #181a1b;
     background-color: rgb(0 0 0 / 2%);
     outline: none;
+	width:100%;
     padding: 7px 10px;
     font-size: 13px;
     background: #141414;

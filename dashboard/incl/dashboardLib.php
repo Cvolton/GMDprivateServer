@@ -172,6 +172,8 @@ class dashboardLib{
 							echo '<a class="dropdown-item" href="stats/reportMod.php">'.$this->getLocalizedString("reportMod").'</a>';
 							if($gs->checkPermission($_SESSION["accountID"], "dashboardAddMod")) {
 							echo '<a class="dropdown-item" href="account/addMod.php">'.$this->getLocalizedString("addMod").'</a>';}
+							if($gs->checkPermission($_SESSION["accountID"], "commandSharecpAll")) {
+							echo '<a class="dropdown-item" href="levels/shareCP.php">'.$this->getLocalizedString("shareCPTitle").'</a>';}
 							echo '</div>
 					</li>';
 			}
