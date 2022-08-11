@@ -47,7 +47,7 @@ foreach($result as &$action){
 	$author = $action["authorName"];
 	$name = $action["name"];
 	$size = $action["size"];
-	$manage = '<td><a class="dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'.$dl->getLocalizedString("change").'</a>
+	$manage = '<td><a class="btn-rendel" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'.$dl->getLocalizedString("change").'</a>
 								<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink"  style="padding:17px 17px 0px 17px; top:0%;">
 									 <form class="form__inner" method="post" action="">
 										<div class="field" style="display:none"><input type="hidden" name="ID" value="'.$songsid.'"></div>

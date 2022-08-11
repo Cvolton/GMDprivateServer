@@ -51,7 +51,7 @@ foreach($result as &$gauntlet){
 	$gauntlettable .= "<tr>
 					<th scope='row'>$x</th>
 					<td>".$gs->getGauntletName($gauntlet["ID"]).'</td>
-					<td><a class="dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					<td><a class="btn-rendel" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 							'.$dl->getLocalizedString("show").'
 						</a>
 						<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink"  style="padding:17px 17px 0px 17px;">

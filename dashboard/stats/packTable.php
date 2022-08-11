@@ -50,7 +50,7 @@ foreach($result as &$pack){
 					<td>".htmlspecialchars($pack["name"],ENT_QUOTES)."</td>
 					<td>".$pack["stars"]."</td>
 					<td>".$pack["coins"].'</td>
-					<td><a class="dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					<td><a class="btn-rendel" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 							'.$dl->getLocalizedString("show").'
 						</a>
 						<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink"  style="padding:17px 17px 0px 17px;">

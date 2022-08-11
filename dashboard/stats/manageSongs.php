@@ -45,7 +45,7 @@ foreach($result as &$action){
 	$author = $action["authorName"];
 	$name = $action["name"];
 	$size = $action["size"];
-	$delete = '<td><a style="color:#ff444c" href="stats/deleteSong.php?ID='.$songsid.'">'.$dl->getLocalizedString("delete").'</a></td>';
+	$delete = '<td><a style="color:#ff444c" class="btn-rendel" href="stats/deleteSong.php?ID='.$songsid.'">'.$dl->getLocalizedString("delete").'</a></td>';
 	$table .= "<tr><th scope='row'>".$x."</th><td>".$songsid."</td><td>".$author."</td><td>".$name."</td><td>".$size."</td><td>".$time."</td><td>".$delete."</td></tr>";
 	$x++;
 }
