@@ -45,6 +45,7 @@ foreach($result as &$action){
 		$levelpass = $dl->getLocalizedString("nopass");
 	}
 	$songid = $action["songID"];
+	if($songid == 0) $songid = $gs->getAudioTrack($action["audioTrack"]);
 	$username = $action["userName"];
 	$stars = $action["starStars"];
 	if($stars == 0) {

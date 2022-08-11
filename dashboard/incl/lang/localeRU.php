@@ -140,6 +140,13 @@ $string["maybeActivate"] = "Возможно, вы не активировали
 $string["activate"] = "Активировать";
 $string["activateDisabled"] = "Активация аккаунта не требуется!";
 
+$string["addMod"] = "Выдать модератора";
+$string["addModDesc"] = "Здесь вы можете сделать модератором игрока!";
+$string["modYourself"] = "Нельзя назначить себя модератором!";
+$string["alreadyMod"] = "Этот игрок уже является модератором!";
+$string["addedMod"] = "Вы успешно сделали модератором игрока";
+$string["addModOneMore"] = "Ещё один модератор?";
+
 /*
 	REUPLOAD
 */
@@ -270,6 +277,7 @@ $string["modAction16"] = "Сменил(а) песню уровню";
 $string["modAction17"] = "Создал(а) Мап-Пак";
 $string["modAction18"] = "Создал(а) Гаунтлет";
 $string["modAction19"] = "Изменил(а) песню";
+$string["modAction20"] = "Сделал(а) модератором игрока";
 $string["modAction25"] = "Создал(а) квест";
 $string["Kish!"] = "Кыш!";
 $string["noPermission"] = "У вас нет прав!";

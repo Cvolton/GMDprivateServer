@@ -140,6 +140,13 @@ $string["maybeActivate"] = "Maybe you didn't activated your account yet.";
 $string["activate"] = "Activate";
 $string["activateDisabled"] = "Account activation is disabled!";
 
+$string["addMod"] = "Add moderator";
+$string["addModDesc"] = "Here you can grant a moderator!";
+$string["modYourself"] = "You can't grant yourself a moderator!";
+$string["alreadyMod"] = "This player is already a moderator!";
+$string["addedMod"] = "You successfully granted a moderator to player";
+$string["addModOneMore"] = "One more moderator?";
+
 /*
 	REUPLOAD
 */
@@ -270,6 +277,7 @@ $string["modAction16"] = "Song ID change";
 $string["modAction17"] = "Created a Map Pack";
 $string["modAction18"] = "Created a Gauntlet";
 $string["modAction19"] = "Changed song";
+$string["modAction20"] = "Granted a moderator to player";
 $string["modAction25"] = "Created a quest";
 $string["Kish!"] = "Go away!";
 $string["noPermission"] = "You don't have permission!";

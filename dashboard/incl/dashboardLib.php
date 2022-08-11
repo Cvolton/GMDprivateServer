@@ -161,14 +161,18 @@ class dashboardLib{
 							<i class="fa fa-wrench" aria-hidden="true"></i> '.$this->getLocalizedString("modTools").'
 						</a>
 						<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-							<a class="dropdown-item" href="stats/leaderboardsBan.php">'.$this->getLocalizedString("leaderboardBan").'</a>
-							<a class="dropdown-item" href="levels/packCreate.php">'.$this->getLocalizedString("packManage").'</a>
-							<a class="dropdown-item" href="levels/gauntletCreate.php">'.$this->getLocalizedString("gauntletManage").'</a>
-							<a class="dropdown-item" href="stats/unlistedMod.php">'.$this->getLocalizedString("unlistedMod").'</a>
-							<a class="dropdown-item" href="stats/suggestList.php">'.$this->getLocalizedString("suggestLevels").'</a>
-							<a class="dropdown-item" href="stats/addQuests.php">'.$this->getLocalizedString("addQuest").'</a>
-							<a class="dropdown-item" href="stats/reportMod.php">'.$this->getLocalizedString("reportMod").'</a>
-						</div>
+							<a class="dropdown-item" href="stats/leaderboardsBan.php">'.$this->getLocalizedString("leaderboardBan").'</a>';
+							if($gs->checkPermission($_SESSION["accountID"], "dashboardLevelPackCreate")) {
+								echo '<a class="dropdown-item" href="levels/packCreate.php">'.$this->getLocalizedString("packManage").'</a>
+							<a class="dropdown-item" href="levels/gauntletCreate.php">'.$this->getLocalizedString("gauntletManage").'</a>';}
+							echo '<a class="dropdown-item" href="stats/unlistedMod.php">'.$this->getLocalizedString("unlistedMod").'</a>
+							<a class="dropdown-item" href="stats/suggestList.php">'.$this->getLocalizedString("suggestLevels").'</a>';
+							if($gs->checkPermission($_SESSION["accountID"], "toolQuestsCreate")) {
+								echo '<a class="dropdown-item" href="stats/addQuests.php">'.$this->getLocalizedString("addQuest").'</a>';} 
+							echo '<a class="dropdown-item" href="stats/reportMod.php">'.$this->getLocalizedString("reportMod").'</a>';
+							if($gs->checkPermission($_SESSION["accountID"], "dashboardAddMod")) {
+							echo '<a class="dropdown-item" href="account/addMod.php">'.$this->getLocalizedString("addMod").'</a>';}
+							echo '</div>
 					</li>';
 			}
 		}else{
