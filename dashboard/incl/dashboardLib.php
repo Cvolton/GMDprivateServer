@@ -1,6 +1,7 @@
 <?php
 $gdps = "GDPS"; // used to title and download
 $lrEnabled = 1; // 1 = level reupload enabled, 0 = disabled
+$msgEnabled = 1;
 class dashboardLib{
 	public function printHeader($isSubdirectory = true){
 		global $gdps;
@@ -87,6 +88,7 @@ class dashboardLib{
 	public function printNavbar($active){
 		global $gdps;
 		global $lrEnabled;
+      	global $msgEnabled;
 		require_once __DIR__."/../../incl/lib/mainLib.php";
 		$gs = new mainLib();
 		$homeActive = "";
@@ -193,7 +195,12 @@ class dashboardLib{
 						</div>
 					</li>
 				</ul>
-				<ul class="nav navbar-nav ml-auto">
+				<ul class="nav navbar-nav ml-auto">';
+					if($msgEnabled == 1) echo '<li class="nav-item dropdown">
+						<a class="nav-link" href="messenger/" id="navbarDropdownMenuLink">
+							<i class="fa fa-comments" aria-hidden="true"></i> '.$this->getLocalizedString("messenger").'
+						</a>';
+      				echo '
 					<li class="nav-item dropdown">
 						<a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 							<i class="fa fa-language" aria-hidden="true"></i> '.$this->getLocalizedString("language").'

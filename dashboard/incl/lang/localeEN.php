@@ -158,6 +158,14 @@ $string["shareCPSuccess2"] = "to player";
 $string["updateCron"] = "Maybe you should update Creator Points.";
 $string["shareCPOneMore"] = "One more share?";
 
+$string["messenger"] = "Messenger";
+$string["write"] = "Write";
+$string["send"] = "Send";
+$string["noMsgs"] = "Start dialog!";
+$string["subject"] = "Subject";
+$string["msg"] = "Message";
+$string["tooFast"] = "You're typing too fast!";
+
 /*
 	REUPLOAD
 */

@@ -156,7 +156,15 @@ $string["userIsBanned"] = "Этот игрок заблокирован!";
 $string["shareCPSuccess"] = "Вы успешно поделились Креатор Поинтами уровня";
 $string["shareCPSuccess2"] = "c игроком";
 $string["updateCron"] = "Возможно, вам следует обновить Креатор Поинты.";
-$string["shareCPOneMore"] = "Еще поделиться?";
+$string["shareCPOneMore"] = "Ещё поделиться?";
+
+$string["messenger"] = "Мессенджер";
+$string["write"] = "Написать";
+$string["send"] = "Отправить";
+$string["noMsgs"] = "Начните диалог!";
+$string["subject"] = "Тема";
+$string["msg"] = "Сообщение";
+$string["tooFast"] = "Вы слишком быстро печатаете!";
 
 /*
 	REUPLOAD
