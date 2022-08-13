@@ -42,9 +42,9 @@ if($_FILES && $_FILES['filename']['error'] == UPLOAD_ERR_OK) {
             if($author == null) $author = "Reupload";
             $servername = $_SERVER['SERVER_NAME'];
 			$accountID = $_SESSION["accountID"];
-			$pathpart1 = str_replace($_SERVER['DOCUMENT_ROOT'], '',__FILE__);
-			$pathpart2 = str_replace(basename(__FILE__), '', $pathpart1);
-            $song = "http://".$servername."".$pathpart2."".$db_fid.".mp3";
+          	$path = str_replace($_SERVER['DOCUMENT_ROOT'], '', $_SERVER['SCRIPT_FILENAME']);
+			$path =  str_replace('index.php', '', $path);
+            $song = "http://".$servername."".$path."".$db_fid.".mp3";
             $query = $db->prepare("INSERT INTO songs (ID, name, authorID, authorName, size, download, hash, reuploadTime, reuploadID) VALUES (:id, :name, '9', :author, :size, :download, :hash, :reuploadTime, :reuploadID)");
             $query->execute([':id' => $db_fid, ':name' => $name, ':download' => $song, ':author' => $author, ':size' => $size, ':hash' => $hash, ':reuploadTime' => time(), ':reuploadID' => $accountID]);
 			
