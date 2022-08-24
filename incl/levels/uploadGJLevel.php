@@ -64,7 +64,7 @@ $settingsString = !empty($_POST["settingsString"]) ? ExploitPatch::remove($_POST
 if(isset($_POST["password"])){
 	$password = ExploitPatch::remove($_POST["password"]);
 }else{
-	$password = 0;
+	$password = 1;
 	if($gameVersion > 17){
 		$password = 0;
 	}
@@ -74,7 +74,7 @@ $hostname = $gs->getIP();
 $userID = $mainLib->getUserID($id, $userName);
 $uploadDate = time();
 $query = $db->prepare("SELECT count(*) FROM levels WHERE uploadDate > :time AND (userID = :userID OR hostname = :ip)");
-$query->execute([':time' => $uploadDate - 120, ':userID' => $userID, ':ip' => $hostname]);
+$query->execute([':time' => $uploadDate - 60, ':userID' => $userID, ':ip' => $hostname]);
 if($query->fetchColumn() > 0){
 	exit("-1");
 }
@@ -96,8 +96,6 @@ if($levelString != "" AND $levelName != ""){
 		$levelID = $db->lastInsertId();
 		file_put_contents("../../data/levels/$levelID",$levelString);
 		echo $levelID;
-		
-
 	}
 
 $query = $db->prepare("UPDATE users SET gameVersion=:gameVersion, userName=:userName, secret=:secret, IP=:hostname, lastPlayed=:uploadDate WHERE userID=:userID");
