@@ -7,6 +7,7 @@ require_once "../lib/exploitPatch.php";
 require_once "../lib/XORCipher.php";
 require_once "../lib/mainLib.php";
 $gs = new mainLib();
+include "../../config/timestamps.php";
 
 $accountID = GJPCheck::getAccountIDOrDie();
 $levelID = ExploitPatch::remove($_POST["levelID"]);
@@ -43,8 +44,6 @@ if($percent > 100){
 	$query->execute([':accountID' => $accountID]);
 }
 
-
-
 //GETTING SCORES
 if(!isset($_POST["type"])){
 	$type = 1;
@@ -72,8 +71,6 @@ switch($type){
 		break;
 }
 
-
-
 $query2->execute($query2args);
 $result = $query2->fetchAll();
 foreach ($result as &$score) {
@@ -82,7 +79,11 @@ foreach ($result as &$score) {
 	$query2->execute([':extID' => $extID]);
 	$user = $query2->fetchAll();
 	$user = $user[0];
-	$time = date("d/m/Y G.i", $score["uploadDate"]);
+	if ($timestampsMode == 0) {
+		$time = $gs->makeTime($score["uploadDate"]);
+	} else {
+		$time = date("d/m/Y G.i", $score["uploadDate"]);
+	}
 	if($user["isBanned"]==0){
 		if($score["percent"] == 100){
 			$place = 1;

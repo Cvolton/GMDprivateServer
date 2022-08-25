@@ -1,9 +1,11 @@
 <?php
 chdir(dirname(__FILE__));
-//error_reporting(0);
 include "../lib/connection.php";
 require_once "../lib/GJPCheck.php";
 require_once "../lib/exploitPatch.php";
+require_once "../lib/mainLib.php";
+$gs = new mainLib();
+include "../../config/timestamps.php";
 $msgstring = "";
 //code begins
 $toAccountID = GJPCheck::getAccountIDOrDie();
@@ -29,8 +31,12 @@ if($msgcount == 0){
 	exit("-2");
 }
 foreach ($result as &$message1) {
-	if($message1["messageID"]!=""){
-		$uploadDate = date("d/m/Y G.i", $message1["timestamp"]);
+	if($message1["messageID"] != ""){
+		if ($timestampsMode == 0) {
+			$uploadDate = $gs->makeTime($message1["timestamp"]);
+		} else {
+			$uploadDate = date("d/m/Y G.i", $message1["timestamp"]);
+		}
 		if($getSent == 1){
 			$accountID = $message1["toAccountID"];
 		}else{
