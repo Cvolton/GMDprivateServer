@@ -53,6 +53,12 @@
     background: #29282c;
 }
 
+.ratecheck {
+	text-align: left;
+	color: white;
+	padding-left: 2px;
+}
+
 .messenger {
 	padding: 10px;
     margin-top: 10px;

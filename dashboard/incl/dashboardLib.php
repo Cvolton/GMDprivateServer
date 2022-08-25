@@ -196,7 +196,7 @@ class dashboardLib{
 					</li>
 				</ul>
 				<ul class="nav navbar-nav ml-auto">';
-					if($msgEnabled == 1) echo '<li class="nav-item dropdown">
+					if($msgEnabled == 1 AND $_SESSION["accountID"] != 0) echo '<li class="nav-item dropdown">
 						<a class="nav-link" href="messenger/" id="navbarDropdownMenuLink">
 							<i class="fa fa-comments" aria-hidden="true"></i> '.$this->getLocalizedString("messenger").'
 						</a>';

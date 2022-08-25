@@ -48,9 +48,16 @@ foreach($result as &$action){
 	if($songid == 0) $songid = $gs->getAudioTrack($action["audioTrack"]);
 	$username = $action["userName"];
 	$stars = $action["starStars"];
-	if($stars == 0) {
-		$stars = $dl->getLocalizedString("unrated");
-	}
+	if($stars == 0 AND $gs->checkPermission($_SESSION["accountID"], "dashboardModTools")) {
+      	$stars = '<a class="dropdown" href="#" data-toggle="dropdown">'.$dl->getLocalizedString("unrated").'</a>
+								<div class="dropdown-menu" style="padding:17px 17px 0px 17px; top:0%;">
+									 <form class="form__inner" method="post" action="levels/rateLevel.php">
+										<div class="field"><input type="number" name="rateStars" placeholder="'.$dl->getLocalizedString("stars").'"></div>
+										<div class="ratecheck"><input type="checkbox" style="margin-right:5px" name="featured" value="1">Featured?</div>
+										<button type="submit" class="btn-song" name="level" value="'.$levelid.'">'.$dl->getLocalizedString("rate").'</button>
+									</form>
+								</div>';
+	} elseif($stars == 0) $stars = $dl->getLocalizedString("unrated");
 	if($gs->checkPermission($_SESSION["accountID"], "dashboardModTools")){
 	$table .= "<tr><th scope='row'>".$x."</th><td>".$levelid."</td><td>".$levelname."</td><td>".$username."</td><td>".$levelDesc."</td><td>".$levelpass."</td><td>".$stars."</td><td>".$songid."</td></tr>";
 	$x++;
