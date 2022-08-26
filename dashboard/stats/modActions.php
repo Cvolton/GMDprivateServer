@@ -5,9 +5,7 @@ require "../incl/dashboardLib.php";
 $dl = new dashboardLib();
 require "../../incl/lib/mainLib.php";
 $gs = new mainLib();
-/*
-	generating modtable
-*/
+$dl->title($dl->getLocalizedString("modActions"));
 $modtable = "";
 $accounts = implode(",",$gs->getAccountsWithPermission("toolModactions"));
 if($accounts == ""){

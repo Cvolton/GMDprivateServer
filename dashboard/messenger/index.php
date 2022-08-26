@@ -10,8 +10,8 @@ require "../../incl/lib/exploitPatch.php";
 $ep = new exploitPatch();
 require "../incl/XOR.php";
 $xor = new XORCipher();
-include "../../incl/lib/connection.php";
 global $msgEnabled;
+$dl->title($dl->getLocalizedString("messenger"));
 if($msgEnabled == 1) {
 if(isset($_SESSION["accountID"]) AND $_SESSION["accountID"] != 0){
 	$accid = $_SESSION["accountID"];

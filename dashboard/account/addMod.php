@@ -9,6 +9,7 @@ $gs = new mainLib();
 include "../../incl/lib/connection.php";
 include "../../incl/lib/exploitPatch.php";
 $ep = new exploitPatch();
+$dl->title($dl->getLocalizedString("addMod"));
 if($gs->checkPermission($_SESSION["accountID"], "dashboardAddMod")){
 	$accountID = $_SESSION["accountID"];
 if(!empty($_POST["user"])) {

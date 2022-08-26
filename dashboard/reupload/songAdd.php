@@ -7,6 +7,7 @@ require_once "../incl/dashboardLib.php";
 $dl = new dashboardLib();
 require_once "../../incl/lib/mainLib.php";
 $gs = new mainLib();
+$dl->title($dl->getLocalizedString("songLink"));
 if(isset($_SESSION["accountID"]) AND $_SESSION["accountID"] != 0){
 if(!empty($_POST["url"])){
 	if(!Captcha::validateCaptcha()) {

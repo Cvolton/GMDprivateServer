@@ -9,6 +9,7 @@ $gs = new mainLib();
 require "../incl/dashboardLib.php";
 $dl = new dashboardLib();
 error_reporting(E_ERROR | E_PARSE);
+$dl->title($dl->getLocalizedString("banUserPlace"));
 if(!empty($_POST["userID"])) {
 	if($gs->checkPermission($_SESSION["accountID"], "dashboardModTools")){
 		if(!Captcha::validateCaptcha()) {

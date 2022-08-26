@@ -6,6 +6,7 @@ $dl = new dashboardLib();
 require "../../incl/lib/mainLib.php";
 $gs = new mainLib();
 include "../../incl/lib/connection.php";
+$dl->title($dl->getLocalizedString("unlistedLevels"));
 if(isset($_SESSION["accountID"]) AND $_SESSION["accountID"] != 0){
 	if(isset($_GET["page"]) AND is_numeric($_GET["page"]) AND $_GET["page"] > 0){
 	$page = ($_GET["page"] - 1) * 10;

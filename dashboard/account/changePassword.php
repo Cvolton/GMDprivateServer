@@ -15,6 +15,7 @@ use Defuse\Crypto\Crypto;
 use Defuse\Crypto\Key;
 $ep = new exploitPatch();
 error_reporting(E_ERROR | E_PARSE);
+$dl->title($dl->getLocalizedString("changePassTitle"));
 if(isset($_SESSION["accountID"]) AND $_SESSION["accountID"] != 0){
 if($_POST["oldpassword"] != "" AND $_POST["newpassword"] != "" AND $_POST["newpassword"] == $_POST["newpassconfirm"]) {
 	if(!Captcha::validateCaptcha()) {

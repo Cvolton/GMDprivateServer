@@ -7,7 +7,7 @@ require_once "../../incl/lib/exploitPatch.php";
 include "../../config/security.php";
 include "../incl/dashboardLib.php";
 $dl = new dashboardLib();
-//here im getting all the data
+$dl->title($dl->getLocalizedString("activateAccount"));
 if($preactivateAccounts == false) {
 if(!isset($_SESSION["accountID"]) OR $_SESSION["accountID"] == 0){
 if(!empty($_POST["userName"]) && !empty($_POST["password"])){

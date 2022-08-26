@@ -9,6 +9,7 @@ $gs = new mainLib();
 include "../../incl/lib/connection.php";
 include "../../incl/lib/exploitPatch.php";
 $ep = new exploitPatch();
+$dl->title($dl->getLocalizedString("packCreateTitle"));
 if($gs->checkPermission($_SESSION["accountID"], "dashboardLevelPackCreate")){
 	$query = $db->prepare("SELECT levelID, levelName, starStars FROM levels");
 	$query->execute();

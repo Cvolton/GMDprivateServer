@@ -4,6 +4,7 @@ require "../../incl/lib/Captcha.php";
 include "../incl/dashboardLib.php";
 $dl = new dashboardLib();
 global $lrEnabled;
+$dl->title($dl->getLocalizedString("levelReupload"));
 if($lrEnabled == 1) {
 function chkarray($source, $default = 0){
 	if($source == ""){

@@ -4,9 +4,7 @@ require "../incl/dashboardLib.php";
 $dl = new dashboardLib();
 require "../../incl/lib/mainLib.php";
 $gs = new mainLib();
-/*
-	generating packtable
-*/
+$dl->title($dl->getLocalizedString("gauntletTable"));
 include "../../incl/lib/connection.php";
 if(isset($_GET["page"]) AND is_numeric($_GET["page"]) AND $_GET["page"] > 0){
 	$page = ($_GET["page"] - 1) * 10;

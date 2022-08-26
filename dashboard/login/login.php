@@ -1,5 +1,6 @@
 <?php
 session_start();
+
 include "../../incl/lib/connection.php";
 include "../../config/security.php";
 require "../incl/dashboardLib.php";
@@ -7,10 +8,9 @@ $dl = new dashboardLib();
 require "../../incl/lib/generatePass.php";
 require_once "../../incl/lib/mainLib.php";
 $gs = new mainLib();
+$dl->title($dl->getLocalizedString("loginBox"));
 if(isset($_SESSION["accountID"]) AND $_SESSION["accountID"] != 0){
-	$dl->printLoginBox('<h3>'.$dl->getLocalizedString("loginAlready").'</h3>
-	<form class="form__inner" method="post" action="../dashboard">
-	<button type="submit" class="btn-primary" >'.$dl->getLocalizedString("clickHere").'</button>');
+	header('Location: ../');
 	exit();
 }
 if(isset($_POST["userName"]) AND isset($_POST["password"])){

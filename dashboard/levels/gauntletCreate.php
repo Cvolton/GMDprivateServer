@@ -10,6 +10,7 @@ include "../../incl/lib/connection.php";
 include "../../incl/lib/exploitPatch.php";
 error_reporting(0);
 $ep = new exploitPatch();
+$dl->title($dl->getLocalizedString("gauntletCreateTitle"));
 if($gs->checkPermission($_SESSION["accountID"], "dashboardLevelPackCreate")){
 	$query = $db->prepare("SELECT levelID, levelName, starStars FROM levels");
 	$query->execute();

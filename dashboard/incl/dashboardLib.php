@@ -5,7 +5,7 @@ $msgEnabled = 1; // 1 = messenger enabled, 0 = disabled
 
 // Socials are below, left empty to disable (only links are allowed, ask me to change that)
 
-$vk = ''; // как https://vk.com/suetin2006
+$vk = ''; // как https;//vk.com/suetin2006
 $discord = ''; // like https://discord.gg/GAk2nA8
 $twitter = ''; // i don't have twitter
 $youtube = ''; // like https://youtube.com/channel/*your channel id* or https://youtube.com/c/*your channel name*
@@ -106,6 +106,10 @@ class dashboardLib{
 	}
 	public function printLoginBoxError($content){
 		$this->printLoginBox("<p>An error has occured: $content. <a href=''>Click here to try again.</a>");
+	}
+  	public function title($title) {
+      	global $gdps;
+		echo '<title>'.$title.' | '.$gdps.'</title>';
 	}
 	public function printNavbar($active){
 		global $gdps;
