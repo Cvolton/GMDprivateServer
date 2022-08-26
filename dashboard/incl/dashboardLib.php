@@ -90,11 +90,11 @@ class dashboardLib{
       	global $youtube;
       	global $twitch;
 		echo '<div class="footer">'.$this->getLocalizedString("footer").'</div><div class="footer socials">';
-        if($youtube != '') echo '<a href="'.$youtube.'"><img class="socials" style="width: 20px" src="incl/socials/youtube.png"></a>';
-        if($discord != '') echo '<a href="'.$discord.'"><img class="socials" style="width: 20px" src="incl/socials/discord.png"></a>';
-      	if($twitter != '') echo '<a href="'.$twitter.'"><img class="socials" style="width: 20px" src="incl/socials/twitter.png"></a>';
-      	if($vk != '') echo '<a href="'.$vk.'"><img class="socials" style="width: 20px" src="incl/socials/vk.png"></a>';
-      	if($twitch != '') echo '<a href="'.$twitch.'"><img class="socials" style="width: 20px" src="incl/socials/twitch.png"></a>';
+        if($youtube != '') echo '<a href="'.$youtube.'" target="_blank"><img class="socials" style="width: 20px" src="incl/socials/youtube.png"></a>';
+        if($discord != '') echo '<a href="'.$discord.'"target="_blank"><img class="socials" style="width: 20px" src="incl/socials/discord.png"></a>';
+      	if($twitter != '') echo '<a href="'.$twitter.'"target="_blank"><img class="socials" style="width: 20px" src="incl/socials/twitter.png"></a>';
+      	if($vk != '') echo '<a href="'.$vk.'"target="_blank"><img class="socials" style="width: 20px" src="incl/socials/vk.png"></a>';
+      	if($twitch != '') echo '<a href="'.$twitch.'"target="_blank"><img class="socials" style="width: 20px" src="incl/socials/twitch.png"></a>';
         echo '</div></body>
 		</html>';
 	}
