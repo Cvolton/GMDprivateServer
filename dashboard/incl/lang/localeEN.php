@@ -6,6 +6,7 @@ $string["homeNavbar"] = "Home";
 $string["welcome"] = "Welcome to GDPS!";
 $string["levelsWeek"] = "Levels uploaded in a week";
 $string["levels3Months"] = "Levels uploaded in 3 months";
+$string["footer"] = "Hello! This is a footer test! Socials are there ->";
 
 $string["accountManagement"] = "Account management";
 $string["changePassword"] = "Change password";

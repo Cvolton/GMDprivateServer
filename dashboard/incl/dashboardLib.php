@@ -1,7 +1,17 @@
 <?php
 $gdps = "GDPS"; // used to title and download
 $lrEnabled = 1; // 1 = level reupload enabled, 0 = disabled
-$msgEnabled = 1;
+$msgEnabled = 1; // 1 = messenger enabled, 0 = disabled
+
+// Socials are below, left empty to disable (only links are allowed, ask me to change that)
+
+$vk = ''; // как https://vk.com/suetin2006
+$discord = ''; // like https://discord.gg/GAk2nA8
+$twitter = ''; // i don't have twitter
+$youtube = ''; // like https://youtube.com/channel/*your channel id* or https://youtube.com/c/*your channel name*
+$twitch = ''; // like https://twitch.tv/*your twitch*
+
+// Dashboard lib
 class dashboardLib{
 	public function printHeader($isSubdirectory = true){
 		global $gdps;
@@ -68,12 +78,24 @@ class dashboardLib{
 		$this->printHeader($isSubdirectory);
 		$this->printNavbar($active);
 		echo "$content";
+      	$this->printFooter();
 	}
 	public function printBoxFooter(){
 		echo '</div></div></div>';
 	}
 	public function printFooter(){
-		echo '</body>
+      	global $vk;
+      	global $discord;
+      	global $twitter;
+      	global $youtube;
+      	global $twitch;
+		echo '<div class="footer">'.$this->getLocalizedString("footer").'</div><div class="footer socials">';
+        if($youtube != '') echo '<a href="'.$youtube.'"><img class="socials" style="width: 20px" src="incl/socials/youtube.png"></a>';
+        if($discord != '') echo '<a href="'.$discord.'"><img class="socials" style="width: 20px" src="incl/socials/discord.png"></a>';
+      	if($twitter != '') echo '<a href="'.$twitter.'"><img class="socials" style="width: 20px" src="incl/socials/twitter.png"></a>';
+      	if($vk != '') echo '<a href="'.$vk.'"><img class="socials" style="width: 20px" src="incl/socials/vk.png"></a>';
+      	if($twitch != '') echo '<a href="'.$twitch.'"><img class="socials" style="width: 20px" src="incl/socials/twitch.png"></a>';
+        echo '</div></body>
 		</html>';
 	}
 	public function printLoginBox($content){

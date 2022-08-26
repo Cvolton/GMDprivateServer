@@ -6,6 +6,7 @@ $string["homeNavbar"] = "Домой";
 $string["welcome"] = "Добро пожаловать на GDPS!";
 $string["levelsWeek"] = "Выложено уровней за неделю";
 $string["levels3Months"] = "Выложено уровней за 3 месяца";
+$string["footer"] = "Привет! Это тест футера, соц.сети там ->";
 
 $string["accountManagement"] = "Управление аккаунтом";
 $string["changePassword"] = "Сменить пароль";
