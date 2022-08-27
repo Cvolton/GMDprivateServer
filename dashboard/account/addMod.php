@@ -10,6 +10,7 @@ include "../../incl/lib/connection.php";
 include "../../incl/lib/exploitPatch.php";
 $ep = new exploitPatch();
 $dl->title($dl->getLocalizedString("addMod"));
+$dl->printFooter('../');
 if($gs->checkPermission($_SESSION["accountID"], "dashboardAddMod")){
 	$accountID = $_SESSION["accountID"];
 if(!empty($_POST["user"])) {

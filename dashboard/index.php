@@ -3,7 +3,7 @@ session_start();
 require "incl/dashboardLib.php";
 $dl = new dashboardLib();
 require "../incl/lib/connection.php";
-
+$dl->printFooter('');
 $chartdata = array();
 for($x = 7; $x >= 0;){
 	$timeBefore = time() - (86400 * $x);

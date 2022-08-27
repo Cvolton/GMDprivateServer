@@ -7,6 +7,7 @@ require "../../incl/lib/exploitPatch.php";
 include "../incl/dashboardLib.php";
 $dl = new dashboardLib();
 $dl->title($dl->getLocalizedString("registerAcc"));
+$dl->printFooter('../');
 if(!isset($_SESSION["accountID"]) OR $_SESSION["accountID"] == 0){
 if(!isset($preactivateAccounts)){
 	$preactivateAccounts = false;

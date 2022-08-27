@@ -16,6 +16,7 @@ use Defuse\Crypto\Key;
 $ep = new exploitPatch();
 error_reporting(E_ERROR | E_PARSE);
 $dl->title($dl->getLocalizedString("changeNickTitle"));
+$dl->printFooter('../');
 if(isset($_SESSION["accountID"]) AND $_SESSION["accountID"] != 0){
 if($_POST["oldnickname"] != "" AND $_POST["newnickname"] != "" AND $_POST["password"] != "") {
 	if(!Captcha::validateCaptcha()) {

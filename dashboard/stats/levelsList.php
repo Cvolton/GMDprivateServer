@@ -7,6 +7,7 @@ require "../../incl/lib/mainLib.php";
 $gs = new mainLib();
 include "../../incl/lib/connection.php";
 $dl->title($dl->getLocalizedString("levels"));
+$dl->printFooter('../');
 if(isset($_GET["page"]) AND is_numeric($_GET["page"]) AND $_GET["page"] > 0){
 	$page = ($_GET["page"] - 1) * 10;
 	$actualpage = $_GET["page"];

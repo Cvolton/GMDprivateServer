@@ -8,6 +8,7 @@ include "../../config/security.php";
 include "../incl/dashboardLib.php";
 $dl = new dashboardLib();
 $dl->title($dl->getLocalizedString("activateAccount"));
+$dl->printFooter('../');
 if($preactivateAccounts == false) {
 if(!isset($_SESSION["accountID"]) OR $_SESSION["accountID"] == 0){
 if(!empty($_POST["userName"]) && !empty($_POST["password"])){

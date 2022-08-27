@@ -8,6 +8,7 @@ require "../incl/dashboardLib.php";
 $dl = new dashboardLib();
 error_reporting(E_ERROR | E_PARSE);
 $dl->title($dl->getLocalizedString("songAdd"));
+$dl->printFooter('../');
 if(isset($_SESSION["accountID"]) AND $_SESSION["accountID"] != 0){
 if($_FILES && $_FILES['filename']['error'] == UPLOAD_ERR_OK) {
 	if(!Captcha::validateCaptcha()) {

@@ -9,6 +9,7 @@ $gs = new mainLib();
 include "../incl/dashboardLib.php";
 $dl = new dashboardLib();
 $dl->title($dl->getLocalizedString("addQuest"));
+$dl->printFooter('../');
 if($gs->checkPermission($_SESSION["accountID"], "toolQuestsCreate")) {
 if(!empty($_POST["type"]) AND !empty($_POST["amount"]) AND !empty($_POST["reward"]) AND !empty($_POST["names"])){
 	if(!Captcha::validateCaptcha()) {

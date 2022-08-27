@@ -11,6 +11,7 @@ include "../../incl/lib/exploitPatch.php";
 error_reporting(0);
 $ep = new exploitPatch();
 $dl->title($dl->getLocalizedString("gauntletCreateTitle"));
+$dl->printFooter('../');
 if($gs->checkPermission($_SESSION["accountID"], "dashboardLevelPackCreate")){
 	$query = $db->prepare("SELECT levelID, levelName, starStars FROM levels");
 	$query->execute();
@@ -148,6 +149,7 @@ if($_POST["checkbox_data"] == 'on') {
     request.send(formData);
 });
     </script>';
+  $dl->printFooter();
 }
 } else
 	$dl->printSong('<div class="form">

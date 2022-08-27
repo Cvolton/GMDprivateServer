@@ -12,6 +12,7 @@ require "../incl/XOR.php";
 $xor = new XORCipher();
 global $msgEnabled;
 $dl->title($dl->getLocalizedString("messenger"));
+$dl->printFooter('../');
 if($msgEnabled == 1) {
 if(isset($_SESSION["accountID"]) AND $_SESSION["accountID"] != 0){
 	$accid = $_SESSION["accountID"];

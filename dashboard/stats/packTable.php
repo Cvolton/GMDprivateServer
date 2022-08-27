@@ -5,6 +5,7 @@ $dl = new dashboardLib();
 require "../../incl/lib/mainLib.php";
 $gs = new mainLib();
 $dl->title($dl->getLocalizedString("packTable"));
+$dl->printFooter('../');
 include "../../incl/lib/connection.php";
 if(isset($_GET["page"]) AND is_numeric($_GET["page"]) AND $_GET["page"] > 0){
 	$page = ($_GET["page"] - 1) * 10;

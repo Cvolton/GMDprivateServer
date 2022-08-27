@@ -9,6 +9,7 @@ $gs = new mainLib();
 include "../../incl/lib/connection.php";
 include "../../incl/lib/exploitPatch.php";
 $ep = new exploitPatch();
+$dl->printFooter('../');
 $dl->title($dl->getLocalizedString("shareCPTitle"));
 if($gs->checkPermission($_SESSION["accountID"], "commandSharecpAll")){
 	$query = $db->prepare("SELECT userID, userName FROM users WHERE isRegistered=1 ORDER BY userName ASC");
@@ -135,6 +136,7 @@ if(!empty($_POST["username"]) AND !empty($_POST["level"])) {
 
         });
     </script>';
+  
 }
 } else
 	$dl->printSong('<div class="form">

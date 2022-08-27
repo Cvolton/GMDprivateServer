@@ -5,6 +5,7 @@ include "../incl/dashboardLib.php";
 $dl = new dashboardLib();
 global $lrEnabled;
 $dl->title($dl->getLocalizedString("levelReupload"));
+$dl->printFooter('../');
 if($lrEnabled == 1) {
 function chkarray($source, $default = 0){
 	if($source == ""){
@@ -214,6 +215,7 @@ if(!empty($_POST["levelid"])){
         <button type="submit" class="btn-song">'.$dl->getLocalizedString("reuploadBTN").'</button>
     </form>
 </div>';
+  $dl->printFooter();
 }
 } else {
 	$dl->printSong('<div class="form">

@@ -8,6 +8,7 @@ error_reporting(0);
 $gs = new mainLib();
 include "../../incl/lib/connection.php";
 $dl->title($dl->getLocalizedString("songs"));
+$dl->printFooter('../');
 if(empty($_POST["author"]) OR empty($_POST["name"])) {
 if(isset($_GET["page"]) AND is_numeric($_GET["page"]) AND $_GET["page"] > 0){
 	$page = ($_GET["page"] - 1) * 10;

@@ -6,6 +6,7 @@ $dl = new dashboardLib();
 require "../../incl/lib/mainLib.php";
 $gs = new mainLib();
 $dl->title($dl->getLocalizedString("modActions"));
+$dl->printFooter('../');
 $modtable = "";
 $accounts = implode(",",$gs->getAccountsWithPermission("toolModactions"));
 if($accounts == ""){

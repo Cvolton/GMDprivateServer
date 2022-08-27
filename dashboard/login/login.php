@@ -9,6 +9,7 @@ require "../../incl/lib/generatePass.php";
 require_once "../../incl/lib/mainLib.php";
 $gs = new mainLib();
 $dl->title($dl->getLocalizedString("loginBox"));
+$dl->printFooter('../');
 if(isset($_SESSION["accountID"]) AND $_SESSION["accountID"] != 0){
 	header('Location: ../');
 	exit();
