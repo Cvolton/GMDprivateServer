@@ -16,6 +16,26 @@
   	justify-self: center;
 }
 
+.newMsgs {
+	font-size: 10px;
+    margin-left: -5;
+    margin-right: 3px;
+    color: #e35151;
+}
+
+.msgupd {
+    background-color: #212529;
+    color: #c0c0c0;
+    font-size: 20px;
+    padding: 15px;
+    margin-left: 10px;
+    border: none;
+    margin-top: 15px;
+    border-radius: 500px;
+    transition: 0.3s;
+    cursor: pointer;
+}
+
 .socials {
 	text-align: right;
     justify-self: center;
@@ -116,7 +136,7 @@
 
 .msgbox {
 	text-align:center;
-	min-width: 100%;
+	min-width: 500px;
 	max-height: 508px;
 	overflow:auto;
 }
@@ -263,7 +283,10 @@ body {
 
 .btn-primary:hover,
 .btn-primary:active,
-.btn-primary:focus {
+.btn-primary:focus,
+.msgupd:hover,
+.msgupd:active,
+.msgupd:focus {
     background-color: #47494e;
     border-color: #47494e;
 }

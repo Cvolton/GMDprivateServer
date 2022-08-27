@@ -115,6 +115,7 @@ class dashboardLib{
 		global $lrEnabled;
       	global $msgEnabled;
 		require_once __DIR__."/../../incl/lib/mainLib.php";
+      	include __DIR__."/../../incl/lib/connection.php";
 		$gs = new mainLib();
 		$homeActive = "";
 		$accountActive = "";
@@ -221,10 +222,22 @@ class dashboardLib{
 					</li>
 				</ul>
 				<ul class="nav navbar-nav ml-auto">';
-					if($msgEnabled == 1 AND $_SESSION["accountID"] != 0) echo '<li class="nav-item dropdown">
-						<a class="nav-link" href="messenger/" id="navbarDropdownMenuLink">
-							<i class="fa fa-comments" aria-hidden="true"></i> '.$this->getLocalizedString("messenger").'
-						</a>';
+					if($msgEnabled == 1 AND $_SESSION["accountID"] != 0) { 
+                      if($_SESSION["msgNew"] != 1) {
+                        	$new = '';
+							$msg = $db->prepare("SELECT isNew FROM messages WHERE toAccountID=:acc AND isNew=0");
+                        	$msg->execute([':acc' => $_SESSION["accountID"]]);
+                        	$msg = $msg->fetchAll();
+                        	if(count($msg) != 0) {
+								$_SESSION["msgNew"] = 1;
+							}
+                          } else {
+							$new = '<i class="fa fa-circle" aria-hidden="true" style="font-size: 10px;margin-left: -5;margin-right: 3px;color: #e35151;"></i></div>';
+							}
+                      echo '<li class="nav-item dropdown">
+						<div style="display:flex"><a class="nav-link" href="messenger/" id="navbarDropdownMenuLink">
+							<i class="fa fa-comments" aria-hidden="true"></i> '.$this->getLocalizedString("messenger").'</a>'.$new;
+                    }
       				echo '
 					<li class="nav-item dropdown">
 						<a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -241,23 +254,14 @@ class dashboardLib{
 							<i class="fa fa-download" aria-hidden="true"></i> '.$this->getLocalizedString("download").'
 						</a>
 						<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">';
-						if(file_exists("download/".$gdps.".zip")) 
+						if(file_exists("download/".$gdps.".zip") OR file_exists("../download/".$gdps.".zip")) 
 							echo '<a class="dropdown-item" id="langload" href="download/'.$gdps.'.zip">'.$this->getLocalizedString("forwindows").'</a>';
-						if(file_exists("download/".$gdps.".apk")) 
+						if(file_exists("download/".$gdps.".apk") OR file_exists("../download/".$gdps.".apk")) 
 							echo '<a class="dropdown-item" id="langload" href="download/'.$gdps.'.apk">'.$this->getLocalizedString("forandroid").'</a>';
-						if(file_exists("download/".$gdps.".dmg")) 
+						if(file_exists("download/".$gdps.".dmg") OR file_exists("../download/".$gdps.".dmg")) 
 							echo '<a class="dropdown-item" id="langload" href="download/'.$gdps.'.dmg">'.$this->getLocalizedString("formac").'</a>';
-						if(file_exists("download/".$gdps.".ipa")) 
-							echo '<a class="dropdown-item" id="langload" href="download/'.$gdps.'.ipa">'.$this->getLocalizedString("forios").'</a>';
-						if(file_exists("../download/".$gdps.".zip")) 
-							echo '<a class="dropdown-item" id="langload" href="download/'.$gdps.'.zip">'.$this->getLocalizedString("forwindows").'</a>';
-						if(file_exists("../download/".$gdps.".apk")) 
-							echo '<a class="dropdown-item" id="langload" href="download/'.$gdps.'.apk">'.$this->getLocalizedString("forandroid").'</a>';
-						if(file_exists("../download/".$gdps.".dmg")) 
-							echo '<a class="dropdown-item" id="langload" href="download/'.$gdps.'.dmg">'.$this->getLocalizedString("formac").'</a>';
-						if(file_exists("../download/".$gdps.".ipa")) 
-							echo '<a class="dropdown-item" id="langload" href="download/'.$gdps.'.ipa">'.$this->getLocalizedString("forios").'</a>
-						</div>';
+						if(file_exists("download/".$gdps.".ipa") OR file_exists("../download/".$gdps.".ipa")) 
+							echo '<a class="dropdown-item" id="langload" href="download/'.$gdps.'.ipa">'.$this->getLocalizedString("forios").'</a></div>';
 						}
 		if(isset($_SESSION["accountID"]) AND $_SESSION["accountID"] != 0){
 			$userName = $gs->getAccountName($_SESSION["accountID"]);
