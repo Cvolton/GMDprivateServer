@@ -31,7 +31,21 @@ foreach($result as &$mod){
 	if ($time==0) {
 		$time=$dl->getLocalizedString("never");
 		}
-	$modtable .= "<tr><th scope='row'>".$row."</th><td>".$mod["userName"]."</td><td>".$actionscount."</td><td>".$lvlcount."</td><td>".$time."</td></tr>";
+ 	$query = $db->prepare("SELECT roleID FROM roleassign WHERE accountID =:accid");
+	$query->execute([':accid' => $mod["accountID"]]);
+	$resultRole = implode($query->fetch());
+	switch($resultRole) {
+		case 11:
+			$resultRole = $dl->getLocalizedString("admin");				
+        break;
+		case 22:
+			$resultRole = $dl->getLocalizedString("elder");
+			break;
+		case 33:
+			$resultRole = $dl->getLocalizedString("moder");
+			break;
+		}
+	$modtable .= "<tr><th scope='row'>".$row."</th><td>".$mod["userName"]."</td><td>".$resultRole."</td><td>".$actionscount."</td><td>".$lvlcount."</td><td>".$time."</td></tr>";
 }
 
 /* 
@@ -42,6 +56,7 @@ $dl->printPage('<table class="table table-inverse">
     <tr>
       <th>#</th>
       <th>'.$dl->getLocalizedString("mod").'</th>
+      <th>'.$dl->getLocalizedString("isAdmin").'</th>
       <th>'.$dl->getLocalizedString("count").'</th>
       <th>'.$dl->getLocalizedString("ratedLevels").'</th>
 	<th>'.$dl->getLocalizedString("lastSeen").'</th>
