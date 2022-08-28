@@ -261,10 +261,15 @@ $string["starsLevel2"] = "stars";
 $string["starsLevel1"] = "stars";
 $string["starsLevel0"] = "star";
 $string["coins1"] = "coins";
+$string["coins1"] = "coins";
 $string["coins0"] = "coin";
+$string["noCoins"] = "Without coins";
 $string["time0"] = "time";
 $string["time1"] = "times";
 $string["times"] = "times";
+
+$string["noActions"] = "No actions";
+$string["noRates"] = "No rates";
 
 $string["accid"] = "with account ID";
 $string["banned"] = "was successfully banned!";
