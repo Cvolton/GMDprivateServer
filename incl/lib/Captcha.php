@@ -6,7 +6,7 @@ class Captcha {
 		include __DIR__ . "/../../config/security.php";
 		if($enableCaptcha){
 			echo "<script src='https://js.hCaptcha.com/1/api.js' async defer></script>";
-			echo "<div class=\"h-captcha\" data-sitekey=\"${hCaptchaKey}\"></div>";
+			echo "<div class=\"h-captcha\" data-sitekey=\"${hCaptchaKey}\" data-theme='dark'></div>";
 		}
 	}
 
