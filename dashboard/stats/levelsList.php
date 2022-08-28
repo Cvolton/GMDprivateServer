@@ -59,7 +59,9 @@ foreach($result as &$action){
 								<div class="dropdown-menu" style="padding:17px 17px 0px 17px; top:0%;">
 									 <form class="form__inner" method="post" action="levels/rateLevel.php">
 										<div class="field"><input type="number" name="rateStars" placeholder="'.$dl->getLocalizedString("stars").'"></div>
-										<div class="ratecheck"><input type="checkbox" style="margin-right:5px" name="featured" value="1">Featured?</div>
+                                        <div class="ratecheck"><input type="radio" style="margin-right:5px;margin-left: 2px" name="featured" value="0">'.$dl->getLocalizedString("isAdminNo").'</input>
+                                        <input type="radio" style="margin-right:5px;margin-left: 2px" name="featured" value="1">Featured</input>
+                                        <input type="radio" style="margin-right:5px;margin-left: 2px" name="featured" value="2">Epic</div>
 										<button type="submit" class="btn-song" name="level" value="'.$levelid.'">'.$dl->getLocalizedString("rate").'</button>
 									</form>
 								</div>';
