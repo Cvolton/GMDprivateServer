@@ -39,19 +39,29 @@ foreach($result as &$daily){
 	$query = $db->prepare("SELECT levelName,userID,starStars,coins FROM levels WHERE levelID = :levelID");
 	$query->execute([':levelID' => $daily["levelID"]]);
 	$level = $query->fetch();
+  	$stars = $level["starStars"];
+        if($stars < 5) $star = 1;
+        elseif($stars > 4) $star = 2;
+        else $star = 0;
+		$stars = $level["starStars"].' '.$dl->getLocalizedString("starsLevel$star");
+    $coins = $level["coins"];
+        if($coins == 1) $coin = 0;
+     	else $coin = 1;
+		$coins = $level["coins"].' '.$dl->getLocalizedString("coins$coin");
+      	if($level["coins"] == 0) $coins = '<div style="color:grey">'.$dl->getLocalizedString("noCoins").'</div>';
 	if($query->rowCount() == 0){
 		$level["levelName"] = $dl->getLocalizedString("deletedLevel");
 		$level["userID"] = 0;
-		$level["starStars"] = -1;
-		$level["coins"] = -1;
+		$stars = -1;
+		$coins = -1;
 	}
 	$dailytable .= '<tr>
 					<th scope="row">'.$x.'</th>
 					<td>'.$daily["levelID"].'</th>
 					<td>'.$level["levelName"].'</td>
 					<td>'.$gs->getUserName($level["userID"]).'</td>
-					<td>'.$level["starStars"].'</td>
-					<td>'.$level["coins"].'</td>
+					<td>'.$stars.'</td>
+					<td>'.$coins.'</td>
 					<td>'.$dl->convertToDate($daily["timestamp"]).'</td>
 				</tr>';
 	$x--;

@@ -25,12 +25,13 @@ $table = '<table class="table table-inverse">
 					<th>#</th>
 					<th>'.$dl->getLocalizedString("ID").'</th>
 					<th>'.$dl->getLocalizedString("name").'</th>
+                    <th>'.$dl->getLocalizedString("author").'</th>
 					<th>'.$dl->getLocalizedString("reportCount").'</th>
 				</tr>
 			</thead>
 			<tbody>';
 
-$query = $db->prepare("SELECT levels.levelID, levels.levelName, count(*) AS reportsCount FROM reports INNER JOIN levels ON reports.levelID = levels.levelID GROUP BY levels.levelID ORDER BY reportsCount DESC");
+$query = $db->prepare("SELECT levels.levelID, levels.extID, levels.levelName, count(*) AS reportsCount FROM reports INNER JOIN levels ON reports.levelID = levels.levelID GROUP BY levels.levelID ORDER BY reportsCount DESC");
 $query->execute();
 $result = $query->fetchAll();
 $x = $page + 1;
@@ -46,10 +47,11 @@ if(empty($result)) {
 } 
 foreach($result as &$report){
 	$levelName = htmlspecialchars($report['levelName'], ENT_QUOTES);
+  	$author = $gs->getAccountName($report['extID']);
 	if($report['reportsCount'] == 1) $reports = $report['reportsCount'].' '.$dl->getLocalizedString("time0");
 	elseif($report['reportsCount'] < 5) $reports = $report['reportsCount'].' '.$dl->getLocalizedString("time1");
 	else $reports = $report['reportsCount'].' '.$dl->getLocalizedString("times");
-	$table .= "<tr><td>$x</td><td>${report['levelID']}</td><td>$levelName</td><td>$reports</td></tr>";
+	$table .= "<tr><td>$x</td><td>${report['levelID']}</td><td>$levelName</td><td>$author</td><td>$reports</td></tr>";
 	$x++;
 }
 $table .= "</tbody></table>";

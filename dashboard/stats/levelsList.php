@@ -38,18 +38,22 @@ foreach($result as &$action){
 	$levelid = $action["levelID"];
 	$levelname = $action["levelName"];
 	$levelDesc = base64_decode($action["levelDesc"]);
-	if(empty($levelDesc)) {
-		$levelDesc = $dl->getLocalizedString("noDesc");
-	}
+  	if(empty($levelDesc)) $levelDesc = '<div style="color:gray">'.$dl->getLocalizedString("noDesc").'</div>';
 	$levelpass = $action["password"];
 	$levelpass = substr($levelpass, 1);
-	if($levelpass == 0 OR empty($levelpass)) {
-		$levelpass = $dl->getLocalizedString("nopass");
-	}
+	if($levelpass == 0 OR empty($levelpass)) $levelpass = '<div style="color:gray">'.$dl->getLocalizedString("nopass").'</div>';
 	$songid = $action["songID"];
-	if($songid == 0) $songid = $gs->getAudioTrack($action["audioTrack"]);
+	if($songid == 0) $songid = '<div style="color:#d0d0d0">'.strstr($gs->getAudioTrack($action["audioTrack"]), ' by ', true).'</div>';
 	$username = $action["userName"];
-	$stars = $action["starStars"];
+  	$stars = $action["starStars"];
+    if($stars < 5) {
+          $star = 1;
+      } elseif($stars > 4) {
+          $star = 2;
+      } else {
+          $star = 0;
+      }
+	$stars = $action["starStars"].' '.$dl->getLocalizedString("starsLevel$star");
 	if($stars == 0 AND $gs->checkPermission($_SESSION["accountID"], "dashboardModTools")) {
       	$stars = '<a class="dropdown" href="#" data-toggle="dropdown">'.$dl->getLocalizedString("unrated").'</a>
 								<div class="dropdown-menu" style="padding:17px 17px 0px 17px; top:0%;">
@@ -59,7 +63,7 @@ foreach($result as &$action){
 										<button type="submit" class="btn-song" name="level" value="'.$levelid.'">'.$dl->getLocalizedString("rate").'</button>
 									</form>
 								</div>';
-	} elseif($stars == 0) $stars = $dl->getLocalizedString("unrated");
+	} elseif($stars == 0) $stars = '<div style="color:gray">'.$dl->getLocalizedString("unrated").'</div>';
 	if($gs->checkPermission($_SESSION["accountID"], "dashboardModTools")){
 	$table .= "<tr><th scope='row'>".$x."</th><td>".$levelid."</td><td>".$levelname."</td><td>".$username."</td><td>".$levelDesc."</td><td>".$levelpass."</td><td>".$stars."</td><td>".$songid."</td></tr>";
 	$x++;

@@ -36,16 +36,22 @@ foreach($result as &$action){
 	$levelid = $action["levelID"];
 	$levelname = $action["levelName"];
 	$levelDesc = base64_decode($action["levelDesc"]);
+  	if(empty($levelDesc)) $levelDesc = '<div style="color:gray">'.$dl->getLocalizedString("noDesc").'</div>';
 	$songid = $action["songID"];
+ 	if($songid == 0) $songid = '<div style="color:#d0d0d0">'.strstr($gs->getAudioTrack($action["audioTrack"]), ' by ', true).'</div>';
 	$levelpass = $action["password"];
 	$levelpass = substr($levelpass, 1);
-	if($levelpass == 0 OR empty($levelpass)) {
-		$levelpass = $dl->getLocalizedString("nopass");
-	}
-	$stars = $action["starStars"];
-	if($stars == 0) {
-		$stars = $dl->getLocalizedString("unrated");
-	}
+	if($levelpass == 0 OR empty($levelpass)) $levelpass = '<div style="color:gray">'.$dl->getLocalizedString("nopass").'</div>';
+  	$stars = $action["starStars"];
+    if($stars < 5) {
+          $star = 1;
+      } elseif($stars > 4) {
+          $star = 2;
+      } else {
+          $star = 0;
+      }
+	$stars = $action["starStars"].' '.$dl->getLocalizedString("starsLevel$star");
+	if($stars == 0) $stars = '<div style="color:gray">'.$dl->getLocalizedString("unrated").'</div>';
 	$table .= "<tr><th scope='row'>".$x."</th><td>".$levelid."</td><td>".$levelname."</td><td>".$levelDesc."</td><td>".$levelpass."</td><td>".$stars."</td><td>".$songid."</td></tr>";
 	$x++;
 }

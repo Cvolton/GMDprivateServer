@@ -16,7 +16,7 @@ if(isset($_GET["page"]) AND is_numeric($_GET["page"]) AND $_GET["page"] > 0){
 	$page = 0;
 	$actualpage = 1;
 }
-$table = '<table class="table table-inverse"><tr><th>#</th><th>'.$dl->getLocalizedString("username").'</th><th>'.$dl->getLocalizedString("accountID").'</th><th>'.$dl->getLocalizedString("registerDate").'</th><th>'.$dl->getLocalizedString("isAdmin").'</th></tr>';
+$table = '<table class="table table-inverse"><tr><th>#</th><th>'.$dl->getLocalizedString("username").'</th><th>'.$dl->getLocalizedString("accountID").'</th><th>'.$dl->getLocalizedString("registerDate").'</th><th>'.$dl->getLocalizedString("isAdmin").'</th><th>'.$dl->getLocalizedString("lastSeen").'</th></tr>';
 $query = $db->prepare("SELECT * FROM accounts ORDER BY accountID ASC LIMIT 10 OFFSET $page");
 $query->execute();
 $result = $query->fetchAll();
@@ -35,6 +35,11 @@ foreach($result as &$action){
 	$username = $action["userName"];
 	$isAdmin = $action["isAdmin"];
 	$accountID = $action["accountID"];
+  	$query = $db->prepare("SELECT lastPlayed FROM users WHERE extID=:id");
+  	$query->execute([':id' => $accountID]);
+  	$lastseen = $query->fetch();
+  	$lastPlayed = $dl->convertToDate($lastseen["lastPlayed"]);
+  	if($lastseen["lastPlayed"] == 0 OR empty($lastseen)) $lastPlayed = '<div style="color:gray">'.$dl->getLocalizedString("never").'</div>';
 	$query = $db->prepare("SELECT roleID FROM roleassign WHERE accountID =:accid");
 	$query->execute([':accid' => $accountID]);
 	$resultRole = implode($query->fetch());
@@ -54,7 +59,7 @@ foreach($result as &$action){
 		}
 	}
 	$registerDate = date("d/m/Y", $action["registerDate"]);
-	$table .= "<tr><th scope='row'>".$x."</th><td>".$username."</td><td>".$accountID."</td><td>".$registerDate."</td><td>".$resultRole."</td></tr>";
+	$table .= "<tr><th scope='row'>".$x."</th><td>".$username."</td><td>".$accountID."</td><td>".$registerDate."</td><td>".$resultRole."</td><td>".$lastPlayed."</td></tr>";
 	$x++;
 }
 $table .= "</table>";

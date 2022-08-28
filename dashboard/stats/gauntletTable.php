@@ -39,17 +39,27 @@ foreach($result as &$gauntlet){
 		$query = $db->prepare("SELECT levelID,levelName,starStars,userID,coins FROM levels WHERE levelID = :levelID");
 		$query->execute([':levelID' => $lvl]);
 		$level = $query->fetch();
+        $stars = $level["starStars"];
+        if($stars < 5) $star = 1;
+        elseif($stars > 4) $star = 2;
+        else $star = 0;
+		$stars = $level["starStars"].' '.$dl->getLocalizedString("starsLevel$star");
+        $coins = $level["coins"];
+        if($coins == 1) $coin = 0;
+     	else $coin = 1;
+		$coins = $level["coins"].' '.$dl->getLocalizedString("coins$coin");
+      	if($level["coins"] == 0) $coins = '<div style="color:grey">'.$dl->getLocalizedString("noCoins").'</div>';
 		$lvltable .= "<tr>
 						<td class='tcell'>".$level["levelID"]."</td>
 						<td class='tcell'>".$level["levelName"]."</td>
 						<td class='tcell'>".$gs->getUserName($level["userID"])."</td>
-						<td class='tcell'>".$level["starStars"]."</td>
-						<td class='tcell'>".$level["coins"]."</td>
+						<td class='tcell'>".$stars."</td>
+						<td class='tcell'>".$coins."</td>
 					</tr>";
 	}
 	$gauntlettable .= "<tr>
 					<th scope='row'>$x</th>
-					<td>".$gs->getGauntletName($gauntlet["ID"]).'</td>
+					<td>".$gs->getGauntletName($gauntlet["ID"]).' Gauntlet</td>
 					<td><a class="btn-rendel" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 							'.$dl->getLocalizedString("show").'
 						</a>

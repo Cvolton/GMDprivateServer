@@ -21,16 +21,15 @@ foreach($result as &$mod){
 	$row++;
 	$query = $db->prepare("SELECT lastPlayed FROM users WHERE extID = :id");
 	$query->execute([':id' => $mod["accountID"]]);
-	$time = $dl->convertToDate($query->fetchColumn());
+	$lastPlayed = $query->fetchColumn();
+  	$time = $dl->convertToDate($lastPlayed);
 	$query = $db->prepare("SELECT count(*) FROM modactions WHERE account = :id");
 	$query->execute([':id' => $mod["accountID"]]);
 	$actionscount = $query->fetchColumn();
 	$query = $db->prepare("SELECT count(*) FROM modactions WHERE account = :id AND type = '1'");
 	$query->execute([':id' => $mod["accountID"]]);
 	$lvlcount = $query->fetchColumn();
-	if ($time==0) {
-		$time=$dl->getLocalizedString("never");
-		}
+	if ($lastPlayed == 0) $time = '<div style="color:gray">'.$dl->getLocalizedString("never").'</div>';
  	$query = $db->prepare("SELECT roleID FROM roleassign WHERE accountID =:accid");
 	$query->execute([':accid' => $mod["accountID"]]);
 	$resultRole = implode($query->fetch());
@@ -45,6 +44,8 @@ foreach($result as &$mod){
 			$resultRole = $dl->getLocalizedString("moder");
 			break;
 		}
+  	if($actionscount == 0) $actionscount = '<div style="color:grey">'.$dl->getLocalizedString("noActions").'</div>';
+	if($lvlcount == 0) $lvlcount = '<div style="color:grey">'.$dl->getLocalizedString("noRates").'</div>';
 	$modtable .= "<tr><th scope='row'>".$row."</th><td>".$mod["userName"]."</td><td>".$resultRole."</td><td>".$actionscount."</td><td>".$lvlcount."</td><td>".$time."</td></tr>";
 }
 

@@ -45,7 +45,7 @@ if(empty($result)) {
 foreach($result as &$action){
 	$songsid = $action["ID"];
 	$time = $dl->convertToDate($action["reuploadTime"]);
-	if($action["reuploadID"] == 0) $time = "Newgrounds";
+	if($action["reuploadID"] == 0) $time = "<div style='color:gray'>Newgrounds</div>";
 	$author = $action["authorName"];
 	$name = $action["name"];
 	$size = $action["size"];
