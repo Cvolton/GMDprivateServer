@@ -82,7 +82,7 @@ class dashboardLib{
 	public function printBoxFooter(){
 		echo '</div></div></div>';
 	}
-	public function printFooter($sub){
+	public function printFooter($sub = ''){
       	global $vk;
       	global $discord;
       	global $twitter;
