@@ -260,7 +260,6 @@ $string["player"] = "Игрок";
 $string["starsLevel2"] = "звёзд";
 $string["starsLevel1"] = "звезды";
 $string["starsLevel0"] = "звезда";
-$string["coins1"] = "монет";
 $string["coins1"] = "монеты";
 $string["coins0"] = "монета";
 $string["noCoins"] = "Без монет";
