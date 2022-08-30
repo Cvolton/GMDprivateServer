@@ -266,6 +266,12 @@ $string["noCoins"] = "Without coins";
 $string["time0"] = "time";
 $string["time1"] = "times";
 $string["times"] = "times";
+$string["action0"] = "action";
+$string["action1"] = "actions";
+$string["action2"] = "actions";
+$string["lvl0"] = "level";
+$string["lvl1"] = "levels";
+$string["lvl2"] = "levels";
 
 $string["noActions"] = "No actions";
 $string["noRates"] = "No rates";

@@ -44,6 +44,12 @@ foreach($result as &$mod){
 			$resultRole = $dl->getLocalizedString("moder");
 			break;
 		}
+  	$actions = $actionscount[strlen($actionscount)-1];
+  	if($actions == 1) $action = 0; elseif($actions < 5) $action = 1; else $action = 2;
+  	$actionscount = $actionscount.' '.$dl->getLocalizedString("action$action");
+  	$levels = $lvlcount[strlen($lvlcount)-1];
+  	if($lvlcount == 1) $lvl = 0; elseif($lvlcount < 5) $lvl = 1; else $lvl = 2;
+  	$lvlcount = $lvlcount.' '.$dl->getLocalizedString("lvl$lvl");
   	if($actionscount == 0) $actionscount = '<div style="color:grey">'.$dl->getLocalizedString("noActions").'</div>';
 	if($lvlcount == 0) $lvlcount = '<div style="color:grey">'.$dl->getLocalizedString("noRates").'</div>';
 	$modtable .= "<tr><th scope='row'>".$row."</th><td>".$mod["userName"]."</td><td>".$resultRole."</td><td>".$actionscount."</td><td>".$lvlcount."</td><td>".$time."</td></tr>";

@@ -266,6 +266,12 @@ $string["noCoins"] = "Без монет";
 $string["time0"] = "раз";
 $string["time1"] = "раза";
 $string["times"] = "раз";
+$string["action0"] = "действие";
+$string["action1"] = "действия";
+$string["action2"] = "действий";
+$string["lvl0"] = "уровень";
+$string["lvl1"] = "уровня";
+$string["lvl2"] = "уровней";
 
 $string["noActions"] = "Нет действий";
 $string["noRates"] = "Нет оценок";
