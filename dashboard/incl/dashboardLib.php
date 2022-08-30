@@ -11,7 +11,7 @@ $twitter = ''; // i don't have twitter
 $youtube = ''; // like https://youtube.com/channel/*your channel id* or https://youtube.com/c/*your channel name*
 $twitch = ''; // like https://twitch.tv/*your twitch*
 
-// Dashboard library
+// Dashboard lib
 class dashboardLib{
 	public function printHeader($isSubdirectory = true){
 		global $gdps;
@@ -222,7 +222,8 @@ class dashboardLib{
 					</li>
 				</ul>
 				<ul class="nav navbar-nav ml-auto">';
-					if($msgEnabled == 1 AND $_SESSION["accountID"] != 0) { 
+					if($msgEnabled == 1 AND isset($_SESSION["accountID"]) AND $_SESSION["accountID"] != 0) { 
+                      if(!isset($_SESSION["msgNew"])) $_SESSION["msgNew"] = 0;
                       if($_SESSION["msgNew"] != 1) {
                         	$new = '';
 							$msg = $db->prepare("SELECT isNew FROM messages WHERE toAccountID=:acc AND isNew=0");
