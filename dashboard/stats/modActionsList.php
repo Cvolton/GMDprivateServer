@@ -61,6 +61,10 @@ foreach($result as &$action){
 	if($action["type"] == 13){
 		$value = base64_decode($value);
 	}
+  	if($action["type"] == 15) {
+    	if($value3 == 0) $value3 = $dl->getLocalizedString("unban");
+      	else $value3 = $dl->getLocalizedString("isBan");
+    } 
 	if(strlen($value) > 18){
 		$value = "<details><summary>Spoiler</summary>$value</details>"; //todo: finish
 	}

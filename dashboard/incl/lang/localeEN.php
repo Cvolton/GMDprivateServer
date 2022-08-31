@@ -272,6 +272,8 @@ $string["action2"] = "actions";
 $string["lvl0"] = "level";
 $string["lvl1"] = "levels";
 $string["lvl2"] = "levels";
+$string["unban"] = "Unban";
+$string["isBan"] = "Ban";
 
 $string["noActions"] = "No actions";
 $string["noRates"] = "No rates";
@@ -285,6 +287,7 @@ $string["banUserID"] = "Username or account ID";
 $string["banUserPlace"] = "Ban a user";
 $string["banYourself"] = "You can't ban yourself!"; 
 $string["banYourSelfBtn!"] = "Ban someone else";
+$string["banReason"] = "Ban reason";
 $string["action"] = "Action";
 $string["value"] = "1st Value";
 $string["value2"] = "2nd Value";

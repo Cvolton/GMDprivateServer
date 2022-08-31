@@ -272,6 +272,8 @@ $string["action2"] = "действий";
 $string["lvl0"] = "уровень";
 $string["lvl1"] = "уровня";
 $string["lvl2"] = "уровней";
+$string["unban"] = "Разбан";
+$string["isBan"] = "Бан";
 
 $string["noActions"] = "Нет действий";
 $string["noRates"] = "Нет оценок";
@@ -285,6 +287,7 @@ $string["banUserID"] = "Никнейм или ID игрока";
 $string["banUserPlace"] = "Забанить пользователя";
 $string["banYourself"] = "Вы не можете забанить себя!"; 
 $string["banYourSelfBtn!"] = "Забанить кого-то другого";
+$string["banReason"] = "Причина блокировки";
 $string["action"] = "Действие";
 $string["value"] = "1 значение";
 $string["value2"] = "2 значение";

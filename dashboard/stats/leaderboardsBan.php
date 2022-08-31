@@ -25,6 +25,8 @@ if(!empty($_POST["userID"])) {
 		}
 		$userName = $gs->getAccountName($_SESSION["accountID"]);
 		$userID = ExploitPatch::remove($_POST["userID"]);
+      	$reason = ExploitPatch::remove($_POST["banReason"]);
+      	if(empty($reason)) $reason = 'banned';
 		$query = $db->prepare("SELECT accountID FROM accounts WHERE userName=:userName");	
 		$query->execute([':userName' => $userName]);
 		$accountID = $query->fetchColumn();
@@ -47,13 +49,15 @@ if(!empty($_POST["userID"])) {
 			$query->execute([':id' => $userID]);
 			$banned = $query->fetchColumn();
 			if($banned != 0) {
-				$ban = $db->prepare("UPDATE users SET isBanned = 0, isCreatorBanned = 0 WHERE extID = :id");
+				$ban = $db->prepare("UPDATE users SET isBanned = 0, isCreatorBanned = 0, banReason = 'none' WHERE extID = :id");
 				$ban->execute([':id' => $userID]);
 				$success = $dl->getLocalizedString("player"). ' <b>' .$nickname.'</b> '.$dl->getLocalizedString("accid").' <b>'.$userID.'</b> '.$dl->getLocalizedString("unbanned");
+              	$bou = 0;
 			} else {
-				$ban = $db->prepare("UPDATE users SET isBanned = 1, isCreatorBanned = 1 WHERE extID = :id");
-				$ban->execute([':id' => $userID]);
+				$ban = $db->prepare("UPDATE users SET isBanned = 1, isCreatorBanned = 1, banReason = :ban WHERE extID = :id");
+				$ban->execute([':id' => $userID, ':ban' => $reason]);
 				$success = $dl->getLocalizedString("player"). ' <b>' .$nickname.'</b> '.$dl->getLocalizedString("accid").' <b>'.$userID.'</b> '.$dl->getLocalizedString("banned");
+              	$bou = 1;
 			}
 			if($ban->rowCount() != 0){
 				$dl->printSong('<div class="form">
@@ -73,9 +77,9 @@ if(!empty($_POST["userID"])) {
 </div>');
 			die();
 			}
-			$query = $db->prepare("INSERT INTO modactions  (type, value, value2, timestamp, account) 
-													VALUES ('15',:userID, '1',  :timestamp,:account)");
-	$query->execute([':userID' => $userID, ':timestamp' => time(), ':account' => $accountID]);
+			$query = $db->prepare("INSERT INTO modactions  (type, value, value2, value3, timestamp, account) 
+													VALUES ('15',:userID, :reason, :bou, :timestamp,:account)");
+	$query->execute([':userID' => $userID, ':timestamp' => time(), ':reason' => $reason, ':bou' => $bou, ':account' => $accountID]);
 	} else {
 		$dl->printSong('<div class="form">
     <h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
@@ -92,6 +96,7 @@ $dl->printSong('<div class="form">
 	<h2>'.$dl->getLocalizedString("banDesc").'</h2>
     <form class="form__inner" method="post" action="">
         <div class="field"><input type="text" name="userID" placeholder="'.$dl->getLocalizedString("banUserID").'"></div>
+        <div class="field"><input type="text" name="banReason" placeholder="'.$dl->getLocalizedString("banReason").'"></div>
 		');
 		Captcha::displayCaptcha();
         echo '
