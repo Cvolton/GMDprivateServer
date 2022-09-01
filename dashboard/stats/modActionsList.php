@@ -62,15 +62,18 @@ foreach($result as &$action){
 		$value = base64_decode($value);
 	}
   	if($action["type"] == 15) {
-    	if($value3 == 0) $value3 = $dl->getLocalizedString("unban");
-      	else $value3 = $dl->getLocalizedString("isBan");
+    	if($value3 == 0) $value3 = '<div style="color:#a9ffa9">'.$dl->getLocalizedString("unban").'</div>';
+      	else $value3 = '<div style="color:#ffa9a9">'.$dl->getLocalizedString("isBan").'</div>';
+      	if($value2 == 'banned' OR $value2 == 'none') $value2 = '<div style="color:gray">'.$dl->getLocalizedString("noReason").'</div>';
     } 
-	if(strlen($value) > 18){
-		$value = "<details><summary>Spoiler</summary>$value</details>"; //todo: finish
+  	if($action["type"] == 17) { 
+      	if($value3 == 1) $star = 0; elseif($value3 < 5) $star = 1; else $star = 2;
+      	if($action["value4"] == 1) $coin = 0; elseif($action["value4"] != 0) $coin = 1; else $coin = 2; 
+		$value = '<div style="color:rgb('.$action["value7"].');font-weight:700">'.$value.'</div>';
+      	$value3 = $value3.' '.$dl->getLocalizedString("starsLevel$star").', '.$action["value4"].' '.$dl->getLocalizedString("coins$coin");
 	}
-	if(strlen($value2) > 18){
-		$value2 = "<details><summary>Spoiler</summary>$value2</details>"; //todo: finish
-	}
+	if(strlen($action["value"]) > 18) $value = "<details><summary>".$dl->getLocalizedString("spoiler")."</summary>$value</details>";
+  	if(strlen($action["value2"]) > 18) $value2 = "<details><summary>".$dl->getLocalizedString("spoiler")."</summary>$value2</details>";
 	$time = date("d/m/Y G:i:s", $action["timestamp"]);
 	if($action["type"] == 5 AND $action["value2"] > time()){
 		$value3 = "future";

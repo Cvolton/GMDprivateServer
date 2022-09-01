@@ -260,9 +260,9 @@ $string["player"] = "Игрок";
 $string["starsLevel2"] = "звёзд";
 $string["starsLevel1"] = "звезды";
 $string["starsLevel0"] = "звезда";
+$string["coins2"] = "монет";
 $string["coins1"] = "монеты";
 $string["coins0"] = "монета";
-$string["noCoins"] = "Без монет";
 $string["time0"] = "раз";
 $string["time1"] = "раза";
 $string["times"] = "раз";
@@ -275,9 +275,12 @@ $string["lvl2"] = "уровней";
 $string["unban"] = "Разбан";
 $string["isBan"] = "Бан";
 
+$string["noCoins"] = "Без монет";
+$string["noReason"] = "Нет причины";
 $string["noActions"] = "Нет действий";
 $string["noRates"] = "Нет оценок";
 
+$string["spoiler"] = "Спойлер";
 $string["accid"] = "с ID аккаунта";
 $string["banned"] = "был успешно забанен!";
 $string["unbanned"] = "был успешно разбанен!";

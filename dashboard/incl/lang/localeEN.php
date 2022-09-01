@@ -260,9 +260,9 @@ $string["player"] = "Player";
 $string["starsLevel2"] = "stars";
 $string["starsLevel1"] = "stars";
 $string["starsLevel0"] = "star";
+$string["coins2"] = "coins";
 $string["coins1"] = "coins";
 $string["coins0"] = "coin";
-$string["noCoins"] = "Without coins";
 $string["time0"] = "time";
 $string["time1"] = "times";
 $string["times"] = "times";
@@ -275,9 +275,12 @@ $string["lvl2"] = "levels";
 $string["unban"] = "Unban";
 $string["isBan"] = "Ban";
 
+$string["noCoins"] = "Without coins";
+$string["noReason"] = "No reason";
 $string["noActions"] = "No actions";
 $string["noRates"] = "No rates";
 
+$string["spoiler"] = "Spoiler";
 $string["accid"] = "with account ID";
 $string["banned"] = "was successfully banned!";
 $string["unbanned"] = "was successfully unbanned!";
