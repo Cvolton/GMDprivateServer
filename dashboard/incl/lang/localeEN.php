@@ -9,7 +9,7 @@ $string["footer"] = "Hello! This is a footer test! Socials are there ->";
 
 $string["accountManagement"] = "Account management";
 $string["changePassword"] = "Change password";
-$string["changeusername"] = "Change username";
+$string["changeUsername"] = "Change username";
 $string["unlistedLevels"] = "Your unlisted levels";
 
 $string["manageSongs"] = "Manage songs";
