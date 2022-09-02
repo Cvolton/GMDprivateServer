@@ -16,6 +16,25 @@
   	justify-self: center;
 }
 
+.error {
+	display: flex;
+    height: 100%;
+    margin-top: 7vw;
+    font-size: 200px;
+    align-items: center;
+  	line-height: 30vh;
+    font-weight: 700;
+    text-shadow: 0px 0px 10px black;
+}
+
+.errtext {
+	display: flex;
+    height: 100%;
+    font-size: 35px;
+  	justify-content: center;
+  	text-shadow: 0px 0px 5px black;
+}
+
 .newMsgs {
 	font-size: 10px;
     margin-left: -5;
