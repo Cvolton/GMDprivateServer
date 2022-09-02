@@ -1,9 +1,8 @@
 <?php
-/*
-	NAVBAR
-*/
+include __DIR__."/../../../config/dashboard.php";
+
 $string["homeNavbar"] = "Домой";
-$string["welcome"] = "Добро пожаловать на GDPS!";
+$string["welcome"] = "Добро пожаловать на ".$gdps.'!';
 $string["levelsWeek"] = "Выложено уровней за неделю";
 $string["levels3Months"] = "Выложено уровней за 3 месяца";
 $string["footer"] = "Привет! Это тест футера, соц.сети там ->";
@@ -198,6 +197,12 @@ $string["songAddError-4"] = "Эту песню нельзя загрузить :
 $string["songAddError-5"] = "Песня весит больше 12 мегабайт!";
 $string["songAddError-6"] = "Что-то случилось при загрузке песни! :с";
 $string["songAddError-7"] = "Загружать можно только аудиофайлы!";
+
+$string[400] = "Плохой запрос!";
+$string[403] = "Доступ запрещён!";
+$string[404] = "Страница не найдена!";
+$string[500] = "Внутренняя ошибка сервера!";
+$string[502] = "Сервер лёг!";
 
 $string["invalidCaptcha"] = "Неверный ответ от капчи!";
 $string["page"] = "Страница";

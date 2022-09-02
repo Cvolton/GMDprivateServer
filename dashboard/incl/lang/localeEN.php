@@ -1,16 +1,15 @@
 <?php
-/*
-	NAVBAR
-*/
+include __DIR__."/../../../config/dashboard.php";
+
 $string["homeNavbar"] = "Home";
-$string["welcome"] = "Welcome to GDPS!";
+$string["welcome"] = "Welcome to ".$gdps.'!';
 $string["levelsWeek"] = "Levels uploaded in a week";
 $string["levels3Months"] = "Levels uploaded in 3 months";
 $string["footer"] = "Hello! This is a footer test! Socials are there ->";
 
 $string["accountManagement"] = "Account management";
 $string["changePassword"] = "Change password";
-$string["changeUsername"] = "Change username";
+$string["changeusername"] = "Change username";
 $string["unlistedLevels"] = "Your unlisted levels";
 
 $string["manageSongs"] = "Manage songs";
@@ -51,7 +50,7 @@ $string["loginBox"] = "Login to account";
 $string["loginSuccess"] = "You successfully login to your account!";
 $string["loginAlready"] = "You already logged in!";
 $string["clickHere"] = "Dashboard";
-$string["enterUsername"] = "Enter Username";
+$string["enterUsername"] = "Enter username";
 $string["enterPassword"] = "Enter password";
 
 $string["register"] = "Register";
@@ -75,14 +74,14 @@ $string["oldPassword"] = "Old password";
 $string["newPassword"] = "New password";
 $string["confirmNew"] = "Confirm password";
 
-$string["changeNickTitle"] = "Change Username";
+$string["changeNickTitle"] = "Change username";
 $string["changedNick"] = "Username successfully changed! You need to login to you account again.";
-$string["wrongNick"] = "Wrong Username!";
+$string["wrongNick"] = "Wrong username!";
 $string["sameNick"] = "Usernames you entered are the same!";
 $string["alreadyUsedNick"] = "Username you entered is already taken!";
-$string["changeNickDesc"] = "Here you can change your Username!";
-$string["oldNick"] = "Old Username";
-$string["newNick"] = " New Username";
+$string["changeNickDesc"] = "Here you can change your username!";
+$string["oldNick"] = "Old username";
+$string["newNick"] = " New username";
 $string["password"] = "Password";
 
 $string["packCreate"] = "Create a Map Pack";
@@ -198,6 +197,12 @@ $string["songAddError-4"] = "This song isn't reuploadable";
 $string["songAddError-5"] = "Song size is higher than 12 megabytes";
 $string["songAddError-6"] = "Something went wrong while uploading a song! :с";
 $string["songAddError-7"] = "You can only upload audio!";
+
+$string[400] = "Bad request!";
+$string[403] = "Forbidden!";
+$string[404] = "Page not found!";
+$string[500] = "Internal server error!";
+$string[502] = "Server is down!";
 
 $string["invalidCaptcha"] = "Invalid captcha response!";
 $string["page"] = "Page";

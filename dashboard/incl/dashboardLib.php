@@ -1,17 +1,8 @@
 <?php
-$gdps = "GDPS"; // used to title and download
-$lrEnabled = 1; // 1 = level reupload enabled, 0 = disabled
-$msgEnabled = 1; // 1 = messenger enabled, 0 = disabled
+include __DIR__."/../../config/dashboard.php";
 
-// Socials are below, left empty to disable (only links are allowed, ask me to change that)
+if(!isset($_SESSION["accountID"])) $_SESSION["accountID"] = 0;
 
-$vk = ''; // как https://vk.com/suetin2006
-$discord = ''; // like https://discord.gg/GAk2nA8
-$twitter = ''; // i don't have twitter
-$youtube = ''; // like https://youtube.com/channel/*your channel id* or https://youtube.com/c/*your channel name*
-$twitch = ''; // like https://twitch.tv/*your twitch*
-
-// Dashboard lib
 class dashboardLib{
 	public function printHeader($isSubdirectory = true){
 		global $gdps;
