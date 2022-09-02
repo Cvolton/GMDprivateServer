@@ -46,9 +46,11 @@ foreach($result as &$mod){
 		}
   	$actions = $actionscount[strlen($actionscount)-1];
   	if($actions == 1) $action = 0; elseif($actions < 5) $action = 1; else $action = 2;
+  	if($actionscount > 9 AND $actionscount < 20) $action = 2;
   	$actionscount = $actionscount.' '.$dl->getLocalizedString("action$action");
   	$levels = $lvlcount[strlen($lvlcount)-1];
   	if($levels == 1) $lvl = 0; elseif($levels < 5) $lvl = 1; else $lvl = 2;
+  	if($lvlcount > 9 AND $lvlcount < 20) $lvl = 2;
   	$lvlcount = $lvlcount.' '.$dl->getLocalizedString("lvl$lvl");
   	if($actionscount == 0) $actionscount = '<div style="color:grey">'.$dl->getLocalizedString("noActions").'</div>';
 	if($lvlcount == 0) $lvlcount = '<div style="color:grey">'.$dl->getLocalizedString("noRates").'</div>';
