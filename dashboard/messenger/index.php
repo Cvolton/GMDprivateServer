@@ -11,7 +11,6 @@ $ep = new exploitPatch();
 require "../incl/XOR.php";
 $xor = new XORCipher();
 global $msgEnabled;
-$dl->title($dl->getLocalizedString("messenger"));
 $dl->printFooter('../');
 if($msgEnabled == 1) {
 if(isset($_SESSION["accountID"]) AND $_SESSION["accountID"] != 0){
@@ -21,7 +20,9 @@ if(isset($_SESSION["accountID"]) AND $_SESSION["accountID"] != 0){
 		if(is_numeric($_POST["receiver"])) $notyou = ExploitPatch::number($_POST["receiver"]);
       	else $notyou = $gs->getAccountIDFromName(ExploitPatch::remove($_POST["receiver"]));
     } 
-	if(!empty($notyou) AND is_numeric($notyou) AND $notyou != 0 AND $notyou != $accid) {
+  	$check = $gs->getAccountName($notyou);
+ 	if(empty($check)) $dl->title($dl->getLocalizedString("messenger")); else $dl->title($check);
+	if(!empty($notyou) AND is_numeric($notyou) AND $notyou != 0 AND $notyou != $accid AND !empty($check)) {
 		if(!empty($_POST["subject"]) AND !empty($_POST["msg"])) {
 			$sendsub = base64_encode(ExploitPatch::remove($_POST["subject"]));
           	$query = $db->prepare("SELECT timestamp FROM messages WHERE accID=:accid AND toAccountID=:toaccid ORDER BY timestamp DESC LIMIT 1");
@@ -65,6 +66,7 @@ if(isset($_SESSION["accountID"]) AND $_SESSION["accountID"] != 0){
 			$msgs .= '<div class="messenger"><p>'.$dl->getLocalizedString("noMsgs").'</p></div>';
 		}
       	$_SESSION["msgNew"] = 0;
+      	
 		$dl->printSong('<div class="form">
 			<div style="display: inherit;align-items: center;margin: -5px;">
               <a class="a" href="messenger/"><h1>'.$gs->getAccountName($notyou).'</h1></a>
@@ -78,7 +80,6 @@ if(isset($_SESSION["accountID"]) AND $_SESSION["accountID"] != 0){
 			<button type="submit" name="accountID" value="'.$notyou.'" class="btn-primary">'.$dl->getLocalizedString("send").'</button></form></div>');
 		$query = $db->prepare("UPDATE messages SET isNew=1 WHERE accID=:notyou AND toAccountID=:you");
 		$query->execute([':you' => $accid, ':notyou' => $notyou]);
-      	
 	} else {
 		$query = $db->prepare("SELECT * FROM friendships WHERE person1=:acc OR person2=:acc");
 		$query->execute([':acc' => $accid]);
@@ -110,6 +111,7 @@ if(isset($_SESSION["accountID"]) AND $_SESSION["accountID"] != 0){
             <button type="submit" class="btn-rendel" style="margin-top:5px">'.$dl->getLocalizedString("write").'</button></div></form>');
 		}
 } else {
+  	$dl->title($dl->getLocalizedString("messenger"));
 	$dl->printSong('<div class="form">
     <h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
     <form class="form__inner" method="post" action="../dashboard/login/login.php">
@@ -119,6 +121,7 @@ if(isset($_SESSION["accountID"]) AND $_SESSION["accountID"] != 0){
 </div>');
 }
 } else {
+  		$dl->title($dl->getLocalizedString("messenger"));
 		$dl->printSong('<div class="form">
 			<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 			<form class="form__inner" method="post" action="../dashboard">
