@@ -41,13 +41,18 @@ foreach($result as &$action){
 	$value3 = $action["value3"];
 	if($action["type"] == 5){
 		if(is_numeric($value2)){
-			$value2 = date("d/m/Y G:i:s", $value2);
+			$value2 = date("d/m/Y", $value2);
 		}
 	}
 	if($action["type"] == 15) {
 		$value = $gs->getAccountName($value);
 	}
 	$actionname = $dl->getLocalizedString("modAction".$action["type"]);
+  	
+  	if($action["type"] == 1) {
+		if($value2 == 1) $star = 0; elseif($value2 < 5) $star = 1; else $star = 2;
+      	$value2 = $value2.' '.$dl->getLocalizedString("starsLevel$star");
+    }
 	if($action["type"] == 2 OR $action["type"] == 3 OR $action["type"] == 4){
 		if($action["value"] == 1){
 			$value = "True";

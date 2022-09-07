@@ -45,7 +45,9 @@ foreach($result as &$action){
 	$songsid = $action["ID"];
 	$time = $dl->convertToDate($action["reuploadTime"]);
 	$author = $action["authorName"];
+   	if(strlen($author) > 18) $author = "<details><summary>".$dl->getLocalizedString("spoiler")."</summary>$author</details>";
 	$name = $action["name"];
+  	if(strlen($name) > 30) $name = "<details><summary>".$dl->getLocalizedString("spoiler")."</summary>$name</details>";
 	$size = $action["size"];
 	$delete = '<td><a style="color:#ff444c" class="btn-rendel" href="stats/deleteSong.php?ID='.$songsid.'">'.$dl->getLocalizedString("delete").'</a></td>';
 	$table .= "<tr><th scope='row'>".$x."</th><td>".$songsid."</td><td>".$author."</td><td>".$name."</td><td>".$size."</td><td>".$time."</td><td>".$delete."</td></tr>";
@@ -56,8 +58,8 @@ $table .= "</table>";
 	bottom row
 */
 //getting count
-$query = $db->prepare("SELECT count(*) FROM songs");
-$query->execute();
+$query = $db->prepare("SELECT count(*) FROM songs WHERE reuploadID=:id");
+$query->execute([':id' => $accountID]);
 $packcount = $query->fetchColumn();
 $pagecount = ceil($packcount / 10);
 $bottomrow = $dl->generateBottomRow($pagecount, $actualpage);

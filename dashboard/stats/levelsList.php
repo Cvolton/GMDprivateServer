@@ -38,6 +38,7 @@ foreach($result as &$action){
 	$levelid = $action["levelID"];
 	$levelname = $action["levelName"];
 	$levelDesc = base64_decode($action["levelDesc"]);
+  	if(strlen($levelDesc) > 35) $levelDesc = "<details><summary>".$dl->getLocalizedString("spoiler")."</summary>$levelDesc</details>";
   	if(empty($levelDesc)) $levelDesc = '<div style="color:gray">'.$dl->getLocalizedString("noDesc").'</div>';
 	$levelpass = $action["password"];
 	$levelpass = substr($levelpass, 1);
@@ -79,7 +80,7 @@ $table .= "</table>";
 	bottom row
 */
 //getting count
-$query = $db->prepare("SELECT count(*) FROM songs");
+$query = $db->prepare("SELECT count(*) FROM levels WHERE unlisted=0");
 $query->execute();
 $packcount = $query->fetchColumn();
 $pagecount = ceil($packcount / 10);

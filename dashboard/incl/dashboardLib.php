@@ -2,7 +2,7 @@
 include __DIR__."/../../config/dashboard.php";
 
 if(!isset($_SESSION["accountID"])) $_SESSION["accountID"] = 0;
-
+// Dashboard library
 class dashboardLib{
 	public function printHeader($isSubdirectory = true){
 		global $gdps;
@@ -15,10 +15,8 @@ class dashboardLib{
 						<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
 						<link rel="manifest" href="/site.webmanifest">
 						<meta charset="utf-8">';
-		if($isSubdirectory){
-			echo '<base href="../">';
-		}
-		echo '			<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+          	if($isSubdirectory) echo '<base href="../">';
+		echo '<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 						<script async src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
 						<script async src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
 						<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.0/Chart.min.js"></script>
@@ -66,6 +64,12 @@ class dashboardLib{
 		$this->printFooter();
 	}
 	public function printSong($content, $active = "", $isSubdirectory = true){
+		$this->printHeader($isSubdirectory);
+		$this->printNavbar($active);
+		echo "$content";
+	}
+	public function error($content, $active = "", $isSubdirectory = false){
+      	echo '<base href="../../">';
 		$this->printHeader($isSubdirectory);
 		$this->printNavbar($active);
 		echo "$content";
@@ -331,6 +335,7 @@ class dashboardLib{
 	public function generateBottomRow($pagecount, $actualpage){
 		$pageminus = $actualpage - 1;
 		$pageplus = $actualpage + 1;
+      	if($pagecount < 2) return '';
 		$bottomrow = '<div>'.sprintf($this->getLocalizedString("pageInfo"),$actualpage,$pagecount).'</div><div class="btn-group" style="margin-left:auto; margin-right:0;">';
 		$bottomrow .= '<a id="first" href="'.strtok($_SERVER["REQUEST_URI"],'?').'?page=1" class="btn btn-outline-secondary"><i class="fa fa-backward" aria-hidden="true"></i> '.$this->getLocalizedString("first").'</a><a id="prev" href="'.strtok($_SERVER["REQUEST_URI"],'?').'?page='. $pageminus .'" class="btn btn-outline-secondary"><i class="fa fa-chevron-left" aria-hidden="true"></i> '.$this->getLocalizedString("previous").'</a>';
 		//updated to ".."

@@ -34,9 +34,10 @@ if(empty($result)) {
 foreach($result as &$action){
 	$username = $action["userName"];
 	$isAdmin = $action["isAdmin"];
-	$accountID = $action["accountID"];
+	$accountID = $action["accountID"].' | '.$gs->getUserID($action["accountID"]);
+  	if($action["accountID"] == $gs->getUserID($action["accountID"])) $accountID = $action["accountID"];
   	$query = $db->prepare("SELECT lastPlayed FROM users WHERE extID=:id");
-  	$query->execute([':id' => $accountID]);
+  	$query->execute([':id' => $action["accountID"]]);
   	$lastseen = $query->fetch();
   	$lastPlayed = $dl->convertToDate($lastseen["lastPlayed"]);
   	if($lastseen["lastPlayed"] == 0 OR empty($lastseen)) $lastPlayed = '<div style="color:gray">'.$dl->getLocalizedString("never").'</div>';

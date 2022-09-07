@@ -17,7 +17,7 @@ if(isset($_GET["page"]) AND is_numeric($_GET["page"]) AND $_GET["page"] > 0){
 }
 $table = '<table class="table table-inverse"><tr><th>#</th><th>'.$dl->getLocalizedString("accountID").'</th><th>'.$dl->getLocalizedString("username").'</th><th>'.$dl->getLocalizedString("stars").'</th></tr>';
 $time = time() - 86400;
-$query = $db->prepare("SELECT users.userID, SUM(actions.value) AS stars, users.userName FROM actions INNER JOIN users ON actions.account = users.userID WHERE type = '9' AND timestamp > :time AND users.isBanned = 0 GROUP BY(users.userID)");
+$query = $db->prepare("SELECT users.extID, SUM(actions.value) AS stars, users.userName FROM actions INNER JOIN users ON actions.account = users.userID WHERE type = '9' AND timestamp > :time AND users.isBanned = 0 GROUP BY(users.userID)");
 $query->execute([':time' => $time]);
 $result = $query->fetchAll();
 $x = $page + 1;
@@ -32,7 +32,7 @@ if(empty($result)) {
 	die();
 } 
 foreach($result as &$action){
-	$userid = $action["userID"];
+	$userid = $action["extID"];
 	$username = $action["userName"];
 	$stars = $action["stars"];
 	$table .= "<tr><th scope='row'>".$x."</th><td>".$userid."</td><td>".$username."</td><td>".$stars."</td></tr>";
@@ -43,9 +43,7 @@ $table .= "</table>";
 	bottom row
 */
 //getting count
-$query = $db->prepare("SELECT count(*) FROM songs");
-$query->execute();
-$packcount = $query->fetchColumn();
+$packcount = count($result);
 $pagecount = ceil($packcount / 10);
 $bottomrow = $dl->generateBottomRow($pagecount, $actualpage);
 $dl->printPage($table . $bottomrow, true, "browse");

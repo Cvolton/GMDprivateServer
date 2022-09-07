@@ -36,6 +36,7 @@ foreach($result as &$action){
 	$levelid = $action["levelID"];
 	$levelname = $action["levelName"];
 	$levelDesc = base64_decode($action["levelDesc"]);
+  	if(strlen($levelDesc) > 35) $levelDesc = "<details><summary>".$dl->getLocalizedString("spoiler")."</summary>$levelDesc</details>";
   	if(empty($levelDesc)) $levelDesc = '<div style="color:gray">'.$dl->getLocalizedString("noDesc").'</div>';
 	$songid = $action["songID"];
  	if($songid == 0) $songid = '<div style="color:#d0d0d0">'.strstr($gs->getAudioTrack($action["audioTrack"]), ' by ', true).'</div>';
@@ -60,7 +61,7 @@ $table .= "</table>";
 	bottom row
 */
 //getting count
-$query = $db->prepare("SELECT count(*) FROM songs");
+$query = $db->prepare("SELECT count(*) FROM levels WHERE unlisted=1");
 $query->execute();
 $packcount = $query->fetchColumn();
 $pagecount = ceil($packcount / 10);

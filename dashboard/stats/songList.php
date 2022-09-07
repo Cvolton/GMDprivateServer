@@ -49,6 +49,8 @@ foreach($result as &$action){
 	$author = $action["authorName"];
 	$name = $action["name"];
 	$size = $action["size"];
+  	if(strlen($author) > 18) $author = "<details><summary>".$dl->getLocalizedString("spoiler")."</summary>$author</details>";
+  	if(strlen($name) > 30) $name = "<details><summary>".$dl->getLocalizedString("spoiler")."</summary>$name</details>";
 	$manage = '<td><a class="btn-rendel" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'.$dl->getLocalizedString("change").'</a>
 								<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink"  style="padding:17px 17px 0px 17px; top:0%;">
 									 <form class="form__inner" method="post" action="">

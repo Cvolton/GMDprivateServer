@@ -16,6 +16,10 @@
   	justify-self: center;
 }
 
+.table-inverse td, .table-inverse th, .table-inverse thead th {
+	text-align:center;
+}
+
 .error {
 	display: flex;
     height: 100%;
@@ -269,7 +273,7 @@ p{
 
 
 summary {
-	color: white;
+	color: #d0d0d0;
 	font-size:15px;
 }
 
