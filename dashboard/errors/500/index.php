@@ -1,3 +1,13 @@
+<?php
+$e = 500;
+$path = str_replace($_SERVER['DOCUMENT_ROOT'], '', $_SERVER['SCRIPT_FILENAME']);
+$path =  str_replace('/errors/'.$e.'/index.php', '', $path);
+include $_SERVER['DOCUMENT_ROOT'].''.$path.'/incl/dashboardLib.php';
+$dl = new dashboardLib();
+$dl->title($e);
+echo '<a href="'.$path.'"><p class="error">'.$e.'</p></a>
+<p class="errtext">'.$dl->getLocalizedString($e).'</p>';
+?>
 <style>
 * {
 	background: #36393e;
@@ -22,12 +32,3 @@
 	color: #c0c0c0;
     text-shadow: 0px 0px 5px black;
 }</style>
-<?php
-$path = str_replace($_SERVER['DOCUMENT_ROOT'], '', $_SERVER['SCRIPT_FILENAME']);
-$path =  str_replace('/errors/500/index.php', '', $path);
-include $_SERVER['DOCUMENT_ROOT'].''.$path.'/../config/dashboard.php';
-if($_COOKIE["lang"] == 'RU') $text = 'Внутренняя ошибка сервера!'; else $text = 'Internal server error!';
-echo '<title>500 | '.$gdps.'</title>
-<a href="'.$path.'"><p class="error">500</p></a>
-<p class="errtext">'.$text.'</p>';
-?>
