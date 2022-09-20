@@ -41,6 +41,7 @@ foreach($result as &$action){
  	if($songid == 0) $songid = '<div style="color:#d0d0d0">'.strstr($gs->getAudioTrack($action["audioTrack"]), ' by ', true).'</div>';
 	$levelpass = $action["password"];
 	$levelpass = substr($levelpass, 1);
+  	$levelpass = preg_replace('/(0)\1+/', '', $levelpass);
 	if($levelpass == 0 OR empty($levelpass)) $levelpass = '<div style="color:gray">'.$dl->getLocalizedString("nopass").'</div>';
 	$username = $gs->getAccountName($action["extID"]);
   	$stars = $action["starStars"];
@@ -61,7 +62,7 @@ $table .= "</table>";
 	bottom row
 */
 //getting count
-$query = $db->prepare("SELECT count(*) FROM songs");
+$query = $db->prepare("SELECT count(*) FROM levels WHERE unlisted=1");
 $query->execute();
 $packcount = $query->fetchColumn();
 $pagecount = ceil($packcount / 10);

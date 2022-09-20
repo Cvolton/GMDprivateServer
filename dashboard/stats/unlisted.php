@@ -42,6 +42,7 @@ foreach($result as &$action){
  	if($songid == 0) $songid = '<div style="color:#d0d0d0">'.strstr($gs->getAudioTrack($action["audioTrack"]), ' by ', true).'</div>';
 	$levelpass = $action["password"];
 	$levelpass = substr($levelpass, 1);
+  	$levelpass = preg_replace('/(0)\1+/', '', $levelpass);
 	if($levelpass == 0 OR empty($levelpass)) $levelpass = '<div style="color:gray">'.$dl->getLocalizedString("nopass").'</div>';
   	$stars = $action["starStars"];
     if($stars < 5) {
