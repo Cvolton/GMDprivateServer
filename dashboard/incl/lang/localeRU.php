@@ -5,7 +5,7 @@ $string["homeNavbar"] = "Домой";
 $string["welcome"] = "Добро пожаловать на ".$gdps.'!';
 $string["levelsWeek"] = "Выложено уровней за неделю";
 $string["levels3Months"] = "Выложено уровней за 3 месяца";
-$string["footer"] = "Привет! Это тест футера, соц.сети там ->";
+$string["footer"] = "GreenCatsServer? 2020 - ".date('Y', time());
 
 $string["accountManagement"] = "Управление аккаунтом";
 $string["changePassword"] = "Сменить пароль";
@@ -221,6 +221,7 @@ $string["songs"] = "Песни";
 $string["author"] = "Автор";
 $string["name"] = "Название";
 $string["date"] = "Дата";
+$string["type"] = "Тип";
 $string["reportCount"] = "Количество репортов";
 $string["reportMod"] = "Репорты";
 $string["username"] = "Никнейм";
@@ -285,6 +286,8 @@ $string["noReason"] = "Нет причины";
 $string["noActions"] = "Нет действий";
 $string["noRates"] = "Нет оценок";
 
+$string["future"] = "Будущее";
+
 $string["spoiler"] = "Спойлер";
 $string["accid"] = "с ID аккаунта";
 $string["banned"] = "был успешно забанен!";
@@ -299,6 +302,7 @@ $string["banReason"] = "Причина блокировки";
 $string["action"] = "Действие";
 $string["value"] = "1 значение";
 $string["value2"] = "2 значение";
+$string["value3"] = "3 значение";
 $string["modAction1"] = "Оценил(а) уровень";
 $string["modAction2"] = "Снял(а)/добавил(а) Featured у уровня";
 $string["modAction3"] = "Снял(а)/добавил(а) монеты уровню";

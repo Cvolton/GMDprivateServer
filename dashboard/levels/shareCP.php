@@ -23,7 +23,7 @@ if(!empty($_POST["username"]) AND !empty($_POST["level"])) {
 				<p>'.$dl->getLocalizedString("invalidCaptcha").'</p>
 				<button type="submit" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 				</form>
-			</div>');
+			</div>', 'mod');
 		die();
 		}
 	$username = ExploitPatch::remove($_POST["username"]);
@@ -38,7 +38,7 @@ if(!empty($_POST["username"]) AND !empty($_POST["level"])) {
 			<p>'.$dl->getLocalizedString("alreadyShared").'</p>
 			<button type="submit" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 			</form>
-			</div>');
+			</div>', 'mod');
 		die();
 	}
 	$query = $db->prepare("SELECT * FROM levels WHERE levelID=:level AND userID=:user");
@@ -51,7 +51,7 @@ if(!empty($_POST["username"]) AND !empty($_POST["level"])) {
 			<p>'.$dl->getLocalizedString("shareToAuthor").'</p>
 			<button type="submit" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 			</form>
-			</div>');
+			</div>', 'mod');
 		die();
 	}
 	$query = $db->prepare("SELECT isCreatorBanned FROM users WHERE userID=:user AND isCreatorBanned=1");
@@ -64,7 +64,7 @@ if(!empty($_POST["username"]) AND !empty($_POST["level"])) {
 			<p>'.$dl->getLocalizedString("userIsBanned").'</p>
 			<button type="submit" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 			</form>
-			</div>');
+			</div>', 'mod');
 		die();
 	}
 	$accountID = $_SESSION["accountID"];
@@ -87,7 +87,7 @@ if(!empty($_POST["username"]) AND !empty($_POST["level"])) {
 		<a class="a" href="../tools/cron/cron.php">'.$dl->getLocalizedString("updateCron").'</a>
 	    <button type="submit" class="btn-primary">'.$dl->getLocalizedString("shareCPOneMore").'</button>
     </form>
-</div>');
+</div>', 'mod');
 } else {
 	$optionUser = '';
 	foreach ($result as $i => $row) {
@@ -113,7 +113,7 @@ if(!empty($_POST["username"]) AND !empty($_POST["level"])) {
         '.$optionLevel.'
     </select>
     </div>
-	');
+	', 'mod');
 		Captcha::displayCaptcha();
         echo '
         <button type="submit" class="btn-primary">' . $dl->getLocalizedString("shareCP") . '</button>
@@ -145,5 +145,5 @@ if(!empty($_POST["username"]) AND !empty($_POST["level"])) {
 		<p>'.$dl->getLocalizedString("noPermission").'</p>
 	        <button type="submit" class="btn-primary">'.$dl->getLocalizedString("Kish!").'</button>
     </form>
-</div>');
+</div>', 'mod');
 ?>

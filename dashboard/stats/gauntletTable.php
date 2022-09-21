@@ -108,5 +108,5 @@ $dl->printPage('<table class="table table-inverse">
     '.$gauntlettable.'
   </tbody>
 </table>'
-.$bottomrow, true, "stats");
+.$bottomrow, true, "browse");
 ?>

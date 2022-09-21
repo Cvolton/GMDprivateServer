@@ -18,7 +18,7 @@ if($_FILES && $_FILES['filename']['error'] == UPLOAD_ERR_OK) {
 			<p>'.$dl->getLocalizedString("invalidCaptcha").'</p>
 			<button type="submit" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 			</form>
-		</div>');
+		</div>', 'reupload');
 		die();
 	} else {
     $file_type = $_FILES['filename']['type'];
@@ -28,7 +28,6 @@ if($_FILES && $_FILES['filename']['error'] == UPLOAD_ERR_OK) {
         $db_fid = -7;
     } else {
         $maxsize = 12582912;
-
         if($_FILES['filename']['size'] >= $maxsize) {
             $db_fid = -5;
         } else {
@@ -58,14 +57,14 @@ if($_FILES && $_FILES['filename']['error'] == UPLOAD_ERR_OK) {
 		<p>'.$dl->getLocalizedString("songAddError$db_fid").'</p>
         <button type="submit" class="btn-primary">'.$dl->getLocalizedString("tryAgainBTN").'</button>
     </form>
-</div>');
+</div>', 'reupload');
 } else {
 	$dl->printSong('<div class="form">
 	  <h1>'.$dl->getLocalizedString("songAdded").'</h1>
 	  <form class="form__inner" method="post" action="">
 		<p>'.$dl->getLocalizedString("songID").''.$db_fid.'</p>
 		<button type="submit" class="btn-primary">'.$dl->getLocalizedString("songAddAnotherBTN").'</button>
-	  </form>');
+	  </form>', 'reupload');
 }
 }
 } else {
@@ -73,9 +72,9 @@ if($_FILES && $_FILES['filename']['error'] == UPLOAD_ERR_OK) {
     <h1>'.$dl->getLocalizedString("songAdd").'</h1>
     <form class="form__inner" method="post" action="" enctype="multipart/form-data">
 		<p>'.$dl->getLocalizedString("songAddDesc").'</p>
-        <div class="btn-song" id="upload"><input type="file" name="filename" size="10" accept=".mp3, .ogg, .mpeg"></div>
+        <div class="btn-song" id="upload"><input type="file" id="randomtext" name="filename" size="10" accept=".mp3, .ogg, .mpeg"></div>
         <div class="field"><input type="text" name="author" placeholder="'.$dl->getLocalizedString("songAddAuthorFieldPlaceholder").'"></div>
-        <div class="field"><input type="text" name="name" placeholder="'.$dl->getLocalizedString("songAddNameFieldPlaceholder").'"></div>');
+        <div class="field"><input type="text" name="name" placeholder="'.$dl->getLocalizedString("songAddNameFieldPlaceholder").'"></div>', 'reupload');
 Captcha::displayCaptcha();
 echo '<button style="margin-top:5px;margin-bottom:5px" type="submit" class="btn-song">'.$dl->getLocalizedString("reuploadBTN").'</button></form>';
 }
@@ -86,6 +85,6 @@ echo '<button style="margin-top:5px;margin-bottom:5px" type="submit" class="btn-
 		<p>'.$dl->getLocalizedString("noLogin?").'</p>
 		<button type="submit" class="btn-song">'.$dl->getLocalizedString("LoginBtn").'</button>
 		</form>
-	</div>');
+	</div>', 'reupload');
 }
 ?>

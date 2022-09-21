@@ -34,7 +34,7 @@ if(empty($result)) {
 foreach($result as &$action){
 	$username = $action["userName"];
 	$isAdmin = $action["isAdmin"];
-	$accountID = $action["accountID"].' | '.$gs->getUserID($action["accountID"]);
+	$accountID = $action["accountID"].' <text style="color:gray">|</text> '.$gs->getUserID($action["accountID"]);
   	if($action["accountID"] == $gs->getUserID($action["accountID"])) $accountID = $action["accountID"];
   	$query = $db->prepare("SELECT lastPlayed FROM users WHERE extID=:id");
   	$query->execute([':id' => $action["accountID"]]);
@@ -59,7 +59,7 @@ foreach($result as &$action){
 				break;
 		}
 	}
-	$registerDate = date("d/m/Y", $action["registerDate"]);
+	$registerDate = date("d.m.Y", $action["registerDate"]);
 	$table .= "<tr><th scope='row'>".$x."</th><td>".$username."</td><td>".$accountID."</td><td>".$registerDate."</td><td>".$resultRole."</td><td>".$lastPlayed."</td></tr>";
 	$x++;
 }

@@ -7,7 +7,6 @@ require "../../incl/lib/mainLib.php";
 $gs = new mainLib();
 include "../../incl/lib/connection.php";
 $dl->title($dl->getLocalizedString("modActionsList"));
-$dl->printFooter('../');
 if(isset($_GET["page"]) AND is_numeric($_GET["page"]) AND $_GET["page"] > 0){
 	$page = ($_GET["page"] - 1) * 10;
 	$actualpage = $_GET["page"];
@@ -15,7 +14,7 @@ if(isset($_GET["page"]) AND is_numeric($_GET["page"]) AND $_GET["page"] > 0){
 	$page = 0;
 	$actualpage = 1;
 }
-$table = '<table class="table table-inverse"><tr><th>#</th><th>'.$dl->getLocalizedString("mod").'</th><th>'.$dl->getLocalizedString("action").'</th><th>'.$dl->getLocalizedString("value").'</th><th>'.$dl->getLocalizedString("value2").'</th><th>'.$dl->getLocalizedString("level").'</th><th>'.$dl->getLocalizedString("time").'</th></tr>';
+$table = '<table class="table table-inverse"><tr><th>#</th><th>'.$dl->getLocalizedString("mod").'</th><th>'.$dl->getLocalizedString("action").'</th><th>'.$dl->getLocalizedString("value").'</th><th>'.$dl->getLocalizedString("value2").'</th><th>'.$dl->getLocalizedString("value3").'</th><th>'.$dl->getLocalizedString("time").'</th></tr>';
 
 $query = $db->prepare("SELECT * FROM modactions ORDER BY ID DESC LIMIT 10 OFFSET $page");
 $query->execute();
@@ -28,7 +27,7 @@ if(empty($result)) {
 		<p>'.$dl->getLocalizedString("emptyPage").'</p>
         <button type="submit" class="btn-primary">'.$dl->getLocalizedString("dashboard").'</button>
     </form>
-</div>');
+</div>', 'stats');
 	die();
 } 
 foreach($result as &$action){
@@ -40,8 +39,9 @@ foreach($result as &$action){
 	$value2 = $action["value2"];
 	$value3 = $action["value3"];
 	if($action["type"] == 5){
+      	$value = $value3;
 		if(is_numeric($value2)){
-			$value2 = date("d/m/Y", $value2);
+			$value3 = date("d.m.Y", $value2);
 		}
 	}
 	if($action["type"] == 15) {
@@ -54,15 +54,9 @@ foreach($result as &$action){
       	$value2 = $value2.' '.$dl->getLocalizedString("starsLevel$star");
     }
 	if($action["type"] == 2 OR $action["type"] == 3 OR $action["type"] == 4){
-		if($action["value"] == 1){
-			$value = "True";
-		}else{
-			$value = "False";
-		}
-	}
-	if($action["type"] == 5 OR $action["type"] == 6){
-		$value = "";
-	}
+		if($action["value"] == 1) $value = '<text style="color:gray">'.$dl->getLocalizedString("isAdminYes").'</text>';
+      	else $value = '<text style="color:gray">'.$dl->getLocalizedString("isAdminNo").'</text>';
+    }
 	if($action["type"] == 13){
 		$value = base64_decode($value);
 	}
@@ -79,9 +73,9 @@ foreach($result as &$action){
 	}
 	if(strlen($action["value"]) > 18) $value = "<details><summary>".$dl->getLocalizedString("spoiler")."</summary>$value</details>";
   	if(strlen($action["value2"]) > 18) $value2 = "<details><summary>".$dl->getLocalizedString("spoiler")."</summary>$value2</details>";
-	$time = date("d/m/Y G:i:s", $action["timestamp"]);
+	$time = $dl->convertToDate($action["timestamp"]);
 	if($action["type"] == 5 AND $action["value2"] > time()){
-		$value3 = "future";
+		$value2 = $dl->getLocalizedString("future");
 	}
 	$table .= "<tr><th scope='row'>".$x."</th><td>".$account."</td><td>".$actionname."</td><td>".$value."</td><td>".$value2."</td><td>".$value3."</td><td>".$time."</td></tr>";
 	$x++;
@@ -96,5 +90,5 @@ $query->execute();
 $packcount = $query->fetchColumn();
 $pagecount = ceil($packcount / 10);
 $bottomrow = $dl->generateBottomRow($pagecount, $actualpage);
-$dl->printPage($table . $bottomrow, true, "browse");
+$dl->printPage($table . $bottomrow, true, "stats");
 ?>

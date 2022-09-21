@@ -5,7 +5,7 @@ $string["homeNavbar"] = "Home";
 $string["welcome"] = "Welcome to ".$gdps.'!';
 $string["levelsWeek"] = "Levels uploaded in a week";
 $string["levels3Months"] = "Levels uploaded in 3 months";
-$string["footer"] = "Hello! This is a footer test! Socials are there ->";
+$string["footer"] = "GreenCatsServer? 2020 - ".date('Y', time());;
 
 $string["accountManagement"] = "Account management";
 $string["changePassword"] = "Change password";
@@ -50,7 +50,7 @@ $string["loginBox"] = "Login to account";
 $string["loginSuccess"] = "You successfully login to your account!";
 $string["loginAlready"] = "You already logged in!";
 $string["clickHere"] = "Dashboard";
-$string["enterUsername"] = "Enter username";
+$string["enterUsername"] = "Enter Username";
 $string["enterPassword"] = "Enter password";
 
 $string["register"] = "Register";
@@ -74,14 +74,14 @@ $string["oldPassword"] = "Old password";
 $string["newPassword"] = "New password";
 $string["confirmNew"] = "Confirm password";
 
-$string["changeNickTitle"] = "Change username";
+$string["changeNickTitle"] = "Change Username";
 $string["changedNick"] = "Username successfully changed! You need to login to you account again.";
-$string["wrongNick"] = "Wrong username!";
+$string["wrongNick"] = "Wrong Username!";
 $string["sameNick"] = "Usernames you entered are the same!";
 $string["alreadyUsedNick"] = "Username you entered is already taken!";
-$string["changeNickDesc"] = "Here you can change your username!";
-$string["oldNick"] = "Old username";
-$string["newNick"] = " New username";
+$string["changeNickDesc"] = "Here you can change your Username!";
+$string["oldNick"] = "Old Username";
+$string["newNick"] = " New Username";
 $string["password"] = "Password";
 
 $string["packCreate"] = "Create a Map Pack";
@@ -221,6 +221,7 @@ $string["songs"] = "Songs";
 $string["author"] = "Creator";
 $string["name"] = "Name";
 $string["date"] = "Date";
+$string["type"] = "Type";
 $string["reportCount"] = "Report count";
 $string["reportMod"] = "Reports";
 $string["username"] = "Username";
@@ -285,6 +286,8 @@ $string["noReason"] = "No reason";
 $string["noActions"] = "No actions";
 $string["noRates"] = "No rates";
 
+$string["future"] = "Future";
+
 $string["spoiler"] = "Spoiler";
 $string["accid"] = "with account ID";
 $string["banned"] = "was successfully banned!";
@@ -297,8 +300,9 @@ $string["banYourself"] = "You can't ban yourself!";
 $string["banYourSelfBtn!"] = "Ban someone else";
 $string["banReason"] = "Ban reason";
 $string["action"] = "Action";
-$string["value"] = "1st Value";
-$string["value2"] = "2nd Value";
+$string["value"] = "1st value";
+$string["value2"] = "2nd value";
+$string["value2"] = "3rd value";
 $string["modAction1"] = "Rated a level";
 $string["modAction2"] = "Un/featured a level";
 $string["modAction3"] = "Un/verified coins";

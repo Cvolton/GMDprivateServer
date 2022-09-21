@@ -21,7 +21,7 @@ if(!empty($_POST["user"])) {
 			<p>'.$dl->getLocalizedString("invalidCaptcha").'</p>
 			<button type="submit" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 			</form>
-		</div>');
+		</div>', 'mod');
 		die();
 	}
 	$mod = ExploitPatch::remove($_POST["user"]);
@@ -33,7 +33,7 @@ if(!empty($_POST["user"])) {
 			<p>'.$dl->getLocalizedString("invalidPost").'</p>
 			<button type="submit" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 			</form>
-		</div>');
+		</div>', 'mod');
 		die();
 	}
 	if(!is_numeric($mod)) $mod = $gs->getAccountIDFromName($mod); 
@@ -47,7 +47,7 @@ if(!empty($_POST["user"])) {
 			<p>'.$dl->getLocalizedString("nothingFound").'</p>
 			<button type="submit" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 			</form>
-		</div>');
+		</div>', 'mod');
 		die();
 	}
 	if($mod == $accountID) {
@@ -57,7 +57,7 @@ if(!empty($_POST["user"])) {
 			<p>'.$dl->getLocalizedString("modYourself").'</p>
 			<button type="submit" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 			</form>
-		</div>');
+		</div>', 'mod');
 		die();
 	}
 	$query = $db->prepare("SELECT accountID FROM roleassign WHERE accountID=:mod");
@@ -70,7 +70,7 @@ if(!empty($_POST["user"])) {
 			<p>'.$dl->getLocalizedString("alreadyMod").'</p>
 			<button type="submit" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 			</form>
-		</div>');
+		</div>', 'mod');
 		die();
 	}
 
@@ -86,7 +86,7 @@ if(!empty($_POST["user"])) {
 		<p>'.$success.'</p>
 	    <button type="submit" class="btn-primary">'.$dl->getLocalizedString("addModOneMore").'</button>
     </form>
-</div>');
+</div>', 'mod');
 } else {
 	$dl->printSong('<div class="form">
     <h1>'.$dl->getLocalizedString("addMod").'</h1>
@@ -99,7 +99,7 @@ if(!empty($_POST["user"])) {
 		<option value="3">'.$dl->getLocalizedString("moder").'</option>
 	</select>
 	</div>
-	');
+	', 'mod');
 		Captcha::displayCaptcha();
         echo '
         <button type="submit" class="btn-primary">' . $dl->getLocalizedString("addMod") . '</button>

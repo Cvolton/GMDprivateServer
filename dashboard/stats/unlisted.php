@@ -29,7 +29,7 @@ if(empty($result)) {
 		<p>'.$dl->getLocalizedString("emptyPage").'</p>
         <button type="submit" class="btn-primary">'.$dl->getLocalizedString("dashboard").'</button>
     </form>
-</div>');
+</div>', 'account');
 	die();
 } 
 foreach($result as &$action){
@@ -67,7 +67,7 @@ $query->execute();
 $packcount = $query->fetchColumn();
 $pagecount = ceil($packcount / 10);
 $bottomrow = $dl->generateBottomRow($pagecount, $actualpage);
-$dl->printPage($table . $bottomrow, true, "browse");
+$dl->printPage($table . $bottomrow, true, "account");
 } else {
 	$dl->printSong('<div class="form">
     <h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
@@ -75,6 +75,6 @@ $dl->printPage($table . $bottomrow, true, "browse");
 	<p>'.$dl->getLocalizedString("noLogin?").'</p>
 	        <button type="submit" class="btn-primary">'.$dl->getLocalizedString("LoginBtn").'</button>
     </form>
-</div>');
+</div>', 'account');
 }
 ?>

@@ -18,7 +18,7 @@ if(!empty($_POST["url"])){
 			<p>'.$dl->getLocalizedString("invalidCaptcha").'</p>
 			<button type="submit" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 			</form>
-		</div>');
+		</div>', 'reupload');
 		die();
 	}
 	$songID = $gs->songReupload($_POST["url"], $_POST["author"], $_POST["name"], $_SESSION["accountID"]);
@@ -31,7 +31,7 @@ if(!empty($_POST["url"])){
 						<p>'.$dl->getLocalizedString("songAddError-3").' '.$existed.'</p>
 						<a class="btn btn-primary btn-block" href="'.$_SERVER["REQUEST_URI"].'">'.$dl->getLocalizedString("tryAgainBTN").'</a>
 				</form>
-				</div>');
+				</div>', 'reupload');
 				die();
 		}
 		$dl->printSong('<div class="form">
@@ -40,7 +40,7 @@ if(!empty($_POST["url"])){
 						<p>'.$dl->getLocalizedString("songAddError$songID").'</p>
 						<a class="btn btn-primary btn-block" href="'.$_SERVER["REQUEST_URI"].'">'.$dl->getLocalizedString("tryAgainBTN").'</a>
 				</form>
-				</div>');
+				</div>', 'reupload');
 	}else{
 		$dl->printSong('<div class="form">
 		<h1>'.$dl->getLocalizedString("songAdd").'</h1>
@@ -48,7 +48,7 @@ if(!empty($_POST["url"])){
 				<p>'.$dl->getLocalizedString("songID").''.$songID.'</p>
 				<a class="btn btn-primary btn-block" href="'.$_SERVER["REQUEST_URI"].'">'.$dl->getLocalizedString("songAddAnotherBTN").'</a>
 			</form>
-		</div>');
+		</div>', 'reupload');
 	}
 }else{
 	$dl->printSong('<div class="form">
@@ -58,7 +58,7 @@ if(!empty($_POST["url"])){
         <div class="field"><input type="text" name="url" placeholder="'.$dl->getLocalizedString("songAddUrlFieldPlaceholder").'"></div>
 		<div class="field"><input type="text" name="author" placeholder="'.$dl->getLocalizedString("songAddAuthorFieldPlaceholder").'"></div>
 		<div class="field"><input type="text" name="name" placeholder="'.$dl->getLocalizedString("songAddNameFieldPlaceholder").'"></div>
-		');
+		', 'reupload');
 		Captcha::displayCaptcha();
         echo '<button type="submit" class="btn-song">'.$dl->getLocalizedString("reuploadBTN").'</button>
     </form>
@@ -71,6 +71,6 @@ if(!empty($_POST["url"])){
 	<p>'.$dl->getLocalizedString("noLogin?").'</p>
 	        <button type="submit" class="btn-song">'.$dl->getLocalizedString("LoginBtn").'</button>
     </form>
-</div>');
+</div>', 'reupload');
 }
 ?>

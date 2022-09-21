@@ -26,7 +26,7 @@ if($_POST["oldpassword"] != "" AND $_POST["newpassword"] != "" AND $_POST["newpa
 			<p>'.$dl->getLocalizedString("invalidCaptcha").'</p>
 			<button type="submit" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 			</form>
-		</div>');
+		</div>', 'account');
 		die();
 	}
 	$userName = $gs->getAccountName($_SESSION["accountID"]);
@@ -39,7 +39,7 @@ if($_POST["oldpassword"] != "" AND $_POST["newpassword"] != "" AND $_POST["newpa
 		<p>'.$dl->getLocalizedString("samePass").'</p>
         <button type="submit" class="btn-primary">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 		</form>
-		</div>');
+		</div>', 'account');
 		die();
 	}
 	$pass = GeneratePass::isValidUsrname($userName, $oldpass);
@@ -55,7 +55,7 @@ if ($pass == 1) {
 		<p>'.$dl->getLocalizedString("changedPass").'</p>
         <button type="submit" class="btn-primary">'.$dl->getLocalizedString("dashboard").'</button>
     </form>
-</div>');
+</div>', 'account');
 	//decrypting save
 	$query = $db->prepare("SELECT accountID FROM accounts WHERE userName=:userName");	
 	$query->execute([':userName' => $userName]);
@@ -82,7 +82,7 @@ if ($pass == 1) {
 		<p>'.$dl->getLocalizedString("wrongPass").'</p>
         <button type="submit" class="btn-primary">'.$dl->getLocalizedString("tryAgainBTN").'</button>
     </form>
-</div>');
+</div>', 'account');
 } 
 
 } else {
@@ -93,7 +93,7 @@ if ($pass == 1) {
         <div class="field"><input type="password" name="oldpassword" placeholder="'.$dl->getLocalizedString("oldPassword").'"></div>
         <div class="field"><input type="password" name="newpassword" placeholder="'.$dl->getLocalizedString("newPassword").'"></div>
 		<div class="field"><input type="password" name="newpassconfirm" placeholder="'.$dl->getLocalizedString("confirmNew").'"></div>
-		');
+		', 'account');
 		Captcha::displayCaptcha();
         echo '<button style="margin-top:5px" type="submit" class="btn-song">'.$dl->getLocalizedString("changePassword").'</button>
     </form>
@@ -105,6 +105,6 @@ if ($pass == 1) {
 	<p>'.$dl->getLocalizedString("noLogin?").'</p>
 	        <button type="submit" class="btn-song">'.$dl->getLocalizedString("LoginBtn").'</button>
     </form>
-</div>');
+</div>', 'account');
 }
 ?>

@@ -16,7 +16,7 @@ if(isset($_GET["page"]) AND is_numeric($_GET["page"]) AND $_GET["page"] > 0){
 }
 $dailytable = "";
 //getting data
-$query = $db->prepare("SELECT feaID, levelID, timestamp FROM dailyfeatures WHERE timestamp < :time ORDER BY feaID DESC LIMIT 10 OFFSET $page");
+$query = $db->prepare("SELECT * FROM dailyfeatures WHERE timestamp < :time ORDER BY feaID DESC LIMIT 10 OFFSET $page");
 $query->execute([':time' => time()]);
 $result = $query->fetchAll();
 $query = $db->prepare("SELECT count(*) FROM dailyfeatures WHERE timestamp < :time");
@@ -30,13 +30,14 @@ if(empty($result)) {
 		<p>'.$dl->getLocalizedString("emptyPage").'</p>
         <button type="submit" class="btn-primary">'.$dl->getLocalizedString("dashboard").'</button>
     </form>
-</div>');
+</div>', 'stats');
 	die();
 } 
 //printing data
 foreach($result as &$daily){
 	//getting level data
-	$query = $db->prepare("SELECT levelName,userID,starStars,coins FROM levels WHERE levelID = :levelID");
+  	if($daily["type"] == 0) $type = 'Daily'; else $type = 'Weekly';
+    $query = $db->prepare("SELECT levelName,userID,starStars,coins FROM levels WHERE levelID = :levelID");
 	$query->execute([':levelID' => $daily["levelID"]]);
 	$level = $query->fetch();
   	$stars = $level["starStars"];
@@ -62,7 +63,8 @@ foreach($result as &$daily){
 					<td>'.$gs->getUserName($level["userID"]).'</td>
 					<td>'.$stars.'</td>
 					<td>'.$coins.'</td>
-					<td>'.$dl->convertToDate($daily["timestamp"]).'</td>
+					<td>'.date('d.m.Y', $daily["timestamp"]).'</td>
+                    <td>'.$type.'</td>
 				</tr>';
 	$x--;
 	echo "</td></tr>";
@@ -85,6 +87,7 @@ $dl->printPage('<table class="table table-inverse">
 			<th>'.$dl->getLocalizedString("stars").'</th>
 			<th>'.$dl->getLocalizedString("userCoins").'</th>
 			<th>'.$dl->getLocalizedString("time").'</th>
+            <th>'.$dl->getLocalizedString("type").'</th>
 		</tr>
 	</thead>
 	<tbody>

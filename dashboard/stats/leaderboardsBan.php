@@ -20,7 +20,7 @@ if(!empty($_POST["userID"])) {
 				<p>'.$dl->getLocalizedString("invalidCaptcha").'</p>
 				<button type="submit" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 				</form>
-			</div>');
+			</div>', 'mod');
 		die();
 		}
 		$userName = $gs->getAccountName($_SESSION["accountID"]);
@@ -43,7 +43,7 @@ if(!empty($_POST["userID"])) {
     <form class="form__inner" method="post" action="">
 	        <button type="submit" class="btn-primary">'.$dl->getLocalizedString("banYourSelfBtn!").'</button>
     </form>
-</div>');
+</div>', 'mod');
 			die();
 		}	$query = $db->prepare("SELECT isBanned FROM users WHERE extID=:id");
 			$query->execute([':id' => $userID]);
@@ -61,20 +61,20 @@ if(!empty($_POST["userID"])) {
 			}
 			if($ban->rowCount() != 0){
 				$dl->printSong('<div class="form">
-    <h1>'.$dl->getLocalizedString("banUserPlace").'</h1>
-	<p id="bruh">'.$success.'</p>
-    <form class="form__inner" method="post" action="">
-	        <button type="submit" class="btn-primary">'.$dl->getLocalizedString("banYourSelfBtn!").'</button>
-    </form>
-</div>');
+                    <h1>'.$dl->getLocalizedString("banUserPlace").'</h1>
+                    <p id="bruh">'.$success.'</p>
+                      <form class="form__inner" method="post" action="">
+                          <button type="submit" class="btn-primary">'.$dl->getLocalizedString("banYourSelfBtn!").'</button>
+                      </form>
+              		</div>', 'mod');
 			}else{
 				$dl->printSong('<div class="form">
-    <h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
-	<p id="bruh">'.$dl->getLocalizedString("nothingFound").'</p>
-    <form class="form__inner" method="post" action="">
-	        <button type="submit" class="btn-primary">'.$dl->getLocalizedString("tryAgainBTN").'</button>
-    </form>
-</div>');
+                    <h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
+                    <p id="bruh">'.$dl->getLocalizedString("nothingFound").'</p>
+                    <form class="form__inner" method="post" action="">
+                         <button type="submit" class="btn-primary">'.$dl->getLocalizedString("tryAgainBTN").'</button>
+                    </form>
+               		</div>', 'mod');
 			die();
 			}
 			$query = $db->prepare("INSERT INTO modactions  (type, value, value2, value3, timestamp, account) 
@@ -87,7 +87,7 @@ if(!empty($_POST["userID"])) {
     <form class="form__inner" method="post" action="../dashboard">
 	        <button type="submit" class="btn-primary">'.$dl->getLocalizedString("Kish!").'</button>
     </form>
-</div>');
+</div>', 'mod');
 die();
 	}
 } else {
@@ -97,7 +97,7 @@ $dl->printSong('<div class="form">
     <form class="form__inner" method="post" action="">
         <div class="field"><input type="text" name="userID" placeholder="'.$dl->getLocalizedString("banUserID").'"></div>
         <div class="field"><input type="text" name="banReason" placeholder="'.$dl->getLocalizedString("banReason").'"></div>
-		');
+		', 'mod');
 		Captcha::displayCaptcha();
         echo '
         <button type="submit" class="btn-primary">'.$dl->getLocalizedString("ban").'</button>
@@ -105,4 +105,3 @@ $dl->printSong('<div class="form">
 </div>';
 }
 ?>
-<link rel="stylesheet" href="../incl/cvolton.css">

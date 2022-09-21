@@ -24,7 +24,7 @@ if($_POST["checkbox_data"] == 'on') {
 				<p>'.$dl->getLocalizedString("invalidCaptcha").'</p>
 				<button type="submit" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 				</form>
-			</div>');
+			</div>', 'mod');
 		die();
 		}
 	$accountID = $_SESSION["accountID"];
@@ -54,7 +54,7 @@ if($_POST["checkbox_data"] == 'on') {
 		<p>'.$dl->getLocalizedString("sameLevels").'</p>
 	        <button type="submit" class="btn-primary">'.$dl->getLocalizedString("tryAgainBTN").'</button>
     </form>
-</div>');
+</div>', 'mod');
 		die();
 	}
 	if($_POST['level_1'] == "l1" OR $_POST['level_2'] == "l2" OR $_POST['level_3'] == "l3" OR $_POST['level_4'] == "l4" OR $_POST['level_5'] == "l5") { // bruh
@@ -64,7 +64,7 @@ if($_POST["checkbox_data"] == 'on') {
 			<p>'.$dl->getLocalizedString("chooseLevels").'</p>
 	        <button type="submit" class="btn-primary">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 			</form>
-			</div>');
+			</div>', 'mod');
 		die();
 	}
 	if(!is_numeric($_POST['level_1']) OR !is_numeric($_POST['level_2']) OR !is_numeric($_POST['level_3']) OR !is_numeric($_POST['level_4']) OR !is_numeric($_POST['level_5'])) {
@@ -74,7 +74,7 @@ if($_POST["checkbox_data"] == 'on') {
 			<p>'.$dl->getLocalizedString("invalidPost").'</p>
 	        <button type="submit" class="btn-primary">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 			</form>
-			</div>');
+			</div>', 'mod');
 		die();
 	}
 	$levels = ExploitPatch::remove($_POST['level_1']) . ',' . ExploitPatch::remove($_POST['level_2']) . ',' . ExploitPatch::remove($_POST['level_3']). ',' . ExploitPatch::remove($_POST['level_4']). ',' . ExploitPatch::remove($_POST['level_5']);
@@ -88,7 +88,7 @@ if($_POST["checkbox_data"] == 'on') {
 		<p>'.$dl->getLocalizedString("gauntletCreateSuccess").'</p>
 	    <button type="submit" class="btn-primary">'.$dl->getLocalizedString("gauntletCreateOneMore").'</button>
     </form>
-</div>');
+</div>', 'mod');
 } else {
 	$options = '';
 	foreach ($result as $i => $row) {
@@ -127,7 +127,7 @@ if($_POST["checkbox_data"] == 'on') {
     </select>
     </div>
 	<div class="checkbox"><input class="checkbox" type="checkbox" name="checkbox_data" required>'.$dl->getLocalizedString("checkbox").'</div>
-	');
+	', 'mod');
 		Captcha::displayCaptcha();
         echo '
         <button type="submit" class="btn-primary">' . $dl->getLocalizedString("gauntletCreate") . '</button>
@@ -158,5 +158,5 @@ if($_POST["checkbox_data"] == 'on') {
 		<p>'.$dl->getLocalizedString("noPermission").'</p>
 	        <button type="submit" class="btn-primary">'.$dl->getLocalizedString("Kish!").'</button>
     </form>
-</div>');
+</div>', 'mod');
 ?>

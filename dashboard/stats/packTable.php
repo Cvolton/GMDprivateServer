@@ -16,7 +16,7 @@ if(isset($_GET["page"]) AND is_numeric($_GET["page"]) AND $_GET["page"] > 0){
 }
 $x = $page + 1;
 $packtable = "";
-$query = $db->prepare("SELECT levels,name,stars,coins FROM mappacks ORDER BY ID ASC LIMIT 10 OFFSET $page");
+$query = $db->prepare("SELECT levels,name,stars,coins,rgbcolors FROM mappacks ORDER BY ID ASC LIMIT 10 OFFSET $page");
 $query->execute();
 $result = $query->fetchAll();
 if(empty($result)) {
@@ -26,12 +26,13 @@ if(empty($result)) {
 		<p>'.$dl->getLocalizedString("emptyPage").'</p>
         <button type="submit" class="btn-primary">'.$dl->getLocalizedString("dashboard").'</button>
     </form>
-</div>');
+</div>', 'browse');
 	die();
 } 
 foreach($result as &$pack){
 	$lvlarray = explode(",", $pack["levels"]);
 	$lvltable = "";
+  	$color = $pack['rgbcolors'];
      $starspack = $pack["stars"];
      if($starspack < 5) {
               $star = 1;
@@ -70,7 +71,7 @@ foreach($result as &$pack){
 	}
 	$packtable .= "<tr>
 					<th scope='row'>$x</th>
-					<td>".htmlspecialchars($pack["name"],ENT_QUOTES)."</td>
+					<td style='color:rgb(".$color.");font-weight:700'>".htmlspecialchars($pack["name"],ENT_QUOTES)."</td>
 					<td>".$starspack."</td>
 					<td>".$coinspack.'</td>
 					<td><a class="btn-rendel" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -122,5 +123,5 @@ $dl->printPage('<table class="table table-inverse">
     '.$packtable.'
   </tbody>
 </table>'
-.$bottomrow, true, "stats");
+.$bottomrow, true, 'browse');
 ?>

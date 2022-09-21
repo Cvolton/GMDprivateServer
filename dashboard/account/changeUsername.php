@@ -26,7 +26,7 @@ if($_POST["oldnickname"] != "" AND $_POST["newnickname"] != "" AND $_POST["passw
 			<p>'.$dl->getLocalizedString("invalidCaptcha").'</p>
 			<button type="submit" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 			</form>
-		</div>');
+		</div>', 'account');
 		die();
 	}
 	$userName = $gs->getAccountName($_SESSION["accountID"]);
@@ -40,7 +40,7 @@ if($_POST["oldnickname"] != "" AND $_POST["newnickname"] != "" AND $_POST["passw
 		<p>'.$dl->getLocalizedString("wrongNick").'</p>
         <button type="submit" class="btn-primary">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 		</form>
-		</div>');
+		</div>', 'account');
 		die();
 	} elseif($userName == $newnick OR $oldnick == $newnick){
 		$dl->printSong('<div class="form">
@@ -49,7 +49,7 @@ if($_POST["oldnickname"] != "" AND $_POST["newnickname"] != "" AND $_POST["passw
 		<p>'.$dl->getLocalizedString("sameNick").'</p>
         <button type="submit" class="btn-primary">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 		</form>
-		</div>');
+		</div>', 'account');
 		die();
 	}
 	$pass = $_POST["password"];
@@ -66,7 +66,7 @@ if ($pass == 1) {
 				<p>'.$dl->getLocalizedString("alreadyUsedNick").'</p>
 				<button type="submit" class="btn-primary">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 				</form>
-				</div>');
+				</div>', 'account');
 				die();
 	}
 	$query = $db->prepare("UPDATE accounts SET userName=:userName, salt=:salt WHERE accountID=:accountid");	
@@ -80,7 +80,7 @@ if ($pass == 1) {
 		<p>'.$dl->getLocalizedString("changedNick").'</p>
         <button type="submit" class="btn-primary">'.$dl->getLocalizedString("dashboard").'</button>
 		</form>
-		</div>');
+		</div>', 'account');
 } else {
 	$dl->printSong('<div class="form">
 		<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
@@ -88,7 +88,7 @@ if ($pass == 1) {
 		<p>'.$dl->getLocalizedString("wrongPass").'</p>
         <button type="submit" class="btn-primary">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 		</form>
-		</div>');
+		</div>', 'account');
 } 
 
 } else {
@@ -99,7 +99,7 @@ if ($pass == 1) {
         <div class="field"><input type="text" name="oldnickname" placeholder="'.$dl->getLocalizedString("oldNick").'"></div>
         <div class="field"><input type="text" name="newnickname" placeholder="'.$dl->getLocalizedString("newNick").'"></div>
 		<div class="field"><input type="password" name="password" placeholder="'.$dl->getLocalizedString("password").'"></div>
-		');
+		', 'account');
 		Captcha::displayCaptcha();
         echo '<button style="margin-top:5px" type="submit" class="btn-song">'.$dl->getLocalizedString("changeUsername").'</button>
 		</form>
@@ -111,6 +111,6 @@ if ($pass == 1) {
 		<p>'.$dl->getLocalizedString("noLogin?").'</p>
 	    <button type="submit" class="btn-song">'.$dl->getLocalizedString("LoginBtn").'</button>
 		</form>
-		</div>');
+		</div>', 'account');
 }
 ?>

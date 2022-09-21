@@ -30,7 +30,7 @@ if(!empty($_POST["levelid"])){
 			<p>'.$dl->getLocalizedString("invalidCaptcha").'</p>
 			<button type="submit" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 			</form>
-		</div>');
+		</div>', 'reupload');
 		die();
 	}
 	if($_POST["debug"] == 1) $debug = 1;
@@ -53,7 +53,7 @@ if(!empty($_POST["levelid"])){
 				<p>'.$dl->getLocalizedString("errorConnection").'</p>
 				<button type="submit" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 				</form>
-			</div>');
+			</div>', 'reupload');
 		}else if($result=="-1"){
 			$dl->printSong('<div class="form">
 				<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
@@ -61,7 +61,7 @@ if(!empty($_POST["levelid"])){
 				<p>'.$dl->getLocalizedString("levelNotFound").'</p>
 				<button type="submit" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 				</form>
-			</div>');
+			</div>', 'reupload');
 		}else{
 			$dl->printSong('<div class="form">
 				<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
@@ -69,7 +69,7 @@ if(!empty($_POST["levelid"])){
 				<p>'.$dl->getLocalizedString("robtopLol").'</p>
 				<button type="submit" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 				</form>
-			</div>');
+			</div>', 'reupload');
 		}
 	}else{
 		$level = explode('#', $result)[0];
@@ -92,7 +92,7 @@ if(!empty($_POST["levelid"])){
 				<p>'.htmlspecialchars($result,ENT_QUOTES).'</p>
 				<button type="submit" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 				</form>
-			</div>');
+			</div>', 'reupload');
 		}
 		$uploadDate = time();
 		//old levelString
@@ -118,7 +118,7 @@ if(!empty($_POST["levelid"])){
 					<p>'.$dl->getLocalizedString("sameServers").'</p>
 					<button type="submit" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 					</form>
-				</div>');
+				</div>', 'reupload');
 				die();
 			}
 			$hostname = $gs->getIP();
@@ -177,7 +177,7 @@ if(!empty($_POST["levelid"])){
 					</details>
 					<button type="submit" class="btn-song">'.$dl->getLocalizedString("oneMoreLevel?").'</button>
 					</form>
-				</div>');
+				</div>', 'reupload');
 		} else {
 				$dl->printSong('<div class="form">
 					<h1>'.$dl->getLocalizedString("levelReupload").'</h1>
@@ -185,7 +185,7 @@ if(!empty($_POST["levelid"])){
 					<p>'.$dl->getLocalizedString("levelReuploaded").' '.$levelID.'</p>
 					<button type="submit" class="btn-song">'.$dl->getLocalizedString("oneMoreLevel?").'</button>
 					</form>
-				</div>');
+				</div>', 'reupload');
 		}
 		}else{
 				$dl->printSong('<div class="form">
@@ -194,7 +194,7 @@ if(!empty($_POST["levelid"])){
 					<p>'.$dl->getLocalizedString("levelAlreadyReuploaded").'</p>
 					<button type="submit" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 					</form>
-				</div>');
+				</div>', 'reupload');
 		}
 	}
 }else{
@@ -208,14 +208,12 @@ if(!empty($_POST["levelid"])){
 			<div class="field" style="display: flex; width:100%; justify-content: space-between;"><input type="text" name="server" value="http://www.boomlings.com/database/downloadGJLevel22.php" placeholder="'.$dl->getLocalizedString("server").'">
 			<input class="checkbox" type="checkbox" name="debug" value="1" placeholder="Debug">
 			</div>
-		</details>
-				');
+		</details>', 'reupload');
 		Captcha::displayCaptcha();
         echo '
         <button type="submit" class="btn-song">'.$dl->getLocalizedString("reuploadBTN").'</button>
     </form>
 </div>';
-  $dl->printFooter();
 }
 } else {
 	$dl->printSong('<div class="form">
@@ -224,7 +222,7 @@ if(!empty($_POST["levelid"])){
 	<p>'.$dl->getLocalizedString("noLogin?").'</p>
 	        <button type="submit" class="btn-song">'.$dl->getLocalizedString("LoginBtn").'</button>
     </form>
-</div>');
+</div>', 'reupload');
 }
 } else {
 		$dl->printSong('<div class="form">
@@ -233,6 +231,6 @@ if(!empty($_POST["levelid"])){
 			<p>'.$dl->getLocalizedString("pageDisabled").'</p>
 			<button type="submit" class="btn-song">'.$dl->getLocalizedString("dashboard").'</button>
 			</form>
-		</div>');
+		</div>', 'reupload');
 }
 ?>

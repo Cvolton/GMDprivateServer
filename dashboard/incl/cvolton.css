@@ -16,27 +16,42 @@
   	justify-self: center;
 }
 
+.icon, .icon:visited {
+  	transition: 0.3s;
+    margin-right: 10px;
+    background: #1e2124;
+    padding: 8px;
+	height: 3.5vh;
+    width: 3.5vh;
+  	margin-left: -4px;
+    text-align: center;
+    display: inline-block;
+    border-radius: 500px;
+}
+
 .table-inverse td, .table-inverse th, .table-inverse thead th {
 	text-align:center;
 }
 
-.error {
+  .error {
 	display: flex;
-    height: 100%;
-    margin-top: 7vw;
-    font-size: 200px;
+    margin: 15vw 0px 0px 0px;
+    padding: 0;
+    font-size: 200;
+    color: #c0c0c0;
     align-items: center;
-  	line-height: 30vh;
     font-weight: 700;
     text-shadow: 0px 0px 10px black;
+    justify-content: center;
+    cursor: pointer;
 }
-
 .errtext {
 	display: flex;
-    height: 100%;
+    margin: 0;
     font-size: 35px;
-  	justify-content: center;
-  	text-shadow: 0px 0px 5px black;
+    justify-content: center;
+	color: #c0c0c0;
+    text-shadow: 0px 0px 5px black;
 }
 
 .newMsgs {
@@ -472,7 +487,7 @@ option,
     width: 0%;
     margin-left: 3%;
     text-align: left;
-    font-size: 100%;
+    font-size: 104%;
 }
 
 #center {
@@ -485,7 +500,7 @@ option,
 #langload:active,
 #langload:hover,
 #langload:focus {
-    font-size: 105%;
+    font-size: 106%;
     background: #47a0ff;
     padding: .25rem 2.2rem 0.3rem 1rem;
     border-radius: 27px;
@@ -493,6 +508,9 @@ option,
     text-align: left;
     margin-left: 4%;
     width: 92%;
+}
+.dropdown-item:hover > .icon {
+	background: #90c7ff;
 }
 
 table,

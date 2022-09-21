@@ -42,7 +42,7 @@ if(empty($result)) {
 		<p>'.$dl->getLocalizedString("emptyPage").'</p>
         <button type="submit" class="btn-primary">'.$dl->getLocalizedString("dashboard").'</button>
     </form>
-</div>');
+</div>', 'mod');
 	die();
 } 
 foreach($result as &$report){
@@ -64,4 +64,4 @@ $query->execute([':extID' => $_SESSION["accountID"]]);
 $packcount = $query->fetchColumn();
 $pagecount = ceil($packcount / 10);
 $bottomrow = $dl->generateBottomRow($pagecount, $actualpage);
-$dl->printPage($table . $bottomrow, true, "browse");
+$dl->printPage($table . $bottomrow, true, "mod");

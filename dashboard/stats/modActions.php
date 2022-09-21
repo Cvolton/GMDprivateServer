@@ -17,6 +17,16 @@ $query = $db->prepare("SELECT accountID, userName FROM accounts WHERE accountID 
 $query->execute();
 $result = $query->fetchAll();
 $row = 0;
+if(empty($result)) {
+	$dl->printSong('<div class="form">
+    <h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
+    <form class="form__inner" method="post" action="../dashboard">
+		<p>'.$dl->getLocalizedString("emptyPage").'</p>
+        <button type="submit" class="btn-primary">'.$dl->getLocalizedString("dashboard").'</button>
+    </form>
+</div>', 'stats');
+	die();
+} 
 foreach($result as &$mod){
 	$row++;
 	$query = $db->prepare("SELECT lastPlayed FROM users WHERE extID = :id");

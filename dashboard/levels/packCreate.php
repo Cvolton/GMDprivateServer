@@ -23,7 +23,7 @@ if(!empty($_POST["packName"])) {
 				<p>'.$dl->getLocalizedString("invalidCaptcha").'</p>
 				<button type="submit" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 				</form>
-			</div>');
+			</div>', 'mod');
 		die();
 		}
 	$accountID = $_SESSION["accountID"];
@@ -34,7 +34,7 @@ if(!empty($_POST["packName"])) {
 		<p>'.$dl->getLocalizedString("sameLevels").'</p>
 	        <button type="submit" class="btn-primary">'.$dl->getLocalizedString("tryAgainBTN").'</button>
     </form>
-</div>');
+</div>', 'mod');
 		die();
 	}
 	$name = ExploitPatch::remove($_POST["packName"]);
@@ -48,7 +48,7 @@ if(!empty($_POST["packName"])) {
 			<p>'.$dl->getLocalizedString("invalidPost").'</p>
 	        <button type="submit" class="btn-primary">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 			</form>
-			</div>');
+			</div>', 'mod');
 		die();
 	}
 	$levels = ExploitPatch::remove($_POST['level_1']) . ',' . ExploitPatch::remove($_POST['level_2']) . ',' . ExploitPatch::remove($_POST['level_3']);
@@ -96,7 +96,7 @@ if(!empty($_POST["packName"])) {
 		<p>'.$success.'</p>
 	    <button type="submit" class="btn-primary">'.$dl->getLocalizedString("packCreateOneMore").'</button>
     </form>
-</div>');
+</div>', 'mod');
 } else {
 	$options = '';
 	foreach ($result as $i => $row) {
@@ -138,8 +138,7 @@ if(!empty($_POST["packName"])) {
     <select name="level_3">
         ' . $options . '
     </select>
-    </div>
-	');
+    </div>', 'mod');
 		Captcha::displayCaptcha();
         echo '
         <button type="submit" class="btn-primary">' . $dl->getLocalizedString("packCreate") . '</button>
@@ -162,7 +161,6 @@ if(!empty($_POST["packName"])) {
 
         });
     </script>';
-  $dl->printFooter();
 }
 } else
 	$dl->printSong('<div class="form">
@@ -171,5 +169,5 @@ if(!empty($_POST["packName"])) {
 		<p>'.$dl->getLocalizedString("noPermission").'</p>
 	        <button type="submit" class="btn-primary">'.$dl->getLocalizedString("Kish!").'</button>
     </form>
-</div>');
+</div>', 'mod');
 ?>

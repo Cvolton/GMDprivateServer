@@ -36,7 +36,7 @@ if(isset($_SESSION["accountID"]) AND $_SESSION["accountID"] != 0){
           		          <p>'.$dl->getLocalizedString("tooFast").'</p>
           		          <button type="submit" class="btn-primary" name="accountID" value="'.$notyou.'">'.$dl->getLocalizedString("tryAgainBTN").'</button>
   						  </form>
-					</div>');
+					</div>', 'msg');
               die();
             }
 			$sendmsg = base64_encode($xor->cipher($_POST["msg"], 14251));
@@ -77,7 +77,7 @@ if(isset($_SESSION["accountID"]) AND $_SESSION["accountID"] != 0){
 				<div class="field"><input type="text" name="subject" placeholder="'.$dl->getLocalizedString("subject").'"></input></div>
 				<div class="field"><input type="text" name="msg" placeholder="'.$dl->getLocalizedString("msg").'"></input></div>
                 
-			<button type="submit" name="accountID" value="'.$notyou.'" class="btn-primary">'.$dl->getLocalizedString("send").'</button></form></div>');
+			<button type="submit" name="accountID" value="'.$notyou.'" class="btn-primary">'.$dl->getLocalizedString("send").'</button></form></div>', 'msg');
 		$query = $db->prepare("UPDATE messages SET isNew=1 WHERE accID=:notyou AND toAccountID=:you");
 		$query->execute([':you' => $accid, ':notyou' => $notyou]);
 	} else {
@@ -108,7 +108,7 @@ if(isset($_SESSION["accountID"]) AND $_SESSION["accountID"] != 0){
 			<div class="msgbox" style="width:100%">'.$options.'</div></form>
             <form class="field" method="post" action="messenger/">
             <div class="messenger" style="width:100%"><input class="field" type="text" name="receiver" placeholder="'.$dl->getLocalizedString("banUserID").'"></input>
-            <button type="submit" class="btn-rendel" style="margin-top:5px">'.$dl->getLocalizedString("write").'</button></div></form>');
+            <button type="submit" class="btn-rendel" style="margin-top:5px">'.$dl->getLocalizedString("write").'</button></div></form>', 'msg');
 		}
 } else {
   	$dl->title($dl->getLocalizedString("messenger"));
@@ -118,7 +118,7 @@ if(isset($_SESSION["accountID"]) AND $_SESSION["accountID"] != 0){
 	<p>'.$dl->getLocalizedString("noLogin?").'</p>
 	        <button type="submit" class="btn-primary">'.$dl->getLocalizedString("LoginBtn").'</button>
     </form>
-</div>');
+</div>', 'msg');
 }
 } else {
   		$dl->title($dl->getLocalizedString("messenger"));

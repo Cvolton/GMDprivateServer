@@ -19,7 +19,7 @@ if(!empty($_POST["type"]) AND !empty($_POST["amount"]) AND !empty($_POST["reward
 			<p>'.$dl->getLocalizedString("invalidCaptcha").'</p>
 			<button type="submit" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 			</form>
-		</div>');
+		</div>', 'mod');
 	die();
 	}
 	$type = ExploitPatch::number($_POST["type"]);
@@ -34,7 +34,7 @@ if(!empty($_POST["type"]) AND !empty($_POST["amount"]) AND !empty($_POST["reward
 				<p>'.$dl->getLocalizedString("invalidPost").'</p>
 				<button type="submit" class="btn-primary">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 				</form>
-			</div>');
+			</div>', 'mod');
 			die();
 		}
 		$query = $db->prepare("INSERT INTO quests (type, amount, reward, name) VALUES (:type,:amount,:reward,:name)");
@@ -50,7 +50,7 @@ if(!empty($_POST["type"]) AND !empty($_POST["amount"]) AND !empty($_POST["reward
 			<p>'.$dl->getLocalizedString("fewMoreQuests").'</p>
 			<button type="submit" class="btn-primary">'.$dl->getLocalizedString("oneMoreQuest?").'</button>
 			</form>
-		</div>');
+		</div>', 'mod');
 		} else {
 		$dl->printSong('<div class="form">
 			<h1>'.$dl->getLocalizedString("addQuest").'</h1>
@@ -58,7 +58,7 @@ if(!empty($_POST["type"]) AND !empty($_POST["amount"]) AND !empty($_POST["reward
 			<p>'.$success.'</p>
 			<button type="submit" class="btn-primary">'.$dl->getLocalizedString("oneMoreQuest?").'</button>
 			</form>
-		</div>');
+		</div>', 'mod');
 		}
 	} else {
 		$dl->printSong('<div class="form">
@@ -77,7 +77,7 @@ if(!empty($_POST["type"]) AND !empty($_POST["amount"]) AND !empty($_POST["reward
 		<input class="number" type="number" name="amount" placeholder="'.$dl->getLocalizedString("questAmount").'">
 		<input class="number" type="number" name="reward" placeholder="'.$dl->getLocalizedString("questReward").'">
 		</div>
-		');
+		', 'mod');
 		Captcha::displayCaptcha();
         echo '
         <button  type="submit" class="btn-song">'.$dl->getLocalizedString("questCreate").'</button>
@@ -91,6 +91,6 @@ if(!empty($_POST["type"]) AND !empty($_POST["amount"]) AND !empty($_POST["reward
 		<p>'.$dl->getLocalizedString("noPermission").'</p>
 	        <button type="submit" class="btn-primary">'.$dl->getLocalizedString("Kish!").'</button>
     </form>
-</div>');
+</div>', 'mod');
 }
 ?>
