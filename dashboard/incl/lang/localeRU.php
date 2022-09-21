@@ -5,7 +5,7 @@ $string["homeNavbar"] = "Домой";
 $string["welcome"] = "Добро пожаловать на ".$gdps.'!';
 $string["levelsWeek"] = "Выложено уровней за неделю";
 $string["levels3Months"] = "Выложено уровней за 3 месяца";
-$string["footer"] = "GreenCatsServer? 2020 - ".date('Y', time());
+$string["footer"] = "GDPS! ".date('Y', time());
 
 $string["accountManagement"] = "Управление аккаунтом";
 $string["changePassword"] = "Сменить пароль";
