@@ -177,7 +177,7 @@ class dashboardLib{
 						<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
 							<a class="dropdown-item" href="songs/"><i class="fa fa-plus" style="position: absolute;font-size: 10px;margin: 5px 5px 5px 0px;" aria-hidden="false"></i><div class="icon"><i class="fa fa-music" aria-hidden="false"></i></div>'.$this->getLocalizedString("songAdd").'</a>
 							<a class="dropdown-item" href="reupload/songAdd.php"><i class="fa fa-link" style="position: absolute;font-size: 9px;margin: 8px 4px 4px 0px;" aria-hidden="false"></i><div class="icon"><i class="fa fa-music" aria-hidden="false"></i></div>'.$this->getLocalizedString("songLink").'</a>';
-								if($lrEnabled == 1) echo '<a class="dropdown-item" href="levels/levelReupload.php">'.$this->getLocalizedString("levelReupload").'</a>
+								if($lrEnabled == 1) echo '<a class="dropdown-item" href="levels/levelReupload.php"><div class="icon"><i class="fa fa-cloud-upload" aria-hidden="false"></i></div>'.$this->getLocalizedString("levelReupload").'</a>
 						</div>
 					</li>';
 			if($gs->checkPermission($_SESSION["accountID"], "dashboardModTools")){
