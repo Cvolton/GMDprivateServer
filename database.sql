@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.0
+-- version 5.1.3
 -- https://www.phpmyadmin.net/
 --
--- Хост: localhost
--- Время создания: Авг 31 2022 г., 00:33
--- Версия сервера: 10.4.25-MariaDB
--- Версия PHP: 7.4.29
+-- Host: localhost
+-- Generation Time: Jul 14, 2022 at 08:19 AM
+-- Server version: 10.6.7-MariaDB-2ubuntu1
+-- PHP Version: 8.1.2
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,70 +18,76 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- База данных: `gcs_db`
+-- Database: `public_cvoltongdps`
 --
 
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `acccomments`
+-- Table structure for table `acccomments`
 --
 
 CREATE TABLE `acccomments` (
   `userID` int(11) NOT NULL,
-  `userName` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `comment` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `secret` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'unused',
+  `userName` varchar(50) COLLATE utf8mb3_unicode_ci NOT NULL,
+  `comment` longtext COLLATE utf8mb3_unicode_ci NOT NULL,
+  `secret` varchar(10) COLLATE utf8mb3_unicode_ci NOT NULL DEFAULT 'unused',
   `commentID` int(11) NOT NULL,
   `timestamp` int(11) NOT NULL,
   `likes` int(11) NOT NULL DEFAULT 0,
   `isSpam` int(11) NOT NULL DEFAULT 0
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+
+-- --------------------------------------------------------
 
 --
--- Структура таблицы `accounts`
+-- Table structure for table `accounts`
 --
 
 CREATE TABLE `accounts` (
-  `userName` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `password` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `gjp2` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `userName` varchar(255) COLLATE utf8mb3_unicode_ci NOT NULL,
+  `password` varchar(255) COLLATE utf8mb3_unicode_ci NOT NULL,
+  `gjp2` varchar(255) COLLATE utf8mb3_unicode_ci DEFAULT NULL,
+  `email` varchar(255) COLLATE utf8mb3_unicode_ci NOT NULL,
   `accountID` int(11) NOT NULL,
   `isAdmin` int(11) NOT NULL DEFAULT 0,
   `mS` int(11) NOT NULL DEFAULT 0,
   `frS` int(11) NOT NULL DEFAULT 0,
   `cS` int(11) NOT NULL DEFAULT 0,
-  `youtubeurl` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `twitter` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `twitch` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `salt` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  `youtubeurl` varchar(255) COLLATE utf8mb3_unicode_ci NOT NULL DEFAULT '',
+  `twitter` varchar(255) COLLATE utf8mb3_unicode_ci NOT NULL DEFAULT '',
+  `twitch` varchar(255) COLLATE utf8mb3_unicode_ci NOT NULL DEFAULT '',
+  `salt` varchar(255) COLLATE utf8mb3_unicode_ci NOT NULL DEFAULT '',
   `registerDate` int(11) NOT NULL DEFAULT 0,
   `friendsCount` int(11) NOT NULL DEFAULT 0,
   `discordID` bigint(20) NOT NULL DEFAULT 0,
   `discordLinkReq` bigint(20) NOT NULL DEFAULT 0,
   `isActive` tinyint(1) NOT NULL DEFAULT 0
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+
+-- --------------------------------------------------------
 
 --
--- Структура таблицы `actions`
+-- Table structure for table `actions`
 --
 
 CREATE TABLE `actions` (
   `ID` int(11) NOT NULL,
   `type` int(11) NOT NULL DEFAULT 0,
-  `value` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '0',
+  `value` varchar(255) COLLATE utf8mb3_unicode_ci NOT NULL DEFAULT '0',
   `timestamp` int(11) NOT NULL DEFAULT 0,
-  `value2` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '0',
+  `value2` varchar(255) COLLATE utf8mb3_unicode_ci NOT NULL DEFAULT '0',
   `value3` int(11) NOT NULL DEFAULT 0,
   `value4` int(11) NOT NULL DEFAULT 0,
   `value5` int(11) NOT NULL DEFAULT 0,
   `value6` int(11) NOT NULL DEFAULT 0,
   `account` int(11) NOT NULL DEFAULT 0
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+
+-- --------------------------------------------------------
 
 --
--- Структура таблицы `actions_downloads`
+-- Table structure for table `actions_downloads`
 --
 
 CREATE TABLE `actions_downloads` (
@@ -89,7 +95,13 @@ CREATE TABLE `actions_downloads` (
   `levelID` int(11) NOT NULL,
   `ip` varbinary(16) NOT NULL,
   `uploadDate` datetime NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `actions_likes`
+--
 
 CREATE TABLE `actions_likes` (
   `id` int(11) NOT NULL,
@@ -98,60 +110,66 @@ CREATE TABLE `actions_likes` (
   `isLike` tinyint(4) NOT NULL,
   `ip` varbinary(16) NOT NULL,
   `uploadDate` datetime NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Структура таблицы `bannedips`
---
-
-CREATE TABLE `bannedips` (
-  `IP` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '127.0.0.1',
-  `ID` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
 
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `blocks`
+-- Table structure for table `bannedips`
+--
+
+CREATE TABLE `bannedips` (
+  `IP` varchar(255) COLLATE utf8mb3_unicode_ci NOT NULL DEFAULT '127.0.0.1',
+  `ID` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `blocks`
 --
 
 CREATE TABLE `blocks` (
   `ID` int(11) NOT NULL,
   `person1` int(11) NOT NULL,
   `person2` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
 
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `comments`
+-- Table structure for table `comments`
 --
 
 CREATE TABLE `comments` (
   `userID` int(11) NOT NULL,
-  `userName` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `comment` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `secret` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'none',
+  `userName` varchar(50) COLLATE utf8mb3_unicode_ci NOT NULL,
+  `comment` longtext COLLATE utf8mb3_unicode_ci NOT NULL,
+  `secret` varchar(10) COLLATE utf8mb3_unicode_ci NOT NULL DEFAULT 'none',
   `levelID` int(11) NOT NULL,
   `commentID` int(11) NOT NULL,
   `timestamp` int(11) NOT NULL,
   `likes` int(11) NOT NULL DEFAULT 0,
   `percent` int(11) NOT NULL DEFAULT 0,
   `isSpam` tinyint(1) NOT NULL DEFAULT 0
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+
+-- --------------------------------------------------------
 
 --
--- Структура таблицы `cpshares`
+-- Table structure for table `cpshares`
 --
 
 CREATE TABLE `cpshares` (
   `shareID` int(11) NOT NULL,
   `levelID` int(11) NOT NULL,
   `userID` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+
+-- --------------------------------------------------------
 
 --
--- Структура таблицы `dailyfeatures`
+-- Table structure for table `dailyfeatures`
 --
 
 CREATE TABLE `dailyfeatures` (
@@ -159,23 +177,27 @@ CREATE TABLE `dailyfeatures` (
   `levelID` int(11) NOT NULL,
   `timestamp` int(11) NOT NULL,
   `type` int(11) NOT NULL DEFAULT 0
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+
+-- --------------------------------------------------------
 
 --
--- Структура таблицы `friendreqs`
+-- Table structure for table `friendreqs`
 --
 
 CREATE TABLE `friendreqs` (
   `accountID` int(11) NOT NULL,
   `toAccountID` int(11) NOT NULL,
-  `comment` varchar(1000) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `comment` varchar(1000) COLLATE utf8mb3_unicode_ci NOT NULL,
   `uploadDate` int(11) NOT NULL,
   `ID` int(11) NOT NULL,
   `isNew` tinyint(1) NOT NULL DEFAULT 1
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+
+-- --------------------------------------------------------
 
 --
--- Структура таблицы `friendships`
+-- Table structure for table `friendships`
 --
 
 CREATE TABLE `friendships` (
@@ -184,10 +206,12 @@ CREATE TABLE `friendships` (
   `person2` int(11) NOT NULL,
   `isNew1` int(11) NOT NULL,
   `isNew2` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+
+-- --------------------------------------------------------
 
 --
--- Структура таблицы `gauntlets`
+-- Table structure for table `gauntlets`
 --
 
 CREATE TABLE `gauntlets` (
@@ -197,19 +221,21 @@ CREATE TABLE `gauntlets` (
   `level3` int(11) NOT NULL,
   `level4` int(11) NOT NULL,
   `level5` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+
+-- --------------------------------------------------------
 
 --
--- Структура таблицы `levels`
+-- Table structure for table `levels`
 --
 
 CREATE TABLE `levels` (
   `gameVersion` int(11) NOT NULL,
   `binaryVersion` int(11) NOT NULL DEFAULT 0,
-  `userName` mediumtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `userName` mediumtext COLLATE utf8mb3_unicode_ci NOT NULL,
   `levelID` int(11) NOT NULL,
-  `levelName` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `levelDesc` mediumtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `levelName` varchar(255) COLLATE utf8mb3_unicode_ci NOT NULL,
+  `levelDesc` mediumtext COLLATE utf8mb3_unicode_ci NOT NULL,
   `levelVersion` int(11) NOT NULL,
   `levelLength` int(11) NOT NULL DEFAULT 0,
   `audioTrack` int(11) NOT NULL,
@@ -221,10 +247,10 @@ CREATE TABLE `levels` (
   `objects` int(11) NOT NULL DEFAULT 0,
   `coins` int(11) NOT NULL DEFAULT 0,
   `requestedStars` int(11) NOT NULL DEFAULT 0,
-  `extraString` mediumtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `levelString` longtext COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `levelInfo` mediumtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `secret` mediumtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `extraString` mediumtext COLLATE utf8mb3_unicode_ci NOT NULL,
+  `levelString` longtext COLLATE utf8mb3_unicode_ci DEFAULT NULL,
+  `levelInfo` mediumtext COLLATE utf8mb3_unicode_ci NOT NULL,
+  `secret` mediumtext COLLATE utf8mb3_unicode_ci NOT NULL,
   `starDifficulty` int(11) NOT NULL DEFAULT 0 COMMENT '0=N/A 10=EASY 20=NORMAL 30=HARD 40=HARDER 50=INSANE 50=AUTO 50=DEMON',
   `downloads` int(11) NOT NULL DEFAULT 300,
   `likes` int(11) NOT NULL DEFAULT 100,
@@ -240,21 +266,23 @@ CREATE TABLE `levels` (
   `starEpic` int(11) NOT NULL DEFAULT 0,
   `starDemonDiff` int(11) NOT NULL DEFAULT 0,
   `userID` int(11) NOT NULL,
-  `extID` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `extID` varchar(255) COLLATE utf8mb3_unicode_ci NOT NULL,
   `unlisted` int(11) NOT NULL,
   `originalReup` int(11) NOT NULL DEFAULT 0 COMMENT 'used for levelReupload.php',
-  `hostname` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `hostname` varchar(255) COLLATE utf8mb3_unicode_ci NOT NULL,
   `isCPShared` int(11) NOT NULL DEFAULT 0,
   `isDeleted` int(11) NOT NULL DEFAULT 0,
   `isLDM` int(11) NOT NULL DEFAULT 0,
   `unlisted2` int(11) NOT NULL DEFAULT 0,
   `wt` int(11) NOT NULL DEFAULT 0,
   `wt2` int(11) NOT NULL DEFAULT 0,
-  `settingsString` mediumtext COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `settingsString` mediumtext COLLATE utf8mb3_unicode_ci NOT NULL DEFAULT ''
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+
+-- --------------------------------------------------------
 
 --
--- Структура таблицы `levelscores`
+-- Table structure for table `levelscores`
 --
 
 CREATE TABLE `levelscores` (
@@ -267,78 +295,86 @@ CREATE TABLE `levelscores` (
   `coins` int(11) NOT NULL DEFAULT 0,
   `clicks` int(11) NOT NULL DEFAULT 0,
   `time` int(11) NOT NULL DEFAULT 0,
-  `progresses` text COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '0',
+  `progresses` text COLLATE utf8mb3_unicode_ci NOT NULL DEFAULT '',
   `dailyID` int(11) NOT NULL DEFAULT 0
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+
+-- --------------------------------------------------------
 
 --
--- Структура таблицы `links`
+-- Table structure for table `links`
 --
 
 CREATE TABLE `links` (
   `ID` int(11) NOT NULL,
   `accountID` int(11) NOT NULL,
   `targetAccountID` int(11) NOT NULL,
-  `server` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `server` varchar(255) COLLATE utf8mb3_unicode_ci NOT NULL,
   `timestamp` int(11) NOT NULL,
   `userID` int(11) NOT NULL,
   `targetUserID` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
 
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `mappacks`
+-- Table structure for table `mappacks`
 --
 
 CREATE TABLE `mappacks` (
   `ID` int(11) NOT NULL,
-  `name` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `levels` varchar(512) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'entered as "ID of level 1, ID of level 2, ID of level 3" for example "13,14,15" (without the "s)',
+  `name` varchar(100) COLLATE utf8mb3_unicode_ci NOT NULL,
+  `levels` varchar(512) COLLATE utf8mb3_unicode_ci NOT NULL COMMENT 'entered as "ID of level 1, ID of level 2, ID of level 3" for example "13,14,15" (without the "s)',
   `stars` int(11) NOT NULL,
   `coins` int(11) NOT NULL,
   `difficulty` int(11) NOT NULL,
-  `rgbcolors` varchar(11) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'entered as R,G,B',
-  `colors2` varchar(11) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'none'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `rgbcolors` varchar(11) COLLATE utf8mb3_unicode_ci NOT NULL COMMENT 'entered as R,G,B',
+  `colors2` varchar(11) COLLATE utf8mb3_unicode_ci NOT NULL DEFAULT 'none'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+
+-- --------------------------------------------------------
 
 --
--- Структура таблицы `messages`
+-- Table structure for table `messages`
 --
 
 CREATE TABLE `messages` (
   `userID` int(11) NOT NULL,
-  `userName` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `body` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `subject` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `userName` varchar(50) COLLATE utf8mb3_unicode_ci NOT NULL,
+  `body` longtext COLLATE utf8mb3_unicode_ci NOT NULL,
+  `subject` longtext COLLATE utf8mb3_unicode_ci NOT NULL,
   `accID` int(11) NOT NULL,
   `messageID` int(11) NOT NULL,
   `toAccountID` int(11) NOT NULL,
   `timestamp` int(11) NOT NULL,
-  `secret` varchar(25) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'unused',
+  `secret` varchar(25) COLLATE utf8mb3_unicode_ci NOT NULL DEFAULT 'unused',
   `isNew` int(11) NOT NULL DEFAULT 0
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+
+-- --------------------------------------------------------
 
 --
--- Структура таблицы `modactions`
+-- Table structure for table `modactions`
 --
 
 CREATE TABLE `modactions` (
   `ID` int(11) NOT NULL,
   `type` int(11) NOT NULL DEFAULT 0,
-  `value` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '0',
+  `value` varchar(255) COLLATE utf8mb3_unicode_ci NOT NULL DEFAULT '0',
   `timestamp` int(11) NOT NULL DEFAULT 0,
-  `value2` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '0',
+  `value2` varchar(255) COLLATE utf8mb3_unicode_ci NOT NULL DEFAULT '0',
   `value3` int(11) NOT NULL DEFAULT 0,
-  `value4` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '0',
+  `value4` varchar(255) COLLATE utf8mb3_unicode_ci NOT NULL DEFAULT '0',
   `value5` int(11) NOT NULL DEFAULT 0,
   `value6` int(11) NOT NULL DEFAULT 0,
   `account` int(11) NOT NULL DEFAULT 0,
-  `value7` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `value7` varchar(255) COLLATE utf8mb3_unicode_ci NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+
+-- --------------------------------------------------------
 
 --
--- Структура таблицы `modipperms`
+-- Table structure for table `modipperms`
 --
 
 CREATE TABLE `modipperms` (
@@ -349,19 +385,21 @@ CREATE TABLE `modipperms` (
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `modips`
+-- Table structure for table `modips`
 --
 
 CREATE TABLE `modips` (
   `ID` int(11) NOT NULL,
-  `IP` varchar(69) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `IP` varchar(69) COLLATE utf8mb3_unicode_ci NOT NULL,
   `isMod` int(11) NOT NULL,
   `accountID` int(11) NOT NULL,
   `modipCategory` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+
+-- --------------------------------------------------------
 
 --
--- Структура таблицы `quests`
+-- Table structure for table `quests`
 --
 
 CREATE TABLE `quests` (
@@ -369,31 +407,37 @@ CREATE TABLE `quests` (
   `type` int(11) NOT NULL,
   `amount` int(11) NOT NULL,
   `reward` int(11) NOT NULL,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `name` varchar(255) COLLATE utf8mb3_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+
+-- --------------------------------------------------------
 
 --
--- Структура таблицы `reports`
+-- Table structure for table `reports`
 --
 
 CREATE TABLE `reports` (
   `ID` int(11) NOT NULL,
   `levelID` int(11) NOT NULL,
-  `hostname` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `hostname` varchar(255) COLLATE utf8mb3_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+
+-- --------------------------------------------------------
 
 --
--- Структура таблицы `roleassign`
+-- Table structure for table `roleassign`
 --
 
 CREATE TABLE `roleassign` (
   `assignID` bigint(20) NOT NULL,
   `roleID` bigint(20) NOT NULL,
   `accountID` bigint(20) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+
+-- --------------------------------------------------------
 
 --
--- Структура таблицы `roles`
+-- Table structure for table `roles`
 --
 
 CREATE TABLE `roles` (
@@ -436,35 +480,35 @@ CREATE TABLE `roles` (
   `toolModactions` int(11) NOT NULL DEFAULT 0,
   `toolSuggestlist` int(11) NOT NULL DEFAULT 0,
   `dashboardModTools` int(11) NOT NULL DEFAULT 0,
-  `dashboardLevelPackCreate` int(11) NOT NULL,
-  `dashboardManageSongs` int(11) NOT NULL,
-  `dashboardAddMod` tinyint(1) NOT NULL DEFAULT 0,
   `modipCategory` int(11) NOT NULL DEFAULT 0,
   `isDefault` int(11) NOT NULL DEFAULT 0,
   `commentColor` varchar(11) NOT NULL DEFAULT '000,000,000',
   `modBadgeLevel` int(11) NOT NULL DEFAULT 0
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+
+-- --------------------------------------------------------
 
 --
--- Структура таблицы `songs`
+-- Table structure for table `songs`
 --
 
 CREATE TABLE `songs` (
   `ID` int(11) NOT NULL,
-  `name` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `name` varchar(100) COLLATE utf8mb3_unicode_ci NOT NULL,
   `authorID` int(11) NOT NULL,
-  `authorName` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `size` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `download` varchar(1337) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `hash` varchar(256) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  `authorName` varchar(100) COLLATE utf8mb3_unicode_ci NOT NULL,
+  `size` varchar(100) COLLATE utf8mb3_unicode_ci NOT NULL,
+  `download` varchar(1337) COLLATE utf8mb3_unicode_ci NOT NULL,
+  `hash` varchar(256) COLLATE utf8mb3_unicode_ci NOT NULL DEFAULT '',
   `isDisabled` int(11) NOT NULL DEFAULT 0,
   `levelsCount` int(11) NOT NULL DEFAULT 0,
-  `reuploadTime` int(11) NOT NULL DEFAULT 0,
-  `reuploadID` int(11) NOT NULL DEFAULT 0
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `reuploadTime` int(11) NOT NULL DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+
+-- --------------------------------------------------------
 
 --
--- Структура таблицы `suggest`
+-- Table structure for table `suggest`
 --
 
 CREATE TABLE `suggest` (
@@ -477,17 +521,19 @@ CREATE TABLE `suggest` (
   `suggestAuto` int(11) NOT NULL DEFAULT 0,
   `suggestDemon` int(11) NOT NULL DEFAULT 0,
   `timestamp` int(11) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb3;
+
+-- --------------------------------------------------------
 
 --
--- Структура таблицы `users`
+-- Table structure for table `users`
 --
 
 CREATE TABLE `users` (
   `isRegistered` int(11) NOT NULL,
   `userID` int(11) NOT NULL,
-  `extID` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `userName` varchar(69) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'undefined',
+  `extID` varchar(100) COLLATE utf8mb3_unicode_ci NOT NULL,
+  `userName` varchar(69) COLLATE utf8mb3_unicode_ci NOT NULL DEFAULT 'undefined',
   `stars` int(11) NOT NULL DEFAULT 0,
   `demons` int(11) NOT NULL DEFAULT 0,
   `icon` int(11) NOT NULL DEFAULT 0,
@@ -498,7 +544,7 @@ CREATE TABLE `users` (
   `userCoins` int(11) NOT NULL DEFAULT 0,
   `special` int(11) NOT NULL DEFAULT 0,
   `gameVersion` int(11) NOT NULL DEFAULT 0,
-  `secret` varchar(69) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'none',
+  `secret` varchar(69) COLLATE utf8mb3_unicode_ci NOT NULL DEFAULT 'none',
   `accIcon` int(11) NOT NULL DEFAULT 0,
   `accShip` int(11) NOT NULL DEFAULT 0,
   `accBall` int(11) NOT NULL DEFAULT 0,
@@ -507,7 +553,7 @@ CREATE TABLE `users` (
   `accRobot` int(11) DEFAULT 0,
   `accGlow` int(11) NOT NULL DEFAULT 0,
   `creatorPoints` double NOT NULL DEFAULT 0,
-  `IP` varchar(69) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '127.0.0.1',
+  `IP` varchar(69) COLLATE utf8mb3_unicode_ci NOT NULL DEFAULT '127.0.0.1',
   `lastPlayed` int(11) NOT NULL DEFAULT 0,
   `diamonds` int(11) NOT NULL DEFAULT 0,
   `moons` int(11) NOT NULL DEFAULT 0,
@@ -520,17 +566,15 @@ CREATE TABLE `users` (
   `chest1count` int(11) NOT NULL DEFAULT 0,
   `chest2count` int(11) NOT NULL DEFAULT 0,
   `isBanned` int(11) NOT NULL DEFAULT 0,
-  `isCreatorBanned` int(11) NOT NULL DEFAULT 0,
-  `banReason` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'none'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `isCreatorBanned` int(11) NOT NULL DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
 
 --
---
--- Индексы сохранённых таблиц
+-- Indexes for dumped tables
 --
 
 --
--- Индексы таблицы `acccomments`
+-- Indexes for table `acccomments`
 --
 ALTER TABLE `acccomments`
   ADD PRIMARY KEY (`commentID`),
@@ -538,7 +582,7 @@ ALTER TABLE `acccomments`
   ADD KEY `timestamp` (`timestamp`);
 
 --
--- Индексы таблицы `accounts`
+-- Indexes for table `accounts`
 --
 ALTER TABLE `accounts`
   ADD PRIMARY KEY (`accountID`),
@@ -551,7 +595,7 @@ ALTER TABLE `accounts`
   ADD KEY `isActive` (`isActive`);
 
 --
--- Индексы таблицы `actions`
+-- Indexes for table `actions`
 --
 ALTER TABLE `actions`
   ADD PRIMARY KEY (`ID`),
@@ -561,27 +605,27 @@ ALTER TABLE `actions`
   ADD KEY `timestamp` (`timestamp`);
 
 --
--- Индексы таблицы `actions_downloads`
+-- Indexes for table `actions_downloads`
 --
 ALTER TABLE `actions_downloads`
   ADD PRIMARY KEY (`id`),
   ADD KEY `levelID` (`levelID`,`ip`,`uploadDate`) USING BTREE;
 
 --
--- Индексы таблицы `actions_likes`
+-- Indexes for table `actions_likes`
 --
 ALTER TABLE `actions_likes`
   ADD PRIMARY KEY (`id`),
   ADD KEY `levelID` (`itemID`,`type`,`isLike`,`ip`,`uploadDate`) USING BTREE;
 
 --
--- Индексы таблицы `bannedips`
+-- Indexes for table `bannedips`
 --
 ALTER TABLE `bannedips`
   ADD PRIMARY KEY (`ID`);
 
 --
--- Индексы таблицы `blocks`
+-- Indexes for table `blocks`
 --
 ALTER TABLE `blocks`
   ADD PRIMARY KEY (`ID`),
@@ -590,7 +634,7 @@ ALTER TABLE `blocks`
   ADD KEY `person2` (`person2`);
 
 --
--- Индексы таблицы `comments`
+-- Indexes for table `comments`
 --
 ALTER TABLE `comments`
   ADD PRIMARY KEY (`commentID`),
@@ -599,14 +643,14 @@ ALTER TABLE `comments`
   ADD KEY `likes` (`likes`);
 
 --
--- Индексы таблицы `cpshares`
+-- Indexes for table `cpshares`
 --
 ALTER TABLE `cpshares`
   ADD PRIMARY KEY (`shareID`),
   ADD KEY `levelID` (`levelID`);
 
 --
--- Индексы таблицы `dailyfeatures`
+-- Indexes for table `dailyfeatures`
 --
 ALTER TABLE `dailyfeatures`
   ADD PRIMARY KEY (`feaID`),
@@ -614,7 +658,7 @@ ALTER TABLE `dailyfeatures`
   ADD KEY `timestamp` (`timestamp`);
 
 --
--- Индексы таблицы `friendreqs`
+-- Indexes for table `friendreqs`
 --
 ALTER TABLE `friendreqs`
   ADD PRIMARY KEY (`ID`),
@@ -623,7 +667,7 @@ ALTER TABLE `friendreqs`
   ADD KEY `uploadDate` (`uploadDate`);
 
 --
--- Индексы таблицы `friendships`
+-- Indexes for table `friendships`
 --
 ALTER TABLE `friendships`
   ADD PRIMARY KEY (`ID`),
@@ -633,14 +677,14 @@ ALTER TABLE `friendships`
   ADD KEY `isNew2` (`isNew2`);
 
 --
--- Индексы таблицы `gauntlets`
+-- Indexes for table `gauntlets`
 --
 ALTER TABLE `gauntlets`
   ADD PRIMARY KEY (`ID`),
   ADD KEY `level5` (`level5`);
 
 --
--- Индексы таблицы `levels`
+-- Indexes for table `levels`
 --
 ALTER TABLE `levels`
   ADD PRIMARY KEY (`levelID`),
@@ -676,7 +720,7 @@ ALTER TABLE `levels`
   ADD KEY `unlisted2` (`unlisted2`);
 
 --
--- Индексы таблицы `levelscores`
+-- Indexes for table `levelscores`
 --
 ALTER TABLE `levelscores`
   ADD PRIMARY KEY (`scoreID`),
@@ -684,7 +728,7 @@ ALTER TABLE `levelscores`
   ADD KEY `accountID` (`accountID`);
 
 --
--- Индексы таблицы `links`
+-- Indexes for table `links`
 --
 ALTER TABLE `links`
   ADD PRIMARY KEY (`ID`),
@@ -693,13 +737,13 @@ ALTER TABLE `links`
   ADD KEY `server` (`server`);
 
 --
--- Индексы таблицы `mappacks`
+-- Indexes for table `mappacks`
 --
 ALTER TABLE `mappacks`
   ADD PRIMARY KEY (`ID`);
 
 --
--- Индексы таблицы `messages`
+-- Indexes for table `messages`
 --
 ALTER TABLE `messages`
   ADD PRIMARY KEY (`messageID`),
@@ -707,7 +751,7 @@ ALTER TABLE `messages`
   ADD KEY `accID` (`accID`);
 
 --
--- Индексы таблицы `modactions`
+-- Indexes for table `modactions`
 --
 ALTER TABLE `modactions`
   ADD PRIMARY KEY (`ID`),
@@ -716,13 +760,13 @@ ALTER TABLE `modactions`
   ADD KEY `value3` (`value3`);
 
 --
--- Индексы таблицы `modipperms`
+-- Indexes for table `modipperms`
 --
 ALTER TABLE `modipperms`
   ADD PRIMARY KEY (`categoryID`);
 
 --
--- Индексы таблицы `modips`
+-- Indexes for table `modips`
 --
 ALTER TABLE `modips`
   ADD PRIMARY KEY (`ID`),
@@ -730,13 +774,13 @@ ALTER TABLE `modips`
   ADD KEY `IP` (`IP`);
 
 --
--- Индексы таблицы `quests`
+-- Indexes for table `quests`
 --
 ALTER TABLE `quests`
   ADD PRIMARY KEY (`ID`);
 
 --
--- Индексы таблицы `reports`
+-- Indexes for table `reports`
 --
 ALTER TABLE `reports`
   ADD PRIMARY KEY (`ID`),
@@ -744,7 +788,7 @@ ALTER TABLE `reports`
   ADD KEY `hostname` (`hostname`);
 
 --
--- Индексы таблицы `roleassign`
+-- Indexes for table `roleassign`
 --
 ALTER TABLE `roleassign`
   ADD PRIMARY KEY (`assignID`),
@@ -752,7 +796,7 @@ ALTER TABLE `roleassign`
   ADD KEY `accountID` (`accountID`);
 
 --
--- Индексы таблицы `roles`
+-- Indexes for table `roles`
 --
 ALTER TABLE `roles`
   ADD PRIMARY KEY (`roleID`),
@@ -760,7 +804,7 @@ ALTER TABLE `roles`
   ADD KEY `toolModactions` (`toolModactions`);
 
 --
--- Индексы таблицы `songs`
+-- Indexes for table `songs`
 --
 ALTER TABLE `songs`
   ADD PRIMARY KEY (`ID`),
@@ -768,14 +812,14 @@ ALTER TABLE `songs`
   ADD KEY `authorName` (`authorName`);
 
 --
--- Индексы таблицы `suggest`
+-- Indexes for table `suggest`
 --
 ALTER TABLE `suggest`
   ADD PRIMARY KEY (`ID`),
   ADD KEY `timestamp` (`timestamp`);
 
 --
--- Индексы таблицы `users`
+-- Indexes for table `users`
 --
 ALTER TABLE `users`
   ADD PRIMARY KEY (`userID`),
@@ -797,176 +841,176 @@ ALTER TABLE `users`
   ADD KEY `isRegistered` (`isRegistered`);
 
 --
--- AUTO_INCREMENT для сохранённых таблиц
+-- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT для таблицы `acccomments`
+-- AUTO_INCREMENT for table `acccomments`
 --
 ALTER TABLE `acccomments`
-  MODIFY `commentID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=0;
+  MODIFY `commentID` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT для таблицы `accounts`
+-- AUTO_INCREMENT for table `accounts`
 --
 ALTER TABLE `accounts`
-  MODIFY `accountID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=0;
+  MODIFY `accountID` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT для таблицы `actions`
+-- AUTO_INCREMENT for table `actions`
 --
 ALTER TABLE `actions`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=0;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT для таблицы `actions_downloads`
+-- AUTO_INCREMENT for table `actions_downloads`
 --
 ALTER TABLE `actions_downloads`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=0;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT для таблицы `actions_likes`
+-- AUTO_INCREMENT for table `actions_likes`
 --
 ALTER TABLE `actions_likes`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=0;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT для таблицы `bannedips`
+-- AUTO_INCREMENT for table `bannedips`
 --
 ALTER TABLE `bannedips`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=0;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT для таблицы `blocks`
+-- AUTO_INCREMENT for table `blocks`
 --
 ALTER TABLE `blocks`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=0;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT для таблицы `comments`
+-- AUTO_INCREMENT for table `comments`
 --
 ALTER TABLE `comments`
-  MODIFY `commentID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=0;
+  MODIFY `commentID` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT для таблицы `cpshares`
+-- AUTO_INCREMENT for table `cpshares`
 --
 ALTER TABLE `cpshares`
-  MODIFY `shareID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=0;
+  MODIFY `shareID` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT для таблицы `dailyfeatures`
+-- AUTO_INCREMENT for table `dailyfeatures`
 --
 ALTER TABLE `dailyfeatures`
-  MODIFY `feaID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=0;
+  MODIFY `feaID` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT для таблицы `friendreqs`
+-- AUTO_INCREMENT for table `friendreqs`
 --
 ALTER TABLE `friendreqs`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=0;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT для таблицы `friendships`
+-- AUTO_INCREMENT for table `friendships`
 --
 ALTER TABLE `friendships`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=0;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT для таблицы `gauntlets`
+-- AUTO_INCREMENT for table `gauntlets`
 --
 ALTER TABLE `gauntlets`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=0;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT для таблицы `levels`
+-- AUTO_INCREMENT for table `levels`
 --
 ALTER TABLE `levels`
-  MODIFY `levelID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=0;
+  MODIFY `levelID` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT для таблицы `levelscores`
+-- AUTO_INCREMENT for table `levelscores`
 --
 ALTER TABLE `levelscores`
-  MODIFY `scoreID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=0;
+  MODIFY `scoreID` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT для таблицы `links`
+-- AUTO_INCREMENT for table `links`
 --
 ALTER TABLE `links`
   MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT для таблицы `mappacks`
+-- AUTO_INCREMENT for table `mappacks`
 --
 ALTER TABLE `mappacks`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=0;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT для таблицы `messages`
+-- AUTO_INCREMENT for table `messages`
 --
 ALTER TABLE `messages`
-  MODIFY `messageID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=0;
+  MODIFY `messageID` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT для таблицы `modactions`
+-- AUTO_INCREMENT for table `modactions`
 --
 ALTER TABLE `modactions`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=0;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT для таблицы `modipperms`
+-- AUTO_INCREMENT for table `modipperms`
 --
 ALTER TABLE `modipperms`
   MODIFY `categoryID` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT для таблицы `modips`
+-- AUTO_INCREMENT for table `modips`
 --
 ALTER TABLE `modips`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=0;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT для таблицы `quests`
+-- AUTO_INCREMENT for table `quests`
 --
 ALTER TABLE `quests`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=0;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT для таблицы `reports`
+-- AUTO_INCREMENT for table `reports`
 --
 ALTER TABLE `reports`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=0;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT для таблицы `roleassign`
+-- AUTO_INCREMENT for table `roleassign`
 --
 ALTER TABLE `roleassign`
-  MODIFY `assignID` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=0;
+  MODIFY `assignID` bigint(20) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT для таблицы `roles`
+-- AUTO_INCREMENT for table `roles`
 --
 ALTER TABLE `roles`
-  MODIFY `roleID` bigint(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=0;
+  MODIFY `roleID` bigint(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT для таблицы `songs`
+-- AUTO_INCREMENT for table `songs`
 --
 ALTER TABLE `songs`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=0;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT для таблицы `suggest`
+-- AUTO_INCREMENT for table `suggest`
 --
 ALTER TABLE `suggest`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=0;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT для таблицы `users`
+-- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `userID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=0;
+  MODIFY `userID` int(11) NOT NULL AUTO_INCREMENT;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
