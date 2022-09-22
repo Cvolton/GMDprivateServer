@@ -20,9 +20,9 @@
   	transition: 0.3s;
     margin-right: 10px;
     background: #1e2124;
-    padding: 8px;
-	height: 3.5vh;
-    width: 3.5vh;
+    padding: 8px 5px 5px 5px;
+    height: 32px;
+    width: 32px;
   	margin-left: -4px;
     text-align: center;
     display: inline-block;

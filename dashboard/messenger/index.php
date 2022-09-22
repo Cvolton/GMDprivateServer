@@ -70,7 +70,7 @@ if(isset($_SESSION["accountID"]) AND $_SESSION["accountID"] != 0){
 		$dl->printSong('<div class="form">
 			<div style="display: inherit;align-items: center;margin: -5px;">
               <a class="a" href="messenger/"><h1>'.$gs->getAccountName($notyou).'</h1></a>
-              <form method="post" action=""><button class="msgupd" name="accountID" value="'.$notyou.'"><i class="fa fa-refresh" aria-hidden="true"></i></button></form>
+              <form method="post" action=""><button class="msgupd" name="accountID" value="'.$notyou.'"><i class="fa-solid fa-arrows-rotate" aria-hidden="true"></i></button></form>
             </div>
 			<form class="form__inner dmbox" method="post" action="">'.$msgs.'</form>
 			<form class="form__inner dmbox" method="post" action="">
