@@ -3,6 +3,7 @@ include __DIR__."/../../../config/dashboard.php";
 
 $string["homeNavbar"] = "Домой";
 $string["welcome"] = "Добро пожаловать на ".$gdps.'!';
+$string["didntInstall"] = "<div style='color:#47a0ff'><b>Внимание!</b> Вы не до конца установили панель сервера! Нажмите на текст, чтобы это сделать.</div>";
 $string["levelsWeek"] = "Выложено уровней за неделю";
 $string["levels3Months"] = "Выложено уровней за 3 месяца";
 $string["footer"] = "GDPS! ".date('Y', time());

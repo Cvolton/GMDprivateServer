@@ -3,6 +3,7 @@ include __DIR__."/../../../config/dashboard.php";
 
 $string["homeNavbar"] = "Home";
 $string["welcome"] = "Welcome to ".$gdps.'!';
+$string["didntInstall"] = "<div style='color:#47a0ff'><b>Warning!</b> You haven't fully installed dashboard! Click on the text to do this.</div>";
 $string["levelsWeek"] = "Levels uploaded in a week";
 $string["levels3Months"] = "Levels uploaded in 3 months";
 $string["footer"] = "GDPS! ".date('Y', time());

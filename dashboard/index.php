@@ -3,6 +3,7 @@ session_start();
 require "incl/dashboardLib.php";
 $dl = new dashboardLib();
 require "../incl/lib/connection.php";
+if(!$installed) $install = '<div class="notify"><a href="install.php">'.$dl->getLocalizedString("didntInstall").'</a></div>'; else $install = '';
 $chartdata = array();
 for($x = 7; $x >= 0;){
 	$timeBefore = time() - (86400 * $x);
@@ -47,6 +48,7 @@ foreach($months as &$month){
 
 $dl->printPage('<p id="bruh">'.$dl->getLocalizedString("welcome").'
 				<br>
+                '.$install.'
 					<div class="chart-container" style="position: relative; height:30vh; width:80vw">
 						<canvas id="levelsChart"></canvas>
 					</div>
