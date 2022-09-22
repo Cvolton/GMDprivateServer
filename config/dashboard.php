@@ -1,4 +1,6 @@
 <?php
+$installed = false;
+
 $gdps = "GDPS"; // used to title and download
 $lrEnabled = 1; // 1 = level reupload enabled, 0 = disabled
 $msgEnabled = 1; // 1 = messenger enabled, 0 = disabled
