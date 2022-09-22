@@ -6,6 +6,7 @@ include "../../incl/lib/mainLib.php";
 $gs = new mainLib();
 include "../incl/dashboardLib.php";
 $dl = new dashboardLib();
+$dl->printFooter('../');
 if(!isset($_SESSION["accountID"]) OR $_SESSION["accountID"] == 0) {
   	$dl->title($dl->getLocalizedString("profile"));
 	$dl->printSong('<div class="form">
