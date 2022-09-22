@@ -156,7 +156,7 @@ class dashboardLib{
 						<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
 							<a class="dropdown-item" href="stats/accountsList.php"><div class="icon"><i class="fa-solid fa-user" aria-hidden="false"></i></div>'.$this->getLocalizedString("accounts").'</a>
 							<a class="dropdown-item" href="stats/levelsList.php"><div class="icon"><i class="fa-solid fa-gamepad" style="margin-top: 1px;"></i></div>'.$this->getLocalizedString("levels").'</a>
-							<a class="dropdown-item" href="stats/packTable.php"><div class="icon"><i class="fa-solid fa-folder-open-o" aria-hidden="false"></i></div>'.$this->getLocalizedString("packTable").'</a>
+							<a class="dropdown-item" href="stats/packTable.php"><div class="icon"><i class="fa-regular fa-folder-open" aria-hidden="false"></i></div>'.$this->getLocalizedString("packTable").'</a>
 							<a class="dropdown-item" href="stats/gauntletTable.php"><div class="icon"><i class="fa-solid fa-globe" aria-hidden="false"></i></div>'.$this->getLocalizedString("gauntletTable").'</a>';
 		if(isset($_SESSION["accountID"]) AND $_SESSION["accountID"] != 0){
 			echo '
@@ -176,8 +176,8 @@ class dashboardLib{
 							<i class="fa-solid fa-upload" style="margin-right:5" aria-hidden="true"></i>'.$this->getLocalizedString("reuploadSection").'
 						</a>
 						<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-							<a class="dropdown-item" href="songs/"><i class="fa-solid fa-plus" style="position: absolute;font-size: 10px;margin: 5px 5px 5px 0px;" aria-hidden="false"></i><div class="icon"><i class="fa-solid fa-music" aria-hidden="false"></i></div>'.$this->getLocalizedString("songAdd").'</a>
-							<a class="dropdown-item" href="reupload/songAdd.php"><i class="fa-solid fa-link" style="position: absolute;font-size: 9px;margin: 5px 4px 4px 0px;" aria-hidden="false"></i><div class="icon"><i class="fa-solid fa-music" aria-hidden="false"></i></div>'.$this->getLocalizedString("songLink").'</a>';
+							<a class="dropdown-item" href="songs/"><i class="fa-solid fa-file" style="position: absolute;font-size: 10px;margin: 5px 5px 5px -2px;" aria-hidden="false"></i><div class="icon"><i class="fa-solid fa-music" aria-hidden="false"></i></div>'.$this->getLocalizedString("songAdd").'</a>
+							<a class="dropdown-item" href="reupload/songAdd.php"><i class="fa-solid fa-link" style="position: absolute;font-size: 9px;margin: 5px 5px 5px -3px;" aria-hidden="false"></i><div class="icon"><i class="fa-solid fa-music" aria-hidden="false"></i></div>'.$this->getLocalizedString("songLink").'</a>';
 								if($lrEnabled == 1) echo '<a class="dropdown-item" href="levels/levelReupload.php"><div class="icon"><i class="fa-solid fa-cloud-upload" aria-hidden="false"></i></div>'.$this->getLocalizedString("levelReupload").'</a>
 						</div>
 					</li>';
@@ -189,7 +189,7 @@ class dashboardLib{
 						<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
 							<a class="dropdown-item" href="stats/leaderboardsBan.php"><div class="icon"><i class="fa-solid fa-ban"></i></div>'.$this->getLocalizedString("leaderboardBan").'</a>';
 							if($gs->checkPermission($_SESSION["accountID"], "dashboardLevelPackCreate")) {
-								echo '<a class="dropdown-item" href="levels/packCreate.php"><i class="fa-solid fa-plus" style="position: absolute;font-size: 10px;margin: 3px 5px 5px -3px;" aria-hidden="false"></i><div class="icon"><i class="fa-solid fa-folder-open-o" style="margin-left: 2px;" aria-hidden="false"></i></div>'.$this->getLocalizedString("packManage").'</a>
+								echo '<a class="dropdown-item" href="levels/packCreate.php"><i class="fa-solid fa-plus" style="position: absolute;font-size: 10px;margin: 3px 5px 5px -3px;" aria-hidden="false"></i><div class="icon"><i class="fa-regular fa-folder-open" style="margin-left: 2px;" aria-hidden="false"></i></div>'.$this->getLocalizedString("packManage").'</a>
 							<a class="dropdown-item" href="levels/gauntletCreate.php"><i class="fa-solid fa-plus" style="position: absolute;font-size: 10px;margin: 3px 5px 5px -3px;" aria-hidden="false"></i><div class="icon"><i class="fa-solid fa-globe" aria-hidden="false"></i></div>'.$this->getLocalizedString("gauntletManage").'</a>';}
 							echo '<a class="dropdown-item" href="stats/unlistedMod.php"><div class="icon"><i class="fa-solid fa-list-ul" aria-hidden="false"></i></div>'.$this->getLocalizedString("unlistedMod").'</a>
 							<a class="dropdown-item" href="stats/suggestList.php"><div class="icon"><i class="fa-solid fa-list" aria-hidden="false"></i></div>'.$this->getLocalizedString("suggestLevels").'</a>';
@@ -197,7 +197,7 @@ class dashboardLib{
 								echo '<a class="dropdown-item" href="stats/addQuests.php"><i class="fa-solid fa-plus" style="position: absolute;font-size: 10px;margin: 5px 5px 5px -5px;" aria-hidden="false"></i><div class="icon"><i class="fa-solid fa-list-ol" aria-hidden="false"></i></div>'.$this->getLocalizedString("addQuest").'</a>';} 
 							echo '<a class="dropdown-item" href="stats/reportMod.php"><div class="icon"><i class="fa-solid fa-exclamation" aria-hidden="false"></i></div>'.$this->getLocalizedString("reportMod").'</a>';
 							if($gs->checkPermission($_SESSION["accountID"], "dashboardAddMod")) {
-							echo '<a class="dropdown-item" href="account/addMod.php"><i class="fa-solid fa-plus" style="position: absolute;font-size: 10px;margin: 5px 5px 5px -5px;" aria-hidden="false"></i><div class="icon"><i class="fa-solid fa-certificate" aria-hidden="false"></i></div>'.$this->getLocalizedString("addMod").'</a>';}
+							echo '<a class="dropdown-item" href="account/addMod.php"><i class="fa-solid fa-plus" style="position: absolute;font-size: 10px;margin: 5px 5px 5px -5px;" aria-hidden="false"></i><div class="icon"><i class="fa-solid fa-id-badge" aria-hidden="false"></i></div>'.$this->getLocalizedString("addMod").'</a>';}
 							if($gs->checkPermission($_SESSION["accountID"], "commandSharecpAll")) {
 							echo '<a class="dropdown-item" href="levels/shareCP.php"><div class="icon"><i class="fa-solid fa-share" aria-hidden="false"></i></div>'.$this->getLocalizedString("shareCPTitle").'</a>';}
 							echo '</div>
