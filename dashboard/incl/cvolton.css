@@ -7,7 +7,7 @@
 }
 
 .footer {
-	position: absolute;
+	position: fixed;
 	bottom: 10px;
     font-size: 15px;
   	text-align: left;
@@ -296,7 +296,7 @@ body {
     margin: 0;
     padding: 0;
     background-color: #36393e;
-    height: 100vh;
+    min-height: calc(100vh - 10px);
 }
 
 .btn-primary,
