@@ -33,7 +33,7 @@ if(empty($result)) {
 foreach($result as &$action){
 	//detecting mod
 	$account = $action["account"];
-	$account = $gs->getAccountName($account);
+	$account =  '<form style="margin:0" method="post" action="profile/"><button style="margin:0" class="accbtn" name="accountID" value="'.$action["account"].'">'.$gs->getAccountName($account).'</button></form>';
 	//detecting action
 	$value = $action["value"];
 	$value2 = $action["value2"];

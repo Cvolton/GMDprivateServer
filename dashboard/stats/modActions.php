@@ -64,7 +64,8 @@ foreach($result as &$mod){
   	$lvlcount = $lvlcount.' '.$dl->getLocalizedString("lvl$lvl");
   	if($actionscount == 0) $actionscount = '<div style="color:grey">'.$dl->getLocalizedString("noActions").'</div>';
 	if($lvlcount == 0) $lvlcount = '<div style="color:grey">'.$dl->getLocalizedString("noRates").'</div>';
-	$modtable .= "<tr><th scope='row'>".$row."</th><td>".$mod["userName"]."</td><td>".$resultRole."</td><td>".$actionscount."</td><td>".$lvlcount."</td><td>".$time."</td></tr>";
+  	$username =  '<form style="margin:0" method="post" action="profile/"><button style="margin:0" class="accbtn" name="accountID" value="'.$mod["accountID"].'">'.$mod["userName"].'</button></form>';
+	$modtable .= "<tr><th scope='row'>".$row."</th><td>".$username."</td><td>".$resultRole."</td><td>".$actionscount."</td><td>".$lvlcount."</td><td>".$time."</td></tr>";
 }
 
 /* 

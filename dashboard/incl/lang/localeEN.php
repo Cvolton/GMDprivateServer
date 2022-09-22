@@ -8,6 +8,10 @@ $string["levelsWeek"] = "Levels uploaded in a week";
 $string["levels3Months"] = "Levels uploaded in 3 months";
 $string["footer"] = "GDPS! ".date('Y', time());
 
+$string["profile"] = "Profile";
+$string["empty"] = "Empty...";
+$string["writeSomething"] = "Write something!";  
+  
 $string["accountManagement"] = "Account management";
 $string["changePassword"] = "Change password";
 $string["changeUsername"] = "Change username";
@@ -60,7 +64,7 @@ $string["registerDesc"] = "Register your account!";
 $string["repeatpassword"] = "Repeat password";
 $string["email"] = "Email";
 $string["repeatemail"] = "Repeat email";
-$string["smallNick"] = "username is too small!";
+$string["smallNick"] = "Username is too small!";
 $string["smallPass"] = "Password is too small!";
 $string["passDontMatch"] = "Passwords don't match!";
 $string["emailDontMatch"] = "Emails don't match";
@@ -76,10 +80,10 @@ $string["newPassword"] = "New password";
 $string["confirmNew"] = "Confirm password";
 
 $string["changeNickTitle"] = "Change username";
-$string["changedNick"] = "username successfully changed! You need to login to you account again.";
+$string["changedNick"] = "Username successfully changed! You need to login to you account again.";
 $string["wrongNick"] = "Wrong username!";
 $string["sameNick"] = "Usernames you entered are the same!";
-$string["alreadyUsedNick"] = "username you entered is already taken!";
+$string["alreadyUsedNick"] = "Username you entered is already taken!";
 $string["changeNickDesc"] = "Here you can change your username!";
 $string["oldNick"] = "Old username";
 $string["newNick"] = " New username";

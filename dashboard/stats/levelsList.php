@@ -46,7 +46,7 @@ foreach($result as &$action){
 	if($levelpass == 0 OR empty($levelpass)) $levelpass = '<div style="color:gray">'.$dl->getLocalizedString("nopass").'</div>';
 	$songid = $action["songID"];
 	if($songid == 0) $songid = '<div style="color:#d0d0d0">'.strstr($gs->getAudioTrack($action["audioTrack"]), ' by ', true).'</div>';
-	$username = $action["userName"];
+	$username =  '<form style="margin:0" method="post" action="profile/"><button style="margin:0" class="accbtn" name="accountID" value="'.$gs->getAccountIDFromName($action["userName"]).'">'.$action["userName"].'</button></form>';
   	$stars = $action["starStars"];
     if($stars < 5) {
           $star = 1;

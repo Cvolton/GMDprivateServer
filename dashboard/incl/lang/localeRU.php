@@ -8,6 +8,10 @@ $string["levelsWeek"] = "Выложено уровней за неделю";
 $string["levels3Months"] = "Выложено уровней за 3 месяца";
 $string["footer"] = "GDPS! ".date('Y', time());
 
+$string["profile"] = "Профиль";
+$string["empty"] = "Пустовато...";
+$string["writeSomething"] = "Напишите что-нибудь!";
+
 $string["accountManagement"] = "Управление аккаунтом";
 $string["changePassword"] = "Сменить пароль";
 $string["changeUsername"] = "Сменить никнейм";

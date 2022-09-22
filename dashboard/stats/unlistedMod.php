@@ -43,7 +43,7 @@ foreach($result as &$action){
 	$levelpass = substr($levelpass, 1);
   	$levelpass = preg_replace('/(0)\1+/', '', $levelpass);
 	if($levelpass == 0 OR empty($levelpass)) $levelpass = '<div style="color:gray">'.$dl->getLocalizedString("nopass").'</div>';
-	$username = $gs->getAccountName($action["extID"]);
+	$username =  '<form style="margin:0" method="post" action="profile/"><button style="margin:0" class="accbtn" name="accountID" value="'.$action["extID"].'">'.$gs->getAccountName($action["extID"]).'</button></form>';
   	$stars = $action["starStars"];
     if($stars < 5) {
           $star = 1;

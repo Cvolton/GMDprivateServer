@@ -107,13 +107,7 @@ class dashboardLib{
 		require_once __DIR__."/../../incl/lib/mainLib.php";
       	include __DIR__."/../../incl/lib/connection.php";
 		$gs = new mainLib();
-		$homeActive = "";
-		$accountActive = "";
-      	$browseActive = "";
-		$modActive = "";
-		$reuploadActive = "";
-		$statsActive = "";
-      	$msgActive = "";
+		$homeActive = $accountActive = $browseActive = $modActive = $reuploadActive = $statsActive = $msgActive = $profileActive = "";
 		switch($active){
 			case "home":
 				$homeActive = "active";
@@ -135,6 +129,9 @@ class dashboardLib{
 				break;
            	case "msg":
 				$msgActive = "active";
+				break;
+           	case "profile":
+				$profileActive = "active";
 				break;
 		}
 		echo '<nav id="navbarepta" class="navbar navbar-expand-lg navbar-dark menubar">
@@ -264,11 +261,12 @@ class dashboardLib{
 						}
 		if(isset($_SESSION["accountID"]) AND $_SESSION["accountID"] != 0){
 			$userName = $gs->getAccountName($_SESSION["accountID"]);
-			echo'<li class="nav-item dropdown">
+			echo'<li class="nav-item dropdown '.$profileActive.'">
 						<a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 							<i class="fa-solid fa-user-circle" aria-hidden="true"></i> '.sprintf($this->getLocalizedString("loginHeader"), $userName).'
 						</a>
 						<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+							<a class="dropdown-item" href="profile/"><div class="icon"><i class="fa-regular fa-user"></i></div>'.$this->getLocalizedString("profile").'</a>
 							<a class="dropdown-item" href="login/logout.php"><div class="icon"><i class="fa-solid fa-sign-out" aria-hidden="false"></i></div>'.$this->getLocalizedString("logout").'</a>
 						</div>
 					</li>';

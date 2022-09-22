@@ -33,7 +33,7 @@ if(empty($result)) {
 } 
 foreach($result as &$action){
 	$userid = $action["extID"];
-	$username = $action["userName"];
+	$username =  '<form style="margin:0" method="post" action="profile/"><button style="margin:0" class="accbtn" name="accountID" value="'.$action["extID"].'">'.$action["userName"].'</button></form>';
 	$stars = $action["stars"];
 	$table .= "<tr><th scope='row'>".$x."</th><td>".$userid."</td><td>".$username."</td><td>".$stars."</td></tr>";
 	$x++;

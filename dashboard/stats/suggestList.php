@@ -33,7 +33,7 @@ if(empty($result)) {
 } 
 foreach($result as &$action){
 	$suggestid = $action["suggestLevelId"];
-	$suggestby = $gs->getAccountName($action["suggestBy"]);
+	$suggestby =  '<form style="margin:0" method="post" action="profile/"><button style="margin:0" class="accbtn" name="accountID" value="'.$action["suggestBy"].'">'.$gs->getAccountName($action["suggestBy"]).'</button></form>';
 	$diff = $action["suggestDifficulty"];
 	$stars = $action["suggestStars"];
 	if($action["suggestAuto"] != 0) {

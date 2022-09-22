@@ -49,10 +49,11 @@ foreach($result as &$gauntlet){
      	else $coin = 1;
 		$coins = $level["coins"].' '.$dl->getLocalizedString("coins$coin");
       	if($level["coins"] == 0) $coins = '<div style="color:grey">'.$dl->getLocalizedString("noCoins").'</div>';
+      	$user =  '<form style="margin:0" method="post" action="profile/"><button style="margin:0" class="accbtn" name="accountID" value="'.$gs->getExtID($level["userID"]).'">'.$gs->getUserName($level["userID"]).'</button></form>';
 		$lvltable .= "<tr>
 						<td class='tcell'>".$level["levelID"]."</td>
 						<td class='tcell'>".$level["levelName"]."</td>
-						<td class='tcell'>".$gs->getUserName($level["userID"])."</td>
+						<td class='tcell'>".$user."</td>
 						<td class='tcell'>".$stars."</td>
 						<td class='tcell'>".$coins."</td>
 					</tr>";

@@ -47,7 +47,7 @@ if(empty($result)) {
 } 
 foreach($result as &$report){
 	$levelName = htmlspecialchars($report['levelName'], ENT_QUOTES);
-  	$author = $gs->getAccountName($report['extID']);
+  	$author =  '<form style="margin:0" method="post" action="profile/"><button style="margin:0" class="accbtn" name="accountID" value="'.$report["extID"].'">'.$gs->getAccountName($report["extID"]).'</button></form>';
 	if($report['reportsCount'] == 1) $reports = $report['reportsCount'].' '.$dl->getLocalizedString("time0");
 	elseif($report['reportsCount'] < 5) $reports = $report['reportsCount'].' '.$dl->getLocalizedString("time1");
 	else $reports = $report['reportsCount'].' '.$dl->getLocalizedString("times");

@@ -56,11 +56,12 @@ foreach($result as &$daily){
 		$stars = -1;
 		$coins = -1;
 	}
+  	$user =  '<form style="margin:0" method="post" action="profile/"><button style="margin:0" class="accbtn" name="accountID" value="'.$gs->getExtID($level["userID"]).'">'.$gs->getUserName($level["userID"]).'</button></form>';
 	$dailytable .= '<tr>
 					<th scope="row">'.$x.'</th>
 					<td>'.$daily["levelID"].'</th>
 					<td>'.$level["levelName"].'</td>
-					<td>'.$gs->getUserName($level["userID"]).'</td>
+					<td>'.$user.'</td>
 					<td>'.$stars.'</td>
 					<td>'.$coins.'</td>
 					<td>'.date('d.m.Y', $daily["timestamp"]).'</td>

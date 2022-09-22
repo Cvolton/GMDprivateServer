@@ -32,10 +32,10 @@ if(empty($result)) {
 	die();
 } 
 foreach($result as &$action){
-	$username = $action["userName"];
 	$isAdmin = $action["isAdmin"];
 	$accountID = $action["accountID"].' <text style="color:gray">|</text> '.$gs->getUserID($action["accountID"]);
   	if($action["accountID"] == $gs->getUserID($action["accountID"])) $accountID = $action["accountID"];
+  	$username = '<form style="margin:0" method="post" action="profile/"><button style="margin:0" class="accbtn" name="accountID" value="'.$action["accountID"].'">'.$action["userName"].'</button></form>';
   	$query = $db->prepare("SELECT lastPlayed FROM users WHERE extID=:id");
   	$query->execute([':id' => $action["accountID"]]);
   	$lastseen = $query->fetch();

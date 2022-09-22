@@ -16,6 +16,11 @@
   	justify-self: center;
 }
 
+.profilepic {
+	font-size: 25px;
+  	margin: 0 5 0 5;
+}
+
 .icon, .icon:visited {
   	transition: 0.3s;
     margin-right: 10px;
@@ -31,6 +36,7 @@
 
 .table-inverse td, .table-inverse th, .table-inverse thead th {
 	text-align:center;
+  	vertical-align: middle;
 }
 
 .newMsgs {
@@ -46,6 +52,19 @@
     font-size: 20px;
     padding: 15px;
     margin-left: 10px;
+    border: none;
+    margin-top: 15px;
+    border-radius: 500px;
+    transition: 0.3s;
+    cursor: pointer;
+}
+
+.goback {
+    background-color: #212529;
+    color: #c0c0c0;
+    font-size: 20px;
+    padding: 15px;
+    margin-right: 10px;
     border: none;
     margin-top: 15px;
     border-radius: 500px;
@@ -120,6 +139,14 @@
     background: #29282c;
 }
 
+.profile {
+	padding: 10px;
+    margin-top: 10px;
+    width: 100%;
+    border-radius: 20px;
+    background: #29282c;
+}
+
 .messengernotyou {
 	padding: 10px;
     margin-top: 10px;
@@ -166,6 +193,13 @@
 	text-align:left;
 }
 
+.profilemsg {
+	font-size:17px;
+	color:white;
+	margin:5px;
+	text-align:left;
+}
+
 .msgbox {
 	text-align:center;
 	min-width: 500px;
@@ -187,6 +221,7 @@
 	margin-right:5px;
 	color:white;
 }
+
 .subjectnotyou {
 	text-align:left;
 	font-size:17px;
@@ -195,6 +230,13 @@
 	color:white;
 }
 
+.profilenick {
+	text-align:left;
+	font-size:22px;
+	font-weight:500;
+	margin-left:5px;
+	color:white;
+}
 
 .table .table {
 	color: #fff;
@@ -346,6 +388,18 @@ body {
     border-color: #47494e;
 }
 
+.accbtn {
+    background-color: #373A3F00;
+    font-weight: 700;
+    font-size: 15px;
+	color: #007bff;
+  	margin:0;
+  	padding:0;
+    border: none;
+    border-radius: 500px;
+    cursor: pointer;
+}
+
 .btn-song,
 .btn-song:visited {
     background-color: #212529;
@@ -390,7 +444,7 @@ body {
 }
 
 #navbarepta {
-    width: 100%;
+    width: 100vw;
     transition: 0.3s;
 }
 
@@ -488,8 +542,10 @@ option,
     margin-left: 4%;
     width: 92%;
 }
-.dropdown-item:hover > .icon {
-	background: #90c7ff;
+.dropdown-item:hover > .icon,
+.dropdown-item:active > .icon,
+.dropdown-item:focus > .icon{
+	background: #8abfff;
 }
 
 table,
