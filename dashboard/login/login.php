@@ -4,7 +4,7 @@ include "../../incl/lib/connection.php";
 require "../incl/dashboardLib.php";
 $dl = new dashboardLib();
 require "../../incl/lib/generatePass.php";
-require "../../incl/lib/mainLib.php";
+require_once "../../incl/lib/mainLib.php";
 $gs = new mainLib();
 if(isset($_SESSION["accountID"]) AND $_SESSION["accountID"] != 0){
 	$dl->printLoginBox("<p>You are already logged in. <a href='..'>Click here to continue</a></p>");
