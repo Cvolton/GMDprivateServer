@@ -1,13 +1,14 @@
 <?php
 //error_reporting(0);
 include dirname(__FILE__)."/../../config/connection.php";
-@header('Content-Type: text/html; charset=utf-8');
+include_once dirname(__FILE__)."/mainLib.php";
+$gs = new mainLib();
 if(!isset($port))
 	$port = 3306;
 // banip check
-$banipcheck = new PDO("mysql:host=$servername;port=$port;dbname=$dbname", $username, $password, array(PDO::ATTR_PERSISTENT => true));
-$banip = $banipcheck->prepare("SELECT IP FROM bannedips WHERE IP=:ip");
-  	$banip->execute([':ip' => $_SERVER['REMOTE_ADDR']]);
+    $banipcheck = new PDO("mysql:host=$servername;port=$port;dbname=$dbname", $username, $password, array(PDO::ATTR_PERSISTENT => true));
+    $banip = $banipcheck->prepare("SELECT IP FROM bannedips WHERE IP=:ip");
+  	$banip->execute([':ip' => $gs->getIP()]);
   	$banip2 = $banip->fetch();
   	if($banip2 != 0) exit(-1);
 try {
