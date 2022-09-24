@@ -1,6 +1,7 @@
 <?php
 //error_reporting(0);
 include dirname(__FILE__)."/../../config/connection.php";
+@header('Content-Type: text/html; charset=utf-8');
 include_once dirname(__FILE__)."/mainLib.php";
 $gs = new mainLib();
 if(!isset($port))
