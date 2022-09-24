@@ -1,5 +1,5 @@
 <?php
-include __DIR__ . "/ip_in_range.php";
+include_once __DIR__ . "/ip_in_range.php";
 class mainLib {
 	public function getAudioTrack($id) {
 		$songs = ["Stereo Madness by ForeverBound",

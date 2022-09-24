@@ -5,7 +5,7 @@ include "../lib/connection.php";
 include "../../config/dailyChests.php";
 require "../lib/XORCipher.php";
 require "../lib/GJPCheck.php";
-require "../lib/mainLib.php";
+require_once "../lib/mainLib.php";
 $gs = new mainLib();
 require "../lib/generateHash.php";
 require_once "../lib/exploitPatch.php";
