@@ -197,6 +197,8 @@ class dashboardLib{
 							echo '<a class="dropdown-item" href="account/addMod.php"><i class="fa-solid fa-plus" style="position: absolute;font-size: 10px;margin: 5px 5px 5px -5px;" aria-hidden="false"></i><div class="icon"><i class="fa-solid fa-id-badge" aria-hidden="false"></i></div>'.$this->getLocalizedString("addMod").'</a>';}
 							if($gs->checkPermission($_SESSION["accountID"], "commandSharecpAll")) {
 							echo '<a class="dropdown-item" href="levels/shareCP.php"><div class="icon"><i class="fa-solid fa-share" aria-hidden="false"></i></div>'.$this->getLocalizedString("shareCPTitle").'</a>';}
+							if($gs->checkPermission($_SESSION["accountID"], "dashboardForceChangePassNick")) {
+							echo '<a class="dropdown-item" href="account/forceChange.php"><div class="icon"><i class="fa-solid fa-gavel" aria-hidden="false"></i></i></div>'.$this->getLocalizedString("changePassOrNick").'   </a>';}
 							echo '</div>
 					</li>';
 			}

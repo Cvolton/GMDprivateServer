@@ -65,6 +65,10 @@ foreach($result as &$action){
       	else $value3 = '<div style="color:#ffa9a9">'.$dl->getLocalizedString("isBan").'</div>';
       	if($value2 == 'banned' OR $value2 == 'none') $value2 = '<div style="color:gray">'.$dl->getLocalizedString("noReason").'</div>';
     } 
+  	if($action["type"] == 26) {
+		if($value2 == 'Password') $value2 = $dl->getLocalizedString("password");
+		else $value2 = $dl->getLocalizedString("username");
+	}
   	if($action["type"] == 17) { 
       	if($value3 == 1) $star = 0; elseif($value3 < 5) $star = 1; else $star = 2;
       	if($action["value4"] == 1) $coin = 0; elseif($action["value4"] != 0) $coin = 1; else $coin = 2; 

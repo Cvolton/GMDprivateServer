@@ -9,6 +9,7 @@ if(!$installed) {
       $db->query("ALTER TABLE roles ADD COLUMN IF NOT EXISTS dashboardLevelPackCreate INT NOT NULL DEFAULT '0' AFTER dashboardModTools; 
       ALTER TABLE roles ADD COLUMN IF NOT EXISTS dashboardAddMod INT NOT NULL DEFAULT '0' AFTER dashboardLevelPackCreate; 
       ALTER TABLE roles ADD COLUMN IF NOT EXISTS dashboardManageSongs INT NOT NULL DEFAULT '0' AFTER dashboardAddMod; 
+      ALTER TABLE roles ADD COLUMN IF NOT EXISTS dashboardForceChangePassNick INT NOT NULL DEFAULT '0' AFTER dashboardManageSongs; 
       ALTER TABLE songs ADD COLUMN IF NOT EXISTS reuploadID INT NOT NULL DEFAULT '0' AFTER reuploadTime; 
       ALTER TABLE users ADD COLUMN IF NOT EXISTS banReason NOT NULL DEFAULT 'none' AFTER isCreatorBanned");
 	} else {
@@ -21,6 +22,9 @@ if(!$installed) {
 		$check = $db->query("SHOW COLUMNS FROM `roles` LIKE 'dashboardManageSongs'");
       	$exist = $check->fetchAll();
       	if(empty($exist)) $db->query("ALTER TABLE roles ADD dashboardManageSongs INT NOT NULL DEFAULT '0' AFTER dashboardAddMod");
+		$check = $db->query("SHOW COLUMNS FROM `roles` LIKE 'dashboardForceChangePassNick'");
+      	$exist = $check->fetchAll();
+      	if(empty($exist)) $db->query("ALTER TABLE roles ADD dashboardForceChangePassNick INT NOT NULL DEFAULT '0' AFTER dashboardManageSongs");
 		$check = $db->query("SHOW COLUMNS FROM `songs` LIKE 'reuploadID'");
       	$exist = $check->fetchAll();
       	if(empty($exist)) $db->query("ALTER TABLE songs ADD reuploadID INT NOT NULL DEFAULT '0' AFTER reuploadTime");

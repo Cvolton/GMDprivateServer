@@ -6,7 +6,7 @@ $string["welcome"] = "Welcome to ".$gdps.'!';
 $string["didntInstall"] = "<div style='color:#47a0ff'><b>Warning!</b> You haven't fully installed dashboard! Click on the text to do this.</div>";
 $string["levelsWeek"] = "Levels uploaded in a week";
 $string["levels3Months"] = "Levels uploaded in 3 months";
-$string["footer"] = "GDPS! ".date('Y', time());
+$string["footer"] = "GreenCatsServer? 2020 - ".date('Y', time());
 
 $string["profile"] = "Profile";
 $string["empty"] = "Empty...";
@@ -78,6 +78,14 @@ $string["changePassDesc"] = "Here you can change your password!";
 $string["oldPassword"] = "Old password";
 $string["newPassword"] = "New password";
 $string["confirmNew"] = "Confirm password";
+
+$string["forcePassword"] = "Force change password";
+$string["forcePasswordDesc"] = "Here you can force change player's password!";
+$string["forceNick"] = "Force change username";
+$string["forceNickDesc"] = "Here you can force change player's username!";
+$string["forceChangedPass"] = "<b>%s</b>'s password has been successfully changed!";
+$string["forceChangedNick"] = "<b>%s</b>'s username has been successfully changed!";
+$string["changePassOrNick"] = "Change player's username or password";
 
 $string["changeNickTitle"] = "Change username";
 $string["changedNick"] = "Username successfully changed! You need to login to you account again.";
