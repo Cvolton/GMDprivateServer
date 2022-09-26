@@ -3,7 +3,6 @@
 include dirname(__FILE__)."/../../config/connection.php";
 require_once dirname(__FILE__)."/ipCheck.php";
 $ic = new ipCheck();
-date_default_timezone_set('Europe/Moscow');
 @header('Content-Type: text/html; charset=utf-8');
 if(!isset($port))
 	$port = 3306;
