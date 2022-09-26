@@ -280,7 +280,7 @@ class dashboardLib{
 						<a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 							<i class="fa-solid fa-sign-in" aria-hidden="true"></i> '.$this->getLocalizedString("login").'
 						</a>
-						<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink" style="padding: 15px 15px 0px 15px;">
+						<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink" style="padding: 15px 15px 0px 15px;min-width: 275px;">
 									<form action="login/login.php" method="post">
 										<div class="form-group">
 											<input type="text" class="form-control login-input" id="usernameField" name="userName" placeholder="'.$this->getLocalizedString("username").'">
@@ -288,8 +288,8 @@ class dashboardLib{
 										<div class="form-group">
 											<input type="password" class="form-control login-input" id="passwordField" name="password" placeholder="'.$this->getLocalizedString("password").'">
 										</div>
-										<div><button type="submit" class="btn btn-primary btn-block">'.$this->getLocalizedString("login").'</button>
-										</form><form action="login/register.php" style="margin-left:25px; width:80%; margin-top:10px">
+										<div style="display: flex;flex-wrap: wrap;justify-content: center"><button type="submit" class="btn btn-primary btn-block">'.$this->getLocalizedString("login").'</button>
+										</form><form action="login/register.php" style="width: 80%;margin-top: 10px;margin-bottom: -5px">
 										<button type="submit"class="btn btn-primary btn-block">'.$this->getLocalizedString("register").'</button>
 										</div>
 									</form>

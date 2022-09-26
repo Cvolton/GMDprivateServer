@@ -2,6 +2,12 @@
     font-family: 'Google Sans', 'Segoe UI' , 'Calibri Light', 'Arial';
 }
 
+@media screen and (min-width: 1079px;) {
+	* {min-width: max-content !important;
+      min-height: max-content !important;
+	}
+}
+
 #ads, .adsbygoogle, #ads_bottom_static {
     display: none !important;
 }
@@ -596,7 +602,6 @@ table,
 }
 
 .login-input {
-    width: 250px;
     border-radius: 20px;
     background: #141414;
 }
