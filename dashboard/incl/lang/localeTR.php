@@ -39,7 +39,7 @@ $string["gauntletTable"] = "Gauntlet listesi";
 $string["packTable"] = "Harita paket listesi";
 $string["leaderboardTime"] = "Liderlik tablosu";
 
-$string["download"] = "İndir: ";
+$string["download"] = "İndir";
 $string["forwindows"] = "Windows";
 $string["forandroid"] = "Android";
 $string["formac"] = "Mac";
