@@ -85,7 +85,7 @@ $string["forceNick"] = "Zorla kullanıcı adı değiştir";
 $string["forceNickDesc"] = "Burada zorla bir oyuncunun kullanıcı adını değiştirebilirsin!";
 $string["forceChangedPass"] = "<b>%s</b> adlı üyenin şifresi başarıyla değiştirildi!";
 $string["forceChangedNick"] = "<b>%s</b> adlı üyenin kullanıcı adı başarıyla değiştirildi!";
-$string["changePassOrNick"] = "Change player's username or password";
+$string["changePassOrNick"] = "Üyenin kullanıcı adını ya da şifresini değiştir";
 
 $string["changeNickTitle"] = "Kullanıcı adı değiştir";
 $string["changedNick"] = "Kullanıcı adı başarıyla değiştirildi! Hesabına yeniden giriş yapman gerekiyor.";
