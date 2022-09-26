@@ -7,7 +7,7 @@ require_once "../lib/exploitPatch.php";
 require_once "../lib/mainLib.php";
 $gs = new mainLib();
 
-if(empty($_POST["accountID"])) exit("1");
+if(empty($_POST["accountID"])) exit("0");
 
 if(!isset($_POST["userName"]) OR !isset($_POST["secret"]) OR !isset($_POST["stars"])
 	OR !isset($_POST["demons"]) OR !isset($_POST["icon"]) OR !isset($_POST["color1"])
