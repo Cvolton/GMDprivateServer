@@ -36,7 +36,7 @@ $string["dailyTable"] = "Günlük bölümler";
 $string["modActionsList"] = "Mod günlüğü";
 $string["modActions"] = "Sunucu moderatörleri";
 $string["gauntletTable"] = "Gauntlet listesi";
-$string["packTable"] = "Harita paket listesi";
+$string["packTable"] = "Harita paketi listesi";
 $string["leaderboardTime"] = "Liderlik tablosu";
 
 $string["download"] = "İndir";
@@ -294,7 +294,7 @@ $string["lvl2"] = "bölüm";
 $string["unban"] = "Unban";
 $string["isBan"] = "Ban";
 
-$string["noCoins"] = "Coinsiz";
+$string["noCoins"] = "Coin yok";
 $string["noReason"] = "Sebep yok";
 $string["noActions"] = "Aksiyon yok";
 $string["noRates"] = "Derecelendirme yok";
