@@ -6,7 +6,7 @@ $string["welcome"] = "Добро пожаловать на ".$gdps.'!';
 $string["didntInstall"] = "<div style='color:#47a0ff'><b>Внимание!</b> Вы не до конца установили панель сервера! Нажмите на текст, чтобы это сделать.</div>";
 $string["levelsWeek"] = "Выложено уровней за неделю";
 $string["levels3Months"] = "Выложено уровней за 3 месяца";
-$string["footer"] = "GreenCatsServer? 2020 - ".date('Y', time());
+$string["footer"] = $gdps.", ".date('Y', time());
 
 $string["profile"] = "Профиль";
 $string["empty"] = "Пустовато...";
@@ -337,6 +337,7 @@ $string["modAction18"] = "Создал(а) Гаунтлет";
 $string["modAction19"] = "Изменил(а) песню";
 $string["modAction20"] = "Сделал(а) модератором игрока";
 $string["modAction25"] = "Создал(а) квест";
+$string["modAction26"] = "Сменил(а) никнейм/пароль игроку";
 $string["Kish!"] = "Кыш!";
 $string["noPermission"] = "У вас нет прав!";
 $string["noLogin?"] = "Вы не вошли в аккаунт!";
