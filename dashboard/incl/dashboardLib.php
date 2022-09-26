@@ -244,7 +244,8 @@ class dashboardLib{
 						<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
 							<a class="dropdown-item" id="langload" href="lang/switchLang.php?lang=RU"><div class="icon flag"><img class="imgflag" src="incl/flags/ru.png"></div>Русский</a>
 							<a class="dropdown-item" id="langload" href="lang/switchLang.php?lang=EN"><div class="icon flag"><img class="imgflag" src="incl/flags/us.png"></div>English</a>
-							<a class="dropdown-item" id="langload" href="lang/switchLang.php?lang=TR"><div class="icon flag"><img class="imgflag" src="incl/flags/tr.png"></div>Türkçe</a>
+							<a class="dropdown-item" id="langload" href="lang/switchLang.php?lang=TR" title="Translated by EMREOYUN"><div class="icon flag"><img class="imgflag" src="incl/flags/tr.png"></div>Türkçe</a>
+                            <a class="dropdown-item" id="langload" href="lang/switchLang.php?lang=UA" title="Translated by Jamichi""><div class="icon flag"><img class="imgflag" src="incl/flags/ua.png"></div>Українська</a>
 						</div>';
 						if(!empty(glob("../download/*.*")) OR !empty(glob("download/*.*"))) {
 							echo '
