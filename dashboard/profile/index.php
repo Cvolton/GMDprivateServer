@@ -7,7 +7,7 @@ $gs = new mainLib();
 include "../incl/dashboardLib.php";
 $dl = new dashboardLib();
 $dl->printFooter('../');
-if(!isset($_SESSION["accountID"]) OR $_SESSION["accountID"] == 0) {
+if(!isset($_SESSION["accountID"]) OR $_SESSION["accountID"] == 0 AND empty($_POST["accountID"])) {
   	$dl->title($dl->getLocalizedString("profile"));
 	$dl->printSong('<div class="form">
     <h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
