@@ -476,6 +476,17 @@ body {
     font-size: 14px;
     width: 100%;
 }
+
+.flag {
+	display: inline-table;
+    padding-top: 7px;
+}
+
+.imgflag {
+    width: 18px;
+    height: 18px;
+}
+
 select,
 option,
 .quest {
