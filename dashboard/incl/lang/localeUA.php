@@ -6,7 +6,7 @@ $string["welcome"] = "Ласкаво просимо до ".$gdps.'!';
 $string["didntInstall"] = "<div style='color:#47a0ff'><b>Увага!</b> Ви не до кінця встановили панель серверу! Нажміть на текст, щоб це зробити.</div>";
 $string["levelsWeek"] = "Викладено рівнів за тиждень";
 $string["levels3Months"] = "Викладено рівнів за 3 місяці";
-$string["footer"] = "GreenCatsServer? 2020 - ".date('Y', time());
+$string["footer"] = $gdps.", ".date('Y', time());
 
 $string["profile"] = "Профіль";
 $string["empty"] = "Порожньо...";
