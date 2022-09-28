@@ -2,11 +2,11 @@
 include __DIR__."/../../../config/dashboard.php";
 
 $string["homeNavbar"] = "Дім";
-$string["welcome"] = "Ласкаво просимо в ".$gdps.'!';
-$string["didntInstall"] = "<div style='color:#47a0ff'><b>Увага!</b> Ви не до кінця встановили панель сервера! Нажміть на текст, щоб це зробити.</div>";
+$string["welcome"] = "Ласкаво просимо до ".$gdps.'!';
+$string["didntInstall"] = "<div style='color:#47a0ff'><b>Увага!</b> Ви не до кінця встановили панель серверу! Нажміть на текст, щоб це зробити.</div>";
 $string["levelsWeek"] = "Викладено рівнів за тиждень";
 $string["levels3Months"] = "Викладено рівнів за 3 місяці";
-$string["footer"] = $gdps.", ".date('Y', time());
+$string["footer"] = "GreenCatsServer? 2020 - ".date('Y', time());
 
 $string["profile"] = "Профіль";
 $string["empty"] = "Порожньо...";
@@ -49,8 +49,8 @@ $string["language"] = "Мова";
 $string["loginHeader"] = "Вітаємо, %s!";
 $string["logout"] = "Вийти";
 $string["login"] = "Ввійти";
-$string["wrongNickOrPass"] = "Неправильний нікнейм або пароль!";
-$string["invalidid"] = "Неправильний ID!";
+$string["wrongNickOrPass"] = "Невірний нікнейм або пароль!";
+$string["invalidid"] = "Невірний ID!";
 $string["loginBox"] = "Вхід в акаунт";
 $string["loginSuccess"] = "Ви успішно ввійшли в акаунт!";
 $string["loginAlready"] = "Ви вже ввійшли в акаунт!";
@@ -77,19 +77,19 @@ $string["samePass"] = "Введені вами паролі однакові!";
 $string["changePassDesc"] = "Тут ви можете змінити свій пароль!";
 $string["oldPassword"] = "Старий пароль";
 $string["newPassword"] = "Новий пароль";
-$string["confirmNew"] = "Подтвердження пароля";
+$string["confirmNew"] = "Підтвердження пароля";
 
 $string["forcePassword"] = "Примусово змінити пароль";
-$string["forcePasswordDesc"] = "Тут ви можете примусово змінити пароль користувачу!";
+$string["forcePasswordDesc"] = "Тут ви можете примусово змінити пароль користувача!";
 $string["forceNick"] = "Примусово змінити нікнейм";
 $string["forceNickDesc"] = "Тут ви можете примусово змінити нікнейм користувача!";
 $string["forceChangedPass"] = "Пароль користувача <b>%s</b> успішно змінений!";
-$string["forceChangedNick"] = "Нікнейм пользователя <b>%s</b> успішно змінений!";
-$string["changePassOrNick"] = "Змінити нікнейм або пароль користувачу";
+$string["forceChangedNick"] = "Нікнейм користувача <b>%s</b> успішно змінений!";
+$string["changePassOrNick"] = "Змінити нікнейм або пароль користувача";
 
 $string["changeNickTitle"] = "Зміна нікнейма";
 $string["changedNick"] = "Нікнейм успішно замінений! Вам потрібно заново ввійти в ваш акаунт.";
-$string["wrongNick"] = "Неправильний нікнейм!";
+$string["wrongNick"] = "Невірний нікнейм!";
 $string["sameNick"] = "Введені вами нікнейми однакові!";
 $string["alreadyUsedNick"] = "Введений вами нікнейм вже занятий!";
 $string["changeNickDesc"] = "Тут ви можете змінити свій нікнейм!";
@@ -228,7 +228,7 @@ $string["ID"] = "ID";
 $string["orbs"] = "Орби";
 $string["stars"] = "Зірки";
 $string["coins"] = "Монети";
-$string["accounts"] = "Аккаунти";
+$string["accounts"] = "Акаунти";
 $string["levels"] = "Рівні";
 $string["songs"] = "Пісні";
 $string["author"] = "Автор";
@@ -344,4 +344,4 @@ $string["noLogin?"] = "Ви не ввійшли в акаунт!";
 $string["LoginBtn"] = "Ввійти в акаунт";
 $string["dashboard"] = "Панель серверу";
 //errors
-$string["errorNoAccWithPerm"] = "Помилка: акаунтыв з правом '%s' не було знайдено";
+$string["errorNoAccWithPerm"] = "Помилка: акаунтів з правом '%s' не було знайдено";
