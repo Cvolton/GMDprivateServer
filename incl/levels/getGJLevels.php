@@ -9,10 +9,9 @@ $gs = new mainLib();
 require "../lib/generateHash.php";
 
 //initializing variables
-$lvlstring = ""; $userstring = ""; $songsstring = ""; $lvlsmultistring = []; $str = ""; $order = "uploadDate";
+$lvlstring = $userstring = $songsstring = $sug = $sugg = $str = $morejoins = ""; $lvlsmultistring = []; $order = "uploadDate";
 $orderenabled = true; $ordergauntlet = false;
 $params = array("NOT unlisted = 1");
-$morejoins = "";
 
 if(!empty($_POST["gameVersion"])){
 	$gameVersion = ExploitPatch::number($_POST["gameVersion"]);
@@ -195,7 +194,10 @@ switch($type){
 		$order = "rateDate DESC,uploadDate";
 		break;
 	case 7: //MAGIC
-		$params[] = "objects > 9999";
+        $sug = ", suggest.suggestLevelId, suggest.timestamp";
+        $sugg = "LEFT JOIN suggest ON levels.levelID = suggest.suggestLevelId";
+		$params[] = "suggestLevelId > 0";
+    	$order = 'suggest.timestamp';
 		break;
 	case 10: //MAP PACKS
 	case 19: //unknown but same as map packs (on real GD type 10 has star rated filter and 19 doesn't)
@@ -233,11 +235,11 @@ switch($type){
 		break;
 }
 //ACTUAL QUERY EXECUTION
-$querybase = "FROM levels LEFT JOIN songs ON levels.songID = songs.ID LEFT JOIN users ON levels.userID = users.userID $morejoins";
+$querybase = "FROM levels LEFT JOIN songs ON levels.songID = songs.ID LEFT JOIN users ON levels.userID = users.userID $sugg $morejoins";
 if(!empty($params)){
 	$querybase .= " WHERE (" . implode(" ) AND ( ", $params) . ")";
 }
-$query = "SELECT levels.*, songs.ID, songs.name, songs.authorID, songs.authorName, songs.size, songs.isDisabled, songs.download, users.userName, users.extID $querybase $morejoins ";
+$query = "SELECT levels.*, songs.ID, songs.name, songs.authorID, songs.authorName, songs.size, songs.isDisabled, songs.download, users.userName, users.extID$sug $querybase $morejoins ";
 if($order){
 	if($ordergauntlet){
 		$query .= "ORDER BY $order ASC";
