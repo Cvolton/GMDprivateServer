@@ -5,9 +5,10 @@ include "../lib/connection.php";
 require_once "../lib/GJPCheck.php";
 require_once "../lib/exploitPatch.php";
 require_once "../lib/mainLib.php";
+require_once "../../config/security.php";
 $gs = new mainLib();
 
-if(empty($_POST["accountID"])) exit("0");
+if(empty($_POST["accountID"]) && !$unregisteredSubmissions) exit("0");
 
 if(!isset($_POST["userName"]) OR !isset($_POST["secret"]) OR !isset($_POST["stars"])
 	OR !isset($_POST["demons"]) OR !isset($_POST["icon"]) OR !isset($_POST["color1"])
