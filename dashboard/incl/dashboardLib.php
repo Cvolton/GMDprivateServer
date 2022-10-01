@@ -414,4 +414,3 @@ class dashboardLib{
 	}
 }
 ?>
-<link rel="stylesheet" href="../incl/cvolton.css">
