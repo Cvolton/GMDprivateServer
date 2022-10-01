@@ -179,12 +179,12 @@ $string["subject"] = "Тема";
 $string["msg"] = "Повідомлення";
 $string["tooFast"] = "Ви надто швидко пишете!";
 
-$string["levelToGD"] = "Перенести уровень на другой сервер";
-$string["levelToGDDesc"] = "Здесь вы можете перенести свой уровень на другой сервер!";
-$string["usernameTarget"] = "Никнейм для выбранного сервера";
-$string["passwordTarget"] = "Пароль для выбранного сервера";
-$string["notYourLevel"] = "Это не ваш уровень!";
-$string["reuploadFailed"] = "Ошибка переноса уровня!";
+$string["levelToGD"] = "Перенести рівень на інший сервер";
+$string["levelToGDDesc"] = "Тут ви можете перенести свій рівень на інший сервер!";
+$string["usernameTarget"] = "Нікнейм для обраного серверу";
+$string["passwordTarget"] = "Пароль для обраного серверу";
+$string["notYourLevel"] = "Це не ваш рівень!";
+$string["reuploadFailed"] = "Помилка перенесення рівня!";
 
 /*
 	REUPLOAD
