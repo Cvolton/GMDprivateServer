@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 include __DIR__."/../../../config/dashboard.php";
 
 $string["homeNavbar"] = "Дім";
@@ -178,6 +178,13 @@ $string["noMsgs"] = "Начніть діалог!";
 $string["subject"] = "Тема";
 $string["msg"] = "Повідомлення";
 $string["tooFast"] = "Ви надто швидко пишете!";
+
+$string["levelToGD"] = "Перенести уровень на другой сервер";
+$string["levelToGDDesc"] = "Здесь вы можете перенести свой уровень на другой сервер!";
+$string["usernameTarget"] = "Никнейм для выбранного сервера";
+$string["passwordTarget"] = "Пароль для выбранного сервера";
+$string["notYourLevel"] = "Это не ваш уровень!";
+$string["reuploadFailed"] = "Ошибка переноса уровня!";
 
 /*
 	REUPLOAD

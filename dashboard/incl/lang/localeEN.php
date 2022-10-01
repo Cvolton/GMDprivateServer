@@ -179,6 +179,13 @@ $string["subject"] = "Subject";
 $string["msg"] = "Message";
 $string["tooFast"] = "You're typing too fast!";
 
+$string["levelToGD"] = "Reupload level to target server";
+$string["levelToGDDesc"] = "Here you can reupload your level to target server!";
+$string["usernameTarget"] = "Username for target server";
+$string["passwordTarget"] = "Password for target server";
+$string["notYourLevel"] = "This is not your level!";
+$string["reuploadFailed"] = "Level reupload error!";
+
 /*
 	REUPLOAD
 */

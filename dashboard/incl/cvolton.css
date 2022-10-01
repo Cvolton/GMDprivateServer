@@ -12,6 +12,10 @@
     display: none !important;
 }
 
+.nav-link {
+	transition: 0.2s;
+}
+
 .footer {
 	position: fixed;
 	bottom: 10px;
@@ -31,7 +35,7 @@
   	transition: 0.3s;
     margin-right: 10px;
     background: #1e2124;
-    padding: 8px 5px 5px 5px;
+    padding-top: 5px;
     height: 32px;
     width: 32px;
   	margin-left: -4px;
@@ -179,10 +183,17 @@
     border-radius: 100px;
 }
  
-::-webkit-scrollbar-thumb {
+.msgbox::-webkit-scrollbar-thumb,
+.dmbox::-webkit-scrollbar-thumb{
     background-color: #373A3F;
     border-radius: 100px;
   	border: 4px solid #181a1b;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #181a1b;
+    border-radius: 100px;
+  	border: 4px solid #373A3F;
 }
 
 .messageyou {
@@ -273,10 +284,12 @@
 
 .details .field input {
   display: block;
-  min-width: 130%;
   width: 130%;
 } 
 
+.details {
+	width:100%;
+}
 
 .form__create > div {
     display: flex;
@@ -451,7 +464,6 @@ body {
 
 #navbarepta {
     width: 100vw;
-    transition: 0.3s;
 }
 
 .color123 > input {
@@ -479,12 +491,11 @@ body {
 
 .flag {
 	display: inline-table;
-    padding-top: 7px;
+    padding-top: 2px;
 }
 
 .imgflag {
     width: 18px;
-    height: 18px;
 }
 
 select,
@@ -508,9 +519,10 @@ option,
 }
 
 .dropdown-menu {
-    display: none;
+    display: block;
     opacity: 0;
     visibility: hidden;
+  	position: absolute !important;
     border-radius: 30px;
     text-align: left;
     transition: 0.2s;
@@ -521,6 +533,7 @@ option,
     display: block;
     opacity: 1;
     visibility: visible;
+  	position: static;
     border-radius: 30px;
     text-align: left;
     transition: 0.2s;
@@ -550,7 +563,7 @@ option,
 #langload:active,
 #langload:hover,
 #langload:focus {
-    font-size: 106%;
+    font-size: 104%;
     background: #47a0ff;
     padding: .25rem 2.2rem 0.3rem 1rem;
     border-radius: 27px;

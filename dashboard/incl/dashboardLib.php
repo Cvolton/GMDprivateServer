@@ -10,20 +10,22 @@ class dashboardLib{
 		echo '<!DOCTYPE html>
 				<html lang="en">
 					<head>
+                    	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
 						<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 						<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
 						<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
 						<link rel="manifest" href="/site.webmanifest">
 						<meta charset="utf-8">';
           	if($isSubdirectory) echo '<base href="../">';
-				echo '<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+				echo '
+                		<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
                           <script src="https://kit.fontawesome.com/10e18026cb.js" crossorigin="anonymous"></script>
                           <script async src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
                           <script async src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
                           <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.0/Chart.min.js"></script>
-                          <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
-                          <link async rel="stylesheet" href="incl/cvolton.css">
+                          
                           <link async rel="stylesheet" href="incl/font-awesome-4.7.0/css/font-awesome.min.css">
+                          <link async rel="stylesheet" href="incl/cvolton.css">
                           <title>'.$gdps.'</title>
 
 						<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">';
@@ -170,12 +172,13 @@ class dashboardLib{
 					</li>' . $browse . '<a class="dropdown-item" href="stats/songList.php"><div class="icon"><i class="fa-solid fa-music" aria-hidden="false"></i></div>'.$this->getLocalizedString("songs").'</a></div></li>
 					<li class="nav-item dropdown '.$reuploadActive.'">
 						<a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-							<i class="fa-solid fa-upload" style="margin-right:5" aria-hidden="true"></i>'.$this->getLocalizedString("reuploadSection").'
+							<i class="fa-solid fa-upload" style="margin-right:5" aria-hidden="true"></i> '.$this->getLocalizedString("reuploadSection").'
 						</a>
 						<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
 							<a class="dropdown-item" href="songs/"><i class="fa-solid fa-file" style="position: absolute;font-size: 10px;margin: 5px 5px 5px -2px;" aria-hidden="false"></i><div class="icon"><i class="fa-solid fa-music" aria-hidden="false"></i></div>'.$this->getLocalizedString("songAdd").'</a>
 							<a class="dropdown-item" href="reupload/songAdd.php"><i class="fa-solid fa-link" style="position: absolute;font-size: 9px;margin: 5px 5px 5px -3px;" aria-hidden="false"></i><div class="icon"><i class="fa-solid fa-music" aria-hidden="false"></i></div>'.$this->getLocalizedString("songLink").'</a>';
-								if($lrEnabled == 1) echo '<a class="dropdown-item" href="levels/levelReupload.php"><div class="icon"><i class="fa-solid fa-cloud-upload" aria-hidden="false"></i></div>'.$this->getLocalizedString("levelReupload").'</a>
+								if($lrEnabled == 1) echo '<a class="dropdown-item" href="levels/levelReupload.php"><i class="fa-solid fa-arrow-down" style="position: absolute;font-size: 10px;margin: 5px 5px 5px -5px;" aria-hidden="false"></i><div class="icon"><i class="fa-solid fa-cloud" aria-hidden="false"></i></div>'.$this->getLocalizedString("levelReupload").'</a>
+                                <a class="dropdown-item" href="levels/levelToGD.php"><i class="fa-solid fa-arrow-up" style="position: absolute;font-size: 10px;margin: 5px 5px 5px -5px;" aria-hidden="false"></i><div class="icon"><i class="fa-solid fa-cloud" aria-hidden="false"></i></div>'.$this->getLocalizedString("levelToGD").'  </a>
 						</div>
 					</li>';
 			if($gs->checkPermission($_SESSION["accountID"], "dashboardModTools")){
@@ -244,7 +247,7 @@ class dashboardLib{
 						<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
 							<a class="dropdown-item" id="langload" href="lang/switchLang.php?lang=RU"><div class="icon flag"><img class="imgflag" src="incl/flags/ru.png"></div>Русский</a>
 							<a class="dropdown-item" id="langload" href="lang/switchLang.php?lang=EN"><div class="icon flag"><img class="imgflag" src="incl/flags/us.png"></div>English</a>
-							<a class="dropdown-item" id="langload" href="lang/switchLang.php?lang=TR" title="Translated by EMREOYUN"><div class="icon flag"><img class="imgflag" src="incl/flags/tr.png"></div>Türkçe</a>
+							<a class="dropdown-item" id="langload" href="lang/switchLang.php?lang=TR" title="Translated by EMREOYUN"><div class="icon flag"><img style="padding-top:2px" class="imgflag" src="incl/flags/tr.png"></div>Türkçe</a>
                             <a class="dropdown-item" id="langload" href="lang/switchLang.php?lang=UA" title="Translated by Jamichi""><div class="icon flag"><img class="imgflag" src="incl/flags/ua.png"></div>Українська</a>
 						</div>';
 						if(!empty(glob("../download/*.*")) OR !empty(glob("download/*.*"))) {
