@@ -179,12 +179,12 @@ $string["subject"] = "Konu";
 $string["msg"] = "Mesaj";
 $string["tooFast"] = "Çok hızlı yazıyorsun!";
 
-$string["levelToGD"] = "Reupload level to target server";
-$string["levelToGDDesc"] = "Here you can reupload your level to target server!";
-$string["usernameTarget"] = "Username for target server";
-$string["passwordTarget"] = "Password for target server";
-$string["notYourLevel"] = "This is not your level!";
-$string["reuploadFailed"] = "Level reupload error!";
+$string["levelToGD"] = "Bölümü hedef sunucuya aktar";
+$string["levelToGDDesc"] = "Burada bölümünü hedef sunucuya aktarabilirsin!";
+$string["usernameTarget"] = "Hedef sunucudaki kullanıcı adı";
+$string["passwordTarget"] = "Hedef sunucudaki şifre";
+$string["notYourLevel"] = "Bu senin bölümün değil!";
+$string["reuploadFailed"] = "Aktarma hatası!";
 
 /*
 	REUPLOAD
