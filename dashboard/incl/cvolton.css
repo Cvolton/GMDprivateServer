@@ -18,12 +18,14 @@
 
 .footer {
 	position: fixed;
-	bottom: 10px;
+    bottom: 0px;
     font-size: 15px;
-  	text-align: left;
-  	width: 98%;
-  	color: #c0c0c0;
-  	justify-self: center;
+    padding: 10px;
+    text-align: left;
+    width: 100%;
+    color: #c0c0c0;
+    justify-self: center;
+    background: linear-gradient(0deg, rgba(33,37,41,1) 0%, rgba(30,33,36,0) 100%);
 }
 
 .profilepic {
@@ -35,13 +37,14 @@
   	transition: 0.3s;
     margin-right: 10px;
     background: #1e2124;
-    padding-top: 5px;
     height: 32px;
     width: 32px;
   	margin-left: -4px;
     text-align: center;
-    display: inline-block;
+    display: inline-flex;
     border-radius: 500px;
+	align-items: center;
+    justify-content: center;
 }
 
 .table-inverse td, .table-inverse th, .table-inverse thead th {
@@ -87,6 +90,7 @@
     justify-self: center;
     justify-items: right;
     margin: 0px 3px 0px 3px;
+  	background: rgba(0,0,0,0);
 }
 
 .h-captcha {
@@ -330,7 +334,7 @@ p{
 summary {
 	color: #d0d0d0;
 	font-size:15px;
-	cursor: pointer;
+  	cursor: pointer;
 }
 
 #bruh{
@@ -443,6 +447,37 @@ body {
     margin-bottom: 5px;
 }
 
+.btn-upload-song,
+.btn-upload-song:visited {
+    background-color: #212529;
+    color: #c0c0c0;
+    font-weight: 700;
+    font-size: 15px;
+    padding: 7px 20px;
+    border: none;
+    border-radius: 500px;
+    width: 100%;
+    transition: 0.3s;
+    cursor: pointer;
+    margin-bottom: 5px;
+}
+
+.btn-upload-song input[type=file] {
+	position: absolute;
+	opacity: 0;
+  	cursor: pointer;
+    width: 0;
+    height: 0;
+}
+
+.btn-upload-song:hover,
+.btn-upload-song:active,
+.btn-upload-song:focus {
+    background-color: #47494e;
+    border-color: #47494e;
+    margin-bottom: 5px;
+}
+
 .form {
     display: flex;
     align-items: center;
@@ -488,11 +523,6 @@ body {
     grid-gap: 20px;
     font-size: 14px;
     width: 100%;
-}
-
-.flag {
-	display: inline-table;
-    padding-top: 2px;
 }
 
 .imgflag {

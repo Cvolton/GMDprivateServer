@@ -9,6 +9,16 @@ require_once "../../incl/lib/mainLib.php";
 $gs = new mainLib();
 $dl->title($dl->getLocalizedString("songLink"));
 $dl->printFooter('../');
+if(strpos($songEnabled, '2') === false) {
+	$dl->printSong('<div class="form">
+		<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
+		<form class="form__inner" method="post" action="">
+		<p>'.$dl->getLocalizedString("pageDisabled").'</p>
+		<button type="submit" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
+		</form>
+	</div>', 'reupload');
+	die();
+}
 if(isset($_SESSION["accountID"]) AND $_SESSION["accountID"] != 0){
 if(!empty($_POST["url"])){
 	if(!Captcha::validateCaptcha()) {

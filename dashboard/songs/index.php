@@ -9,6 +9,16 @@ $dl = new dashboardLib();
 error_reporting(E_ERROR | E_PARSE);
 $dl->title($dl->getLocalizedString("songAdd"));
 $dl->printFooter('../');
+if(strpos($songEnabled, '1') === false) {
+	$dl->printSong('<div class="form">
+		<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
+		<form class="form__inner" method="post" action="">
+		<p>'.$dl->getLocalizedString("pageDisabled").'</p>
+		<button type="submit" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
+		</form>
+	</div>', 'reupload');
+	die();
+}
 if(isset($_SESSION["accountID"]) AND $_SESSION["accountID"] != 0){
 if($_FILES && $_FILES['filename']['error'] == UPLOAD_ERR_OK) {
 	if(!Captcha::validateCaptcha()) {
@@ -23,11 +33,10 @@ if($_FILES && $_FILES['filename']['error'] == UPLOAD_ERR_OK) {
 	} else {
     $file_type = $_FILES['filename']['type'];
     $allowed = array("audio/mpeg", "audio/ogg", "audio/mp3");
-
     if(!in_array($file_type, $allowed)) {
         $db_fid = -7;
     } else {
-        $maxsize = 12582912;
+        $maxsize = $songSize * 1024 * 1024;
         if($_FILES['filename']['size'] >= $maxsize) {
             $db_fid = -5;
         } else {
@@ -37,10 +46,16 @@ if($_FILES && $_FILES['filename']['error'] == UPLOAD_ERR_OK) {
             $size = ($_FILES['filename']['size'] / 1048576);
             $size = round($size, 2);
             $hash = "";
-            $name = ExploitPatch::remove($_POST['name']);
-            $author = ExploitPatch::remove($_POST['author']);
-            if($name == null) $name = "Unnamed";
-            if($author == null) $author = "Reupload";
+          	$types = array('.mp3', '.ogg', '.mpeg');
+          	$nAu = explode(' - ', str_replace($types, '', $_FILES['filename']['name']));
+          	if(!empty($nAu[1])) {
+                if(!empty($_POST['name'])) $name = ExploitPatch::charclean($_POST['name']);
+                else $name = trim(ExploitPatch::charclean($nAu[1]));
+                if(!empty($_POST['author'])) $author = ExploitPatch::charclean($_POST['author']);
+                else $author = trim(ExploitPatch::charclean($nAu[0]));
+            }
+            if(empty($name)) $name = "Unnamed";
+            if(empty($author)) $author = "Reupload";
             $servername = $_SERVER['SERVER_NAME'];
 			$accountID = $_SESSION["accountID"];
           	$path = str_replace($_SERVER['DOCUMENT_ROOT'], '', $_SERVER['SCRIPT_FILENAME']);
@@ -72,11 +87,29 @@ if($_FILES && $_FILES['filename']['error'] == UPLOAD_ERR_OK) {
     <h1>'.$dl->getLocalizedString("songAdd").'</h1>
     <form class="form__inner" method="post" action="" enctype="multipart/form-data">
 		<p>'.$dl->getLocalizedString("songAddDesc").'</p>
-        <div class="btn-song" id="upload"><input type="file" id="randomtext" name="filename" size="10" accept=".mp3, .ogg, .mpeg"></div>
+        <div style="width:100%;text-align:center">
+          <label for="upload" class="btn-upload-song">
+          	 <i style="margin:0;font-size: 17" class="fa-solid fa-music icon"></i> 
+              <input id="upload" type="file" name="filename" size="10" accept=".mp3, .ogg, .mpeg">
+                  <text style="font-size: 21">
+                    <span>
+                        '.$dl->getLocalizedString("chooseFile").'
+                    </span>
+                  </text>
+             <i style="margin:0;font-size: 17" class="fa-solid fa-music icon fa-flip-horizontal"></i>
+		  </label>
+        </div>
         <div class="field"><input type="text" name="author" placeholder="'.$dl->getLocalizedString("songAddAuthorFieldPlaceholder").'"></div>
         <div class="field"><input type="text" name="name" placeholder="'.$dl->getLocalizedString("songAddNameFieldPlaceholder").'"></div>', 'reupload');
 Captcha::displayCaptcha();
-echo '<button style="margin-top:5px;margin-bottom:5px" type="submit" class="btn-song">'.$dl->getLocalizedString("reuploadBTN").'</button></form>';
+echo '<button style="margin-top:5px;margin-bottom:5px" type="submit" class="btn-song">'.$dl->getLocalizedString("reuploadBTN").'</button></form>
+		<script src="https://snipp.ru/cdn/jquery/2.1.1/jquery.min.js"></script>
+		<script>
+			$(".btn-upload-song input[type=file]").on("change", function(){
+			let file = this.files[0];
+			$(this).next().html(file.name.split(".").slice(0, -1).join("."));
+			});
+		</script>';
 }
 } else {
 	$dl->printSong('<div class="form">
