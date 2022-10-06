@@ -215,7 +215,7 @@ $string["chooseFile"] = "Виберіть пісню";
 $string["songAddError-2"] = "Невірний URL (можливо, посилання не пряма).";
 $string["songAddError-3"] = "Пісня вже завантажена під ID:";
 $string["songAddError-4"] = "Цю пісню не можна завантажити :с";
-$string["songAddError-5"] = "Пісня важить більше ніж 12 мегабайт!";
+$string["songAddError-5"] = "Пісня важить більше ніж $songSize мегабайт!";
 $string["songAddError-6"] = "Щось трапилося при завантаженні пісні! :с";
 $string["songAddError-7"] = "Завантажувати можна тільки аудіофайли!";
 

@@ -215,7 +215,7 @@ $string["chooseFile"] = "Choose a song";
 $string["songAddError-2"] = "Geçersiz URL (Şarkının bu linkte bulunduğundan emin olun.)";
 $string["songAddError-3"] = "Bu şarkı zaten transfer edilmiş. ID:";
 $string["songAddError-4"] = "Bu şarkı transfer edilemez";
-$string["songAddError-5"] = "Şarkı boyutu 12megabyte'dan daha büyük";
+$string["songAddError-5"] = "Şarkı boyutu $songSize megabyte'dan daha büyük";
 $string["songAddError-6"] = "Bir şeyler ters gitti! :с";
 $string["songAddError-7"] = "Sadece ses dosyası yükleyebilirsin!";
 
