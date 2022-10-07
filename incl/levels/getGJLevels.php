@@ -87,13 +87,21 @@ if(!empty($_POST["noStar"])){
 }
 if(!empty($_POST["gauntlet"])){
 	$ordergauntlet = true;
-	$order = "starStars";
 	$gauntlet = ExploitPatch::remove($_POST["gauntlet"]);
 	$query=$db->prepare("SELECT * FROM gauntlets WHERE ID = :gauntlet");
 	$query->execute([':gauntlet' => $gauntlet]);
 	$actualgauntlet = $query->fetch();
 	$str = $actualgauntlet["level1"].",".$actualgauntlet["level2"].",".$actualgauntlet["level3"].",".$actualgauntlet["level4"].",".$actualgauntlet["level5"];
 	$params[] = "levelID IN ($str)";
+	$order = '
+	CASE
+	WHEN levelID =' . $actualgauntlet["level1"] . ' THEN 1
+	WHEN levelID =' . $actualgauntlet["level2"] . ' THEN 2
+	WHEN levelID =' . $actualgauntlet["level3"] . ' THEN 3
+	WHEN levelID =' . $actualgauntlet["level4"] . ' THEN 4
+	WHEN levelID =' . $actualgauntlet["level5"] . ' THEN 5
+	END
+	';
 	$type = -1;
 }
 if(!empty($_POST["len"])){
