@@ -53,36 +53,14 @@ foreach($result as &$action){
   	if(strlen($name) > 30) $name = "<details><summary>".$dl->getLocalizedString("spoiler")."</summary>$name</details>";
 	$manage = '<td><a class="btn-rendel" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'.$dl->getLocalizedString("change").'</a>
 								<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink"  style="padding:17px 17px 0px 17px; top:0%;">
-									 <form class="form__inner" method="post" action="">
+									 <form class="form__inner" method="post" action="stats/renameSong.php">
 										<div class="field" style="display:none"><input type="hidden" name="ID" value="'.$songsid.'"></div>
 										<div class="field"><input type="text" name="author" value="'.$author.'" placeholder="'.$author.'"></div>
 										<div class="field"><input type="text" name="name" value="'.$name.'" placeholder="'.$name.'"></div>
 										<button type="submit" class="btn-song">'.$dl->getLocalizedString("change").'</button>
 									</form>
 								</div>
-							</td>
-							<script>
-									document.addEventListener("submit", () => {
-									let selectData = [];
-									let checkboxData;
-									let authorSong;
-									let nameSong;
-									document.querySelectorAll("select > option").forEach(el => {
-										selectData.push(el.value);
-									});
-									checkboxData = document.querySelector("input[type=checkbox]").value;
-									authorSong = document.querySelector("input[name=author]").value;
-									nameSong = document.querySelector("input[name=name]").value;
-									var formData = new FormData();
-									formData.append("select_data", selectData);
-									formData.append("author", authorSong);
-									formData.append("name", nameSong);
-									formData.append("checkbox_data", checkboxData);
-									var request = new XMLHttpRequest();
-									request.open("POST", "/");
-									request.send(formData);
-								});
-								</script>';
+							</td>';
 						
 if($gs->checkPermission($_SESSION["accountID"], "dashboardManageSongs")){
 	$table .= "<tr>
