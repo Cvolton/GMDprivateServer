@@ -30,7 +30,12 @@ $query = $db->prepare("
 	) gauntlets
 	JOIN
 		(SELECT SUM(stars) as stars FROM mappacks) mappacks
-
+	JOIN
+		(SELECT SUM(starStars) as stars FROM levels INNER JOIN dailyfeatures on levels.levelID = dailyfeatures.levelID)
+	JOIN
+		(SELECT SUM(starCoins) as coins FROM levels INNER JOIN dailyfeatures on levels.levelID = dailyfeatures.levelID)
+	JOIN
+		(SELECT SUM(starDemon) as demons FROM levels INNER JOIN dailyfeatures on levels.levelID = dailyfeatures.levelID)
 	");
 $query->execute();
 $levelstuff = $query->fetch();
