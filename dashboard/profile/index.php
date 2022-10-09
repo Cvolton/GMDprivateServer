@@ -40,26 +40,21 @@ if(!empty($_POST["msg"])) {
 	$query = $db->prepare("INSERT INTO acccomments (userID, userName, comment, timestamp) VALUES (:id, :name, :msg, :time)");
   	$query->execute([':id' => $gs->getUserID($accid), ':name' => $gs->getAccountName($accid), ':msg' => $msg, ':time' => time()]);
 }
-$query = $db->prepare("SELECT banReason FROM users WHERE extID=:id");
+$query = $db->prepare("SELECT isBanned, banReason FROM users WHERE extID=:id");
 $query->execute([':id' => $accid]);
 $query = $query->fetch();
-if($query["banReason"] != 'none') $maybeban = '<h1 style="text-decoration:line-through;color:#432529">'.$accname.'</h1>'; else $maybeban = $accname;
+if($query["banReason"] != 'none' OR $query["isBanned"] == 1) $maybeban = '<h1 style="text-decoration:line-through;color:#432529">'.$accname.'</h1>'; else $maybeban = '<h1 style="color:rgb('.$gs->getAccountCommentColor($accid).')">'.$accname.'</h1>';
 if(isset($_SERVER["HTTP_REFERER"])) $back = '<form method="post" action="'.$_SERVER["HTTP_REFERER"].'"><button class="goback"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i></button></form>'; else $back = '';
-$query = $db->prepare("SELECT extID, stars, demons, coins, userCoins, creatorPoints , diamonds FROM users WHERE extID=:id");
+$query = $db->prepare("SELECT extID, stars, demons, coins, userCoins, creatorPoints, diamonds, isCreatorBanned FROM users WHERE extID=:id");
 $query->execute([':id' => $accid]);
 $res = $query->fetch();
-$st = '<p class="profilepic">'.$res["stars"].' <i class="fa-solid fa-star"></i></p>';
-if($res["stars"] == 0) $st = '';
-$dm = ' <p class="profilepic">'.$res["diamonds"].' <i class="fa-solid fa-gem"></i></p>';
-if($res["diamonds"] == 0) $dm = '';
-$gc = '<p class="profilepic">'.$res["coins"].' <i class="fa-solid fa-coins" style="color:#ffffbb"></i></p>';
-if($res["coins"] == 0) $gc = '';
-$uc = '<p class="profilepic">'.$res["userCoins"].' <i class="fa-solid fa-coins"></i></p>';
-if($res["userCoins"] == 0) $uc = '';
-$dn = '<p class="profilepic">'.$res["demons"].' <i class="fa-solid fa-dragon"></i></p>';
-if($res["demons"] == 0) $dn = '';
-$cp = '<p class="profilepic">'.$res["creatorPoints"].' <i class="fa-solid fa-screwdriver-wrench"></i></p>';
-if($res["creatorPoints"] == 0) $cp = '';
+if($res["stars"] == 0) $st = ''; else $st = '<p class="profilepic">'.$res["stars"].' <i class="fa-solid fa-star"></i></p>';
+if($res["diamonds"] == 0) $dm = ''; else $dm = ' <p class="profilepic">'.$res["diamonds"].' <i class="fa-solid fa-gem"></i></p>';
+if($res["coins"] == 0) $gc = ''; else $gc = '<p class="profilepic">'.$res["coins"].' <i class="fa-solid fa-coins" style="color:#ffffbb"></i></p>';
+if($res["userCoins"] == 0) $uc = ''; else $uc = '<p class="profilepic">'.$res["userCoins"].' <i class="fa-solid fa-coins"></i></p>';
+if($res["demons"] == 0) $dn = ''; else $dn = '<p class="profilepic">'.$res["demons"].' <i class="fa-solid fa-dragon"></i></p>';
+if($res["isCreatorBanned"] == 1) $banhaha = 'style="text-decoration:line-through;color:#432529"'; else $banhaha = '';
+if($res["creatorPoints"] == 0) $cp = ''; else $cp = '<p class="profilepic" '.$banhaha.'>'.$res["creatorPoints"].' <i class="fa-solid fa-screwdriver-wrench"></i></p>';
 $all = $st.''.$dm.''.$gc.''.$uc.''.$dn.''.$cp;
 if(empty($all)) $st = '<p style="font-size:25px;color:#212529">'.$dl->getLocalizedString("empty").'</p>';
 $msgs = $db->prepare("SELECT * FROM acccomments WHERE userID=:uid ORDER BY commentID DESC");
@@ -91,7 +86,7 @@ $dl->printSong('<div class="form" style="width: 60vw;height: max-content">
               <h1>'.$maybeban.'</h1>'.$msgtopl.'
         </div>
         <div class="form-control" style="display: flex;width: 100%;height: max-content;align-items: center;">'.$st.''.$dm.''.$gc.''.$uc.''.$dn.''.$cp.'</div>
-        <div class="form-control dmbox" style="display: flex;border-radius: 30px;margin-top: 20px;flex-wrap: wrap;max-height: 520px;padding-bottom: 15px;min-width: 100%;height: max-content;align-items: center;">
+        <div class="form-control dmbox" style="display: flex;border-radius: 30px;margin-top: 20px;flex-wrap: wrap;padding-top: 0;max-height: 535px;padding-bottom: 10px;min-width: 100%;height: max-content;margin-bottom: 17px;align-items: center;">
         	'.$comments.'
         </div>
 		'.$send.'
