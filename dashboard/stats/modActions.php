@@ -59,7 +59,7 @@ foreach($result as &$mod){
   	if($actionscount > 9 AND $actionscount < 20) $action = 2;
   	$actionscount = $actionscount.' '.$dl->getLocalizedString("action$action");
   	$levels = $lvlcount[strlen($lvlcount)-1];
-  	if($levels == 1) $lvl = 0; elseif($levels < 5) $lvl = 1; else $lvl = 2;
+  	if($levels == 1) $lvl = 0; elseif($levels < 5 AND $levels > 0) $lvl = 1; else $lvl = 2;
   	if($lvlcount > 9 AND $lvlcount < 20) $lvl = 2;
   	$lvlcount = $lvlcount.' '.$dl->getLocalizedString("lvl$lvl");
   	if($actionscount == 0) $actionscount = '<div style="color:grey">'.$dl->getLocalizedString("noActions").'</div>';
