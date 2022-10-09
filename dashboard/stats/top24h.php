@@ -35,9 +35,20 @@ foreach($result as &$action){
 	$userid = $action["extID"];
 	$username =  '<form style="margin:0" method="post" action="profile/"><button style="margin:0" class="accbtn" name="accountID" value="'.$action["extID"].'">'.$action["userName"].'</button></form>';
 	$stars = $action["stars"];
+  	if($stars == 0) break;
 	$table .= "<tr><th scope='row'>".$x."</th><td>".$userid."</td><td>".$username."</td><td>".$stars."</td></tr>";
 	$x++;
 }
+if(empty(str_replace( '<table class="table table-inverse"><tr><th>#</th><th>'.$dl->getLocalizedString("accountID").'</th><th>'.$dl->getLocalizedString("username").'</th><th>'.$dl->getLocalizedString("stars").'</th></tr>', '', $table))) {
+	$dl->printSong('<div class="form">
+    <h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
+    <form class="form__inner" method="post" action="../dashboard">
+		<p>'.$dl->getLocalizedString("emptyPage").'</p>
+        <button type="submit" class="btn-primary">'.$dl->getLocalizedString("dashboard").'</button>
+    </form>
+</div>', 'mod');
+	die();
+} 
 $table .= "</table>";
 /*
 	bottom row
