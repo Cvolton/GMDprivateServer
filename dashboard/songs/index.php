@@ -103,7 +103,6 @@ if($_FILES && $_FILES['filename']['error'] == UPLOAD_ERR_OK) {
         <div class="field"><input type="text" name="name" placeholder="'.$dl->getLocalizedString("songAddNameFieldPlaceholder").'"></div>', 'reupload');
 Captcha::displayCaptcha();
 echo '<button style="margin-top:5px;margin-bottom:5px" type="submit" class="btn-song">'.$dl->getLocalizedString("reuploadBTN").'</button></form>
-		<script src="https://snipp.ru/cdn/jquery/2.1.1/jquery.min.js"></script>
 		<script>
 			$(".btn-upload-song input[type=file]").on("change", function(){
 			let file = this.files[0];
