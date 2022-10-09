@@ -6,10 +6,19 @@ ob_flush();
 flush();
 //note: this needs a better algorithm
 $query = $db->prepare("
-	SELECT 10+IFNULL(FLOOR(coins.coins*1.25),0) as coins, 3+IFNULL(FLOOR(levels.demons*1.0625),0) as demons, 200+FLOOR((IFNULL(levels.stars,0)+IFNULL(gauntlets.stars,0)+IFNULL(mappacks.stars,0))*1.25) as stars FROM
+	SELECT 10+IFNULL(FLOOR(coins.coins*1.25)+(coins1.coins),0) as coins, 3+IFNULL(FLOOR(levels.demons*1.0625)+(demons.demons),0) as demons, 200+FLOOR((IFNULL(levels.stars,0)+IFNULL(gauntlets.stars,0)+IFNULL(mappacks.stars,0))+IFNULL(stars.stars,0)*1.25) as stars FROM
 		(SELECT SUM(coins) as coins FROM levels WHERE starCoins <> 0) coins
 	JOIN
 		(SELECT SUM(starDemon) as demons, SUM(starStars) as stars FROM levels) levels
+     JOIN 
+		(SELECT SUM(starStars) as stars FROM dailyfeatures 
+        INNER JOIN levels on levels.levelID = dailyfeatures.levelID) stars
+	JOIN
+		(SELECT SUM(starCoins) as coins FROM dailyfeatures 
+        INNER JOIN levels on levels.levelID = dailyfeatures.levelID) coins1
+	JOIN
+		(SELECT SUM(starDemon) as demons FROM dailyfeatures 
+        INNER JOIN levels on levels.levelID = dailyfeatures.levelID) demons
 	JOIN
 	(
 		SELECT (level1.stars + level2.stars + level3.stars + level4.stars + level5.stars) as stars FROM
@@ -30,12 +39,6 @@ $query = $db->prepare("
 	) gauntlets
 	JOIN
 		(SELECT SUM(stars) as stars FROM mappacks) mappacks
-	JOIN
-		(SELECT SUM(starStars) as stars FROM levels INNER JOIN dailyfeatures on levels.levelID = dailyfeatures.levelID)
-	JOIN
-		(SELECT SUM(starCoins) as coins FROM levels INNER JOIN dailyfeatures on levels.levelID = dailyfeatures.levelID)
-	JOIN
-		(SELECT SUM(starDemon) as demons FROM levels INNER JOIN dailyfeatures on levels.levelID = dailyfeatures.levelID)
 	");
 $query->execute();
 $levelstuff = $query->fetch();
