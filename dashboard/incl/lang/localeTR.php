@@ -210,7 +210,7 @@ $string["songAuthor"] = "Sahip";
 $string["size"] = "Boyut";
 $string["delete"] = "Sil";
 $string["change"] = "Değiştir";
-$string["chooseFile"] = "Şarkı seç";
+$string["chooseFile"] = "Bir şarkı seç";
 ///errors
 $string["songAddError-2"] = "Geçersiz URL (Şarkının bu linkte bulunduğundan emin olun.)";
 $string["songAddError-3"] = "Bu şarkı zaten transfer edilmiş. ID:";
@@ -276,7 +276,7 @@ $string["nopass"] = "Şifre yok";
 $string["unrated"] = "Derecesiz";
 $string["rate"] = "Derecelendir";
 $string["suggestFeatured"] = "Tavsiye et?";
-$string["whoAdded"] = "Who added?";
+$string["whoAdded"] = "Kim ekledi?";
 //modActionsList
 $string["banDesc"] = "Burada bir kullanıcıyı sıralamadan yasaklayabilirsin!";
 
