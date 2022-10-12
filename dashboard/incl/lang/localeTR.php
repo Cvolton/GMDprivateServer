@@ -210,7 +210,7 @@ $string["songAuthor"] = "Sahip";
 $string["size"] = "Boyut";
 $string["delete"] = "Sil";
 $string["change"] = "Değiştir";
-$string["chooseFile"] = "Choose a song";
+$string["chooseFile"] = "Şarkı seç";
 ///errors
 $string["songAddError-2"] = "Geçersiz URL (Şarkının bu linkte bulunduğundan emin olun.)";
 $string["songAddError-3"] = "Bu şarkı zaten transfer edilmiş. ID:";
