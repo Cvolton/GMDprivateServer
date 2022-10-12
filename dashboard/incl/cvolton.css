@@ -2,18 +2,16 @@
     font-family: 'Google Sans', 'Segoe UI' , 'Calibri Light', 'Arial';
 }
 
-@media screen and (min-width: 1079px;) {
-	* {min-width: max-content !important;
-      min-height: max-content !important;
-	}
-}
-
 #ads, .adsbygoogle, #ads_bottom_static {
     display: none !important;
 }
 
 .nav-link {
 	transition: 0.2s;
+}
+
+.flag {
+	vertical-align: sub;
 }
 
 .footer {
@@ -571,8 +569,7 @@ option,
     background: #181a1b;
 }
 
-.dropdown-item,
-#langload {
+.dropdown-item{
     padding: .25rem 2rem 0.3rem 1rem;
     border-radius: 27px;
     transition: 0.3s;
@@ -590,10 +587,7 @@ option,
 
 .dropdown-item:active,
 .dropdown-item:hover,
-.dropdown-item:focus,
-#langload:active,
-#langload:hover,
-#langload:focus {
+.dropdown-item:focus {
     font-size: 104%;
     background: #47a0ff;
     padding: .25rem 2.2rem 0.3rem 1rem;
