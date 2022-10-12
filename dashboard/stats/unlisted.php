@@ -62,8 +62,8 @@ $table .= "</table>";
 	bottom row
 */
 //getting count
-$query = $db->prepare("SELECT count(*) FROM levels WHERE unlisted=1");
-$query->execute();
+$query = $db->prepare("SELECT count(*) FROM levels WHERE unlisted=1 AND extID = :id");
+$query->execute([':id' => $_SESSION["accountID"]]);
 $packcount = $query->fetchColumn();
 $pagecount = ceil($packcount / 10);
 $bottomrow = $dl->generateBottomRow($pagecount, $actualpage);
