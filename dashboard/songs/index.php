@@ -53,7 +53,10 @@ if($_FILES && $_FILES['filename']['error'] == UPLOAD_ERR_OK) {
                 else $name = trim(ExploitPatch::charclean($nAu[1]));
                 if(!empty($_POST['author'])) $author = ExploitPatch::charclean($_POST['author']);
                 else $author = trim(ExploitPatch::charclean($nAu[0]));
-            }
+            } else {
+				$name = ExploitPatch::charclean($_POST['name']);
+				$author = ExploitPatch::charclean($_POST['author']);
+			}
             if(empty($name)) $name = "Unnamed";
             if(empty($author)) $author = "Reupload";
             $servername = $_SERVER['SERVER_NAME'];

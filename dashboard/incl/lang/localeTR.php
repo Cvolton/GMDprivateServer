@@ -6,7 +6,7 @@ $string["welcome"] = $gdps." sunucusuna hoş geldiniz!";
 $string["didntInstall"] = "<div style='color:#47a0ff'><b>Uyarı!</b> Dashboard'ı tam olarak kurmamışsınız! Buraya basarak tam kurulumu yapın.</div>";
 $string["levelsWeek"] = "Bir hafta içinde yüklenen bölümler";
 $string["levels3Months"] = "3 ayda yüklenen bölümler";
-$string["footer"] = $gdps.", ".date('Y', time());
+$string["footer"] = $gdps."? 2020 - ".date('Y', time());
 
 $string["profile"] = "Profil";
 $string["empty"] = "Boş...";
@@ -210,7 +210,7 @@ $string["songAuthor"] = "Sahip";
 $string["size"] = "Boyut";
 $string["delete"] = "Sil";
 $string["change"] = "Değiştir";
-$string["chooseFile"] = "Şarkı seç";
+$string["chooseFile"] = "Choose a song";
 ///errors
 $string["songAddError-2"] = "Geçersiz URL (Şarkının bu linkte bulunduğundan emin olun.)";
 $string["songAddError-3"] = "Bu şarkı zaten transfer edilmiş. ID:";
@@ -276,6 +276,7 @@ $string["nopass"] = "Şifre yok";
 $string["unrated"] = "Derecesiz";
 $string["rate"] = "Derecelendir";
 $string["suggestFeatured"] = "Tavsiye et?";
+$string["whoAdded"] = "Who added?";
 //modActionsList
 $string["banDesc"] = "Burada bir kullanıcıyı sıralamadan yasaklayabilirsin!";
 

@@ -48,8 +48,15 @@ foreach($result as &$action){
    	if(strlen($author) > 18) $author = "<details><summary>".$dl->getLocalizedString("spoiler")."</summary>$author</details>";
 	$name = $action["name"];
   	if(strlen($name) > 30) $name = "<details><summary>".$dl->getLocalizedString("spoiler")."</summary>$name</details>";
+  	$delete = '<td><a style="color:#ff444c" class="btn-rendel" href="stats/deleteSong.php?ID='.$songsid.'">'.$dl->getLocalizedString("delete").'</a></td>';
 	$size = $action["size"];
-	$delete = '<td><a style="color:#ff444c" class="btn-rendel" href="stats/deleteSong.php?ID='.$songsid.'">'.$dl->getLocalizedString("delete").'</a></td>';
+    if($action["isDisabled"]) {
+		$songsid = '<div style="text-decoration:line-through;color:#8b2e2c">'.$songsid.'</div>';
+		$author = '<div style="text-decoration:line-through;color:#8b2e2c">'.$author.'</div>';
+		$name = '<div style="text-decoration:line-through;color:#8b2e2c">'.$name.'</div>';
+      	$size = '<div style="text-decoration:line-through;color:#8b2e2c">'.$size.'</div>';
+      	$time = '<div style="text-decoration:line-through;color:#8b2e2c">'.$time.'</div>';
+	}
 	$table .= "<tr><th scope='row'>".$x."</th><td>".$songsid."</td><td>".$author."</td><td>".$name."</td><td>".$size."</td><td>".$time."</td><td>".$delete."</td></tr>";
 	$x++;
 }

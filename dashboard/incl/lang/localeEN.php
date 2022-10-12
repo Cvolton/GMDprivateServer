@@ -6,7 +6,7 @@ $string["welcome"] = "Welcome to ".$gdps.'!';
 $string["didntInstall"] = "<div style='color:#47a0ff'><b>Warning!</b> You haven't fully installed dashboard! Click on the text to do this.</div>";
 $string["levelsWeek"] = "Levels uploaded in a week";
 $string["levels3Months"] = "Levels uploaded in 3 months";
-$string["footer"] = $gdps.", ".date('Y', time());
+$string["footer"] = $gdps."? 2020 - ".date('Y', time());
 
 $string["profile"] = "Profile";
 $string["empty"] = "Empty...";
@@ -276,6 +276,7 @@ $string["nopass"] = "No password";
 $string["unrated"] = "Unrated";
 $string["rate"] = "Rate";
 $string["suggestFeatured"] = "Featured?";
+$string["whoAdded"] = "Who added?";
 //modActionsList
 $string["banDesc"] = "Here you can ban a player from leaderboard!";
 

@@ -154,7 +154,8 @@ class dashboardLib{
 							<a class="dropdown-item" href="stats/accountsList.php"><div class="icon"><i class="fa-solid fa-user" aria-hidden="false"></i></div>'.$this->getLocalizedString("accounts").'</a>
 							<a class="dropdown-item" href="stats/levelsList.php"><div class="icon"><i class="fa-solid fa-gamepad" style="margin-top: 1px;"></i></div>'.$this->getLocalizedString("levels").'</a>
 							<a class="dropdown-item" href="stats/packTable.php"><div class="icon"><i class="fa-regular fa-folder-open" aria-hidden="false"></i></div>'.$this->getLocalizedString("packTable").'</a>
-							<a class="dropdown-item" href="stats/gauntletTable.php"><div class="icon"><i class="fa-solid fa-globe" aria-hidden="false"></i></div>'.$this->getLocalizedString("gauntletTable").'</a>';
+							<a class="dropdown-item" href="stats/gauntletTable.php"><div class="icon"><i class="fa-solid fa-globe" aria-hidden="false"></i></div>'.$this->getLocalizedString("gauntletTable").'</a>
+							<a class="dropdown-item" href="stats/songList.php"><div class="icon"><i class="fa-solid fa-music" aria-hidden="false"></i></div>'.$this->getLocalizedString("songs").'</a>';
 		if(isset($_SESSION["accountID"]) AND $_SESSION["accountID"] != 0){
 			echo '
 					<li class="nav-item dropdown '.$accountActive.' ">
@@ -167,7 +168,7 @@ class dashboardLib{
 							<a class="dropdown-item" href="stats/unlisted.php"><div class="icon"><i class="fa-solid fa-list-ul" aria-hidden="false"></i></div>'.$this->getLocalizedString("unlistedLevels").'</a>
 							<a class="dropdown-item" href="stats/manageSongs.php"><div class="icon"><i class="fa-solid fa-music" aria-hidden="false"></i></div>'.$this->getLocalizedString("manageSongs").'</a>
 						</div>
-					</li>' . $browse . '<a class="dropdown-item" href="stats/songList.php"><div class="icon"><i class="fa-solid fa-music" aria-hidden="false"></i></div>'.$this->getLocalizedString("songs").'</a></div></li>';
+					</li>' . $browse . '</div></li>';
 					if(strpos($songEnabled, '1') !== false OR strpos($songEnabled, '2') !== false OR $lrEnabled == 1) echo '<li class="nav-item dropdown '.$reuploadActive.'">
 						<a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 							<i class="fa-solid fa-upload" style="margin-right:5" aria-hidden="true"></i> '.$this->getLocalizedString("reuploadSection").'
@@ -243,10 +244,10 @@ class dashboardLib{
 							<i class="fa-solid fa-language" aria-hidden="true"></i> '.$this->getLocalizedString("language").'
 						</a>
 						<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-							<a class="dropdown-item" id="langload" href="lang/switchLang.php?lang=RU"><div class="icon"><img class="imgflag" src="incl/flags/ru.png"></div>Русский</a>
-							<a class="dropdown-item" id="langload" href="lang/switchLang.php?lang=EN"><div class="icon"><img class="imgflag" src="incl/flags/us.png"></div>English</a>
-							<a class="dropdown-item" id="langload" href="lang/switchLang.php?lang=TR" title="Translated by EMREOYUN"><div class="icon"><img class="imgflag" src="incl/flags/tr.png"></div>Türkçe</a>
-                            <a class="dropdown-item" id="langload" href="lang/switchLang.php?lang=UA" title="Translated by Jamichi""><div class="icon"><img class="imgflag" src="incl/flags/ua.png"></div>Українська</a>
+							<a class="dropdown-item" href="lang/switchLang.php?lang=RU"><div class="icon flag"><img class="imgflag" src="incl/flags/ru.png"></div>Русский</a>
+							<a class="dropdown-item" href="lang/switchLang.php?lang=EN"><div class="icon flag"><img class="imgflag" src="incl/flags/us.png"></div>English</a>
+							<a class="dropdown-item" href="lang/switchLang.php?lang=TR" title="Translated by EMREOYUN"><div class="icon flag"><img class="imgflag" src="incl/flags/tr.png"></div>Türkçe</a>
+                            <a class="dropdown-item" href="lang/switchLang.php?lang=UA" title="Translated by Jamichi""><div class="icon flag"><img class="imgflag" src="incl/flags/ua.png"></div>Українська</a>
 						</div>';
 						if(!empty(glob("../download/*.*")) OR !empty(glob("download/*.*"))) {
 							echo '
@@ -256,13 +257,13 @@ class dashboardLib{
 						</a>
 						<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">';
 						if(file_exists("download/".$gdps.".zip") OR file_exists("../download/".$gdps.".zip")) 
-							echo '<a class="dropdown-item" id="langload" href="download/'.$gdps.'.zip"><div class="icon"><i class="fa-brands fa-windows" aria-hidden="false"></i></div>'.$this->getLocalizedString("forwindows").'</a>';
+							echo '<a class="dropdown-item" href="download/'.$gdps.'.zip"><div class="icon"><i class="fa-brands fa-windows" aria-hidden="false"></i></div>'.$this->getLocalizedString("forwindows").'</a>';
 						if(file_exists("download/".$gdps.".dmg") OR file_exists("../download/".$gdps.".dmg")) 
-							echo '<a class="dropdown-item" id="langload" href="download/'.$gdps.'.dmg"><div class="icon"><i class="fa-brands fa-apple" aria-hidden="false"></i></div>'.$this->getLocalizedString("formac").'</a>';
+							echo '<a class="dropdown-item" href="download/'.$gdps.'.dmg"><div class="icon"><i class="fa-brands fa-apple" aria-hidden="false"></i></div>'.$this->getLocalizedString("formac").'</a>';
 						if(file_exists("download/".$gdps.".apk") OR file_exists("../download/".$gdps.".apk")) 
-							echo '<a class="dropdown-item" id="langload" href="download/'.$gdps.'.apk"><div class="icon"><i class="fa-brands fa-android" aria-hidden="false"></i></div>'.$this->getLocalizedString("forandroid").'</a>';
+							echo '<a class="dropdown-item" href="download/'.$gdps.'.apk"><div class="icon"><i class="fa-brands fa-android" aria-hidden="false"></i></div>'.$this->getLocalizedString("forandroid").'</a>';
 						if(file_exists("download/".$gdps.".ipa") OR file_exists("../download/".$gdps.".ipa")) 
-							echo '<a class="dropdown-item" id="langload" href="download/'.$gdps.'.ipa"><div class="icon"><i class="fa-brands fa-apple" aria-hidden="false"></i></div>'.$this->getLocalizedString("forios").'</a></div>';
+							echo '<a class="dropdown-item" href="download/'.$gdps.'.ipa"><div class="icon"><i class="fa-brands fa-apple" aria-hidden="false"></i></div>'.$this->getLocalizedString("forios").'</a></div>';
 						}
 		if(isset($_SESSION["accountID"]) AND $_SESSION["accountID"] != 0){
 			$userName = $gs->getAccountName($_SESSION["accountID"]);
@@ -271,7 +272,7 @@ class dashboardLib{
 							<i class="fa-solid fa-user-circle" aria-hidden="true"></i> '.sprintf($this->getLocalizedString("loginHeader"), $userName).'
 						</a>
 						<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-							<a class="dropdown-item" href="profile/"><div class="icon"><i class="fa-regular fa-user"></i></div>'.$this->getLocalizedString("profile").'</a>
+							<a class="dropdown-item" href="profile/"><div class="icon"><i class="fa-regular fa-id-badge"></i></div>'.$this->getLocalizedString("profile").'</a>
 							<a class="dropdown-item" href="login/logout.php"><div class="icon"><i class="fa-solid fa-sign-out" aria-hidden="false"></i></div>'.$this->getLocalizedString("logout").'</a>
 						</div>
 					</li>';
