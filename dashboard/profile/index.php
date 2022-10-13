@@ -53,8 +53,11 @@ if($res["diamonds"] == 0) $dm = ''; else $dm = ' <p class="profilepic">'.$res["d
 if($res["coins"] == 0) $gc = ''; else $gc = '<p class="profilepic">'.$res["coins"].' <i class="fa-solid fa-coins" style="color:#ffffbb"></i></p>';
 if($res["userCoins"] == 0) $uc = ''; else $uc = '<p class="profilepic">'.$res["userCoins"].' <i class="fa-solid fa-coins"></i></p>';
 if($res["demons"] == 0) $dn = ''; else $dn = '<p class="profilepic">'.$res["demons"].' <i class="fa-solid fa-dragon"></i></p>';
-if($res["isCreatorBanned"] == 1) $banhaha = 'style="text-decoration:line-through;color:#432529"'; else $banhaha = '';
-if($res["creatorPoints"] == 0) $cp = ''; else $cp = '<p class="profilepic" '.$banhaha.'>'.$res["creatorPoints"].' <i class="fa-solid fa-screwdriver-wrench"></i></p>';
+if($res["isCreatorBanned"] == 1) {
+	$banhaha = 'style="text-decoration:line-through;color:#432529"';
+	$creatorban = 'style="text-decoration: line-through"';
+} else $banhaha = $creatorban = '';
+if($res["creatorPoints"] == 0) $cp = ''; else $cp = '<p class="profilepic" '.$banhaha.'>'.$res["creatorPoints"].' <i class="fa-solid fa-screwdriver-wrench" '.$creatorban.'></i></p>';
 $all = $st.''.$dm.''.$gc.''.$uc.''.$dn.''.$cp;
 if(empty($all)) $st = '<p style="font-size:25px;color:#212529">'.$dl->getLocalizedString("empty").'</p>';
 $msgs = $db->prepare("SELECT * FROM acccomments WHERE userID=:uid ORDER BY commentID DESC");
