@@ -91,7 +91,7 @@ if($_FILES && $_FILES['filename']['error'] == UPLOAD_ERR_OK) {
     <form class="form__inner" method="post" action="" enctype="multipart/form-data">
 		<p>'.$dl->getLocalizedString("songAddDesc").'</p>
         <div style="width:100%;text-align:center">
-          <label for="upload" class="btn-upload-song">
+          <label for="upload" id="labelupload" class="btn-upload-song">
           	 <i style="margin:0;font-size: 17" class="fa-solid fa-music icon"></i> 
               <input id="upload" type="file" name="filename" size="10" accept=".mp3, .ogg, .mpeg">
                   <text style="font-size: 21">
@@ -105,11 +105,33 @@ if($_FILES && $_FILES['filename']['error'] == UPLOAD_ERR_OK) {
         <div class="field"><input type="text" name="author" placeholder="'.$dl->getLocalizedString("songAddAuthorFieldPlaceholder").'"></div>
         <div class="field"><input type="text" name="name" placeholder="'.$dl->getLocalizedString("songAddNameFieldPlaceholder").'"></div>', 'reupload');
 Captcha::displayCaptcha();
-echo '<button style="margin-top:5px;margin-bottom:5px" type="submit" class="btn-song">'.$dl->getLocalizedString("reuploadBTN").'</button></form>
+echo '<button style="margin-top:5px;margin-bottom:5px" type="submit" id="submit" class="btn-song">'.$dl->getLocalizedString("reuploadBTN").'</button></form>
 		<script>
 			$(".btn-upload-song input[type=file]").on("change", function(){
 			let file = this.files[0];
-			$(this).next().html(file.name.split(".").slice(0, -1).join("."));
+            const upload = document.getElementById("labelupload");
+            const btn = document.getElementById("submit");
+            if (file.size > '.$songSize * 1024 * 1024 .') {
+				$(this).next().html("'.$dl->getLocalizedString("songAddError-5").'");
+				upload.classList.add("btn-size");
+                btn.disabled = true;
+                btn.classList.add("btn-block");
+                btn.classList.remove("btn-song");
+			}
+            else if (file.type != "audio/mpeg" && file.type != "audio/ogg" && file.type != "audio/mp3") {
+				$(this).next().html("'.$dl->getLocalizedString("songAddError-7").'");
+				upload.classList.add("btn-size");
+                btn.disabled = true;
+                btn.classList.add("btn-block");
+                btn.classList.remove("btn-song");
+			} 
+			else {
+				$(this).next().html(file.name.split(".").slice(0, -1).join("."));
+            	upload.classList.remove("btn-size");
+                btn.removeAttribute("disabled");
+                btn.classList.remove("btn-block");
+                btn.classList.add("btn-song");
+			}
 			});
 		</script>';
 }
