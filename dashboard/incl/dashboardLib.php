@@ -292,9 +292,9 @@ class dashboardLib{
 										<div class="form-group">
 											<input type="password" class="form-control login-input" id="passwordField" name="password" placeholder="'.$this->getLocalizedString("password").'">
 										</div>
-										<div style="display: flex;flex-wrap: wrap;justify-content: center"><button type="submit" class="btn btn-primary btn-block">'.$this->getLocalizedString("login").'</button>
+										<div style="display: flex;flex-wrap: wrap;justify-content: center"><button type="submit" class="btn btn-primary">'.$this->getLocalizedString("login").'</button>
 										</form><form action="login/register.php" style="width: 80%;margin-top: 10px;margin-bottom: -5px">
-										<button type="submit"class="btn btn-primary btn-block">'.$this->getLocalizedString("register").'</button>
+										<button type="submit"class="btn btn-primary"style="margin-bottom: 20px;">'.$this->getLocalizedString("register").'</button>
 										</div>
 									</form>
 						</div>';
