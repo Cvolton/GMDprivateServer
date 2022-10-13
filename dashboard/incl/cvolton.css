@@ -470,9 +470,55 @@ body {
 
 .btn-upload-song:hover,
 .btn-upload-song:active,
-.btn-upload-song:focus {
+.btn-upload-song:focus,
+.btn-size:hover,
+.btn-size:active,
+.btn-size:focus {
     background-color: #47494e;
     border-color: #47494e;
+    margin-bottom: 5px;
+}
+
+.btn-size,
+.btn-size:visited {
+	background-color: #ffb1ab;
+	border-color: #ffb1ab;
+  	transition: 0.3s;
+  	color: #bc6363;
+}
+
+.btn-size:hover,
+.btn-size:active,
+.btn-size:focus {
+	color: #c0c0c0;
+}
+
+.btn-size > .icon,
+.btn-size:visited > .icon {
+	background: #dc8a80;
+}
+
+.btn-size:hover > .icon,
+.btn-size:active > .icon,
+.btn-size:focus > .icon{
+	background: #1e2124;
+}
+
+.btn-block,
+.btn-block:visited,
+.btn-block:hover,
+.btn-block:active,
+.btn-block:focus {
+	background: #141414;
+  	color: #303030;
+    font-weight: 700;
+    font-size: 15px;
+    padding: 7px 20px;
+    border: none;
+    border-radius: 500px;
+    width: 100%;
+    transition: 0.3s;
+    cursor: default;
     margin-bottom: 5px;
 }
 
