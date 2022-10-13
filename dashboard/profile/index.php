@@ -59,7 +59,7 @@ if($res["isCreatorBanned"] == 1) {
 } else $banhaha = $creatorban = '';
 if($res["creatorPoints"] == 0) $cp = ''; else $cp = '<p class="profilepic" '.$banhaha.'>'.$res["creatorPoints"].' <i class="fa-solid fa-screwdriver-wrench" '.$creatorban.'></i></p>';
 $all = $st.''.$dm.''.$gc.''.$uc.''.$dn.''.$cp;
-if(empty($all)) $st = '<p style="font-size:25px;color:#212529">'.$dl->getLocalizedString("empty").'</p>';
+if(empty($all)) $all = '<p style="font-size:25px;color:#212529">'.$dl->getLocalizedString("empty").'</p>';
 $msgs = $db->prepare("SELECT * FROM acccomments WHERE userID=:uid ORDER BY commentID DESC");
 $msgs->execute([':uid' => $gs->getUserID($accid)]);
 $msgs = $msgs->fetchAll();
@@ -88,7 +88,7 @@ $dl->printSong('<div class="form" style="width: 60vw;height: max-content">
         	'.$back.'
               <h1>'.$maybeban.'</h1>'.$msgtopl.'
         </div>
-        <div class="form-control" style="display: flex;width: 100%;height: max-content;align-items: center;">'.$st.''.$dm.''.$gc.''.$uc.''.$dn.''.$cp.'</div>
+        <div class="form-control" style="display: flex;width: 100%;height: max-content;align-items: center;">'.$all.'</div>
         <div class="form-control dmbox" style="display: flex;border-radius: 30px;margin-top: 20px;flex-wrap: wrap;padding-top: 0;max-height: 535px;padding-bottom: 10px;min-width: 100%;height: max-content;margin-bottom: 17px;align-items: center;">
         	'.$comments.'
         </div>
