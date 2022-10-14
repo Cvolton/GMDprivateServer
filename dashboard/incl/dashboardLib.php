@@ -22,7 +22,9 @@ class dashboardLib{
                           <script async src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
                           <script async src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
                           <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.0/Chart.min.js"></script>
-                          <link async rel="stylesheet" href="incl/font-awesome-4.7.0/css/font-awesome.min.css">
+						  <link href="incl/fontawesome/css/fontawesome.css" rel="stylesheet">
+						  <link href="incl/fontawesome/css/brands.css" rel="stylesheet">
+						  <link href="incl/fontawesome/css/solid.css" rel="stylesheet">
                           <link async rel="stylesheet" href="incl/cvolton.css">
                           <title>'.$gdps.'</title>
 						<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">';
@@ -164,7 +166,7 @@ class dashboardLib{
 						</a>
 						<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
 							<a class="dropdown-item" href="account/changePassword.php"><div class="icon"><i class="fa-solid fa-key" aria-hidden="false"></i></div>'.$this->getLocalizedString("changePassword").'</a>
-							<a class="dropdown-item" href="account/changeUsername.php"><div class="icon"><i class="fa-solid fa-user-o" aria-hidden="false"></i></div>'.$this->getLocalizedString("changeUsername").'</a>
+							<a class="dropdown-item" href="account/changeUsername.php"><div class="icon"><i class="fa-solid fa-user" aria-hidden="false"></i></div>'.$this->getLocalizedString("changeUsername").'</a>
 							<a class="dropdown-item" href="stats/unlisted.php"><div class="icon"><i class="fa-solid fa-list-ul" aria-hidden="false"></i></div>'.$this->getLocalizedString("unlistedLevels").'</a>
 							<a class="dropdown-item" href="stats/manageSongs.php"><div class="icon"><i class="fa-solid fa-music" aria-hidden="false"></i></div>'.$this->getLocalizedString("manageSongs").'</a>
 						</div>
@@ -213,7 +215,7 @@ class dashboardLib{
 							<i class="fa-solid fa-chart-column" aria-hidden="true"></i> '.$this->getLocalizedString("statsSection").'
 						</a>
 						<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-							<a class="dropdown-item" href="stats/dailyTable.php"><div class="icon"><i class="fa-solid fa-sun-o" aria-hidden="false"></i></div>'.$this->getLocalizedString("dailyTable").'</a>
+							<a class="dropdown-item" href="stats/dailyTable.php"><div class="icon"><i class="fa-regular fa-sun" aria-hidden="false"></i></div>'.$this->getLocalizedString("dailyTable").'</a>
 							<a class="dropdown-item" href="stats/modActions.php"><div class="icon"><i class="fa-solid fa-universal-access" aria-hidden="false"></i></div>'.$this->getLocalizedString("modActions").'</a>
 							<a class="dropdown-item" href="stats/modActionsList.php"><div class="icon"><i class="fa-solid fa-list" aria-hidden="false"></i></div>'.$this->getLocalizedString("modActionsList").'</a>
 							<a class="dropdown-item" href="stats/top24h.php"><div class="icon"><i class="fa-solid fa-list-ol" aria-hidden="false"></i></div>'.$this->getLocalizedString("leaderboardTime").'</a>
