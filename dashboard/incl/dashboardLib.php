@@ -106,6 +106,10 @@ class dashboardLib{
 		global $lrEnabled;
       	global $msgEnabled;
       	global $songEnabled;
+      	global $pc;
+      	global $mac;
+      	global $android;
+        global $ios;
 		require_once __DIR__."/../../incl/lib/mainLib.php";
       	include __DIR__."/../../incl/lib/connection.php";
 		$gs = new mainLib();
@@ -251,21 +255,21 @@ class dashboardLib{
 							<a class="dropdown-item" href="lang/switchLang.php?lang=TR" title="Translated by EMREOYUN"><div class="icon flag"><img class="imgflag" src="incl/flags/tr.png"></div>Türkçe</a>
                             <a class="dropdown-item" href="lang/switchLang.php?lang=UA" title="Translated by Jamichi""><div class="icon flag"><img class="imgflag" src="incl/flags/ua.png"></div>Українська</a>
 						</div>';
-						if(!empty(glob("../download/*.*")) OR !empty(glob("download/*.*"))) {
+						if(!empty(glob("../download/".$gdps.".*")) OR !empty(glob("download/".$gdps.".*")) OR !empty($pc) OR !empty($mac) OR !empty($android) OR !empty($ios)) {
 							echo '
 					<li class="nav-item dropdown">
 						<a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 							<i class="fa-solid fa-download" aria-hidden="true"></i> '.$this->getLocalizedString("download").'
 						</a>
 						<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">';
-						if(file_exists("download/".$gdps.".zip") OR file_exists("../download/".$gdps.".zip")) 
-							echo '<a class="dropdown-item" href="download/'.$gdps.'.zip"><div class="icon"><i class="fa-brands fa-windows" aria-hidden="false"></i></div>'.$this->getLocalizedString("forwindows").'</a>';
-						if(file_exists("download/".$gdps.".dmg") OR file_exists("../download/".$gdps.".dmg")) 
-							echo '<a class="dropdown-item" href="download/'.$gdps.'.dmg"><i class="fa-solid fa-desktop" style="position: absolute;font-size: 10px;margin: 3px 5px 5px -6px;" aria-hidden="false"></i><div class="icon"><i class="fa-brands fa-apple" aria-hidden="false"></i></div>'.$this->getLocalizedString("formac").'</a>';
-						if(file_exists("download/".$gdps.".apk") OR file_exists("../download/".$gdps.".apk")) 
-							echo '<a class="dropdown-item" href="download/'.$gdps.'.apk"><div class="icon"><i class="fa-brands fa-android" aria-hidden="false"></i></div>'.$this->getLocalizedString("forandroid").'</a>';
-						if(file_exists("download/".$gdps.".ipa") OR file_exists("../download/".$gdps.".ipa")) 
-							echo '<a class="dropdown-item" href="download/'.$gdps.'.ipa"><i class="fa-solid fa-mobile-screen-button" style="position: absolute;font-size: 10px;margin: 3px 5px 5px -3px;" aria-hidden="false"></i><div class="icon"><i class="fa-brands fa-apple" aria-hidden="false"></i></div>'.$this->getLocalizedString("forios").'</a></div>';
+						if(file_exists("download/".$gdps.".zip") OR file_exists("../download/".$gdps.".zip")) echo '<a class="dropdown-item" href="download/'.$gdps.'.zip"><div class="icon"><i class="fa-brands fa-windows" aria-hidden="false"></i></div>'.$this->getLocalizedString("forwindows").'</a>';
+                        elseif(!empty($pc)) echo '<a class="dropdown-item" href="'.$pc.'"><div class="icon"><i class="fa-brands fa-windows" aria-hidden="false"></i></div>'.$this->getLocalizedString("forwindows").'</a>';
+						if(file_exists("download/".$gdps.".dmg") OR file_exists("../download/".$gdps.".dmg")) echo '<a class="dropdown-item" href="download/'.$gdps.'.dmg"><i class="fa-solid fa-desktop" style="position: absolute;font-size: 10px;margin: 3px 5px 5px -6px;" aria-hidden="false"></i><div class="icon"><i class="fa-brands fa-apple" aria-hidden="false"></i></div>'.$this->getLocalizedString("formac").'</a>';
+                        elseif(!empty($mac)) echo '<a class="dropdown-item" href="'.$mac.'"><i class="fa-solid fa-desktop" style="position: absolute;font-size: 10px;margin: 3px 5px 5px -6px;" aria-hidden="false"></i><div class="icon"><i class="fa-brands fa-apple" aria-hidden="false"></i></div>'.$this->getLocalizedString("formac").'</a>';
+						if(file_exists("download/".$gdps.".apk") OR file_exists("../download/".$gdps.".apk")) echo '<a class="dropdown-item" href="download/'.$gdps.'.apk"><div class="icon"><i class="fa-brands fa-android" aria-hidden="false"></i></div>'.$this->getLocalizedString("forandroid").'</a>';
+                        elseif(!empty($android)) echo '<a class="dropdown-item" href="'.$android.'"><div class="icon"><i class="fa-brands fa-android" aria-hidden="false"></i></div>'.$this->getLocalizedString("forandroid").'</a>';
+						if(file_exists("download/".$gdps.".ipa") OR file_exists("../download/".$gdps.".ipa")) echo '<a class="dropdown-item" href="download/'.$gdps.'.ipa"><i class="fa-solid fa-mobile-screen-button" style="position: absolute;font-size: 10px;margin: 3px 5px 5px -3px;" aria-hidden="false"></i><div class="icon"><i class="fa-brands fa-apple" aria-hidden="false"></i></div>'.$this->getLocalizedString("forios").'</a></div>';
+                        elseif(!empty($ios)) echo '<a class="dropdown-item" href="'.$ios.'"><i class="fa-solid fa-mobile-screen-button" style="position: absolute;font-size: 10px;margin: 3px 5px 5px -3px;" aria-hidden="false"></i><div class="icon"><i class="fa-brands fa-apple" aria-hidden="false"></i></div>'.$this->getLocalizedString("forios").'</a></div>';
 						}
 		if(isset($_SESSION["accountID"]) AND $_SESSION["accountID"] != 0){
 			$userName = $gs->getAccountName($_SESSION["accountID"]);
