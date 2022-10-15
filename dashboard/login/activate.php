@@ -1,11 +1,11 @@
 <?php
 session_start();
-require "../../incl/lib/Captcha.php";
-include "../../incl/lib/connection.php";
-require "../../incl/lib/generatePass.php";
-require_once "../../incl/lib/exploitPatch.php";
-include "../../config/security.php";
 include "../incl/dashboardLib.php";
+require "../".$dbPath."incl/lib/Captcha.php";
+include "../".$dbPath."incl/lib/connection.php";
+require "../".$dbPath."incl/lib/generatePass.php";
+require_once "../".$dbPath."incl/lib/exploitPatch.php";
+include "../".$dbPath."config/security.php";
 $dl = new dashboardLib();
 $dl->title($dl->getLocalizedString("activateAccount"));
 $dl->printFooter('../');
@@ -30,7 +30,7 @@ if(!empty($_POST["userName"]) && !empty($_POST["password"])){
 		$query->execute(['userName' => $userName]);
 		 $dl->printSong('<div class="form">
 			<h1>'.$dl->getLocalizedString("activateAccount").'</h1>
-			<form class="form__inner" method="post" action="../dashboard">
+			<form class="form__inner" method="post" action=".">
 			<p>'.$dl->getLocalizedString("activated").'</p>
 			<button type="submit" class="btn btn-primary">'.$dl->getLocalizedString("dashboard").'</button>
 		</form></div>');
@@ -38,7 +38,7 @@ if(!empty($_POST["userName"]) && !empty($_POST["password"])){
 	elseif ($pass == 1) {
 		 $dl->printSong('<div class="form">
 			<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
-			<form class="form__inner" method="post" action="../dashboard">
+			<form class="form__inner" method="post" action=".">
 			<p>'.$dl->getLocalizedString("alreadyActivated").'</p>
 			<button type="submit" class="btn btn-primary">'.$dl->getLocalizedString("dashboard").'</button>
 		</form></div>');
@@ -66,7 +66,7 @@ if(!empty($_POST["userName"]) && !empty($_POST["password"])){
 } else {
 	$dl->printSong('<div class="form">
 		<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
-		<form class="form__inner" method="post" action="../dashboard">
+		<form class="form__inner" method="post" action=".">
 		<p>'.$dl->getLocalizedString("loginAlready").'</p>
 		<button type="submit" class="btn-song">'.$dl->getLocalizedString("dashboard").'</button>
 		</form>
@@ -75,7 +75,7 @@ if(!empty($_POST["userName"]) && !empty($_POST["password"])){
 } else {
 		$dl->printSong('<div class="form">
 		<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
-		<form class="form__inner" method="post" action="../dashboard">
+		<form class="form__inner" method="post" action=".">
 		<p>'.$dl->getLocalizedString("activateDisabled").'</p>
 		<button type="submit" class="btn-song">'.$dl->getLocalizedString("dashboard").'</button>
 		</form>

@@ -1,12 +1,11 @@
 <?php
 session_start();
-
-include "../../incl/lib/connection.php";
-include "../../config/security.php";
 require "../incl/dashboardLib.php";
+include "../".$dbPath."incl/lib/connection.php";
+include "../".$dbPath."config/security.php";
 $dl = new dashboardLib();
-require "../../incl/lib/generatePass.php";
-require_once "../../incl/lib/mainLib.php";
+require "../".$dbPath."incl/lib/generatePass.php";
+require "../".$dbPath."incl/lib/mainLib.php";
 $gs = new mainLib();
 $dl->title($dl->getLocalizedString("loginBox"));
 $dl->printFooter('../');

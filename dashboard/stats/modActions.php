@@ -1,9 +1,9 @@
 <?php
 session_start();
-require "../../incl/lib/connection.php";
 require "../incl/dashboardLib.php";
+require "../".$dbPath."incl/lib/connection.php";
 $dl = new dashboardLib();
-require "../../incl/lib/mainLib.php";
+require "../".$dbPath."incl/lib/mainLib.php";
 $gs = new mainLib();
 $dl->title($dl->getLocalizedString("modActions"));
 $dl->printFooter('../');
@@ -20,7 +20,7 @@ $row = 0;
 if(empty($result)) {
 	$dl->printSong('<div class="form">
     <h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
-    <form class="form__inner" method="post" action="../dashboard">
+    <form class="form__inner" method="post" action=".">
 		<p>'.$dl->getLocalizedString("emptyPage").'</p>
         <button type="submit" class="btn-primary">'.$dl->getLocalizedString("dashboard").'</button>
     </form>

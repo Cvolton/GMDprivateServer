@@ -1,14 +1,14 @@
 <?php
 session_start();
-require "../../incl/lib/Captcha.php";
-include "../../incl/lib/connection.php";
-include_once "../../config/security.php";
-require "../../incl/lib/generatePass.php";
-require_once "../../incl/lib/exploitPatch.php";
-include_once "../../incl/lib/defuse-crypto.phar";
-require_once "../../incl/lib/mainLib.php";
-$gs = new mainLib();
 require "../incl/dashboardLib.php";
+require "../".$dbPath."incl/lib/Captcha.php";
+include "../".$dbPath."incl/lib/connection.php";
+include_once "../".$dbPath."config/security.php";
+require "../".$dbPath."incl/lib/generatePass.php";
+require_once "../".$dbPath."incl/lib/exploitPatch.php";
+include_once "../".$dbPath."incl/lib/defuse-crypto.phar";
+require_once "../".$dbPath."incl/lib/mainLib.php";
+$gs = new mainLib();
 $dl = new dashboardLib();
 use Defuse\Crypto\KeyProtectedByPassword;
 use Defuse\Crypto\Crypto;
@@ -76,7 +76,7 @@ if ($pass == 1) {
 	$_SESSION["accountID"] = 0;
 	$dl->printSong('<div class="form">
 		<h1>'.$dl->getLocalizedString("changeNickTitle").'</h1>
-		<form class="form__inner" method="post" action="">
+		<form class="form__inner" method="post" action=".">
 		<p>'.$dl->getLocalizedString("changedNick").'</p>
         <button type="submit" class="btn-primary">'.$dl->getLocalizedString("dashboard").'</button>
 		</form>
@@ -107,7 +107,7 @@ if ($pass == 1) {
 }} else {
 	$dl->printSong('<div class="form">
 		<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
-		<form class="form__inner" method="post" action="../dashboard/login/login.php">
+		<form class="form__inner" method="post" action="./login/login.php">
 		<p>'.$dl->getLocalizedString("noLogin?").'</p>
 	    <button type="submit" class="btn-song">'.$dl->getLocalizedString("LoginBtn").'</button>
 		</form>

@@ -1,10 +1,9 @@
 <?php
 session_start();
-require "../../incl/lib/Captcha.php";
-include "../../incl/lib/connection.php";
-require_once "../../incl/lib/exploitPatch.php";
-$ep = new exploitPatch();
 require "../incl/dashboardLib.php";
+require "../".$dbPath."incl/lib/Captcha.php";
+include "../".$dbPath."incl/lib/connection.php";
+require_once "../".$dbPath."incl/lib/exploitPatch.php";
 $dl = new dashboardLib();
 error_reporting(E_ERROR | E_PARSE);
 $dl->title($dl->getLocalizedString("songAdd"));
@@ -138,7 +137,7 @@ echo '<button style="margin-top:5px;margin-bottom:5px" type="submit" id="submit"
 } else {
 	$dl->printSong('<div class="form">
 		<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
-		<form class="form__inner" method="post" action="../dashboard/login/login.php">
+		<form class="form__inner" method="post" action="./login/login.php">
 		<p>'.$dl->getLocalizedString("noLogin?").'</p>
 		<button type="submit" class="btn-song">'.$dl->getLocalizedString("LoginBtn").'</button>
 		</form>

@@ -1,7 +1,6 @@
 <?php
-include __DIR__."/../../config/dashboard.php";
-
-if(!isset($_SESSION["accountID"])) $_SESSION["accountID"] = 0;
+$dbPath = '../'; // Path to main directory. If you didn't changed dashboard place, don't change this value. Usually, its /database (https://imgur.com/a/P8LdhzY). 
+include __DIR__."/../".$dbPath."config/dashboard.php";
 // Dashboard library
 class dashboardLib{
 	public function printHeader($isSubdirectory = true){
@@ -110,8 +109,9 @@ class dashboardLib{
       	global $mac;
       	global $android;
         global $ios;
-		require_once __DIR__."/../../incl/lib/mainLib.php";
-      	include __DIR__."/../../incl/lib/connection.php";
+      	global $dbPath;
+		require_once __DIR__."/../".$dbPath."incl/lib/mainLib.php";
+      	include __DIR__."/../".$dbPath."incl/lib/connection.php";
 		$gs = new mainLib();
 		$homeActive = $accountActive = $browseActive = $modActive = $reuploadActive = $statsActive = $msgActive = $profileActive = "";
 		switch($active){
@@ -228,7 +228,6 @@ class dashboardLib{
 				</ul>
 				<ul class="nav navbar-nav ml-auto">';
 					if($msgEnabled == 1 AND isset($_SESSION["accountID"]) AND $_SESSION["accountID"] != 0) { 
-                      if(!isset($_SESSION["msgNew"])) $_SESSION["msgNew"] = 0;
                       if($_SESSION["msgNew"] != 1) {
                         	$new = '';
 							$msg = $db->prepare("SELECT isNew FROM messages WHERE toAccountID=:acc AND isNew=0");
@@ -236,9 +235,10 @@ class dashboardLib{
                         	$msg = $msg->fetchAll();
                         	if(count($msg) != 0) {
 								$_SESSION["msgNew"] = 1;
+                              	$new = '<i class="fa-solid fa-circle" id="notify" aria-hidden="true" style="font-size: 10px;margin-left: -5;margin-right: 3px;color: #e35151;"></i></div>';
 							}
                           } else {
-							$new = '<i class="fa-solid fa-circle" aria-hidden="true" style="font-size: 10px;margin-left: -5;margin-right: 3px;color: #e35151;"></i></div>';
+							$new = '<i class="fa-solid fa-circle" id="notify" aria-hidden="true" style="font-size: 10px;margin-left: -5;margin-right: 3px;color: #e35151;"></i></div>';
 							}
                       echo '<li class="nav-item dropdown">
 						<div style="display:flex"><a class="nav-link '.$msgActive.'" href="messenger/" id="navbarDropdownMenuLink">
@@ -323,6 +323,8 @@ class dashboardLib{
 		if(!isset($_COOKIE["lang"]) OR !ctype_alpha($_COOKIE["lang"])){
 			setcookie("lang", "EN", 2147483647, "/");
 		}
+		if(!isset($_SESSION["accountID"])) $_SESSION["accountID"] = 0;
+        if(!isset($_SESSION["msgNew"])) $_SESSION["msgNew"] = 0;
 	}
 	public function hex2RGB($hexStr, $returnAsString = false, $seperator = ',') {
     $hexStr = preg_replace("/[^0-9A-Fa-f]/", '', $hexStr);

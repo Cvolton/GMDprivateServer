@@ -1,12 +1,12 @@
 <?php
 session_start();
-require "../../incl/lib/connection.php";
 require "../incl/dashboardLib.php";
+require "../".$dbPath."incl/lib/connection.php";
 $dl = new dashboardLib();
 error_reporting(0);
-require "../../incl/lib/mainLib.php";
+require "../".$dbPath."incl/lib/mainLib.php";
 $gs = new mainLib();
-require "../../incl/lib/exploitPatch.php";
+require "../".$dbPath."incl/lib/exploitPatch.php";
 $ep = new exploitPatch();
 require "../incl/XOR.php";
 $xor = new XORCipher();
@@ -14,6 +14,7 @@ global $msgEnabled;
 $dl->printFooter('../');
 if($msgEnabled == 1) {
 if(isset($_SESSION["accountID"]) AND $_SESSION["accountID"] != 0){
+  	$newMsgs = $_SESSION["msgNew"];
 	$accid = $_SESSION["accountID"];
 	$notyou = ExploitPatch::number($_POST["accountID"]);
   	if(empty($notyou)) {
@@ -65,11 +66,10 @@ if(isset($_SESSION["accountID"]) AND $_SESSION["accountID"] != 0){
 		if(count($res) == 0) {
 			$msgs .= '<div class="messenger"><p>'.$dl->getLocalizedString("noMsgs").'</p></div>';
 		}
-      	$_SESSION["msgNew"] = 0;
-      	
-		$dl->printSong('<div class="form">
+        $_SESSION["msgNew"] = $newMsgs = 0;
+        $dl->printSong('<div class="form">
 			<div style="display: inherit;align-items: center;margin: -5px;">
-		<form method="post" action="profile/"><button class="goback" name="accountID" value="'.$notyou.'"><i class="fa-regular fa-user" aria-hidden="true"></i></button></form>
+              <form method="post" action="profile/"><button class="goback" name="accountID" value="'.$notyou.'"><i class="fa-regular fa-user" aria-hidden="true"></i></button></form>
               <a class="a" href="messenger/"><h1>'.$gs->getAccountName($notyou).'</h1></a>
               <form method="post" action=""><button class="msgupd" name="accountID" value="'.$notyou.'"><i class="fa-solid fa-arrows-rotate" aria-hidden="true"></i></button></form>
             </div>
@@ -77,8 +77,12 @@ if(isset($_SESSION["accountID"]) AND $_SESSION["accountID"] != 0){
 			<form class="form__inner dmbox" method="post" action="">
 				<div class="field"><input type="text" name="subject" placeholder="'.$dl->getLocalizedString("subject").'"></input></div>
 				<div class="field"><input type="text" name="msg" placeholder="'.$dl->getLocalizedString("msg").'"></input></div>
-                
-			<button type="submit" name="accountID" value="'.$notyou.'" class="btn-primary">'.$dl->getLocalizedString("send").'</button></form></div>', 'msg');
+			<button type="submit" name="accountID" value="'.$notyou.'" class="btn-primary">'.$dl->getLocalizedString("send").'</button></form></div>
+        <script>
+			var notify = '.$newMsgs.';
+            var elem = document.getElementById("notify");
+            if(notify == 0) elem.parentNode.removeChild(elem);
+        </script>', 'msg');
 		$query = $db->prepare("UPDATE messages SET isNew=1 WHERE accID=:notyou AND toAccountID=:you");
 		$query->execute([':you' => $accid, ':notyou' => $notyou]);
 	} else {
@@ -109,13 +113,18 @@ if(isset($_SESSION["accountID"]) AND $_SESSION["accountID"] != 0){
 			<div class="msgbox" style="width:100%">'.$options.'</div></form>
             <form class="field" method="post" action="messenger/">
             <div class="messenger" style="width:100%"><input class="field" type="text" name="receiver" placeholder="'.$dl->getLocalizedString("banUserID").'"></input>
-            <button type="submit" class="btn-rendel" style="margin-top:5px">'.$dl->getLocalizedString("write").'</button></div></form>', 'msg');
+            <button type="submit" class="btn-rendel" style="margin-top:5px">'.$dl->getLocalizedString("write").'</button></div></form>
+		<script>
+			var notify = '.$newMsgs.';
+            var elem = document.getElementById("notify");
+            if(notify == 0) elem.parentNode.removeChild(elem);
+        </script>', 'msg');
 		}
 } else {
   	$dl->title($dl->getLocalizedString("messenger"));
 	$dl->printSong('<div class="form">
     <h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
-    <form class="form__inner" method="post" action="../dashboard/login/login.php">
+    <form class="form__inner" method="post" action="./login/login.php">
 	<p>'.$dl->getLocalizedString("noLogin?").'</p>
 	        <button type="submit" class="btn-primary">'.$dl->getLocalizedString("LoginBtn").'</button>
     </form>
@@ -125,7 +134,7 @@ if(isset($_SESSION["accountID"]) AND $_SESSION["accountID"] != 0){
   		$dl->title($dl->getLocalizedString("messenger"));
 		$dl->printSong('<div class="form">
 			<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
-			<form class="form__inner" method="post" action="../dashboard">
+			<form class="form__inner" method="post" action=".">
 			<p>'.$dl->getLocalizedString("pageDisabled").'</p>
 			<button type="submit" class="btn-song">'.$dl->getLocalizedString("dashboard").'</button>
 			</form>

@@ -2,9 +2,9 @@
 session_start();
 require "../incl/dashboardLib.php";
 $dl = new dashboardLib();
-require "../../incl/lib/mainLib.php";
+require "../".$dbPath."incl/lib/mainLib.php";
 $gs = new mainLib();
-require "../../incl/lib/connection.php";
+require "../".$dbPath."incl/lib/connection.php";
 $dl->title($dl->getLocalizedString("dailyTable"));
 $dl->printFooter('../');
 if(isset($_GET["page"]) AND is_numeric($_GET["page"]) AND $_GET["page"] > 0){
@@ -26,7 +26,7 @@ $x = $dailycount - $page;
 if(empty($result)) {
 	$dl->printSong('<div class="form">
     <h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
-    <form class="form__inner" method="post" action="../dashboard">
+    <form class="form__inner" method="post" action=".">
 		<p>'.$dl->getLocalizedString("emptyPage").'</p>
         <button type="submit" class="btn-primary">'.$dl->getLocalizedString("dashboard").'</button>
     </form>

@@ -1,17 +1,17 @@
 <?php
 session_start();
-include "../../incl/lib/connection.php";
-include "../../incl/lib/exploitPatch.php";
-include "../../incl/lib/mainLib.php";
-$gs = new mainLib();
 include "../incl/dashboardLib.php";
+include "../".$dbPath."incl/lib/connection.php";
+include "../".$dbPath."incl/lib/exploitPatch.php";
+include "../".$dbPath."incl/lib/mainLib.php";
+$gs = new mainLib();
 $dl = new dashboardLib();
 $dl->printFooter('../');
 if(!isset($_SESSION["accountID"]) OR $_SESSION["accountID"] == 0 AND empty($_POST["accountID"])) {
   	$dl->title($dl->getLocalizedString("profile"));
 	$dl->printSong('<div class="form">
     <h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
-    <form class="form__inner" method="post" action="../dashboard/login/login.php">
+    <form class="form__inner" method="post" action="./login/login.php">
 	<p>'.$dl->getLocalizedString("noLogin?").'</p>
 	        <button type="submit" class="btn-primary">'.$dl->getLocalizedString("LoginBtn").'</button>
     </form>
@@ -83,6 +83,7 @@ $send = '<div class="field" style="margin-top:10px">
 		</div>';
 $msgtopl = '';
 }
+if($_SESSION["accountID"] == 0) $msgtopl = '';
 $dl->printSong('<div class="form" style="width: 60vw;height: max-content">
     	<div style="height: 100%;width: 100%;"><div style="display: flex;align-items: center;justify-content: center;">
         	'.$back.'

@@ -1,11 +1,11 @@
 <?php
 session_start();
-require "../../incl/lib/connection.php";
 require "../incl/dashboardLib.php";
+require "../".$dbPath."incl/lib/connection.php";
 $dl = new dashboardLib();
-require "../../incl/lib/mainLib.php";
+require "../".$dbPath."incl/lib/mainLib.php";
 $gs = new mainLib();
-include "../../incl/lib/connection.php";
+include "../".$dbPath."incl/lib/connection.php";
 $dl->title($dl->getLocalizedString("levels"));
 $dl->printFooter('../');
 if(isset($_GET["page"]) AND is_numeric($_GET["page"]) AND $_GET["page"] > 0){
@@ -27,7 +27,7 @@ $x = $page + 1;
 if(empty($result)) {
 	$dl->printSong('<div class="form">
     <h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
-    <form class="form__inner" method="post" action="../dashboard">
+    <form class="form__inner" method="post" action=".">
 		<p>'.$dl->getLocalizedString("emptyPage").'</p>
         <button type="submit" class="btn-primary">'.$dl->getLocalizedString("dashboard").'</button>
     </form>
@@ -38,7 +38,7 @@ foreach($result as &$action){
 	$levelid = $action["levelID"];
 	$levelname = $action["levelName"];
 	$levelDesc = base64_decode($action["levelDesc"]);
-  	if(strlen($levelDesc) > 35) $levelDesc = "<details><summary>".$dl->getLocalizedString("spoiler")."</summary>$levelDesc</details>";
+  	if(strlen($levelDesc) > 31) $levelDesc = "<details><summary>".$dl->getLocalizedString("spoiler")."</summary>$levelDesc</details>";
   	if(empty($levelDesc)) $levelDesc = '<div style="color:gray">'.$dl->getLocalizedString("noDesc").'</div>';
 	$levelpass = $action["password"];
 	$levelpass = substr($levelpass, 1);

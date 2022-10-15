@@ -1,14 +1,14 @@
 <?php
 session_start();
-require "../../incl/lib/Captcha.php";
-include "../../incl/lib/connection.php";
-include_once "../../config/security.php";
-require "../../incl/lib/generatePass.php";
-require_once "../../incl/lib/exploitPatch.php";
-include_once "../../incl/lib/defuse-crypto.phar";
-require_once "../../incl/lib/mainLib.php";
-$gs = new mainLib();
 require "../incl/dashboardLib.php";
+require "../".$dbPath."incl/lib/Captcha.php";
+include "../".$dbPath."incl/lib/connection.php";
+include_once "../".$dbPath."config/security.php";
+require "../".$dbPath."incl/lib/generatePass.php";
+require_once "../".$dbPath."incl/lib/exploitPatch.php";
+include_once "../".$dbPath."incl/lib/defuse-crypto.phar";
+require_once "../".$dbPath."incl/lib/mainLib.php";
+$gs = new mainLib();
 $dl = new dashboardLib();
 use Defuse\Crypto\KeyProtectedByPassword;
 use Defuse\Crypto\Crypto;
@@ -21,7 +21,7 @@ if(!$gs->checkPermission($acc, 'dashboardForceChangePassNick')) {
 	$dl->printSong('<div class="form">
     <h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 	<p id="bruh">'.$dl->getLocalizedString("noPermission").'</p>
-    <form class="form__inner" method="post" action="../dashboard">
+    <form class="form__inner" method="post" action=".">
 	<button type="submit" class="btn-primary">'.$dl->getLocalizedString("Kish!").'</button>
     </form>
 	</div>', 'mod');
@@ -82,7 +82,7 @@ if(!empty($_POST["userID"]) AND !empty($_POST[$type])) {
     $accountID = $gs->getAccountIDFromName($userName);
     $query = $db->prepare("INSERT INTO modactions  (type, value, value2, timestamp, account) VALUES ('26',:userID, :type, :timestamp,:account)");
 	$query->execute([':userID' => $accountID, ':timestamp' => time(), ':type' => $type, ':account' => $acc]);
-	$saveData = file_get_contents("../../data/accounts/$accountID");
+	$saveData = file_get_contents("../".$dbPath."data/accounts/$accountID");
     $dl->printSong('<div class="form">
 		<h1>'.$dl->getLocalizedString("changePassTitle").'</h1>
 		<form class="form__inner" method="post" action="">
@@ -91,8 +91,8 @@ if(!empty($_POST["userID"]) AND !empty($_POST[$type])) {
 		</form>
 		</div>', 'mod');
 	}
-	if(file_exists("../../data/accounts/keys/$accountID")){
-		$protected_key_encoded = file_get_contents("../../data/accounts/keys/$accountID");
+	if(file_exists("../".$dbPath."data/accounts/keys/$accountID")){
+		$protected_key_encoded = file_get_contents("../".$dbPath."data/accounts/keys/$accountID");
 		if($protected_key_encoded != ""){
 			$protected_key = KeyProtectedByPassword::loadFromAsciiSafeString($protected_key_encoded);
 			$user_key = $protected_key->unlockKey($oldpass);
@@ -101,8 +101,8 @@ if(!empty($_POST["userID"]) AND !empty($_POST[$type])) {
 			} catch (Defuse\Crypto\Exception\WrongKeyOrModifiedCiphertextException $ex) {
 				exit("Unable to update save data encryption");	
 			}
-			file_put_contents("../../data/accounts/$accountID",$saveData);
-			file_put_contents("../../data/accounts/keys/$accountID","");
+			file_put_contents("../".$dbPath."data/accounts/$accountID",$saveData);
+			file_put_contents("../".$dbPath."data/accounts/keys/$accountID","");
 		}
 	} 
 } else {

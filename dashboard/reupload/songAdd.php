@@ -1,11 +1,10 @@
 <?php
 session_start();
-//error_reporting(0);
-require "../../incl/lib/Captcha.php";
-include "../../incl/lib/connection.php";
 require_once "../incl/dashboardLib.php";
+require "../".$dbPath."incl/lib/Captcha.php";
+include "../".$dbPath."incl/lib/connection.php";
 $dl = new dashboardLib();
-require_once "../../incl/lib/mainLib.php";
+require_once "../".$dbPath."incl/lib/mainLib.php";
 $gs = new mainLib();
 $dl->title($dl->getLocalizedString("songLink"));
 $dl->printFooter('../');
@@ -77,7 +76,7 @@ if(!empty($_POST["url"])){
 } else {
 	$dl->printSong('<div class="form">
     <h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
-	<form class="form__inner" method="post" action="../dashboard/login/login.php">
+	<form class="form__inner" method="post" action="./login/login.php">
 	<p>'.$dl->getLocalizedString("noLogin?").'</p>
 	        <button type="submit" class="btn-song">'.$dl->getLocalizedString("LoginBtn").'</button>
     </form>

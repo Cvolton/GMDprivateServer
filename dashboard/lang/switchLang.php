@@ -1,6 +1,5 @@
 <?php
 session_start();
-include "../../incl/lib/connection.php";
 require "../incl/dashboardLib.php";
 $dl = new dashboardLib();
 if(isset($_GET["lang"]) AND ctype_alpha($_GET["lang"])){

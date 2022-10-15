@@ -2,7 +2,7 @@
 session_start();
 require "incl/dashboardLib.php";
 $dl = new dashboardLib();
-require "../incl/lib/connection.php";
+require $dbPath."incl/lib/connection.php";
 if(!$installed) $install = '<div class="notify"><a href="install.php">'.$dl->getLocalizedString("didntInstall").'</a></div>'; else $install = '';
 $chartdata = array();
 for($x = 7; $x >= 0;){

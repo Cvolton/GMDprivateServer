@@ -1,7 +1,7 @@
 <?php
 session_start();
-require "../../incl/lib/Captcha.php";
 include "../incl/dashboardLib.php";
+require "../".$dbPath."incl/lib/Captcha.php";
 $dl = new dashboardLib();
 global $lrEnabled;
 $dl->title($dl->getLocalizedString("levelReupload"));
@@ -16,10 +16,10 @@ function chkarray($source, $default = 0){
 	return $target;
 }
 //error_reporting(0);
-include "../../incl/lib/connection.php";
-require "../../incl/lib/XORCipher.php";
-require "../../config/reuploadAcc.php";
-require_once "../../incl/lib/mainLib.php";
+include "../".$dbPath."incl/lib/connection.php";
+require "../".$dbPath."incl/lib/XORCipher.php";
+require "../".$dbPath."config/reuploadAcc.php";
+require_once "../".$dbPath."incl/lib/mainLib.php";
 $gs = new mainLib();
 if(isset($_SESSION["accountID"]) AND $_SESSION["accountID"] != 0){
 if(!empty($_POST["levelid"])){
@@ -204,9 +204,10 @@ if(!empty($_POST["levelid"])){
 		<p>'.$dl->getLocalizedString("levelReuploadDesc").'</p>
         <div class="field"><input type="text" name="levelid" placeholder="'.$dl->getLocalizedString("levelID").'"></div>
 		<details class="details">
-			<summary>'.$dl->getLocalizedString("advanced").'</summary>
-			<div class="field" style="display: flex; width:100%; justify-content: space-between;"><input type="text" name="server" value="http://www.boomlings.com/database/downloadGJLevel22.php" placeholder="'.$dl->getLocalizedString("server").'">
-			<input class="checkbox" type="checkbox" name="debug" value="1" placeholder="Debug">
+			<summary style="width: 100%;">'.$dl->getLocalizedString("advanced").'</summary>
+			<div class="field" style="display: inline-flex;width:100%;justify-content: space-between;">
+            	<input type="text" name="server" value="http://www.boomlings.com/database/downloadGJLevel22.php" placeholder="'.$dl->getLocalizedString("server").'" style="width: 86%;">
+			<input class="checkbox" type="checkbox" name="debug" value="1" placeholder="Debug" style="width: 8%;">
 			</div>
 		</details>', 'reupload');
 		Captcha::displayCaptcha();
@@ -218,7 +219,7 @@ if(!empty($_POST["levelid"])){
 } else {
 	$dl->printSong('<div class="form">
     <h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
-	<form class="form__inner" method="post" action="../dashboard/login/login.php">
+	<form class="form__inner" method="post" action="./login/login.php">
 	<p>'.$dl->getLocalizedString("noLogin?").'</p>
 	        <button type="submit" class="btn-song">'.$dl->getLocalizedString("LoginBtn").'</button>
     </form>
@@ -227,7 +228,7 @@ if(!empty($_POST["levelid"])){
 } else {
 		$dl->printSong('<div class="form">
 			<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
-			<form class="form__inner" method="post" action="../dashboard">
+			<form class="form__inner" method="post" action=".">
 			<p>'.$dl->getLocalizedString("pageDisabled").'</p>
 			<button type="submit" class="btn-song">'.$dl->getLocalizedString("dashboard").'</button>
 			</form>

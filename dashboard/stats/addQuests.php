@@ -1,12 +1,12 @@
 <?php
 session_start();
-require "../../incl/lib/Captcha.php";
-include "../../incl/lib/connection.php";
-require "../../incl/lib/generatePass.php";
-require "../../incl/lib/exploitPatch.php";
-require "../../incl/lib/mainLib.php";
-$gs = new mainLib();
 include "../incl/dashboardLib.php";
+require "../".$dbPath."incl/lib/Captcha.php";
+include "../".$dbPath."incl/lib/connection.php";
+require "../".$dbPath."incl/lib/generatePass.php";
+require "../".$dbPath."incl/lib/exploitPatch.php";
+require "../".$dbPath."incl/lib/mainLib.php";
+$gs = new mainLib();
 $dl = new dashboardLib();
 $dl->title($dl->getLocalizedString("addQuest"));
 $dl->printFooter('../');
@@ -87,7 +87,7 @@ if(!empty($_POST["type"]) AND !empty($_POST["amount"]) AND !empty($_POST["reward
 } else {
 	$dl->printSong('<div class="form">
     <h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
-    <form class="form__inner" method="post" action="../dashboard">
+    <form class="form__inner" method="post" action=".">
 		<p>'.$dl->getLocalizedString("noPermission").'</p>
 	        <button type="submit" class="btn-primary">'.$dl->getLocalizedString("Kish!").'</button>
     </form>

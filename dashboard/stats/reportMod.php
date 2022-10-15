@@ -1,11 +1,11 @@
 <?php
 session_start();
-require "../../incl/lib/connection.php";
 require "../incl/dashboardLib.php";
+require "../".$dbPath."incl/lib/connection.php";
 $dl = new dashboardLib();
-require "../../incl/lib/mainLib.php";
+require "../".$dbPath."incl/lib/mainLib.php";
 $gs = new mainLib();
-include "../../incl/lib/connection.php";
+include "../".$dbPath."incl/lib/connection.php";
 $dl->title($dl->getLocalizedString("reportMod"));
 $dl->printFooter('../');
 if(!isset($_SESSION["accountID"]) OR $_SESSION["accountID"] == 0){
@@ -38,7 +38,7 @@ $x = $page + 1;
 if(empty($result)) {
 	$dl->printSong('<div class="form">
     <h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
-    <form class="form__inner" method="post" action="../dashboard">
+    <form class="form__inner" method="post" action=".">
 		<p>'.$dl->getLocalizedString("emptyPage").'</p>
         <button type="submit" class="btn-primary">'.$dl->getLocalizedString("dashboard").'</button>
     </form>

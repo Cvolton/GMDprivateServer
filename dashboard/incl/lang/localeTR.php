@@ -1,12 +1,13 @@
 <?php
-include __DIR__."/../../../config/dashboard.php";
+global $dbPath;
+include __DIR__."/../../".$dbPath."config/dashboard.php";
 
 $string["homeNavbar"] = "Ana Sayfa";
 $string["welcome"] = $gdps." sunucusuna hoş geldiniz!";
 $string["didntInstall"] = "<div style='color:#47a0ff'><b>Uyarı!</b> Dashboard'ı tam olarak kurmamışsınız! Buraya basarak tam kurulumu yapın.</div>";
 $string["levelsWeek"] = "Bir hafta içinde yüklenen bölümler";
 $string["levels3Months"] = "3 ayda yüklenen bölümler";
-$string["footer"] = $gdps.", ".date('Y', time());
+$string["footer"] = $gdps."? 2020 - ".date('Y', time());
 
 $string["profile"] = "Profil";
 $string["empty"] = "Boş...";

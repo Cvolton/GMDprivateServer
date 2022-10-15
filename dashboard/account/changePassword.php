@@ -1,14 +1,14 @@
 <?php
 session_start();
-require "../../incl/lib/Captcha.php";
-include "../../incl/lib/connection.php";
-include_once "../../config/security.php";
-require "../../incl/lib/generatePass.php";
-require_once "../../incl/lib/exploitPatch.php";
-include_once "../../incl/lib/defuse-crypto.phar";
-require_once "../../incl/lib/mainLib.php";
-$gs = new mainLib();
 require "../incl/dashboardLib.php";
+require "../".$dbPath."incl/lib/Captcha.php";
+include "../".$dbPath."incl/lib/connection.php";
+include_once "../".$dbPath."config/security.php";
+require "../".$dbPath."incl/lib/generatePass.php";
+require_once "../".$dbPath."incl/lib/exploitPatch.php";
+include_once "../".$dbPath."incl/lib/defuse-crypto.phar";
+require_once "../".$dbPath."incl/lib/mainLib.php";
+$gs = new mainLib();
 $dl = new dashboardLib();
 use Defuse\Crypto\KeyProtectedByPassword;
 use Defuse\Crypto\Crypto;
@@ -60,9 +60,9 @@ if ($pass == 1) {
 	$query = $db->prepare("SELECT accountID FROM accounts WHERE userName=:userName");	
 	$query->execute([':userName' => $userName]);
 	$accountID = $query->fetchColumn();
-	$saveData = file_get_contents("../../data/accounts/$accountID");
-	if(file_exists("../../data/accounts/keys/$accountID")){
-		$protected_key_encoded = file_get_contents("../../data/accounts/keys/$accountID");
+	$saveData = file_get_contents("../".$dbPath."data/accounts/$accountID");
+	if(file_exists("../".$dbPath."data/accounts/keys/$accountID")){
+		$protected_key_encoded = file_get_contents("../".$dbPath."data/accounts/keys/$accountID");
 		if($protected_key_encoded != ""){
 			$protected_key = KeyProtectedByPassword::loadFromAsciiSafeString($protected_key_encoded);
 			$user_key = $protected_key->unlockKey($oldpass);
@@ -71,8 +71,8 @@ if ($pass == 1) {
 			} catch (Defuse\Crypto\Exception\WrongKeyOrModifiedCiphertextException $ex) {
 				exit("Unable to update save data encryption");	
 			}
-			file_put_contents("../../data/accounts/$accountID",$saveData);
-			file_put_contents("../../data/accounts/keys/$accountID","");
+			file_put_contents("../".$dbPath."data/accounts/$accountID",$saveData);
+			file_put_contents("../".$dbPath."data/accounts/keys/$accountID","");
 		}
 	}
 }else{
@@ -101,7 +101,7 @@ if ($pass == 1) {
 }} else {
 	$dl->printSong('<div class="form">
     <h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
-	<form class="form__inner" method="post" action="../dashboard/login/login.php">
+	<form class="form__inner" method="post" action="./login/login.php">
 	<p>'.$dl->getLocalizedString("noLogin?").'</p>
 	        <button type="submit" class="btn-song">'.$dl->getLocalizedString("LoginBtn").'</button>
     </form>

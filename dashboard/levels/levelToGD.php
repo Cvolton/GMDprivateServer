@@ -1,14 +1,14 @@
 <?php
 session_start();
-include "../../incl/lib/connection.php";
-include "../../incl/lib/Captcha.php";
-require "../../incl/lib/XORCipher.php";
-require_once "../../incl/lib/generatePass.php";
-require_once "../../incl/lib/exploitPatch.php";
-require_once "../../incl/lib/generateHash.php";
-include "../../incl/lib/mainLib.php";
-$gs = new mainLib();
 include "../incl/dashboardLib.php";
+include "../".$dbPath."incl/lib/connection.php";
+include "../".$dbPath."incl/lib/Captcha.php";
+require "../".$dbPath."incl/lib/XORCipher.php";
+require_once "../".$dbPath."incl/lib/generatePass.php";
+require_once "../".$dbPath."incl/lib/exploitPatch.php";
+require_once "../".$dbPath."incl/lib/generateHash.php";
+include "../".$dbPath."incl/lib/mainLib.php";
+$gs = new mainLib();
 $dl = new dashboardLib();
 global $lrEnabled;
 $dl->title($dl->getLocalizedString("levelToGD"));
@@ -17,7 +17,7 @@ if($lrEnabled) {
 if(!isset($_SESSION["accountID"]) OR $_SESSION["accountID"] == 0) {
 		$dl->printSong('<div class="form">
     	<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
-		<form class="form__inner" method="post" action="../dashboard/login/login.php">
+		<form class="form__inner" method="post" action="./login/login.php">
 			<p>'.$dl->getLocalizedString("noLogin?").'</p>
 	        <button type="submit" class="btn-song">'.$dl->getLocalizedString("LoginBtn").'</button>
   	  	</form>
@@ -217,7 +217,7 @@ if(!empty($_POST["usertarg"]) AND !empty($_POST["passtarg"]) AND !empty($_POST["
 } else {
 		$dl->printSong('<div class="form">
 			<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
-			<form class="form__inner" method="post" action="../dashboard">
+			<form class="form__inner" method="post" action=".">
 			<p>'.$dl->getLocalizedString("pageDisabled").'</p>
 			<button type="submit" class="btn-song">'.$dl->getLocalizedString("dashboard").'</button>
 			</form>

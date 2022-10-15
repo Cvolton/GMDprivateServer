@@ -1,13 +1,13 @@
 <?php
 session_start();
-require "../../incl/lib/Captcha.php";
-require "../../incl/lib/connection.php";
 require "../incl/dashboardLib.php";
+require "../".$dbPath."incl/lib/Captcha.php";
+require "../".$dbPath."incl/lib/connection.php";
 $dl = new dashboardLib();
-require "../../incl/lib/mainLib.php";
+require "../".$dbPath."incl/lib/mainLib.php";
 $gs = new mainLib();
-include "../../incl/lib/connection.php";
-include "../../incl/lib/exploitPatch.php";
+include "../".$dbPath."incl/lib/connection.php";
+include "../".$dbPath."incl/lib/exploitPatch.php";
 $ep = new exploitPatch();
 $dl->printFooter('../');
 $dl->title($dl->getLocalizedString("shareCPTitle"));
@@ -141,7 +141,7 @@ if(!empty($_POST["username"]) AND !empty($_POST["level"])) {
 } else
 	$dl->printSong('<div class="form">
     <h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
-    <form class="form__inner" method="post" action="../dashboard">
+    <form class="form__inner" method="post" action=".">
 		<p>'.$dl->getLocalizedString("noPermission").'</p>
 	        <button type="submit" class="btn-primary">'.$dl->getLocalizedString("Kish!").'</button>
     </form>

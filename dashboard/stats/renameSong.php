@@ -1,12 +1,12 @@
 <?php
 session_start();
-require "../../incl/lib/connection.php";
 require "../incl/dashboardLib.php";
+require "../".$dbPath."incl/lib/connection.php";
 $dl = new dashboardLib();
-require "../../incl/lib/mainLib.php";
+require "../".$dbPath."incl/lib/mainLib.php";
 $gs = new mainLib();
-include "../../incl/lib/connection.php";
-require "../../incl/lib/exploitPatch.php";
+include "../".$dbPath."incl/lib/connection.php";
+require "../".$dbPath."incl/lib/exploitPatch.php";
 if($gs->checkPermission($_SESSION["accountID"], "dashboardManageSongs")){
 	$author = ExploitPatch::remove($_POST["author"]);
 	$name = ExploitPatch::remove($_POST["name"]);

@@ -1,10 +1,10 @@
 <?php
 session_start();
-require "../../incl/lib/Captcha.php";
-include "../../config/security.php";
-include "../../incl/lib/connection.php";
-require "../../incl/lib/exploitPatch.php";
 include "../incl/dashboardLib.php";
+require "../".$dbPath."incl/lib/Captcha.php";
+include "../".$dbPath."config/security.php";
+include "../".$dbPath."incl/lib/connection.php";
+require "../".$dbPath."incl/lib/exploitPatch.php";
 $dl = new dashboardLib();
 $dl->title($dl->getLocalizedString("registerAcc"));
 $dl->printFooter('../');
@@ -12,7 +12,6 @@ if(!isset($_SESSION["accountID"]) OR $_SESSION["accountID"] == 0){
 if(!isset($preactivateAccounts)){
 	$preactivateAccounts = false;
 }
-
 // here begins the checks
 if(!empty($_POST["username"]) AND !empty($_POST["email"]) AND !empty($_POST["repeatemail"]) AND !empty($_POST["password"]) AND !empty($_POST["repeatpassword"])){
 	if(!Captcha::validateCaptcha()) {
@@ -84,7 +83,7 @@ if(!empty($_POST["username"]) AND !empty($_POST["email"]) AND !empty($_POST["rep
 				// there you go, you are registered.
 				$dl->printSong('<div class="form">
 					<h1>'.$dl->getLocalizedString("registerAcc").'</h1>
-					<form class="form__inner" method="post" action="../dashboard">
+					<form class="form__inner" method="post" action=".">
 					<p>'.$dl->getLocalizedString("registered").'</p>
 					<button type="submit" class="btn-song">'.$dl->getLocalizedString("dashboard").'</button>
 					</form>
@@ -112,7 +111,7 @@ if(!empty($_POST["username"]) AND !empty($_POST["email"]) AND !empty($_POST["rep
 } else {
 	$dl->printSong('<div class="form">
     <h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
-	<form class="form__inner" method="post" action="../dashboard">
+	<form class="form__inner" method="post" action=".">
 	<p>'.$dl->getLocalizedString("loginAlready").'</p>
 	        <button type="submit" class="btn-song">'.$dl->getLocalizedString("dashboard").'</button>
     </form>

@@ -6,6 +6,7 @@ $lrEnabled = 1; // 1 = Level reupload enabled, 0 = disabled
 $msgEnabled = 1; // 1 = Messenger enabled, 0 = disabled
 $songEnabled = 12; // 0 = Song reupload disabled, add 1 to enable song file reupload, add 2 to enable song link reupload
 $songSize = 8; // Max song size in megabytes (i don't recommend setting this value too high)
+// If you changed dashboard's place, change $dbPath in dashboard/incl/dashboardLib.php
  
 // Below are external download links, disables when you have gdpsName.gdpsFileType in dashboard/download directory
 

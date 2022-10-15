@@ -1,12 +1,12 @@
 <?php
 session_start();
-require "../../incl/lib/Captcha.php";
-include "../../incl/lib/connection.php";
-require "../../incl/lib/generatePass.php";
-require_once "../../incl/lib/exploitPatch.php";
-require_once "../../incl/lib/mainLib.php";
-$gs = new mainLib();
 require "../incl/dashboardLib.php";
+require "../".$dbPath."incl/lib/Captcha.php";
+include "../".$dbPath."incl/lib/connection.php";
+require "../".$dbPath."incl/lib/generatePass.php";
+require_once "../".$dbPath."incl/lib/exploitPatch.php";
+require_once "../".$dbPath."incl/lib/mainLib.php";
+$gs = new mainLib();
 $dl = new dashboardLib();
 error_reporting(E_ERROR | E_PARSE);
 $dl->title($dl->getLocalizedString("banUserPlace"));
@@ -84,7 +84,7 @@ if(!empty($_POST["userID"])) {
 		$dl->printSong('<div class="form">
     <h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 	<p id="bruh">'.$dl->getLocalizedString("noPermission").'</p>
-    <form class="form__inner" method="post" action="../dashboard">
+    <form class="form__inner" method="post" action=".">
 	        <button type="submit" class="btn-primary">'.$dl->getLocalizedString("Kish!").'</button>
     </form>
 </div>', 'mod');
