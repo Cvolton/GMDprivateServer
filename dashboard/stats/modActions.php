@@ -42,7 +42,8 @@ foreach($result as &$mod){
 	if ($lastPlayed == 0) $time = '<div style="color:gray">'.$dl->getLocalizedString("never").'</div>';
  	$query = $db->prepare("SELECT roleID FROM roleassign WHERE accountID =:accid");
 	$query->execute([':accid' => $mod["accountID"]]);
-	$resultRole = implode($query->fetch());
+	$resultRole = $color = implode($query->fetch());
+  	$color = mb_substr($resultRole, 1);
 	switch($resultRole) {
 		case 11:
 			$resultRole = $dl->getLocalizedString("admin");				
@@ -54,6 +55,10 @@ foreach($result as &$mod){
 			$resultRole = $dl->getLocalizedString("moder");
 			break;
 		}
+  	$query = $db->prepare("SELECT commentColor FROM roles WHERE roleID = :rid");
+  	$query->execute([':rid' => $color]);
+  	$color = $query->fetch();
+  	$resultRole = '<div style="color:rgb('.$color["commentColor"].')">'.$resultRole.'</div>';
   	$actions = $actionscount[strlen($actionscount)-1];
   	if($actions == 1) $action = 0; elseif($actions < 5) $action = 1; else $action = 2;
   	if($actionscount > 9 AND $actionscount < 20) $action = 2;
