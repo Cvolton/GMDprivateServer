@@ -24,7 +24,7 @@ $x = $page + 1;
 if(empty($result)) {
 	$dl->printSong('<div class="form">
     <h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
-    <form class="form__inner" method="post" action=".">
+    <form class="form__inner" method="post" action="../dashboard">
 		<p>'.$dl->getLocalizedString("emptyPage").'</p>
         <button type="submit" class="btn-primary">'.$dl->getLocalizedString("dashboard").'</button>
     </form>
@@ -47,6 +47,7 @@ foreach($result as &$action){
 	if(empty($resultRole)){
 		$resultRole = $dl->getLocalizedString("player");
 	} else {
+      	$color = mb_substr($resultRole, 1);
 		switch($resultRole) {
 			case 11:
 				$resultRole = $dl->getLocalizedString("admin");
@@ -58,6 +59,10 @@ foreach($result as &$action){
 				$resultRole = $dl->getLocalizedString("moder");
 				break;
 		}
+    $query = $db->prepare("SELECT commentColor FROM roles WHERE roleID = :rid");
+  	$query->execute([':rid' => $color]);
+  	$color = $query->fetch();
+  	$resultRole = '<div style="color:rgb('.$color["commentColor"].')">'.$resultRole.'</div>';
 	}
 	$registerDate = date("d.m.Y", $action["registerDate"]);
 	$table .= "<tr><th scope='row'>".$x."</th><td>".$username."</td><td>".$accountID."</td><td>".$registerDate."</td><td>".$resultRole."</td><td>".$lastPlayed."</td></tr>";
