@@ -221,20 +221,20 @@ $string["songAddError-6"] = "Bir şeyler ters gitti! :с";
 $string["songAddError-7"] = "Sadece ses dosyası yükleyebilirsin!";
 
 $string[400] = "Kötü istek!";
-$string["400!"] = "Check drivers of your network hardware.";
+$string["400!"] = "Sürücülerini veya bağlantı cihazlarını kontrol et.";
 $string[403] = "Yasak!";
-$string["403!"] = "You don't have access to this page!";
+$string["403!"] = "Bu sayfaya erişim iznin yok!";
 $string[404] = "Sayfa bulunamadı!";
-$string["404!"] = "Are you sure you typed address correctly?";
+$string["404!"] = "Adresi doğru yazdığından emin misin?";
 $string[500] = "İç sunucu hatası!";
-$string["500!"] = "Coder made an mistake in the code,</br>
-please say about this problem here:</br>
+$string["500!"] = "Geliştirici kodda bir hata yapmış,</br>
+lütfen sorunu buradan bildirin:</br>
 https://github.com/Cvolton/GMDprivateServer/pull/883";
 $string[502] = "Sunucuya ulaşılamıyor!";
-$string["502!"] = "Load on the server is too big.</br>
-Come back later within several hours!";
+$string["502!"] = "Sunucudaki yük çok ağır.</br>
+Birkaç saat içerisinde tekrar ziyaret edin!";
 
-$string["invalidCaptcha"] = "Invalid captcha response!";
+$string["invalidCaptcha"] = "Geçersiz Captcha isteği!";
 $string["page"] = "Sayfa";
 $string["emptyPage"] = "Bu sayfa boş!";
 
