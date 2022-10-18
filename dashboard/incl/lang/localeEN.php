@@ -7,7 +7,7 @@ $string["welcome"] = "Welcome to ".$gdps.'!';
 $string["didntInstall"] = "<div style='color:#47a0ff'><b>Warning!</b> You haven't fully installed dashboard! Click on the text to do this.</div>";
 $string["levelsWeek"] = "Levels uploaded in a week";
 $string["levels3Months"] = "Levels uploaded in 3 months";
-$string["footer"] = $gdps.", ".date('Y', time());
+$string["footer"] = $gdps."? 2020 - ".date('Y', time());
 
 $string["profile"] = "Profile";
 $string["empty"] = "Empty...";
@@ -221,10 +221,18 @@ $string["songAddError-6"] = "Something went wrong while uploading a song! :с";
 $string["songAddError-7"] = "You can only upload audio!";
 
 $string[400] = "Bad request!";
+$string["400!"] = "Check drivers of your network hardware.";
 $string[403] = "Forbidden!";
+$string["403!"] = "You don't have access to this page!";
 $string[404] = "Page not found!";
+$string["404!"] = "Are you sure you typed address correctly?";
 $string[500] = "Internal server error!";
+$string["500!"] = "Coder made an mistake in the code,</br>
+please say about this problem here:</br>
+https://github.com/Cvolton/GMDprivateServer/pull/883";
 $string[502] = "Server is down!";
+$string["502!"] = "Load on the server is too big.</br>
+Come back later within several hours!";
 
 $string["invalidCaptcha"] = "Invalid captcha response!";
 $string["page"] = "Page";

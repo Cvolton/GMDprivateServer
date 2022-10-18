@@ -7,7 +7,7 @@ $string["welcome"] = $gdps." sunucusuna hoş geldiniz!";
 $string["didntInstall"] = "<div style='color:#47a0ff'><b>Uyarı!</b> Dashboard'ı tam olarak kurmamışsınız! Buraya basarak tam kurulumu yapın.</div>";
 $string["levelsWeek"] = "Bir hafta içinde yüklenen bölümler";
 $string["levels3Months"] = "3 ayda yüklenen bölümler";
-$string["footer"] = $gdps.", ".date('Y', time());
+$string["footer"] = $gdps."? 2020 - ".date('Y', time());
 
 $string["profile"] = "Profil";
 $string["empty"] = "Boş...";
@@ -221,10 +221,18 @@ $string["songAddError-6"] = "Bir şeyler ters gitti! :с";
 $string["songAddError-7"] = "Sadece ses dosyası yükleyebilirsin!";
 
 $string[400] = "Kötü istek!";
+$string["400!"] = "Check drivers of your network hardware.";
 $string[403] = "Yasak!";
+$string["403!"] = "You don't have access to this page!";
 $string[404] = "Sayfa bulunamadı!";
+$string["404!"] = "Are you sure you typed address correctly?";
 $string[500] = "İç sunucu hatası!";
+$string["500!"] = "Coder made an mistake in the code,</br>
+please say about this problem here:</br>
+https://github.com/Cvolton/GMDprivateServer/pull/883";
 $string[502] = "Sunucuya ulaşılamıyor!";
+$string["502!"] = "Load on the server is too big.</br>
+Come back later within several hours!";
 
 $string["invalidCaptcha"] = "Invalid captcha response!";
 $string["page"] = "Sayfa";
