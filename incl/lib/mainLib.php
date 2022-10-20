@@ -290,7 +290,7 @@ class mainLib {
 		}else{
 			$register = 0;
 		}
-		$query = $db->prepare("SELECT userID FROM users WHERE extID = :id");
+		$query = $db->prepare("SELECT userID FROM users WHERE extID LIKE BINARY :id");
 		$query->execute([':id' => $extID]);
 		if ($query->rowCount() > 0) {
 			$userID = $query->fetchColumn();
@@ -304,6 +304,8 @@ class mainLib {
 		return $userID;
 	}
 	public function getAccountName($accountID) {
+		if(!is_numeric($accountID)) return false;
+
 		include __DIR__ . "/connection.php";
 		$query = $db->prepare("SELECT userName FROM accounts WHERE accountID = :id");
 		$query->execute([':id' => $accountID]);
@@ -463,6 +465,8 @@ class mainLib {
 		return $accountlist;
 	}
 	public function checkPermission($accountID, $permission){
+		if(!is_numeric($accountID)) return false;
+
 		include __DIR__ . "/connection.php";
 		//isAdmin check
 		$query = $db->prepare("SELECT isAdmin FROM accounts WHERE accountID = :accountID");
@@ -556,6 +560,8 @@ class mainLib {
 		return false;
 	}
 	public function getFriends($accountID){
+		if(!is_numeric($accountID)) return false;
+
 		include __DIR__ . "/connection.php";
 		$friendsarray = array();
 		$query = "SELECT person1,person2 FROM friendships WHERE person1 = :accountID OR person2 = :accountID"; //selecting friendships
@@ -578,12 +584,16 @@ class mainLib {
 		return $friendsarray;
 	}
 	public function isFriends($accountID, $targetAccountID) {
+		if(!is_numeric($accountID) || !is_numeric($targetAccountID)) return false;
+
 		include __DIR__ . "/connection.php";
 		$query = $db->prepare("SELECT count(*) FROM friendships WHERE person1 = :accountID AND person2 = :targetAccountID OR person1 = :targetAccountID AND person2 = :accountID");
 		$query->execute([':accountID' => $accountID, ':targetAccountID' => $targetAccountID]);
 		return $query->fetchColumn() > 0;
 	}
 	public function getMaxValuePermission($accountID, $permission){
+		if(!is_numeric($accountID)) return false;
+
 		include __DIR__ . "/connection.php";
 		$maxvalue = 0;
 		$query = $db->prepare("SELECT roleID FROM roleassign WHERE accountID = :accountID");
@@ -607,6 +617,8 @@ class mainLib {
 		return $maxvalue;
 	}
 	public function getAccountCommentColor($accountID){
+		if(!is_numeric($accountID)) return false;
+
 		include __DIR__ . "/connection.php";
 		$query = $db->prepare("SELECT roleID FROM roleassign WHERE accountID = :accountID");
 		$query->execute([':accountID' => $accountID]);
@@ -633,6 +645,8 @@ class mainLib {
 		return "255,255,255";
 	}
 	public function rateLevel($accountID, $levelID, $stars, $difficulty, $auto, $demon){
+		if(!is_numeric($accountID)) return false;
+
 		include __DIR__ . "/connection.php";
 		//lets assume the perms check is done properly before
 		$query = "UPDATE levels SET starDemon=:demon, starAuto=:auto, starDifficulty=:diff, starStars=:stars, rateDate=:now WHERE levelID=:levelID";
@@ -645,6 +659,8 @@ class mainLib {
 		
 	}
 	public function featureLevel($accountID, $levelID, $feature){
+		if(!is_numeric($accountID)) return false;
+
 		include __DIR__ . "/connection.php";
 		$query = "UPDATE levels SET starFeatured=:feature, rateDate=:now WHERE levelID=:levelID";
 		$query = $db->prepare($query);	
@@ -653,6 +669,8 @@ class mainLib {
 		$query->execute([':value' => $feature, ':timestamp' => time(), ':id' => $accountID, ':levelID' => $levelID]);
 	}
 	public function verifyCoinsLevel($accountID, $levelID, $coins){
+		if(!is_numeric($accountID)) return false;
+
 		include __DIR__ . "/connection.php";
 		$query = "UPDATE levels SET starCoins=:coins WHERE levelID=:levelID";
 		$query = $db->prepare($query);	
@@ -706,6 +724,8 @@ class mainLib {
 		return ['size' => $size, 'type' => $mime];
 	}
 	public function suggestLevel($accountID, $levelID, $difficulty, $stars, $feat, $auto, $demon){
+		if(!is_numeric($accountID)) return false;
+		
 		include __DIR__ . "/connection.php";
 		$query = "INSERT INTO suggest (suggestBy, suggestLevelID, suggestDifficulty, suggestStars, suggestFeatured, suggestAuto, suggestDemon, timestamp) VALUES (:account, :level, :diff, :stars, :feat, :auto, :demon, :timestamp)";
 		$query = $db->prepare($query);

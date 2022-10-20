@@ -67,7 +67,7 @@ foreach($result as &$comment1) {
 				$badge = $gs->getMaxValuePermission($extID, "modBadgeLevel");
 				$colorString = $badge > 0 ? "~12~".$gs->getAccountCommentColor($extID) : "";
 
-				$commentstring .= "~11~${badge}${colorString}:1~".$comment1["userName"]."~7~1~9~".$comment1["icon"]."~10~".$comment1["color1"]."~11~".$comment1["color2"]."~14~".$comment1["iconType"]."~15~".$comment1["special"]."~16~".$comment1["extID"];
+				$commentstring .= "~11~${badge}${colorString}:1~".$comment1["userName"]."~7~1~9~".$comment1["icon"]."~10~".$comment1["color1"]."~11~".$comment1["color2"]."~14~".$comment1["iconType"]."~15~".$comment1["special"]."~16~".$extID;
 			}elseif(!in_array($comment1["userID"], $users)){
 				$users[] = $comment1["userID"];
 				$userstring .=  $comment1["userID"] . ":" . $comment1["userName"] . ":" . $extID . "|";
