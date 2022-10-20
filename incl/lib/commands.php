@@ -12,10 +12,12 @@ class Commands {
 		return false;
 	}
 	public static function doCommands($accountID, $comment, $levelID) {
+		if(!is_numeric($accountID)) return false;
+
 		include dirname(__FILE__)."/../lib/connection.php";
 		require_once "../lib/exploitPatch.php";
 		require_once "../lib/mainLib.php";
-				$gs = new mainLib();
+		$gs = new mainLib();
 		$commentarray = explode(' ', $comment);
 		$uploadDate = time();
 		//LEVELINFO

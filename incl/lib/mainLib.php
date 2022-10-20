@@ -290,7 +290,7 @@ class mainLib {
 		}else{
 			$register = 0;
 		}
-		$query = $db->prepare("SELECT userID FROM users WHERE extID = :id");
+		$query = $db->prepare("SELECT userID FROM users WHERE extID LIKE BINARY :id");
 		$query->execute([':id' => $extID]);
 		if ($query->rowCount() > 0) {
 			$userID = $query->fetchColumn();
