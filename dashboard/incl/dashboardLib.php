@@ -298,12 +298,28 @@ class dashboardLib{
 										<div class="form-group">
 											<input type="password" class="form-control login-input" id="passwordField" name="password" placeholder="'.$this->getLocalizedString("password").'">
 										</div>
-										<div style="display: flex;flex-wrap: wrap;justify-content: center"><button type="submit" class="btn btn-primary">'.$this->getLocalizedString("login").'</button>
+										<div style="display: flex;flex-wrap: wrap;justify-content: center"><button type="submit" class="btn-primary btn-block" id="submit" disabled>'.$this->getLocalizedString("login").'</button>
 										</form><form action="login/register.php" style="width: 80%;margin-top: 10px;margin-bottom: -5px">
-										<button type="submit"class="btn btn-primary"style="margin-bottom: 20px;">'.$this->getLocalizedString("register").'</button>
+										<button type="submit"class="btn btn-primary">'.$this->getLocalizedString("register").'</button>
 										</div>
 									</form>
-						</div>';
+						</div><script>
+$(document).change(function(){
+   const p1 = document.getElementById("usernameField");
+   const p2 = document.getElementById("passwordField");
+   const btn = document.getElementById("submit");
+   if(!p1.value.trim().length || !p2.value.trim().length) {
+                btn.disabled = true;
+                btn.classList.add("btn-block");
+                btn.classList.remove("btn-primary");
+	} else {
+		        btn.removeAttribute("disabled");
+                btn.classList.remove("btn-block");
+                btn.classList.remove("btn-size");
+                btn.classList.add("btn-primary");
+	}
+});
+</script>';
 		}		
 		echo'	</ul>
 			</div>

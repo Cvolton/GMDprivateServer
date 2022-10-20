@@ -108,7 +108,7 @@ if(!empty($_POST["packName"])) {
     <h1>' . $dl->getLocalizedString("packCreateTitle") . '</h1>
     <form class="form__inner form__create" method="post" action="">
     <p>' . $dl->getLocalizedString("packCreateDesc") . '</p>
-    <div class="field"><input type="text" name="packName" placeholder="' . $dl->getLocalizedString("packName") . '"></div>
+    <div class="field"><input type="text" name="packName" id="p1" placeholder="' . $dl->getLocalizedString("packName") . '"></div>
 	<div class="field color123"><input type="color" name="color" placeholder="' . $dl->getLocalizedString("color") . '"></div>
 	<div id="selecthihi">
 	<select name="stars">
@@ -141,10 +141,24 @@ if(!empty($_POST["packName"])) {
     </div>', 'mod');
 		Captcha::displayCaptcha();
         echo '
-        <button type="submit" class="btn-primary">' . $dl->getLocalizedString("packCreate") . '</button>
+        <button type="submit" class="btn-primary btn-block" id="submit" disabled>' . $dl->getLocalizedString("packCreate") . '</button>
     </form>
     </div>
     <script>
+$(document).change(function(){
+   const p1 = document.getElementById("p1");
+   const btn = document.getElementById("submit");
+   if(!p1.value.trim().length) {
+                btn.disabled = true;
+                btn.classList.add("btn-block");
+                btn.classList.remove("btn-song");
+	} else {
+		        btn.removeAttribute("disabled");
+                btn.classList.remove("btn-block");
+                btn.classList.remove("btn-size");
+                btn.classList.add("btn-song");
+	}
+});
         document.addEventListener("submit", () => {
             let selectData = [];
             document.querySelectorAll("select > option").forEach(el => {
@@ -165,7 +179,7 @@ if(!empty($_POST["packName"])) {
 } else
 	$dl->printSong('<div class="form">
     <h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
-    <form class="form__inner" method="post" action=".">
+    <form class="form__inner" method="post" action="../dashboard">
 		<p>'.$dl->getLocalizedString("noPermission").'</p>
 	        <button type="submit" class="btn-primary">'.$dl->getLocalizedString("Kish!").'</button>
     </form>

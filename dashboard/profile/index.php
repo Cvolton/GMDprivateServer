@@ -11,7 +11,7 @@ if(!isset($_SESSION["accountID"]) OR $_SESSION["accountID"] == 0 AND empty($_POS
   	$dl->title($dl->getLocalizedString("profile"));
 	$dl->printSong('<div class="form">
     <h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
-    <form class="form__inner" method="post" action="./login/login.php">
+    <form class="form__inner" method="post" action="../login/login.php">
 	<p>'.$dl->getLocalizedString("noLogin?").'</p>
 	        <button type="submit" class="btn-primary">'.$dl->getLocalizedString("LoginBtn").'</button>
     </form>
@@ -78,9 +78,24 @@ $msgtopl = '<form method="post" action="messenger/"><button class="msgupd" name=
 if($accid == $_SESSION["accountID"]) {
 if(empty($comments)) $comments = '<p class="profile" style="font-size:25px;color:#c0c0c0">'.$dl->getLocalizedString("writeSomething").'</p>';
 $send = '<div class="field" style="margin-top:10px">
-			<form method="post" action=""><input type="text" name="msg" placeholder="'.$dl->getLocalizedString("msg").'"></input>
-			<button style="margin-top: 10px;" class="btn-primary">'.$dl->getLocalizedString("send").'</button></form>
-		</div>';
+			<form method="post" action=""><input type="text" name="msg" id="p1" placeholder="'.$dl->getLocalizedString("msg").'"></input>
+			<button style="margin-top: 10px;" class="btn-primary btn-block" id="submit" disabled>'.$dl->getLocalizedString("send").'</button></form>
+		</div><script>
+$(document).change(function(){
+   const p1 = document.getElementById("p1");
+   const btn = document.getElementById("submit");
+   if(!p1.value.trim().length) {
+                btn.disabled = true;
+                btn.classList.add("btn-block");
+                btn.classList.remove("btn-primary");
+	} else {
+		        btn.removeAttribute("disabled");
+                btn.classList.remove("btn-block");
+                btn.classList.remove("btn-size");
+                btn.classList.add("btn-primary");
+	}
+});
+</script>';
 $msgtopl = '';
 }
 if($_SESSION["accountID"] == 0) $msgtopl = '';

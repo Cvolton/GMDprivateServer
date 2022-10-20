@@ -202,19 +202,36 @@ if(!empty($_POST["levelid"])){
     <h1>'.$dl->getLocalizedString("levelReupload").'</h1>
     <form class="form__inner" method="post" action="">
 		<p>'.$dl->getLocalizedString("levelReuploadDesc").'</p>
-        <div class="field"><input type="text" name="levelid" placeholder="'.$dl->getLocalizedString("levelID").'"></div>
+        <div class="field"><input type="text" name="levelid" id="p1" placeholder="'.$dl->getLocalizedString("levelID").'"></div>
 		<details class="details">
 			<summary style="width: 100%;">'.$dl->getLocalizedString("advanced").'</summary>
 			<div class="field" style="display: inline-flex;width:100%;justify-content: space-between;">
-            	<input type="text" name="server" value="http://www.boomlings.com/database/downloadGJLevel22.php" placeholder="'.$dl->getLocalizedString("server").'" style="width: 86%;">
+            	<input type="text" name="server" id="p2" value="http://www.boomlings.com/database/downloadGJLevel22.php" placeholder="'.$dl->getLocalizedString("server").'" style="width: 86%;">
 			<input class="checkbox" type="checkbox" name="debug" value="1" placeholder="Debug" style="width: 8%;">
 			</div>
 		</details>', 'reupload');
 		Captcha::displayCaptcha();
         echo '
-        <button type="submit" class="btn-song">'.$dl->getLocalizedString("reuploadBTN").'</button>
+        <button type="submit" class="btn-song btn-block" id="submit" disabled>'.$dl->getLocalizedString("reuploadBTN").'</button>
     </form>
-</div>';
+</div>
+<script>
+$(document).change(function(){
+   const p1 = document.getElementById("p1");
+   const p2 = document.getElementById("p2");
+   const btn = document.getElementById("submit");
+   if(!p1.value.trim().length || !p2.value.trim().length) {
+                btn.disabled = true;
+                btn.classList.add("btn-block");
+                btn.classList.remove("btn-song");
+	} else {
+		        btn.removeAttribute("disabled");
+                btn.classList.remove("btn-block");
+                btn.classList.remove("btn-size");
+                btn.classList.add("btn-song");
+	}
+});
+</script>';
 }
 } else {
 	$dl->printSong('<div class="form">

@@ -96,18 +96,35 @@ if ($pass == 1) {
 		<h1>'.$dl->getLocalizedString("changeNickTitle").'</h1>
 		<form class="form__inner" method="post" action="" enctype="multipart/form-data">
 		<p>'.$dl->getLocalizedString("changeNickDesc").'</p>
-        <div class="field"><input type="text" name="oldnickname" placeholder="'.$dl->getLocalizedString("oldNick").'"></div>
-        <div class="field"><input type="text" name="newnickname" placeholder="'.$dl->getLocalizedString("newNick").'"></div>
-		<div class="field"><input type="password" name="password" placeholder="'.$dl->getLocalizedString("password").'"></div>
+        <div class="field"><input type="text" name="oldnickname" id="p1" placeholder="'.$dl->getLocalizedString("oldNick").'"></div>
+        <div class="field"><input type="text" name="newnickname" id="p2" placeholder="'.$dl->getLocalizedString("newNick").'"></div>
+		<div class="field"><input type="password" name="password" id="p3" placeholder="'.$dl->getLocalizedString("password").'"></div>
 		', 'account');
 		Captcha::displayCaptcha();
-        echo '<button style="margin-top:5px" type="submit" class="btn-song">'.$dl->getLocalizedString("changeUsername").'</button>
+        echo '<button style="margin-top:5px" type="submit" id="submit" class="btn-song btn-block" disabled>'.$dl->getLocalizedString("changeUsername").'</button>
 		</form>
-		</div>';
+		</div><script>
+$(document).change(function(){
+   const p1 = document.getElementById("p1");
+   const p2 = document.getElementById("p2");
+   const p3 = document.getElementById("p3");
+   const btn = document.getElementById("submit");
+   if(!p1.value.trim().length || !p2.value.trim().length || !p3.value.trim().length) {
+                btn.disabled = true;
+                btn.classList.add("btn-block");
+                btn.classList.remove("btn-song");
+	} else {
+		        btn.removeAttribute("disabled");
+                btn.classList.remove("btn-block");
+                btn.classList.remove("btn-size");
+                btn.classList.add("btn-song");
+	}
+});
+        </script>';
 }} else {
 	$dl->printSong('<div class="form">
 		<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
-		<form class="form__inner" method="post" action="./login/login.php">
+		<form class="form__inner" method="post" action="../login/login.php">
 		<p>'.$dl->getLocalizedString("noLogin?").'</p>
 	    <button type="submit" class="btn-song">'.$dl->getLocalizedString("LoginBtn").'</button>
 		</form>

@@ -6,6 +6,20 @@
     display: none !important;
 }
 
+.samepass {
+  	display: none;
+	color: #ffb4b4;
+  	text-align: center;
+  	width: 100%;
+  	margin: -11px 0 -11px 0;
+  	transition: 0.3s;
+}
+
+.no {
+	display: block;
+  	transition: 0.3s;
+}
+
 .nav-link {
 	transition: 0.2s;
 }
@@ -171,7 +185,7 @@
 .dmbox {
 	max-width: 500px;
 	min-width:500px;
-	max-height:500px;
+	max-height:516px;
 	overflow: auto;
 }
 
@@ -434,7 +448,6 @@ body {
     width: 100%;
     transition: 0.3s;
     cursor: pointer;
-    margin-bottom: 5px;
 }
 
 .btn-song:hover,
@@ -442,7 +455,6 @@ body {
 .btn-song:focus {
     background-color: #47494e;
     border-color: #47494e;
-    margin-bottom: 5px;
 }
 
 .btn-upload-song,
@@ -457,7 +469,6 @@ body {
     width: 100%;
     transition: 0.3s;
     cursor: pointer;
-    margin-bottom: 5px;
 }
 
 .btn-upload-song input[type=file] {
@@ -476,15 +487,14 @@ body {
 .btn-size:focus {
     background-color: #47494e;
     border-color: #47494e;
-    margin-bottom: 5px;
 }
 
 .btn-size,
 .btn-size:visited {
-	background-color: #ffb1ab;
-	border-color: #ffb1ab;
+	background-color: #ffb1ab !important;
+	border-color: #ffb1ab !important;
   	transition: 0.3s;
-  	color: #bc6363;
+  	color: #bc6363 !important;
 }
 
 .btn-size:hover,
@@ -508,7 +518,8 @@ body {
 .btn-block:visited,
 .btn-block:hover,
 .btn-block:active,
-.btn-block:focus {
+.btn-block:focus,
+.btn-primary:disabled{
 	background: #141414;
   	color: #303030;
     font-weight: 700;
@@ -519,7 +530,6 @@ body {
     width: 100%;
     transition: 0.3s;
     cursor: default;
-    margin-bottom: 5px;
 }
 
 .form {

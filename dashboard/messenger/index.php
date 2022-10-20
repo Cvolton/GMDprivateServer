@@ -75,10 +75,25 @@ if(isset($_SESSION["accountID"]) AND $_SESSION["accountID"] != 0){
             </div>
 			<form class="form__inner dmbox" method="post" action="">'.$msgs.'</form>
 			<form class="form__inner dmbox" method="post" action="">
-				<div class="field"><input type="text" name="subject" placeholder="'.$dl->getLocalizedString("subject").'"></input></div>
-				<div class="field"><input type="text" name="msg" placeholder="'.$dl->getLocalizedString("msg").'"></input></div>
-			<button type="submit" name="accountID" value="'.$notyou.'" class="btn-primary">'.$dl->getLocalizedString("send").'</button></form></div>
+				<div class="field"><input type="text" name="subject" id="p1" placeholder="'.$dl->getLocalizedString("subject").'"></input></div>
+				<div class="field"><input type="text" name="msg" id="p2" placeholder="'.$dl->getLocalizedString("msg").'"></input></div>
+			<button type="submit" name="accountID" value="'.$notyou.'" class="btn-primary btn-block" id="submit" disabled>'.$dl->getLocalizedString("send").'</button></form></div>
         <script>
+$(document).change(function(){
+   const p1 = document.getElementById("p1");
+   const p2 = document.getElementById("p2");
+   const btn = document.getElementById("submit");
+   if(!p1.value.trim().length || !p2.value.trim().length) {
+                btn.disabled = true;
+                btn.classList.add("btn-block");
+                btn.classList.remove("btn-primary");
+	} else {
+		        btn.removeAttribute("disabled");
+                btn.classList.remove("btn-block");
+                btn.classList.remove("btn-size");
+                btn.classList.add("btn-primary");
+	}
+});
 			var notify = '.$newMsgs.';
             var elem = document.getElementById("notify");
             if(notify == 0) elem.parentNode.removeChild(elem);
@@ -112,9 +127,23 @@ if(isset($_SESSION["accountID"]) AND $_SESSION["accountID"] != 0){
 			<form class="form__inner" method="post" action="messenger/">
 			<div class="msgbox" style="width:100%">'.$options.'</div></form>
             <form class="field" method="post" action="messenger/">
-            <div class="messenger" style="width:100%"><input class="field" type="text" name="receiver" placeholder="'.$dl->getLocalizedString("banUserID").'"></input>
-            <button type="submit" class="btn-rendel" style="margin-top:5px">'.$dl->getLocalizedString("write").'</button></div></form>
+            <div class="messenger" style="width:100%"><input class="field" id="p1" type="text" name="receiver" placeholder="'.$dl->getLocalizedString("banUserID").'"></input>
+            <button type="submit" class="btn-rendel btn-block" id="submit" style="margin-top:5px" disabled>'.$dl->getLocalizedString("write").'</button></div></form>
 		<script>
+$(document).change(function(){
+   const p1 = document.getElementById("p1");
+   const btn = document.getElementById("submit");
+   if(!p1.value.trim().length) {
+                btn.disabled = true;
+                btn.classList.add("btn-block");
+                btn.classList.remove("btn-rendel");
+	} else {
+		        btn.removeAttribute("disabled");
+                btn.classList.remove("btn-block");
+                btn.classList.remove("btn-size");
+                btn.classList.add("btn-rendel");
+	}
+});
 			var notify = '.$newMsgs.';
             var elem = document.getElementById("notify");
             if(notify == 0) elem.parentNode.removeChild(elem);
@@ -124,7 +153,7 @@ if(isset($_SESSION["accountID"]) AND $_SESSION["accountID"] != 0){
   	$dl->title($dl->getLocalizedString("messenger"));
 	$dl->printSong('<div class="form">
     <h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
-    <form class="form__inner" method="post" action="./login/login.php">
+    <form class="form__inner" method="post" action="../dashboard/login/login.php">
 	<p>'.$dl->getLocalizedString("noLogin?").'</p>
 	        <button type="submit" class="btn-primary">'.$dl->getLocalizedString("LoginBtn").'</button>
     </form>
@@ -134,7 +163,7 @@ if(isset($_SESSION["accountID"]) AND $_SESSION["accountID"] != 0){
   		$dl->title($dl->getLocalizedString("messenger"));
 		$dl->printSong('<div class="form">
 			<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
-			<form class="form__inner" method="post" action=".">
+			<form class="form__inner" method="post" action="../dashboard">
 			<p>'.$dl->getLocalizedString("pageDisabled").'</p>
 			<button type="submit" class="btn-song">'.$dl->getLocalizedString("dashboard").'</button>
 			</form>

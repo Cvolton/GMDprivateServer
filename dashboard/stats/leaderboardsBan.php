@@ -95,13 +95,29 @@ $dl->printSong('<div class="form">
     <h1>'.$dl->getLocalizedString("banUserPlace").'</h1>
 	<h2>'.$dl->getLocalizedString("banDesc").'</h2>
     <form class="form__inner" method="post" action="">
-        <div class="field"><input type="text" name="userID" placeholder="'.$dl->getLocalizedString("banUserID").'"></div>
+        <div class="field"><input type="text" name="userID" id="p1" placeholder="'.$dl->getLocalizedString("banUserID").'"></div>
         <div class="field"><input type="text" name="banReason" placeholder="'.$dl->getLocalizedString("banReason").'"></div>
 		', 'mod');
 		Captcha::displayCaptcha();
         echo '
-        <button type="submit" class="btn-primary">'.$dl->getLocalizedString("ban").'</button>
+        <button type="submit" class="btn-primary btn-block" id="submit" disabled>'.$dl->getLocalizedString("ban").'</button>
     </form>
-</div>';
+</div>
+<script>
+$(document).change(function(){
+   const p1 = document.getElementById("p1");
+   const btn = document.getElementById("submit");
+   if(!p1.value.trim().length) {
+                btn.disabled = true;
+                btn.classList.add("btn-block");
+                btn.classList.remove("btn-primary");
+	} else {
+		        btn.removeAttribute("disabled");
+                btn.classList.remove("btn-block");
+                btn.classList.remove("btn-size");
+                btn.classList.add("btn-primary");
+	}
+});
+</script>';
 }
 ?>

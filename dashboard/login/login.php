@@ -44,16 +44,33 @@ if(isset($_POST["userName"]) AND isset($_POST["password"])){
 }else{
 	$loginbox = '<form class="field" action="" method="post">
 							<div class="form-group">
-								<input type="text" class="form-control login-input" id="usernameField" name="userName" placeholder="'.$dl->getLocalizedString("enterUsername").'">
+								<input type="text" class="form-control login-input" id="p1" name="userName" placeholder="'.$dl->getLocalizedString("enterUsername").'">
 							</div>
 							<div class="form-group">
-								<input type="password" class="form-control" id="passwordField" name="password" placeholder="'.$dl->getLocalizedString("enterPassword").'">
+								<input type="password" class="form-control" id="p2" name="password" placeholder="'.$dl->getLocalizedString("enterPassword").'">
 							</div>';
 	if(isset($_SERVER["HTTP_REFERER"])){
 		$loginbox .= '<input type="hidden" name="ref" value="'.$_SERVER["HTTP_REFERER"].'">';
 	}
-	$loginbox .= '<button type="submit" class="btn btn-primary">'.$dl->getLocalizedString("login").'</button>
-						</form>';
+	$loginbox .= '<button type="submit" class="btn-primary btn-block" id="submit" disabled>'.$dl->getLocalizedString("login").'</button>
+						</form>
+<script>
+$(document).change(function(){
+   const p1 = document.getElementById("p1");
+   const p2 = document.getElementById("p2");
+   const btn = document.getElementById("submit");
+   if(!p1.value.trim().length || !p2.value.trim().length) {
+                btn.disabled = true;
+                btn.classList.add("btn-block");
+                btn.classList.remove("btn-primary");
+	} else {
+		        btn.removeAttribute("disabled");
+                btn.classList.remove("btn-block");
+                btn.classList.remove("btn-size");
+                btn.classList.add("btn-primary");
+	}
+});
+</script>';
 	$dl->printLoginBox($loginbox);
 }
 ?>

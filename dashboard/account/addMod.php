@@ -92,7 +92,7 @@ if(!empty($_POST["user"])) {
     <h1>'.$dl->getLocalizedString("addMod").'</h1>
     <form class="form__inner form__create" method="post" action="">
     <p>'.$dl->getLocalizedString("addModDesc").'</p>
-    <div class="field"><input type="text" name="user" placeholder="' . $dl->getLocalizedString("banUserID") . '"></div>
+    <div class="field"><input type="text" name="user" id="p1" placeholder="' . $dl->getLocalizedString("banUserID") . '"></div>
 	<div id="selecthihi">
 	<select name="role">
 		<option value="2">'.$dl->getLocalizedString("elder").'</option>
@@ -102,9 +102,24 @@ if(!empty($_POST["user"])) {
 	', 'mod');
 		Captcha::displayCaptcha();
         echo '
-        <button type="submit" class="btn-primary">' . $dl->getLocalizedString("addMod") . '</button>
+        <button type="submit" id="submit" class="btn-primary btn-block" disabled>' . $dl->getLocalizedString("addMod") . '</button>
     </form>
-    </div>';
+    </div><script>
+$(document).change(function(){
+   const p1 = document.getElementById("p1");
+   const btn = document.getElementById("submit");
+   if(!p1.value.trim().length) {
+                btn.disabled = true;
+                btn.classList.add("btn-block");
+                btn.classList.remove("btn-primary");
+	} else {
+		        btn.removeAttribute("disabled");
+                btn.classList.remove("btn-block");
+                btn.classList.remove("btn-size");
+                btn.classList.add("btn-primary");
+	}
+});
+</script>';
 }
 } else
 	$dl->printSong('<div class="form">

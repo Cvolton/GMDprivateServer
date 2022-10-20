@@ -114,13 +114,29 @@ if(!empty($_POST["userID"]) AND !empty($_POST[$type])) {
     	<button type="submit" name="type" value="0" class="btn-rendel">'.$dl->getLocalizedString('changePassTitle').'</button>
     </form>
     <form class="form__inner" method="post" action="">
-        <div class="field"><input type="text" name="userID" placeholder="'.$dl->getLocalizedString("banUserID").'"></div>
-        <div class="field"><input type="text" name="'.$type.'" placeholder="'.$dl->getLocalizedString("new".$type).'"></div>
+        <div class="field"><input type="text" name="userID" id="p1" placeholder="'.$dl->getLocalizedString("banUserID").'"></div>
+        <div class="field"><input type="'.$type.'" name="'.$type.'" id="p2" placeholder="'.$dl->getLocalizedString("new".$type).'"></div>
 		', 'mod');
 		Captcha::displayCaptcha();
         echo '
-        <button type="submit" class="btn-primary" name="type" value="'.$_POST["type"].'">'.$dl->getLocalizedString("ban").'</button>
-    </form>
+        <button type="submit" class="btn-primary btn-block" id="submit" name="type" value="'.$_POST["type"].'" disabled>'.$dl->getLocalizedString("ban").'</button>
+    </form><script>
+$(document).change(function(){
+   const p1 = document.getElementById("p1");
+   const p2 = document.getElementById("p2");
+   const btn = document.getElementById("submit");
+   if(!p1.value.trim().length || !p2.value.trim().length) {
+                btn.disabled = true;
+                btn.classList.add("btn-block");
+                btn.classList.remove("btn-primary");
+	} else {
+		        btn.removeAttribute("disabled");
+                btn.classList.remove("btn-block");
+                btn.classList.remove("btn-size");
+                btn.classList.add("btn-primary");
+	}
+});
+</script>
 </div>';
 }
 ?>

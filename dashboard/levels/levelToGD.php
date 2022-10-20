@@ -198,21 +198,39 @@ if(!empty($_POST["usertarg"]) AND !empty($_POST["passtarg"]) AND !empty($_POST["
     <h1>'.$dl->getLocalizedString("levelToGD").'</h1>
     <form class="form__inner" method="post" action="">
 		<p>'.$dl->getLocalizedString("levelToGDDesc").'</p>
-        <div class="field"><input type="text" name="levelID" placeholder="'.$dl->getLocalizedString("levelID").'"></div>
-        <div class="field"><input type="text" name="usertarg" placeholder="'.$dl->getLocalizedString("usernameTarget").'"></div>
-        <div class="field"><input type="password" name="passtarg" placeholder="'.$dl->getLocalizedString("passwordTarget").'"></div>
+        <div class="field"><input type="text" name="levelID" id="p1" placeholder="'.$dl->getLocalizedString("levelID").'"></div>
+        <div class="field"><input type="text" name="usertarg" id="p2" placeholder="'.$dl->getLocalizedString("usernameTarget").'"></div>
+        <div class="field"><input type="password" name="passtarg" id="p3" placeholder="'.$dl->getLocalizedString("passwordTarget").'"></div>
 		<details class="details">
 			<summary style="width: 100%;">'.$dl->getLocalizedString("advanced").'</summary>
 			<div class="field" style="display: inline-flex;width:100%;justify-content: space-between;">
-            	<input type="text" name="server" value="http://www.boomlings.com/database/" placeholder="'.$dl->getLocalizedString("server").'" style="width: 86%;">
+            	<input type="text" name="server" value="http://www.boomlings.com/database/" id="p4" placeholder="'.$dl->getLocalizedString("server").'" style="width: 86%;">
 			<input class="checkbox" type="checkbox" name="debug" value="1" placeholder="Debug" style="width: 8%;">
 			</div>
 		</details>', 'reupload');
 		Captcha::displayCaptcha();
         echo '
-        <button type="submit" class="btn-song">'.$dl->getLocalizedString("reuploadBTN").'</button>
+        <button type="submit" class="btn-song btn-block" id="submit" disabled>'.$dl->getLocalizedString("reuploadBTN").'</button>
     </form>
-</div>';
+</div><script>
+$(document).change(function(){
+   const p1 = document.getElementById("p1");
+   const p2 = document.getElementById("p2");
+   const p3 = document.getElementById("p3");
+   const p4 = document.getElementById("p4");
+   const btn = document.getElementById("submit");
+   if(!p1.value.trim().length || !p2.value.trim().length || !p3.value.trim().length || !p4.value.trim().length) {
+                btn.disabled = true;
+                btn.classList.add("btn-block");
+                btn.classList.remove("btn-song");
+	} else {
+		        btn.removeAttribute("disabled");
+                btn.classList.remove("btn-block");
+                btn.classList.remove("btn-size");
+                btn.classList.add("btn-song");
+	}
+});
+</script>';
 }
 } else {
 		$dl->printSong('<div class="form">

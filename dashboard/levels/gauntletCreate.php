@@ -101,27 +101,27 @@ if($_POST["checkbox_data"] == 'on') {
     <form class="form__inner form__create" method="post" action="">
     <p>' . $dl->getLocalizedString("gauntletCreateDesc") . '</p>
     <div id="selecthihi">
-    <select name="level_1">
+    <select id="l1" name="level_1">
 	<option value="l1">'.$dl->getLocalizedString("level1").'</option>
         ' . $options . '
     </select>
-    <select name="level_2">
+    <select id="l2" name="level_2">
 	<option value="l2">'.$dl->getLocalizedString("level2").'</option>
         ' . $options . '
     </select>
 	</div>
 	<div id="selecthihi">
-    <select name="level_3">
+    <select id="l3" name="level_3">
 	<option value="l3">'.$dl->getLocalizedString("level3").'</option>
         ' . $options . '
     </select>
 	</div>
 	<div id="selecthihi">
-	<select name="level_4">
+	<select id="l4" name="level_4">
 	<option value="l4">'.$dl->getLocalizedString("level4").'</option>
         ' . $options . '
     </select>
-    <select name="level_5">
+    <select id="l5" name="level_5">
 	<option value="l5">'.$dl->getLocalizedString("level5").'</option>
         ' . $options . '
     </select>
@@ -130,10 +130,28 @@ if($_POST["checkbox_data"] == 'on') {
 	', 'mod');
 		Captcha::displayCaptcha();
         echo '
-        <button type="submit" class="btn-primary">' . $dl->getLocalizedString("gauntletCreate") . '</button>
+        <button type="submit" class="btn-primary btn-block" id="submit" disabled>' . $dl->getLocalizedString("gauntletCreate") . '</button>
     </form>
     </div>
     <script>
+    $(document).change(function(){
+   const p1 = document.getElementById("l1");
+   const p2 = document.getElementById("l2");
+   const p3 = document.getElementById("l3");
+   const p4 = document.getElementById("l4");
+   const p5 = document.getElementById("l5");
+   const btn = document.getElementById("submit");
+   if(p1.value === "l1" || p2.value === "l2" || p3.value === "l3" || p4.value === "l4" || p5.value === "l5") {
+                btn.disabled = true;
+                btn.classList.add("btn-block");
+                btn.classList.remove("btn-song");
+	} else {
+		        btn.removeAttribute("disabled");
+                btn.classList.remove("btn-block");
+                btn.classList.remove("btn-size");
+                btn.classList.add("btn-song");
+	}
+});
         document.addEventListener("submit", ()		=> {
     let selectData = [];
     let checkboxData;

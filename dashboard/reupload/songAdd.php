@@ -64,19 +64,35 @@ if(!empty($_POST["url"])){
     <h1>'.$dl->getLocalizedString("songAdd").'</h1>
     <form class="form__inner" method="post" action="">
 		<p>'.$dl->getLocalizedString("songAddUrlFieldLabel").'</p>
-        <div class="field"><input type="text" name="url" placeholder="'.$dl->getLocalizedString("songAddUrlFieldPlaceholder").'"></div>
+        <div class="field"><input type="text" name="url" id="p1" placeholder="'.$dl->getLocalizedString("songAddUrlFieldPlaceholder").'"></div>
 		<div class="field"><input type="text" name="author" placeholder="'.$dl->getLocalizedString("songAddAuthorFieldPlaceholder").'"></div>
 		<div class="field"><input type="text" name="name" placeholder="'.$dl->getLocalizedString("songAddNameFieldPlaceholder").'"></div>
 		', 'reupload');
 		Captcha::displayCaptcha();
-        echo '<button type="submit" class="btn-song">'.$dl->getLocalizedString("reuploadBTN").'</button>
+        echo '<button type="submit" class="btn-song btn-block" id="submit" disabled>'.$dl->getLocalizedString("reuploadBTN").'</button>
     </form>
-</div>';
+</div>
+<script>
+$(document).change(function(){
+   const p1 = document.getElementById("p1");
+   const btn = document.getElementById("submit");
+   if(!p1.value.trim().length) {
+                btn.disabled = true;
+                btn.classList.add("btn-block");
+                btn.classList.remove("btn-song");
+	} else {
+		        btn.removeAttribute("disabled");
+                btn.classList.remove("btn-block");
+                btn.classList.remove("btn-size");
+                btn.classList.add("btn-song");
+	}
+});
+</script>';
 }
 } else {
 	$dl->printSong('<div class="form">
     <h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
-	<form class="form__inner" method="post" action="./login/login.php">
+	<form class="form__inner" method="post" action="../dashboard/login/login.php">
 	<p>'.$dl->getLocalizedString("noLogin?").'</p>
 	        <button type="submit" class="btn-song">'.$dl->getLocalizedString("LoginBtn").'</button>
     </form>

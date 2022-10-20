@@ -60,13 +60,29 @@ foreach($result as &$action){
       	$stars = '<a class="dropdown" href="#" data-toggle="dropdown">'.$dl->getLocalizedString("unrated").'</a>
 								<div class="dropdown-menu" style="padding:17px 17px 0px 17px; top:0%;">
 									 <form class="form__inner" method="post" action="levels/rateLevel.php">
-										<div class="field"><input type="number" name="rateStars" placeholder="'.$dl->getLocalizedString("stars").'"></div>
+										<div class="field"><input type="number" id="p1" name="rateStars" placeholder="'.$dl->getLocalizedString("stars").'"></div>
                                         <div class="ratecheck"><input type="radio" style="margin-right:5px;margin-left: 2px" name="featured" value="0">'.$dl->getLocalizedString("isAdminNo").'</input>
                                         <input type="radio" style="margin-right:5px;margin-left: 2px" name="featured" value="1">Featured</input>
                                         <input type="radio" style="margin-right:5px;margin-left: 2px" name="featured" value="2">Epic</div>
-										<button type="submit" class="btn-song" name="level" value="'.$levelid.'">'.$dl->getLocalizedString("rate").'</button>
+										<button type="submit" class="btn-song btn-block" id="submit" name="level" value="'.$levelid.'" disabled>'.$dl->getLocalizedString("rate").'</button>
 									</form>
-								</div>';
+								</div>
+                                <script>
+$(document).change(function(){
+   const p1 = document.getElementById("p1");
+   const btn = document.getElementById("submit");
+   if(!p1.value.trim().length) {
+                btn.disabled = true;
+                btn.classList.add("btn-block");
+                btn.classList.remove("btn-song");
+	} else {
+		        btn.removeAttribute("disabled");
+                btn.classList.remove("btn-block");
+                btn.classList.remove("btn-size");
+                btn.classList.add("btn-song");
+	}
+});
+</script>';
 	} elseif($stars == 0) $stars = '<div style="color:gray">'.$dl->getLocalizedString("unrated").'</div>';
 	if($gs->checkPermission($_SESSION["accountID"], "dashboardModTools")){
 	$table .= "<tr><th scope='row'>".$x."</th><td>".$levelid."</td><td>".$levelname."</td><td>".$username."</td><td>".$levelDesc."</td><td>".$levelpass."</td><td>".$stars."</td><td>".$songid."</td></tr>";

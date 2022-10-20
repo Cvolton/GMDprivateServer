@@ -66,7 +66,7 @@ if(!empty($_POST["type"]) AND !empty($_POST["amount"]) AND !empty($_POST["reward
     <form class="form__inner" method="post" action="">
 	<p>'.$dl->getLocalizedString("addQuestDesc").'</p>
 	 <div class="field" id="selecthihi">
-	 <input class="quest" type="text" name="names" placeholder="'.$dl->getLocalizedString("questName").'"></div>
+	 <input class="quest" type="text" name="names" id="p1" placeholder="'.$dl->getLocalizedString("questName").'"></div>
 	 <div class="field" id="selecthihi">
 		<select name="type">
 			<option value="1">'.$dl->getLocalizedString("orbs").'</option>
@@ -74,15 +74,33 @@ if(!empty($_POST["type"]) AND !empty($_POST["amount"]) AND !empty($_POST["reward
 			<option value="3">'.$dl->getLocalizedString("stars").'</option>
 		</select></div>
         <div class="field" id="selecthihi">
-		<input class="number" type="number" name="amount" placeholder="'.$dl->getLocalizedString("questAmount").'">
-		<input class="number" type="number" name="reward" placeholder="'.$dl->getLocalizedString("questReward").'">
+		<input class="number" type="number" name="amount" id="p2" placeholder="'.$dl->getLocalizedString("questAmount").'">
+		<input class="number" type="number" name="reward" id="p3" placeholder="'.$dl->getLocalizedString("questReward").'">
 		</div>
 		', 'mod');
 		Captcha::displayCaptcha();
         echo '
-        <button  type="submit" class="btn-song">'.$dl->getLocalizedString("questCreate").'</button>
+        <button  type="submit" class="btn-song btn-block" id="submit" disabled>'.$dl->getLocalizedString("questCreate").'</button>
     </form>
-</div>';
+</div>
+<script>
+$(document).change(function(){
+   const p1 = document.getElementById("p1");
+   const p2 = document.getElementById("p2");
+   const p3 = document.getElementById("p3");
+   const btn = document.getElementById("submit");
+   if(!p1.value.trim().length || !p2.value.trim().length || !p3.value.trim().length) {
+                btn.disabled = true;
+                btn.classList.add("btn-block");
+                btn.classList.remove("btn-song");
+	} else {
+		        btn.removeAttribute("disabled");
+                btn.classList.remove("btn-block");
+                btn.classList.remove("btn-size");
+                btn.classList.add("btn-song");
+	}
+});
+</script>';
 }
 } else {
 	$dl->printSong('<div class="form">

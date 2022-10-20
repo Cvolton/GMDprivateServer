@@ -60,11 +60,28 @@ foreach($result as &$action){
 									 <form class="form__inner" method="post" action="stats/renameSong.php">
 										<div class="field" style="display:none"><input type="hidden" name="ID" value="'.$songsid.'"></div>
 										<div class="field" style="display:none"><input type="hidden" name="page" value="'.$actualpage.'"></div>
-										<div class="field"><input type="text" name="author" value="'.$author.'" placeholder="'.$author.'"></div>
-										<div class="field"><input type="text" name="name" value="'.$name.'" placeholder="'.$name.'"></div>
-										<button type="submit" class="btn-song">'.$dl->getLocalizedString("change").'</button>
+										<div class="field"><input type="text" name="author" id="p1" value="'.$author.'" placeholder="'.$author.'"></div>
+										<div class="field"><input type="text" name="name" id="p2" value="'.$name.'" placeholder="'.$name.'"></div>
+										<button type="submit" class="btn-song" id="submit">'.$dl->getLocalizedString("change").'</button>
 									</form>
 								</div>
+                                <script>
+$(document).change(function(){
+   const p1 = document.getElementById("p1");
+   const p2 = document.getElementById("p2");
+   const btn = document.getElementById("submit");
+   if(!p1.value.trim().length || !p2.value.trim().length) {
+                btn.disabled = true;
+                btn.classList.add("btn-block");
+                btn.classList.remove("btn-song");
+	} else {
+		        btn.removeAttribute("disabled");
+                btn.classList.remove("btn-block");
+                btn.classList.remove("btn-size");
+                btn.classList.add("btn-song");
+	}
+});
+</script>
 							</td>';
     if($action["isDisabled"]) {
 		$songsid = '<div style="text-decoration:line-through;color:#8b2e2c">'.$songsid.'</div>';
