@@ -124,7 +124,7 @@ $(document).change(function(){
 }} else {
 	$dl->printSong('<div class="form">
 		<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
-		<form class="form__inner" method="post" action="../login/login.php">
+		<form class="form__inner" method="post" action="./login/login.php">
 		<p>'.$dl->getLocalizedString("noLogin?").'</p>
 	    <button type="submit" class="btn-song">'.$dl->getLocalizedString("LoginBtn").'</button>
 		</form>

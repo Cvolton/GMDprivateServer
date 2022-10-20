@@ -30,7 +30,7 @@ if(!empty($_POST["userName"]) && !empty($_POST["password"])){
 		$query->execute(['userName' => $userName]);
 		 $dl->printSong('<div class="form">
 			<h1>'.$dl->getLocalizedString("activateAccount").'</h1>
-			<form class="form__inner" method="post" action="../dashboard">
+			<form class="form__inner" method="post" action=".">
 			<p>'.$dl->getLocalizedString("activated").'</p>
 			<button type="submit" class="btn btn-primary">'.$dl->getLocalizedString("dashboard").'</button>
 		</form></div>');
@@ -38,7 +38,7 @@ if(!empty($_POST["userName"]) && !empty($_POST["password"])){
 	elseif ($pass == 1) {
 		 $dl->printSong('<div class="form">
 			<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
-			<form class="form__inner" method="post" action="../dashboard">
+			<form class="form__inner" method="post" action=".">
 			<p>'.$dl->getLocalizedString("alreadyActivated").'</p>
 			<button type="submit" class="btn btn-primary">'.$dl->getLocalizedString("dashboard").'</button>
 		</form></div>');

@@ -11,7 +11,7 @@ if(!isset($_SESSION["accountID"]) OR $_SESSION["accountID"] == 0 AND empty($_POS
   	$dl->title($dl->getLocalizedString("profile"));
 	$dl->printSong('<div class="form">
     <h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
-    <form class="form__inner" method="post" action="../login/login.php">
+    <form class="form__inner" method="post" action="./login/login.php">
 	<p>'.$dl->getLocalizedString("noLogin?").'</p>
 	        <button type="submit" class="btn-primary">'.$dl->getLocalizedString("LoginBtn").'</button>
     </form>

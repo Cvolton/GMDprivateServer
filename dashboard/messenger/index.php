@@ -153,7 +153,7 @@ $(document).change(function(){
   	$dl->title($dl->getLocalizedString("messenger"));
 	$dl->printSong('<div class="form">
     <h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
-    <form class="form__inner" method="post" action="../dashboard/login/login.php">
+    <form class="form__inner" method="post" action="./login/login.php">
 	<p>'.$dl->getLocalizedString("noLogin?").'</p>
 	        <button type="submit" class="btn-primary">'.$dl->getLocalizedString("LoginBtn").'</button>
     </form>
@@ -163,7 +163,7 @@ $(document).change(function(){
   		$dl->title($dl->getLocalizedString("messenger"));
 		$dl->printSong('<div class="form">
 			<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
-			<form class="form__inner" method="post" action="../dashboard">
+			<form class="form__inner" method="post" action=".">
 			<p>'.$dl->getLocalizedString("pageDisabled").'</p>
 			<button type="submit" class="btn-song">'.$dl->getLocalizedString("dashboard").'</button>
 			</form>

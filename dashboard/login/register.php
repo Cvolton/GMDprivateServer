@@ -83,7 +83,7 @@ if(!empty($_POST["username"]) AND !empty($_POST["email"]) AND !empty($_POST["rep
 				// there you go, you are registered.
 				$dl->printSong('<div class="form">
 					<h1>'.$dl->getLocalizedString("registerAcc").'</h1>
-					<form class="form__inner" method="post" action="../dashboard">
+					<form class="form__inner" method="post" action=".">
 					<p>'.$dl->getLocalizedString("registered").'</p>
 					<button type="submit" class="btn-song">'.$dl->getLocalizedString("dashboard").'</button>
 					</form>
@@ -151,7 +151,7 @@ $(document).change(function(){
 } else {
 	$dl->printSong('<div class="form">
     <h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
-	<form class="form__inner" method="post" action="../dashboard">
+	<form class="form__inner" method="post" action=".">
 	<p>'.$dl->getLocalizedString("loginAlready").'</p>
 	        <button type="submit" class="btn-song">'.$dl->getLocalizedString("dashboard").'</button>
     </form>
