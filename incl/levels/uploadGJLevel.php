@@ -16,9 +16,15 @@ $levelID = ExploitPatch::remove($_POST["levelID"]);
 $levelName = ExploitPatch::charclean($_POST["levelName"]);
 //TODO: move description fixing code to a function
 $levelDesc = ExploitPatch::remove($_POST["levelDesc"]);
-$levelDesc = str_replace('-', '+', $levelDesc);
-$levelDesc = str_replace('_', '/', $levelDesc);
-$rawDesc = base64_decode($levelDesc);
+if($gameVersion < 20){
+	$rawDesc = $levelDesc;
+	$levelDesc = str_replace('+', '-', base64_encode($rawDesc));
+	$levelDesc = str_replace('/', '_', $levelDesc);
+} else {
+	$rawDesc = str_replace('-', '+', $levelDesc);
+	$rawDesc = str_replace('_', '/', $rawDesc);
+	$rawDesc = base64_decode($rawDesc);
+}
 if (strpos($rawDesc, '<c') !== false) {
 	$tags = substr_count($rawDesc, '<c');
 	if ($tags > substr_count($rawDesc, '</c>')) {
@@ -29,9 +35,6 @@ if (strpos($rawDesc, '<c') !== false) {
 		$levelDesc = str_replace('+', '-', base64_encode($rawDesc));
 		$levelDesc = str_replace('/', '_', $levelDesc);
 	}
-}
-if($gameVersion < 20){
-	$levelDesc = base64_encode($levelDesc);
 }
 $levelVersion = ExploitPatch::remove($_POST["levelVersion"]);
 $levelLength = ExploitPatch::remove($_POST["levelLength"]);
