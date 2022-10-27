@@ -7,8 +7,6 @@ $dl = new dashboardLib();
 require "../".$dbPath."incl/lib/generatePass.php";
 require_once "../".$dbPath."incl/lib/mainLib.php";
 $gs = new mainLib();
-$dl->title($dl->getLocalizedString("loginBox"));
-$dl->printFooter('../');
 if(isset($_SESSION["accountID"]) AND $_SESSION["accountID"] != 0){
 	header('Location: ../');
 	exit();
@@ -18,6 +16,8 @@ if(isset($_POST["userName"]) AND isset($_POST["password"])){
 	$password = $_POST["password"];
 	$valid = GeneratePass::isValidUsrname($userName, $password);
 	if($valid != 1){
+		$dl->title($dl->getLocalizedString("loginBox"));
+		$dl->printFooter('../');
 		$dl->printSong('<div class="form">
 		<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 		<form class="field" action="" method="post">
@@ -34,11 +34,39 @@ if(isset($_POST["userName"]) AND isset($_POST["password"])){
 		$dl->printLoginBoxError($dl->getLocalizedString("invalidid"));
 		exit();
 	}
-	$_SESSION["accountID"] = $accountID;
+  	$_SESSION["accountID"] = $accountID;
+  	$query = $db->prepare("SELECT auth FROM accounts WHERE accountID = :id");
+  	$query->execute([':id' => $accountID]);
+  	$auth = $query->fetch();
+    if($auth["auth"] == 'none') {
+          $auth = $gs->randomString(8);
+          $query = $db->prepare("UPDATE accounts SET auth = :auth WHERE accountID = :id");
+          $query->execute([':auth' => $auth, ':id' => $accountID]);
+      if(isset($_POST["ref"])){
+			header('refresh: 2; url='.$_POST["ref"]);
+        	setcookie('auth', $auth, 2147483647, '/');
+      }elseif(isset($_SERVER["HTTP_REFERER"])){
+			header('refresh: 2; url='.$_SERVER["HTTP_REDIRECT"]);
+        	setcookie('auth', $auth, 2147483647, '/');
+      }
+      setcookie('auth', $auth, 2147483647, '/');
+    } else setcookie('auth', $auth["auth"], 2147483647, '/');
 	if(isset($_POST["ref"])){
-		header('Location: ' . $_POST["ref"]);
+      	$path = $_POST["ref"];
+        if(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') $protocol = 'https://';
+        else $protocol = 'http://';
+      	$path2 = $_SERVER[HTTP_HOST].'/';
+      	$path = str_replace($procotol.''.$path2, '', $path);
+      	$path = str_replace($protocol, '', $path);
+		header('Location: ../'.$path);
 	}elseif(isset($_SERVER["HTTP_REFERER"])){
-		header('Location: ' . $_SERVER["HTTP_REFERER"]);
+      	$path = $_SERVER["HTTP_REFERER"];
+        if(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') $protocol = 'https://';
+        else $protocol = 'http://';
+      	$path2 = $_SERVER[HTTP_HOST].'/';
+      	$path = str_replace($procotol.''.$path2, '', $path);
+      	$path = str_replace($protocol, '', $path);
+		header('Location: ../'.$path);
 	}
 	$dl->printLoginBox('<p>'.$dl->getLocalizedString("loginSuccess").'<button type="submit" class="btn-primary" >'.$dl->getLocalizedString("clickHere").'</button></p>');
 }else{
@@ -71,6 +99,8 @@ $(document).change(function(){
 	}
 });
 </script>';
+	$dl->title($dl->getLocalizedString("loginBox"));
+	$dl->printFooter('../');
 	$dl->printLoginBox($loginbox);
 }
 ?>

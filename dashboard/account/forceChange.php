@@ -62,6 +62,9 @@ if(!empty($_POST["userID"]) AND !empty($_POST[$type])) {
 	$query->execute([':userName' => $newnick, ':salt' => $salt, ':accountid' => $accID]);
 	$query = $db->prepare("UPDATE users SET userName=:userName WHERE extID=:accountid");
 	$query->execute([':userName' => $newnick,':accountid' => $accID]);
+    $auth = $gs->randomString(8);
+    $query = $db->prepare("UPDATE accounts SET auth = :auth WHERE accountID = :id");
+    $query->execute([':auth' => $auth, ':id' => $accID]);
     $query = $db->prepare("INSERT INTO modactions (type, value, value2, timestamp, account) VALUES ('26',:userID, :type, :timestamp,:account)");
 	$query->execute([':userID' => $accID, ':timestamp' => time(), ':type' => $type, ':account' => $acc]);
 	$dl->printSong('<div class="form">
@@ -73,10 +76,19 @@ if(!empty($_POST["userID"]) AND !empty($_POST[$type])) {
 		</div>', 'mod');
   } elseif($type == 'Password') {
 	$newpass = $_POST["Password"]; 
-  	if(is_numeric($_POST["userID"])) $userName = $gs->getAccountName($_POST["userID"]); 
-    else $userName = ExploitPatch::remove($_POST["userID"]);
+  	if(is_numeric($_POST["userID"])) {
+		$userName = $gs->getAccountName($_POST["userID"]);
+      	$accID = $_POST["userID"];
+	}
+    else {
+		$userName = ExploitPatch::remove($_POST["userID"]);
+		$accID = $gs->getAccountIDFromName($_POST["userID"]); 
+    }
   	$salt = '';
 	$passhash = password_hash($newpass, PASSWORD_DEFAULT);
+    $auth = $gs->randomString(8);
+    $query = $db->prepare("UPDATE accounts SET auth = :auth WHERE accountID = :id");
+    $query->execute([':auth' => $auth, ':id' => $accID]);
 	$query = $db->prepare("UPDATE accounts SET password=:password, salt=:salt WHERE userName=:userName");	
 	$query->execute([':password' => $passhash, ':userName' => $userName, ':salt' => $salt]);
     $accountID = $gs->getAccountIDFromName($userName);

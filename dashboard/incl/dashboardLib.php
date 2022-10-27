@@ -1,6 +1,9 @@
 <?php
 $dbPath = '../'; // Path to main directory. If you didn't changed dashboard place, don't change this value. Usually, its /database (https://imgur.com/a/P8LdhzY). 
 include __DIR__."/../".$dbPath."config/dashboard.php";
+include_once "auth.php";
+$au = new au();
+$au->auth($dbPath);
 // Dashboard library
 class dashboardLib{
 	public function printHeader($isSubdirectory = true){

@@ -74,6 +74,7 @@ if ($pass == 1) {
 	$query = $db->prepare("UPDATE users SET userName=:userName WHERE extID=:accountid");
 	$query->execute([':userName' => $newnick,':accountid' => $accID]);
 	$_SESSION["accountID"] = 0;
+	setcookie('auth', 'no', 2147483647, '/');
 	$dl->printSong('<div class="form">
 		<h1>'.$dl->getLocalizedString("changeNickTitle").'</h1>
 		<form class="form__inner" method="post" action=".">

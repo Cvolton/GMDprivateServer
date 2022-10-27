@@ -49,6 +49,7 @@ if ($pass == 1) {
 	$query = $db->prepare("UPDATE accounts SET password=:password, salt=:salt WHERE userName=:userName");	
 	$query->execute([':password' => $passhash, ':userName' => $userName, ':salt' => $salt]);
 	$_SESSION["accountID"] = 0;
+	setcookie('auth', 'no', 2147483647, '/');
 	$dl->printSong('<div class="form">
     <h1>'.$dl->getLocalizedString("changePassTitle").'</h1>
     <form class="form__inner" method="post" action="">
