@@ -18,9 +18,9 @@ if (isset($_POST['udid']) && !empty($_POST['udid'])) {
 } else {
 	$id = GJPCheck::getAccountIDOrDie();
 }
-$levelDesc = str_replace('-', '+', $levelDesc);
-$levelDesc = str_replace('_', '/', $levelDesc);
-$rawDesc = base64_decode($levelDesc);
+$rawDesc = str_replace('-', '+', $levelDesc);
+$rawDesc = str_replace('_', '/', $rawDesc);
+$rawDesc = base64_decode($rawDesc);
 if (strpos($rawDesc, '<c') !== false) {
 	$tags = substr_count($rawDesc, '<c');
 	if ($tags > substr_count($rawDesc, '</c>')) {
