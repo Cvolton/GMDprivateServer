@@ -73,6 +73,9 @@ if ($pass == 1) {
 	$query->execute([':userName' => $newnick, ':salt' => $salt, ':accountid' => $accID]);
 	$query = $db->prepare("UPDATE users SET userName=:userName WHERE extID=:accountid");
 	$query->execute([':userName' => $newnick,':accountid' => $accID]);
+    $auth = $gs->randomString(8);
+    $query = $db->prepare("UPDATE accounts SET auth = :auth WHERE accountID = :id");
+    $query->execute([':auth' => $auth, ':id' => $accID]);
 	$_SESSION["accountID"] = 0;
 	setcookie('auth', 'no', 2147483647, '/');
 	$dl->printSong('<div class="form">

@@ -48,6 +48,9 @@ if ($pass == 1) {
 	$passhash = password_hash($newpass, PASSWORD_DEFAULT);
 	$query = $db->prepare("UPDATE accounts SET password=:password, salt=:salt WHERE userName=:userName");	
 	$query->execute([':password' => $passhash, ':userName' => $userName, ':salt' => $salt]);
+    $auth = $gs->randomString(8);
+    $query = $db->prepare("UPDATE accounts SET auth = :auth WHERE accountID = :id");
+    $query->execute([':auth' => $auth, ':id' => $_SESSION["accountID"]]);
 	$_SESSION["accountID"] = 0;
 	setcookie('auth', 'no', 2147483647, '/');
 	$dl->printSong('<div class="form">
