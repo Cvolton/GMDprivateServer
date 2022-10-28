@@ -1,7 +1,7 @@
 <?php
 class au {
   function auth($dbPath = '../') {
-    if(file_exists($dbPath."incl/lib/connection.php")) include_once "$dbPath/incl/lib/connection.php";
+    if(file_exists($dbPath."incl/lib/connection.php")) include_once $dbPath."incl/lib/connection.php";
     elseif(file_exists("../../$dbPath".''."incl/lib/connection.php")) include_once "../../$dbPath".''."incl/lib/connection.php";
     else include_once "../$dbPath".''."incl/lib/connection.php";
     error_reporting(0);
