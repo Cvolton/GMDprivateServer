@@ -9,9 +9,9 @@ $string["levelsWeek"] = "Bir hafta içinde yüklenen bölümler";
 $string["levels3Months"] = "3 ayda yüklenen bölümler";
 $string["footer"] = $gdps.", ".date('Y', time());
 
-$string["tryCron"] = "Run Cron";
-$string["cronSuccess"] = "Success!";
-$string["cronError"] = "Error!";
+$string["tryCron"] = "Cron çalıştır";
+$string["cronSuccess"] = "Başarılı!";
+$string["cronError"] = "Hata!";
 
 $string["profile"] = "Profil";
 $string["empty"] = "Boş...";
