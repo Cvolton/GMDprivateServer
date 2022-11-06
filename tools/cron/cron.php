@@ -1,4 +1,5 @@
 <?php
+error_reporting(0);
 chdir(dirname(__FILE__));
 if(function_exists("set_time_limit")) set_time_limit(0);
 include "fixcps.php";
@@ -19,6 +20,6 @@ flush();
 include "fixnames.php";
 ob_flush();
 flush();
-echo "CRON done";
+echo "1";
 file_put_contents("../logs/cronlastrun.txt",time());
 ?>

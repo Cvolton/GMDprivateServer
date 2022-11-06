@@ -9,6 +9,10 @@ $string["levelsWeek"] = "Levels uploaded in a week";
 $string["levels3Months"] = "Levels uploaded in 3 months";
 $string["footer"] = $gdps.", ".date('Y', time());
 
+$string["tryCron"] = "Run Cron";
+$string["cronSuccess"] = "Success!";
+$string["cronError"] = "Error!";
+
 $string["profile"] = "Profile";
 $string["empty"] = "Empty...";
 $string["writeSomething"] = "Write something!";  

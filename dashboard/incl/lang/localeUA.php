@@ -9,6 +9,10 @@ $string["levelsWeek"] = "Викладено рівнів за тиждень";
 $string["levels3Months"] = "Викладено рівнів за 3 місяці";
 $string["footer"] = $gdps.", ".date('Y', time());
 
+$string["tryCron"] = "Виконати Cron";
+$string["cronSuccess"] = "Готово!";
+$string["cronError"] = "Помилка!";
+
 $string["profile"] = "Профіль";
 $string["empty"] = "Порожньо...";
 $string["writeSomething"] = "Напишіть щось!";
@@ -75,6 +79,7 @@ $string["changePassTitle"] = "Зміна пароля";
 $string["changedPass"] = "Пароль успішно змінений! Вам потрібно заново ввійти в ваш акаунт.";
 $string["wrongPass"] = "Неправильний пароль!";
 $string["samePass"] = "Введені вами паролі однакові!";
+$string["notSamePass"] = "Пароли не совпадают!";
 $string["changePassDesc"] = "Тут ви можете змінити свій пароль!";
 $string["oldPassword"] = "Старий пароль";
 $string["newPassword"] = "Новий пароль";

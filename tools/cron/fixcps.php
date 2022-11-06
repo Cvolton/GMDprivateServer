@@ -1,7 +1,6 @@
 <?php
 error_reporting(0);
 chdir(dirname(__FILE__));
-echo "Please wait...<br>";
 ob_flush();
 flush();
 if(file_exists("../logs/fixcpslog.txt")){
@@ -13,7 +12,7 @@ if(file_exists("../logs/fixcpslog.txt")){
 		$remainmins = floor($remaintime / 60);
 		$remainsecs = $remainmins * 60;
 		$remainsecs = $remaintime - $remainsecs;
-		exit("Please wait $remainmins minutes and $remainsecs seconds before running ". basename($_SERVER['SCRIPT_NAME'])." again");
+		exit("-1");
 	}
 }
 file_put_contents("../logs/fixcpslog.txt",time());
@@ -44,7 +43,6 @@ $query = $db->prepare("UPDATE users
 	ON users.userID = calculated.userID
 	SET users.creatorPoints = IFNULL(calculated.CP, 0)");
 $query->execute();
-echo "Calculated base CP<br>";
 /*
 	CP SHARING
 */
@@ -114,10 +112,8 @@ foreach($result as $daily){
 	DONE
 */
 foreach($people as $user => $cp){
-	echo "$user now has $cp creator points... <br>";
 	$query4 = $db->prepare("UPDATE users SET creatorPoints = (creatorpoints + :creatorpoints) WHERE userID=:userID");
 	$query4->execute([':userID' => $user, ':creatorpoints' => $cp]);
 }
-echo "<hr>done";
 file_put_contents("../logs/cplog.txt",$cplog);
 ?>

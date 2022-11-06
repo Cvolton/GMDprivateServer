@@ -7,8 +7,8 @@ $au->auth($dbPath);
 // Dashboard library
 class dashboardLib{
 	public function printHeader($isSubdirectory = true){
-		global $gdps;
 		$this->handleLangStart();
+      	global $gdps;
 		echo '<!DOCTYPE html>
 				<html lang="en">
 					<head>
@@ -178,15 +178,46 @@ class dashboardLib{
 							<a class="dropdown-item" href="stats/manageSongs.php"><div class="icon"><i class="fa-solid fa-music" aria-hidden="false"></i></div>'.$this->getLocalizedString("manageSongs").'</a>
 						</div>
 					</li>' . $browse . '</div></li>';
-					if(strpos($songEnabled, '1') !== false OR strpos($songEnabled, '2') !== false OR $lrEnabled == 1) echo '<li class="nav-item dropdown '.$reuploadActive.'">
+					echo '<li class="nav-item dropdown '.$reuploadActive.'">
 						<a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 							<i class="fa-solid fa-upload" style="margin-right:5" aria-hidden="true"></i> '.$this->getLocalizedString("reuploadSection").'
 						</a>
-						<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">';
+                            
+						<div class="dropdown-menu" id="cronview" aria-labelledby="navbarDropdownMenuLink">';
           					if(strpos($songEnabled, '1') !== false) echo '<a class="dropdown-item" href="songs/"><i class="fa-solid fa-file" style="position: absolute;font-size: 10px;margin: 5px 5px 5px -2px;" aria-hidden="false"></i><div class="icon"><i class="fa-solid fa-music" aria-hidden="false"></i></div>'.$this->getLocalizedString("songAdd").'</a>';
           					if(strpos($songEnabled, '2') !== false) echo '<a class="dropdown-item" href="reupload/songAdd.php"><i class="fa-solid fa-link" style="position: absolute;font-size: 9px;margin: 5px 5px 5px -3px;" aria-hidden="false"></i><div class="icon"><i class="fa-solid fa-music" aria-hidden="false"></i></div>'.$this->getLocalizedString("songLink").'</a>';
 								if($lrEnabled == 1) echo '<a class="dropdown-item" href="levels/levelReupload.php"><i class="fa-solid fa-arrow-down" style="position: absolute;font-size: 10px;margin: 5px 5px 5px -5px;" aria-hidden="false"></i><div class="icon"><i class="fa-solid fa-cloud" aria-hidden="false"></i></div>'.$this->getLocalizedString("levelReupload").'</a>
-                                <a class="dropdown-item" href="levels/levelToGD.php"><i class="fa-solid fa-arrow-up" style="position: absolute;font-size: 10px;margin: 5px 5px 5px -5px;" aria-hidden="false"></i><div class="icon"><i class="fa-solid fa-cloud" aria-hidden="false"></i></div>'.$this->getLocalizedString("levelToGD").'  </a>
+                                <a class="dropdown-item" href="levels/levelToGD.php"><i class="fa-solid fa-arrow-up" style="position: absolute;font-size: 10px;margin: 5px 5px 5px -5px;" aria-hidden="false"></i><div class="icon"><i class="fa-solid fa-cloud" aria-hidden="false"></i></div>'.$this->getLocalizedString("levelToGD").'</a>';
+          				echo '<button class="dropdown-item" id="crbtn" onclick="cron(), event.stopPropagation();"><div class="icon"><i id="iconcron" class="fa-solid fa-bars-progress"></i></div>'.$this->getLocalizedString('tryCron').'</button>
+                        <script>
+								function cron(){
+									cr = new XMLHttpRequest();
+                                    cr.open("GET", "../'.$dbPath.'tools/cron/cron.php", true);
+                                    var ic = document.getElementById("iconcron");
+                                    var on = document.getElementById("crbtn");
+                                    ic.classList.remove("fa-bars-progress");
+                                    ic.classList.add("fa-spinner");
+                                    ic.classList.add("fa-spin");
+                                    cr.onload = function (){
+										if(cr.response == "1") {
+                                        	on.innerHTML = \'<div class="icon"><i id="iconcron" class="fa-solid fa-check"></i></div>'.$this->getLocalizedString('cronSuccess').'\';
+                                   			ic.classList.remove("fa-spinner");
+                                   			ic.classList.remove("fa-spin");
+                                            ic.classList.add("fa-bars-progress");
+                                            on.classList.add("dropdown-success");
+                                            on.disabled = true;
+										}
+										else {
+                                        	on.innerHTML = \'<div class="icon"><i id="iconcron" class="fa-solid fa-xmark"></i></div>'.$this->getLocalizedString('cronError').'\';;
+                                   			ic.classList.remove("fa-spinner");
+                                   			ic.classList.remove("fa-spin");
+                                            ic.classList.add("fa-bars-progress");
+                                            on.classList.add("dropdown-error");
+										}
+                                    }
+                                    cr.send();
+                            	}
+</script>
 						</div>
 					</li>';
 			if($gs->checkPermission($_SESSION["accountID"], "dashboardModTools")){

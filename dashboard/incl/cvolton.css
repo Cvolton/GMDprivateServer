@@ -1,5 +1,7 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap');
+
 * {
-    font-family: 'Google Sans', 'Segoe UI' , 'Calibri Light', 'Arial';
+    font-family: 'Google Sans', 'Inter', 'Segoe UI' , 'Calibri Light', 'Arial';
 }
 
 #ads, .adsbygoogle, #ads_bottom_static {
@@ -657,6 +659,28 @@ option,
 .dropdown-item:active > .icon,
 .dropdown-item:focus > .icon{
 	background: #8abfff;
+}
+
+.dropdown-success:hover,
+.dropdown-success:active,
+.dropdown-success:focus {
+	background: #5effaf;
+}
+.dropdown-success:hover > .icon,
+.dropdown-success:active > .icon,
+.dropdown-success:focus > .icon {
+	background: #1ce681;
+}
+
+.dropdown-error:hover,
+.dropdown-error:active,
+.dropdown-error:focus {
+	background: #ff8787;
+}
+.dropdown-error:hover > .icon,
+.dropdown-error:active > .icon,
+.dropdown-error:focus > .icon {
+	background: #f55656;
 }
 
 table,

@@ -9,6 +9,10 @@ $string["levelsWeek"] = "Выложено уровней за неделю";
 $string["levels3Months"] = "Выложено уровней за 3 месяца";
 $string["footer"] = $gdps.", ".date('Y', time());
 
+$string["tryCron"] = "Выполнить Cron";
+$string["cronSuccess"] = "Готово!";
+$string["cronError"] = "Ошибка!";
+
 $string["profile"] = "Профиль";
 $string["empty"] = "Пустовато...";
 $string["writeSomething"] = "Напишите что-нибудь!";
