@@ -35,7 +35,7 @@ if(!$installed) {
       		if(empty($exist)) $db->query("ALTER TABLE users ADD banReason varchar(255) NOT NULL DEFAULT 'none' AFTER isCreatorBanned");
 		$check = $db->query("SHOW COLUMNS FROM `accounts` LIKE 'auth'");
       		$exist = $check->fetchAll();
-      		if(empty($exist)) $db->query("ALTER TABLE accounts ADD auth varchar(16) NOT NULL DEFAULT 'none' AFTER isCreatorBanned");
+      		if(empty($exist)) $db->query("ALTER TABLE accounts ADD auth varchar(16) NOT NULL DEFAULT 'none' AFTER isActive");
 	}
 	$lines = file($dbPath.'config/dashboard.php');
 	$first_line = $lines[2];
