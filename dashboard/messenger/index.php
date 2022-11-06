@@ -122,6 +122,7 @@ $(document).change(function(){
 			$options .= '<div class="messenger"><text class="receiver">'.$receiver.''.$notify.'</text><br>
 			<button type="submit" class="btn-rendel" name="accountID" value='.$recid.' style="margin-top:5px">'.$dl->getLocalizedString("write").'</button></div>';
 		}
+		if(empty($options)) $options = '<div class="icon" style="height: 70px;width: 70px;margin-left: 0px;background:#36393e"><text class="receiver" style="font-size:50px"><i class="fa-regular fa-face-sad-cry"></i></text></div>';
 		$dl->printSong('<div class="form">
 			<h1>'.$dl->getLocalizedString("messenger").'</h1>
 			<form class="form__inner" method="post" action="messenger/">
