@@ -205,6 +205,7 @@ class dashboardLib{
                                    			ic.classList.remove("fa-spin");
                                             ic.classList.add("fa-bars-progress");
                                             on.classList.add("dropdown-success");
+                                            on.classList.remove("dropdown-error");
                                             on.disabled = true;
 										}
 										else {
@@ -212,6 +213,7 @@ class dashboardLib{
                                    			ic.classList.remove("fa-spinner");
                                    			ic.classList.remove("fa-spin");
                                             ic.classList.add("fa-bars-progress");
+                                            on.classList.remove("dropdown-success");
                                             on.classList.add("dropdown-error");
 										}
                                     }
