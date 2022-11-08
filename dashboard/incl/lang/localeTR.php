@@ -9,7 +9,7 @@ $string["levelsWeek"] = "Bir hafta içinde yüklenen bölümler";
 $string["levels3Months"] = "3 ayda yüklenen bölümler";
 $string["footer"] = $gdps.", ".date('Y', time());
 
-$string["tryCron"] = "Cron çalıştır";
+$string["tryCron"] = "Cron Çalıştır";
 $string["cronSuccess"] = "Başarılı!";
 $string["cronError"] = "Hata!";
 
