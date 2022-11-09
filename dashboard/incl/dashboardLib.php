@@ -35,7 +35,8 @@ class dashboardLib{
 	}
 	public function getLocalizedString($stringName){
 		if(!isset($_COOKIE["lang"]) OR !ctype_alpha($_COOKIE["lang"])){
-			$lang = "EN";
+			if(file_exists('/lang/locale'.strtoupper(substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2))).'.php') $lang = strtoupper(substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2));
+			else $lang = "EN";
 		}else{
 			$lang = $_COOKIE["lang"];
 		}
@@ -43,7 +44,7 @@ class dashboardLib{
 		if(file_exists($locale)){
 			include $locale;
 		}else{
-			include __DIR__ . "/lang/localeRU.php";
+			include __DIR__ . "/lang/localeEN.php";
 		}
 		if($lang == "TEST"){
 			return "lnf:$stringName";
@@ -81,13 +82,13 @@ class dashboardLib{
       	global $twitter;
       	global $youtube;
       	global $twitch;
-		echo '</form><div class="footer">'.$this->getLocalizedString("footer").'</div><div class="footer socials">';
+		echo '</form><div class="footer">'.$this->getLocalizedString("footer").'<div>';
         if($youtube != '') echo '<a href="'.$youtube.'" target="_blank"><img class="socials" style="width: 20px" src="'.$sub.'incl/socials/youtube.png"></a>';
         if($discord != '') echo '<a href="'.$discord.'"target="_blank"><img class="socials" style="width: 20px" src="'.$sub.'incl/socials/discord.png"></a>';
       	if($twitter != '') echo '<a href="'.$twitter.'"target="_blank"><img class="socials" style="width: 20px" src="'.$sub.'incl/socials/twitter.png"></a>';
       	if($vk != '') echo '<a href="'.$vk.'"target="_blank"><img class="socials" style="width: 20px" src="'.$sub.'incl/socials/vk.png"></a>';
       	if($twitch != '') echo '<a href="'.$twitch.'"target="_blank"><img class="socials" style="width: 20px" src="'.$sub.'incl/socials/twitch.png"></a>';
-        echo '</div></body>
+        echo '</div></div></body>
 		</html>';
 	}
 	public function printLoginBox($content){
@@ -373,7 +374,8 @@ $(document).change(function(){
 	}
 	public function handleLangStart(){
 		if(!isset($_COOKIE["lang"]) OR !ctype_alpha($_COOKIE["lang"])){
-			setcookie("lang", "EN", 2147483647, "/");
+			if(file_exists('/lang/locale'.strtoupper(substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2))).'.php') setcookie("lang", strtoupper(substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2)), 2147483647, "/");
+			else setcookie("lang", "EN", 2147483647, "/");
 		}
 		if(!isset($_SESSION["accountID"])) $_SESSION["accountID"] = 0;
         if(!isset($_SESSION["msgNew"])) $_SESSION["msgNew"] = 0;
