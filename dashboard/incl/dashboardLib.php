@@ -1,5 +1,5 @@
 <?php
-$dbPath = 'gcsdb/'; // Path to main directory. If you didn't changed dashboard place, don't change this value. Usually, its /database (https://imgur.com/a/P8LdhzY). 
+$dbPath = '../'; // Path to main directory. If you didn't changed dashboard place, don't change this value. Usually, its /database (https://imgur.com/a/P8LdhzY). 
 include __DIR__."/../".$dbPath."config/dashboard.php";
 include_once "auth.php";
 $au = new au();
@@ -28,7 +28,7 @@ class dashboardLib{
 						  <link href="incl/fontawesome/css/brands.css" rel="stylesheet">
 						  <link href="incl/fontawesome/css/solid.css" rel="stylesheet">
                           <link async rel="stylesheet" href="incl/cvolton.css">
-                          <title>'.$gdps.'!</title>
+                          <title>'.$gdps.'</title>
 						<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">';
 		echo '</head>
 				<body>';
@@ -102,7 +102,7 @@ class dashboardLib{
 	}
   	public function title($title) {
       	global $gdps;
-		echo '<title>'.$title.' | '.$gdps.'!</title>';
+		echo '<title>'.$title.' | '.$gdps.'</title>';
 	}
 	public function printNavbar($active){
 		global $gdps;
