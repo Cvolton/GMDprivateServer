@@ -191,9 +191,9 @@ $string["passwordTarget"] = "Hedef sunucudaki şifre";
 $string["notYourLevel"] = "Bu senin bölümün değil!";
 $string["reuploadFailed"] = "Aktarma hatası!";
 
-$string["search"] = "Search...";
-$string["searchCancel"] = "Cancel search";
-$string["emptySearch"] = "Nothing found!";
+$string["search"] = "Ara...";
+$string["searchCancel"] = "Aramayı iptal et";
+$string["emptySearch"] = "Hiçbir şey bulunamadı!";
 
 /*
 	REUPLOAD
