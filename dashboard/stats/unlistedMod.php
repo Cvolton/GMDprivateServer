@@ -4,6 +4,7 @@ require "../incl/dashboardLib.php";
 require "../".$dbPath."incl/lib/connection.php";
 $dl = new dashboardLib();
 require "../".$dbPath."incl/lib/mainLib.php";
+require "../".$dbPath."incl/lib/exploitPatch.php";
 $gs = new mainLib();
 include "../".$dbPath."incl/lib/connection.php";
 $dl->title($dl->getLocalizedString("unlistedMod"));
@@ -18,9 +19,36 @@ if($gs->checkPermission($_SESSION["accountID"], "dashboardModTools")){
 }
 $table = '<table class="table table-inverse"><tr><th>#</th><th>'.$dl->getLocalizedString("levelid").'</th><th>'.$dl->getLocalizedString("levelname").'</th><th>'.$dl->getLocalizedString("leveldesc").'</th><th>'.$dl->getLocalizedString("levelpass").'</th><th>'.$dl->getLocalizedString("stars").'</th><th>'.$dl->getLocalizedString("songIDw").'</th><th>'.$dl->getLocalizedString("username").'</th></tr>';
 
-$query = $db->prepare("SELECT * FROM levels WHERE unlisted=1 ORDER BY levelID DESC LIMIT 10 OFFSET $page");
-$query->execute();
-$result = $query->fetchAll();
+if(!empty($_GET["search"])) {
+	$srcbtn = '<a href="'.$_SERVER["SCRIPT_NAME"].'" style="width: 0%;display: flex;margin-left: 5px;align-items: center;justify-content: center;color: indianred; text-decoration:none" class="btn-primary" title="'.$dl->getLocalizedString("searchCancel").'"><i class="fa-solid fa-xmark"></i></a>';
+	$query = $db->prepare("SELECT * FROM levels WHERE unlisted=1 AND levelName LIKE '%".ExploitPatch::remove($_GET["search"])."%' LIMIT 10 OFFSET $page");
+	$query->execute();
+	$result = $query->fetchAll();
+	if(empty($result)) {
+		$dl->printSong('<div class="form">
+		<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
+		<form class="form__inner" method="post" action="'.$_SERVER["SCRIPT_NAME"].'">
+			<p>'.$dl->getLocalizedString("emptySearch").'</p>
+			<button type="submit" class="btn-primary">'.$dl->getLocalizedString("tryAgainBTN").'</button>
+		</form>
+	</div>');
+		die();
+	} 
+} else {
+	$query = $db->prepare("SELECT * FROM levels WHERE unlisted=1 ORDER BY levelID DESC LIMIT 10 OFFSET $page");
+	$query->execute();
+	$result = $query->fetchAll();
+	if(empty($result)) {
+		$dl->printSong('<div class="form">
+		<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
+		<form class="form__inner" method="post" action=".">
+			<p>'.$dl->getLocalizedString("emptyPage").'</p>
+			<button type="submit" class="btn-primary">'.$dl->getLocalizedString("dashboard").'</button>
+		</form>
+	</div>', 'browse');
+		die();
+	} 
+}
 $x = $page + 1;
 if(empty($result)) {
 	$dl->printSong('<div class="form">
@@ -57,7 +85,13 @@ foreach($result as &$action){
 	$table .= "<tr><th scope='row'>".$x."</th><td>".$levelid."</td><td>".$levelname."</td><td>".$levelDesc."</td><td>".$levelpass."</td><td>".$stars."</td><td>".$songid."</td><td>".$username."</td></tr>";
 	$x++;
 }
-$table .= "</table>";
+$table .= '</table><form method="get" class="form__inner">
+	<div class="field" style="display:flex">
+		<input style="border-top-right-radius: 0;border-bottom-right-radius: 0;" type="text" name="search" value="'.$_GET["search"].'" placeholder="'.$dl->getLocalizedString("search").'">
+		<button style="width: 6%;border-top-left-radius:0px !important;border-bottom-left-radius:0px !important" type="submit" class="btn-primary" title="'.$dl->getLocalizedString("search").'"><i class="fa-solid fa-magnifying-glass"></i></button>
+		'.$srcbtn.'
+	</div>
+</form>';
 /*
 	bottom row
 */

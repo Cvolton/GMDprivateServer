@@ -4,6 +4,7 @@ require "../incl/dashboardLib.php";
 require "../".$dbPath."incl/lib/connection.php";
 $dl = new dashboardLib();
 require "../".$dbPath."incl/lib/mainLib.php";
+require "../".$dbPath."incl/lib/exploitPatch.php";
 error_reporting(0);
 $gs = new mainLib();
 include "../".$dbPath."incl/lib/connection.php";
@@ -28,9 +29,26 @@ if(!empty($_GET["author"]) AND !empty($_GET["name"])) {
 }
 $table = '<div class="notifyblue" style="display:'.$notify.'">'.$dl->getLocalizedString("renamedSong").' <b>'.$an.'</b> - <b>'.$nn.'</b>!</div><table class="table table-inverse"><tr><th>#</th><th>'.$dl->getLocalizedString("songIDw").'</th><th>'.$dl->getLocalizedString("songAuthor").'</th><th>'.$dl->getLocalizedString("name").'</th><th>'.$dl->getLocalizedString("size").'</th><th>'.$dl->getLocalizedString("time").'</th>'.$me.'</tr>';
 
-$query = $db->prepare("SELECT * FROM songs ORDER BY ID ASC LIMIT 10 OFFSET $page");
-$query->execute();
-$result = $query->fetchAll();
+if(!empty($_GET["search"])) {
+	$srcbtn = '<a href="'.$_SERVER["SCRIPT_NAME"].'" style="width: 0%;display: flex;margin-left: 5px;align-items: center;justify-content: center;color: indianred; text-decoration:none" class="btn-primary" title="'.$dl->getLocalizedString("searchCancel").'"><i class="fa-solid fa-xmark"></i></a>';
+	$query = $db->prepare("SELECT * FROM songs WHERE name LIKE '%".ExploitPatch::remove($_GET["search"])."%' OR authorName LIKE '%".ExploitPatch::remove($_GET["search"])."%' ORDER BY ID DESC LIMIT 10 OFFSET $page");
+	$query->execute();
+	$result = $query->fetchAll();
+	if(empty($result)) {
+		$dl->printSong('<div class="form">
+		<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
+		<form class="form__inner" method="post" action="'.$_SERVER["SCRIPT_NAME"].'">
+			<p>'.$dl->getLocalizedString("emptySearch").'</p>
+			<button type="submit" class="btn-primary">'.$dl->getLocalizedString("tryAgainBTN").'</button>
+		</form>
+	</div>');
+		die();
+	} 
+} else {
+	$query = $db->prepare("SELECT * FROM songs ORDER BY ID ASC LIMIT 10 OFFSET $page");
+	$query->execute();
+	$result = $query->fetchAll();
+}
 $x = $page + 1;
 if(empty($result)) {
 	$dl->printSong('<div class="form">
@@ -114,7 +132,13 @@ if($gs->checkPermission($_SESSION["accountID"], "dashboardManageSongs")){
 }
 
 }
-$table .= "</table>";
+$table .= '</table><form method="get" class="form__inner">
+	<div class="field" style="display:flex">
+		<input style="border-top-right-radius: 0;border-bottom-right-radius: 0;" type="text" name="search" value="'.$_GET["search"].'" placeholder="'.$dl->getLocalizedString("search").'">
+		<button style="width: 6%;border-top-left-radius:0px !important;border-bottom-left-radius:0px !important" type="submit" class="btn-primary" title="'.$dl->getLocalizedString("search").'"><i class="fa-solid fa-magnifying-glass"></i></button>
+		'.$srcbtn.'
+	</div>
+</form>';
 /*
 	bottom row
 */

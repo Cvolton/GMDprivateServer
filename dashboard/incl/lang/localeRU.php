@@ -7,7 +7,7 @@ $string["welcome"] = "Добро пожаловать на ".$gdps.'!';
 $string["didntInstall"] = "<div style='color:#47a0ff'><b>Внимание!</b> Вы не до конца установили панель сервера! Нажмите на текст, чтобы это сделать.</div>";
 $string["levelsWeek"] = "Выложено уровней за неделю";
 $string["levels3Months"] = "Выложено уровней за 3 месяца";
-$string["footer"] = $gdps.", ".date('Y', time());
+$string["footer"] = $gdps."? 2020 - ".date('Y', time());
 
 $string["tryCron"] = "Выполнить Cron";
 $string["cronSuccess"] = "Готово!";
@@ -190,6 +190,10 @@ $string["usernameTarget"] = "Никнейм для выбранного серв
 $string["passwordTarget"] = "Пароль для выбранного сервера";
 $string["notYourLevel"] = "Это не ваш уровень!";
 $string["reuploadFailed"] = "Ошибка переноса уровня!";
+
+$string["search"] = "Поиск...";
+$string["searchCancel"] = "Отменить поиск";
+$string["emptySearch"] = "Ничего не найдено!";
 
 /*
 	REUPLOAD

@@ -7,7 +7,7 @@ $string["welcome"] = "Welcome to ".$gdps.'!';
 $string["didntInstall"] = "<div style='color:#47a0ff'><b>Warning!</b> You haven't fully installed dashboard! Click on the text to do this.</div>";
 $string["levelsWeek"] = "Levels uploaded in a week";
 $string["levels3Months"] = "Levels uploaded in 3 months";
-$string["footer"] = $gdps.", ".date('Y', time());
+$string["footer"] = $gdps."? 2020 - ".date('Y', time());
 
 $string["tryCron"] = "Run Cron";
 $string["cronSuccess"] = "Success!";
@@ -190,6 +190,10 @@ $string["usernameTarget"] = "Username for target server";
 $string["passwordTarget"] = "Password for target server";
 $string["notYourLevel"] = "This is not your level!";
 $string["reuploadFailed"] = "Level reupload error!";
+
+$string["search"] = "Search...";
+$string["searchCancel"] = "Cancel search";
+$string["emptySearch"] = "Nothing found!";
 
 /*
 	REUPLOAD

@@ -1,5 +1,5 @@
 <?php
-$dbPath = '../'; // Path to main directory. If you didn't changed dashboard place, don't change this value. Usually, its /database (https://imgur.com/a/P8LdhzY). 
+$dbPath = 'gcsdb/'; // Path to main directory. If you didn't changed dashboard place, don't change this value. Usually, its /database (https://imgur.com/a/P8LdhzY). 
 include __DIR__."/../".$dbPath."config/dashboard.php";
 include_once "auth.php";
 $au = new au();
@@ -28,7 +28,7 @@ class dashboardLib{
 						  <link href="incl/fontawesome/css/brands.css" rel="stylesheet">
 						  <link href="incl/fontawesome/css/solid.css" rel="stylesheet">
                           <link async rel="stylesheet" href="incl/cvolton.css">
-                          <title>'.$gdps.'</title>
+                          <title>'.$gdps.'!</title>
 						<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">';
 		echo '</head>
 				<body>';
@@ -102,7 +102,7 @@ class dashboardLib{
 	}
   	public function title($title) {
       	global $gdps;
-		echo '<title>'.$title.' | '.$gdps.'</title>';
+		echo '<title>'.$title.' | '.$gdps.'!</title>';
 	}
 	public function printNavbar($active){
 		global $gdps;
@@ -120,28 +120,28 @@ class dashboardLib{
 		$homeActive = $accountActive = $browseActive = $modActive = $reuploadActive = $statsActive = $msgActive = $profileActive = "";
 		switch($active){
 			case "home":
-				$homeActive = "active";
+				$homeActive = "active tooactive";
 				break;
 			case "account":
-				$accountActive = "active";
+				$accountActive = "active tooactive";
 				break;
 			case "browse":
-				$browseActive = "active";
+				$browseActive = "active tooactive";
 				break;
 			case "mod":
-				$modActive = "active";
+				$modActive = "active tooactive";
 				break;
 			case "reupload":
-				$reuploadActive = "active";
+				$reuploadActive = "active tooactive";
 				break;
 			case "stats":
-				$statsActive = "active";
+				$statsActive = "active tooactive";
 				break;
            	case "msg":
-				$msgActive = "active";
+				$msgActive = "active tooactive";
 				break;
            	case "profile":
-				$profileActive = "active";
+				$profileActive = "active tooactive";
 				break;
 		}
 		echo '<nav id="navbarepta" class="navbar navbar-expand-lg navbar-dark menubar">
@@ -404,8 +404,9 @@ $(document).change(function(){
 		$pageminus = $actualpage - 1;
 		$pageplus = $actualpage + 1;
       	if($pagecount < 2) return '';
+		$inputSearch = !empty($_GET["search"]) ? '<input type="hidden" name="search" value="'.$_GET["search"].'">' : '';
 		$bottomrow = '<div>'.sprintf($this->getLocalizedString("pageInfo"),$actualpage,$pagecount).'</div><div class="btn-group" style="margin-left:auto; margin-right:0;">';
-		$bottomrow .= '<a id="first" href="'.strtok($_SERVER["REQUEST_URI"],'?').'?page=1" class="btn btn-outline-secondary"><i class="fa-solid fa-backward" aria-hidden="true"></i> '.$this->getLocalizedString("first").'</a><a id="prev" href="'.strtok($_SERVER["REQUEST_URI"],'?').'?page='. $pageminus .'" class="btn btn-outline-secondary"><i class="fa-solid fa-chevron-left" aria-hidden="true"></i> '.$this->getLocalizedString("previous").'</a>';
+		$bottomrow .= '<form method="get" style="margin:0">'.$inputSearch.'<button type="submit" name="page" id="first" style="border-top-right-radius:0px !important;border-bottom-right-radius:0px !important;border-radius:500px" value=1 class="btn btn-outline-secondary"><i class="fa-solid fa-backward" aria-hidden="true"></i> '.$this->getLocalizedString("first").'</button></form><form method="get" style="margin:0">'.$inputSearch.'<button style="border-radius:0" type="submit" id="prev" value='. $pageminus .' class="btn btn-outline-secondary"><i class="fa-solid fa-chevron-left" aria-hidden="true"></i> '.$this->getLocalizedString("previous").'</button></form>';
 		//updated to ".."
 		$bottomrow .= '<a class="btn btn-outline-secondary" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">..</a>
 			<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink" style="padding:17px 17px 4px 17px;">
@@ -421,7 +422,7 @@ $(document).change(function(){
 					<button type="submit" class="btn btn-primary btn-block">'.$this->getLocalizedString("go").'</button>
 				</form>
 			</div>';
-		$bottomrow .= '<a href="'.strtok($_SERVER["REQUEST_URI"],'?').'?page='.$pageplus.'" id="next" class="btn btn-outline-secondary">'.$this->getLocalizedString("next").' <i class="fa-solid fa-chevron-right" aria-hidden="true"></i></a><a id="last" href="'.strtok($_SERVER["REQUEST_URI"],'?').'?page='. $pagecount .'" class="btn btn-outline-secondary">'.$this->getLocalizedString("last").' <i class="fa-solid fa-forward" aria-hidden="true"></i></a>';
+		$bottomrow .= '<form method="get" style="margin:0">'.$inputSearch.'<button type="submit" name="page" style="border-radius:0px" value='.$pageplus.' id="next" class="btn btn-outline-secondary">'.$this->getLocalizedString("next").' <i class="fa-solid fa-chevron-right" aria-hidden="true"></i></button></form><form method="get" style="margin:0;">'.$inputSearch.'<button type="submit" name="page" id="last" style="border-top-left-radius:0px !important;border-bottom-left-radius:0px !important;border-radius:500px" value='. $pagecount .' class="btn btn-outline-secondary">'.$this->getLocalizedString("last").' <i class="fa-solid fa-forward" aria-hidden="true"></i></button></form>';
 		$bottomrow .= "</div><script>
 			function disableElement(element){
 				if(element){
@@ -431,12 +432,12 @@ $(document).change(function(){
 			var pagecount = $pagecount;
 			var actualpage = $actualpage;
 			if(actualpage == 1){
-				disableElement(document.getElementById('first'));
-				disableElement(document.getElementById('prev'));
+				document.getElementById('first').disabled = true;
+				document.getElementById('prev').disabled = true;
 			}
 			if(pagecount == actualpage){
-				disableElement(document.getElementById('last'));
-				disableElement(document.getElementById('next'));
+				document.getElementById('last').disabled = true;
+				document.getElementById('next').disabled = true;
 			}
 			</script>";
 		return $bottomrow;

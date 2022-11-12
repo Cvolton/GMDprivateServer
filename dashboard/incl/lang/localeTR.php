@@ -7,7 +7,7 @@ $string["welcome"] = $gdps." sunucusuna hoş geldiniz!";
 $string["didntInstall"] = "<div style='color:#47a0ff'><b>Uyarı!</b> Dashboard'ı tam olarak kurmamışsınız! Buraya basarak tam kurulumu yapın.</div>";
 $string["levelsWeek"] = "Bir hafta içinde yüklenen bölümler";
 $string["levels3Months"] = "3 ayda yüklenen bölümler";
-$string["footer"] = $gdps.", ".date('Y', time());
+$string["footer"] = $gdps."? 2020 - ".date('Y', time());
 
 $string["tryCron"] = "Cron çalıştır";
 $string["cronSuccess"] = "Başarılı!";
@@ -190,6 +190,10 @@ $string["usernameTarget"] = "Hedef sunucudaki kullanıcı adı";
 $string["passwordTarget"] = "Hedef sunucudaki şifre";
 $string["notYourLevel"] = "Bu senin bölümün değil!";
 $string["reuploadFailed"] = "Aktarma hatası!";
+
+$string["search"] = "Search...";
+$string["searchCancel"] = "Cancel search";
+$string["emptySearch"] = "Nothing found!";
 
 /*
 	REUPLOAD
