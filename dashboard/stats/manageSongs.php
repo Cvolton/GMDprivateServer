@@ -89,7 +89,8 @@ $table .= '</table><form method="get" class="form__inner">
 	bottom row
 */
 //getting count
-$query = $db->prepare("SELECT count(*) FROM songs WHERE reuploadID=:id");
+if(!empty($_GET["search"])) $query = $db->prepare("SELECT count(*) FROM songs WHERE reuploadID=:id AND (name LIKE '%".ExploitPatch::remove($_GET["search"])."%' OR authorName LIKE '%".ExploitPatch::remove($_GET["search"])."%')");
+else $query = $db->prepare("SELECT count(*) FROM songs WHERE reuploadID=:id");
 $query->execute([':id' => $accountID]);
 $packcount = $query->fetchColumn();
 $pagecount = ceil($packcount / 10);

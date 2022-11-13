@@ -419,7 +419,7 @@ $(document).change(function(){
 			}
 		}
 		$bottomrow .= '</div>
-					<button type="submit" class="btn btn-primary btn-block">'.$this->getLocalizedString("go").'</button>
+					<button type="submit" class="btn btn-primary">'.$this->getLocalizedString("go").'</button>
 				</form>
 			</div>';
 		$bottomrow .= '<form method="get" style="margin:0">'.$inputSearch.'<button type="submit" name="page" style="border-radius:0px" value='.$pageplus.' id="next" class="btn btn-outline-secondary">'.$this->getLocalizedString("next").' <i class="fa-solid fa-chevron-right" aria-hidden="true"></i></button></form><form method="get" style="margin:0;">'.$inputSearch.'<button type="submit" name="page" id="last" style="border-top-left-radius:0px !important;border-bottom-left-radius:0px !important;border-radius:500px" value='. $pagecount .' class="btn btn-outline-secondary">'.$this->getLocalizedString("last").' <i class="fa-solid fa-forward" aria-hidden="true"></i></button></form>';

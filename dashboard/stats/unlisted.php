@@ -96,7 +96,8 @@ $table .= '</table><form method="get" class="form__inner">
 	bottom row
 */
 //getting count
-$query = $db->prepare("SELECT count(*) FROM levels WHERE unlisted=1 AND extID = :id");
+if(!empty($_GET["search"])) $query = $db->prepare("SELECT count(*) FROM levels WHERE unlisted=1 AND extID = :id AND levelName LIKE '%".ExploitPatch::remove($_GET["search"])."%'");
+else $query = $db->prepare("SELECT count(*) FROM levels WHERE unlisted=1 AND extID = :id");
 $query->execute([':id' => $_SESSION["accountID"]]);
 $packcount = $query->fetchColumn();
 $pagecount = ceil($packcount / 10);

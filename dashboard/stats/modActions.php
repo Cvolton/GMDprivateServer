@@ -4,6 +4,7 @@ require "../incl/dashboardLib.php";
 require "../".$dbPath."incl/lib/connection.php";
 $dl = new dashboardLib();
 require "../".$dbPath."incl/lib/mainLib.php";
+require "../".$dbPath."incl/lib/exploitPatch.php";
 $gs = new mainLib();
 $dl->title($dl->getLocalizedString("modActions"));
 $dl->printFooter('../');
@@ -13,7 +14,11 @@ if($accounts == ""){
 	$dl->printBox(sprintf($dl->getLocalizedString("errorNoAccWithPerm"), "toolsModactions"));
 	exit();
 }
-$query = $db->prepare("SELECT accountID, userName FROM accounts WHERE accountID IN ($accounts) ORDER BY userName ASC");
+if(!empty($_GET["search"])) {
+	$query = $db->prepare("SELECT accountID, userName FROM accounts WHERE accountID IN ($accounts) AND userName LIKE '%".ExploitPatch::remove($_GET["search"])."%' ORDER BY userName ASC");
+	$srcbtn = '<a href="'.$_SERVER["SCRIPT_NAME"].'" style="width: 0%;display: flex;margin-left: 5px;align-items: center;justify-content: center;color: indianred; text-decoration:none" class="btn-primary" title="'.$dl->getLocalizedString("searchCancel").'"><i class="fa-solid fa-xmark"></i></a>';
+}
+ else $query = $db->prepare("SELECT accountID, userName FROM accounts WHERE accountID IN ($accounts) ORDER BY userName ASC");
 $query->execute();
 $result = $query->fetchAll();
 $row = 0;
@@ -90,5 +95,11 @@ $dl->printPage('<table class="table table-inverse">
   <tbody>
     '.$modtable.'
   </tbody>
-</table>', true, "stats");
+</table><form method="get" class="form__inner">
+	<div class="field" style="display:flex">
+		<input style="border-top-right-radius: 0;border-bottom-right-radius: 0;" type="text" name="search" value="'.$_GET["search"].'" placeholder="'.$dl->getLocalizedString("search").'">
+		<button style="width: 6%;border-top-left-radius:0px !important;border-bottom-left-radius:0px !important" type="submit" class="btn-primary" title="'.$dl->getLocalizedString("search").'"><i class="fa-solid fa-magnifying-glass"></i></button>
+		'.$srcbtn.'
+	</div>
+</form>', true, "stats");
 ?>

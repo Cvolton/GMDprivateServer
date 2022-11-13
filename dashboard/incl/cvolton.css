@@ -755,3 +755,6 @@ table,
 .tooactive {
 	font-weight: 700;
 }
+.btn-outline-secondary:enabled {
+	cursor: pointer;
+}

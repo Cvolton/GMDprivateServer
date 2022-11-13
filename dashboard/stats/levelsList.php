@@ -121,7 +121,8 @@ $table .= '</table><form method="get" class="form__inner">
 	bottom row
 */
 //getting count
-$query = $db->prepare("SELECT count(*) FROM levels WHERE unlisted=0");
+if(!empty($_GET["search"])) $query = $db->prepare("SELECT count(*) FROM levels WHERE unlisted=0 AND levelName LIKE '%".ExploitPatch::remove($_GET["search"])."%'");
+else $query = $db->prepare("SELECT count(*) FROM levels WHERE unlisted=0");
 $query->execute();
 $packcount = $query->fetchColumn();
 $pagecount = ceil($packcount / 10);
