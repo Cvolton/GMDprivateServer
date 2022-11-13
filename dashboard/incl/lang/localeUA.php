@@ -192,10 +192,9 @@ $string["passwordTarget"] = "Пароль для обраного серверу
 $string["notYourLevel"] = "Це не ваш рівень!";
 $string["reuploadFailed"] = "Помилка перенесення рівня!";
 
-$string["search"] = "Поиск...";
-$string["searchCancel"] = "Отменить поиск";
-$string["emptySearch"] = "Ничего не найдено!";
-
+$string["search"] = "Пошук...";
+$string["searchCancel"] = "Відмінити пошук";
+$string["emptySearch"] = "Нічого не знайдено!";
 
 /*
 	REUPLOAD
