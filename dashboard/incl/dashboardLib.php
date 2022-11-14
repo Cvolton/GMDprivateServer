@@ -405,6 +405,7 @@ $(document).change(function(){
 		$pageplus = $actualpage + 1;
       	if($pagecount < 2) return '';
 		$inputSearch = !empty($_GET["search"]) ? '<input type="hidden" name="search" value="'.$_GET["search"].'">' : '';
+		if(!empty($_GET["type"] OR !empty($_GET["who"]))) $inputSearch .= '<input type="hidden" name="type" value="'.$_GET["type"].'"><input type="hidden" name="who" value="'.$_GET["who"].'">';
 		$bottomrow = '<div>'.sprintf($this->getLocalizedString("pageInfo"),$actualpage,$pagecount).'</div><div class="btn-group" style="margin-left:auto; margin-right:0;">';
 		$bottomrow .= '<form method="get" style="margin:0">'.$inputSearch.'<button type="submit" name="page" id="first" style="border-top-right-radius:0px !important;border-bottom-right-radius:0px !important;border-radius:500px" value=1 class="btn btn-outline-secondary"><i class="fa-solid fa-backward" aria-hidden="true"></i> '.$this->getLocalizedString("first").'</button></form><form method="get" style="margin:0">'.$inputSearch.'<button style="border-radius:0" type="submit" id="prev" value='. $pageminus .' class="btn btn-outline-secondary"><i class="fa-solid fa-chevron-left" aria-hidden="true"></i> '.$this->getLocalizedString("previous").'</button></form>';
 		//updated to ".."
