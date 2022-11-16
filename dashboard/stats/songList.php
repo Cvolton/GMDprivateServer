@@ -30,8 +30,9 @@ if(!empty($_GET["author"]) AND !empty($_GET["name"])) {
 $table = '<div class="notifyblue" style="display:'.$notify.'">'.$dl->getLocalizedString("renamedSong").' <b>'.$an.'</b> - <b>'.$nn.'</b>!</div><table class="table table-inverse"><tr><th>#</th><th>'.$dl->getLocalizedString("songIDw").'</th><th>'.$dl->getLocalizedString("songAuthor").'</th><th>'.$dl->getLocalizedString("name").'</th><th>'.$dl->getLocalizedString("size").'</th><th>'.$dl->getLocalizedString("time").'</th>'.$me.'</tr>';
 
 if(!empty($_GET["search"])) {
+	$ngw = $_GET["ng"] == 1 ? '' : 'reuploadID > 0';
 	$srcbtn = '<a href="'.$_SERVER["SCRIPT_NAME"].'" style="width: 0%;display: flex;margin-left: 5px;align-items: center;justify-content: center;color: indianred; text-decoration:none" class="btn-primary" title="'.$dl->getLocalizedString("searchCancel").'"><i class="fa-solid fa-xmark"></i></a>';
-	$query = $db->prepare("SELECT * FROM songs WHERE name LIKE '%".ExploitPatch::remove($_GET["search"])."%' OR authorName LIKE '%".ExploitPatch::remove($_GET["search"])."%' ORDER BY ID DESC LIMIT 10 OFFSET $page");
+	$query = $db->prepare("SELECT * FROM songs WHERE (name LIKE '%".ExploitPatch::remove($_GET["search"])."%' OR authorName LIKE '%".ExploitPatch::remove($_GET["search"])."%') $ngw ORDER BY ID DESC LIMIT 10 OFFSET $page");
 	$query->execute();
 	$result = $query->fetchAll();
 	if(empty($result)) {
@@ -45,7 +46,8 @@ if(!empty($_GET["search"])) {
 		die();
 	} 
 } else {
-	$query = $db->prepare("SELECT * FROM songs ORDER BY ID ASC LIMIT 10 OFFSET $page");
+	$ngw = $_GET["ng"] == 1 ? '' : 'WHERE reuploadID > 0';
+	$query = $db->prepare("SELECT * FROM songs $ngw ORDER BY ID ASC LIMIT 10 OFFSET $page");
 	$query->execute();
 	$result = $query->fetchAll();
 }
@@ -144,7 +146,7 @@ $table .= '</table><form method="get" class="form__inner">
 */
 //getting count
 if(!empty($_GET["search"])) $query = $db->prepare("SELECT count(*) FROM songs WHERE name LIKE '%".ExploitPatch::remove($_GET["search"])."%' OR authorName LIKE '%".ExploitPatch::remove($_GET["search"])."%'");
-else $query = $db->prepare("SELECT count(*) FROM songs");
+else $query = $db->prepare("SELECT count(*) FROM songs $ngw");
 $query->execute();
 $packcount = $query->fetchColumn();
 $pagecount = ceil($packcount / 10);
