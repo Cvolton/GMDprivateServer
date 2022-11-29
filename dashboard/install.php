@@ -1,7 +1,7 @@
 <?php
-include "../incl/lib/connection.php";
-include "../config/dashboard.php";
 include "incl/dashboardLib.php";
+include $dbPath."incl/lib/connection.php";
+include $dbPath."config/dashboard.php";
 if(!$installed) {
 	$info = $db->query("SHOW VARIABLES like '%version%'")->fetchAll(PDO::FETCH_KEY_PAIR);
 	$server  = strtok($info['version_comment']," ");
