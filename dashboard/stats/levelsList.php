@@ -82,25 +82,9 @@ foreach($result as &$action){
                                         <div class="ratecheck"><input type="radio" style="margin-right:5px;margin-left: 2px" name="featured" value="0">'.$dl->getLocalizedString("isAdminNo").'</input>
                                         <input type="radio" style="margin-right:5px;margin-left: 2px" name="featured" value="1">Featured</input>
                                         <input type="radio" style="margin-right:5px;margin-left: 2px" name="featured" value="2">Epic</div>
-										<button type="submit" class="btn-song btn-block" id="submit" name="level" value="'.$levelid.'" disabled>'.$dl->getLocalizedString("rate").'</button>
+										<button type="submit" class="btn-song" id="submit" name="level" value="'.$levelid.'">'.$dl->getLocalizedString("rate").'</button>
 									</form>
-								</div>
-                                <script>
-$(document).change(function(){
-   const p1 = document.getElementById("p1");
-   const btn = document.getElementById("submit");
-   if(!p1.value.trim().length) {
-                btn.disabled = true;
-                btn.classList.add("btn-block");
-                btn.classList.remove("btn-song");
-	} else {
-		        btn.removeAttribute("disabled");
-                btn.classList.remove("btn-block");
-                btn.classList.remove("btn-size");
-                btn.classList.add("btn-song");
-	}
-});
-</script>';
+								</div>';
 	} elseif($stars == 0) $stars = '<div style="color:gray">'.$dl->getLocalizedString("unrated").'</div>';
 	if($gs->checkPermission($_SESSION["accountID"], "dashboardModTools")){
 	$table .= "<tr><th scope='row'>".$x."</th><td>".$levelid."</td><td>".$levelname."</td><td>".$username."</td><td>".$levelDesc."</td><td>".$levelpass."</td><td>".$stars."</td><td>".$songid."</td></tr>";
