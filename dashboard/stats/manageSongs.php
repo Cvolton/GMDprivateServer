@@ -26,7 +26,7 @@ if(!empty($_GET["author"]) AND !empty($_GET["name"])) {
 	$an = 0;
 	$nn = 0;
 }
-$table = '<div class="notify" style="display:'.$notify.'">'.$dl->getLocalizedString("deletedSong").' <b>'.$an.'</b> - <b>'.$nn.'</b>!</div><table class="table table-inverse"><tr><th>#</th><th>'.$dl->getLocalizedString("songIDw").'</th><th>'.$dl->getLocalizedString("songAuthor").'</th><th>'.$dl->getLocalizedString("name").'</th><th>'.$dl->getLocalizedString("size").'</th><th>'.$dl->getLocalizedString("time").'</th></tr>';
+$table = '<div class="notify" style="display:'.$notify.'">'.$dl->getLocalizedString("deletedSong").' <b>'.$an.'</b> - <b>'.$nn.'</b>!</div><table class="table table-inverse"><tr><th>#</th><th></th><th>'.$dl->getLocalizedString("songIDw").'</th><th>'.$dl->getLocalizedString("songAuthor").'</th><th>'.$dl->getLocalizedString("name").'</th><th>'.$dl->getLocalizedString("size").'</th><th>'.$dl->getLocalizedString("time").'</th></tr>';
 $accountID = $_SESSION["accountID"];
 if(!empty($_GET["search"])) {
 	$srcbtn = '<a href="'.$_SERVER["SCRIPT_NAME"].'" style="width: 0%;display: flex;margin-left: 5px;align-items: center;justify-content: center;color: indianred; text-decoration:none" class="btn-primary" title="'.$dl->getLocalizedString("searchCancel").'"><i class="fa-solid fa-xmark"></i></a>';
@@ -65,6 +65,7 @@ foreach($result as &$action){
 	$author = $action["authorName"];
    	if(strlen($author) > 18) $author = "<details><summary>".$dl->getLocalizedString("spoiler")."</summary>$author</details>";
 	$name = $action["name"];
+	$download = $action["download"];
   	if(strlen($name) > 30) $name = "<details><summary>".$dl->getLocalizedString("spoiler")."</summary>$name</details>";
   	$delete = '<td><a style="color:#ff444c" class="btn-rendel" href="stats/deleteSong.php?ID='.$songsid.'">'.$dl->getLocalizedString("delete").'</a></td>';
 	$size = $action["size"];
@@ -75,7 +76,18 @@ foreach($result as &$action){
       	$size = '<div style="text-decoration:line-through;color:#8b2e2c">'.$size.'</div>';
       	$time = '<div style="text-decoration:line-through;color:#8b2e2c">'.$time.'</div>';
 	}
-	$table .= "<tr><th scope='row'>".$x."</th><td>".$songsid."</td><td>".$author."</td><td>".$name."</td><td>".$size."</td><td>".$time."</td><td>".$delete."</td></tr>";
+	$btn = '<button type="button" title="'.$songsid.'.mp3" style="display: contents;color: white;margin: 0;" onclick="btn'.$songsid.'();"><div class="icon" style="font-size:13px; height:25px;width:25px;background:#373A3F;margin-left: 0px;margin-right: -9px;"><i class="fa-solid fa-play" aria-hidden="false"></i></div><audio name="song" preload="metadata" controls class="audio" id="'.$songsid.'" style="display: none"><source src="'.$download.'" type="audio/mpeg"></audio></button>
+	<script>
+	function btn'.$songsid.'(){
+		document.getElementById("'.$songsid.'").volume = 0.2;
+		var elems=document.getElementsByTagName("audio");
+		for(var i=0; i<elems.length; i++)elems[i].pause();
+		for(var i=0; i<elems.length; i++)elems[i].style.display="none";
+		document.getElementById("'.$songsid.'").style.display = "block";
+		document.getElementById("'.$songsid.'").play();
+	}
+	</script>';
+	$table .= "<tr><th scope='row'>".$x."</th><td>".$btn."</td><td>".$songsid."</td><td>".$author."</td><td>".$name."</td><td>".$size."</td><td>".$time."</td><td>".$delete."</td></tr>";
 	$x++;
 }
 $table .= '</table><form method="get" class="form__inner">

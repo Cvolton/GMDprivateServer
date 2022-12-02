@@ -27,7 +27,7 @@ if(!empty($_GET["author"]) AND !empty($_GET["name"])) {
 	$an = 0;
 	$nn = 0;
 }
-$table = '<div class="notifyblue" style="display:'.$notify.'">'.$dl->getLocalizedString("renamedSong").' <b>'.$an.'</b> - <b>'.$nn.'</b>!</div><table class="table table-inverse"><tr><th>#</th><th>'.$dl->getLocalizedString("songIDw").'</th><th>'.$dl->getLocalizedString("songAuthor").'</th><th>'.$dl->getLocalizedString("name").'</th><th>'.$dl->getLocalizedString("size").'</th><th>'.$dl->getLocalizedString("time").'</th>'.$me.'</tr>';
+$table = '<div class="notifyblue" style="display:'.$notify.'">'.$dl->getLocalizedString("renamedSong").' <b>'.$an.'</b> - <b>'.$nn.'</b>!</div><table class="table table-inverse"><tr><th>#</th><th></th><th>'.$dl->getLocalizedString("songIDw").'</th><th>'.$dl->getLocalizedString("songAuthor").'</th><th>'.$dl->getLocalizedString("name").'</th><th>'.$dl->getLocalizedString("size").'</th><th>'.$dl->getLocalizedString("time").'</th>'.$me.'</tr>';
 
 if(!empty($_GET["search"])) {
 	$ngw = $_GET["ng"] == 1 ? '' : 'reuploadID > 0';
@@ -69,9 +69,25 @@ foreach($result as &$action){
   	$author = $action["authorName"];
 	$name = $action["name"];
 	$size = $action["size"];
+	$download = $action["download"];
 	if($action["reuploadID"] == 0) {
+		$download = str_replace('%3A', ':', $download);
+		$download = str_replace('%2F', '/', $download);
 		$time = "<div style='color:gray'>Newgrounds</div>";
 		$who = "<div><a style='color:#a7a7ff' target='_blank' href='https://".$author.".newgrounds.com/audio';>".$author."</a></div>";
+		$btn = '<button type="button" title="'.$songsid.'.mp3" style="display: contents;color: #ffb1ab;margin: 0;" onclick="btn'.$songsid.'();"><div class="icon" style="font-size:13px; height:25px;width:25px;background:#373A3F;margin-left: 0px;margin-right: -9px;"><i class="fa-solid fa-xmark" aria-hidden="false"></i></div>';
+	} else {
+		$btn = '<button type="button" title="'.$songsid.'.mp3" style="display: contents;color: white;margin: 0;" onclick="btn'.$songsid.'();"><div class="icon" style="font-size:13px; height:25px;width:25px;background:#373A3F;margin-left: 0px;margin-right: -9px;"><i class="fa-solid fa-play" aria-hidden="false"></i></div><audio name="song" preload="metadata" controls class="audio" id="'.$songsid.'" style="display: none"><source src="'.$download.'" type="audio/mpeg"></audio></button>
+		<script>
+			function btn'.$songsid.'(){
+				document.getElementById("'.$songsid.'").volume = 0.2;
+				var elems=document.getElementsByTagName("audio");
+				for(var i=0; i<elems.length; i++)elems[i].pause();
+				for(var i=0; i<elems.length; i++)elems[i].style.display="none";
+				document.getElementById("'.$songsid.'").style.display = "block";
+				document.getElementById("'.$songsid.'").play();
+			}
+		</script>';
 	}
   	if(strlen($author) > 18) $author = "<details><summary>".$dl->getLocalizedString("spoiler")."</summary>$author</details>";
   	if(strlen($name) > 30) $name = "<details><summary>".$dl->getLocalizedString("spoiler")."</summary>$name</details>";
@@ -113,6 +129,7 @@ $(document).change(function(){
 if($gs->checkPermission($_SESSION["accountID"], "dashboardManageSongs")){
 	$table .= "<tr>
 						<th scope='row'>".$x."</th>
+						<td>".$btn."</td>
 						<td>".$songsid."</td>
 						<td>".$author."</td>
 						<td>".$name."</td>
@@ -125,6 +142,7 @@ if($gs->checkPermission($_SESSION["accountID"], "dashboardManageSongs")){
 } else {
 	$table .= "<tr>
 						<th scope='row'>".$x."</th>
+						<td>".$btn."</td>
 						<td>".$songsid."</td>
 						<td>".$author."</td>
 						<td>".$name."</td>
