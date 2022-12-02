@@ -1,6 +1,5 @@
 <?php
 session_start();
-error_reporting(E_ALL);
 include "../incl/dashboardLib.php";
 require "../".$dbPath."incl/lib/Captcha.php";
 include "../".$dbPath."incl/lib/connection.php";
