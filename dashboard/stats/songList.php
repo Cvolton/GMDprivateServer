@@ -149,6 +149,7 @@ if($gs->checkPermission($_SESSION["accountID"], "dashboardManageSongs")){
 						<td>".$size."</td>
 						<td>".$time."</td>
 						</tr>";
+	$x++;
 }
 
 }
