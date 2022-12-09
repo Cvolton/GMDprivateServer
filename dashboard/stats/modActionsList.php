@@ -66,7 +66,10 @@ foreach($result as &$action){
 	if($action["type"] == 2 OR $action["type"] == 3 OR $action["type"] == 4){
 		if($action["value"] == 1) $value = '<text style="color:gray">'.$dl->getLocalizedString("isAdminYes").'</text>';
       	else $value = '<text style="color:gray">'.$dl->getLocalizedString("isAdminNo").'</text>';
-		$value2 = $gs->getLevelName($value3);
+		$desc = $db->prepare("SELECT levelName FROM levels WHERE levelID = :id");
+		$desc->execute([':id' => $value3]);
+		$desc = $desc->fetch();
+		$value2 = $desc["levelName"];
     }
 	if($action["type"] == 13){
 		$value = base64_decode($value);
