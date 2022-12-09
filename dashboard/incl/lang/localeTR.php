@@ -7,7 +7,7 @@ $string["welcome"] = $gdps." sunucusuna hoş geldiniz!";
 $string["didntInstall"] = "<div style='color:#47a0ff'><b>Uyarı!</b> Dashboard'ı tam olarak kurmamışsınız! Buraya basarak tam kurulumu yapın.</div>";
 $string["levelsWeek"] = "Bir hafta içinde yüklenen bölümler";
 $string["levels3Months"] = "3 ayda yüklenen bölümler";
-$string["footer"] = $gdps.", ".date('Y', time());
+$string["footer"] = $gdps."? 2020 - ".date('Y', time());
 
 $string["tryCron"] = "Cron çalıştır";
 $string["cronSuccess"] = "Başarılı!";
@@ -292,6 +292,7 @@ $string["levelpass"] = "Şifre";
 $string["nopass"] = "Şifre yok";
 $string["unrated"] = "Derecesiz";
 $string["rate"] = "Derecelendir";
+$string["stats"] = "İstatistik";
 $string["suggestFeatured"] = "Tavsiye et?";
 $string["whoAdded"] = "Kim ekledi?";
 //modActionsList
@@ -364,6 +365,8 @@ $string["modAction19"] = "(19)Şarkı değiştirildi";
 $string["modAction20"] = "(20)Moderatörlük verdi";
 $string["modAction25"] = "(25)Quest oluşturdu";
 $string["modAction26"] = "(26)Kullanıcı adı/şifre değiştirdi";
+$string["everyActions"] = "Any actions";
+$string["everyMod"] = "All moderators";
 $string["Kish!"] = "Uzak dur!";
 $string["noPermission"] = "İznin yok!";
 $string["noLogin?"] = "Hesabına giriş yapmadın!";

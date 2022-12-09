@@ -293,6 +293,7 @@ $string["levelpass"] = "Mot de passe";
 $string["nopass"] = "Aucun mot de passe";
 $string["unrated"] = "Unrate (retiré d'étoiles)";
 $string["rate"] = "Rate (étoiler)";
+$string["stats"] = "Statistique";
 $string["suggestFeatured"] = "En vedette?";
 $string["whoAdded"] = "Qui l'a ajouté?";
 //modActionsList
@@ -365,6 +366,8 @@ $string["modAction19"] = "A changé une chanson";
 $string["modAction20"] = "Donné les permissions modérateur à un joueur";
 $string["modAction25"] = "A créé une quête";
 $string["modAction26"] = "A changé le nom d'utilisateur/mot de passe du joueur";
+$string["everyActions"] = "Any actions";
+$string["everyMod"] = "All moderators";
 $string["Kish!"] = "Part d'ici!";
 $string["noPermission"] = "Vous n'avez pas la permission!";
 $string["noLogin?"] = "Vous n'êtes pas connecté à votre compte!";

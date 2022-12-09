@@ -7,7 +7,7 @@ $string["welcome"] = "Welcome to ".$gdps.'!';
 $string["didntInstall"] = "<div style='color:#47a0ff'><b>Warning!</b> You haven't fully installed dashboard! Click on the text to do this.</div>";
 $string["levelsWeek"] = "Levels uploaded in a week";
 $string["levels3Months"] = "Levels uploaded in 3 months";
-$string["footer"] = $gdps.", ".date('Y', time());
+$string["footer"] = $gdps."? 2020 - ".date('Y', time());
 
 $string["tryCron"] = "Run Cron";
 $string["cronSuccess"] = "Success!";
@@ -292,6 +292,7 @@ $string["levelpass"] = "Password";
 $string["nopass"] = "No password";
 $string["unrated"] = "Unrated";
 $string["rate"] = "Rate";
+$string["stats"] = "Stats";
 $string["suggestFeatured"] = "Featured?";
 $string["whoAdded"] = "Who added?";
 //modActionsList
@@ -364,6 +365,8 @@ $string["modAction19"] = "Changed song";
 $string["modAction20"] = "Granted a moderator to player";
 $string["modAction25"] = "Created a quest";
 $string["modAction26"] = "Changed player's username/password";
+$string["everyActions"] = "Any actions";
+$string["everyMod"] = "All moderators";
 $string["Kish!"] = "Go away!";
 $string["noPermission"] = "You don't have permission!";
 $string["noLogin?"] = "You are not logged into your account!";

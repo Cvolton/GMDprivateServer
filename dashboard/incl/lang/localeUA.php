@@ -7,7 +7,7 @@ $string["welcome"] = "Ласкаво просимо до ".$gdps.'!';
 $string["didntInstall"] = "<div style='color:#47a0ff'><b>Увага!</b> Ви не до кінця встановили панель серверу! Нажміть на текст, щоб це зробити.</div>";
 $string["levelsWeek"] = "Викладено рівнів за тиждень";
 $string["levels3Months"] = "Викладено рівнів за 3 місяці";
-$string["footer"] = $gdps.", ".date('Y', time());
+$string["footer"] = $gdps."? 2020 - ".date('Y', time());
 
 $string["tryCron"] = "Виконати Cron";
 $string["cronSuccess"] = "Готово!";
@@ -192,9 +192,10 @@ $string["passwordTarget"] = "Пароль для обраного серверу
 $string["notYourLevel"] = "Це не ваш рівень!";
 $string["reuploadFailed"] = "Помилка перенесення рівня!";
 
-$string["search"] = "Пошук...";
-$string["searchCancel"] = "Відмінити пошук";
-$string["emptySearch"] = "Нічого не знайдено!";
+$string["search"] = "Поиск...";
+$string["searchCancel"] = "Отменить поиск";
+$string["emptySearch"] = "Ничего не найдено!";
+
 
 /*
 	REUPLOAD
@@ -293,6 +294,7 @@ $string["levelpass"] = "Пароль";
 $string["nopass"] = "Без пароля";
 $string["unrated"] = "Не оцінений";
 $string["rate"] = "Оцінка";
+$string["stats"] = "Статистика";
 $string["suggestFeatured"] = "Featured?";
 $string["whoAdded"] = "Хто додав?";
 //modActionsList
@@ -365,6 +367,8 @@ $string["modAction19"] = "Змінив(ла) пісню";
 $string["modAction20"] = "Зробив(ла) модератором користувача";
 $string["modAction25"] = "Створив(ла) квест";
 $string["modAction26"] = "Змінив(ла) нікнейм/пароль користувачу";
+$string["everyActions"] = "Любые действия";
+$string["everyMod"] = "Все модераторы";
 $string["Kish!"] = "Киш!";
 $string["noPermission"] = "У вас немає прав!";
 $string["noLogin?"] = "Ви не ввійшли в акаунт!";
