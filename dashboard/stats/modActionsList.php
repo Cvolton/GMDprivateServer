@@ -1,7 +1,6 @@
 <?php
 session_start();
 require "../incl/dashboardLib.php";
-require "../".$dbPath."incl/lib/connection.php";
 $dl = new dashboardLib();
 require "../".$dbPath."incl/lib/mainLib.php";
 require "../".$dbPath."incl/lib/exploitPatch.php";
@@ -62,10 +61,12 @@ foreach($result as &$action){
   	if($action["type"] == 1) {
 		if($value2 == 1) $star = 0; elseif($value2 < 5 AND $value2 != 0) $star = 1; else $star = 2;
       	$value2 = $value2.' '.$dl->getLocalizedString("starsLevel$star");
+		if($value == 0) $value = '<text style="color:gray">'.$dl->getLocalizedString("isAdminNo").'</text>';
     }
 	if($action["type"] == 2 OR $action["type"] == 3 OR $action["type"] == 4){
 		if($action["value"] == 1) $value = '<text style="color:gray">'.$dl->getLocalizedString("isAdminYes").'</text>';
       	else $value = '<text style="color:gray">'.$dl->getLocalizedString("isAdminNo").'</text>';
+		$value2 = $gs->getLevelName($value3);
     }
 	if($action["type"] == 13){
 		$value = base64_decode($value);
@@ -88,8 +89,11 @@ foreach($result as &$action){
 	if(strlen($action["value"]) > 18) $value = "<details><summary>".$dl->getLocalizedString("spoiler")."</summary>$value</details>";
   	if(strlen($action["value2"]) > 18) $value2 = "<details><summary>".$dl->getLocalizedString("spoiler")."</summary>$value2</details>";
 	$time = $dl->convertToDate($action["timestamp"]);
-	if($action["type"] == 5 AND $action["value2"] > time()){
-		$value2 = $dl->getLocalizedString("future");
+	if($action["type"] == 5){
+		$desc = $db->prepare("SELECT levelName FROM levels WHERE levelID = :id");
+		$desc->execute([':id' => $value]);
+		$desc = $desc->fetch();
+		$value2 = $desc["levelName"];
 	}
 	$table .= "<tr><th scope='row'>".$x."</th><td>".$account."</td><td>".$actionname."</td><td>".$value."</td><td>".$value2."</td><td>".$value3."</td><td>".$time."</td></tr>";
 	$x++;
