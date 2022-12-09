@@ -112,7 +112,7 @@ foreach($mods as &$mod) {
 $table .= '</table><form method="get" class="form__inner">
 	<div class="field" style="display:flex">
 		<select id="sel1" style="border-top-right-radius: 0;margin:0;border-bottom-right-radius: 0;" name="type" value="'.$_GET["type"].'" placeholder="'.$dl->getLocalizedString("search").'">
-		    <option value="0">Любые действия</option>
+		    <option value="0">'.$dl->getLocalizedString("everyActions").'</option>
 			<option value="1">'.$dl->getLocalizedString("modAction1").'</option>
 			<option value="2">'.$dl->getLocalizedString("modAction2").'</option>
 			<option value="3">'.$dl->getLocalizedString("modAction3").'</option>
@@ -137,7 +137,7 @@ $table .= '</table><form method="get" class="form__inner">
 			<option value="26">'.$dl->getLocalizedString("modAction26").'</option>
 		</select>
 		<select id="sel2" style="border-radius: 0;margin:0;width:35%" name="who" value="'.$_GET["who"].'" placeholder="'.$dl->getLocalizedString("search").'">
-			<option value="0">Все модераторы</option>
+			<option value="0">'.$dl->getLocalizedString("everyMod").'</option>
 			'.$options.'
 		</select>
 		<button style="width: 6%;border-top-left-radius:0px !important;border-bottom-left-radius:0px !important" type="submit" class="btn-primary" title="'.$dl->getLocalizedString("search").'"><i class="fa-solid fa-magnifying-glass"></i></button>
