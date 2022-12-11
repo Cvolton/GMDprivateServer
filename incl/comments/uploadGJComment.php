@@ -19,8 +19,11 @@ $register = is_numeric($id);
 $userID = $mainLib->getUserID($id, $userName);
 $uploadDate = time();
 $decodecomment = base64_decode($comment);
-if(Commands::doCommands($id, $decodecomment, $levelID)){
+$cmd = Commands::doCommands($id, $decodecomment, $levelID);
+if($cmd=="1"){
 	exit($gameVersion > 20 ? "temp_0_Command executed successfully!" : "-1");
+} else {
+	if($cmd != false)exit($gameVersion > 20 ? "temp_0_" . $cmd : "-1");
 }
 if($id != "" AND $comment != ""){
 	$query = $db->prepare("INSERT INTO comments (userName, comment, levelID, userID, timeStamp, percent) VALUES (:userName, :comment, :levelID, :userID, :uploadDate, :percent)");
