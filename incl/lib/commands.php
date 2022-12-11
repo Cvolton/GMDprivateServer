@@ -55,31 +55,30 @@ class Commands {
 			return true;
 		}
 		if(substr($comment,0,8) == '!feature' AND $gs->checkPermission($accountID, "commandFeature")){
-			$query = $db->prepare("UPDATE levels SET starFeatured='1' WHERE levelID=:levelID");
+			$v = $commentarray[1];
+			if($v=="")$v=1;
+			$query = $db->prepare("UPDATE levels SET starFeatured=$v WHERE levelID=:levelID");
 			$query->execute([':levelID' => $levelID]);
 			$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('2', :value, :levelID, :timestamp, :id)");
-			$query->execute([':value' => "1", ':timestamp' => $uploadDate, ':id' => $accountID, ':levelID' => $levelID]);
+			$query->execute([':value' => $v, ':timestamp' => $uploadDate, ':id' => $accountID, ':levelID' => $levelID]);
 			return true;
 		}
 		if(substr($comment,0,5) == '!epic' AND $gs->checkPermission($accountID, "commandEpic")){
-			$query = $db->prepare("UPDATE levels SET starEpic='1' WHERE levelID=:levelID");
+			$v = $commentarray[1];
+			if($v=="")$v=1;
+			$query = $db->prepare("UPDATE levels SET starEpic=$v WHERE levelID=:levelID");
 			$query->execute([':levelID' => $levelID]);
 			$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('4', :value, :levelID, :timestamp, :id)");
-			$query->execute([':value' => "1", ':timestamp' => $uploadDate, ':id' => $accountID, ':levelID' => $levelID]);
+			$query->execute([':value' => $v, ':timestamp' => $uploadDate, ':id' => $accountID, ':levelID' => $levelID]);
 			return true;
 		}
-		if(substr($comment,0,7) == '!unepic' AND $gs->checkPermission($accountID, "commandUnepic")){
-			$query = $db->prepare("UPDATE levels SET starEpic='0' WHERE levelID=:levelID");
-			$query->execute([':levelID' => $levelID]);
-			$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('4', :value, :levelID, :timestamp, :id)");
-			$query->execute([':value' => "0", ':timestamp' => $uploadDate, ':id' => $accountID, ':levelID' => $levelID]);
-				return true;
-		}
 		if(substr($comment,0,12) == '!verifycoins' AND $gs->checkPermission($accountID, "commandVerifycoins")){
-			$query = $db->prepare("UPDATE levels SET starCoins='1' WHERE levelID = :levelID");
+			$vc = $commentarray[1];
+			if($vc == "")$vc = 1;
+			$query = $db->prepare("UPDATE levels SET starCoins=$vc WHERE levelID = :levelID");
 			$query->execute([':levelID' => $levelID]);
 			$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('2', :value, :levelID, :timestamp, :id)");
-			$query->execute([':value' => "1", ':timestamp' => $uploadDate, ':id' => $accountID, ':levelID' => $levelID]);
+			$query->execute([':value' => $vc, ':timestamp' => $uploadDate, ':id' => $accountID, ':levelID' => $levelID]);
 			return true;
 		}
 		if(substr($comment,0,6) == '!daily' AND $gs->checkPermission($accountID, "commandDaily")){
@@ -235,8 +234,14 @@ class Commands {
 			$query->execute([':value' => "0", ':timestamp' => $uploadDate, ':id' => $accountID, ':levelID' => $levelID]);
 			return true;
 		}
+		/* For testing only
+		if(substr($comment,0,5)=="!echo"){
+			$cmessage = explode(" ", $comment, 2);
+			return $cmessage[1];
+		}
 		return false;
 	}
+	*/
 	public static function doProfileCommands($accountID, $command){
 		include dirname(__FILE__)."/../lib/connection.php";
 		require_once "../lib/exploitPatch.php";
