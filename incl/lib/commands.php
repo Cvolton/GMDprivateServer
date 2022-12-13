@@ -193,18 +193,13 @@ class Commands {
 			$query->execute([':value' => $desc, ':timestamp' => $uploadDate, ':id' => $accountID, ':levelID' => $levelID]);
 			return true;
 		}
-		if(self::ownCommand($comment, "public", $accountID, $targetExtID)){
-			$query = $db->prepare("UPDATE levels SET unlisted='0' WHERE levelID=:levelID");
-			$query->execute([':levelID' => $levelID]);
-			$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('12', :value, :levelID, :timestamp, :id)");
-			$query->execute([':value' => "0", ':timestamp' => $uploadDate, ':id' => $accountID, ':levelID' => $levelID]);
-			return true;
-		}
 		if(self::ownCommand($comment, "unlist", $accountID, $targetExtID)){
-			$query = $db->prepare("UPDATE levels SET unlisted='1' WHERE levelID=:levelID");
+			$v = $commentarray[1];
+			if($v=="")$v=1;
+			$query = $db->prepare("UPDATE levels SET unlisted=$v WHERE levelID=:levelID");
 			$query->execute([':levelID' => $levelID]);
 			$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('12', :value, :levelID, :timestamp, :id)");
-			$query->execute([':value' => "1", ':timestamp' => $uploadDate, ':id' => $accountID, ':levelID' => $levelID]);
+			$query->execute([':value' => $v, ':timestamp' => $uploadDate, ':id' => $accountID, ':levelID' => $levelID]);
 			return true;
 		}
 		if(self::ownCommand($comment, "sharecp", $accountID, $targetExtID)){
@@ -221,17 +216,12 @@ class Commands {
 			return true;
 		}
 		if(self::ownCommand($comment, "ldm", $accountID, $targetExtID)){
-			$query = $db->prepare("UPDATE levels SET isLDM='1' WHERE levelID=:levelID");
+			$v = $commentarray[1];
+			if($v=="")$v=1;
+			$query = $db->prepare("UPDATE levels SET isLDM=$v WHERE levelID=:levelID");
 			$query->execute([':levelID' => $levelID]);
 			$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('14', :value, :levelID, :timestamp, :id)");
-			$query->execute([':value' => "1", ':timestamp' => $uploadDate, ':id' => $accountID, ':levelID' => $levelID]);
-			return true;
-		}
-		if(self::ownCommand($comment, "unldm", $accountID, $targetExtID)){
-			$query = $db->prepare("UPDATE levels SET isLDM='0' WHERE levelID=:levelID");
-			$query->execute([':levelID' => $levelID]);
-			$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('14', :value, :levelID, :timestamp, :id)");
-			$query->execute([':value' => "0", ':timestamp' => $uploadDate, ':id' => $accountID, ':levelID' => $levelID]);
+			$query->execute([':value' => $v, ':timestamp' => $uploadDate, ':id' => $accountID, ':levelID' => $levelID]);
 			return true;
 		}
 		/* For testing only
