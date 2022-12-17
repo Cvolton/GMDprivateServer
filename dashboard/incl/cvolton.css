@@ -1,11 +1,19 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap');
 
+@media screen and (max-width: 993px) {
+	body {overflow: auto !important}
+}
+
 * {
     font-family: 'Google Sans', 'Inter', 'Segoe UI' , 'Calibri Light', 'Arial';
 }
 
 #ads, .adsbygoogle, #ads_bottom_static {
     display: none !important;
+}
+
+.table-inverse td, .table-inverse th, .table-inverse thead th {
+    border-color: #32383e00;
 }
 
 .samepass {
@@ -355,6 +363,7 @@ summary {
 
 #bruh{
 	margin-bottom:20px;
+	font-weight: 700;
 }
 h2{
 	    font-size: 17px;
@@ -377,6 +386,7 @@ body {
     flex-direction: column;
     margin: 0;
     padding: 0;
+	overflow: hidden;
     background-color: #36393e;
     min-height: calc(100vh - 10px);
 }
@@ -756,5 +766,34 @@ table,
 	font-weight: 700;
 }
 .btn-outline-secondary:enabled {
+	cursor: pointer;
+}
+
+audio::-webkit-media-controls-panel,
+audio::-webkit-media-controls-mute-button,
+audio::-webkit-media-controls-timeline-container,
+audio::-webkit-media-controls-current-time-display,
+audio::-webkit-media-controls-time-remaining-display,
+audio::-webkit-media-controls-timeline,
+audio::-webkit-media-controls-volume-slider-container,
+audio::-webkit-media-controls-volume-slider,
+audio::-webkit-media-controls-seek-back-button,
+audio::-webkit-media-controls-seek-forward-button,
+audio::-webkit-media-controls-fullscreen-button,
+audio::-webkit-media-controls-rewind-button,
+audio::-webkit-media-controls-return-to-realtime-button,
+audio::-webkit-media-controls-toggle-closed-captions-button {
+	color-scheme: dark !important;
+    background: #181a1b;
+	color:white;
+}
+.audio {
+	position: fixed;
+	left: 4px;
+	bottom: 45px;
+	width: calc(100% - 8px);
+}
+button > .icon:hover {
+	background: #47494e !important;
 	cursor: pointer;
 }
