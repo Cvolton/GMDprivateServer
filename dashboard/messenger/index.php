@@ -45,7 +45,7 @@ if(isset($_SESSION["accountID"]) AND $_SESSION["accountID"] != 0){
 			VALUES (:uid, :nick, :body, :subject, :accid, :notyou, :time, 'Wmfd2893gb7', '0')");
 			$query->execute([':uid' => $gs->getUserID($accid), ':nick' => $gs->getAccountName($accid), ':body' => $sendmsg, ':subject' => $sendsub, ':accid' => $accid, ':notyou' => $notyou, 'time' => time()]);
 		}
-		$query = $db->prepare("SELECT * FROM messages WHERE accID=:you AND toAccountID=:notyou OR accID=:notyou AND toAccountID=:you ORDER BY messageID ASC");
+		$query = $db->prepare("SELECT * FROM messages WHERE accID=:you AND toAccountID=:notyou OR accID=:notyou AND toAccountID=:you ORDER BY messageID DESC");
 		$query->execute([':you' => $accid, ':notyou' => $notyou]);
 		$res = $query->fetchAll();
 		$msgs = '';
