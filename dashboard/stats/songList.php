@@ -89,8 +89,6 @@ foreach($result as &$action){
 			}
 		</script>';
 	}
-  	if(strlen($author) > 18) $author = "<details><summary>".$dl->getLocalizedString("spoiler")."</summary>$author</details>";
-  	if(strlen($name) > 30) $name = "<details><summary>".$dl->getLocalizedString("spoiler")."</summary>$name</details>";
 	$manage = '<td><a class="btn-rendel" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'.$dl->getLocalizedString("change").'</a>
 								<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink"  style="padding: 17px 17px 0px;top: 0px;left: 0px;position: absolute;transform: translate3d(971px, 200px, 0px);will-change: transform;">
 									 <form class="form__inner" method="post" action="stats/renameSong.php">
@@ -119,6 +117,8 @@ $(document).change(function(){
 });
 </script>
 							</td>';
+	if(strlen($author) > 18) $author = "<details><summary>".$dl->getLocalizedString("spoiler")."</summary>$author</details>";
+  	if(strlen($name) > 30) $name = "<details><summary>".$dl->getLocalizedString("spoiler")."</summary>$name</details>";
     if($action["isDisabled"]) {
 		$songsid = '<div style="text-decoration:line-through;color:#8b2e2c">'.$songsid.'</div>';
 		$author = '<div style="text-decoration:line-through;color:#8b2e2c">'.$author.'</div>';
