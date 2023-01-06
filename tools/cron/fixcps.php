@@ -25,7 +25,7 @@ include "../../incl/lib/connection.php";
 $query = $db->prepare("UPDATE users
 	LEFT JOIN
 	(
-	    SELECT usersTable.userID, (IFNULL(starredTable.starred, 0) + IFNULL(featuredTable.featured, 0) + (IFNULL(epicTable.epic,0)*2)) as CP FROM (
+	    SELECT usersTable.userID, (IFNULL(starredTable.starred, 0) + IFNULL(featuredTable.featured, 0) + (IFNULL(epicTable.epic,0)*2) + (IFNULL(legendaryTable.legendary,0)*4)) as CP FROM (
             SELECT userID FROM users
         ) AS usersTable
         LEFT JOIN
@@ -40,7 +40,12 @@ $query = $db->prepare("UPDATE users
 	    (
 	        SELECT count(*) as epic, userID FROM levels WHERE starEpic != 0 AND isCPShared = 0 GROUP BY(userID) 
 	    ) AS epicTable ON usersTable.userID = epicTable.userID
-	) calculated
+		 LEFT JOIN
+		(
+			SELECT count(*) as legendary, userID FROM levels WHERE starLegendary != 0 AND isCPShared = 0 GROUP BY(userID) 
+		) AS legendaryTable ON usersTable.userID = legendaryTable.userID
+	) 
+	calculated
 	ON users.userID = calculated.userID
 	SET users.creatorPoints = IFNULL(calculated.CP, 0)");
 $query->execute();
@@ -48,7 +53,7 @@ echo "Calculated base CP<br>";
 /*
 	CP SHARING
 */
-$query = $db->prepare("SELECT levelID, userID, starStars, starFeatured, starEpic FROM levels WHERE isCPShared = 1");
+$query = $db->prepare("SELECT levelID, userID, starStars, starFeatured, starEpic, starLegendary FROM levels WHERE isCPShared = 1");
 $query->execute();
 $result = $query->fetchAll();
 foreach($result as $level){
@@ -61,6 +66,9 @@ foreach($result as $level){
 	}
 	if($level["starEpic"] != 0){
 		$deservedcp += 2;
+	}
+	if($level["starLegendary"] != 0){
+		$deservedcp += 4;
 	}
 	$query = $db->prepare("SELECT userID FROM cpshares WHERE levelID = :levelID");
 	$query->execute([':levelID' => $level["levelID"]]);
