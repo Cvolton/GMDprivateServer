@@ -120,6 +120,20 @@ class Commands {
 			$query->execute([':value' => "1", ':timestamp' => $uploadDate, ':id' => $accountID, ':levelID' => $levelID, ':dailytime' => $timestamp]);
 			return true;
 		}
+		if(substr($comment,0,10) == '!legendary' AND $gs->checkPermission($accountID, "commandLegendary")){
+			$query = $db->prepare("UPDATE levels SET starLegendary='1' WHERE levelID=:levelID");
+			$query->execute([':levelID' => $levelID]);
+			$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('4', :value, :levelID, :timestamp, :id)");
+			$query->execute([':value' => "1", ':timestamp' => $uploadDate, ':id' => $accountID, ':levelID' => $levelID]);
+			return true;
+		} 
+		if(substr($comment,0,12) == '!unlegendary' AND $gs->checkPermission($accountID, "commandUnlegendary")){
+			$query = $db->prepare("UPDATE levels SET starLegendary='0' WHERE levelID=:levelID");
+			$query->execute([':levelID' => $levelID]);
+			$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('4', :value, :levelID, :timestamp, :id)");
+			$query->execute([':value' => "1", ':timestamp' => $uploadDate, ':id' => $accountID, ':levelID' => $levelID]);
+			return true;
+		} 
 		if(substr($comment,0,6) == '!delet' AND $gs->checkPermission($accountID, "commandDelete")){
 			if(!is_numeric($levelID)){
 				return false;
