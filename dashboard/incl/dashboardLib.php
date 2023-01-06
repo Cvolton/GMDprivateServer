@@ -210,7 +210,7 @@ class dashboardLib{
                                             on.disabled = true;
 										}
 										else {
-                                        	on.innerHTML = \'<div class="icon"><i id="iconcron" class="fa-solid fa-xmark"></i></div>'.$this->getLocalizedString('cronError').'\';;
+                                        	on.innerHTML = \'<div class="icon"><i id="iconcron" class="fa-solid fa-xmark"></i></div>'.$this->getLocalizedString('cronError').'\';
                                    			ic.classList.remove("fa-spinner");
                                    			ic.classList.remove("fa-spin");
                                             ic.classList.add("fa-bars-progress");
