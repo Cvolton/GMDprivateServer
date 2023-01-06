@@ -8,10 +8,10 @@ $string["didntInstall"] = "<div style='color:#47a0ff'><b>Uyarı!</b> Dashboard'�
 $string["levelsWeek"] = "Bir hafta içinde yüklenen bölümler";
 $string["levels3Months"] = "3 ayda yüklenen bölümler";
 $string["footer"] = $gdps.", ".date('Y', time());
-$string["tipsAfterInstalling"] = "Welcome to Dashboard! We give you some hints after installation:<br>
-1. It seems that new permissions have appeared in SQL in the 'roles' table! You should check it out...<br>
-2. If you put 'icon.png' to the 'dashboard' folder, then the icon of your GDPS will appear on the top left!<br>
-3. You should to configure config/dashboard.php!";
+$string["tipsAfterInstalling"] = "Kontrol paneline hoş geldin! Kurulumdan sonra bir kaç tavsiye:<br>
+1. SQL içerisinde 'roles' tablosunda yeni izinler belirmiş gibi gözüküyor! Bunlara baksan çok iyi olur...<br>
+2. 'dashboard' klasörüne 'icon.png' koyarsan, ikonun en sol köşede belirir!<br>
+3. config/dashboard.php dosyanısı configüre et!";
 
 $string["tryCron"] = "Cron çalıştır";
 $string["cronSuccess"] = "Başarılı!";
@@ -168,7 +168,7 @@ $string["modYourself"] = "Kendini moderatör yapamazsın!";
 $string["alreadyMod"] = "Kullanıcı zaten moderatör!";
 $string["addedMod"] = "Kullanıcıya moderatörlük verildi";
 $string["addModOneMore"] = "Başka ekle?";
-$string["modAboveYourRole"] = "You\'re trying to give a role above yours!";
+$string["modAboveYourRole"] = "Senden daha yüksek bir rolü vermeye çalışıyorsun!";
 
 $string["shareCPTitle"] = "Creator Point ekle";
 $string["shareCPDesc"] = "Burada kullanıcılara CP ekleyebilirsin!";
@@ -244,7 +244,7 @@ $string["status"] = 'Durum';
 
 $string["reuploadBTN"] = "Transfer Et";
 $string["errorGeneric"] = "Hata!";
-$string["smthWentWrong"] = "Something went wrong!";
+$string["smthWentWrong"] = "Bir şeyler ters gitti!";
 $string["tryAgainBTN"] = "Tekrar Dene";
 //songAdd.php
 $string["songAddDesc"] = "Burada kendi şarkını ekleyebilirsin!";
