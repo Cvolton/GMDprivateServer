@@ -3,7 +3,7 @@ session_start();
 include "../incl/dashboardLib.php";
 include "../".$dbPath."incl/lib/connection.php";
 include "../".$dbPath."incl/lib/exploitPatch.php";
-include "../".$dbPath."incl/lib/mainLib.php";
+include_once "../".$dbPath."incl/lib/mainLib.php";
 $gs = new mainLib();
 $dl = new dashboardLib();
 $dl->printFooter('../');
@@ -45,7 +45,7 @@ $query->execute([':id' => $accid]);
 $query = $query->fetch();
 if($query["banReason"] != 'none' OR $query["isBanned"] == 1) $maybeban = '<h1 style="text-decoration:line-through;color:#432529">'.$accname.'</h1>'; else $maybeban = '<h1 style="color:rgb('.$gs->getAccountCommentColor($accid).')">'.$accname.'</h1>';
 if(isset($_SERVER["HTTP_REFERER"])) $back = '<form method="post" action="'.$_SERVER["HTTP_REFERER"].'"><button class="goback"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i></button></form>'; else $back = '';
-$query = $db->prepare("SELECT extID, stars, demons, coins, userCoins, creatorPoints, diamonds, isCreatorBanned FROM users WHERE extID=:id");
+$query = $db->prepare("SELECT extID, stars, demons, coins, userCoins, creatorPoints, diamonds, isCreatorBanned, dlPoints FROM users WHERE extID=:id");
 $query->execute([':id' => $accid]);
 $res = $query->fetch();
 if($res["stars"] == 0) $st = ''; else $st = '<p class="profilepic">'.$res["stars"].' <i class="fa-solid fa-star"></i></p>';
@@ -67,7 +67,7 @@ $comments = $send = '';
 foreach($msgs AS &$msg) {
   	$message = base64_decode($msg["comment"]);
   	$time = $msg["timestamp"];
-  	$likes = $msg["likes"];
+	$likes = $msg["likes"];
   	if($likes >= 0) $likes = $likes.' <i class="fa-regular fa-thumbs-up"></i>'; else $likes = mb_substr($likes, 1).' <i class="fa-regular fa-thumbs-down"></i>';
   	$comments .= '<div class="profile"><div style="display:flex"><h2 class="profilenick">'.$accname.'</h2><p style="text-align:right">'.$likes.'</p></div>
 			<h3 class="profilemsg">'.$message.'</h3>
@@ -99,10 +99,11 @@ $(document).change(function(){
 $msgtopl = '';
 }
 if($_SESSION["accountID"] == 0) $msgtopl = '';
-$dl->printSong('<div class="form" style="width: 60vw;height: max-content">
+if($res["dlPoints"] != 0) $points = '<i style="position: absolute;font-size: 20;right: 50;color: gray;" class="fa-solid fa-medal"> '.$res["dlPoints"].'</i>';
+$dl->printSong('<div class="form" style="width: 60vw;height: max-content;position:relative">
     	<div style="height: 100%;width: 100%;"><div style="display: flex;align-items: center;justify-content: center;">
         	'.$back.'
-              <h1>'.$maybeban.'</h1>'.$msgtopl.'
+              <h1>'.$maybeban.'</h1>'.$msgtopl.''.$points.'
         </div>
         <div class="form-control" style="display: flex;width: 100%;height: max-content;align-items: center;">'.$all.'</div>
         <div class="form-control dmbox" style="display: flex;border-radius: 30px;margin-top: 20px;flex-wrap: wrap;padding-top: 0;max-height: 535px;padding-bottom: 10px;min-width: 100%;height: max-content;margin-bottom: 17px;align-items: center;">

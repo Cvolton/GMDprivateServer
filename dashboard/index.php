@@ -4,6 +4,7 @@ require "incl/dashboardLib.php";
 $dl = new dashboardLib();
 require $dbPath."incl/lib/connection.php";
 if(!$installed) $install = '<div class="notify"><a href="install.php">'.$dl->getLocalizedString("didntInstall").'</a></div>'; else $install = '';
+if(isset($_GET["installed"])) $install = '<div class="notify"><p>'.$dl->getLocalizedString("tipsAfterInstalling").'</p></div>'; else $install = '';
 $chartdata = array();
 for($x = 7; $x >= 0;){
 	$timeBefore = time() - (86400 * $x);
@@ -24,7 +25,6 @@ for($x = 7; $x >= 0;){
 	$chartdata[$identifier] = $query->fetchColumn();
 	$x--;
 }
-
 $levelsChart2 = array();
 $months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
 $x = 0;
@@ -45,7 +45,6 @@ foreach($months as &$month){
 		$levelsChart2[$month] = $amount;
 	}
 }
-
 $dl->printPage('<p id="bruh">'.$dl->getLocalizedString("welcome").'
 				<br>
                 '.$install.'

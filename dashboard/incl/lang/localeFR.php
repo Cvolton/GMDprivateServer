@@ -9,6 +9,10 @@ $string["didntInstall"] = "<div style='color:#47a0ff'><b>Alerte!</b> Vous n'avez
 $string["levelsWeek"] = "Niveaux publiés en une semaine";
 $string["levels3Months"] = "Niveaux publiés en 3 mois";
 $string["footer"] = $gdps.", ".date('Y', time());
+$string["tipsAfterInstalling"] = "Welcome to Dashboard! We give you some hints after installation:<br>
+1. It seems that new permissions have appeared in SQL in the 'roles' table! You should check it out...<br>
+2. If you put 'icon.png' to the 'dashboard' folder, then the icon of your GDPS will appear on the top left!<br>
+3. You should to configure config/dashboard.php!";
 
 $string["tryCron"] = "Exécuter Cron";
 $string["cronSuccess"] = "Succès!";
@@ -165,6 +169,7 @@ $string["modYourself"] = "Vous ne pouvez pas devenir modérateur vous même!";
 $string["alreadyMod"] = "Ce joueur est déjà un modérateur!";
 $string["addedMod"] = "Vous avez donné les permissions modérateur à un joueur avec succès";
 $string["addModOneMore"] = "Un moderateur de plus?";
+$string["modAboveYourRole"] = "You\'re trying to give a role above yours!";
 
 $string["shareCPTitle"] = "Partager les Points Créateur";
 $string["shareCPDesc"] = "Ici vous pouvez partager les Points Créateur avec un joueur!";
@@ -196,12 +201,51 @@ $string["search"] = "Rechercher...";
 $string["searchCancel"] = "Annuler la recherche";
 $string["emptySearch"] = "Aucun résultat!";
 
+$string["demonlist"] = 'Demonlist';
+$string["demonlistRecord"] = '<b>%s</b>\'s record';
+$string["alreadyApproved"] = 'Already approved!';
+$string["alreadyDenied"] = 'Already denied!';
+$string["approveSuccess"] = 'You\'ve successfully approved <b>%s</b>\'s record!';
+$string["denySuccess"] = 'You\'ve successfully approved <b>%s</b>\'s record!';
+$string["recordParameters"] = '<b>%s</b> has beated <b>%s</b> in <b>%d</b> attempts';
+$string["approve"] = 'Approve';
+$string["deny"] = 'Deny';
+$string["submitRecord"] = 'Submit record';
+$string["submitRecordForLevel"] = 'Submit record for <b>%s</b>';
+$string["alreadySubmitted"] = 'You\'ve already submitted an record for <b>%s</b>!';
+$string["submitSuccess"] = 'You\'ve successfully submitted an record for <b>%s</b>!';
+$string["submitRecordDesc"] = 'Submit records only if you beated the level!';
+$string["atts"] = 'Attemps';
+$string["ytlink"] = 'YouTube video ID (dQw4w9WgXcQ)';
+$string["submit"] = 'Submit';
+$string["addDemonTitle"] = 'Add demon';
+$string["addDemon"] = 'Add demon to demonlist';
+$string["addedDemon"] = 'You\'ve been added <b>%s</b> to <b>%d</b> place!';
+$string["addDemonDesc"] = 'Here you can add a demon to demonlist!';
+$string["place"] = 'Place';
+$string["giveablePoints"] = 'Giveable points';
+$string["add"] = 'Add';
+$string["recordApproved"] = 'Record approved!';
+$string["recordDenied"] = 'Record denied!';
+$string["recordSubmitted"] = 'Record submitted!';
+$string["nooneBeat"] = 'noone has beaten'; //let it be lowercase
+$string["oneBeat"] = '1 player has beaten'; 
+$string["lower5Beat"] = '%d players have beaten'; // russian syntax, sorry
+$string["above5Beat"] = '%d players have beaten'; 
+$string["demonlistLevel"] = '%s <text style="display: inline-flex;font-size: 25px;font-weight:400">by <form style="margin:0" method="post" action="profile/"><button style="margin-left:7;font-size:25" class="accbtn" name="accountID" value="%d">%s</button></form></text>';
+$string["noDemons"] = 'It seems that your demonlist doesn\'t have any demons...';
+$string["addSomeDemons"] = 'Add some demons to fill up demonlist!';
+$string["askForDemons"] = 'Ask server\'s administrator to add some!';
+$string["recordList"] = 'List of records';
+$string["status"] = 'Status';
+
 /*
 	REUPLOAD
 */
 
 $string["reuploadBTN"] = "Upload";
 $string["errorGeneric"] = "Une erreur est apparue!";
+$string["smthWentWrong"] = "Something went wrong!";
 $string["tryAgainBTN"] = "Réessayez";
 //songAdd.php
 $string["songAddDesc"] = "Ici vous pouvez ajouter votre chanson!";

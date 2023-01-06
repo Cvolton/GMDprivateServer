@@ -4,13 +4,14 @@ require "../incl/dashboardLib.php";
 require "../".$dbPath."incl/lib/Captcha.php";
 require "../".$dbPath."incl/lib/connection.php";
 $dl = new dashboardLib();
-require "../".$dbPath."incl/lib/mainLib.php";
+require_once "../".$dbPath."incl/lib/mainLib.php";
 $gs = new mainLib();
 include "../".$dbPath."incl/lib/connection.php";
 include "../".$dbPath."incl/lib/exploitPatch.php";
 $ep = new exploitPatch();
 $dl->title($dl->getLocalizedString("addMod"));
 $dl->printFooter('../');
+$options = '';
 if($gs->checkPermission($_SESSION["accountID"], "dashboardAddMod")){
 	$accountID = $_SESSION["accountID"];
 if(!empty($_POST["user"])) {
@@ -26,7 +27,7 @@ if(!empty($_POST["user"])) {
 	}
 	$mod = ExploitPatch::remove($_POST["user"]);
 	$role = ExploitPatch::remove($_POST["role"]);
-	if(!is_numeric($role) OR $role != 2 AND $role != 3) {
+	if(!is_numeric($role)) {
 		$dl->printSong('<div class="form">
 			<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 			<form class="form__inner" method="post" action="">
@@ -50,6 +51,13 @@ if(!empty($_POST["user"])) {
 		</div>', 'mod');
 		die();
 	}
+	if($role < $gs->getMaxValuePermission($_SESSION["accountID"], 'roleID')) die($dl->printSong('<div class="form">
+			<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
+			<form class="form__inner" method="post" action="">
+			<p>'.$dl->getLocalizedString("modAboveYourRole").'</p>
+			<button type="submit" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
+			</form>
+		</div>', 'mod'));
 	if($mod == $accountID) {
 		$dl->printSong('<div class="form">
 			<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
@@ -73,7 +81,6 @@ if(!empty($_POST["user"])) {
 		</div>', 'mod');
 		die();
 	}
-
 	$query = $db->prepare("INSERT INTO roleassign (roleID, accountID) VALUES (:role, :mod)");
 	$query->execute([':role' => $role, ':mod' => $mod]);
 	$mod = $gs->getAccountName($mod);
@@ -88,6 +95,25 @@ if(!empty($_POST["user"])) {
     </form>
 </div>', 'mod');
 } else {
+	$query = $db->prepare("SELECT roleName, roleID FROM roles WHERE roleID >= :id");
+	$query->execute([':id' => $gs->getMaxValuePermission($_SESSION["accountID"], 'roleID')]);
+	$query = $query->fetchAll();
+	foreach($query as &$role) {
+		switch($role["roleID"]) {
+			case 1:
+				$options .= '<option value="1">'.$dl->getLocalizedString("admin").'</option>';
+				break;
+			case 2:
+				$options .= '<option value="2">'.$dl->getLocalizedString("elder").'</option>';
+				break;
+			case 3:
+				$options .= '<option value="3">'.$dl->getLocalizedString("moder").'</option>';
+				break;
+			default:
+				$options .= '<option value="'.$role["roleID"].'">'.$role["roleName"].'</option>';
+				break;
+		}
+	}
 	$dl->printSong('<div class="form">
     <h1>'.$dl->getLocalizedString("addMod").'</h1>
     <form class="form__inner form__create" method="post" action="">
@@ -95,8 +121,7 @@ if(!empty($_POST["user"])) {
     <div class="field"><input type="text" name="user" id="p1" placeholder="' . $dl->getLocalizedString("banUserID") . '"></div>
 	<div id="selecthihi">
 	<select name="role">
-		<option value="2">'.$dl->getLocalizedString("elder").'</option>
-		<option value="3">'.$dl->getLocalizedString("moder").'</option>
+		'.$options.'
 	</select>
 	</div>
 	', 'mod');

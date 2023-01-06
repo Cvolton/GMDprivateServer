@@ -4,7 +4,7 @@ require "../incl/dashboardLib.php";
 $dl = new dashboardLib();
 require "../".$dbPath."incl/lib/Captcha.php";
 require "../".$dbPath."incl/lib/connection.php";
-require "../".$dbPath."incl/lib/mainLib.php";
+require_once "../".$dbPath."incl/lib/mainLib.php";
 $gs = new mainLib();
 include "../".$dbPath."incl/lib/connection.php";
 include "../".$dbPath."incl/lib/exploitPatch.php";

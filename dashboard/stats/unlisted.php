@@ -3,7 +3,7 @@ session_start();
 require "../incl/dashboardLib.php";
 require "../".$dbPath."incl/lib/connection.php";
 $dl = new dashboardLib();
-require "../".$dbPath."incl/lib/mainLib.php";
+require_once "../".$dbPath."incl/lib/mainLib.php";
 require "../".$dbPath."incl/lib/exploitPatch.php";
 $gs = new mainLib();
 include "../".$dbPath."incl/lib/connection.php";
@@ -19,9 +19,9 @@ if(isset($_SESSION["accountID"]) AND $_SESSION["accountID"] != 0){
 }
 $table = '<table class="table table-inverse"><tr><th>#</th><th>'.$dl->getLocalizedString("levelid").'</th><th>'.$dl->getLocalizedString("levelname").'</th><th>'.$dl->getLocalizedString("leveldesc").'</th><th>'.$dl->getLocalizedString("levelpass").'</th><th>'.$dl->getLocalizedString("stars").'</th><th>'.$dl->getLocalizedString("songIDw").'</th></tr>';
 $yourID = $gs->getAccountName($_SESSION["accountID"]);
-if(!empty($_GET["search"])) {
+if(!empty(trim(ExploitPatch::remove($_GET["search"])))) {
 	$srcbtn = '<a href="'.$_SERVER["SCRIPT_NAME"].'" style="width: 0%;display: flex;margin-left: 5px;align-items: center;justify-content: center;color: indianred; text-decoration:none" class="btn-primary" title="'.$dl->getLocalizedString("searchCancel").'"><i class="fa-solid fa-xmark"></i></a>';
-	$query = $db->prepare("SELECT * FROM levels WHERE unlisted=1 AND userName='$yourID' AND levelName LIKE '%".ExploitPatch::remove($_GET["search"])."%' LIMIT 10 OFFSET $page");
+	$query = $db->prepare("SELECT * FROM levels WHERE unlisted=1 AND userName='$yourID' AND levelName LIKE '%".trim(ExploitPatch::remove($_GET["search"]))."%' LIMIT 10 OFFSET $page");
 	$query->execute();
 	$result = $query->fetchAll();
 	if(empty($result)) {
@@ -96,7 +96,7 @@ $table .= '</table><form method="get" class="form__inner">
 	bottom row
 */
 //getting count
-if(!empty($_GET["search"])) $query = $db->prepare("SELECT count(*) FROM levels WHERE unlisted=1 AND extID = :id AND levelName LIKE '%".ExploitPatch::remove($_GET["search"])."%'");
+if(!empty($_GET["search"])) $query = $db->prepare("SELECT count(*) FROM levels WHERE unlisted=1 AND extID = :id AND levelName LIKE '%".trim(ExploitPatch::remove($_GET["search"]))."%'");
 else $query = $db->prepare("SELECT count(*) FROM levels WHERE unlisted=1 AND extID = :id");
 $query->execute([':id' => $_SESSION["accountID"]]);
 $packcount = $query->fetchColumn();

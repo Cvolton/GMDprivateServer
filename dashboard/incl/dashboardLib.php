@@ -5,7 +5,7 @@ include_once "auth.php";
 $au = new au();
 $au->auth($dbPath);
 // Dashboard library
-class dashboardLib{
+class dashboardLib {
 	public function printHeader($isSubdirectory = true){
 		$this->handleLangStart();
       	global $gdps;
@@ -13,12 +13,11 @@ class dashboardLib{
 				<html lang="en">
 					<head>
                     	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
-						<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-						<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-						<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+						<link rel="icon" type="image/png" sizes="64x64" href="/favicon.png">
 						<link rel="manifest" href="/site.webmanifest">
-						<meta charset="utf-8">';
-          	if($isSubdirectory) echo '<base href="../">';
+						<meta charset="utf-8">
+						<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit="no">';
+				if($isSubdirectory) echo '<base href="../">';
 				echo '<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
                           <script src="https://kit.fontawesome.com/10e18026cb.js" crossorigin="anonymous"></script>
                           <script async src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
@@ -28,17 +27,19 @@ class dashboardLib{
 						  <link href="incl/fontawesome/css/brands.css" rel="stylesheet">
 						  <link href="incl/fontawesome/css/solid.css" rel="stylesheet">
                           <link async rel="stylesheet" href="incl/cvolton.css">
-                          <title>'.$gdps.'</title>
-						<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">';
+						  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+                          <title>'.$gdps.'</title>';
 		echo '</head>
 				<body>';
 	}
-	public function getLocalizedString($stringName){
-		if(!isset($_COOKIE["lang"]) OR !ctype_alpha($_COOKIE["lang"])){
-			if(file_exists('/lang/locale'.strtoupper(substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2))).'.php') $lang = strtoupper(substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2));
-			else $lang = "EN";
-		}else{
-			$lang = $_COOKIE["lang"];
+	public function getLocalizedString($stringName, $lang = ''){
+		if(empty($lang)) {
+			if(!isset($_COOKIE["lang"]) OR !ctype_alpha($_COOKIE["lang"])){
+				if(file_exists('/lang/locale'.strtoupper(substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2))).'.php') $lang = strtoupper(substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2));
+				else $lang = "EN";
+			}else{
+				$lang = $_COOKIE["lang"];
+			}
 		}
 		$locale = __DIR__ . "/lang/locale".$lang.".php";
 		if(file_exists($locale)){
@@ -47,7 +48,7 @@ class dashboardLib{
 			include __DIR__ . "/lang/localeEN.php";
 		}
 		if($lang == "TEST"){
-			return "lnf:$stringName";
+			return "$stringName";
 		}
 		if(isset($string[$stringName])){
 			return $string[$stringName];
@@ -100,10 +101,6 @@ class dashboardLib{
 	public function printLoginBoxError($content){
 		$this->printLoginBox("<p>An error has occured: $content. <a href=''>Click here to try again.</a>");
 	}
-  	public function title($title) {
-      	global $gdps;
-		echo '<title>'.$title.' | '.$gdps.'</title>';
-	}
 	public function printNavbar($active){
 		global $gdps;
 		global $lrEnabled;
@@ -145,7 +142,7 @@ class dashboardLib{
 				break;
 		}
 		echo '<nav id="navbarepta" class="navbar navbar-expand-lg navbar-dark menubar">
-			<a class="navbar-brand" href=""><img style="width:32px" src="icon.png"></a>
+			<a class="navbar-brand" href="" style="margin-right:0.5rem"><img style="width:39px" src="icon.png"></a>
 			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
 				<span class="navbar-toggler-icon"></span>
 			</button>
@@ -165,7 +162,8 @@ class dashboardLib{
 							<a class="dropdown-item" href="stats/levelsList.php"><div class="icon"><i class="fa-solid fa-gamepad" style="margin-top: 1px;"></i></div>'.$this->getLocalizedString("levels").'</a>
 							<a class="dropdown-item" href="stats/packTable.php"><div class="icon"><i class="fa-regular fa-folder-open" aria-hidden="false"></i></div>'.$this->getLocalizedString("packTable").'</a>
 							<a class="dropdown-item" href="stats/gauntletTable.php"><div class="icon"><i class="fa-solid fa-globe" aria-hidden="false"></i></div>'.$this->getLocalizedString("gauntletTable").'</a>
-							<a class="dropdown-item" href="stats/songList.php"><div class="icon"><i class="fa-solid fa-music" aria-hidden="false"></i></div>'.$this->getLocalizedString("songs").'</a>';
+							<a class="dropdown-item" href="stats/songList.php"><div class="icon"><i class="fa-solid fa-music" aria-hidden="false"></i></div>'.$this->getLocalizedString("songs").'</a>
+							<a class="dropdown-item" href="demonlist"><div class="icon"><i class="fa-solid fa-dragon" aria-hidden="false"></i></div>'.$dl->getLocalizedString("demonlist").'</a>';
 		if(isset($_SESSION["accountID"]) AND $_SESSION["accountID"] != 0){
 			echo '
 					<li class="nav-item dropdown '.$accountActive.' ">
@@ -481,6 +479,10 @@ $(document).change(function(){
 					});
 					</script>";
 		return $chart;
+	}
+	public function title($title) {
+      	global $gdps;
+		echo '<title>'.$title.' | '.$gdps.'!</title>';
 	}
 }
 ?>

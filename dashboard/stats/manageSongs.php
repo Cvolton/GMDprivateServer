@@ -3,7 +3,7 @@ session_start();
 require "../incl/dashboardLib.php";
 require "../".$dbPath."incl/lib/connection.php";
 $dl = new dashboardLib();
-require "../".$dbPath."incl/lib/mainLib.php";
+require_once "../".$dbPath."incl/lib/mainLib.php";
 $gs = new mainLib();
 include "../".$dbPath."incl/lib/connection.php";
 require "../".$dbPath."incl/lib/exploitPatch.php";
@@ -28,9 +28,10 @@ if(!empty($_GET["author"]) AND !empty($_GET["name"])) {
 }
 $table = '<div class="notify" style="display:'.$notify.'">'.$dl->getLocalizedString("deletedSong").' <b>'.$an.'</b> - <b>'.$nn.'</b>!</div><table class="table table-inverse"><tr><th>#</th><th></th><th>'.$dl->getLocalizedString("songIDw").'</th><th>'.$dl->getLocalizedString("songAuthor").'</th><th>'.$dl->getLocalizedString("name").'</th><th>'.$dl->getLocalizedString("size").'</th><th>'.$dl->getLocalizedString("time").'</th></tr>';
 $accountID = $_SESSION["accountID"];
-if(!empty($_GET["search"])) {
+if(!empty(trim(ExploitPatch::remove($_GET["search"])))) {
+	$q = is_numeric(trim(ExploitPatch::remove($_GET["search"]))) ? "ID LIKE '%".trim(ExploitPatch::remove($_GET["search"]))."%'" : "(name LIKE '%".trim(ExploitPatch::remove($_GET["search"]))."%' OR authorName LIKE '%".trim(ExploitPatch::remove($_GET["search"]))."%')";
 	$srcbtn = '<a href="'.$_SERVER["SCRIPT_NAME"].'" style="width: 0%;display: flex;margin-left: 5px;align-items: center;justify-content: center;color: indianred; text-decoration:none" class="btn-primary" title="'.$dl->getLocalizedString("searchCancel").'"><i class="fa-solid fa-xmark"></i></a>';
-	$query = $db->prepare("SELECT * FROM songs WHERE reuploadID = $accountID AND (name LIKE '%".ExploitPatch::remove($_GET["search"])."%' OR authorName LIKE '%".ExploitPatch::remove($_GET["search"])."%') ORDER BY ID DESC LIMIT 10 OFFSET $page");
+	$query = $db->prepare("SELECT * FROM songs WHERE reuploadID = $accountID AND $q ORDER BY ID DESC LIMIT 10 OFFSET $page");
 	$query->execute();
 	$result = $query->fetchAll();
 	if(empty($result)) {
@@ -52,7 +53,7 @@ $x = $page + 1;
 if(empty($result)) {
 	$dl->printSong('<div class="form">
     <h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
-    <form class="form__inner" method="post" action="../dashboard">
+    <form class="form__inner" method="post" action=".">
 		<p>'.$dl->getLocalizedString("emptyPage").'</p>
         <button type="submit" class="btn-primary">'.$dl->getLocalizedString("dashboard").'</button>
     </form>
@@ -101,7 +102,7 @@ $table .= '</table><form method="get" class="form__inner">
 	bottom row
 */
 //getting count
-if(!empty($_GET["search"])) $query = $db->prepare("SELECT count(*) FROM songs WHERE reuploadID=:id AND (name LIKE '%".ExploitPatch::remove($_GET["search"])."%' OR authorName LIKE '%".ExploitPatch::remove($_GET["search"])."%')");
+if(!empty(trim(ExploitPatch::remove($_GET["search"])))) $query = $db->prepare("SELECT count(*) FROM songs WHERE reuploadID=:id AND $q");
 else $query = $db->prepare("SELECT count(*) FROM songs WHERE reuploadID=:id");
 $query->execute([':id' => $accountID]);
 $packcount = $query->fetchColumn();

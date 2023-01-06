@@ -65,7 +65,6 @@ if($_FILES && $_FILES['filename']['error'] == UPLOAD_ERR_OK) {
             $song = "http://".$servername."".$path."".$db_fid.".mp3";
             $query = $db->prepare("INSERT INTO songs (ID, name, authorID, authorName, size, download, hash, reuploadTime, reuploadID) VALUES (:id, :name, '9', :author, :size, :download, :hash, :reuploadTime, :reuploadID)");
             $query->execute([':id' => $db_fid, ':name' => $name, ':download' => $song, ':author' => $author, ':size' => $size, ':hash' => $hash, ':reuploadTime' => time(), ':reuploadID' => $accountID]);
-			
         } 
     }  if($db_fid < 0) {
 	$dl->printSong('<div class="form">

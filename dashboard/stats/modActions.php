@@ -3,7 +3,7 @@ session_start();
 require "../incl/dashboardLib.php";
 require "../".$dbPath."incl/lib/connection.php";
 $dl = new dashboardLib();
-require "../".$dbPath."incl/lib/mainLib.php";
+require_once "../".$dbPath."incl/lib/mainLib.php";
 require "../".$dbPath."incl/lib/exploitPatch.php";
 $gs = new mainLib();
 $dl->title($dl->getLocalizedString("modActions"));
@@ -44,7 +44,7 @@ foreach($result as &$mod){
 	$query = $db->prepare("SELECT count(*) FROM modactions WHERE account = :id AND type = '1'");
 	$query->execute([':id' => $mod["accountID"]]);
 	$lvlcount = $query->fetchColumn();
-	if ($lastPlayed == 0) $time = '<div style="color:gray">'.$dl->getLocalizedString("never").'</div>';
+	if($lastPlayed == 0) $time = '<div style="color:gray">'.$dl->getLocalizedString("never").'</div>';
  	$query = $db->prepare("SELECT roleID FROM roleassign WHERE accountID =:accid");
 	$query->execute([':accid' => $mod["accountID"]]);
 	$resultRole = $color = implode($query->fetch());
@@ -58,6 +58,12 @@ foreach($result as &$mod){
 			break;
 		case 33:
 			$resultRole = $dl->getLocalizedString("moder");
+			break;
+		default:
+			$query = $db->prepare("SELECT roleName FROM roles WHERE roleID = :id");
+			$query->execute([':id' => $color]);
+			$resultRole = $query->fetch();
+			$resultRole = $resultRole["roleName"];
 			break;
 		}
   	$query = $db->prepare("SELECT commentColor FROM roles WHERE roleID = :rid");

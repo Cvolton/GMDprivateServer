@@ -5,7 +5,7 @@ require "../".$dbPath."incl/lib/Captcha.php";
 include "../".$dbPath."incl/lib/connection.php";
 require "../".$dbPath."incl/lib/generatePass.php";
 require "../".$dbPath."incl/lib/exploitPatch.php";
-require "../".$dbPath."incl/lib/mainLib.php";
+require_once "../".$dbPath."incl/lib/mainLib.php";
 $gs = new mainLib();
 $dl = new dashboardLib();
 $dl->title($dl->getLocalizedString("addQuest"));

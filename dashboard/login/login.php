@@ -25,8 +25,7 @@ if(isset($_POST["userName"]) AND isset($_POST["password"])){
 		<h2 style="margin-top:5px"><a href="login/activate.php">'.$dl->getLocalizedString("maybeActivate").'</a></h2>
 		<button type="submit" class="btn btn-primary">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 		</form>
-		</div>
-		');
+		</div>');
 		exit();
 	}
 	$accountID = $gs->getAccountIDFromName($userName);
@@ -80,13 +79,13 @@ if(isset($_POST["userName"]) AND isset($_POST["password"])){
 	if(isset($_SERVER["HTTP_REFERER"])){
 		$loginbox .= '<input type="hidden" name="ref" value="'.$_SERVER["HTTP_REFERER"].'">';
 	}
-	$loginbox .= '<button type="submit" class="btn-primary btn-block" id="submit" disabled>'.$dl->getLocalizedString("login").'</button>
+	$loginbox .= '<button type="submit" class="btn-primary btn-block" id="submit2" disabled>'.$dl->getLocalizedString("login").'</button>
 						</form>
 <script>
 $(document).change(function(){
    const p1 = document.getElementById("p1");
    const p2 = document.getElementById("p2");
-   const btn = document.getElementById("submit");
+   const btn = document.getElementById("submit2");
    if(!p1.value.trim().length || !p2.value.trim().length) {
                 btn.disabled = true;
                 btn.classList.add("btn-block");

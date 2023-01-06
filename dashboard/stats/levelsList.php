@@ -3,7 +3,7 @@ session_start();
 require "../incl/dashboardLib.php";
 require "../".$dbPath."incl/lib/connection.php";
 $dl = new dashboardLib();
-require "../".$dbPath."incl/lib/mainLib.php";
+require_once "../".$dbPath."incl/lib/mainLib.php";
 require "../".$dbPath."incl/lib/exploitPatch.php";
 $gs = new mainLib();
 include "../".$dbPath."incl/lib/connection.php";
@@ -21,9 +21,9 @@ if($gs->checkPermission($_SESSION["accountID"], "dashboardModTools")){
 } else {
 	$table = '<table class="table table-inverse"><tr><th>#</th><th>'.$dl->getLocalizedString("levelid").'</th><th>'.$dl->getLocalizedString("levelname").'</th><th>'.$dl->getLocalizedString("levelAuthor").'</th><th>'.$dl->getLocalizedString("leveldesc").'</th><th>'.$dl->getLocalizedString("stars").'</th><th>'.$dl->getLocalizedString("songIDw").'</th></tr>';
 }
-if(!empty($_GET["search"])) {
+if(!empty(trim(ExploitPatch::remove($_GET["search"])))) {
 	$srcbtn = '<a href="'.$_SERVER["SCRIPT_NAME"].'" style="width: 0%;display: flex;margin-left: 5px;align-items: center;justify-content: center;color: indianred; text-decoration:none" class="btn-primary" title="'.$dl->getLocalizedString("searchCancel").'"><i class="fa-solid fa-xmark"></i></a>';
-	$query = $db->prepare("SELECT * FROM levels WHERE unlisted=0 AND levelName LIKE '%".ExploitPatch::remove($_GET["search"])."%' LIMIT 10 OFFSET $page");
+	$query = $db->prepare("SELECT * FROM levels WHERE unlisted<>1 AND levelName LIKE '%".trim(ExploitPatch::remove($_GET["search"]))."%' LIMIT 10 OFFSET $page");
 	$query->execute();
 	$result = $query->fetchAll();
 	if(empty($result)) {
@@ -37,7 +37,7 @@ if(!empty($_GET["search"])) {
 		die();
 	} 
 } else {
-	$query = $db->prepare("SELECT * FROM levels WHERE unlisted=0 ORDER BY levelID DESC LIMIT 10 OFFSET $page");
+	$query = $db->prepare("SELECT * FROM levels WHERE unlisted<>1 ORDER BY levelID DESC LIMIT 10 OFFSET $page");
 	$query->execute();
 	$result = $query->fetchAll();
 	if(empty($result)) {
@@ -62,11 +62,12 @@ foreach($result as &$action){
 	$levelpass = substr($levelpass, 1);
   	$levelpass = preg_replace('/(0)\1+/', '', $levelpass);
 	if($levelpass == 0 OR empty($levelpass)) $levelpass = '<div style="color:gray">'.$dl->getLocalizedString("nopass").'</div>';
+	elseif(strlen($levelpass) < 4) while(strlen($levelpass) < 4) $levelpass = '0'.$levelpass;
 	$songid = $action["songID"];
 	if($songid == 0) $songid = '<div style="color:#d0d0d0">'.strstr($gs->getAudioTrack($action["audioTrack"]), ' by ', true).'</div>';
 	$username =  '<form style="margin:0" method="post" action="profile/"><button style="margin:0" class="accbtn" name="accountID" value="'.$gs->getAccountIDFromName($action["userName"]).'">'.$action["userName"].'</button></form>';
   	$stars = $action["starStars"];
-    if($stars < 5) {
+    if($stars < 5 AND $stars != 1) {
           $star = 1;
       } elseif($stars > 4) {
           $star = 2;
@@ -105,7 +106,7 @@ $table .= '</table><form method="get" class="form__inner">
 	bottom row
 */
 //getting count
-if(!empty($_GET["search"])) $query = $db->prepare("SELECT count(*) FROM levels WHERE unlisted=0 AND levelName LIKE '%".ExploitPatch::remove($_GET["search"])."%'");
+if(!empty(trim(ExploitPatch::remove($_GET["search"])))) $query = $db->prepare("SELECT count(*) FROM levels WHERE unlisted=0 AND levelName LIKE '%".trim(ExploitPatch::remove($_GET["search"]))."%'");
 else $query = $db->prepare("SELECT count(*) FROM levels WHERE unlisted=0");
 $query->execute();
 $packcount = $query->fetchColumn();

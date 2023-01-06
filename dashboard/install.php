@@ -13,7 +13,9 @@ if(!$installed) {
       ALTER TABLE roles ADD COLUMN IF NOT EXISTS dashboardForceChangePassNick INT NOT NULL DEFAULT '0' AFTER dashboardManageSongs; 
       ALTER TABLE songs ADD COLUMN IF NOT EXISTS reuploadID INT NOT NULL DEFAULT '0' AFTER reuploadTime; 
       ALTER TABLE users ADD COLUMN IF NOT EXISTS banReason varchar(255) NOT NULL DEFAULT 'none' AFTER isCreatorBanned;
-	  ALTER TABLE accounts ADD COLUMN IF NOT EXISTS auth varchar(16) NOT NULL DEFAULT 'none' AFTER isActive");
+	  ALTER TABLE accounts ADD COLUMN IF NOT EXISTS auth varchar(16) NOT NULL DEFAULT 'none' AFTER isActive;
+	  ALTER TABLE roles ADD COLUMN IF NOT EXISTS demonlistAdd INT NOT NULL DEFAULT '0' AFTER dashboardForceChangePassNick;
+	  ALTER TABLE roles ADD COLUMN IF NOT EXISTS demonlistApprove INT NOT NULL DEFAULT '0' AFTER demonlistAdd");
 	} else {
 		$check = $db->query("SHOW COLUMNS FROM `roles` LIKE 'dashboardLevelPackCreate'");
       		$exist = $check->fetchAll();
@@ -36,6 +38,12 @@ if(!$installed) {
 		$check = $db->query("SHOW COLUMNS FROM `accounts` LIKE 'auth'");
       		$exist = $check->fetchAll();
       		if(empty($exist)) $db->query("ALTER TABLE accounts ADD auth varchar(16) NOT NULL DEFAULT 'none' AFTER isActive");
+		$check = $db->query("SHOW COLUMNS FROM `roles` LIKE 'demonlistAdd'");
+      		$exist = $check->fetchAll();
+      		if(empty($exist)) $db->query("ALTER TABLE roles ADD demonlistAdd INT NOT NULL DEFAULT '0' AFTER dashboardForceChangePassNick");
+		$check = $db->query("SHOW COLUMNS FROM `roles` LIKE 'demonlistApprove'");
+      		$exist = $check->fetchAll();
+      		if(empty($exist)) $db->query("ALTER TABLE roles ADD demonlistApprove INT NOT NULL DEFAULT '0' AFTER demonlistAdd");
 	}
 	$lines = file($dbPath.'config/dashboard.php');
 	$first_line = $lines[2];
@@ -43,10 +51,10 @@ if(!$installed) {
 	$lines = array_merge(array($first_line, "\n"), $lines);
 	$file = fopen($dbPath.'config/dashboard.php', 'w');
   	fwrite($file, "<?php\r\n");
-  	fwrite($file, "\$installed = true;\r");
+  	fwrite($file, "\$installed = true; // Like i said, it changed!\r");
 	fwrite($file, implode('', $lines));
   	fclose($file);
   	if(!file_exists("./download")) mkdir("./download", 0755);
-  	header('Location: .');
+  	header('Location: .?installed=1');
 } else header('Location: .');
 ?>

@@ -79,11 +79,11 @@ if(!empty($_POST["username"]) AND !empty($_POST["email"]) AND !empty($_POST["rep
 				$hashpass = password_hash($password, PASSWORD_DEFAULT);
 				$query2 = $db->prepare("INSERT INTO accounts (userName, password, email, registerDate, isActive)
 				VALUES (:userName, :password, :email, :time, :isActive)");
-				$query2->execute([':userName' => $username, ':password' => $hashpass, ':email' => $email,':time' => time(), ':isActive' => $preactivateAccounts ? 1 : 0]);
+				$query2->execute([':userName' => $username, ':password' => $hashpass, ':email' => $email, ':time' => time(), ':isActive' => $preactivateAccounts ? 1 : 0]);
 				// there you go, you are registered.
 				$dl->printSong('<div class="form">
 					<h1>'.$dl->getLocalizedString("registerAcc").'</h1>
-					<form class="form__inner" method="post" action=".">
+					<form class="form__inner" method="post" action="."style="grid-gap: 0px;">
 					<p>'.$dl->getLocalizedString("registered").'</p>
 					<button type="submit" class="btn-song">'.$dl->getLocalizedString("dashboard").'</button>
 					</form>
@@ -106,7 +106,7 @@ if(!empty($_POST["username"]) AND !empty($_POST["email"]) AND !empty($_POST["rep
 		');
 		Captcha::displayCaptcha();
         echo '
-        <button type="submit" class="btn-song btn-block" id="submit" disabled>'.$dl->getLocalizedString("register").'</button>
+        <button type="submit" class="btn-song btn-block" id="submita" disabled>'.$dl->getLocalizedString("register").'</button>
     </form>
 </div>
 <script>
@@ -116,7 +116,7 @@ $(document).change(function(){
    const p3 = document.getElementById("p3");
    const p4 = document.getElementById("p4");
    const p5 = document.getElementById("p5");
-   const btn = document.getElementById("submit");
+   const btn = document.getElementById("submita");
    const sp = document.getElementById("sp");
    const sp2 = document.getElementById("sp2");
    if(!p1.value.trim().length || !p2.value.trim().length || !p3.value.trim().length || !p4.value.trim().length || !p5.value.trim().length) {

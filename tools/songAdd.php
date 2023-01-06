@@ -1,5 +1,7 @@
 <?php
 //error_reporting(0);
+include "../config/dashboard.php";
+if(strpos($songEnabled, '2') !== true) exit('Sorry, GDPS owner has turned off this tool!');
 include "../incl/lib/connection.php";
 require_once "../incl/lib/exploitPatch.php";
 require_once "../incl/lib/mainLib.php";

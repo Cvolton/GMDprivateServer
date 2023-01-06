@@ -8,6 +8,8 @@ function chkarray($source){
 	return $source == "" ? "0" : $target;
 }
 //error_reporting(0);
+include "../config/dashboard.php";
+if(!$lrEnabled) exit('Sorry, GDPS owner has turned off this tool!');
 include "../incl/lib/connection.php";
 require "../incl/lib/XORCipher.php";
 require_once "../incl/lib/generatePass.php";

@@ -4,7 +4,7 @@ require "../incl/dashboardLib.php";
 require "../".$dbPath."incl/lib/connection.php";
 $dl = new dashboardLib();
 error_reporting(0);
-require "../".$dbPath."incl/lib/mainLib.php";
+require_once "../".$dbPath."incl/lib/mainLib.php";
 $gs = new mainLib();
 require "../".$dbPath."incl/lib/exploitPatch.php";
 $ep = new exploitPatch();

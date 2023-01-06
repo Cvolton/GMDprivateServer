@@ -7,7 +7,7 @@ require "../".$dbPath."incl/lib/XORCipher.php";
 require_once "../".$dbPath."incl/lib/generatePass.php";
 require_once "../".$dbPath."incl/lib/exploitPatch.php";
 require_once "../".$dbPath."incl/lib/generateHash.php";
-include "../".$dbPath."incl/lib/mainLib.php";
+include_once "../".$dbPath."incl/lib/mainLib.php";
 $gs = new mainLib();
 $dl = new dashboardLib();
 global $lrEnabled;

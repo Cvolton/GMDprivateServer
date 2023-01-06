@@ -13,6 +13,8 @@ function chkarray($source, $default = 0){
 	return $target;
 }
 //error_reporting(0);
+include "../config/dashboard.php";
+if(!$lrEnabled) exit('Sorry, GDPS owner has turned off this tool!');
 include "../incl/lib/connection.php";
 require "../incl/lib/XORCipher.php";
 require "../config/reuploadAcc.php";

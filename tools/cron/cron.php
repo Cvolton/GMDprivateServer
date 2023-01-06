@@ -20,6 +20,9 @@ flush();
 include "fixnames.php";
 ob_flush();
 flush();
+include "demonlistPoints.php";
+ob_flush();
+flush();
 echo "1";
 file_put_contents("../logs/cronlastrun.txt",time());
 ?>

@@ -5,7 +5,7 @@ require "../".$dbPath."incl/lib/connection.php";
 require_once "../".$dbPath."incl/lib/exploitPatch.php";
 error_reporting(0);
 $dl = new dashboardLib();
-require "../".$dbPath."incl/lib/mainLib.php";
+require_once "../".$dbPath."incl/lib/mainLib.php";
 $gs = new mainLib();
 include "../".$dbPath."incl/lib/connection.php";
 $dl->title($dl->getLocalizedString("accounts"));
@@ -18,7 +18,7 @@ if(isset($_GET["page"]) AND is_numeric($_GET["page"]) AND $_GET["page"] > 0){
 	$actualpage = 1;
 }
 $table = '<table class="table table-inverse"><tr><th>#</th><th>'.$dl->getLocalizedString("username").'</th><th>'.$dl->getLocalizedString("accountID").'</th><th>'.$dl->getLocalizedString("registerDate").'</th><th>'.$dl->getLocalizedString("isAdmin").'</th><th>'.$dl->getLocalizedString("lastSeen").'</th></tr>';
-if(empty(ExploitPatch::remove($_GET["search"]))) {
+if(empty(trim(ExploitPatch::remove($_GET["search"])))) {
 	$query = $db->prepare("SELECT * FROM accounts ORDER BY accountID ASC LIMIT 10 OFFSET $page");
 	$query->execute();
 	$result = $query->fetchAll();
@@ -34,7 +34,7 @@ if(empty(ExploitPatch::remove($_GET["search"]))) {
 	} 
 } else {
 	$srcbtn = '<a href="'.$_SERVER["SCRIPT_NAME"].'" style="width: 0%;display: flex;margin-left: 5px;align-items: center;justify-content: center;color: indianred; text-decoration:none" class="btn-primary" title="'.$dl->getLocalizedString("searchCancel").'"><i class="fa-solid fa-xmark"></i></a>';
-	$query = $db->prepare("SELECT * FROM accounts WHERE userName LIKE '%".ExploitPatch::remove($_GET["search"])."%' ORDER BY accountID ASC LIMIT 10 OFFSET $page");
+	$query = $db->prepare("SELECT * FROM accounts WHERE userName LIKE '%".trim(ExploitPatch::remove($_GET["search"]))."%' ORDER BY accountID ASC LIMIT 10 OFFSET $page");
 	$query->execute();
 	$result = $query->fetchAll();
 	if(empty($result)) {
@@ -76,6 +76,12 @@ foreach($result as &$action){
 			case 33:
 				$resultRole = $dl->getLocalizedString("moder");
 				break;
+			default:
+				$query = $db->prepare("SELECT roleName FROM roles WHERE roleID = :id");
+				$query->execute([':id' => $color]);
+				$resultRole = $query->fetch();
+				$resultRole = $resultRole["roleName"];
+				break;
 		}
     $query = $db->prepare("SELECT commentColor FROM roles WHERE roleID = :rid");
   	$query->execute([':rid' => $color]);
@@ -97,8 +103,8 @@ $table .= '</table><form method="get" class="form__inner">
 	bottom row
 */
 //getting count
-if(empty(ExploitPatch::remove($_GET["search"]))) $query = $db->prepare("SELECT count(*) FROM accounts");
-else $query = $db->prepare("SELECT count(*) FROM accounts WHERE userName LIKE '%".ExploitPatch::remove($_GET["search"])."%'");
+if(empty(trim(ExploitPatch::remove($_GET["search"])))) $query = $db->prepare("SELECT count(*) FROM accounts");
+else $query = $db->prepare("SELECT count(*) FROM accounts WHERE userName LIKE '%".trim(ExploitPatch::remove($_GET["search"]))."%'");
 $query->execute();
 $packcount = $query->fetchColumn();
 $pagecount = ceil($packcount / 10);

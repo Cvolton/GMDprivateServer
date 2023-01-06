@@ -4,6 +4,10 @@
 	body {overflow: auto !important}
 }
 
+@media (min-width: 1500px) {
+	.container {max-width: 1450px;}
+}
+
 * {
     font-family: 'Google Sans', 'Inter', 'Segoe UI' , 'Calibri Light', 'Arial';
 }
@@ -212,6 +216,7 @@
 }
  
 .msgbox::-webkit-scrollbar-thumb,
+.form::-webkit-scrollbar-thumb,
 .dmbox::-webkit-scrollbar-thumb{
     background-color: #373A3F;
     border-radius: 100px;
@@ -354,11 +359,21 @@ p{
 	width:100%;
 }
 
-
 summary {
 	color: #d0d0d0;
 	font-size:15px;
   	cursor: pointer;
+}
+
+select::-webkit-scrollbar {
+	width:15px;
+  	border-radius:500px;
+}
+
+select::-webkit-scrollbar-thumb {
+    background-color: #141414;
+    border-radius: 100px;
+  	border: 4px solid #373A3F;
 }
 
 #bruh{

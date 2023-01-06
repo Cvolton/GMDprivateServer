@@ -8,6 +8,10 @@ $string["didntInstall"] = "<div style='color:#47a0ff'><b>Увага!</b> Ви н
 $string["levelsWeek"] = "Викладено рівнів за тиждень";
 $string["levels3Months"] = "Викладено рівнів за 3 місяці";
 $string["footer"] = $gdps.", ".date('Y', time());
+$string["tipsAfterInstalling"] = "Добро пожаловать в панель сервера! Мы даём вам несколько подсказок после установки:<br>
+1. Кажется, в SQL в таблице 'roles' появились новые права! Вам следует это проверить...<br>
+2. Если вы поместите icon.png в папку 'dashboard', то слева сверху появится иконка вашего сервера!<br>
+3. Нужно настроить config/dashboard.php, без этого никак!";
 
 $string["tryCron"] = "Виконати Cron";
 $string["cronSuccess"] = "Готово!";
@@ -165,6 +169,7 @@ $string["modYourself"] = "Не можна призначити себе моде
 $string["alreadyMod"] = "Цей користувач вже є модератором!";
 $string["addedMod"] = "Ви успішно зробили користувача модератором";
 $string["addModOneMore"] = "Ще один модератор?";
+$string["modAboveYourRole"] = "Вы пытаетесь выдать игроку роль выше вашей!";
 
 $string["shareCPTitle"] = "Поділитися Креатор Поїнтами";
 $string["shareCPDesc"] = "Тут ви можете поділитися Креатор Поїнтами з користувачами!";
@@ -196,6 +201,44 @@ $string["search"] = "Пошук...";
 $string["searchCancel"] = "Відмінити пошук";
 $string["emptySearch"] = "Нічого не знайдено!";
 
+$string["demonlist"] = 'Топ демонов';
+$string["demonlistRecord"] = 'Рекорд <b>%s</b>';
+$string["alreadyApproved"] = 'Уже принят!';
+$string["alreadyDenied"] = 'Уже отклонён!';
+$string["approveSuccess"] = 'Вы успешно приняли рекорд <b>%s</b>!';
+$string["denySuccess"] = 'Вы успешно отклонили рекорд <b>%s</b>!';
+$string["recordParameters"] = '<b>%s</b> прошёл <b>%s</b> за <b>%d</b> попыток';
+$string["approve"] = 'Принять';
+$string["deny"] = 'Отклонить';
+$string["submitRecord"] = 'Опубликовать рекорд';
+$string["submitRecordForLevel"] = 'Опубликовать рекорд для <b>%s</b>';
+$string["alreadySubmitted"] = 'Вы уже публиковали рекорд для <b>%s</b>!';
+$string["submitSuccess"] = 'Вы успешно опубликовали рекорд для <b>%s</b>!';
+$string["submitRecordDesc"] = 'Публикуйте свои рекорды только если вы прошли уровень!';
+$string["atts"] = 'Попытки';
+$string["ytlink"] = 'ID видео на YouTube (dQw4w9WgXcQ)';
+$string["submit"] = 'Опубликовать';
+$string["addDemonTitle"] = 'Добавить демон';
+$string["addDemon"] = 'Добавить демон в топ демонов';
+$string["addedDemon"] = 'Вы добавили <b>%s</b> на <b>%d</b> место!';
+$string["addDemonDesc"] = 'Здесь вы можете добавить демон в демонлист!';
+$string["place"] = 'Место';
+$string["giveablePoints"] = 'Выдаваемые очки';
+$string["add"] = 'Добавить';
+$string["recordApproved"] = 'Рекорд подтверждён!';
+$string["recordDenied"] = 'Рекорд отклонён!';
+$string["recordSubmitted"] = 'Рекорд опубликован!';
+$string["nooneBeat"] = 'никто не прошёл'; //let it be lowercase
+$string["oneBeat"] = 'прошёл 1 игрок'; 
+$string["lower5Beat"] = 'прошло %d игрока'; 
+$string["above5Beat"] = 'прошло %d игроков'; 
+$string["demonlistLevel"] = '%s <text style="display: inline-flex;font-size: 25px;font-weight:400">от <form style="margin:0" method="post" action="profile/"><button style="margin-left:7;font-size:25" class="accbtn" name="accountID" value="%d">%s</button></form></text>';
+$string["noDemons"] = 'Кажется, в вашем топе демонов нет ни одного демона...';
+$string["addSomeDemons"] = 'Добавьте несколько демонов, чтобы заполнить топ!';
+$string["askForDemons"] = 'Попросите администратора сервера добавить несколько!';
+$string["recordList"] = 'Список рекордов';
+$string["status"] = 'Статус';
+
 
 /*
 	REUPLOAD
@@ -203,6 +246,7 @@ $string["emptySearch"] = "Нічого не знайдено!";
 
 $string["reuploadBTN"] = "Завантажити";
 $string["errorGeneric"] = "Відбулася помилка!";
+$string["smthWentWrong"] = "Что-то пошло не так!";
 $string["tryAgainBTN"] = "Спробуйте ще раз";
 //songAdd.php
 $string["songAddDesc"] = "Тут ви можете додати свою пісню!";

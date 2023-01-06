@@ -3,7 +3,7 @@ session_start();
 require "../incl/dashboardLib.php";
 require "../".$dbPath."incl/lib/connection.php";
 $dl = new dashboardLib();
-require "../".$dbPath."incl/lib/mainLib.php";
+require_once "../".$dbPath."incl/lib/mainLib.php";
 require "../".$dbPath."incl/lib/exploitPatch.php";
 error_reporting(0);
 $gs = new mainLib();
@@ -29,10 +29,11 @@ if(!empty($_GET["author"]) AND !empty($_GET["name"])) {
 }
 $table = '<div class="notifyblue" style="display:'.$notify.'">'.$dl->getLocalizedString("renamedSong").' <b>'.$an.'</b> - <b>'.$nn.'</b>!</div><table class="table table-inverse"><tr><th>#</th><th></th><th>'.$dl->getLocalizedString("songIDw").'</th><th>'.$dl->getLocalizedString("songAuthor").'</th><th>'.$dl->getLocalizedString("name").'</th><th>'.$dl->getLocalizedString("size").'</th><th>'.$dl->getLocalizedString("time").'</th>'.$me.'</tr>';
 
-if(!empty($_GET["search"])) {
-	$ngw = $_GET["ng"] == 1 ? '' : 'reuploadID > 0';
+if(!empty(trim(ExploitPatch::remove($_GET["search"])))) {
+	$ngw = $_GET["ng"] == 1 ? '' : 'AND reuploadID > 0';
+	$q = is_numeric(trim(ExploitPatch::remove($_GET["search"]))) ? "ID LIKE '%".trim(ExploitPatch::remove($_GET["search"]))."%'" : "(name LIKE '%".trim(ExploitPatch::remove($_GET["search"]))."%' OR authorName LIKE '%".trim(ExploitPatch::remove($_GET["search"]))."%')";
 	$srcbtn = '<a href="'.$_SERVER["SCRIPT_NAME"].'" style="width: 0%;display: flex;margin-left: 5px;align-items: center;justify-content: center;color: indianred; text-decoration:none" class="btn-primary" title="'.$dl->getLocalizedString("searchCancel").'"><i class="fa-solid fa-xmark"></i></a>';
-	$query = $db->prepare("SELECT * FROM songs WHERE (name LIKE '%".ExploitPatch::remove($_GET["search"])."%' OR authorName LIKE '%".ExploitPatch::remove($_GET["search"])."%') $ngw ORDER BY ID DESC LIMIT 10 OFFSET $page");
+	$query = $db->prepare("SELECT * FROM songs WHERE $q $ngw ORDER BY ID DESC LIMIT 10 OFFSET $page");
 	$query->execute();
 	$result = $query->fetchAll();
 	if(empty($result)) {
@@ -149,7 +150,7 @@ if($gs->checkPermission($_SESSION["accountID"], "dashboardManageSongs")){
 						<td>".$size."</td>
 						<td>".$time."</td>
 						</tr>";
-	$x++;
+						$x++;
 }
 
 }
@@ -164,7 +165,7 @@ $table .= '</table><form method="get" class="form__inner">
 	bottom row
 */
 //getting count
-if(!empty($_GET["search"])) $query = $db->prepare("SELECT count(*) FROM songs WHERE name LIKE '%".ExploitPatch::remove($_GET["search"])."%' OR authorName LIKE '%".ExploitPatch::remove($_GET["search"])."%'");
+if(!empty(trim($_GET["search"]))) $query = $db->prepare("SELECT count(*) FROM songs WHERE name LIKE '%".trim(ExploitPatch::remove($_GET["search"]))."%' OR authorName LIKE '%".trim(ExploitPatch::remove($_GET["search"]))."%'");
 else $query = $db->prepare("SELECT count(*) FROM songs $ngw");
 $query->execute();
 $packcount = $query->fetchColumn();

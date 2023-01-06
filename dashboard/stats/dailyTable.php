@@ -2,7 +2,7 @@
 session_start();
 require "../incl/dashboardLib.php";
 $dl = new dashboardLib();
-require "../".$dbPath."incl/lib/mainLib.php";
+require_once "../".$dbPath."incl/lib/mainLib.php";
 $gs = new mainLib();
 require "../".$dbPath."incl/lib/connection.php";
 $dl->title($dl->getLocalizedString("dailyTable"));
