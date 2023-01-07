@@ -70,9 +70,8 @@ foreach($msgs AS &$msg) {
 	$reply = $reply->fetchColumn();	
   	$message = base64_decode($msg["comment"]);
   	$time = $msg["timestamp"];
-	$likes = $msg["likes"] > 0 ? $msg["likes"] : '<text style="color:gray">'.$msg["likes"].'</text>';
-	$dislikes = $msg["dislikes"] > 0 ? $msg["dislikes"] : '<text style="color:gray">'.$msg["dislikes"].'</text>';
-	$stats = '<i style="color:#ffffc0" class="fa-regular fa-thumbs-up"></i> '.$likes. ' | <i style="color:#ffc0c0" class="fa-regular fa-thumbs-down"></i> '.$dislikes;
+	$likes = $msg["likes"];
+  	if($likes >= 0) $likes = $likes.' <i class="fa-regular fa-thumbs-up"></i>'; else $likes = mb_substr($likes, 1).' <i class="fa-regular fa-thumbs-down"></i>';
 	if($_SESSION["accountID"] != 0) {
 		if($reply == 0) $none = 'display:none';
 		$replies = '<button id="btnreply'.$msg["commentID"].'" onclick="reply('.$msg["commentID"].')" class="btn-rendel" style="padding: 7 10;margin-right: 10px;min-width: max-content;width: max-content;'.$none.'">'.$dl->getLocalizedString("replies").' ('.$reply.')</button>';
@@ -82,7 +81,7 @@ foreach($msgs AS &$msg) {
 		</div>';
 	}
   	$comments .= '<div style="width: 100%;display: flex;flex-wrap: wrap;justify-content: center;">
-			<div class="profile"><div style="display:flex"><h2 class="profilenick">'.$accname.'</h2><p style="text-align:right">'.$stats.'</p></div>
+			<div class="profile"><div style="display:flex"><h2 class="profilenick">'.$accname.'</h2><p style="text-align:right">'.$likes.'</p></div>
 			<h3 class="profilemsg">'.$message.'</h3>
 			<h3 id="comments"><div id="replyBtn'.$msg["commentID"].'">'.$replies.'</div><i style="display: none;margin-right: 10px;color: white;font-size: 13px;" id="spin'.$msg["commentID"].'" class="fa-solid fa-spinner fa-spin"></i>'.$input.''.$dl->convertToDate($time, true).'</h3></div>
 			<div style="width: 90%;" id="reply'.$msg["commentID"].'"></div>
