@@ -21,6 +21,8 @@ $string["cronError"] = "Erreur!";
 $string["profile"] = "Profile";
 $string["empty"] = "Vide...";
 $string["writeSomething"] = "Écrivez quelque chose!";  
+$string["replies"] = "Replies";
+$string["replyToComment"] = "Reply to a comment";
 
 $string["accountManagement"] = "Géstion du compte";
 $string["changePassword"] = "Changer le mot de passe";

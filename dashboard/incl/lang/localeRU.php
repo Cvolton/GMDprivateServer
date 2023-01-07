@@ -20,6 +20,8 @@ $string["cronError"] = "Ошибка!";
 $string["profile"] = "Профиль";
 $string["empty"] = "Пустовато...";
 $string["writeSomething"] = "Напишите что-нибудь!";
+$string["replies"] = "Ответы";
+$string["replyToComment"] = "Ответ на комментарий";
 
 $string["accountManagement"] = "Управление аккаунтом";
 $string["changePassword"] = "Сменить пароль";

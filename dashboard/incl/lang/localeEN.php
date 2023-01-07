@@ -20,6 +20,8 @@ $string["cronError"] = "Error!";
 $string["profile"] = "Profile";
 $string["empty"] = "Empty...";
 $string["writeSomething"] = "Write something!";  
+$string["replies"] = "Replies";
+$string["replyToComment"] = "Reply to a comment";
   
 $string["accountManagement"] = "Account management";
 $string["changePassword"] = "Change password";

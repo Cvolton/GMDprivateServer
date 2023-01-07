@@ -45,6 +45,38 @@ if(!$installed) {
       		$exist = $check->fetchAll();
       		if(empty($exist)) $db->query("ALTER TABLE roles ADD demonlistApprove INT NOT NULL DEFAULT '0' AFTER demonlistAdd");
 	}
+	$check = $db->query("SHOW TABLES LIKE 'replies'");
+      		$exist = $check->fetchAll();
+      		if(empty($exist)) $db->query("CREATE TABLE `replies` (
+			 `replyID` int(11) NOT NULL AUTO_INCREMENT,
+			 `commentID` int(11) NOT NULL,
+			 `accountID` int(11) NOT NULL,
+			 `body` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+			 `timestamp` int(11) NOT NULL,
+			 PRIMARY KEY (`replyID`)
+			) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
+	$check = $db->query("SHOW TABLES LIKE 'demonlist''");
+      	$exist = $check->fetchAll();
+      	if(empty($exist)) $db->query("CREATE TABLE `demonlist` (
+		 `levelID` int(11) NOT NULL,
+		 `authorID` int(11) NOT NULL,
+		 `pseudoPoints` int(11) NOT NULL,
+		 `giveablePoints` int(11) NOT NULL,
+		 `youtube` varchar(255) CHARACTER SET utf8mb4 NOT NULL,
+		 PRIMARY KEY (`levelID`)
+		) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
+	$check = $db->query("SHOW TABLES LIKE 'dlsubmits'");
+      		$exist = $check->fetchAll();
+      		if(empty($exist)) $db->query("CREATE TABLE `dlsubmits` (
+			 `ID` int(11) NOT NULL AUTO_INCREMENT,
+			 `accountID` int(11) NOT NULL,
+			 `levelID` int(11) NOT NULL,
+			 `atts` int(255) NOT NULL,
+			 `ytlink` varchar(255) CHARACTER SET utf8mb4 NOT NULL DEFAULT '',
+			 `auth` varchar(255) CHARACTER SET utf8mb4 NOT NULL DEFAULT '',
+			 `approve` int(11) NOT NULL DEFAULT 0,
+			 PRIMARY KEY (`ID`)
+			) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
 	$lines = file($dbPath.'config/dashboard.php');
 	$first_line = $lines[2];
 	$lines = array_slice($lines, 1 + 2);

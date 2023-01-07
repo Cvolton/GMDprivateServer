@@ -8,10 +8,10 @@ $string["didntInstall"] = "<div style='color:#47a0ff'><b>Увага!</b> Ви н
 $string["levelsWeek"] = "Викладено рівнів за тиждень";
 $string["levels3Months"] = "Викладено рівнів за 3 місяці";
 $string["footer"] = $gdps.", ".date('Y', time());
-$string["tipsAfterInstalling"] = "Добро пожаловать в панель сервера! Мы даём вам несколько подсказок после установки:<br>
-1. Кажется, в SQL в таблице 'roles' появились новые права! Вам следует это проверить...<br>
-2. Если вы поместите icon.png в папку 'dashboard', то слева сверху появится иконка вашего сервера!<br>
-3. Нужно настроить config/dashboard.php, без этого никак!";
+$string["tipsAfterInstalling"] = "Ласкаво просимо до панелі серверу! Ми даємо вам декілька підсказок після встановлення:<br>
+1. Здається, в SQL у таблиці 'roles' з'явились нові права! Вам слід це перевірити...<br>
+2. Якщо ви помістите icon.png у папку 'dashboard', то зліва зверху появиться значок вашого серверу!<br>
+3. Потрібно налаштувати config/dashboard.php, без цього ніяк!";
 
 $string["tryCron"] = "Виконати Cron";
 $string["cronSuccess"] = "Готово!";
@@ -20,6 +20,8 @@ $string["cronError"] = "Помилка!";
 $string["profile"] = "Профіль";
 $string["empty"] = "Порожньо...";
 $string["writeSomething"] = "Напишіть щось!";
+$string["replies"] = "Ответы";
+$string["replyToComment"] = "Ответ на комментарий";
 
 $string["accountManagement"] = "Управніння акаунтом";
 $string["changePassword"] = "Змінити пароль";
@@ -238,6 +240,7 @@ $string["addSomeDemons"] = 'Додайте декілька демонів, що
 $string["askForDemons"] = 'Попросіть адміністратора серверу додати декілька!';
 $string["recordList"] = 'Список рекордів';
 $string["status"] = 'Статус';
+
 
 /*
 	REUPLOAD

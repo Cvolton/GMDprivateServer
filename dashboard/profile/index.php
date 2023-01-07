@@ -65,38 +65,53 @@ $msgs->execute([':uid' => $gs->getUserID($accid)]);
 $msgs = $msgs->fetchAll();
 $comments = $send = '';
 foreach($msgs AS &$msg) {
+	$reply = $db->prepare("SELECT count(*) FROM replies WHERE commentID = :id");
+	$reply->execute([':id' => $msg["commentID"]]);
+	$reply = $reply->fetchColumn();	
   	$message = base64_decode($msg["comment"]);
   	$time = $msg["timestamp"];
-	$likes = $msg["likes"];
-  	if($likes >= 0) $likes = $likes.' <i class="fa-regular fa-thumbs-up"></i>'; else $likes = mb_substr($likes, 1).' <i class="fa-regular fa-thumbs-down"></i>';
-  	$comments .= '<div class="profile"><div style="display:flex"><h2 class="profilenick">'.$accname.'</h2><p style="text-align:right">'.$likes.'</p></div>
+	$likes = $msg["likes"] > 0 ? $msg["likes"] : '<text style="color:gray">'.$msg["likes"].'</text>';
+	$dislikes = $msg["dislikes"] > 0 ? $msg["dislikes"] : '<text style="color:gray">'.$msg["dislikes"].'</text>';
+	$stats = '<i style="color:#ffffc0" class="fa-regular fa-thumbs-up"></i> '.$likes. ' | <i style="color:#ffc0c0" class="fa-regular fa-thumbs-down"></i> '.$dislikes;
+	if($_SESSION["accountID"] != 0) {
+		if($reply == 0) $none = 'display:none';
+		$replies = '<button id="btnreply'.$msg["commentID"].'" onclick="reply('.$msg["commentID"].')" class="btn-rendel" style="padding: 7 10;margin-right: 10px;min-width: max-content;width: max-content;'.$none.'">'.$dl->getLocalizedString("replies").' ('.$reply.')</button>';
+		if($_SESSION["accountID"] != 0) $input = '<div class="field" style="display:flex;margin-right:10px">
+			<input id="inputReply'.$msg["commentID"].'" type="text" placeholder="'.$dl->getLocalizedString("replyToComment").'">
+			<button onclick="sendReply('.$msg["commentID"].')" id="btninput'.$msg["commentID"].'" style="width: max-content;margin-left: 10px;padding: 8px;" class="btn-rendel"><i style="color:white" class="fa-regular fa-paper-plane" aria-hidden="true"></i></button>
+		</div>';
+	}
+  	$comments .= '<div style="width: 100%;display: flex;flex-wrap: wrap;justify-content: center;">
+			<div class="profile"><div style="display:flex"><h2 class="profilenick">'.$accname.'</h2><p style="text-align:right">'.$stats.'</p></div>
 			<h3 class="profilemsg">'.$message.'</h3>
-			<h3 id="comments">'.$dl->convertToDate($time).'<h3></div>';
+			<h3 id="comments"><div id="replyBtn'.$msg["commentID"].'">'.$replies.'</div><i style="display: none;margin-right: 10px;color: white;font-size: 13px;" id="spin'.$msg["commentID"].'" class="fa-solid fa-spinner fa-spin"></i>'.$input.''.$dl->convertToDate($time, true).'</h3></div>
+			<div style="width: 90%;" id="reply'.$msg["commentID"].'"></div>
+		</div>';
 }
 if(empty($comments)) $comments = '<p class="profile" style="font-size:25px;color:#c0c0c0">'.$dl->getLocalizedString("empty").'</p>';
 $msgtopl = '<form method="post" action="messenger/"><button class="msgupd" name="accountID" value="'.$accid.'"><i class="fa-regular fa-comment" aria-hidden="true"></i></button></form>';
 if($accid == $_SESSION["accountID"]) {
 if(empty($comments)) $comments = '<p class="profile" style="font-size:25px;color:#c0c0c0">'.$dl->getLocalizedString("writeSomething").'</p>';
-$send = '<div class="field" style="margin-top:10px">
-			<form method="post" action=""><input type="text" name="msg" id="p1" placeholder="'.$dl->getLocalizedString("msg").'"></input>
-			<button style="margin-top: 10px;" class="btn-primary btn-block" id="submit" disabled>'.$dl->getLocalizedString("send").'</button></form>
-		</div><script>
-$(document).change(function(){
-   const p1 = document.getElementById("p1");
-   const btn = document.getElementById("submit");
-   if(!p1.value.trim().length) {
-                btn.disabled = true;
-                btn.classList.add("btn-block");
-                btn.classList.remove("btn-primary");
-	} else {
-		        btn.removeAttribute("disabled");
-                btn.classList.remove("btn-block");
-                btn.classList.remove("btn-size");
-                btn.classList.add("btn-primary");
-	}
-});
-</script>';
-$msgtopl = '';
+	$send = '<div class="field" style="margin-top:10px">
+				<form method="post" action=""><input type="text" name="msg" id="p1" placeholder="'.$dl->getLocalizedString("msg").'"></input>
+				<button style="margin-top: 10px;" class="btn-primary btn-block" id="submit" disabled>'.$dl->getLocalizedString("send").'</button></form>
+			</div><script>
+	$(document).change(function(){
+	   const p1 = document.getElementById("p1");
+	   const btn = document.getElementById("submit");
+	   if(!p1.value.trim().length) {
+					btn.disabled = true;
+					btn.classList.add("btn-block");
+					btn.classList.remove("btn-primary");
+		} else {
+					btn.removeAttribute("disabled");
+					btn.classList.remove("btn-block");
+					btn.classList.remove("btn-size");
+					btn.classList.add("btn-primary");
+		}
+	});
+	</script>';
+	$msgtopl = '';
 }
 if($_SESSION["accountID"] == 0) $msgtopl = '';
 if($res["dlPoints"] != 0) $points = '<i style="position: absolute;font-size: 20;right: 50;color: gray;" class="fa-solid fa-medal"> '.$res["dlPoints"].'</i>';
@@ -110,6 +125,99 @@ $dl->printSong('<div class="form" style="width: 60vw;height: max-content;positio
         	'.$comments.'
         </div>
 		'.$send.'
-        
-</div></div>', 'profile');
+</div></div>
+<script>
+replyCount = '.$reply.';
+function reply(id) {
+	document.getElementById("spin" + id).style.display = "block";
+	replies = new XMLHttpRequest();
+    replies.open("GET", "profile/replies.php?id=" + id, true);
+	replies.onload = function () {
+		document.getElementById("spin" + id).style.display = "none";
+		str = replies.response;
+		if(!str.trim().length) document.getElementById("replyBtn" + id).innerHTML = "";
+		str2 = str.split(" | ");
+		r = 0;
+		str2.forEach(element => {
+			rep = element.split(", ");
+			rid = rep[0];
+			cid = rep[1];
+			accid = rep[2];
+			body = atob(rep[3]);
+			r = r + 1;
+			time = rep[4];
+			const div = document.createElement("div");
+			div.className = "profile";
+			div.style.background = "none";
+			if(r > 1) {
+				hr = document.createElement("hr");
+				hr.innerHTML = `<hr style="width:90%">`;
+				document.getElementById("reply" + id).appendChild(hr);
+			}
+			if(rep[2] == "'.$gs->getAccountName($_SESSION["accountID"]).'") div.innerHTML = `<div style="display:flex;height: max-content;justify-content: space-between;">
+				<h2 class="profilenick" style="width:max-content">` + accid + `</h2>
+				<button onclick="deleteReply(`+ rid + `, ` + cid +`)" id="delete` + id + `" style="width: max-content;margin-left: 10px;padding: 8px;height: max-content;font-size: 10px;" class="btn-rendel">
+				<i style="margin: 0 2px 0 2px;color:#ffb1ab" class="fa-solid fa-xmark" aria-hidden="true"></i>
+				</button>
+			</div>
+			<div style="display:flex;justify-content:space-between"><h3 class="profilemsg">` + body + `</h3><h3 id="comments" style="justify-content:flex-end">` + time + `</h3></div>`;
+			else div.innerHTML = `<div style="display:flex;height: max-content;justify-content: space-between;">
+				<h2 class="profilenick" style="width:max-content">` + accid + `</h2>
+			</div>
+			<div style="display:flex;justify-content:space-between"><h3 class="profilemsg">` + body + `</h3><h3 id="comments" style="justify-content:flex-end">` + time + `</h3></div>`;
+			document.getElementById("reply" + id).appendChild(div);
+			document.getElementById("btnreply" + id).setAttribute( "onClick", "hideReplies(" + id + ");" );
+		});
+		if(r < 1) document.getElementById("replyBtn" + id).innerHTML = "";
+	}
+	replies.send();
+}
+function showReplies(id) {
+	document.getElementById("reply" + id).style.display = "block";
+	document.getElementById("btnreply" + id).setAttribute( "onClick", "hideReplies(" + id + ");" );
+}
+function hideReplies(id) {
+	document.getElementById("reply" + id).style.display = "none";
+	document.getElementById("btnreply" + id).setAttribute( "onClick", "showReplies(" + id + ");"  );
+}
+function sendReply(id) {
+	document.getElementById("spin" + id).style.display = "block";
+	const input = document.getElementById("inputReply" + id);
+	if(input.value.trim().length) {
+		document.getElementById("btninput" + id).disabled = true;
+		document.getElementById("btninput" + id).classList.add("btn-block");
+		repsend = new XMLHttpRequest();
+		repsend.open("GET", "profile/replies.php?id=" + id + "&body=" + input.value, true);
+		repsend.onload = function () {
+			if(repsend.response == 1) {
+				document.getElementById("spin" + id).style.display = "none";
+				replyCount++;
+				input.value = "";
+				document.getElementById("btninput" + id).removeAttribute("disabled");
+				document.getElementById("btninput" + id).classList.remove("btn-block");
+				document.getElementById("reply" + id).innerHTML = "";
+				document.getElementById("replyBtn" + id).innerHTML = \'<button id="btnreply\' +  id+ \'" onclick="reply(\' +  id+ \')" class="btn-rendel" style="padding: 7 10;margin-right: 5px;min-width: max-content;width: max-content">'.$dl->getLocalizedString("replies").' (\' + replyCount + \')</button>\';
+				reply(id);
+			}
+		}
+		repsend.send();
+	}
+}
+function deleteReply(rid, id) {
+	document.getElementById("spin" + id).style.display = "block";
+	del = new XMLHttpRequest();
+    del.open("GET", "profile/replies.php?id=" + rid + "&delete=1", true);
+	del.onload = function () {
+			if(del.response == 1) {
+			document.getElementById("spin" + id).style.display = "none";
+			replyCount--;
+			document.getElementById("reply" + id).innerHTML = "";
+			if(r > 0) document.getElementById("replyBtn" + id).innerHTML = \'<button id="btnreply\' +  id+ \'" onclick="reply(\' +  id+ \')" class="btn-rendel" style="padding: 7 10;margin-right: 5px;min-width: max-content;width: max-content">'.$dl->getLocalizedString("replies").' (\' + replyCount + \')</button>\';
+			else document.getElementById("replyBtn" + id).innerHTML = "";
+			reply(id);
+		}
+	}
+	del.send();
+}
+</script>', 'profile');
 ?>

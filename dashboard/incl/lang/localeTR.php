@@ -19,7 +19,9 @@ $string["cronError"] = "Hata!";
 
 $string["profile"] = "Profil";
 $string["empty"] = "Boş...";
-$string["writeSomething"] = "Bir şeyler yaz!";  
+$string["writeSomething"] = "Bir şeyler yaz!";
+$string["replies"] = "Replies";
+$string["replyToComment"] = "Reply to a comment";  
 
 $string["accountManagement"] = "Hesap yönetimi";
 $string["changePassword"] = "Şifreyi değiştir";
