@@ -145,6 +145,7 @@ function reply(id) {
 			body = b64DecodeUnicode(rep[3]);
 			r = r + 1;
 			time = rep[4];
+			replyCount = rep[5];
 			const div = document.createElement("div");
 			div.className = "profile";
 			div.style.background = "none";

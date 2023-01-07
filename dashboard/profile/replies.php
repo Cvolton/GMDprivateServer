@@ -22,7 +22,7 @@ if($_SESSION["accountID"] != 0) {
 		$reply = $db->prepare("SELECT * FROM replies WHERE commentID = :id ORDER BY replyID DESC");
 		$reply->execute([':id' => $id]);
 		$reply = $reply->fetchAll();
-		foreach($reply as &$rep) echo $rep["replyID"].', '.$id.', '.$gs->getAccountName($rep["accountID"]).', '.$rep["body"].', '.$dl->convertToDate($rep["timestamp"], true).' | ';
+		foreach($reply as &$rep) echo $rep["replyID"].', '.$id.', '.$gs->getAccountName($rep["accountID"]).', '.$rep["body"].', '.$dl->convertToDate($rep["timestamp"], true).', '.count($reply).' | ';
 	} else {
 		$body = base64_encode(ExploitPatch::remove($_GET["body"]));
 		$reply = $db->prepare("INSERT INTO replies (commentID, accountID, body, timestamp) VALUES (:cid, :acc, :body, :time)");
