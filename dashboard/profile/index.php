@@ -142,7 +142,7 @@ function reply(id) {
 			rid = rep[0];
 			cid = rep[1];
 			accid = rep[2];
-			body = atob(rep[3]);
+			body = b64DecodeUnicode(rep[3]);
 			r = r + 1;
 			time = rep[4];
 			const div = document.createElement("div");
@@ -217,6 +217,11 @@ function deleteReply(rid, id) {
 		}
 	}
 	del.send();
+}
+function b64DecodeUnicode(str) {
+    return decodeURIComponent(atob(str).split(\'\').map(function(c) {
+        return \'%\' + (\'00\' + c.charCodeAt(0).toString(16)).slice(-2);
+    }).join(\'\'));
 }
 </script>', 'profile');
 ?>
