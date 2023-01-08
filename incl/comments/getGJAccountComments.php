@@ -10,7 +10,7 @@ $accountid = ExploitPatch::remove($_POST["accountID"]);
 $page = ExploitPatch::remove($_POST["page"]);
 $commentpage = $page*10;
 $userID = $gs->getUserID($accountid);
-$query = "SELECT comment, userID, likes, dislikes, isSpam, commentID, timestamp FROM acccomments WHERE userID = :userID ORDER BY timeStamp DESC LIMIT 10 OFFSET $commentpage";
+$query = "SELECT comment, userID, likes, isSpam, commentID, timestamp FROM acccomments WHERE userID = :userID ORDER BY timeStamp DESC LIMIT 10 OFFSET $commentpage";
 $query = $db->prepare($query);
 $query->execute([':userID' => $userID]);
 $result = $query->fetchAll();
@@ -24,7 +24,6 @@ foreach($result as &$comment1) {
 	if($comment1["commentID"]!=""){
       	if(time() - 86400 > $comment1["timestamp"] OR date('d', $comment1["timestamp"]) < date('d', time())) $uploadDate = date("d.m.Y", $comment1["timestamp"]);
 		else $uploadDate = date("G:i", $comment1["timestamp"]);
-		$likes = $comment1["likes"] - $comment1["dislikes"];
 		$reply = $db->prepare("SELECT count(*) FROM replies WHERE commentID = :id");
 		$reply->execute([':id' => $comment1["commentID"]]);
 		$reply = $reply->fetchColumn();
