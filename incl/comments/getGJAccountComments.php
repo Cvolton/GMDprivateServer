@@ -32,7 +32,7 @@ foreach($result as &$comment1) {
 			$comment1["comment"] = base64_decode($comment1["comment"]);
 			$comment1["comment"] = base64_encode($comment1["comment"].' ('.$reply.' '.$rep);
 		}
-		$commentstring .= "2~".$comment1["comment"]."~3~".$comment1["userID"]."~4~".$likes."~5~0~7~".$comment1["isSpam"]."~9~".$uploadDate."~6~".$comment1["commentID"]."|";
+		$commentstring .= "2~".$comment1["comment"]."~3~".$comment1["userID"]."~4~".$comment1["likes"]."~5~0~7~".$comment1["isSpam"]."~9~".$uploadDate."~6~".$comment1["commentID"]."|";
 	}
 }
 $commentstring = substr($commentstring, 0, -1);
