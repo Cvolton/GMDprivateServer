@@ -396,8 +396,12 @@ $(document).change(function(){
     }
     return $returnAsString ? implode($seperator, $rgbArray) : $rgbArray; 
 	}
-	public function convertToDate($timestamp){
-		return date("d.m.Y G:i:s", $timestamp);
+	public function convertToDate($timestamp, $acc = false){
+		if($acc) {
+			if(date("d", $timestamp) == date("d", time())) return date("G:i", $timestamp);
+			elseif(date("Y", $timestamp) == date("Y", time())) return date("d.m", $timestamp);
+			else return date("d.m.Y", $timestamp);
+		} else return date("d.m.Y G:i:s", $timestamp);
 	}
 	public function generateBottomRow($pagecount, $actualpage){
 		$pageminus = $actualpage - 1;
