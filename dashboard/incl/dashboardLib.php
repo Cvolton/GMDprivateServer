@@ -163,7 +163,7 @@ class dashboardLib {
 							<a class="dropdown-item" href="stats/packTable.php"><div class="icon"><i class="fa-regular fa-folder-open" aria-hidden="false"></i></div>'.$this->getLocalizedString("packTable").'</a>
 							<a class="dropdown-item" href="stats/gauntletTable.php"><div class="icon"><i class="fa-solid fa-globe" aria-hidden="false"></i></div>'.$this->getLocalizedString("gauntletTable").'</a>
 							<a class="dropdown-item" href="stats/songList.php"><div class="icon"><i class="fa-solid fa-music" aria-hidden="false"></i></div>'.$this->getLocalizedString("songs").'</a>
-							<a class="dropdown-item" href="demonlist"><div class="icon"><i class="fa-solid fa-dragon" aria-hidden="false"></i></div>'.$dl->getLocalizedString("demonlist").'</a>';
+							<a class="dropdown-item" href="demonlist"><div class="icon"><i class="fa-solid fa-dragon" aria-hidden="false"></i></div>'.$this->getLocalizedString("demonlist").'</a>';
 		if(isset($_SESSION["accountID"]) AND $_SESSION["accountID"] != 0){
 			echo '
 					<li class="nav-item dropdown '.$accountActive.' ">
