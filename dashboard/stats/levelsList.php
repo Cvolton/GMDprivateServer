@@ -17,9 +17,9 @@ if(isset($_GET["page"]) AND is_numeric($_GET["page"]) AND $_GET["page"] > 0){
 	$actualpage = 1;
 }
 if($gs->checkPermission($_SESSION["accountID"], "dashboardModTools")){
-	$table = '<table class="table table-inverse"><tr><th>#</th><th>'.$dl->getLocalizedString("levelid").'</th><th>'.$dl->getLocalizedString("levelname").'</th><th>'.$dl->getLocalizedString("levelAuthor").'</th><th>'.$dl->getLocalizedString("leveldesc").'</th><th>'.$dl->getLocalizedString("levelpass").'</th><th>'.$dl->getLocalizedString("stars").'</th><th>'.$dl->getLocalizedString("stats").'</th><th>'.$dl->getLocalizedString("songIDw").'</th></tr>';
+	$table = '<table class="table table-inverse"><tr><th>#</th><th>'.$dl->getLocalizedString("levelid").'</th><th>'.$dl->getLocalizedString("levelname").'</th><th>'.$dl->getLocalizedString("levelAuthor").'</th><th>'.$dl->getLocalizedString("leveldesc").'</th><th>'.$dl->getLocalizedString("levelpass").'</th><th>'.$dl->getLocalizedString("stars").'</th><th>'.$dl->getLocalizedString("songIDw").'</th></tr>';
 } else {
-	$table = '<table class="table table-inverse"><tr><th>#</th><th>'.$dl->getLocalizedString("levelid").'</th><th>'.$dl->getLocalizedString("levelname").'</th><th>'.$dl->getLocalizedString("levelAuthor").'</th><th>'.$dl->getLocalizedString("leveldesc").'</th><th>'.$dl->getLocalizedString("stars").'</th><th>'.$dl->getLocalizedString("stats").'</th><th>'.$dl->getLocalizedString("songIDw").'</th></tr>';
+	$table = '<table class="table table-inverse"><tr><th>#</th><th>'.$dl->getLocalizedString("levelid").'</th><th>'.$dl->getLocalizedString("levelname").'</th><th>'.$dl->getLocalizedString("levelAuthor").'</th><th>'.$dl->getLocalizedString("leveldesc").'</th><th>'.$dl->getLocalizedString("stars").'</th><th>'.$dl->getLocalizedString("songIDw").'</th></tr>';
 }
 if(!empty(trim(ExploitPatch::remove($_GET["search"])))) {
 	$srcbtn = '<a href="'.$_SERVER["SCRIPT_NAME"].'" style="width: 0%;display: flex;margin-left: 5px;align-items: center;justify-content: center;color: indianred; text-decoration:none" class="btn-primary" title="'.$dl->getLocalizedString("searchCancel").'"><i class="fa-solid fa-xmark"></i></a>';
@@ -59,13 +59,10 @@ foreach($result as &$action){
   	if(strlen($levelDesc) > 31) $levelDesc = "<details><summary>".$dl->getLocalizedString("spoiler")."</summary>$levelDesc</details>";
   	if(empty($levelDesc)) $levelDesc = '<div style="color:gray">'.$dl->getLocalizedString("noDesc").'</div>';
 	$levelpass = $action["password"];
-	$likes = $action["likes"] > 0 ? $action["likes"] : '<text style="color:gray">'.$action["likes"].'</text>';
-	$dislikes = $action["dislikes"] > 0 ? $action["dislikes"] : '<text style="color:gray">'.$action["dislikes"].'</text>';
-	$stats = '<i style="color:#ffffc0" class="fa-regular fa-thumbs-up"></i> '.$likes. ' | <i style="color:#ffc0c0" class="fa-regular fa-thumbs-down"></i> '.$dislikes;
 	$levelpass = substr($levelpass, 1);
   	$levelpass = preg_replace('/(0)\1+/', '', $levelpass);
 	if($levelpass == 0 OR empty($levelpass)) $levelpass = '<div style="color:gray">'.$dl->getLocalizedString("nopass").'</div>';
-	else if(strlen($levelpass) < 4) while(strlen($levelpass) < 4) $levelpass = '0'.$levelpass;
+	elseif(strlen($levelpass) < 4) while(strlen($levelpass) < 4) $levelpass = '0'.$levelpass;
 	$songid = $action["songID"];
 	if($songid == 0) $songid = '<div style="color:#d0d0d0">'.strstr($gs->getAudioTrack($action["audioTrack"]), ' by ', true).'</div>';
 	$username =  '<form style="margin:0" method="post" action="profile/"><button style="margin:0" class="accbtn" name="accountID" value="'.$gs->getAccountIDFromName($action["userName"]).'">'.$action["userName"].'</button></form>';
@@ -78,7 +75,7 @@ foreach($result as &$action){
           $star = 0;
       }
 	$stars = $action["starStars"].' '.$dl->getLocalizedString("starsLevel$star");
-	if($action["starStars"] == 0 AND $gs->checkPermission($_SESSION["accountID"], "dashboardModTools")) {
+	if($stars == 0 AND $gs->checkPermission($_SESSION["accountID"], "dashboardModTools")) {
       	$stars = '<a class="dropdown" href="#" data-toggle="dropdown">'.$dl->getLocalizedString("unrated").'</a>
 								<div class="dropdown-menu" style="padding:17px 17px 0px 17px; top:0%;">
 									 <form class="form__inner" method="post" action="levels/rateLevel.php">
@@ -89,12 +86,12 @@ foreach($result as &$action){
 										<button type="submit" class="btn-song" id="submit" name="level" value="'.$levelid.'">'.$dl->getLocalizedString("rate").'</button>
 									</form>
 								</div>';
-	} elseif($action["starStars"]== 0) $stars = '<div style="color:gray">'.$dl->getLocalizedString("unrated").'</div>';
+	} elseif($stars == 0) $stars = '<div style="color:gray">'.$dl->getLocalizedString("unrated").'</div>';
 	if($gs->checkPermission($_SESSION["accountID"], "dashboardModTools")){
-	$table .= "<tr><th scope='row'>".$x."</th><td>".$levelid."</td><td>".$levelname."</td><td>".$username."</td><td>".$levelDesc."</td><td>".$levelpass."</td><td>".$stars."</td><td>".$stats."</td><td>".$songid."</td></tr>";
+	$table .= "<tr><th scope='row'>".$x."</th><td>".$levelid."</td><td>".$levelname."</td><td>".$username."</td><td>".$levelDesc."</td><td>".$levelpass."</td><td>".$stars."</td><td>".$songid."</td></tr>";
 	$x++;
 	} else {
-	$table .= "<tr><th scope='row'>".$x."</th><td>".$levelid."</td><td>".$levelname."</td><td>".$username."</td><td>".$levelDesc."</td><td>".$stars."</td><td>".$stats."</td><td>".$songid."</td></tr>";
+	$table .= "<tr><th scope='row'>".$x."</th><td>".$levelid."</td><td>".$levelname."</td><td>".$username."</td><td>".$levelDesc."</td><td>".$stars."</td><td>".$songid."</td></tr>";
 	$x++;
 	}
 }
