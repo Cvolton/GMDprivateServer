@@ -18,8 +18,8 @@ if(isset($_GET["page"]) AND is_numeric($_GET["page"]) AND $_GET["page"] > 0){
 	$actualpage = 1;
 }
 $table = '<table class="table table-inverse"><tr><th>#</th><th>'.$dl->getLocalizedString("username").'</th><th>'.$dl->getLocalizedString("accountID").'</th><th>'.$dl->getLocalizedString("registerDate").'</th><th>'.$dl->getLocalizedString("isAdmin").'</th><th>'.$dl->getLocalizedString("lastSeen").'</th></tr>';
-if(empty(trim(ExploitPatch::remove($_GET["search"])))) {
-	$query = $db->prepare("SELECT * FROM accounts ORDER BY accountID ASC LIMIT 10 OFFSET $page");
+if(!isset($_GET["search"]) OR empty(trim(ExploitPatch::remove($_GET["search"])))) {
+	$query = $db->prepare("SELECT * FROM accounts WHERE isActive = 1 ORDER BY accountID ASC LIMIT 10 OFFSET $page");
 	$query->execute();
 	$result = $query->fetchAll();
 	if(empty($result)) {
@@ -34,7 +34,7 @@ if(empty(trim(ExploitPatch::remove($_GET["search"])))) {
 	} 
 } else {
 	$srcbtn = '<a href="'.$_SERVER["SCRIPT_NAME"].'" style="width: 0%;display: flex;margin-left: 5px;align-items: center;justify-content: center;color: indianred; text-decoration:none" class="btn-primary" title="'.$dl->getLocalizedString("searchCancel").'"><i class="fa-solid fa-xmark"></i></a>';
-	$query = $db->prepare("SELECT * FROM accounts WHERE userName LIKE '%".trim(ExploitPatch::remove($_GET["search"]))."%' ORDER BY accountID ASC LIMIT 10 OFFSET $page");
+	$query = $db->prepare("SELECT * FROM accounts WHERE userName LIKE '%".trim(ExploitPatch::remove($_GET["search"]))."%' AND isActive = 1 ORDER BY accountID ASC LIMIT 10 OFFSET $page");
 	$query->execute();
 	$result = $query->fetchAll();
 	if(empty($result)) {
@@ -61,19 +61,19 @@ foreach($result as &$action){
   	if($lastseen["lastPlayed"] == 0 OR empty($lastseen)) $lastPlayed = '<div style="color:gray">'.$dl->getLocalizedString("never").'</div>';
 	$query = $db->prepare("SELECT roleID FROM roleassign WHERE accountID =:accid");
 	$query->execute([':accid' => $accountID]);
-	$resultRole = implode($query->fetch());
+	$resultPls = $query->fetch();
+	$resultRole = $resultPls["roleID"];
 	if(empty($resultRole)){
 		$resultRole = $dl->getLocalizedString("player");
 	} else {
-      	$color = mb_substr($resultRole, 1);
 		switch($resultRole) {
-			case 11:
+			case 1:
 				$resultRole = $dl->getLocalizedString("admin");
 				break;
-			case 22:
+			case 2:
 				$resultRole = $dl->getLocalizedString("elder");
 				break;
-			case 33:
+			case 3:
 				$resultRole = $dl->getLocalizedString("moder");
 				break;
 			default:
@@ -83,10 +83,7 @@ foreach($result as &$action){
 				$resultRole = $resultRole["roleName"];
 				break;
 		}
-    $query = $db->prepare("SELECT commentColor FROM roles WHERE roleID = :rid");
-  	$query->execute([':rid' => $color]);
-  	$color = $query->fetch();
-  	$resultRole = '<div style="color:rgb('.$color["commentColor"].')">'.$resultRole.'</div>';
+  	$resultRole = '<div style="color:rgb('.$gs->getAccountCommentColor($action["accountID"]).')">'.$resultRole.'</div>';
 	}
 	$registerDate = date("d.m.Y", $action["registerDate"]);
 	$table .= "<tr><th scope='row'>".$x."</th><td>".$username."</td><td>".$accountID."</td><td>".$registerDate."</td><td>".$resultRole."</td><td>".$lastPlayed."</td></tr>";
@@ -103,8 +100,8 @@ $table .= '</table><form method="get" class="form__inner">
 	bottom row
 */
 //getting count
-if(empty(trim(ExploitPatch::remove($_GET["search"])))) $query = $db->prepare("SELECT count(*) FROM accounts");
-else $query = $db->prepare("SELECT count(*) FROM accounts WHERE userName LIKE '%".trim(ExploitPatch::remove($_GET["search"]))."%'");
+if(empty(trim(ExploitPatch::remove($_GET["search"])))) $query = $db->prepare("SELECT count(*) FROM accounts WHERE isActive = 1 ");
+else $query = $db->prepare("SELECT count(*) FROM accounts WHERE userName LIKE '%".trim(ExploitPatch::remove($_GET["search"]))."%' AND isActive = 1");
 $query->execute();
 $packcount = $query->fetchColumn();
 $pagecount = ceil($packcount / 10);

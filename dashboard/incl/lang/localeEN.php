@@ -11,7 +11,7 @@ $string["footer"] = $gdps.", ".date('Y', time());
 $string["tipsAfterInstalling"] = "Welcome to Dashboard! We give you some hints after installation:<br>
 1. It seems that new permissions have appeared in SQL in the 'roles' table! You should check it out...<br>
 2. If you put 'icon.png' to the 'dashboard' folder, then the icon of your GDPS will appear on the top left!<br>
-3. You should to configure config/dashboard.php!";
+3. You should configure config/dashboard.php!";
 
 $string["tryCron"] = "Run Cron";
 $string["cronSuccess"] = "Success!";
@@ -117,6 +117,8 @@ $string["packName"] = "Name of Map Pack";
 $string["color"] = "Color";
 $string["sameLevels"] = "You chose the same levels!";
 $string["show"] = "Show";
+$string["packChange"] = "Change Map Pack";
+$string["createNewPack"] = "Create new Map Pack!"; // Translate word "create" like "You'll need to create new map pack!", but its call to action
 
 $string["gauntletCreate"] = "Create Gauntlet";
 $string["gauntletCreateTitle"] = "Create Gauntlet";
@@ -130,6 +132,8 @@ $string["level2"] = "2 level";
 $string["level3"] = "3 level";
 $string["level4"] = "4 level";
 $string["level5"] = "5 level";
+$string["gauntletChange"] = "Change Gauntlet";
+$string["createNewGauntlet"] = "Create new Gauntlet!"; // Translate word "create" like "You'll need to create new gauntlet!", but its call to action
 
 $string["addQuest"] = "Add quest";
 $string["addQuestDesc"] = "Here you can create a quest!";
@@ -141,6 +145,8 @@ $string["questsSuccess"] = "You successfully created a quest";
 $string["invalidPost"] = "Invalid data!";
 $string["fewMoreQuests"] = "It's reccomend to create a few more quests.";
 $string["oneMoreQuest?"] = "One more quest?";
+$string["changeQuest"] = "Change quest";
+$string["createNewQuest"] = "Create new quest!"; // like gauntlets and mappacks above
 
 $string["levelReupload"] = "Reupload level";
 $string["levelReuploadDesc"] = "Here you can reupload a level from any server!";
@@ -171,6 +177,9 @@ $string["alreadyMod"] = "This player is already a moderator!";
 $string["addedMod"] = "You successfully granted a moderator to player";
 $string["addModOneMore"] = "One more moderator?";
 $string["modAboveYourRole"] = "You\'re trying to give a role above yours!";
+$string["makeNewMod"] = "Make someone moderator!";
+$string["reassignMod"] = "Reassign moderator";
+$string["reassign"] = "Reassign";
 
 $string["shareCPTitle"] = "Share Creator Points";
 $string["shareCPDesc"] = "Here you can share Creator Points with player!";
@@ -409,6 +418,10 @@ $string["modAction17"] = "Created a Map Pack";
 $string["modAction18"] = "Created a Gauntlet";
 $string["modAction19"] = "Changed song";
 $string["modAction20"] = "Granted a moderator to player";
+$string["modAction21"] = "Changed Map Pack";
+$string["modAction22"] = "Changed Gauntlet";
+$string["modAction23"] = "Changed quest";
+$string["modAction24"] = "Reassigned a player";
 $string["modAction25"] = "Created a quest";
 $string["modAction26"] = "Changed player's username/password";
 $string["everyActions"] = "Any actions";

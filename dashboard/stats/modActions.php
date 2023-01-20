@@ -44,6 +44,8 @@ foreach($result as &$mod){
 	$query = $db->prepare("SELECT count(*) FROM modactions WHERE account = :id AND type = '1'");
 	$query->execute([':id' => $mod["accountID"]]);
 	$lvlcount = $query->fetchColumn();
+  	if($actionscount == 0) $actionscount = '<div style="color:grey">'.$dl->getLocalizedString("noActions").'</div>';
+	if($lvlcount == 0) $lvlcount = '<div style="color:grey">'.$dl->getLocalizedString("noRates").'</div>';
 	if($lastPlayed == 0) $time = '<div style="color:gray">'.$dl->getLocalizedString("never").'</div>';
  	$query = $db->prepare("SELECT roleID FROM roleassign WHERE accountID =:accid");
 	$query->execute([':accid' => $mod["accountID"]]);
@@ -70,16 +72,18 @@ foreach($result as &$mod){
   	$query->execute([':rid' => $color]);
   	$color = $query->fetch();
   	$resultRole = '<div style="color:rgb('.$color["commentColor"].')">'.$resultRole.'</div>';
-  	$actions = $actionscount[strlen($actionscount)-1];
-  	if($actions == 1) $action = 0; elseif($actions < 5) $action = 1; else $action = 2;
-  	if($actionscount > 9 AND $actionscount < 20) $action = 2;
-  	$actionscount = $actionscount.' '.$dl->getLocalizedString("action$action");
-  	$levels = $lvlcount[strlen($lvlcount)-1];
-  	if($levels == 1) $lvl = 0; elseif($levels < 5 AND $levels > 0) $lvl = 1; else $lvl = 2;
-  	if($lvlcount > 9 AND $lvlcount < 20) $lvl = 2;
-  	$lvlcount = $lvlcount.' '.$dl->getLocalizedString("lvl$lvl");
-  	if($actionscount == 0) $actionscount = '<div style="color:grey">'.$dl->getLocalizedString("noActions").'</div>';
-	if($lvlcount == 0) $lvlcount = '<div style="color:grey">'.$dl->getLocalizedString("noRates").'</div>';
+	if($actionscount != '<div style="color:grey">'.$dl->getLocalizedString("noActions").'</div>') {
+		$actions = $actionscount[strlen($actionscount)-1];
+		if($actions == 1) $action = 0; elseif($actions < 5 AND $actions != 0) $action = 1; else $action = 2;
+		if($actionscount > 9 AND $actionscount < 20) $action = 2;
+		$actionscount = $actionscount.' '.$dl->getLocalizedString("action$action");
+	}
+	if($lvlcount != '<div style="color:grey">'.$dl->getLocalizedString("noRates").'</div>') {
+		$levels = $lvlcount[strlen($lvlcount)-1];
+		if($levels == 1) $lvl = 0; elseif($levels < 5 AND $levels > 0) $lvl = 1; else $lvl = 2;
+		if($lvlcount > 9 AND $lvlcount < 20) $lvl = 2;
+		$lvlcount = $lvlcount.' '.$dl->getLocalizedString("lvl$lvl");
+	}
   	$username =  '<form style="margin:0" method="post" action="profile/"><button style="margin:0" class="accbtn" name="accountID" value="'.$mod["accountID"].'">'.$mod["userName"].'</button></form>';
 	$modtable .= "<tr><th scope='row'>".$row."</th><td>".$username."</td><td>".$resultRole."</td><td>".$actionscount."</td><td>".$lvlcount."</td><td>".$time."</td></tr>";
 }

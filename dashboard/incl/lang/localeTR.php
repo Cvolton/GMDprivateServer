@@ -117,6 +117,8 @@ $string["packName"] = "Paketin ismi";
 $string["color"] = "Renk";
 $string["sameLevels"] = "Aynı bölümleri seçtin!";
 $string["show"] = "Göster";
+$string["packChange"] = "Change Map Pack";
+$string["createNewPack"] = "Create new Map Pack!"; // Translate word "create" like "You'll need to create new map pack!", but its call to action
 
 $string["gauntletCreate"] = "Gauntlet Oluştur";
 $string["gauntletCreateTitle"] = "Gauntlet Oluştur";
@@ -130,6 +132,8 @@ $string["level2"] = "2 bölüm";
 $string["level3"] = "3 bölüm";
 $string["level4"] = "4 bölüm";
 $string["level5"] = "5 bölüm";
+$string["gauntletChange"] = "Change Gauntlet";
+$string["createNewGauntlet"] = "Create new Gauntlet!"; // Translate word "create" like "You'll need to create new gauntlet!", but its call to action
 
 $string["addQuest"] = "Quest ekle";
 $string["addQuestDesc"] = "Burada quest ekleyebilirsin!";
@@ -141,6 +145,8 @@ $string["questsSuccess"] = "Başarıyla quest oluşturdun";
 $string["invalidPost"] = "Geçersiz data!";
 $string["fewMoreQuests"] = "Birkaç tane daha quest oluşturmanız önerilir.";
 $string["oneMoreQuest?"] = "Başka ekle?";
+$string["changeQuest"] = "Change quest";
+$string["createNewQuest"] = "Create new quest!"; // like gauntlets and mappacks above
 
 $string["levelReupload"] = "Bölüm aktarma";
 $string["levelReuploadDesc"] = "Burada başka bir sunucudan bölüm aktarabilirsin!";
@@ -171,6 +177,9 @@ $string["alreadyMod"] = "Kullanıcı zaten moderatör!";
 $string["addedMod"] = "Kullanıcıya moderatörlük verildi";
 $string["addModOneMore"] = "Başka ekle?";
 $string["modAboveYourRole"] = "Senden daha yüksek bir rolü vermeye çalışıyorsun!";
+$string["makeNewMod"] = "Make someone moderator!";
+$string["reassignMod"] = "Reassign moderator";
+$string["reassign"] = "Reassign";
 
 $string["shareCPTitle"] = "Creator Point ekle";
 $string["shareCPDesc"] = "Burada kullanıcılara CP ekleyebilirsin!";
@@ -409,6 +418,10 @@ $string["modAction17"] = "(17)Harita paketi oluşturdu";
 $string["modAction18"] = "(18)Gauntlet oluşturuldu";
 $string["modAction19"] = "(19)Şarkı değiştirildi";
 $string["modAction20"] = "(20)Moderatörlük verdi";
+$string["modAction21"] = "Changed Map Pack";
+$string["modAction22"] = "Changed Gauntlet";
+$string["modAction23"] = "Changed quest";
+$string["modAction24"] = "Reassigned a player";
 $string["modAction25"] = "(25)Quest oluşturdu";
 $string["modAction26"] = "(26)Kullanıcı adı/şifre değiştirdi";
 $string["everyActions"] = "Tüm eylemler";

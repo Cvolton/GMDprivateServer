@@ -81,7 +81,7 @@ foreach($result as &$action){
           $star = 0;
       }
 	$stars = $action["starStars"].' '.$dl->getLocalizedString("starsLevel$star");
-	if($stars == 0) $stars = '<div style="color:gray">'.$dl->getLocalizedString("unrated").'</div>';
+	if($action["stars"] == 0) $stars = '<div style="color:gray">'.$dl->getLocalizedString("unrated").'</div>';
 	$table .= "<tr><th scope='row'>".$x."</th><td>".$levelid."</td><td>".$levelname."</td><td>".$levelDesc."</td><td>".$levelpass."</td><td>".$stars."</td><td>".$songid."</td></tr>";
 	$x++;
 }

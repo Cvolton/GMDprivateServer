@@ -16,6 +16,17 @@
     display: none !important;
 }
 
+input, select {
+	cursor: pointer;
+}
+
+.replybtn {
+	color: #909090;
+   margin-left: 5;
+   font-size: 13px;
+   display: block;
+}
+
 .table-inverse td, .table-inverse th, .table-inverse thead th {
     border-color: #32383e00;
 }
@@ -27,6 +38,11 @@
   	width: 100%;
   	margin: -11px 0 -11px 0;
   	transition: 0.3s;
+}
+
+.btn-success {
+	background: #5effaf !important;
+    color: #149957 !important;
 }
 
 .no {
@@ -217,16 +233,52 @@
  
 .msgbox::-webkit-scrollbar-thumb,
 .form::-webkit-scrollbar-thumb,
-.dmbox::-webkit-scrollbar-thumb{
-    background-color: #373A3F;
-    border-radius: 100px;
+.dmbox::-webkit-scrollbar-thumb {
+   background-color: #373A3F;
+   border-radius: 100px;
   	border: 4px solid #181a1b;
 }
 
+.itemslist::-webkit-scrollbar-thumb {
+   background-color: #373A3F;
+   border-radius: 100px;
+	border: 4px solid #141414;
+}
+
+.itemslist {
+	overflow: auto;
+   border-radius: 20px;
+   grid-gap: 10px;
+   display: flex;
+   margin: 10 0 10 0px;
+   flex-wrap: wrap;
+   width: 65%;
+   align-content: flex-start;
+}
+
 ::-webkit-scrollbar-thumb {
-    background-color: #181a1b;
-    border-radius: 100px;
+   background-color: #181a1b;
+   border-radius: 100px;
   	border: 4px solid #373A3F;
+}
+
+.itemsbox {
+	border-radius: 30px !important;
+	width: 50% !important;
+	padding: 0 !important;
+	padding-left: 10 !important;
+	display: flex;
+	margin-top: 8%;
+}
+
+.itembtn {
+	padding: 10 !important;
+	border-radius: 20px !important;
+	height:max-content;
+	margin: 0px;
+	margin-right: 10;
+	width: 100% !important;
+	border: none !important;
 }
 
 .messageyou {
@@ -283,7 +335,7 @@
 .profilenick {
 	text-align:left;
 	font-size:22px;
-	font-weight:500;
+	font-weight:700;
 	margin-left:5px;
 	color:white;
 }
@@ -601,7 +653,7 @@ body {
 .form__inner {
     display: grid;
     grid-template-columns: 1fr;
-    justify-items: start;
+    justify-items: center;
     align-items: stretch;
     grid-gap: 20px;
     font-size: 14px;
@@ -771,11 +823,23 @@ table,
     justify-content: center;
 }
 
+hr {
+	background-image: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.2), transparent);
+	border: 0;
+	height: 1px;
+	margin: 0;
+	box-sizing:content-box;
+	display: block;
+}
+
 #comments {
-    color: #535456;
-    font-size: 13px;
-	height: 0;
-    text-align: right;
+	margin: 10px 0px 0px 0px;
+   color: #535456;
+   font-size: 13px;
+   display: flex;
+   justify-content: space-between;
+   text-align: right;
+   align-items: baseline;
 }
 .tooactive {
 	font-weight: 700;

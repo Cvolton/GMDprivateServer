@@ -118,6 +118,8 @@ $string["packName"] = "Le nom du Map Pack";
 $string["color"] = "Couleur";
 $string["sameLevels"] = "Vous avez choisi les mêmes niveaux!";
 $string["show"] = "Montrer.";
+$string["packChange"] = "Change Map Pack";
+$string["createNewPack"] = "Create new Map Pack!"; // Translate word "create" like "You'll need to create new map pack!", but its call to action
 
 $string["gauntletCreate"] = "Créer un Gauntlet";
 $string["gauntletCreateTitle"] = "Créer un Gauntlet";
@@ -131,6 +133,8 @@ $string["level2"] = "Niveau 2";
 $string["level3"] = "Niveau 3";
 $string["level4"] = "Niveau 4";
 $string["level5"] = "Niveau 5";
+$string["gauntletChange"] = "Change Gauntlet";
+$string["createNewGauntlet"] = "Create new Gauntlet!"; // Translate word "create" like "You'll need to create new gauntlet!", but its call to action
 
 $string["addQuest"] = "Ajouter une quête";
 $string["addQuestDesc"] = "Ici vous pouvez ajouter une quête!";
@@ -142,6 +146,8 @@ $string["questsSuccess"] = "Vous avez créé une quête avec succès";
 $string["invalidPost"] = "Données invalides!";
 $string["fewMoreQuests"] = "Il est recommendé de créer quelques quêtes de plus.";
 $string["oneMoreQuest?"] = "Une quête de plus?";
+$string["changeQuest"] = "Change quest";
+$string["createNewQuest"] = "Create new quest!"; // like gauntlets and mappacks above
 
 $string["levelReupload"] = "Reupload le niveau";
 $string["levelReuploadDesc"] = "Ici vous pouvez reupload un niveau de n'importe quel serveur (GDPS)!";
@@ -172,6 +178,9 @@ $string["alreadyMod"] = "Ce joueur est déjà un modérateur!";
 $string["addedMod"] = "Vous avez donné les permissions modérateur à un joueur avec succès";
 $string["addModOneMore"] = "Un moderateur de plus?";
 $string["modAboveYourRole"] = "Tu essayes de donner un rôle supérieur au tiens!";
+$string["makeNewMod"] = "Make someone moderator!";
+$string["reassignMod"] = "Reassign moderator";
+$string["reassign"] = "Reassign";
 
 $string["shareCPTitle"] = "Partager les Points Créateur";
 $string["shareCPDesc"] = "Ici vous pouvez partager les Points Créateur avec un joueur!";
@@ -410,6 +419,10 @@ $string["modAction17"] = "A créé un Map Pack";
 $string["modAction18"] = "A créé un Gauntlet";
 $string["modAction19"] = "A changé une chanson";
 $string["modAction20"] = "Donné les permissions modérateur à un joueur";
+$string["modAction21"] = "Changed Map Pack";
+$string["modAction22"] = "Changed Gauntlet";
+$string["modAction23"] = "Changed quest";
+$string["modAction24"] = "Reassigned a player";
 $string["modAction25"] = "A créé une quête";
 $string["modAction26"] = "A changé le nom d'utilisateur/mot de passe du joueur";
 $string["everyActions"] = "Toutes les actions";

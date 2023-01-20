@@ -47,15 +47,12 @@ foreach($result as &$action){
 	$value = $action["value"];
 	$value2 = $action["value2"];
 	$value3 = $action["value3"];
+	$value4 = $action["value4"];
 	if($action["type"] == 5){
       	$value = $value3;
-		if(is_numeric($value2)){
-			$value3 = date("d.m.Y", $value2);
-		}
+		if(is_numeric($value2)) $value3 = date("d.m.Y", $value2);
 	}
-	if($action["type"] == 15) {
-		$value = $gs->getAccountName($value);
-	}
+	if($action["type"] == 15) $value = $gs->getAccountName($value);
 	$actionname = $dl->getLocalizedString("modAction".$action["type"]);
   	
   	if($action["type"] == 1) {
@@ -68,9 +65,7 @@ foreach($result as &$action){
       	else $value = '<text style="color:gray">'.$dl->getLocalizedString("isAdminNo").'</text>';
 		$value2 = $gs->getLevelName($value3);
     }
-	if($action["type"] == 13){
-		$value = base64_decode($value);
-	}
+	if($action["type"] == 13) $value = base64_decode($value);
   	if($action["type"] == 15) {
     	if($value3 == 0) $value3 = '<div style="color:#a9ffa9">'.$dl->getLocalizedString("unban").'</div>';
       	else $value3 = '<div style="color:#ffa9a9">'.$dl->getLocalizedString("isBan").'</div>';
@@ -80,7 +75,46 @@ foreach($result as &$action){
 		if($value2 == 'Password') $value2 = $dl->getLocalizedString("password");
 		else $value2 = $dl->getLocalizedString("username");
 	}
-  	if($action["type"] == 17) { 
+	if($action["type"] == 25 OR $action["type"] == 23) {
+		$value = $value4;
+		switch($action["value"]) {
+			case 1:
+				$value2 = $dl->getLocalizedString("orbs");
+				break;
+			case 2:
+				$value2 = $dl->getLocalizedString("coins");
+				break;
+			case 3:
+				$value2 = $dl->getLocalizedString("stars");
+				break;
+		}
+		$value3 = $action["value2"].' | '.$action["value3"];
+	}
+	if($action["type"] == 20 OR $action["type"] == 24) {
+		$value = '<form style="margin:0" method="post" action="profile/"><button style="margin:0" class="accbtn" name="accountID" value="'.$value2.'">'.$value.'</button></form>';
+		$clr = $db->prepare("SELECT commentColor FROM roles WHERE roleID = :id");
+		$clr->execute([':id' => $value3]);
+		$clr = $clr->fetch();
+		switch($value3) {
+			case 1:
+				$value3 = $dl->getLocalizedString("admin");
+				break;
+			case 2:
+				$value3 = $dl->getLocalizedString("elder");
+				break;
+			case 3:
+				$value3 = $dl->getLocalizedString("moder");
+				break;
+			default:
+				$name = $db->prepare("SELECT roleName FROM roles WHERE roleID = :id");
+				$name->execute([':id' => $value3]);
+				$name = $name->fetch();
+				$value3 = $name["roleName"];
+				break;
+		}
+		$value3 = '<text style="color:rgb('.$clr["commentColor"].')">'.$value3.'</text>';
+	}
+  	if($action["type"] == 17 OR $action["type"] == 21) { 
       	if($value3 == 1) $star = 0; elseif($value3 < 5) $star = 1; else $star = 2;
       	if($action["value4"] == 1) $coin = 0; elseif($action["value4"] != 0) $coin = 1; else $coin = 2; 
 		$value = '<div style="color:rgb('.$action["value7"].');font-weight:700">'.$value.'</div>';
@@ -89,13 +123,11 @@ foreach($result as &$action){
 	if(strlen($action["value"]) > 18) $value = "<details><summary>".$dl->getLocalizedString("spoiler")."</summary>$value</details>";
   	if(strlen($action["value2"]) > 18) $value2 = "<details><summary>".$dl->getLocalizedString("spoiler")."</summary>$value2</details>";
 	$time = $dl->convertToDate($action["timestamp"]);
-	if($action["type"] == 5){
-		$value2 = $gs->getLevelName($value);
-	}
+	if($action["type"] == 5) $value2 = $gs->getLevelName($value);
 	$table .= "<tr><th scope='row'>".$x."</th><td>".$account."</td><td>".$actionname."</td><td>".$value."</td><td>".$value2."</td><td>".$value3."</td><td>".$time."</td></tr>";
 	$x++;
 }
-$mods = $db->prepare("SELECT * FROM roleassign");
+$mods = $db->prepare("SELECT * FROM roleassign GROUP BY accountID");
 $mods->execute();
 $mods = $mods->fetchAll();
 $options = '';
@@ -127,6 +159,10 @@ $table .= '</table><form method="get" class="form__inner">
 			<option value="18">'.$dl->getLocalizedString("modAction18").'</option>
 			<option value="19">'.$dl->getLocalizedString("modAction19").'</option>
 			<option value="20">'.$dl->getLocalizedString("modAction20").'</option>
+            <option value="21">'.$dl->getLocalizedString("modAction21").'</option>
+            <option value="22">'.$dl->getLocalizedString("modAction22").'</option>
+            <option value="23">'.$dl->getLocalizedString("modAction23").'</option>
+            <option value="24">'.$dl->getLocalizedString("modAction24").'</option>
 			<option value="25">'.$dl->getLocalizedString("modAction25").'</option>
 			<option value="26">'.$dl->getLocalizedString("modAction26").'</option>
 		</select>

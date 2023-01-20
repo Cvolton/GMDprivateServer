@@ -16,8 +16,9 @@ class dashboardLib {
 						<link rel="icon" type="image/png" sizes="64x64" href="/favicon.png">
 						<link rel="manifest" href="/site.webmanifest">
 						<meta charset="utf-8">
+						<meta name="color-scheme" content="dark">
 						<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit="no">';
-				if($isSubdirectory) echo '<base href="../">';
+          	if($isSubdirectory) echo '<base href="../">';
 				echo '<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
                           <script src="https://kit.fontawesome.com/10e18026cb.js" crossorigin="anonymous"></script>
                           <script async src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
@@ -142,7 +143,7 @@ class dashboardLib {
 				break;
 		}
 		echo '<nav id="navbarepta" class="navbar navbar-expand-lg navbar-dark menubar">
-			<a class="navbar-brand" href="" style="margin-right:0.5rem"><img style="width:30px" src="icon.png"></a>
+			<a class="navbar-brand" href="" style="margin-right:0.5rem"><img style="width:40px" src="icon.svg"></a>
 			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
 				<span class="navbar-toggler-icon"></span>
 			</button>
@@ -155,7 +156,7 @@ class dashboardLib {
 					</li>';
 		$browse = '<li class="nav-item dropdown '.$browseActive.' ">
 						<a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-							<i class="fa-solid fa-folder-open" aria-hidden="true"></i> '.$this->getLocalizedString("browse").'
+							<i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i> '.$this->getLocalizedString("browse").'
 						</a>
 						<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
 							<a class="dropdown-item" href="stats/accountsList.php"><div class="icon"><i class="fa-solid fa-user" aria-hidden="false"></i></div>'.$this->getLocalizedString("accounts").'</a>
@@ -263,7 +264,6 @@ class dashboardLib {
 				</ul>
 				<ul class="nav navbar-nav ml-auto">';
 					if($msgEnabled == 1 AND isset($_SESSION["accountID"]) AND $_SESSION["accountID"] != 0) { 
-                      if($_SESSION["msgNew"] != 1) {
                         	$new = '';
 							$msg = $db->prepare("SELECT isNew FROM messages WHERE toAccountID=:acc AND isNew=0");
                         	$msg->execute([':acc' => $_SESSION["accountID"]]);
@@ -271,10 +271,9 @@ class dashboardLib {
                         	if(count($msg) != 0) {
 								$_SESSION["msgNew"] = 1;
                               	$new = '<i class="fa-solid fa-circle" id="notify" aria-hidden="true" style="font-size: 10px;margin-left: -5;margin-right: 3px;color: #e35151;"></i></div>';
-							}
-                          } else {
-							$new = '<i class="fa-solid fa-circle" id="notify" aria-hidden="true" style="font-size: 10px;margin-left: -5;margin-right: 3px;color: #e35151;"></i></div>';
-							}
+							} else {
+								$new = '';
+						}
                       echo '<li class="nav-item dropdown">
 						<div style="display:flex"><a class="nav-link '.$msgActive.'" href="messenger/" id="navbarDropdownMenuLink">
 							<i class="fa-solid fa-comments" aria-hidden="true"></i> '.$this->getLocalizedString("messenger").'</a>'.$new;
@@ -398,6 +397,7 @@ $(document).change(function(){
 	}
 	public function convertToDate($timestamp, $acc = false){
 		if($acc) {
+			if($timestamp == 0) return $this->getLocalizedString("never");
 			if(date("d", $timestamp) == date("d", time())) return date("G:i", $timestamp);
 			elseif(date("Y", $timestamp) == date("Y", time())) return date("d.m", $timestamp);
 			else return date("d.m.Y", $timestamp);
@@ -486,7 +486,7 @@ $(document).change(function(){
 	}
 	public function title($title) {
       	global $gdps;
-		echo '<title>'.$title.' | '.$gdps.'!</title>';
+		echo '<title>'.$title.' | '.$gdps.'</title>';
 	}
 }
 ?>
