@@ -95,7 +95,7 @@ if(empty($comments)) $comments = '<p class="profile" style="font-size:25px;color
 				<form method="post" action=""><input type="text" name="msg" id="p1" placeholder="'.$dl->getLocalizedString("msg").'"></input>
 				<button style="margin-top: 10px;" class="btn-primary btn-block" id="submit" disabled>'.$dl->getLocalizedString("send").'</button></form>
 			</div><script>
-	$(document).change(function(){
+	$(document).on("keyup keypress change keydown",function(){
 	   const p1 = document.getElementById("p1");
 	   const btn = document.getElementById("submit");
 	   if(!p1.value.trim().length) {

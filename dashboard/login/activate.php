@@ -63,7 +63,7 @@ if(!empty($_POST["userName"]) && !empty($_POST["password"])){
 		<button type="submit" class="btn-primary btn-block" id="submit" disabled>'.$dl->getLocalizedString("activate").'</button>
 	</form></div>
     <script>
-$(document).change(function(){
+$(document).on("keyup keypress change keydown",function(){
    const p1 = document.getElementById("p1");
    const p2 = document.getElementById("p2");
    const btn = document.getElementById("submit");

@@ -79,7 +79,7 @@ if(isset($_SESSION["accountID"]) AND $_SESSION["accountID"] != 0){
 				<div class="field"><input type="text" name="msg" id="p2" placeholder="'.$dl->getLocalizedString("msg").'"></input></div>
 			<button type="submit" name="accountID" value="'.$notyou.'" class="btn-primary btn-block" id="submit" disabled>'.$dl->getLocalizedString("send").'</button></form></div>
         <script>
-$(document).change(function(){
+$(document).on("keyup keypress change keydown",function(){
    const p1 = document.getElementById("p1");
    const p2 = document.getElementById("p2");
    const btn = document.getElementById("submit");
@@ -143,7 +143,7 @@ $(document).change(function(){
             <div class="messenger" style="width:100%"><input class="field" id="p1" type="text" name="receiver" placeholder="'.$dl->getLocalizedString("banUserID").'"></input>
             <button type="submit" class="btn-rendel btn-block" id="submit" style="margin-top:5px" disabled>'.$dl->getLocalizedString("write").'</button></div></form>
 		<script>
-$(document).change(function(){
+$(document).on("keyup keypress change keydown",function(){
    const p1 = document.getElementById("p1");
    const btn = document.getElementById("submit");
    if(!p1.value.trim().length) {

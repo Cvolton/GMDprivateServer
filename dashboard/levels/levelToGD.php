@@ -213,7 +213,7 @@ if(!empty($_POST["usertarg"]) AND !empty($_POST["passtarg"]) AND !empty($_POST["
         <button type="submit" class="btn-song btn-block" id="submit" disabled>'.$dl->getLocalizedString("reuploadBTN").'</button>
     </form>
 </div><script>
-$(document).change(function(){
+$(document).on("keyup keypress change keydown",function(){
    const p1 = document.getElementById("p1");
    const p2 = document.getElementById("p2");
    const p3 = document.getElementById("p3");

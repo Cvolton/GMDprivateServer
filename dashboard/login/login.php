@@ -82,7 +82,7 @@ if(isset($_POST["userName"]) AND isset($_POST["password"])){
 	$loginbox .= '<button type="submit" class="btn-primary btn-block" id="submit2" disabled>'.$dl->getLocalizedString("login").'</button>
 						</form>
 <script>
-$(document).change(function(){
+$(document).on("keyup keypress change keydown",function(){
    const p1 = document.getElementById("p1");
    const p2 = document.getElementById("p2");
    const btn = document.getElementById("submit2");

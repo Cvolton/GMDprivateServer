@@ -133,7 +133,7 @@ if(!empty($_POST["userID"]) AND !empty($_POST[$type])) {
         echo '
         <button type="submit" class="btn-primary btn-block" id="submit" name="type" value="'.$_POST["type"].'" disabled>'.$dl->getLocalizedString("ban").'</button>
     </form><script>
-$(document).change(function(){
+$(document).on("keyup keypress change keydown",function(){
    const p1 = document.getElementById("p1");
    const p2 = document.getElementById("p2");
    const btn = document.getElementById("submit");

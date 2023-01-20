@@ -108,7 +108,7 @@ if ($pass == 1) {
         echo '<button style="margin-top:5px" type="submit" id="submit" class="btn-song btn-block" disabled>'.$dl->getLocalizedString("changeUsername").'</button>
 		</form>
 		</div><script>
-$(document).change(function(){
+$(document).on("keyup keypress change keydown",function(){
    const p1 = document.getElementById("p1");
    const p2 = document.getElementById("p2");
    const p3 = document.getElementById("p3");

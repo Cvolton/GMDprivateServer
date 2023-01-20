@@ -104,7 +104,7 @@ $dl->printSong('<div class="form">
     </form>
 </div>
 <script>
-$(document).change(function(){
+$(document).on("keyup keypress change keydown",function(){
    const p1 = document.getElementById("p1");
    const btn = document.getElementById("submit");
    if(!p1.value.trim().length) {
