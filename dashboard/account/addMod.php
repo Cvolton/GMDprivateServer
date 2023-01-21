@@ -114,7 +114,7 @@ if(!empty($_POST["user"])) {
 				break;
 		}
 	}
-	$mods = $db->prepare("SELECT * FROM roleassign WHERE roleID >= :id ORDER BY roleID DESC");
+	$mods = $db->prepare("SELECT * FROM roleassign WHERE roleID >= :id GROUP BY accountID DESC");
   	$mods->execute([':id' => $gs->getMaxValuePermission($_SESSION["accountID"], 'roleID')]);
   	$mods = $mods->fetchAll();
   	foreach($mods as &$mod) {
