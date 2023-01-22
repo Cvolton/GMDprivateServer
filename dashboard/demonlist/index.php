@@ -107,7 +107,7 @@ if(!empty($_POST["sr"]) AND is_numeric($_POST["sr"])) {
 			$levelid = $action["levelID"];
 			$levelname = $gs->getLevelName($levelid);
 			$atts = $action["atts"];
-			if($action["approve"] == 0) $approve = '<a href="demonlist/approve.php?str='.$action["auth"].'" class="btn-rendel">Проверить рекорд</a>';
+			if($action["approve"] == 0) $approve = '<a href="demonlist/approve.php?str='.$action["auth"].'" class="btn-rendel">'.$dl->getLocalizedString('checkRecord').'</a>';
 			else $approve = $action["approve"] == 1 ? '<text class="btn-rendel btn-success">'.$dl->getLocalizedString('alreadyApproved').'</text>' : '<text class="btn-rendel btn-size">'.$dl->getLocalizedString('alreadyDenied').'</text>';
 			$table .= "<tr><th scope='row'>".$x."</th><td>".$levelid."</td><td>".$levelname."</td><td>".$atts."</td><td>".$approve."</td></tr>";
 			$x++;
