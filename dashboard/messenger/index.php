@@ -59,7 +59,7 @@ if(isset($_SESSION["accountID"]) AND $_SESSION["accountID"] != 0){
 			$body = $xor->plaintext(base64_decode($msg["body"]), 14251);
 			$msgs .= '<div class="messenger'.$div.'"><h2 class="subject'.$div.'">'.$subject.'</h2>
 			<h3 class="message'.$div.'">'.$body.'</h3>
-			<h3 id="comments">'.$dl->convertToDate($msg["timestamp"]).'<h3></div>';
+			<h3 id="comments" style="justify-content:flex-end">'.$dl->convertToDate($msg["timestamp"]).'</h3></div>';
 			$_POST["subject"] = '';
 			$_POST["msg"] = '';
 		}
