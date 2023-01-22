@@ -249,6 +249,7 @@ $string["addSomeDemons"] = 'Додайте декілька демонів, що
 $string["askForDemons"] = 'Попросіть адміністратора серверу додати декілька!';
 $string["recordList"] = 'Список рекордів';
 $string["status"] = 'Статус';
+$string["checkRecord"] = 'Проверить рекорд';
 
 
 /*

@@ -248,6 +248,7 @@ $string["addSomeDemons"] = 'Add some demons to fill up demonlist!';
 $string["askForDemons"] = 'Ask server\'s administrator to add some!';
 $string["recordList"] = 'List of records';
 $string["status"] = 'Status';
+$string["checkRecord"] = 'Check record';
 
 /*
 	REUPLOAD
