@@ -248,7 +248,7 @@ $string["addSomeDemons"] = 'Listeyi doldurmak için demon seviyesi bölüm ekle!
 $string["askForDemons"] = 'Bir yöneticiden bu listeye eklemesini iste!';
 $string["recordList"] = 'Rekor listesi';
 $string["status"] = 'Durum';
-$string["checkRecord"] = 'Check record';
+$string["checkRecord"] = 'Rekoru kontrol et';
 
 /*
 	REUPLOAD
