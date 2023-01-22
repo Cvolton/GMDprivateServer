@@ -56,11 +56,10 @@ if(!empty($_POST["sr"]) AND is_numeric($_POST["sr"])) {
 			$lid = ExploitPatch::number($_POST["id"]);
 			$ytlink = ExploitPatch::remove($_POST["ytlink"]);
 			$points = ExploitPatch::number($_POST["points"]);
-			$dlist = $db->prepare("SELECT pseudoPoints FROM demonlist ORDER BY pseudoPoints DESC LIMIT 2 OFFSET $place");
+			$dlist = $db->prepare("SELECT pseudoPoints FROM demonlist ORDER BY pseudoPoints DESC LIMIT 1 OFFSET $place");
 			$dlist->execute();
-			$dlist = $dlist->fetchAll();
-			foreach($dlist as &$dli) $dlist2[] = $dli["pseudoPoints"];
-			$average = array_sum($dlist2)+1;
+			$dlist = $dlist->fetch();
+			$average = $dlist["pseudoPoints"] + 2;
 			$add = $db->prepare("INSERT INTO demonlist (levelID, authorID, pseudoPoints, giveablePoints, youtube) VALUES (:lid, :aid, :pp, :gp, :yt)");
 			$add->execute([':lid' => $lid, ':aid' => $gs->getLevelAuthor($lid), ':pp' => $average, ':gp' => $points, ':yt' => $ytlink]);
 			$dl->printSong('<div class="form">
