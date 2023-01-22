@@ -452,12 +452,12 @@ class mainLib {
 		//var_dump($userinfo);
 		return $userinfo["username"] . "#" . $userinfo["discriminator"];
 	}
-	public function getDesc($lid) {
+	public function getDesc($lid, $dashboard = false) {
 		include __DIR__ . "/connection.php";
 		$desc = $db->prepare("SELECT levelDesc FROM levels WHERE levelID = :id");
 		$desc->execute([':id' => $lid]);
 		$desc = $desc->fetch();
-		if(empty($desc["levelDesc"])) return '*Нет описания*';
+		if(empty($desc["levelDesc"])) return !$dashboard ? '*This level doesn\'t have description*' : '<text style="font-style:italic">This level doesn\'t have description</text>';
 		else return base64_decode($desc["levelDesc"]);
 	}
 	public function getLevelName($lid) {
