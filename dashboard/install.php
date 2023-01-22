@@ -47,7 +47,7 @@ if(!$installed) {
       		if(empty($exist)) $db->query("ALTER TABLE roles ADD demonlistApprove INT NOT NULL DEFAULT '0' AFTER demonlistAdd");
 		$check = $db->query("SHOW COLUMNS FROM `users` LIKE 'dlPoints'");
       		$exist = $check->fetchAll();
-      		if(empty($exist)) $db->query("ALTER TABLE roles ADD dlPoints INT NOT NULL DEFAULT '0' AFTER userName");
+      		if(empty($exist)) $db->query("ALTER TABLE users ADD dlPoints INT NOT NULL DEFAULT '0' AFTER userName");
 	}
 	$check = $db->query("SHOW TABLES LIKE 'replies'");
       		$exist = $check->fetchAll();
