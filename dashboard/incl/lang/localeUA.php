@@ -118,8 +118,8 @@ $string["packName"] = "Назва Мап-Пака";
 $string["color"] = "Колір";
 $string["sameLevels"] = "Ви вибрали однакові рівні!";
 $string["show"] = "Показати";
-$string["modAction21"] = "Изменил(а) Мап-Пак";
-$string["modAction22"] = "Изменил(а) Гаунтлет";
+$string["packChange"] = "Изменить Мап-Пак";
+$string["createNewPack"] = "Создайте новый Мап-Пак!";
 
 $string["gauntletCreate"] = "Створити Гаунтлет";
 $string["gauntletCreateTitle"] = "Створення Гаунтлета";
