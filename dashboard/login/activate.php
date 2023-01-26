@@ -96,13 +96,13 @@ if(!empty($_POST["userName"]) && !empty($_POST["password"])){
 		');
 		Captcha::displayCaptcha();
         echo '
-		<button type="submit" class="btn-primary btn-block" id="submit" disabled>'.$dl->getLocalizedString("activate").'</button>
+		<button type="submit" class="btn-primary btn-block" id="submit11" disabled>'.$dl->getLocalizedString("activate").'</button>
 	</form></div>
     <script>
 $(document).on("keyup keypress change keydown",function(){
    const p1 = document.getElementById("p1");
    const p2 = document.getElementById("p2");
-   const btn = document.getElementById("submit");
+   const btn = document.getElementById("submit11");
    if(!p1.value.trim().length || !p2.value.trim().length) {
                 btn.disabled = true;
                 btn.classList.add("btn-block");
