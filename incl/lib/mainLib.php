@@ -798,6 +798,6 @@ class mainLib {
         $headers[] .= 'Content-type: text/html; charset=utf8\n';
         $headers[] .= 'From: "GDPS" <noreply@example.com>';
       	$mail = '"'.$user.'" <'.$mail.'>';
-        imap_mail($mail, 'Confirm mail', 'Your confirmation link: http://'.$_SERVER["HTTP_HOST"].'/database/dashboard/mail/'.$string, implode("\n", $headers));
+        imap_mail($mail, 'Confirm mail', 'Your confirmation link: http://'.$_SERVER["HTTP_HOST"].'/database/dashboard/login/activate.php?mail='.$string, implode("\n", $headers));
 	}
 }
