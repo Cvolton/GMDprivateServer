@@ -16,7 +16,8 @@ if(!$installed) {
       ALTER TABLE accounts ADD COLUMN IF NOT EXISTS auth varchar(16) NOT NULL DEFAULT 'none' AFTER isActive;
       ALTER TABLE roles ADD COLUMN IF NOT EXISTS demonlistAdd INT NOT NULL DEFAULT '0' AFTER dashboardForceChangePassNick;
       ALTER TABLE roles ADD COLUMN IF NOT EXISTS demonlistApprove INT NOT NULL DEFAULT '0' AFTER demonlistAdd;
-      ALTER TABLE users ADD COLUMN IF NOT EXISTS dlPoints INT NOT NULL DEFAULT '0' AFTER userName");
+      ALTER TABLE users ADD COLUMN IF NOT EXISTS dlPoints INT NOT NULL DEFAULT '0' AFTER userName;
+	  ALTER TABLE accounts ADD COLUMN IF NOT EXISTS mail varchar(9) NOT NULL DEFAULT 'none' AFTER auth");
 	} else {
 		$check = $db->query("SHOW COLUMNS FROM `roles` LIKE 'dashboardLevelPackCreate'");
       		$exist = $check->fetchAll();
@@ -48,6 +49,9 @@ if(!$installed) {
 		$check = $db->query("SHOW COLUMNS FROM `users` LIKE 'dlPoints'");
       		$exist = $check->fetchAll();
       		if(empty($exist)) $db->query("ALTER TABLE users ADD dlPoints INT NOT NULL DEFAULT '0' AFTER userName");
+		$check = $db->query("SHOW COLUMNS FROM `accounts` LIKE 'mail'");
+      		$exist = $check->fetchAll();
+      		if(empty($exist)) $db->query("ALTER TABLE accounts ADD mail varchar(9) NOT NULL DEFAULT 'none' AFTER auth");
 	}
 	$check = $db->query("SHOW TABLES LIKE 'replies'");
       		$exist = $check->fetchAll();

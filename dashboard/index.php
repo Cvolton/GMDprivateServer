@@ -6,6 +6,7 @@ require $dbPath."incl/lib/connection.php";
 if(!$installed) $install = '<div class="notify"><a href="install.php">'.$dl->getLocalizedString("didntInstall").'</a></div>'; else $install = '';
 if(isset($_GET["installed"])) $install = '<div class="notify"><p>'.$dl->getLocalizedString("tipsAfterInstalling").'</p></div>'; else $install = '';
 $chartdata = array();
+$dl->printFooter();
 for($x = 7; $x >= 0;){
 	$timeBefore = time() - (86400 * $x);
 	$timeAfter = time() - (86400 * ($x + 1));

@@ -55,6 +55,9 @@ $string["forwindows"] = "Для Windows";
 $string["forandroid"] = "Для Android";
 $string["formac"] = "Для Mac";
 $string["forios"] = "Для iOS";
+$string["third-party"] = "Сторонние ресурсы";
+$string["thanks"] = "Спасибо этим людям!";
+
 $string["language"] = "Язык";
 
 $string["loginHeader"] = "Приветствуем, %s!";
@@ -249,6 +252,11 @@ $string["askForDemons"] = 'Попросите администратора се�
 $string["recordList"] = 'Список рекордов';
 $string["status"] = 'Статус';
 $string["checkRecord"] = 'Проверить рекорд';
+$string["record"] = 'Рекорд';
+$string["recordDeleted"] = 'Рекорд был удалён!';
+
+$string["didntActivatedEmail"] = 'Вы не подтвердили вашу почту!';
+$string["checkMail"] = 'Вам следует проверить ваш почтовый ящик...';
 
 /*
 	REUPLOAD

@@ -1,16 +1,52 @@
 <?php
 session_start();
+error_reporting(E_ALL);
 include "../incl/dashboardLib.php";
 require "../".$dbPath."incl/lib/Captcha.php";
 include "../".$dbPath."incl/lib/connection.php";
 require "../".$dbPath."incl/lib/generatePass.php";
 require_once "../".$dbPath."incl/lib/exploitPatch.php";
 include "../".$dbPath."config/security.php";
+include "../".$dbPath."config/mail.php";
 $dl = new dashboardLib();
 $dl->title($dl->getLocalizedString("activateAccount"));
 $dl->printFooter('../');
 if(!$preactivateAccounts) {
 if(!isset($_SESSION["accountID"]) OR $_SESSION["accountID"] == 0){
+if($mailEnabled) {
+	if(isset($_GET["mail"])) {
+	$mail = ExploitPatch::remove(explode('/', '', $_GET["mail"])[count(explode('/', '', $_GET["mail"]))-1]);
+  	$check = $db->prepare("SELECT accountID FROM accounts WHERE mail = :mail");
+  	$check->execute([':mail' => $mail]);
+    $check = $check->fetch();
+  	if(empty($check)) {
+			$dl->printSong('<div class="form">
+				<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
+				<form class="form__inner" method="post" action=".">
+				<p>'.$dl->getLocalizedString("nothingFound").'</p>
+				<button type="submit" class="btn btn-primary">'.$dl->getLocalizedString("dashboard").'</button>
+			</form></div>');
+      		die();
+		} else {
+  			$query = $db->prepare("UPDATE accounts SET isActive = '1', mail = 'activated' WHERE accountID = :acc");
+  			$query->execute([':acc' => $check["accountID"]]);
+			$dl->printSong('<div class="form">
+              <h1>'.$dl->getLocalizedString("activateAccount").'</h1>
+              <form class="form__inner" method="post" action=".">
+              <p>'.$dl->getLocalizedString("activated").'</p>
+              <button type="submit" class="btn btn-primary">'.$dl->getLocalizedString("dashboard").'</button>
+			</form></div>');
+      		die();
+		}
+}
+die($dl->printSong('<div class="form">
+		<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
+		<form class="form__inner" method="post" action=".">
+		<p>'.$dl->getLocalizedString("activateDisabled").'</p>
+		<button type="submit" class="btn-song">'.$dl->getLocalizedString("dashboard").'</button>
+		</form>
+	</div>'));
+}
 if(!empty($_POST["userName"]) && !empty($_POST["password"])){
 	if(!Captcha::validateCaptcha()) {
 		$dl->printSong('<div class="form">
@@ -60,13 +96,13 @@ if(!empty($_POST["userName"]) && !empty($_POST["password"])){
 		');
 		Captcha::displayCaptcha();
         echo '
-		<button type="submit" class="btn-primary btn-block" id="submit11" disabled>'.$dl->getLocalizedString("activate").'</button>
+		<button type="submit" class="btn-primary btn-block" id="submit" disabled>'.$dl->getLocalizedString("activate").'</button>
 	</form></div>
     <script>
 $(document).on("keyup keypress change keydown",function(){
    const p1 = document.getElementById("p1");
    const p2 = document.getElementById("p2");
-   const btn = document.getElementById("submit11");
+   const btn = document.getElementById("submit");
    if(!p1.value.trim().length || !p2.value.trim().length) {
                 btn.disabled = true;
                 btn.classList.add("btn-block");

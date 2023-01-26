@@ -22,7 +22,7 @@ input, select {
 
 .replybtn {
 	color: #909090;
-   margin-left: 5;
+   margin-left: 5px;
    font-size: 13px;
    display: block;
 }
@@ -36,7 +36,7 @@ input, select {
 	color: #ffb4b4;
   	text-align: center;
   	width: 100%;
-  	margin: -11px 0 -11px 0;
+  	margin: -11px 0px -11px 0px;
   	transition: 0.3s;
 }
 
@@ -74,7 +74,7 @@ input, select {
 
 .profilepic {
 	font-size: 25px;
-  	margin: 0 5 0 5;
+  	margin: 0px 5px 0px 5px;
 }
 
 .icon, .icon:visited {
@@ -98,7 +98,7 @@ input, select {
 
 .newMsgs {
 	font-size: 10px;
-    margin-left: -5;
+    margin-left: -5px;
     margin-right: 3px;
     color: #e35151;
 }
@@ -250,7 +250,7 @@ input, select {
    border-radius: 20px;
    grid-gap: 10px;
    display: flex;
-   margin: 10 0 10 0px;
+   margin: 10px 0px 10px 0px;
    flex-wrap: wrap;
    width: 65%;
    align-content: flex-start;
@@ -265,18 +265,18 @@ input, select {
 .itemsbox {
 	border-radius: 30px !important;
 	width: 50% !important;
-	padding: 0 !important;
-	padding-left: 10 !important;
+	padding: 0px !important;
+	padding-left: 10px !important;
 	display: flex;
 	margin-top: 8%;
 }
 
 .itembtn {
-	padding: 10 !important;
+	padding: 10px !important;
 	border-radius: 20px !important;
 	height:max-content;
 	margin: 0px;
-	margin-right: 10;
+	margin-right: 10px;
 	width: 100% !important;
 	border: none !important;
 }
@@ -313,7 +313,6 @@ input, select {
 	text-align:center;
 	font-size:20px;
 	color:white;
-	
 }
 
 .subjectyou {
@@ -435,7 +434,7 @@ select::-webkit-scrollbar-thumb {
 h2{
 	    font-size: 17px;
     color: #c0c0c0;
-	margin-top: 0;
+	margin-top: 0px;
 	text-align:center;
     margin-bottom: 1rem;
 }
@@ -451,8 +450,8 @@ body {
     align-items: center;
     justify-content: start;
     flex-direction: column;
-    margin: 0;
-    padding: 0;
+    margin: 0px;
+    padding: 0px;
 	overflow: hidden;
     background-color: #36393e;
     min-height: calc(100vh - 10px);
@@ -510,8 +509,8 @@ body {
     font-weight: 700;
     font-size: 15px;
 	color: #007bff;
-  	margin:0;
-  	padding:0;
+  	margin:0px;
+  	padding:0px;
     border: none;
     border-radius: 500px;
     cursor: pointer;
@@ -556,8 +555,8 @@ body {
 	position: absolute;
 	opacity: 0;
   	cursor: pointer;
-    width: 0;
-    height: 0;
+    width: 0px;
+    height: 0px;
 }
 
 .btn-upload-song:hover,
@@ -639,10 +638,10 @@ body {
 
 .color123 > input {
     position: relative;
-    padding: 0;
+    padding: 0px;
     background: none;
     border: none;
-		 height: 40;
+		 height: 40px;
 }
 
 .color123 > input::-webkit-color-swatch {
@@ -825,9 +824,9 @@ table,
 
 hr {
 	background-image: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.2), transparent);
-	border: 0;
+	border: 0px;
 	height: 1px;
-	margin: 0;
+	margin: 0px;
 	box-sizing:content-box;
 	display: block;
 }

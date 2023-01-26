@@ -3,8 +3,11 @@ session_start();
 include "../incl/dashboardLib.php";
 require "../".$dbPath."incl/lib/Captcha.php";
 include "../".$dbPath."config/security.php";
+include "../".$dbPath."config/mail.php";
 include "../".$dbPath."incl/lib/connection.php";
 require "../".$dbPath."incl/lib/exploitPatch.php";
+require_once "../".$dbPath."incl/lib/mainLib.php";
+$gs = new mainLib();
 $dl = new dashboardLib();
 $dl->title($dl->getLocalizedString("registerAcc"));
 $dl->printFooter('../');
@@ -81,13 +84,23 @@ if(!empty($_POST["username"]) AND !empty($_POST["email"]) AND !empty($_POST["rep
 				VALUES (:userName, :password, :email, :time, :isActive)");
 				$query2->execute([':userName' => $username, ':password' => $hashpass, ':email' => $email, ':time' => time(), ':isActive' => $preactivateAccounts ? 1 : 0]);
 				// there you go, you are registered.
-				$dl->printSong('<div class="form">
-					<h1>'.$dl->getLocalizedString("registerAcc").'</h1>
-					<form class="form__inner" method="post" action="."style="grid-gap: 0px;">
-					<p>'.$dl->getLocalizedString("registered").'</p>
-					<button type="submit" class="btn-song">'.$dl->getLocalizedString("dashboard").'</button>
-					</form>
-				</div>');
+              	if($mailEnabled) {
+					$gs->mail($email, $username);
+					$dl->printSong('<div class="form">
+						<h1>'.$dl->getLocalizedString("registerAcc").'</h1>
+						<form class="form__inner" method="post" action="."style="grid-gap: 0px;">
+						<p>'.$dl->getLocalizedString("registered").'</p>
+						<p style="margin-bottom: 20px">'.$dl->getLocalizedString("checkMail").'</p>
+						<button type="submit" class="btn-song">'.$dl->getLocalizedString("dashboard").'</button>
+						</form>
+					</div>');
+				} else $dl->printSong('<div class="form">
+						<h1>'.$dl->getLocalizedString("registerAcc").'</h1>
+						<form class="form__inner" method="post" action="."style="grid-gap: 0px;">
+						<p>'.$dl->getLocalizedString("registered").'</p>
+						<button type="submit" class="btn-song">'.$dl->getLocalizedString("dashboard").'</button>
+						</form>
+					</div>');
 			}
 		}
 	}

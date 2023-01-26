@@ -3,6 +3,7 @@ session_start();
 require "../incl/dashboardLib.php";
 include "../".$dbPath."incl/lib/connection.php";
 include "../".$dbPath."config/security.php";
+include "../".$dbPath."config/mail.php";
 $dl = new dashboardLib();
 require "../".$dbPath."incl/lib/generatePass.php";
 require_once "../".$dbPath."incl/lib/mainLib.php";
@@ -16,13 +17,31 @@ if(isset($_POST["userName"]) AND isset($_POST["password"])){
 	$password = $_POST["password"];
 	$valid = GeneratePass::isValidUsrname($userName, $password);
 	if($valid != 1){
+      	if($valid == -2) {
+            $dl->title($dl->getLocalizedString("loginBox"));
+            $dl->printFooter('../');
+            if($mailEnabled) $dl->printSong('<div class="form">
+            <h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
+            <form class="field" action="" method="post">
+            <p>'.$dl->getLocalizedString("didntActivatedEmail").'</p><br>
+            <button type="submit" class="btn btn-primary">'.$dl->getLocalizedString("tryAgainBTN").'</button>
+            </form>
+            </div>');
+			else $dl->printSong('<div class="form">
+            <h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
+            <form class="field" action="" method="post">
+            <p>'.$dl->getLocalizedString("activateDesc").'</p><br>
+            <button type="submit" class="btn btn-primary">'.$dl->getLocalizedString("tryAgainBTN").'</button>
+            </form>
+            </div>');
+			die();
+        }
 		$dl->title($dl->getLocalizedString("loginBox"));
 		$dl->printFooter('../');
 		$dl->printSong('<div class="form">
 		<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 		<form class="field" action="" method="post">
 		<p>'.$dl->getLocalizedString("wrongNickOrPass").'</p>
-		<h2 style="margin-top:5px"><a href="login/activate.php">'.$dl->getLocalizedString("maybeActivate").'</a></h2>
 		<button type="submit" class="btn btn-primary">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 		</form>
 		</div>');
@@ -54,7 +73,7 @@ if(isset($_POST["userName"]) AND isset($_POST["password"])){
       	$path = $_POST["ref"];
         if(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') $protocol = 'https://';
         else $protocol = 'http://';
-      	$path2 = $_SERVER[HTTP_HOST].'/';
+      	$path2 = $_SERVER["HTTP_HOST"].'/';
       	$path = str_replace($procotol.''.$path2, '', $path);
       	$path = str_replace($protocol, '', $path);
 		header('Location: ../'.$path);
@@ -62,7 +81,7 @@ if(isset($_POST["userName"]) AND isset($_POST["password"])){
       	$path = $_SERVER["HTTP_REFERER"];
         if(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') $protocol = 'https://';
         else $protocol = 'http://';
-      	$path2 = $_SERVER[HTTP_HOST].'/';
+      	$path2 = $_SERVER["HTTP_HOST"].'/';
       	$path = str_replace($procotol.''.$path2, '', $path);
       	$path = str_replace($protocol, '', $path);
 		header('Location: ../'.$path);

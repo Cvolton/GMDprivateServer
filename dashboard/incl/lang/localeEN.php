@@ -55,6 +55,8 @@ $string["forwindows"] = "For Windows";
 $string["forandroid"] = "For Android";
 $string["formac"] = "For Mac";
 $string["forios"] = "For iOS";
+$string["third-party"] = "Third-party";
+$string["thanks"] = "Thanks to these people!";
 $string["language"] = "Language";
 
 $string["loginHeader"] = "Welcome, %s!";
@@ -249,6 +251,11 @@ $string["askForDemons"] = 'Ask server\'s administrator to add some!';
 $string["recordList"] = 'List of records';
 $string["status"] = 'Status';
 $string["checkRecord"] = 'Check record';
+$string["record"] = 'Record';
+$string["recordDeleted"] = 'Record was deleted!';
+
+$string["didntActivatedEmail"] = 'You didn\'t activated your account through email!';
+$string["checkMail"] = 'You should check your email...';
 
 /*
 	REUPLOAD

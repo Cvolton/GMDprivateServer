@@ -786,4 +786,18 @@ class mainLib {
         if(!empty($query)) return true; 
         else return false;
 	}
+  	public function mail($mail = '', $user = '') {
+      	include __DIR__."/connection.php";
+      	include __DIR__."/../../config/mail.php";
+      	if(empty($mail) OR empty($user)) return;
+		if($mailEnabled) imap_open($mailbox, $mailuser, $mailpass, $flags, $retries, $options);
+      	$string = $this->randomString(4);
+      	$query = $db->prepare("UPDATE accounts SET mail = :mail WHERE userName = :user");
+      	$query->execute([':mail' => $string, ':user' => $user]);
+		$headers[]  = 'MIME-Version: 1.0\n';
+        $headers[] .= 'Content-type: text/html; charset=utf8\n';
+        $headers[] .= 'From: "GDPS" <noreply@example.com>';
+      	$mail = '"'.$user.'" <'.$mail.'>';
+        imap_mail($mail, 'Confirm mail', 'Your confirmation link: http://'.$_SERVER["HTTP_HOST"].'/database/dashboard/mail/'.$string, implode("\n", $headers));
+	}
 }

@@ -55,6 +55,8 @@ $string["forwindows"] = "Для Windows";
 $string["forandroid"] = "Для Android";
 $string["formac"] = "Для Mac";
 $string["forios"] = "Для iOS";
+$string["third-party"] = "Сторонние ресурсы";
+$string["thanks"] = "Спасибо этим людям!";
 $string["language"] = "Мова";
 
 $string["loginHeader"] = "Вітаємо, %s!";
@@ -250,7 +252,11 @@ $string["askForDemons"] = 'Попросіть адміністратора се�
 $string["recordList"] = 'Список рекордів';
 $string["status"] = 'Статус';
 $string["checkRecord"] = 'Провірити рекорд';
+$string["record"] = 'Рекорд';
+$string["recordDeleted"] = 'Рекорд был удалён!';
 
+$string["didntActivatedEmail"] = 'Вы не подтвердили вашу почту!';
+$string["checkMail"] = 'Вам следует проверить ваш почтовый ящик...';
 
 /*
 	REUPLOAD
@@ -377,7 +383,7 @@ $string["lvl0"] = "рівень";
 $string["lvl1"] = "рівня";
 $string["lvl2"] = "рівней";
 $string["unban"] = "Розблокування";
-$string["isBan"] = "блокування";
+$string["isBan"] = "Блокування";
 
 $string["noCoins"] = "Без монет";
 $string["noReason"] = "Немає причини";
