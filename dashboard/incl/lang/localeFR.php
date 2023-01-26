@@ -56,8 +56,8 @@ $string["forwindows"] = "Pour Windows";
 $string["forandroid"] = "Pour Android";
 $string["formac"] = "Pour Mac";
 $string["forios"] = "Pour iOS";
-$string["third-party"] = "Third-party";
-$string["thanks"] = "Thanks to these people!";
+$string["third-party"] = "Tiers";
+$string["thanks"] = "Merci à ces personnes!";
 $string["language"] = "Langues";
 
 $string["loginHeader"] = "Bienvenu, %s!";
@@ -253,10 +253,10 @@ $string["recordList"] = 'Liste des records';
 $string["status"] = 'Status';
 $string["checkRecord"] = 'Vérifier les records';
 $string["record"] = 'Record';
-$string["recordDeleted"] = 'Record was deleted!';
+$string["recordDeleted"] = 'Le record à été supprimé!';
 
-$string["didntActivatedEmail"] = 'You didn\'t activated your account through email!';
-$string["checkMail"] = 'You should check your email...';
+$string["didntActivatedEmail"] = 'Vous n\'avez pas activé votre compte par email!';
+$string["checkMail"] = 'Vous devrez vérifier vos mails...';
 
 /*
 	REUPLOAD
