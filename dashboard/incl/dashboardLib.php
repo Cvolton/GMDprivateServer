@@ -1,6 +1,6 @@
 <?php
 $dbPath = '../'; // Path to main directory. If you didn't changed dashboard place, don't change this value. Usually, its /database (https://imgur.com/a/P8LdhzY).
-$dbStartPage = 'database/dashboard/'; // What URL do you see at main dashboard. NOT WHAT YOU WANT TO SEE! https://imgur.com/a/QCeTMKH
+$dbStartPage = '/../../database/dashboard/'; // What URL do you see at main dashboard. NOT WHAT YOU WANT TO SEE! https://imgur.com/a/QCeTMKH
 include __DIR__."/../".$dbPath."config/dashboard.php";
 include_once "auth.php";
 $au = new au();
@@ -393,7 +393,7 @@ cptch = document.querySelector("#verycoolcaptcha");
 			path = "'.$dbStartPage.'";
 			document.getElementById("loadingloool").style.opacity = "1";
 			pg = new XMLHttpRequest();
-			pg.open("GET", path + "/../" + page, true); 
+			pg.open("GET", window.location.origin + path + page, true); 
 			pg.responseType = "document";
 			htmlpage = document.querySelector("#htmlpage");
 			htmtitle = document.querySelectorAll("title")[0];
