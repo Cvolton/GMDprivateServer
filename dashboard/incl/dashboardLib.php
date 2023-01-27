@@ -390,7 +390,7 @@ cptch = document.querySelector("#verycoolcaptcha");
 		if(window.location.pathname.indexOf(page) != "1") {
 			document.getElementById("loadingloool").style.opacity = "1";
 			pg = new XMLHttpRequest();
-			pg.open("GET", "/../../" + page, true);
+			pg.open("GET", "../../../" + page, true);
 			pg.responseType = "document";
 			htmlpage = document.querySelector("#htmlpage");
 			htmtitle = document.querySelectorAll("title")[0];
