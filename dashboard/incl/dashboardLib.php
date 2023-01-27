@@ -389,7 +389,7 @@ cptch = document.querySelector("#verycoolcaptcha");
 	function a(page) {
 		if(window.location.pathname.indexOf(page) != "1") {
 			path = window.location.pathname.split("/");
-			path = path.replace ("/" + path[path.length-1], "");
+			path = window.location.pathname.replace ("/" + path[path.length-1], "");
 			document.getElementById("loadingloool").style.opacity = "1";
 			pg = new XMLHttpRequest();
 			pg.open("GET", path + page, true);
