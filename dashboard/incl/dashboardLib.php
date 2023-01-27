@@ -317,7 +317,7 @@ class dashboardLib {
 								</button>
 								<div style="border-radius: 30px;background: #141414;width: 92%;margin-left: 4%; margin-top: 5px;padding: 9px 0px;display:none" id="tp">
 								'.$tp.'
-								</div>
+								</div></div>
 								<script>
 									function tp(type) {
 										event.stopPropagation();
