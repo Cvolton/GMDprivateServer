@@ -1,5 +1,6 @@
 <?php
-$dbPath = '../'; // Path to main directory. If you didn't changed dashboard place, don't change this value. Usually, its /database (https://imgur.com/a/P8LdhzY). 
+$dbPath = '../'; // Path to main directory. If you didn't changed dashboard place, don't change this value. Usually, its /database (https://imgur.com/a/P8LdhzY).
+$dbStartPage = 'database/dashboard/'; // What URL do you see at main dashboard. NOT WHAT YOU WANT TO SEE! https://imgur.com/a/QCeTMKH
 include __DIR__."/../".$dbPath."config/dashboard.php";
 include_once "auth.php";
 $au = new au();
@@ -113,6 +114,7 @@ class dashboardLib {
         global $ios;
 		global $thirdParty;
       	global $dbPath;
+		global $dbStartPage;
 		include __DIR__."/../".$dbPath."incl/lib/Captcha.php";
 		require_once __DIR__."/../".$dbPath."incl/lib/mainLib.php";
       	include __DIR__."/../".$dbPath."incl/lib/connection.php";
@@ -388,8 +390,7 @@ $(document).change(function(){
 cptch = document.querySelector("#verycoolcaptcha");
 	function a(page) {
 		if(window.location.pathname.indexOf(page) != "1") {
-			path = window.location.pathname.split("/");
-			path = window.location.pathname.replace ("/" + path[path.length-1], "");
+			path = "'.$dbStartPage.'";
 			document.getElementById("loadingloool").style.opacity = "1";
 			pg = new XMLHttpRequest();
 			pg.open("GET", path + "/../" + page, true); 
