@@ -388,9 +388,11 @@ $(document).change(function(){
 cptch = document.querySelector("#verycoolcaptcha");
 	function a(page) {
 		if(window.location.pathname.indexOf(page) != "1") {
+			path = window.location.pathname.split("/");
+			path = path.replace ("/" + path[path.length-1], "");
 			document.getElementById("loadingloool").style.opacity = "1";
 			pg = new XMLHttpRequest();
-			pg.open("GET", "../../../" + page, true);
+			pg.open("GET", path + page, true);
 			pg.responseType = "document";
 			htmlpage = document.querySelector("#htmlpage");
 			htmtitle = document.querySelectorAll("title")[0];
