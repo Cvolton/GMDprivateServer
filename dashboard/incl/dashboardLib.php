@@ -411,7 +411,7 @@ cptch = document.querySelector("#verycoolcaptcha");
 				var scr = document.createElement(\'script\');
 				if(scripts.textContent !== undefined) scr.innerHTML = scripts.textContent;
 				document.body.appendChild(scr);
-				history.replaceState(null,null,window.location.href + "/../../" + page);
+				history.replaceState(null,null,window.location.origin + path + page);
 				if(typeof coolcaptcha !== undefined) { 
 					coolcaptcha.replaceWith(cptch);
 					document.getElementsByClassName("h-captcha")[0].style.display = "block";
