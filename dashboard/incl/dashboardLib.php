@@ -58,7 +58,7 @@ class dashboardLib {
 		}
 	}
 	public function printBoxBody(){
-		echo '<div class="container container-box">
+		echo '<span id="htmlpage" style="width: 100%;height: 100%;display: contents;"><div class="container container-box">
 					<div class="card">
 						<div class="card-block buffer">';
 	}
@@ -66,7 +66,7 @@ class dashboardLib {
 		$this->printHeader($isSubdirectory);
 		$this->printNavbar($active);
 		$this->printBoxBody();
-		echo '<span id="htmlpage" style="width: 100%;height: 100%;display: contents;">'.$content.'</span>';
+		echo $content;
 		$this->printBoxFooter();
 		$this->printFooter();
 	}
@@ -76,7 +76,7 @@ class dashboardLib {
 		echo '<span id="htmlpage" style="width: 100%;height: 100%;display: contents;">'.$content.'</span>';
 	}
 	public function printBoxFooter(){
-		echo '</div></div></div>';
+		echo '</div></div></div></span>';
 	}
 	public function printFooter($sub = ''){
 		global $dbPath;
@@ -389,30 +389,34 @@ $(document).change(function(){
 		echo '<div class="form" style="margin:0px;position:absolute;bottom:50px;color:white;font-size:50px;width:max-content;right:50px;padding:25px;transition:0.3s;opacity:0;border-radius:500px" id="loadingloool"><i class="fa-solid fa-spinner fa-spin"></i></div><script>
 cptch = document.querySelector("#verycoolcaptcha");
 	function a(page) {
-		if(window.location.pathname.indexOf(page) != "1") {
+		if(window.location.pathname.indexOf(page) != "1" || page == "profile") {
 			path = "'.$dbStartPage.'";
 			document.getElementById("loadingloool").style.opacity = "1";
 			pg = new XMLHttpRequest();
-			pg.open("GET", window.location.origin + path + page, true); 
+			pg.open("GET", window.location.origin + path + page, true);
 			pg.responseType = "document";
 			htmlpage = document.querySelector("#htmlpage");
 			htmtitle = document.querySelectorAll("title")[0];
-			scr = document.querySelectorAll("span script");
-			scr = scr[scr.length-1]
 			pg.onload = function (){
 				document.getElementById("loadingloool").style.opacity = "0";
 				child = pg.response.querySelector("#htmlpage");
 				title = pg.response.querySelectorAll("title")[0];
 				scripts = pg.response.querySelectorAll("body script");
-				if(page != "") scripts = scripts[scripts.length-1];
-				else scripts = scripts[scripts.length-2];
+				scripts = scripts[scripts.length-1];
 				htmlpage.replaceWith(child);
 				htmtitle.replaceWith(title);
-				var scr = document.createElement(\'script\');
-				if(scripts.textContent !== undefined) scr.innerHTML = scripts.textContent;
-				document.body.appendChild(scr);
+				var scrp = document.createElement(\'script\');
+				if(typeof scripts.textContent != "undefined") scrp.innerHTML = scripts.textContent;
+				document.body.appendChild(scrp);
+				if(page == "") {
+					scripts = child.querySelectorAll("script");
+					scrpts = scripts[scripts.length-2];
+					var scri = document.createElement(\'script\');
+					scri.innerHTML = scrpts.textContent;
+					document.body.appendChild(scri);
+				}
 				history.replaceState(null,null,window.location.origin + path + page);
-				if(typeof coolcaptcha !== undefined) { 
+				if(typeof coolcaptcha != "undefined") { 
 					coolcaptcha.replaceWith(cptch);
 					document.getElementsByClassName("h-captcha")[0].style.display = "block";
 				}
