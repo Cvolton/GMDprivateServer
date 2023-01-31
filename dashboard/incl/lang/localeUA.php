@@ -55,8 +55,8 @@ $string["forwindows"] = "Для Windows";
 $string["forandroid"] = "Для Android";
 $string["formac"] = "Для Mac";
 $string["forios"] = "Для iOS";
-$string["third-party"] = "Сторонние ресурсы";
-$string["thanks"] = "Спасибо этим людям!";
+$string["third-party"] = "Посторонні ресурси";
+$string["thanks"] = "Дякую цим людям!";
 $string["language"] = "Мова";
 
 $string["loginHeader"] = "Вітаємо, %s!";
@@ -253,10 +253,10 @@ $string["recordList"] = 'Список рекордів';
 $string["status"] = 'Статус';
 $string["checkRecord"] = 'Провірити рекорд';
 $string["record"] = 'Рекорд';
-$string["recordDeleted"] = 'Рекорд был удалён!';
+$string["recordDeleted"] = 'Рекорд був видалений!';
 
-$string["didntActivatedEmail"] = 'Вы не подтвердили вашу почту!';
-$string["checkMail"] = 'Вам следует проверить ваш почтовый ящик...';
+$string["didntActivatedEmail"] = 'Ви не підтвердили вашу почту!';
+$string["checkMail"] = 'Вам слід провірити ваш поштовий ящик...';
 
 /*
 	REUPLOAD
