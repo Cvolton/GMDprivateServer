@@ -114,13 +114,13 @@ if(empty($comments)) $comments = '<p class="profile" style="font-size:25px;color
 }
 if($_SESSION["accountID"] == 0) $msgtopl = '';
 if($res["dlPoints"] != 0) $points = '<i style="position: absolute;font-size: 20;right: 50;color: gray;" class="fa-solid fa-medal"> '.$res["dlPoints"].'</i>';
-$dl->printSong('<div class="form" style="width: 60vw;height: max-content;position:relative">
+$dl->printSong('<div class="form" style="width: 60vw;max-height: 80vh;position:relative">
     	<div style="height: 100%;width: 100%;"><div style="display: flex;align-items: center;justify-content: center;">
         	'.$back.'
               <h1>'.$maybeban.'</h1>'.$msgtopl.''.$points.'
         </div>
         <div class="form-control" style="display: flex;width: 100%;height: max-content;align-items: center;">'.$all.'</div>
-        <div class="form-control dmbox" style="display: flex;border-radius: 30px;margin-top: 20px;flex-wrap: wrap;padding-top: 0;max-height: 535px;padding-bottom: 10px;min-width: 100%;height: max-content;margin-bottom: 17px;align-items: center;">
+        <div class="form-control dmbox" style="display: flex;border-radius: 30px;margin-top: 20px;flex-wrap: wrap;padding-top: 0;max-height: 535px;padding-bottom: 10px;min-width: 100%;max-height: 45vh;margin-bottom: 17px;align-items: center;">
         	'.$comments.'
         </div>
 		'.$send.'
