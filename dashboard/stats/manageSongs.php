@@ -53,7 +53,7 @@ $x = $page + 1;
 if(empty($result)) {
 	$dl->printSong('<div class="form">
     <h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
-    <form class="form__inner" method="post" action=".">
+    <form class="form__inner" method="post" action="../dashboard">
 		<p>'.$dl->getLocalizedString("emptyPage").'</p>
         <button type="submit" class="btn-primary">'.$dl->getLocalizedString("dashboard").'</button>
     </form>
@@ -66,7 +66,7 @@ foreach($result as &$action){
 	$author = $action["authorName"];
    	if(strlen($author) > 18) $author = "<details><summary>".$dl->getLocalizedString("spoiler")."</summary>$author</details>";
 	$name = $action["name"];
-	$download = $action["download"];
+	$download = str_replace('http://', 'https://', $action["download"]);
   	if(strlen($name) > 30) $name = "<details><summary>".$dl->getLocalizedString("spoiler")."</summary>$name</details>";
   	$delete = '<td><a style="color:#ff444c" class="btn-rendel" href="stats/deleteSong.php?ID='.$songsid.'">'.$dl->getLocalizedString("delete").'</a></td>';
 	$size = $action["size"];
@@ -77,17 +77,10 @@ foreach($result as &$action){
       	$size = '<div style="text-decoration:line-through;color:#8b2e2c">'.$size.'</div>';
       	$time = '<div style="text-decoration:line-through;color:#8b2e2c">'.$time.'</div>';
 	}
-	$btn = '<button type="button" title="'.$songsid.'.mp3" style="display: contents;color: white;margin: 0;" onclick="btn'.$songsid.'();"><div class="icon" style="font-size:13px; height:25px;width:25px;background:#373A3F;margin-left: 0px;margin-right: -9px;"><i class="fa-solid fa-play" aria-hidden="false"></i></div><audio name="song" preload="metadata" controls class="audio" id="'.$songsid.'" style="display: none"><source src="'.$download.'" type="audio/mpeg"></audio></button>
-	<script>
-	function btn'.$songsid.'(){
-		document.getElementById("'.$songsid.'").volume = 0.2;
-		var elems=document.getElementsByTagName("audio");
-		for(var i=0; i<elems.length; i++)elems[i].pause();
-		for(var i=0; i<elems.length; i++)elems[i].style.display="none";
-		document.getElementById("'.$songsid.'").style.display = "block";
-		document.getElementById("'.$songsid.'").play();
-	}
-	</script>';
+	$btn = '<button type="button" name="btnsng" id="btn'.$songsid.'" title="'.$songsid.'.mp3" style="display: contents;color: white;margin: 0;" onclick="btnsong(\''.$songsid.'\');"><div class="icon" style="font-size:13px; height:25px;width:25px;background:#373A3F;margin-left: 0px;margin-right: -9px;"><i class="fa-solid fa-play" aria-hidden="false"></i></div></button>
+			<div name="audio" class="audio" id="'.$songsid.'" style="display: none">
+			<audio style="width:100%" name="song" id="song'.$songsid.'" preload="metadata" controls><source src="'.$download.'" type="audio/mpeg"></audio>
+			<button style="margin: 0px;font-size: 25px;padding: 14px 19px;margin-left: 5px;" type="button" class="msgupd" onclick="btnsong(0)"><i class="fa-solid fa-xmark"></i></button></div>';
 	$table .= "<tr><th scope='row'>".$x."</th><td>".$btn."</td><td>".$songsid."</td><td>".$author."</td><td>".$name."</td><td>".$size."</td><td>".$time."</td><td>".$delete."</td></tr>";
 	$x++;
 }
@@ -108,7 +101,31 @@ $query->execute([':id' => $accountID]);
 $packcount = $query->fetchColumn();
 $pagecount = ceil($packcount / 10);
 $bottomrow = $dl->generateBottomRow($pagecount, $actualpage);
-$dl->printPage($table . $bottomrow, true, "account");
+$dl->printPage($table . $bottomrow.'<script>
+			function btnsong(id, pausemaybe = false) {
+				$("#song"+id).on("pause play", function() {
+					if(document.getElementById("song" + id).paused) {
+						var elems=document.getElementsByName("btnsng");
+						for(var i=0; i<elems.length; i++)elems[i].innerHTML = \'<div class="icon" style="font-size:13px; height:25px;width:25px;background:#373A3F;margin-left: 0px;margin-right: -9px;"><i class="fa-solid fa-play" aria-hidden="false"></i></div>\';
+					} else document.getElementById("btn"+id).innerHTML = \'<div class="icon" style="font-size:13px; height:25px;width:25px;background:#373A3F;margin-left: 0px;margin-right: -9px;"><i class="fa-solid fa-pause" aria-hidden="false"></i></div>\';
+				});
+				var elems=document.getElementsByName("audio");
+				for(var i=0; i<elems.length; i++)elems[i].style.display="none";
+				var elems=document.getElementsByName("btnsng");
+				for(var i=0; i<elems.length; i++)elems[i].innerHTML = \'<div class="icon" style="font-size:13px; height:25px;width:25px;background:#373A3F;margin-left: 0px;margin-right: -9px;"><i class="fa-solid fa-play" aria-hidden="false"></i></div>\';
+				var elems=document.getElementsByTagName("audio");
+				for(var i=0; i<elems.length; i++)elems[i].pause();
+				if(id != 0) {
+					document.getElementById(id).style.display = "flex";
+					if(pausemaybe == false) {
+						document.getElementById("btn"+id).innerHTML = \'<div class="icon" style="font-size:13px; height:25px;width:25px;background:#373A3F;margin-left: 0px;margin-right: -9px;"><i class="fa-solid fa-pause" aria-hidden="false"></i></div>\';
+						document.getElementById("song"+id).volume = 0.2;
+						document.getElementById("song"+id).play();
+						document.getElementById("btn"+id).setAttribute("onclick", "btnsong(" + id + ", true)");
+					} else document.getElementById("btn"+id).setAttribute("onclick", "btnsong(" + id + ")");
+				}
+			}
+		</script>', true, "account");
 } else {
 	$dl->printSong('<div class="form">
     <h1>'.$dl->getLocalizedString("errorGeneric").'</h1>

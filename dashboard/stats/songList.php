@@ -66,29 +66,22 @@ if(empty($result)) {
 foreach($result as &$action){
 	$songsid = $action["ID"];
 	$time = $dl->convertToDate($action["reuploadTime"]);
-  	$who = '<form style="margin:0" method="post" action="profile/"><button style="margin:0" class="accbtn" name="accountID" value="'.$action["reuploadID"].'">'.$gs->getAccountName($action['reuploadID']).'</button></form>';
+  	$who = '<form style="margin:0" method="post" action="./profile/"><button style="margin:0" class="accbtn" name="accountID" value="'.$action["reuploadID"].'">'.$gs->getAccountName($action['reuploadID']).'</button></form>';
   	$author = $action["authorName"];
 	$name = $action["name"];
 	$size = $action["size"];
-	$download = $action["download"];
+	$download = str_replace('http://', 'https://', $action["download"]);
 	if($action["reuploadID"] == 0) {
 		$download = str_replace('%3A', ':', $download);
 		$download = str_replace('%2F', '/', $download);
 		$time = "<div style='color:gray'>Newgrounds</div>";
 		$who = "<div><a style='color:#a7a7ff' target='_blank' href='https://".$author.".newgrounds.com/audio';>".$author."</a></div>";
-		$btn = '<button type="button" title="'.$songsid.'.mp3" style="display: contents;color: #ffb1ab;margin: 0;" onclick="btn'.$songsid.'();"><div class="icon" style="font-size:13px; height:25px;width:25px;background:#373A3F;margin-left: 0px;margin-right: -9px;"><i class="fa-solid fa-xmark" aria-hidden="false"></i></div>';
+		$btn = '<button type="button" title="'.$songsid.'.mp3" style="display: contents;color: #ffb1ab;margin: 0;"><div class="icon" style="font-size:13px; height:25px;width:25px;background:#373A3F;margin-left: 0px;margin-right: -9px;"><i class="fa-solid fa-xmark" aria-hidden="false"></i></div>';
 	} else {
-		$btn = '<button type="button" title="'.$songsid.'.mp3" style="display: contents;color: white;margin: 0;" onclick="btn'.$songsid.'();"><div class="icon" style="font-size:13px; height:25px;width:25px;background:#373A3F;margin-left: 0px;margin-right: -9px;"><i class="fa-solid fa-play" aria-hidden="false"></i></div><audio name="song" preload="metadata" controls class="audio" id="'.$songsid.'" style="display: none"><source src="'.$download.'" type="audio/mpeg"></audio></button>
-		<script>
-			function btn'.$songsid.'(){
-				document.getElementById("'.$songsid.'").volume = 0.2;
-				var elems=document.getElementsByTagName("audio");
-				for(var i=0; i<elems.length; i++)elems[i].pause();
-				for(var i=0; i<elems.length; i++)elems[i].style.display="none";
-				document.getElementById("'.$songsid.'").style.display = "block";
-				document.getElementById("'.$songsid.'").play();
-			}
-		</script>';
+		$btn = '<button type="button" name="btnsng" id="btn'.$songsid.'" title="'.$songsid.'.mp3" style="display: contents;color: white;margin: 0;" onclick="btnsong(\''.$songsid.'\');"><div class="icon" style="font-size:13px; height:25px;width:25px;background:#373A3F;margin-left: 0px;margin-right: -9px;"><i class="fa-solid fa-play" aria-hidden="false"></i></div></button>
+			<div name="audio" class="audio" id="'.$songsid.'" style="display: none">
+			<audio style="width:100%" name="song" id="song'.$songsid.'" preload="metadata" controls><source src="'.$download.'" type="audio/mpeg"></audio>
+			<button style="margin: 0px;font-size: 25px;padding: 14px 19px;margin-left: 5px;" type="button" class="msgupd" onclick="btnsong(0)"><i class="fa-solid fa-xmark"></i></button></div>';
 	}
 	$manage = '<td><a class="btn-rendel" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'.$dl->getLocalizedString("change").'</a>
 								<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink"  style="padding: 17px 17px 0px;top: 0px;left: 0px;position: absolute;transform: translate3d(971px, 200px, 0px);will-change: transform;">
@@ -100,23 +93,6 @@ foreach($result as &$action){
 										<button type="submit" class="btn-song" id="submit">'.$dl->getLocalizedString("change").'</button>
 									</form>
 								</div>
-                                <script>
-$(document).on("keyup keypress change keydown",function(){
-   const p1 = document.getElementById("p1");
-   const p2 = document.getElementById("p2");
-   const btn = document.getElementById("submit");
-   if(!p1.value.trim().length || !p2.value.trim().length) {
-                btn.disabled = true;
-                btn.classList.add("btn-block");
-                btn.classList.remove("btn-song");
-	} else {
-		        btn.removeAttribute("disabled");
-                btn.classList.remove("btn-block");
-                btn.classList.remove("btn-size");
-                btn.classList.add("btn-song");
-	}
-});
-</script>
 							</td>';
 	if(strlen($author) > 18) $author = "<details><summary>".$dl->getLocalizedString("spoiler")."</summary>$author</details>";
   	if(strlen($name) > 30) $name = "<details><summary>".$dl->getLocalizedString("spoiler")."</summary>$name</details>";
@@ -171,5 +147,29 @@ $query->execute();
 $packcount = $query->fetchColumn();
 $pagecount = ceil($packcount / 10);
 $bottomrow = $dl->generateBottomRow($pagecount, $actualpage);
-$dl->printPage($table . $bottomrow, true, "browse");
+$dl->printPage($table . $bottomrow.'<script>
+			function btnsong(id, pausemaybe = false) {
+				$("#song"+id).on("pause play", function() {
+					if(document.getElementById("song" + id).paused) {
+						var elems=document.getElementsByName("btnsng");
+						for(var i=0; i<elems.length; i++)elems[i].innerHTML = \'<div class="icon" style="font-size:13px; height:25px;width:25px;background:#373A3F;margin-left: 0px;margin-right: -9px;"><i class="fa-solid fa-play" aria-hidden="false"></i></div>\';
+					} else document.getElementById("btn"+id).innerHTML = \'<div class="icon" style="font-size:13px; height:25px;width:25px;background:#373A3F;margin-left: 0px;margin-right: -9px;"><i class="fa-solid fa-pause" aria-hidden="false"></i></div>\';
+				});
+				var elems=document.getElementsByName("audio");
+				for(var i=0; i<elems.length; i++)elems[i].style.display="none";
+				var elems=document.getElementsByName("btnsng");
+				for(var i=0; i<elems.length; i++)elems[i].innerHTML = \'<div class="icon" style="font-size:13px; height:25px;width:25px;background:#373A3F;margin-left: 0px;margin-right: -9px;"><i class="fa-solid fa-play" aria-hidden="false"></i></div>\';
+				var elems=document.getElementsByTagName("audio");
+				for(var i=0; i<elems.length; i++)elems[i].pause();
+				if(id != 0) {
+					document.getElementById(id).style.display = "flex";
+					if(pausemaybe == false) {
+						document.getElementById("btn"+id).innerHTML = \'<div class="icon" style="font-size:13px; height:25px;width:25px;background:#373A3F;margin-left: 0px;margin-right: -9px;"><i class="fa-solid fa-pause" aria-hidden="false"></i></div>\';
+						document.getElementById("song"+id).volume = 0.2;
+						document.getElementById("song"+id).play();
+						document.getElementById("btn"+id).setAttribute("onclick", "btnsong(" + id + ", true)");
+					} else document.getElementById("btn"+id).setAttribute("onclick", "btnsong(" + id + ")");
+				}
+			}
+		</script>', true, "browse");
 ?>
