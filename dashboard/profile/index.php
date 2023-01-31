@@ -181,6 +181,7 @@ function hideReplies(id) {
 	document.getElementById("btnreply" + id).setAttribute( "onClick", "showReplies(" + id + ");"  );
 }
 function sendReply(id) {
+	if(typeof replyCount == "undefined") replyCount = 0;
 	document.getElementById("spin" + id).style.display = "block";
 	const input = document.getElementById("inputReply" + id);
 	if(input.value.trim().length) {
