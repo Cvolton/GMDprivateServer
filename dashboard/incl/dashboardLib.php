@@ -432,8 +432,8 @@ cptch = document.querySelector("#verycoolcaptcha");
 		echo '<span id="htmlpage" style="width: 100%;height: 100%;display: contents;"><div class="container d-flex flex-column">
 				<div class="row fill d-flex justify-content-start content buffer">
 					'.$content.'
-				</div></span>
-			</div>';
+				</div>
+			</div></span>';
 	}
 	public function handleLangStart(){
 		if(!isset($_COOKIE["lang"]) OR !ctype_alpha($_COOKIE["lang"])){
