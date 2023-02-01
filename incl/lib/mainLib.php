@@ -787,18 +787,41 @@ class mainLib {
         else return false;
 	}
   	public function mail($mail = '', $user = '') {
-      	include __DIR__."/connection.php";
-      	include __DIR__."/../../config/mail.php";
-	include __DIR__."/../../config/dashboard.php";
-      	if(empty($mail) OR empty($user)) return;
-	if($mailEnabled) imap_open($mailbox, $mailuser, $mailpass, $flags, $retries, $options);
-      	$string = $this->randomString(4);
-      	$query = $db->prepare("UPDATE accounts SET mail = :mail WHERE userName = :user");
-      	$query->execute([':mail' => $string, ':user' => $user]);
-	$headers[]  = 'MIME-Version: 1.0\n';
-        $headers[] .= 'Content-type: text/html; charset=utf8\n';
-        $headers[] .= 'From: "'.$gdps.'" <'.$mailuser.'>';
-      	$mail = '"'.$user.'" <'.$mail.'>';
-        imap_mail($mail, 'Confirm mail', 'Your confirmation link: http://'.$_SERVER["HTTP_HOST"].'/database/dashboard/login/activate.php?mail='.$string, implode("\n", $headers));
+		if(empty($mail) OR empty($user)) return;
+		include __DIR__."/../../config/mail.php";
+		if($mailEnabled) {
+			include __DIR__."/connection.php";
+			include __DIR__."/../../config/dashboard.php";
+			$string = $this->randomString(4);
+			$query = $db->prepare("UPDATE accounts SET mail = :mail WHERE userName = :user");
+			$query->execute([':mail' => $string, ':user' => $user]);
+			include __DIR__."/../../config/mail/PHPMailer.php";
+			include __DIR__."/../../config/mail/SMTP.php";
+			include __DIR__."/../../config/mail/Exception.php";
+			$m = new PHPMailer\PHPMailer\PHPMailer();
+			$m->isSMTP();
+			$m->CharSet = 'utf-8';
+			$m->SMTPAuth = true;
+			$m->Host = $mailbox;
+			$m->Username = $mailuser;
+			$m->Password = $mailpass;
+			$m->Port = $mailport;
+			$m->SMTPOptions = array(
+				'ssl' => array(
+					'verify_peer' => false,
+					'verify_peer_name' => false,
+					'allow_self_signed' => true
+				)
+			);
+			$m->setFrom($yourmail, $gdps.'!');
+			$m->addAddress($mail, $user);
+			$m->isHTML(true);
+			$m->Subject = 'Confirm link';
+			$m->Body = '<h1 align=center>Hello, <b>'.$user.'</b>!</h1><br>
+			<p align=center>It seems, that you wanna register new account in <b>'.$gdps.'</b></p><br>
+			<p align=center>Here is your link!</p><br>
+			<h2 align=center>http://'.$_SERVER["HTTP_HOST"].'/database/dashboard/login/activate.php?mail='.$string.'</h2>';
+			$m->send();
+		}
 	}
 }
