@@ -1,5 +1,5 @@
 <?php
-$dbPath = '../'; // Path to main directory. If you didn't changed dashboard place, don't change this value. Usually, its /database (https://imgur.com/a/P8LdhzY).
+$dbPath = '../'; // Path to main directory. It needs to point to main endpoint files. If you didn't changed dashboard place, don't change this value. Usually, its '../' (cuz dashboard folder is inside main endpoints folder) (https://imgur.com/a/P8LdhzY).
 include __DIR__."/../".$dbPath."config/dashboard.php";
 include_once "auth.php";
 $au = new au();
@@ -392,7 +392,7 @@ $(document).change(function(){
 		if(window.location.pathname.indexOf(page) != "1" || page == "profile") {
 			document.getElementById("loadingloool").style.opacity = "1";
 			pg = new XMLHttpRequest();
-			pg.open("GET", "../" + page, true);
+			pg.open("GET", page, true);
 			pg.responseType = "document";
 			htmlpage = document.querySelector("#htmlpage");
 			htmtitle = document.querySelectorAll("title")[0];
@@ -437,7 +437,7 @@ $(document).change(function(){
 					scri.innerHTML = scrpts.textContent;
 					document.body.appendChild(scri);
 				}
-				history.replaceState(null,null,"../" + page);
+				history.replaceState(null,null,page);
 				if(typeof coolcaptcha != "undefined") { 
 					coolcaptcha.replaceWith(cptch);
 					document.getElementsByClassName("h-captcha")[0].style.display = "block";
