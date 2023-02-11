@@ -271,7 +271,7 @@ class mainLib {
 		if(!empty($_POST["udid"]) AND $unregisteredSubmissions) 
 		{
 			$id = ExploitPatch::remove($_POST["udid"]);
-			if(is_numeric($id) OR $_POST['gameVersion'] < 20) exit("-1");
+			if(is_numeric($id)) exit("-1");
 		}
 		elseif(!empty($_POST["accountID"]) AND $_POST["accountID"]!="0")
 		{
