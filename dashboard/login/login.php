@@ -83,7 +83,7 @@ if(isset($_POST["userName"]) AND isset($_POST["password"])){
         else $protocol = 'http://';
       	$path2 = $_SERVER["HTTP_HOST"].'/';
       	$path = str_replace($procotol.''.$path2, '', $path);
-      	$path = str_replace($protocol, '', $path);
+      	$path = str_replace($protocol, '', '');
 		header('Location: ../'.$path);
 	}
 	$dl->printLoginBox('<p>'.$dl->getLocalizedString("loginSuccess").'<button type="submit" class="btn-primary" >'.$dl->getLocalizedString("clickHere").'</button></p>');
