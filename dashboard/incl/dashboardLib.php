@@ -399,17 +399,6 @@ $(document).change(function(){
 			htmtitle = document.querySelectorAll("title")[0];
 			pg.onload = function (){
 				if(pg.response.getElementById("htmlpage") != null) {
-					if(page != "" && typeof document.getElementsByTagName("base")[0] == "undefined") {
-						base = document.createElement("base");
-						base.href = "../";
-						document.body.appendChild(base);
-					}
-					if(document.querySelector("base").getAttribute("href") == "/") document.querySelector("base").href = "../";
-					if(page == "" && typeof document.querySelector("base") == "object") {
-						base2 = document.querySelector("base");
-						base2.href = "/";
-						document.body.appendChild(base2);
-					}
 					document.getElementById("loadingloool").style.opacity = "0";
 					child = pg.response.querySelector("#htmlpage");
 					title = pg.response.querySelectorAll("title")[0];
@@ -446,6 +435,17 @@ $(document).change(function(){
 						document.body.appendChild(scri);
 					}
 					history.replaceState(null,null,page);
+					if(page != "" && typeof document.getElementsByTagName("base")[0] == "undefined") {
+						base = document.createElement("base");
+						base.href = "../";
+						document.body.appendChild(base);
+					}
+					if(document.querySelector("base").getAttribute("href") == "/") document.querySelector("base").href = "../";
+					if(page == "" && typeof document.querySelector("base") == "object") {
+						base2 = document.querySelector("base");
+						base2.href = "/";
+						document.body.appendChild(base2);
+					}
 					if(typeof coolcaptcha != "undefined") { 
 						coolcaptcha.replaceWith(cptch);
 						document.getElementsByClassName("h-captcha")[0].style.display = "block";
