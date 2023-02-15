@@ -872,6 +872,6 @@ audio::-webkit-media-controls-toggle-closed-captions-button {
 	width: calc(100% - 8px);
 }
 button > .icon:hover {
-	background: #47494e !important;
+	background: #a9ccef !important;
 	cursor: pointer;
 }
