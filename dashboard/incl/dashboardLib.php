@@ -115,7 +115,7 @@ class dashboardLib {
 		include_once __DIR__."/../".$dbPath."config/security.php";
 		global $enableCaptcha;
 		require_once __DIR__."/../".$dbPath."incl/lib/mainLib.php";
-      	include_once __DIR__."/../".$dbPath."incl/lib/connection.php";
+      	include __DIR__."/../".$dbPath."incl/lib/connection.php";
 		$gs = new mainLib();
 		if($enableCaptcha) Captcha::displayCaptcha('no');
 		$homeActive = $accountActive = $browseActive = $modActive = $reuploadActive = $statsActive = $msgActive = $profileActive = "";
