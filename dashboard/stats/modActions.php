@@ -49,31 +49,34 @@ foreach($result as &$mod){
   	if($actionscount == 0) $actionscount = '<div style="color:grey">'.$dl->getLocalizedString("noActions").'</div>';
 	if($lvlcount == 0) $lvlcount = '<div style="color:grey">'.$dl->getLocalizedString("noRates").'</div>';
 	if($lastPlayed == 0) $time = '<div style="color:gray">'.$dl->getLocalizedString("never").'</div>';
- 	$query = $db->prepare("SELECT roleID FROM roleassign WHERE accountID =:accid");
+	$query = $db->prepare("SELECT roleID FROM roleassign WHERE accountID =:accid GROUP BY roleID ASC");
 	$query->execute([':accid' => $mod["accountID"]]);
-	$resultRole = $color = implode($query->fetch());
-  	$color = mb_substr($resultRole, 1);
-	switch($resultRole) {
-		case 11:
-			$resultRole = $dl->getLocalizedString("admin");				
-        break;
-		case 22:
-			$resultRole = $dl->getLocalizedString("elder");
-			break;
-		case 33:
-			$resultRole = $dl->getLocalizedString("moder");
-			break;
-		default:
-			$query = $db->prepare("SELECT roleName FROM roles WHERE roleID = :id");
-			$query->execute([':id' => $color]);
-			$resultRole = $query->fetch();
-			$resultRole = $resultRole["roleName"];
-			break;
+	$resultPls = $query->fetch();
+	if(!$resultPls) $resultRole = $dl->getLocalizedString("player");
+	else {
+		$resultRole = $resultPls["roleID"];
+		if(empty($resultRole)){
+			$resultRole = $dl->getLocalizedString("player");
+		} else {
+			switch($resultRole) {
+				case 1:
+					$resultRole = $dl->getLocalizedString("admin");
+					break;
+				case 2:
+					$resultRole = $dl->getLocalizedString("elder");
+					break;
+				case 3:
+					$resultRole = $dl->getLocalizedString("moder");
+					break;
+				default:
+					$query = $db->prepare("SELECT roleName FROM roles WHERE roleID = :id");
+					$query->execute([':id' => $resultRole]);
+					$resultRole = $query->fetch()["roleName"];
+					break;
+			}
+			$resultRole = '<div style="color:rgb('.$gs->getAccountCommentColor($mod["accountID"]).')">'.$resultRole.'</div>';
 		}
-  	$query = $db->prepare("SELECT commentColor FROM roles WHERE roleID = :rid");
-  	$query->execute([':rid' => $color]);
-  	$color = $query->fetch();
-  	$resultRole = '<div style="color:rgb('.$color["commentColor"].')">'.$resultRole.'</div>';
+	}
 	if($actionscount != '<div style="color:grey">'.$dl->getLocalizedString("noActions").'</div>') {
 		$actions = $actionscount[strlen($actionscount)-1];
 		if($actions == 1) $action = 0; elseif($actions < 5 AND $actions != 0) $action = 1; else $action = 2;
