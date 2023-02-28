@@ -70,21 +70,13 @@ if(isset($_POST["userName"]) AND isset($_POST["password"])){
       setcookie('auth', $auth, 2147483647, '/');
     } else setcookie('auth', $auth["auth"], 2147483647, '/');
 	if(isset($_POST["ref"])){
-      	$path = $_POST["ref"];
         if(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') $protocol = 'https://';
         else $protocol = 'http://';
-      	$path2 = $_SERVER["HTTP_HOST"].'/';
-      	$path = str_replace($procotol.''.$path2, '', $path);
-      	$path = str_replace($protocol, '', $path);
-		header('Location: ../'.$path);
+		header('Location: ../');
 	}elseif(isset($_SERVER["HTTP_REFERER"])){
-      	$path = $_SERVER["HTTP_REFERER"];
         if(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') $protocol = 'https://';
         else $protocol = 'http://';
-      	$path2 = $_SERVER["HTTP_HOST"].'/';
-      	$path = str_replace($procotol.''.$path2, '', $path);
-      	$path = str_replace($protocol, '', '');
-		header('Location: ../'.$path);
+		header('Location: ../');
 	}
 	$dl->printLoginBox('<p>'.$dl->getLocalizedString("loginSuccess").'<button type="submit" class="btn-primary" >'.$dl->getLocalizedString("clickHere").'</button></p>');
 }else{
