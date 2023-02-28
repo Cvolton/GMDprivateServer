@@ -56,18 +56,11 @@ if(isset($_POST["userName"]) AND isset($_POST["password"])){
   	$query = $db->prepare("SELECT auth FROM accounts WHERE accountID = :id");
   	$query->execute([':id' => $accountID]);
   	$auth = $query->fetch();
-    if($auth["auth"] == 'none') {
+     if($auth["auth"] == 'none') {
           $auth = $gs->randomString(8);
           $query = $db->prepare("UPDATE accounts SET auth = :auth WHERE accountID = :id");
           $query->execute([':auth' => $auth, ':id' => $accountID]);
-      if(isset($_POST["ref"])){
-			header('refresh: 2; url='.$_POST["ref"]);
-        	setcookie('auth', $auth, 2147483647, '/');
-      }elseif(isset($_SERVER["HTTP_REFERER"])){
-			header('refresh: 2; url='.$_SERVER["HTTP_REDIRECT"]);
-        	setcookie('auth', $auth, 2147483647, '/');
-      }
-      setcookie('auth', $auth, 2147483647, '/');
+		  setcookie('auth', $auth, 2147483647, '/');
     } else setcookie('auth', $auth["auth"], 2147483647, '/');
 	header('Location: ../');
 	$dl->printLoginBox('<p>'.$dl->getLocalizedString("loginSuccess").'<button type="submit" class="btn-primary" >'.$dl->getLocalizedString("clickHere").'</button></p>');
