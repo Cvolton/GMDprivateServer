@@ -1,11 +1,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap');
 
 @media screen and (max-width: 993px) {
-	body {overflow: auto !important}
+	body {overflow-y: auto !important}
 }
 
 @media (min-width: 1500px) {
 	.container {max-width: 1450px;}
+	.nav-link {width:max-content;}
 }
 
 * {
@@ -14,6 +15,16 @@
 
 #ads, .adsbygoogle, #ads_bottom_static {
     display: none !important;
+}
+
+.music {
+	display: flex;
+   margin: 0px;
+   padding: 4px 8px;
+   background: #141414;
+   border-radius: 500px;
+   align-items: center;
+	font-size: 16px;
 }
 
 input, select {
@@ -217,7 +228,7 @@ input, select {
 .dmbox {
 	max-width: 500px;
 	min-width:500px;
-	max-height:516px;
+	max-height:50vh;
 	overflow: auto;
 }
 
@@ -305,7 +316,7 @@ input, select {
 .msgbox {
 	text-align:center;
 	min-width: 500px;
-	max-height: 508px;
+	max-height: 50vh;
 	overflow:auto;
 }
 
@@ -432,11 +443,12 @@ select::-webkit-scrollbar-thumb {
 	font-weight: 700;
 }
 h2{
-	    font-size: 17px;
+	font-size: 17px;
     color: #c0c0c0;
 	margin-top: 0px;
 	text-align:center;
     margin-bottom: 1rem;
+	font-weight: 400;
 }
 
 h3{
@@ -476,7 +488,10 @@ body {
 .btn-primary:focus,
 .msgupd:hover,
 .msgupd:active,
-.msgupd:focus {
+.msgupd:focus,
+.goback:hover,
+.goback:active,
+.goback:focus {
     background-color: #47494e;
     border-color: #47494e;
 }
