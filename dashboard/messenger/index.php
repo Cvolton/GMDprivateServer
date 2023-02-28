@@ -138,7 +138,7 @@ $(document).on("keyup keypress change keydown",function(){
 				$recid = $row["accID"];
 				$notify = '<i class="fa fa-circle" aria-hidden="true" style="font-size: 10px;margin-left:5px;color: #e35151;"></i>';
 				$options .= '<div class="messenger"><text class="receiver">'.$receiver.''.$notify.'</text><br>
-				<a href="messenger/'.$gs->getAccountName($recid).'" class="btn-rendel" style="margin-top:5px;width:100%">'.$dl->getLocalizedString("write").'</a></div>';
+				<a href="messenger/'.$gs->getAccountName($recid).'" class="btn-rendel" style="margin-top:5px;width:100%;display:inline-block">'.$dl->getLocalizedString("write").'</a></div>';
 			}
 		}
       	if(empty($options)) $options = '<div class="icon" style="height: 70px;width: 70px;margin-left: 0px;background:#36393e"><text class="receiver" style="font-size:50px"><i class="fa-regular fa-face-sad-cry"></i></text></div>';
