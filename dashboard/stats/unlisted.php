@@ -19,6 +19,8 @@ if(isset($_SESSION["accountID"]) AND $_SESSION["accountID"] != 0){
 }
 $table = '<table class="table table-inverse"><tr><th>#</th><th>'.$dl->getLocalizedString("levelid").'</th><th>'.$dl->getLocalizedString("levelname").'</th><th>'.$dl->getLocalizedString("leveldesc").'</th><th>'.$dl->getLocalizedString("levelpass").'</th><th>'.$dl->getLocalizedString("stars").'</th><th>'.$dl->getLocalizedString("songIDw").'</th></tr>';
 $yourID = $gs->getAccountName($_SESSION["accountID"]);
+if(!isset($_GET["search"])) $_GET["search"] = "";
+$srcbtn = "";
 if(!empty(trim(ExploitPatch::remove($_GET["search"])))) {
 	$srcbtn = '<a href="'.$_SERVER["SCRIPT_NAME"].'" style="width: 0%;display: flex;margin-left: 5px;align-items: center;justify-content: center;color: indianred; text-decoration:none" class="btn-primary" title="'.$dl->getLocalizedString("searchCancel").'"><i class="fa-solid fa-xmark"></i></a>';
 	$query = $db->prepare("SELECT * FROM levels WHERE unlisted=1 AND userName='$yourID' AND levelName LIKE '%".trim(ExploitPatch::remove($_GET["search"]))."%' LIMIT 10 OFFSET $page");
@@ -81,7 +83,7 @@ foreach($result as &$action){
           $star = 0;
       }
 	$stars = $action["starStars"].' '.$dl->getLocalizedString("starsLevel$star");
-	if($action["stars"] == 0) $stars = '<div style="color:gray">'.$dl->getLocalizedString("unrated").'</div>';
+	if($action["starStars"] == 0) $stars = '<div style="color:gray">'.$dl->getLocalizedString("unrated").'</div>';
 	$table .= "<tr><th scope='row'>".$x."</th><td>".$levelid."</td><td>".$levelname."</td><td>".$levelDesc."</td><td>".$levelpass."</td><td>".$stars."</td><td>".$songid."</td></tr>";
 	$x++;
 }

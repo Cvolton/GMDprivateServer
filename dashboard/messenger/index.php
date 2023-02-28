@@ -3,26 +3,33 @@ session_start();
 require "../incl/dashboardLib.php";
 require "../".$dbPath."incl/lib/connection.php";
 $dl = new dashboardLib();
-error_reporting(0);
 require_once "../".$dbPath."incl/lib/mainLib.php";
 $gs = new mainLib();
 require "../".$dbPath."incl/lib/exploitPatch.php";
-$ep = new exploitPatch();
 require "../incl/XOR.php";
 $xor = new XORCipher();
 global $msgEnabled;
 $dl->printFooter('../');
+if(!isset($_POST["accountID"])) $_POST["accountID"] = 0; // cuz it sends warnings (it works! dont change anything pls ok thx)
+if(!isset($_POST["receiver"])) $_POST["receiver"] = 0;
 if($msgEnabled == 1) {
 if(isset($_SESSION["accountID"]) AND $_SESSION["accountID"] != 0){
   	$newMsgs = $_SESSION["msgNew"];
 	$accid = $_SESSION["accountID"];
 	$notyou = ExploitPatch::number($_POST["accountID"]);
-  	if(empty($notyou)) {
-		if(is_numeric($_POST["receiver"])) $notyou = ExploitPatch::number($_POST["receiver"]);
-      	else $notyou = $gs->getAccountIDFromName(ExploitPatch::remove($_POST["receiver"]));
-    } 
+  	if(!isset($_GET["id"])) {
+		if(empty($notyou)) {
+			if(is_numeric($_POST["receiver"])) $notyou = ExploitPatch::number($_POST["receiver"]);
+			else $notyou = $gs->getAccountIDFromName(ExploitPatch::remove($_POST["receiver"]));
+		} 
+	} else {
+		$getID = explode("/", $_GET["id"])[count(explode("/", $_GET["id"]))-1];
+		$notyou = ExploitPatch::remove($getID);
+		if(is_numeric($notyou)) $notyou = ExploitPatch::number($notyou);
+		else $notyou = $gs->getAccountIDFromName(ExploitPatch::remove($notyou));
+	}
   	$check = $gs->getAccountName($notyou);
- 	if(empty($check)) $dl->title($dl->getLocalizedString("messenger")); else $dl->title($check);
+ 	if(empty($check) OR $notyou == $accid) $dl->title($dl->getLocalizedString("messenger")); else $dl->title($dl->getLocalizedString("messenger").', '.$check);
 	if(!empty($notyou) AND is_numeric($notyou) AND $notyou != 0 AND $notyou != $accid AND !empty($check)) {
 		if(!empty($_POST["subject"]) AND !empty($_POST["msg"])) {
 			$sendsub = base64_encode(ExploitPatch::remove($_POST["subject"]));
@@ -59,7 +66,7 @@ if(isset($_SESSION["accountID"]) AND $_SESSION["accountID"] != 0){
 			$body = $xor->plaintext(base64_decode($msg["body"]), 14251);
 			$msgs .= '<div class="messenger'.$div.'"><h2 class="subject'.$div.'">'.$subject.'</h2>
 			<h3 class="message'.$div.'">'.$body.'</h3>
-			<h3 id="comments" style="justify-content:flex-end">'.$dl->convertToDate($msg["timestamp"]).'</h3></div>';
+			<h3 id="comments" style="justify-content:flex-end">'.$dl->convertToDate($msg["timestamp"], true).'</h3></div>';
 			$_POST["subject"] = '';
 			$_POST["msg"] = '';
 		}
@@ -120,7 +127,7 @@ $(document).on("keyup keypress change keydown",function(){
           	$notify = '';
             if($new2 != 0) $notify = '<i class="fa fa-circle" aria-hidden="true" style="font-size: 10px;margin-left:5px;color: #e35151;"></i>';
 			$options .= '<div class="messenger"><text class="receiver">'.$receiver.''.$notify.'</text><br>
-			<button type="submit" class="btn-rendel" name="accountID" value='.$recid.' style="margin-top:5px">'.$dl->getLocalizedString("write").'</button></div>';
+			<a href="messenger/'.$gs->getAccountName($recid).'" class="btn-rendel" style="margin-top:5px;width:100%;display:inline-block">'.$dl->getLocalizedString("write").'</a></div>';
 		}
 		if(strpos($options, '<i class="fa fa-circle" aria-hidden="true" style="font-size: 10px;margin-left:5px;color: #e35151;"></i>') === FALSE AND $_SESSION["msgNew"] == 1) {
 			$query = $db->prepare("SELECT accID FROM messages WHERE toAccountID=:acc AND isNew=0");
@@ -131,7 +138,7 @@ $(document).on("keyup keypress change keydown",function(){
 				$recid = $row["accID"];
 				$notify = '<i class="fa fa-circle" aria-hidden="true" style="font-size: 10px;margin-left:5px;color: #e35151;"></i>';
 				$options .= '<div class="messenger"><text class="receiver">'.$receiver.''.$notify.'</text><br>
-				<button type="submit" class="btn-rendel" name="accountID" value='.$recid.' style="margin-top:5px">'.$dl->getLocalizedString("write").'</button></div>';
+				<a href="messenger/'.$gs->getAccountName($recid).'" class="btn-rendel" style="margin-top:5px;width:100%">'.$dl->getLocalizedString("write").'</a></div>';
 			}
 		}
       	if(empty($options)) $options = '<div class="icon" style="height: 70px;width: 70px;margin-left: 0px;background:#36393e"><text class="receiver" style="font-size:50px"><i class="fa-regular fa-face-sad-cry"></i></text></div>';

@@ -196,7 +196,7 @@ class dashboardLib {
                         <script>
 								function cron(){
 									cr = new XMLHttpRequest();
-                                    cr.open("GET", "../'.$dbPath.'tools/cron/cron.php", true);
+                                    cr.open("GET", "'.$dbPath.'tools/cron/cron.php", true);
                                     var ic = document.getElementById("iconcron");
                                     var on = document.getElementById("crbtn");
                                     ic.classList.remove("fa-bars-progress");
@@ -339,7 +339,7 @@ class dashboardLib {
 							<i class="fa-solid fa-user-circle" aria-hidden="true"></i> '.sprintf($this->getLocalizedString("loginHeader"), $userName).'
 						</a>
 						<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-							<button onclick="a(\'profile\')"class="dropdown-item" href=""><div class="icon"><i class="fa-regular fa-id-badge"></i></div>'.$this->getLocalizedString("profile").'</button>
+							<button onclick="a(\'profile/'.$gs->getAccountName($_SESSION["accountID"]).'\')"class="dropdown-item" href=""><div class="icon"><i class="fa-regular fa-id-badge"></i></div>'.$this->getLocalizedString("profile").'</button>
 							<a class="dropdown-item" href="login/logout.php"><div class="icon"><i class="fa-solid fa-sign-out" aria-hidden="false"></i></div>'.$this->getLocalizedString("logout").'</a>
 						</div>
 					</li>';

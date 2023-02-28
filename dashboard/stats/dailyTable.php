@@ -15,7 +15,8 @@ if(isset($_GET["page"]) AND is_numeric($_GET["page"]) AND $_GET["page"] > 0){
 	$actualpage = 1;
 }
 $dailytable = "";
-//getting data
+if(!isset($_GET["type"])) $_GET["type"] = "";
+if(!isset($_GET["ng"])) $_GET["ng"] = "";
 $query = $db->prepare("SELECT * FROM dailyfeatures WHERE timestamp < :time ORDER BY feaID DESC LIMIT 10 OFFSET $page");
 $query->execute([':time' => time()]);
 $result = $query->fetchAll();

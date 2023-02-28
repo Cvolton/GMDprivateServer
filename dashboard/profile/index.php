@@ -1,10 +1,11 @@
 <?php
 session_start();
 include "../incl/dashboardLib.php";
-include "../".$dbPath."incl/lib/connection.php";
 include "../".$dbPath."incl/lib/exploitPatch.php";
 include_once "../".$dbPath."incl/lib/mainLib.php";
 $gs = new mainLib();
+if(!isset($_GET["id"])) header("Location: ".$gs->getAccountName(ExploitPatch::number($_POST["accountID"])));
+include "../".$dbPath."incl/lib/connection.php";
 $dl = new dashboardLib();
 $dl->printFooter('../');
 if(!isset($_SESSION["accountID"]) OR $_SESSION["accountID"] == 0 AND empty($_POST["accountID"])) {
@@ -18,9 +19,16 @@ if(!isset($_SESSION["accountID"]) OR $_SESSION["accountID"] == 0 AND empty($_POS
 </div>', 'profile');
   	die();
 }
-if(!empty($_POST["accountID"])) $accid = ExploitPatch::number($_POST["accountID"]); else $accid = $_SESSION["accountID"];
+if(!empty($_POST["accountID"])) $accid = ExploitPatch::number($_POST["accountID"]); 
+elseif(isset($_GET["id"])) {
+	$getID = explode("/", $_GET["id"])[count(explode("/", $_GET["id"]))-1];
+	$accid = ExploitPatch::remove($getID);
+	if(!is_numeric($accid)) $accid = $gs->getAccountIDFromName($accid);
+}
+else $accid = $_SESSION["accountID"];
+if(!$accid) $accid = $_SESSION["accountID"];
 $accname = $gs->getAccountName($accid);
-$dl->title($accname);
+$dl->title($dl->getLocalizedString("profile").', '.$accname);
 if(!empty($_POST["msg"])) {
   	  $query = $db->prepare("SELECT timestamp FROM acccomments WHERE userID=:accid ORDER BY timestamp DESC LIMIT 1");
       $query->execute([':accid' => $gs->getUserID($accid)]);
@@ -38,7 +46,7 @@ if(!empty($_POST["msg"])) {
     }
 	$msg = base64_encode(ExploitPatch::remove($_POST["msg"]));
 	$query = $db->prepare("INSERT INTO acccomments (userID, userName, comment, timestamp) VALUES (:id, :name, :msg, :time)");
-  	$query->execute([':id' => $gs->getUserID($accid), ':name' => $gs->getAccountName($accid), ':msg' => $msg, ':time' => time()]);
+  	$query->execute([':id' => $gs->getUserID($accid), ':name' => $accname, ':msg' => $msg, ':time' => time()]);
 }
 $query = $db->prepare("SELECT isBanned, banReason FROM users WHERE extID=:id");
 $query->execute([':id' => $accid]);
@@ -73,7 +81,7 @@ foreach($msgs AS &$msg) {
 	$likes = $msg["likes"];
   	if($likes >= 0) $likes = $likes.' <i class="fa-regular fa-thumbs-up"></i>'; else $likes = mb_substr($likes, 1).' <i class="fa-regular fa-thumbs-down"></i>';
 	if($_SESSION["accountID"] != 0) {
-		if($reply == 0) $none = 'display:none';
+		if($reply == 0) $none = 'display:none'; else $none = '';
 		$replies = '<button id="btnreply'.$msg["commentID"].'" onclick="reply('.$msg["commentID"].')" class="btn-rendel" style="padding: 7 10;margin-right: 10px;min-width: max-content;width: max-content;'.$none.'">'.$dl->getLocalizedString("replies").' ('.$reply.')</button>';
 		if($_SESSION["accountID"] != 0) $input = '<div class="field" style="display:flex;margin-right:10px">
 			<input id="inputReply'.$msg["commentID"].'" type="text" placeholder="'.$dl->getLocalizedString("replyToComment").'">
@@ -88,7 +96,7 @@ foreach($msgs AS &$msg) {
 		</div>';
 }
 if(empty($comments)) $comments = '<p class="profile" style="font-size:25px;color:#c0c0c0">'.$dl->getLocalizedString("empty").'</p>';
-$msgtopl = '<form method="post" action="messenger/"><button class="msgupd" name="accountID" value="'.$accid.'"><i class="fa-regular fa-comment" aria-hidden="true"></i></button></form>';
+$msgtopl = '<form method="post" action="messenger/'.$accname.'"><button class="msgupd" name="accountID" value="'.$accid.'"><i class="fa-regular fa-comment" aria-hidden="true"></i></button></form>';
 if($accid == $_SESSION["accountID"]) {
 if(empty($comments)) $comments = '<p class="profile" style="font-size:25px;color:#c0c0c0">'.$dl->getLocalizedString("writeSomething").'</p>';
 	$send = '<div class="field" style="margin-top:10px">
@@ -113,7 +121,7 @@ if(empty($comments)) $comments = '<p class="profile" style="font-size:25px;color
 	$msgtopl = '';
 }
 if($_SESSION["accountID"] == 0) $msgtopl = '';
-if($res["dlPoints"] != 0) $points = '<i style="position: absolute;font-size: 20;right: 50;color: gray;" class="fa-solid fa-medal"> '.$res["dlPoints"].'</i>';
+if($res["dlPoints"] != 0) $points = '<i style="position: absolute;font-size: 20;right: 50;color: gray;" class="fa-solid fa-medal"> '.$res["dlPoints"].'</i>'; else $points = '';
 $dl->printSong('<div class="form" style="width: 60vw;max-height: 80vh;position:relative">
     	<div style="height: 100%;width: 100%;"><div style="display: flex;align-items: center;justify-content: center;">
         	'.$back.'
@@ -126,7 +134,6 @@ $dl->printSong('<div class="form" style="width: 60vw;max-height: 80vh;position:r
 		'.$send.'
 </div></div>
 <script>
-replyCount = '.$reply.';
 function reply(id) {
 	document.getElementById("spin" + id).style.display = "block";
 	replies = new XMLHttpRequest();

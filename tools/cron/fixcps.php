@@ -1,5 +1,5 @@
 <?php
-error_reporting(0);
+error_reporting(NULL);
 chdir(dirname(__FILE__));
 ob_flush();
 flush();

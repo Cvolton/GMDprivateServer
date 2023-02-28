@@ -18,6 +18,10 @@ if(isset($_GET["page"]) AND is_numeric($_GET["page"]) AND $_GET["page"] > 0){
 	$actualpage = 1;
 }
 $table = '<table class="table table-inverse"><tr><th>#</th><th>'.$dl->getLocalizedString("username").'</th><th>'.$dl->getLocalizedString("accountID").'</th><th>'.$dl->getLocalizedString("registerDate").'</th><th>'.$dl->getLocalizedString("isAdmin").'</th><th>'.$dl->getLocalizedString("lastSeen").'</th></tr>';
+if(!isset($_GET["search"])) $_GET["search"] = "";
+if(!isset($_GET["type"])) $_GET["type"] = "";
+if(!isset($_GET["ng"])) $_GET["ng"] = "";
+$srcbtn = "";
 if(!isset($_GET["search"]) OR empty(trim(ExploitPatch::remove($_GET["search"])))) {
 	$query = $db->prepare("SELECT * FROM accounts WHERE isActive = 1 ORDER BY accountID ASC LIMIT 10 OFFSET $page");
 	$query->execute();
@@ -62,28 +66,30 @@ foreach($result as &$action){
 	$query = $db->prepare("SELECT roleID FROM roleassign WHERE accountID =:accid");
 	$query->execute([':accid' => $accountID]);
 	$resultPls = $query->fetch();
-	$resultRole = $resultPls["roleID"];
-	if(empty($resultRole)){
-		$resultRole = $dl->getLocalizedString("player");
-	} else {
-		switch($resultRole) {
-			case 1:
-				$resultRole = $dl->getLocalizedString("admin");
-				break;
-			case 2:
-				$resultRole = $dl->getLocalizedString("elder");
-				break;
-			case 3:
-				$resultRole = $dl->getLocalizedString("moder");
-				break;
-			default:
-				$query = $db->prepare("SELECT roleName FROM roles WHERE roleID = :id");
-				$query->execute([':id' => $color]);
-				$resultRole = $query->fetch();
-				$resultRole = $resultRole["roleName"];
-				break;
+	if(!$resultPls) $resultRole = $dl->getLocalizedString("player");
+	else {
+		$resultRole = $resultPls["roleID"];
+		if(empty($resultRole)){
+			$resultRole = $dl->getLocalizedString("player");
+		} else {
+			switch($resultRole) {
+				case 1:
+					$resultRole = $dl->getLocalizedString("admin");
+					break;
+				case 2:
+					$resultRole = $dl->getLocalizedString("elder");
+					break;
+				case 3:
+					$resultRole = $dl->getLocalizedString("moder");
+					break;
+				default:
+					$query = $db->prepare("SELECT roleName FROM roles WHERE roleID = :id");
+					$query->execute([':id' => $resultRole]);
+					$resultRole = $query->fetch();
+					break;
+			}
+			$resultRole = '<div style="color:rgb('.$gs->getAccountCommentColor($action["accountID"]).')">'.$resultRole.'</div>';
 		}
-  	$resultRole = '<div style="color:rgb('.$gs->getAccountCommentColor($action["accountID"]).')">'.$resultRole.'</div>';
 	}
 	$registerDate = date("d.m.Y", $action["registerDate"]);
 	$table .= "<tr><th scope='row'>".$x."</th><td>".$username."</td><td>".$accountID."</td><td>".$registerDate."</td><td>".$resultRole."</td><td>".$lastPlayed."</td></tr>";

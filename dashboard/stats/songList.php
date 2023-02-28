@@ -28,7 +28,10 @@ if(!empty($_GET["author"]) AND !empty($_GET["name"])) {
 	$nn = 0;
 }
 $table = '<div class="notifyblue" style="display:'.$notify.'">'.$dl->getLocalizedString("renamedSong").' <b>'.$an.'</b> - <b>'.$nn.'</b>!</div><table class="table table-inverse"><tr><th>#</th><th></th><th>'.$dl->getLocalizedString("songIDw").'</th><th>'.$dl->getLocalizedString("songAuthor").'</th><th>'.$dl->getLocalizedString("name").'</th><th>'.$dl->getLocalizedString("size").'</th><th>'.$dl->getLocalizedString("time").'</th>'.$me.'</tr>';
-
+if(!isset($_GET["search"])) $_GET["search"] = "";
+if(!isset($_GET["type"])) $_GET["type"] = "";
+if(!isset($_GET["ng"])) $_GET["ng"] = "";
+$srcbtn = "";
 if(!empty(trim(ExploitPatch::remove($_GET["search"])))) {
 	$ngw = $_GET["ng"] == 1 ? '' : 'AND reuploadID > 0';
 	$q = is_numeric(trim(ExploitPatch::remove($_GET["search"]))) ? "ID LIKE '%".trim(ExploitPatch::remove($_GET["search"]))."%'" : "(name LIKE '%".trim(ExploitPatch::remove($_GET["search"]))."%' OR authorName LIKE '%".trim(ExploitPatch::remove($_GET["search"]))."%')";

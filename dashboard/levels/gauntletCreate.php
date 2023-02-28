@@ -11,6 +11,7 @@ include "../".$dbPath."incl/lib/exploitPatch.php";
 $dl->title($dl->getLocalizedString("gauntletCreateTitle"));
 $dl->printFooter('../');
 $allGauntlets = '';
+if(!isset($_POST["checkbox_data"])) $_POST["checkbox_data"] = "";
 if($gs->checkPermission($_SESSION["accountID"], "dashboardLevelPackCreate")){
 if($_POST["checkbox_data"] == 'on') {
 		if(!Captcha::validateCaptcha()) {

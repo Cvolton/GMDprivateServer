@@ -14,6 +14,11 @@ if(isset($_GET["page"]) AND is_numeric($_GET["page"]) AND $_GET["page"] > 0){
 	$page = 0;
 	$actualpage = 1;
 }
+if(!isset($_GET["search"])) $_GET["search"] = "";
+if(!isset($_GET["type"])) $_GET["type"] = "";
+if(!isset($_GET["ng"])) $_GET["ng"] = "";
+if(!isset($_GET["who"])) $_GET["who"] = "";
+$srcbtn = "";
 $table = '<table class="table table-inverse"><tr><th>#</th><th>'.$dl->getLocalizedString("mod").'</th><th>'.$dl->getLocalizedString("action").'</th><th>'.$dl->getLocalizedString("value").'</th><th>'.$dl->getLocalizedString("value2").'</th><th>'.$dl->getLocalizedString("value3").'</th><th>'.$dl->getLocalizedString("time").'</th></tr>';
 $seltype = !empty($_GET["type"]) ? ExploitPatch::number($_GET["type"]) : 0; 
 $selname = !empty($_GET["who"]) ? ExploitPatch::number($_GET["who"]) : 0;

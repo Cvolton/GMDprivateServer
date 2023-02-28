@@ -56,7 +56,7 @@ if(isset($_POST["userName"]) AND isset($_POST["password"])){
   	$query = $db->prepare("SELECT auth FROM accounts WHERE accountID = :id");
   	$query->execute([':id' => $accountID]);
   	$auth = $query->fetch();
-     if($auth["auth"] == 'none') {
+    if($auth["auth"] == 'none') {
           $auth = $gs->randomString(8);
           $query = $db->prepare("UPDATE accounts SET auth = :auth WHERE accountID = :id");
           $query->execute([':auth' => $auth, ':id' => $accountID]);

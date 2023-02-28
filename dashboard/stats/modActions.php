@@ -14,6 +14,8 @@ if($accounts == ""){
 	$dl->printBox(sprintf($dl->getLocalizedString("errorNoAccWithPerm"), "toolsModactions"));
 	exit();
 }
+if(!isset($_GET["search"])) $_GET["search"] = "";
+$srcbtn = "";
 if(!empty($_GET["search"])) {
 	$query = $db->prepare("SELECT accountID, userName FROM accounts WHERE accountID IN ($accounts) AND userName LIKE '%".ExploitPatch::remove($_GET["search"])."%' ORDER BY userName ASC");
 	$srcbtn = '<a href="'.$_SERVER["SCRIPT_NAME"].'" style="width: 0%;display: flex;margin-left: 5px;align-items: center;justify-content: center;color: indianred; text-decoration:none" class="btn-primary" title="'.$dl->getLocalizedString("searchCancel").'"><i class="fa-solid fa-xmark"></i></a>';

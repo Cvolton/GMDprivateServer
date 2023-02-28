@@ -1,4 +1,5 @@
 <?php
+error_reporting(0);
 include "../../incl/lib/connection.php";
 ob_flush();
 flush();
