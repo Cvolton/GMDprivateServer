@@ -16,7 +16,7 @@ use Defuse\Crypto\Key;
 $ep = new exploitPatch();
 $dl->printFooter('../');
 $acc = $_SESSION["accountID"];
-error_reporting(E_ERROR | E_PARSE);
+if(!isset($_POST["type"])) $_POST["type"] = "";
 if(!$gs->checkPermission($acc, 'dashboardForceChangePassNick')) {
 	$dl->printSong('<div class="form">
     <h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
