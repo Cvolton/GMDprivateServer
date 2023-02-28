@@ -436,7 +436,7 @@ $(document).change(function(){
 						scri.innerHTML = scrpts.textContent;
 						document.body.appendChild(scri);
 					}
-					history.replaceState(null,null,page);
+					history.pushState(null,null,page);
 					if(page != "" && typeof document.getElementsByTagName("base")[0] == "undefined") {
 						base = document.createElement("base");
 						base.href = "../";
@@ -445,7 +445,7 @@ $(document).change(function(){
 					if(document.querySelector("base").getAttribute("href") == "/") document.querySelector("base").href = "../";
 					if(page == "" && typeof document.querySelector("base") == "object") {
 						base2 = document.querySelector("base");
-						base2.href = "/";
+						base2.href = ".";
 						document.body.appendChild(base2);
 					}
 					if(typeof coolcaptcha != "undefined") { 
