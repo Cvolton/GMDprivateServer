@@ -111,7 +111,6 @@ class dashboardLib {
         global $ios;
 		global $thirdParty;
       	global $dbPath;
-		global $dbStartPage;
 		include __DIR__."/../".$dbPath."incl/lib/Captcha.php";
 		require_once __DIR__."/../".$dbPath."incl/lib/mainLib.php";
       	include __DIR__."/../".$dbPath."incl/lib/connection.php";
