@@ -390,6 +390,8 @@ $(document).change(function(){
 	cptch = document.querySelector("#verycoolcaptcha");
 	function a(page) {
 		if(window.location.pathname.indexOf(page) != "1" || page == "profile") {
+			phpCheck = page.substr(page.length - 4);
+			if(phpCheck != ".php" && page != "" && page != "profile/'.$gs->getAccountName($_SESSION["accountID"]).'") page = page + "/";
 			document.getElementById("loadingloool").innerHTML = \'<i class="fa-solid fa-spinner fa-spin"></i>\';
 			document.getElementById("loadingloool").style.opacity = "1";
 			pg = new XMLHttpRequest();
