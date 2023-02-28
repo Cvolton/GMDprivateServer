@@ -875,3 +875,8 @@ button > .icon:hover {
 	background: #a9ccef !important;
 	cursor: pointer;
 }
+
+.dropdown-item > .icon:hover {
+	background: #8abfff !important;
+	cursor: pointer;
+}
