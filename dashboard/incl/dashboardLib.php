@@ -78,7 +78,6 @@ class dashboardLib {
 		echo '</div></div></div></span>';
 	}
 	public function printFooter($sub = ''){
-		global $dbPath;
       	global $vk;
       	global $discord;
       	global $twitter;
@@ -90,8 +89,7 @@ class dashboardLib {
       	if($twitter != '') echo '<a href="'.$twitter.'"target="_blank"><img class="socials" style="width: 20px" src="'.$sub.'incl/socials/twitter.png"></a>';
       	if($vk != '') echo '<a href="'.$vk.'"target="_blank"><img class="socials" style="width: 20px" src="'.$sub.'incl/socials/vk.png"></a>';
       	if($twitch != '') echo '<a href="'.$twitch.'"target="_blank"><img class="socials" style="width: 20px" src="'.$sub.'incl/socials/twitch.png"></a>';
-        echo '</div></div></div></body>
-		</html>';
+        echo '</div></div></div>';
 	}
 	public function printLoginBox($content){
 		$this->printBox("<h1 id='center'>".$this->getLocalizedString("loginBox")."</h1>".$content);
