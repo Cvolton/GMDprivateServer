@@ -85,7 +85,7 @@ foreach($result as &$action){
 				default:
 					$query = $db->prepare("SELECT roleName FROM roles WHERE roleID = :id");
 					$query->execute([':id' => $resultRole]);
-					$resultRole = $query->fetch();
+					$resultRole = $query->fetch()["roleName"];
 					break;
 			}
 			$resultRole = '<div style="color:rgb('.$gs->getAccountCommentColor($action["accountID"]).')">'.$resultRole.'</div>';
