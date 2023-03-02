@@ -2,11 +2,15 @@
 
 class Captcha {
 
-	public static function displayCaptcha() {
+	public static function displayCaptcha($vis = '') {
 		include __DIR__ . "/../../config/security.php";
 		if($enableCaptcha){
 			echo "<script src='https://js.hCaptcha.com/1/api.js' async defer></script>";
-			echo "<div class=\"h-captcha\" data-sitekey=\"${hCaptchaKey}\" data-theme='dark'></div>";
+			if($vis == "no") {
+				$vis = 'style="display:none"';
+				$very = 'very';
+			}
+			echo "<div class=\"h-captcha\" $vis id=\"".$very."coolcaptcha\" data-sitekey=\"${hCaptchaKey}\" data-theme='dark' style='border-width: 0px !important;border-radius: 20px !important;'></div>";
 		}
 	}
 
