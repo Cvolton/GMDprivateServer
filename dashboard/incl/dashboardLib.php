@@ -113,7 +113,6 @@ class dashboardLib {
       	global $dbPath;
 		include_once __DIR__."/../".$dbPath."incl/lib/Captcha.php";
 		include_once __DIR__."/../".$dbPath."config/security.php";
-		global $enableCaptcha;
 		require_once __DIR__."/../".$dbPath."incl/lib/mainLib.php";
       	include __DIR__."/../".$dbPath."incl/lib/connection.php";
 		$gs = new mainLib();
