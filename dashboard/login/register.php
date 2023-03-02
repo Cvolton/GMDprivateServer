@@ -28,8 +28,8 @@ if(!empty($_POST["username"]) AND !empty($_POST["email"]) AND !empty($_POST["rep
 	die();
 	}
 	$username = ExploitPatch::remove($_POST["username"]);
-	$password = ExploitPatch::remove($_POST["password"]);
-	$repeat_password = ExploitPatch::remove($_POST["repeatpassword"]);
+	$password = $_POST["password"];
+	$repeat_password = $_POST["repeatpassword"];
 	$email = ExploitPatch::remove($_POST["email"]);
 	$repeat_email = ExploitPatch::remove($_POST["repeatemail"]);
 	if(strlen($username) < 3){
