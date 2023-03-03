@@ -46,8 +46,8 @@ if(!empty($_POST["sr"]) AND is_numeric($_POST["sr"])) {
 	if(!empty($_POST["change"]) AND $gs->checkPermission($_SESSION["accountID"], "demonlistAdd")) {
 		$dl->title($dl->getLocalizedString('addDemonTitle'));
 		if(!empty($_POST["id"]) AND !empty($_POST["place"]) AND !empty($_POST["points"])) {
-			$place = ExploitPatch::number($_POST["place"]) - 1;
-			if($place < 0) exit($dl->printSong('<div class="form">
+			$place = ExploitPatch::number($_POST["place"]);
+			if($place < 1) exit($dl->printSong('<div class="form">
 			<h1>'.$dl->getLocalizedString('addDemon').'</h1>
 			<form class="form__inner" method="post" action="">
 				<p>'.$dl->getLocalizedString('smthWentWrong').'</p>
@@ -55,17 +55,30 @@ if(!empty($_POST["sr"]) AND is_numeric($_POST["sr"])) {
 			</form></div>', 'browse'));
 			$lid = ExploitPatch::number($_POST["id"]);
 			$ytlink = ExploitPatch::remove($_POST["ytlink"]);
+			$ytlink = str_replace('https://', '', $_POST["ytlink"]);
+			$ytlink = str_replace('http://', '', $ytlink);
+			$ytlink = str_replace('www.youtube.com/watch?v=', '', $ytlink);
+			$ytlink = str_replace('youtu.be/', '', $ytlink);
 			$points = ExploitPatch::number($_POST["points"]);
-			$dlist = $db->prepare("SELECT pseudoPoints FROM demonlist ORDER BY pseudoPoints DESC LIMIT 1 OFFSET $place");
+			$place -= 2;
+			if($place == "-1") $queryplace = 0; else $queryplace = $place;
+			$dlist = $db->prepare("SELECT pseudoPoints FROM demonlist ORDER BY pseudoPoints DESC LIMIT 2 OFFSET $queryplace");
 			$dlist->execute();
-			$dlist = $dlist->fetch();
-			$average = $dlist["pseudoPoints"] + 2;
+			$dlist = $dlist->fetchAll();
+			$count = 1;
+			foreach($dlist as &$dli) {
+				$pseudo["number".$count] = $dli["pseudoPoints"];
+				$count++;
+			}
+			$average = ($pseudo["number1"] + $pseudo["number2"]) / 2;
+			if($place == -1) $average = $average * 2;
+			$place += 2;
 			$add = $db->prepare("INSERT INTO demonlist (levelID, authorID, pseudoPoints, giveablePoints, youtube) VALUES (:lid, :aid, :pp, :gp, :yt)");
 			$add->execute([':lid' => $lid, ':aid' => $gs->getLevelAuthor($lid), ':pp' => $average, ':gp' => $points, ':yt' => $ytlink]);
 			$dl->printSong('<div class="form">
 			<h1>'.$dl->getLocalizedString('addDemon').'</h1>
 			<form class="form__inner" method="post" action="">
-				<p>'.sprintf($dl->getLocalizedString('addedDemon'), $gs->getLevelName($lid), $place++).'</p>
+				<p>'.sprintf($dl->getLocalizedString('addedDemon'), $gs->getLevelName($lid), $place).'</p>
 				<button style="margin-top:5px;margin-bottom:5px" type="submit" class="btn-song">'.$dl->getLocalizedString('demonlist').'</button>
 			</form></div>', 'browse');
 		} else $dl->printSong('<div class="form">
