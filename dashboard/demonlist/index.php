@@ -65,12 +65,15 @@ if(!empty($_POST["sr"]) AND is_numeric($_POST["sr"])) {
 			$dlist = $db->prepare("SELECT pseudoPoints FROM demonlist ORDER BY pseudoPoints DESC LIMIT 2 OFFSET $queryplace");
 			$dlist->execute();
 			$dlist = $dlist->fetchAll();
+			if(count($dlist) < 1) $average = 30000;
+			else {
 			$count = 1;
-			foreach($dlist as &$dli) {
-				$pseudo["number".$count] = $dli["pseudoPoints"];
-				$count++;
+				foreach($dlist as &$dli) {
+					$pseudo["number".$count] = $dli["pseudoPoints"];
+					$count++;
+				}
+				$average = ($pseudo["number1"] + $pseudo["number2"]) / 2;
 			}
-			$average = ($pseudo["number1"] + $pseudo["number2"]) / 2;
 			if($place == -1) $average = $average * 2;
 			$place += 2;
 			$add = $db->prepare("INSERT INTO demonlist (levelID, authorID, pseudoPoints, giveablePoints, youtube) VALUES (:lid, :aid, :pp, :gp, :yt)");
