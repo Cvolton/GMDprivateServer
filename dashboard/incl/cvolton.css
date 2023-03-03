@@ -293,6 +293,7 @@ input, select {
 }
 
 .messageyou {
+    overflow-wrap: anywhere;
 	font-size:13px;
 	color:white;
 	margin:5px;
@@ -300,6 +301,7 @@ input, select {
 }
 
 .messagenotyou {
+    overflow-wrap: anywhere;
 	font-size:13px;
 	color:white;
 	margin:5px;
@@ -327,6 +329,7 @@ input, select {
 }
 
 .subjectyou {
+    overflow-wrap: anywhere;
 	text-align:right;
 	font-size:17px;
 	font-weight:500;
@@ -335,6 +338,7 @@ input, select {
 }
 
 .subjectnotyou {
+    overflow-wrap: anywhere;
 	text-align:left;
 	font-size:17px;
 	font-weight:500;
