@@ -55,7 +55,7 @@ if(!$installed) {
 			 `timestamp` int(11) NOT NULL,
 			 PRIMARY KEY (`replyID`)
 			) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
-	$check = $db->query("SHOW TABLES LIKE 'demonlist''");
+	$check = $db->query("SHOW TABLES LIKE 'demonlist'");
       	$exist = $check->fetchAll();
       	if(empty($exist)) $db->query("CREATE TABLE `demonlist` (
 		 `levelID` int(11) NOT NULL,
