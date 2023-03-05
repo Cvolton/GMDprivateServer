@@ -28,7 +28,7 @@ if(!empty($_POST["levelid"])){
 			<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 			<form class="form__inner" method="post" action="">
 			<p>'.$dl->getLocalizedString("invalidCaptcha").'</p>
-			<button type="submit" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
+			<button type="button" onclick="a(\'levels/levelReupload.php\', true, false, \'GET\')" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 			</form>
 		</div>', 'reupload');
 		die();
@@ -51,7 +51,7 @@ if(!empty($_POST["levelid"])){
 				<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 				<form class="form__inner" method="post" action="">
 				<p>'.$dl->getLocalizedString("errorConnection").'</p>
-				<button type="submit" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
+				<button type="button" onclick="a(\'levels/levelReupload.php\', true, false, \'GET\')" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 				</form>
 			</div>', 'reupload');
 		}else if($result=="-1"){
@@ -59,7 +59,7 @@ if(!empty($_POST["levelid"])){
 				<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 				<form class="form__inner" method="post" action="">
 				<p>'.$dl->getLocalizedString("levelNotFound").'</p>
-				<button type="submit" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
+				<button type="button" onclick="a(\'levels/levelReupload.php\', true, false, \'GET\')" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 				</form>
 			</div>', 'reupload');
 		}else{
@@ -67,7 +67,7 @@ if(!empty($_POST["levelid"])){
 				<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 				<form class="form__inner" method="post" action="">
 				<p>'.$dl->getLocalizedString("robtopLol").'</p>
-				<button type="submit" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
+				<button type="button" onclick="a(\'levels/levelReupload.php\', true, false, \'GET\')" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 				</form>
 			</div>', 'reupload');
 		}
@@ -90,7 +90,7 @@ if(!empty($_POST["levelid"])){
 				<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 				<form class="form__inner" method="post" action="">
 				<p>'.htmlspecialchars($result,ENT_QUOTES).'</p>
-				<button type="submit" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
+				<button type="button" onclick="a(\'levels/levelReupload.php\', true, false, \'GET\')" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 				</form>
 			</div>', 'reupload');
 		}
@@ -116,7 +116,7 @@ if(!empty($_POST["levelid"])){
 					<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 					<form class="form__inner" method="post" action="">
 					<p>'.$dl->getLocalizedString("sameServers").'</p>
-					<button type="submit" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
+					<button type="button" onclick="a(\'levels/levelReupload.php\', true, false, \'GET\')" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 					</form>
 				</div>', 'reupload');
 				die();
@@ -130,10 +130,6 @@ if(!empty($_POST["levelid"])){
 			$extraString = chkarray($levelarray["a36"], "");
 			$starStars = chkarray($levelarray["a18"]);
 			$isLDM = chkarray($levelarray["a40"]);
-			$password = chkarray($levelarray["a27"]);
-			if($password != "0"){
-				$password = XORCipher::cipher(base64_decode($password),26364);
-			}
 			$starCoins = 0;
 			$starDiff = 0;
 			$starDemon = 0;
@@ -163,7 +159,7 @@ if(!empty($_POST["levelid"])){
 			//query
 			$query = $db->prepare("INSERT INTO levels (levelName, gameVersion, binaryVersion, userName, levelDesc, levelVersion, levelLength, audioTrack, auto, password, original, twoPlayer, songID, objects, coins, requestedStars, extraString, levelString, levelInfo, secret, uploadDate, updateDate, originalReup, userID, extID, unlisted, hostname, starStars, starCoins, starDifficulty, starDemon, starAuto, isLDM)
 												VALUES (:name ,:gameVersion, '27', 'Reupload', :desc, :version, :length, :audiotrack, '0', :password, :originalReup, :twoPlayer, :songID, '0', :coins, :reqstar, :extraString, :levelString, '', '', '$uploadDate', '$uploadDate', :originalReup, :userID, :extID, '0', :hostname, :starStars, :starCoins, :starDifficulty, :starDemon, :starAuto, :isLDM)");
-			$query->execute([':password' => $password, ':starDemon' => $starDemon, ':starAuto' => $starAuto, ':gameVersion' => $gameVersion, ':name' => $levelarray["a2"], ':desc' => $levelarray["a3"], ':version' => $levelarray["a5"], ':length' => $levelarray["a15"], ':audiotrack' => $levelarray["a12"], ':twoPlayer' => $twoPlayer, ':songID' => $songID, ':coins' => $coins, ':reqstar' => $reqstar, ':extraString' => $extraString, ':levelString' => "", ':originalReup' => $levelarray["a1"], ':hostname' => $hostname, ':starStars' => $starStars, ':starCoins' => $starCoins, ':starDifficulty' => $starDiff, ':userID' => $userID, ':extID' => $extID, ':isLDM' => $isLDM]);
+			$query->execute([':password' => 1, ':starDemon' => $starDemon, ':starAuto' => $starAuto, ':gameVersion' => $gameVersion, ':name' => $levelarray["a2"], ':desc' => $levelarray["a3"], ':version' => $levelarray["a5"], ':length' => $levelarray["a15"], ':audiotrack' => $levelarray["a12"], ':twoPlayer' => $twoPlayer, ':songID' => $songID, ':coins' => $coins, ':reqstar' => $reqstar, ':extraString' => $extraString, ':levelString' => "", ':originalReup' => $levelarray["a1"], ':hostname' => $hostname, ':starStars' => 0, ':starCoins' => 0, ':starDifficulty' => $starDiff, ':userID' => $userID, ':extID' => $extID, ':isLDM' => $isLDM]);
 			$levelID = $db->lastInsertId();
 			file_put_contents("../../data/levels/$levelID",$levelString);
 		if($debug == 1) {
@@ -175,7 +171,7 @@ if(!empty($_POST["levelid"])){
 					<summary>Debug</summary>
 					'.$result.'
 					</details>
-					<button type="submit" class="btn-song">'.$dl->getLocalizedString("oneMoreLevel?").'</button>
+					<button type="button" onclick="a(\'levels/levelReupload.php\', true, false, \'GET\')" class="btn-song">'.$dl->getLocalizedString("oneMoreLevel?").'</button>
 					</form>
 				</div>', 'reupload');
 		} else {
@@ -183,7 +179,7 @@ if(!empty($_POST["levelid"])){
 					<h1>'.$dl->getLocalizedString("levelReupload").'</h1>
 					<form class="form__inner" method="post" action="">
 					<p>'.$dl->getLocalizedString("levelReuploaded").' '.$levelID.'</p>
-					<button type="submit" class="btn-song">'.$dl->getLocalizedString("oneMoreLevel?").'</button>
+					<button type="button" onclick="a(\'levels/levelReupload.php\', true, false, \'GET\')" class="btn-song">'.$dl->getLocalizedString("oneMoreLevel?").'</button>
 					</form>
 				</div>', 'reupload');
 		}
@@ -192,7 +188,7 @@ if(!empty($_POST["levelid"])){
 					<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 					<form class="form__inner" method="post" action="">
 					<p>'.$dl->getLocalizedString("levelAlreadyReuploaded").'</p>
-					<button type="submit" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
+					<button type="button" onclick="a(\'levels/levelReupload.php\', true, false, \'GET\')" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 					</form>
 				</div>', 'reupload');
 		}
@@ -212,7 +208,7 @@ if(!empty($_POST["levelid"])){
 		</details>', 'reupload');
 		Captcha::displayCaptcha();
         echo '
-        <button type="submit" class="btn-song btn-block" id="submit" disabled>'.$dl->getLocalizedString("reuploadBTN").'</button>
+        <button type="button" onclick="a(\'levels/levelReupload.php\', true, true, \'POST\')" class="btn-song btn-block" id="submit" disabled>'.$dl->getLocalizedString("reuploadBTN").'</button>
     </form>
 </div>
 <script>
@@ -238,7 +234,7 @@ $(document).on("keyup keypress change keydown",function(){
     <h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 	<form class="form__inner" method="post" action="./login/login.php">
 	<p>'.$dl->getLocalizedString("noLogin?").'</p>
-	        <button type="submit" class="btn-song">'.$dl->getLocalizedString("LoginBtn").'</button>
+	        <button type="button" onclick="a(\'login/login.php\', true, false, \'GET\')" class="btn-song">'.$dl->getLocalizedString("LoginBtn").'</button>
     </form>
 </div>', 'reupload');
 }
@@ -247,7 +243,7 @@ $(document).on("keyup keypress change keydown",function(){
 			<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 			<form class="form__inner" method="post" action=".">
 			<p>'.$dl->getLocalizedString("pageDisabled").'</p>
-			<button type="submit" class="btn-song">'.$dl->getLocalizedString("dashboard").'</button>
+			<button type="button" onclick="a(\'\', true, false, \'GET\')" class="btn-song">'.$dl->getLocalizedString("dashboard").'</button>
 			</form>
 		</div>', 'reupload');
 }

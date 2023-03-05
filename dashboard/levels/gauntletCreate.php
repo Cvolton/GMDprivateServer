@@ -19,7 +19,7 @@ if($_POST["checkbox_data"] == 'on') {
 				<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 				<form class="form__inner" method="post" action="">
 				<p>'.$dl->getLocalizedString("invalidCaptcha").'</p>
-				<button type="submit" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
+				<button type="button" onclick="a(\'levels/gauntletCreate.php\', true, false, \'GET\')" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 				</form>
 			</div>', 'mod');
 		die();
@@ -49,7 +49,7 @@ if($_POST["checkbox_data"] == 'on') {
     <h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
     <form class="form__inner" method="post" action="">
 		<p>'.$dl->getLocalizedString("sameLevels").'</p>
-	        <button type="submit" class="btn-primary">'.$dl->getLocalizedString("tryAgainBTN").'</button>
+	        <button type="button" onclick="a(\'levels/gauntletCreate.php\', true, false, \'GET\')" class="btn-primary">'.$dl->getLocalizedString("tryAgainBTN").'</button>
     </form>
 </div>', 'mod');
 		die();
@@ -59,7 +59,7 @@ if($_POST["checkbox_data"] == 'on') {
 			<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 			<form class="form__inner" method="post" action="">
 			<p>'.$dl->getLocalizedString("chooseLevels").'</p>
-	        <button type="submit" class="btn-primary">'.$dl->getLocalizedString("tryAgainBTN").'</button>
+	        <button type="button" onclick="a(\'levels/gauntletCreate.php\', true, false, \'GET\')" class="btn-primary">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 			</form>
 			</div>', 'mod');
 		die();
@@ -69,7 +69,7 @@ if($_POST["checkbox_data"] == 'on') {
 			<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 			<form class="form__inner" method="post" action="">
 			<p>'.$dl->getLocalizedString("invalidPost").'</p>
-	        <button type="submit" class="btn-primary">'.$dl->getLocalizedString("tryAgainBTN").'</button>
+	        <button type="button" onclick="a(\'levels/gauntletCreate.php\', true, false, \'GET\')" class="btn-primary">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 			</form>
 			</div>', 'mod');
 		die();
@@ -83,7 +83,7 @@ if($_POST["checkbox_data"] == 'on') {
     <h1>'.$dl->getLocalizedString("gauntletCreateTitle").'</h1>
     <form class="form__inner" method="post" action="">
 		<p>'.$dl->getLocalizedString("gauntletCreateSuccess").'</p>
-	    <button type="submit" class="btn-primary">'.$dl->getLocalizedString("gauntletCreateOneMore").'</button>
+	    <button type="button" onclick="a(\'levels/gauntletCreate.php\', true, false, \'GET\')" class="btn-primary">'.$dl->getLocalizedString("gauntletCreateOneMore").'</button>
     </form>
 </div>', 'mod');
 } else {
@@ -107,25 +107,25 @@ if($_POST["checkbox_data"] == 'on') {
     </button>'.$allGauntlets.'
     </div>
 	<div class="form" style="margin:0;width:100%">
-    <h1>' . $dl->getLocalizedString("gauntletCreateTitle") . '</h1>
-    <form class="form__inner form__create" method="post" action="">
-    <p>' . $dl->getLocalizedString("gauntletCreateDesc") . '</p>
-    <div class="field" style="grid-gap:5px">
-    <input id="l1" name="level_1" type="number" placeholder="'.$dl->getLocalizedString("level1").'">
-    <input id="l2" name="level_2" type="number" placeholder="'.$dl->getLocalizedString("level2").'">
-	</div>
-	<div class="field">
-    <input id="l3" name="level_3" type="number" placeholder="'.$dl->getLocalizedString("level3").'">
-	</div>
-	<div class="field" style="grid-gap:5px">
-	<input id="l4" name="level_4" type="number" placeholder="'.$dl->getLocalizedString("level4").'">
-    <input id="l5" name="level_5" type="number" placeholder="'.$dl->getLocalizedString("level5").'">
+		<h1>' . $dl->getLocalizedString("gauntletCreateTitle") . '</h1>
+		<form class="form__inner form__create" method="post" action="">
+		<p>' . $dl->getLocalizedString("gauntletCreateDesc") . '</p>
+		<div class="field" style="grid-gap:5px">
+		<input id="l1" name="level_1" type="number" placeholder="'.$dl->getLocalizedString("level1").'">
+		<input id="l2" name="level_2" type="number" placeholder="'.$dl->getLocalizedString("level2").'">
+		</div>
+		<div class="field">
+		<input id="l3" name="level_3" type="number" placeholder="'.$dl->getLocalizedString("level3").'">
+		</div>
+		<div class="field" style="grid-gap:5px">
+		<input id="l4" name="level_4" type="number" placeholder="'.$dl->getLocalizedString("level4").'">
+		<input id="l5" name="level_5" type="number" placeholder="'.$dl->getLocalizedString("level5").'">
     </div>
 	<div class="checkbox"><input class="checkbox" type="checkbox" name="checkbox_data" required>'.$dl->getLocalizedString("checkbox").'</div>
 	', 'mod');
 		Captcha::displayCaptcha();
         echo '
-        <button type="submit" class="btn-primary btn-block" id="submit" disabled>' . $dl->getLocalizedString("gauntletCreate") . '</button>
+        <button type="button" onclick="a(\'levels/gauntletCreate.php\', true, false, \'POST\')" class="btn-primary btn-block" id="submit" disabled>' . $dl->getLocalizedString("gauntletCreate") . '</button>
     </form>
     </div></div>
     <script>
@@ -164,8 +164,8 @@ if($_POST["checkbox_data"] == 'on') {
               document.getElementsByTagName("h1")[0].innerHTML = "'.$dl->getLocalizedString("gauntletCreateTitle").'";
               document.getElementsByTagName("p")[0].innerHTML = "'.$dl->getLocalizedString("gauntletCreateDesc").'";
               document.getElementById("submit").innerHTML = "'.$dl->getLocalizedString("gauntletCreate").'";
-              document.getElementById("submit").type = "submit";
-              document.getElementById("submit").setAttribute("onclick", "");
+              document.getElementById("submit").type = "button";
+              document.getElementById("submit").setAttribute("onclick", "a(\'levels/gauntletCreate.php\', true, false, \'POST\')");
       }
     }
 function change(id) {
@@ -216,7 +216,7 @@ $(document).on("keyup keypress change keydown",function(){
     <h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
     <form class="form__inner" method="post" action=".">
 		<p>'.$dl->getLocalizedString("noPermission").'</p>
-	        <button type="submit" class="btn-primary">'.$dl->getLocalizedString("Kish!").'</button>
+	        <button type="button" onclick="a(\'\', true, false, \'GET\')" class="btn-primary">'.$dl->getLocalizedString("Kish!").'</button>
     </form>
 </div>', 'mod');
 ?>

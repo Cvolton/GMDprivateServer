@@ -24,7 +24,7 @@ if(empty($result)) {
     <h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
     <form class="form__inner" method="post" action=".">
 		<p>'.$dl->getLocalizedString("emptyPage").'</p>
-        <button type="submit" class="btn-primary">'.$dl->getLocalizedString("dashboard").'</button>
+        <button type="button" onclick="a(\'\', true, false, \'GET\')" class="btn-primary">'.$dl->getLocalizedString("dashboard").'</button>
     </form>
 </div>', 'browse');
 	die();
@@ -61,7 +61,7 @@ foreach($result as &$pack){
      	else $coin = 1;
 		$coins = $level["coins"].' '.$dl->getLocalizedString("coins$coin");
       	if($level["coins"] == 0) $coins = '<div style="color:grey">'.$dl->getLocalizedString("noCoins").'</div>';
-      	$user =  '<form style="margin:0" method="post" action="profile/"><button style="margin:0" class="accbtn" name="accountID" value="'.$gs->getExtID($level["userID"]).'">'.$gs->getUserName($level["userID"]).'</button></form>';
+      	$user =  '<form style="margin:0" method="post" action="./profile/"><button type="button" onclick="a(\'profile/'.$gs->getUserName($level["userID"]).'\', true, true, \'POST\')" style="margin:0" class="accbtn" name="accountID" value="">'.$gs->getUserName($level["userID"]).'</button></form>';
 		$lvltable .= "<tr>
 						<td class='tcell'>".$level["levelID"]."</td>
 						<td class='tcell'>".$level["levelName"]."</td>

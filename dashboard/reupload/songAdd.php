@@ -13,7 +13,7 @@ if(strpos($songEnabled, '2') === false) {
 		<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 		<form class="form__inner" method="post" action="">
 		<p>'.$dl->getLocalizedString("pageDisabled").'</p>
-		<button type="submit" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
+		<button type="button" onclick="a(\'reupload/songAdd.php\', true, true, \'GET\')" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 		</form>
 	</div>', 'reupload');
 	die();
@@ -25,7 +25,7 @@ if(!empty($_POST["url"])){
 			<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 			<form class="form__inner" method="post" action="">
 			<p>'.$dl->getLocalizedString("invalidCaptcha").'</p>
-			<button type="submit" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
+			<button type="button" onclick="a(\'reupload/songAdd.php\', true, true, \'GET\')"class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 			</form>
 		</div>', 'reupload');
 		die();
@@ -38,7 +38,7 @@ if(!empty($_POST["url"])){
 		<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 		<form class="form__inner" method="post" action="">
 						<p>'.$dl->getLocalizedString("songAddError-3").' '.$existed.'</p>
-						<a class="btn btn-primary btn-block" href="'.$_SERVER["REQUEST_URI"].'">'.$dl->getLocalizedString("tryAgainBTN").'</a>
+						<button type="button" onclick="a(\'reupload/songAdd.php\', true, true, \'GET\')"class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 				</form>
 				</div>', 'reupload');
 				die();
@@ -47,7 +47,7 @@ if(!empty($_POST["url"])){
 		<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 		<form class="form__inner" method="post" action="">
 						<p>'.$dl->getLocalizedString("songAddError$songID").'</p>
-						<a class="btn btn-primary btn-block" href="'.$_SERVER["REQUEST_URI"].'">'.$dl->getLocalizedString("tryAgainBTN").'</a>
+						<button type="button" onclick="a(\'reupload/songAdd.php\', true, true, \'GET\')"class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 				</form>
 				</div>', 'reupload');
 	}else{
@@ -55,7 +55,7 @@ if(!empty($_POST["url"])){
 		<h1>'.$dl->getLocalizedString("songAdd").'</h1>
 		<form class="form__inner" method="post" action="">
 				<p>'.$dl->getLocalizedString("songID").''.$songID.'</p>
-				<a class="btn btn-primary btn-block" href="'.$_SERVER["REQUEST_URI"].'">'.$dl->getLocalizedString("songAddAnotherBTN").'</a>
+				<button type="button" onclick="a(\'reupload/songAdd.php\', true, true, \'GET\')"class="btn-song">'.$dl->getLocalizedString("songAddAnotherBTN").'</button>
 			</form>
 		</div>', 'reupload');
 	}
@@ -69,7 +69,7 @@ if(!empty($_POST["url"])){
 		<div class="field"><input type="text" name="name" placeholder="'.$dl->getLocalizedString("songAddNameFieldPlaceholder").'"></div>
 		', 'reupload');
 		Captcha::displayCaptcha();
-        echo '<button type="submit" class="btn-song btn-block" id="submit" disabled>'.$dl->getLocalizedString("reuploadBTN").'</button>
+        echo '<button type="button" onclick="a(\'reupload/songAdd.php\', true, true, \'POST\')" class="btn-song btn-block" id="submit" disabled>'.$dl->getLocalizedString("reuploadBTN").'</button>
     </form>
 </div>
 <script>
@@ -94,7 +94,7 @@ $(document).on("keyup keypress change keydown",function(){
     <h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 	<form class="form__inner" method="post" action="./login/login.php">
 	<p>'.$dl->getLocalizedString("noLogin?").'</p>
-	        <button type="submit" class="btn-song">'.$dl->getLocalizedString("LoginBtn").'</button>
+	        <button type="button" onclick="a(\'login/login.php\')" class="btn-song">'.$dl->getLocalizedString("LoginBtn").'</button>
     </form>
 </div>', 'reupload');
 }

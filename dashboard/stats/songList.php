@@ -27,6 +27,9 @@ if(!empty($_GET["author"]) AND !empty($_GET["name"])) {
 	$an = 0;
 	$nn = 0;
 }
+$pagelol = explode("/", $_SERVER["REQUEST_URI"]);
+$pagelol = $pagelol[count($pagelol)-2]."/".$pagelol[count($pagelol)-1];
+$pagelol = explode("?", $pagelol)[0];
 $table = '<div class="notifyblue" style="display:'.$notify.'">'.$dl->getLocalizedString("renamedSong").' <b>'.$an.'</b> - <b>'.$nn.'</b>!</div><table class="table table-inverse"><tr><th>#</th><th></th><th>'.$dl->getLocalizedString("songIDw").'</th><th>'.$dl->getLocalizedString("songAuthor").'</th><th>'.$dl->getLocalizedString("name").'</th><th>'.$dl->getLocalizedString("size").'</th><th>'.$dl->getLocalizedString("time").'</th>'.$me.'</tr>';
 if(!isset($_GET["search"])) $_GET["search"] = "";
 if(!isset($_GET["type"])) $_GET["type"] = "";
@@ -35,7 +38,7 @@ $srcbtn = "";
 if(!empty(trim(ExploitPatch::remove($_GET["search"])))) {
 	$ngw = $_GET["ng"] == 1 ? '' : 'AND reuploadID > 0';
 	$q = is_numeric(trim(ExploitPatch::remove($_GET["search"]))) ? "ID LIKE '%".trim(ExploitPatch::remove($_GET["search"]))."%'" : "(name LIKE '%".trim(ExploitPatch::remove($_GET["search"]))."%' OR authorName LIKE '%".trim(ExploitPatch::remove($_GET["search"]))."%')";
-	$srcbtn = '<a href="'.$_SERVER["SCRIPT_NAME"].'" style="width: 0%;display: flex;margin-left: 5px;align-items: center;justify-content: center;color: indianred; text-decoration:none" class="btn-primary" title="'.$dl->getLocalizedString("searchCancel").'"><i class="fa-solid fa-xmark"></i></a>';
+	$srcbtn = '<button type="button" onclick="a(\''.$pagelol.'\', true, true, \'GET\')"  href="'.$_SERVER["SCRIPT_NAME"].'" style="width: 0%;display: flex;margin-left: 5px;align-items: center;justify-content: center;color: indianred; text-decoration:none" class="btn-primary" title="'.$dl->getLocalizedString("searchCancel").'"><i class="fa-solid fa-xmark"></i></button>';
 	$query = $db->prepare("SELECT * FROM songs WHERE $q $ngw ORDER BY ID DESC LIMIT 10 OFFSET $page");
 	$query->execute();
 	$result = $query->fetchAll();
@@ -44,7 +47,7 @@ if(!empty(trim(ExploitPatch::remove($_GET["search"])))) {
 		<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 		<form class="form__inner" method="post" action="'.$_SERVER["SCRIPT_NAME"].'">
 			<p>'.$dl->getLocalizedString("emptySearch").'</p>
-			<button type="submit" class="btn-primary">'.$dl->getLocalizedString("tryAgainBTN").'</button>
+			<button type="button" onclick="a(\'stats/songList.php\', true, false, \'GET\')" class="btn-primary">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 		</form>
 	</div>');
 		die();
@@ -61,7 +64,7 @@ if(empty($result)) {
     <h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
     <form class="form__inner" method="post" action=".">
 		<p>'.$dl->getLocalizedString("emptyPage").'</p>
-        <button type="submit" class="btn-primary">'.$dl->getLocalizedString("dashboard").'</button>
+        <button type="button" onclick="a(\'\', true, false, \'GET\')" class="btn-primary">'.$dl->getLocalizedString("dashboard").'</button>
     </form>
 </div>', 'browse');
 	die();
@@ -69,7 +72,7 @@ if(empty($result)) {
 foreach($result as &$action){
 	$songsid = $action["ID"];
 	$time = $dl->convertToDate($action["reuploadTime"]);
-  	$who = '<form style="margin:0" method="post" action="./profile/"><button style="margin:0" class="accbtn" name="accountID" value="'.$action["reuploadID"].'">'.$gs->getAccountName($action['reuploadID']).'</button></form>';
+  	$who = '<form style="margin:0" method="post" action="./profile/"><button type="button" onclick="a(\'profile/'.$gs->getAccountName($action['reuploadID']).'\', true, true, \'POST\')" style="margin:0" class="accbtn" name="accountID" value="'.$action["reuploadID"].'">'.$gs->getAccountName($action['reuploadID']).'</button></form>';
   	$author = $action["authorName"];
 	$name = $action["name"];
 	$size = $action["size"];
@@ -81,9 +84,9 @@ foreach($result as &$action){
 		$who = "<div><a style='color:#a7a7ff' target='_blank' href='https://".$author.".newgrounds.com/audio';>".$author."</a></div>";
 		$btn = '<button type="button" title="'.$songsid.'.mp3" style="display: contents;color: #ffb1ab;margin: 0;"><div class="icon" style="font-size:13px; height:25px;width:25px;background:#373A3F;margin-left: 0px;margin-right: -9px;"><i class="fa-solid fa-xmark" aria-hidden="false"></i></div>';
 	} else {
-		$btn = '<button type="button" name="btnsng" id="btn'.$songsid.'" title="'.$songsid.'.mp3" style="display: contents;color: white;margin: 0;" onclick="btnsong(\''.$songsid.'\');"><div class="icon" style="font-size:13px; height:25px;width:25px;background:#373A3F;margin-left: 0px;margin-right: -9px;"><i class="fa-solid fa-play" aria-hidden="false"></i></div></button>
+		$btn = '<button type="button" name="btnsng" id="btn'.$songsid.'" title="'.$author.' - '.$name.'" style="display: contents;color: white;margin: 0;" onclick="btnsong(\''.$songsid.'\');"><div class="icon" style="font-size:13px; height:25px;width:25px;background:#373A3F;margin-left: 0px;margin-right: -9px;"><i class="fa-solid fa-play" aria-hidden="false"></i></div></button>
 			<div name="audio" class="audio" id="'.$songsid.'" style="display: none">
-			<audio style="width:100%" name="song" id="song'.$songsid.'" preload="metadata" controls><source src="'.$download.'" type="audio/mpeg"></audio>
+			<audio title="'.$author.' - '.$name.'" style="width:100%" name="song" id="song'.$songsid.'" preload="metadata" controls><source src="'.$download.'" type="audio/mpeg"></audio>
 			<button style="margin: 0px;font-size: 25px;padding: 14px 19px;margin-left: 5px;" type="button" class="msgupd" onclick="btnsong(0)"><i class="fa-solid fa-xmark"></i></button></div>';
 	}
 	$manage = '<td><a class="btn-rendel" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'.$dl->getLocalizedString("change").'</a>
@@ -133,10 +136,10 @@ if($gs->checkPermission($_SESSION["accountID"], "dashboardManageSongs")){
 }
 
 }
-$table .= '</table><form method="get" class="form__inner">
+$table .= '</table><form method="get" name="searchform" class="form__inner">
 	<div class="field" style="display:flex">
 		<input style="border-top-right-radius: 0;border-bottom-right-radius: 0;" type="text" name="search" value="'.$_GET["search"].'" placeholder="'.$dl->getLocalizedString("search").'">
-		<button style="width: 6%;border-top-left-radius:0px !important;border-bottom-left-radius:0px !important" type="submit" class="btn-primary" title="'.$dl->getLocalizedString("search").'"><i class="fa-solid fa-magnifying-glass"></i></button>
+		<button type="button" onclick="a(\''.$pagelol.'\', true, true, \'GET\', 69)" style="width: 6%;border-top-left-radius:0px !important;border-bottom-left-radius:0px !important" type="submit" class="btn-primary" title="'.$dl->getLocalizedString("search").'"><i class="fa-solid fa-magnifying-glass"></i></button>
 		'.$srcbtn.'
 	</div>
 </form>';
@@ -160,12 +163,14 @@ $dl->printPage($table . $bottomrow.'<script>
 				});
 				var elems=document.getElementsByName("audio");
 				for(var i=0; i<elems.length; i++)elems[i].style.display="none";
+				for(var i=0; i<elems.length; i++)elems[i].classList.remove("playing");
 				var elems=document.getElementsByName("btnsng");
 				for(var i=0; i<elems.length; i++)elems[i].innerHTML = \'<div class="icon" style="font-size:13px; height:25px;width:25px;background:#373A3F;margin-left: 0px;margin-right: -9px;"><i class="fa-solid fa-play" aria-hidden="false"></i></div>\';
 				var elems=document.getElementsByTagName("audio");
 				for(var i=0; i<elems.length; i++)elems[i].pause();
 				if(id != 0) {
 					document.getElementById(id).style.display = "flex";
+					document.getElementById(id).classList.add("playing");
 					if(pausemaybe == false) {
 						document.getElementById("btn"+id).innerHTML = \'<div class="icon" style="font-size:13px; height:25px;width:25px;background:#373A3F;margin-left: 0px;margin-right: -9px;"><i class="fa-solid fa-pause" aria-hidden="false"></i></div>\';
 						document.getElementById("song"+id).volume = 0.2;

@@ -26,14 +26,14 @@ if(empty($result)) {
     <h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
     <form class="form__inner" method="post" action=".">
 		<p>'.$dl->getLocalizedString("emptyPage").'</p>
-        <button type="submit" class="btn-primary">'.$dl->getLocalizedString("dashboard").'</button>
+        <button type="button" onclick="a(\'\', true, false, \'GET\')" class="btn-primary">'.$dl->getLocalizedString("dashboard").'</button>
     </form>
 </div>', 'mod');
 	die();
 } 
 foreach($result as &$action){
 	$suggestid = $action["suggestLevelId"];
-	$suggestby =  '<form style="margin:0" method="post" action="profile/"><button style="margin:0" class="accbtn" name="accountID" value="'.$action["suggestBy"].'">'.$gs->getAccountName($action["suggestBy"]).'</button></form>';
+	$suggestby =  '<form style="margin:0" method="post" action="./profile/"><button type="button" onclick="a(\'profile/'.$gs->getAccountName($action["suggestBy"]).'\', true, true, \'POST\')" style="margin:0" class="accbtn" name="accountID" value="'.$action["suggestBy"].'">'.$gs->getAccountName($action["suggestBy"]).'</button></form>';
 	$diff = $action["suggestDifficulty"];
 	$stars = $action["suggestStars"];
 	if($action["suggestAuto"] != 0) {
@@ -93,7 +93,7 @@ $dl->printPage($table . $bottomrow, true, "mod");
     <h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
     <form class="form__inner" method="post" action=".">
 		<p>'.$dl->getLocalizedString("noPermission").'</p>
-	        <button type="submit" class="btn-primary">'.$dl->getLocalizedString("Kish!").'</button>
+	        <button type="button" onclick="a(\'\', true, false, \'GET\')" class="btn-primary">'.$dl->getLocalizedString("Kish!").'</button>
     </form>
 </div>', 'mod');
 ?>

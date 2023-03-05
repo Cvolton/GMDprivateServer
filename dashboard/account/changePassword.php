@@ -24,7 +24,7 @@ if($_POST["oldpassword"] != "" AND $_POST["newpassword"] != "" AND $_POST["newpa
 			<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 			<form class="form__inner" method="post" action="">
 			<p>'.$dl->getLocalizedString("invalidCaptcha").'</p>
-			<button type="submit" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
+			<button type="button" onclick="a(\'account/changePassword.php\', true, true, \'GET\')"  class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 			</form>
 		</div>', 'account');
 		die();
@@ -37,7 +37,7 @@ if($_POST["oldpassword"] != "" AND $_POST["newpassword"] != "" AND $_POST["newpa
 		<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 		<form class="form__inner" method="post" action="">
 		<p>'.$dl->getLocalizedString("samePass").'</p>
-        <button type="submit" class="btn-primary">'.$dl->getLocalizedString("tryAgainBTN").'</button>
+        <button type="button" onclick="a(\'account/changePassword.php\', true, true, \'GET\')" class="btn-primary">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 		</form>
 		</div>', 'account');
 		die();
@@ -57,7 +57,7 @@ if ($pass == 1) {
     <h1>'.$dl->getLocalizedString("changePassTitle").'</h1>
     <form class="form__inner" method="post" action="">
 		<p>'.$dl->getLocalizedString("changedPass").'</p>
-        <button type="submit" class="btn-primary">'.$dl->getLocalizedString("dashboard").'</button>
+        <button type="button" onclick="a(\'account/changePassword.php\', true, true, \'GET\')" class="btn-primary">'.$dl->getLocalizedString("dashboard").'</button>
     </form>
 </div>', 'account');
 	//decrypting save
@@ -84,7 +84,7 @@ if ($pass == 1) {
     <h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
     <form class="form__inner" method="post" action="">
 		<p>'.$dl->getLocalizedString("wrongPass").'</p>
-        <button type="submit" class="btn-primary">'.$dl->getLocalizedString("tryAgainBTN").'</button>
+        <button type="button" onclick="a(\'account/changePassword.php\', true, true, \'GET\')" class="btn-primary">'.$dl->getLocalizedString("tryAgainBTN").'</button>
     </form>
 </div>', 'account');
 } 
@@ -101,7 +101,7 @@ if ($pass == 1) {
 		', 'account');
 		Captcha::displayCaptcha();
         echo '
-        <button style="margin-top:5px" type="submit" id="submit" class="btn-song btn-block" disabled>'.$dl->getLocalizedString("changePassword").'</button>
+        <button type="button" onclick="a(\'account/changePassword.php\', true, true, \'POST\')" style="margin-top:5px" type="submit" id="submit" class="btn-song btn-block" disabled>'.$dl->getLocalizedString("changePassword").'</button>
     </form>
 </div><script>
 $(document).on("keyup keypress change keydown",function(){
@@ -134,7 +134,7 @@ $(document).on("keyup keypress change keydown",function(){
     <h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 	<form class="form__inner" method="post" action="./login/login.php">
 	<p>'.$dl->getLocalizedString("noLogin?").'</p>
-	        <button type="submit" class="btn-song">'.$dl->getLocalizedString("LoginBtn").'</button>
+	        <button type="button" onclick="a(\'login/login.php\')"class="btn-song">'.$dl->getLocalizedString("LoginBtn").'</button>
     </form>
 </div>', 'account');
 }

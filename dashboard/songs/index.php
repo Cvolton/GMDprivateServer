@@ -13,7 +13,7 @@ if(strpos($songEnabled, '1') === false) {
 		<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 		<form class="form__inner" method="post" action="">
 		<p>'.$dl->getLocalizedString("pageDisabled").'</p>
-		<button type="submit" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
+		<button type="button" onclick="a(\'\', true, false, \'GET\')" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 		</form>
 	</div>', 'reupload');
 	die();
@@ -25,7 +25,7 @@ if($_FILES && $_FILES['filename']['error'] == UPLOAD_ERR_OK) {
 			<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 			<form class="form__inner" method="post" action="">
 			<p>'.$dl->getLocalizedString("invalidCaptcha").'</p>
-			<button type="submit" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
+			<button type="button" onclick="a(\'songs\', true, false, \'GET\')" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 			</form>
 		</div>', 'reupload');
 		die();
@@ -62,7 +62,7 @@ if($_FILES && $_FILES['filename']['error'] == UPLOAD_ERR_OK) {
 			$accountID = $_SESSION["accountID"];
           	$path = str_replace($_SERVER['DOCUMENT_ROOT'], '', $_SERVER['SCRIPT_FILENAME']);
 			$path =  str_replace('index.php', '', $path);
-            $song = "http://".$servername."".$path."".$db_fid.".mp3";
+            $song = "https://".$servername."".$path."".$db_fid.".mp3";
             $query = $db->prepare("INSERT INTO songs (ID, name, authorID, authorName, size, download, hash, reuploadTime, reuploadID) VALUES (:id, :name, '9', :author, :size, :download, :hash, :reuploadTime, :reuploadID)");
             $query->execute([':id' => $db_fid, ':name' => $name, ':download' => $song, ':author' => $author, ':size' => $size, ':hash' => $hash, ':reuploadTime' => time(), ':reuploadID' => $accountID]);
         } 
@@ -71,7 +71,7 @@ if($_FILES && $_FILES['filename']['error'] == UPLOAD_ERR_OK) {
     <h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
     <form class="form__inner" method="post" action="">
 		<p>'.$dl->getLocalizedString("songAddError$db_fid").'</p>
-        <button type="submit" class="btn-primary">'.$dl->getLocalizedString("tryAgainBTN").'</button>
+        <button type="button" onclick="a(\'songs\', true, false, \'GET\')" class="btn-primary">'.$dl->getLocalizedString("tryAgainBTN").'</button>
     </form>
 </div>', 'reupload');
 } else {
@@ -79,7 +79,7 @@ if($_FILES && $_FILES['filename']['error'] == UPLOAD_ERR_OK) {
 	  <h1>'.$dl->getLocalizedString("songAdded").'</h1>
 	  <form class="form__inner" method="post" action="">
 		<p>'.$dl->getLocalizedString("songID").''.$db_fid.'</p>
-		<button type="submit" class="btn-primary">'.$dl->getLocalizedString("songAddAnotherBTN").'</button>
+		<button type="button" onclick="a(\'songs\', true, false, \'GET\')" class="btn-primary">'.$dl->getLocalizedString("songAddAnotherBTN").'</button>
 	  </form>', 'reupload');
 }
 }
@@ -99,11 +99,12 @@ if($_FILES && $_FILES['filename']['error'] == UPLOAD_ERR_OK) {
                   </text>
              <i style="margin:0;font-size: 17" class="fa-solid fa-music icon fa-flip-horizontal"></i>
 		  </label>
+		  <progress id="progress" style="display: none"></progress>
         </div>
         <div class="field"><input type="text" name="author" placeholder="'.$dl->getLocalizedString("songAddAuthorFieldPlaceholder").'"></div>
         <div class="field"><input type="text" name="name" placeholder="'.$dl->getLocalizedString("songAddNameFieldPlaceholder").'"></div>', 'reupload');
 Captcha::displayCaptcha();
-echo '<button style="margin-top:5px;margin-bottom:5px" type="submit" id="submit" class="btn-song btn-block" disabled>'.$dl->getLocalizedString("reuploadBTN").'</button></form>
+echo '<button type="button" onclick="a(\'songs\', true, false, \'POST\');" style="margin-top:5px;margin-bottom:5px" type="submit" id="submit" class="btn-song btn-block" disabled>'.$dl->getLocalizedString("reuploadBTN").'</button></form>
 		<script>
 			$(".btn-upload-song input[type=file]").on("change", function(){
 			let file = this.files[0];
@@ -138,7 +139,7 @@ echo '<button style="margin-top:5px;margin-bottom:5px" type="submit" id="submit"
 		<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 		<form class="form__inner" method="post" action="./login/login.php">
 		<p>'.$dl->getLocalizedString("noLogin?").'</p>
-		<button type="submit" class="btn-song">'.$dl->getLocalizedString("LoginBtn").'</button>
+		<button type="button" onclick="a(\'login/login.php\');" class="btn-song">'.$dl->getLocalizedString("LoginBtn").'</button>
 		</form>
 	</div>', 'reupload');
 }

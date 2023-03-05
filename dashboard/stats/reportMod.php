@@ -40,14 +40,14 @@ if(empty($result)) {
     <h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
     <form class="form__inner" method="post" action=".">
 		<p>'.$dl->getLocalizedString("emptyPage").'</p>
-        <button type="submit" class="btn-primary">'.$dl->getLocalizedString("dashboard").'</button>
+        <button type="button" onclick="a(\'\', true, false, \'GET\')" class="btn-primary">'.$dl->getLocalizedString("dashboard").'</button>
     </form>
 </div>', 'mod');
 	die();
 } 
 foreach($result as &$report){
 	$levelName = htmlspecialchars($report['levelName'], ENT_QUOTES);
-  	$author =  '<form style="margin:0" method="post" action="profile/"><button style="margin:0" class="accbtn" name="accountID" value="'.$report["extID"].'">'.$gs->getAccountName($report["extID"]).'</button></form>';
+  	$author =  '<form style="margin:0" method="post" action="./profile/"><button type="button" onclick="a(\'profile/'.$gs->getAccountName($report["extID"]).'\', true, true, \'POST\')" style="margin:0" class="accbtn" name="accountID" value="'.$report["extID"].'">'.$gs->getAccountName($report["extID"]).'</button></form>';
 	if($report['reportsCount'] == 1) $reports = $report['reportsCount'].' '.$dl->getLocalizedString("time0");
 	elseif($report['reportsCount'] < 5) $reports = $report['reportsCount'].' '.$dl->getLocalizedString("time1");
 	else $reports = $report['reportsCount'].' '.$dl->getLocalizedString("times");

@@ -7,7 +7,7 @@ $string["welcome"] = "Добро пожаловать на ".$gdps.'!';
 $string["didntInstall"] = "<div style='color:#47a0ff'><b>Внимание!</b> Вы не до конца установили панель сервера! Нажмите на текст, чтобы это сделать.</div>";
 $string["levelsWeek"] = "Выложено уровней за неделю";
 $string["levels3Months"] = "Выложено уровней за 3 месяца";
-$string["footer"] = $gdps.", ".date('Y', time());
+$string["footer"] = $gdps."? 2020 - ".date('Y', time());
 $string["tipsAfterInstalling"] = "Добро пожаловать в панель сервера! Мы даём вам несколько подсказок после установки:<br>
 1. Кажется, в SQL в таблице 'roles' появились новые права! Вам следует это проверить...<br>
 2. Если вы поместите icon.png в папку 'dashboard', то слева сверху появится иконка вашего сервера!<br>
@@ -361,6 +361,8 @@ $string["suggestFeatured"] = "Featured?";
 $string["whoAdded"] = "Кто добавил?";
 //modActionsList
 $string["banDesc"] = "Здесь вы можете забанить игрока из лидерборда!";
+$string["playerTop"] = 'Топ игроков';
+$string["creatorTop"] = 'Топ строителей';
 
 $string["admin"] = "Администратор";
 $string["elder"] = "Старший модератор";

@@ -27,6 +27,7 @@
 	font-size: 16px;
 }
 
+
 input, select {
 	cursor: pointer;
 }
@@ -293,16 +294,16 @@ input, select {
 }
 
 .messageyou {
-    overflow-wrap: anywhere;
 	font-size:13px;
+    overflow-wrap: anywhere;
 	color:white;
 	margin:5px;
 	text-align:right;
 }
 
 .messagenotyou {
-    overflow-wrap: anywhere;
 	font-size:13px;
+    overflow-wrap: anywhere;
 	color:white;
 	margin:5px;
 	text-align:left;
@@ -338,7 +339,7 @@ input, select {
 }
 
 .subjectnotyou {
-    overflow-wrap: anywhere;
+	overflow-wrap: anywhere;
 	text-align:left;
 	font-size:17px;
 	font-weight:500;
@@ -423,6 +424,17 @@ p{
 	margin:0px;
 	transition:0.2s;
 	width:100%;
+}
+
+.a-btn {
+	border: none;
+   background: none;
+	cursor: pointer;
+}
+
+.a-btn:hover {
+	text-decoration: underline;
+	text-decoration-color: dodgerblue;
 }
 
 summary {
@@ -898,4 +910,31 @@ button > .icon:hover {
 .dropdown-item > .icon:hover {
 	background: #8abfff !important;
 	cursor: pointer;
+}
+
+progress {
+  width: 100%;
+  margin-top: 13px;
+  margin-bottom: -8px;
+  display: block; /* default: inline-block */
+  background: #141414;
+  transition: 0.2s;
+  border-radius: 500px;
+}
+
+progress::-webkit-progress-bar {
+    background: transparent;
+	transition: 0.2s;
+	border-radius: 500px;
+} 
+
+progress::-webkit-progress-value {  
+  border-radius: 500px;
+  background: #3EE667;
+  transition: 0.2s;
+  padding: 5px;
+} 
+
+label {
+	margin: 0px;
 }

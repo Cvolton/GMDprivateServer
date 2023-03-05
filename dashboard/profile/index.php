@@ -19,7 +19,7 @@ if(!isset($_SESSION["accountID"]) OR $_SESSION["accountID"] == 0 AND empty($_POS
 </div>', 'profile');
   	die();
 }
-if(!empty($_POST["accountID"])) $accid = ExploitPatch::number($_POST["accountID"]); 
+if(!empty($_POST["accountID"])) $accid = ExploitPatch::number($_POST["accountID"]);
 elseif(isset($_GET["id"])) {
 	$getID = explode("/", $_GET["id"])[count(explode("/", $_GET["id"]))-1];
 	$accid = ExploitPatch::remove($getID);
@@ -39,7 +39,7 @@ if(!empty($_POST["msg"])) {
             	   <h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
            	 	   <form class="form__inner" method="post" action="">
           		  <p>'.$dl->getLocalizedString("tooFast").'</p>
-          		  <button type="submit" class="btn-primary" name="accountID" value="'.$accid.'">'.$dl->getLocalizedString("tryAgainBTN").'</button>
+          		  <button type="button" onclick="a(\'profile/'.$accname.'\', true, true, \'GET\')" class="btn-primary" name="accountID" value="'.$accid.'">'.$dl->getLocalizedString("tryAgainBTN").'</button>
   				 </form>
 			</div>', 'profile');
      die();
@@ -51,8 +51,8 @@ if(!empty($_POST["msg"])) {
 $query = $db->prepare("SELECT isBanned, banReason FROM users WHERE extID=:id");
 $query->execute([':id' => $accid]);
 $query = $query->fetch();
-if($query["banReason"] != 'none' OR $query["isBanned"] == 1) $maybeban = '<h1 style="text-decoration:line-through;color:#432529">'.$accname.'</h1>'; else $maybeban = '<h1 style="color:rgb('.$gs->getAccountCommentColor($accid).')">'.$accname.'</h1>';
-if(isset($_SERVER["HTTP_REFERER"])) $back = '<form method="post" action="'.$_SERVER["HTTP_REFERER"].'"><button class="goback"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i></button></form>'; else $back = '';
+if($query["banReason"] != 'none' OR $query["isBanned"] == 1) $maybeban = '<h1 style="text-decoration:line-through;color:#432529;margin:0px">'.$accname.'</h1>'; else $maybeban = '<h1 style="color:rgb('.$gs->getAccountCommentColor($accid).');margin:0px">'.$accname.'</h1>';
+if(isset($_SERVER["HTTP_REFERER"])) $back = '<form method="post" action="'.$_SERVER["HTTP_REFERER"].'"><button type="button" onclick="a(\''.$_SERVER["HTTP_REFERER"].'\', true, true, \'GET\')" class="goback"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i></button></form>'; else $back = '';
 $query = $db->prepare("SELECT extID, stars, demons, coins, userCoins, creatorPoints, diamonds, isCreatorBanned, dlPoints FROM users WHERE extID=:id");
 $query->execute([':id' => $accid]);
 $res = $query->fetch();
@@ -96,12 +96,12 @@ foreach($msgs AS &$msg) {
 		</div>';
 }
 if(empty($comments)) $comments = '<p class="profile" style="font-size:25px;color:#c0c0c0">'.$dl->getLocalizedString("empty").'</p>';
-$msgtopl = '<form method="post" action="messenger/'.$accname.'"><button class="msgupd" name="accountID" value="'.$accid.'"><i class="fa-regular fa-comment" aria-hidden="true"></i></button></form>';
+$msgtopl = '<form method="post" action="messenger/'.$accname.'"><button type="button" onclick="a(\'messenger/'.$accname.'\', true, true, \'GET\')" class="msgupd" name="accountID" value="'.$accid.'"><i class="fa-regular fa-comment" aria-hidden="true"></i></button></form>';
 if($accid == $_SESSION["accountID"]) {
 if(empty($comments)) $comments = '<p class="profile" style="font-size:25px;color:#c0c0c0">'.$dl->getLocalizedString("writeSomething").'</p>';
 	$send = '<div class="field" style="margin-top:10px">
 				<form method="post" action=""><input type="text" name="msg" id="p1" placeholder="'.$dl->getLocalizedString("msg").'"></input>
-				<button style="margin-top: 10px;" class="btn-primary btn-block" id="submit" disabled>'.$dl->getLocalizedString("send").'</button></form>
+				<button type="button" onclick="a(\'profile/'.$accname.'\', true, true, \'POST\')" style="margin-top: 10px;" class="btn-primary btn-block" id="submit" disabled>'.$dl->getLocalizedString("send").'</button></form>
 			</div><script>
 	$(document).on("keyup keypress change keydown",function(){
 	   const p1 = document.getElementById("p1");
@@ -121,14 +121,14 @@ if(empty($comments)) $comments = '<p class="profile" style="font-size:25px;color
 	$msgtopl = '';
 }
 if($_SESSION["accountID"] == 0) $msgtopl = '';
-if($res["dlPoints"] != 0) $points = '<i style="position: absolute;font-size: 20;right: 50;color: gray;" class="fa-solid fa-medal"> '.$res["dlPoints"].'</i>'; else $points = '';
+if($res["dlPoints"] != 0) $points = '<i style="position: absolute;font-size: 20;right: 50;color: gray;" class="fa-solid fa-medal"> '.$res["dlPoints"].'</i>';
 $dl->printSong('<div class="form" style="width: 60vw;max-height: 80vh;position:relative">
     	<div style="height: 100%;width: 100%;"><div style="display: flex;align-items: center;justify-content: center;">
         	'.$back.'
-              <h1>'.$maybeban.'</h1>'.$msgtopl.''.$points.'
+              <div style="display: flex;flex-direction: column;align-items: center;margin:5px 0px 10px 0px">'.$maybeban.'</div>'.$msgtopl.$points.'
         </div>
         <div class="form-control" style="display: flex;width: 100%;height: max-content;align-items: center;">'.$all.'</div>
-        <div class="form-control dmbox" style="display: flex;border-radius: 30px;margin-top: 20px;flex-wrap: wrap;padding-top: 0;max-height: 535px;padding-bottom: 10px;min-width: 100%;max-height: 45vh;margin-bottom: 17px;align-items: center;">
+        <div class="form-control dmbox" style="display: flex;border-radius: 30px;margin-top: 20px;flex-wrap: wrap;padding-top: 0;max-height: 45vh;padding-bottom: 10px;min-width: 100%;height: max-content;margin-bottom: 17px;align-items: center;">
         	'.$comments.'
         </div>
 		'.$send.'

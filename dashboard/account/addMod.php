@@ -20,7 +20,7 @@ if(!empty($_POST["user"])) {
 			<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 			<form class="form__inner" method="post" action="">
 			<p>'.$dl->getLocalizedString("invalidCaptcha").'</p>
-			<button type="submit" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
+			<button type="button" onclick="a(\'account/addMod.php\', true, false, \'GET\')" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 			</form>
 		</div>', 'mod');
 		die();
@@ -32,7 +32,7 @@ if(!empty($_POST["user"])) {
 			<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 			<form class="form__inner" method="post" action="">
 			<p>'.$dl->getLocalizedString("invalidPost").'</p>
-			<button type="submit" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
+			<button type="button" onclick="a(\'account/addMod.php\', true, false, \'GET\')" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 			</form>
 		</div>', 'mod');
 		die();
@@ -46,7 +46,7 @@ if(!empty($_POST["user"])) {
 			<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 			<form class="form__inner" method="post" action="">
 			<p>'.$dl->getLocalizedString("nothingFound").'</p>
-			<button type="submit" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
+			<button type="button" onclick="a(\'account/addMod.php\', true, false, \'GET\')" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 			</form>
 		</div>', 'mod');
 		die();
@@ -55,7 +55,7 @@ if(!empty($_POST["user"])) {
 			<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 			<form class="form__inner" method="post" action="">
 			<p>'.$dl->getLocalizedString("modAboveYourRole").'</p>
-			<button type="submit" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
+			<button type="button" onclick="a(\'account/addMod.php\', true, false, \'GET\')" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 			</form>
 		</div>', 'mod'));
 	if($mod == $accountID) {
@@ -63,7 +63,7 @@ if(!empty($_POST["user"])) {
 			<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 			<form class="form__inner" method="post" action="">
 			<p>'.$dl->getLocalizedString("modYourself").'</p>
-			<button type="submit" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
+			<button type="button" onclick="a(\'account/addMod.php\', true, false, \'GET\')" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 			</form>
 		</div>', 'mod');
 		die();
@@ -76,7 +76,7 @@ if(!empty($_POST["user"])) {
 			<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 			<form class="form__inner" method="post" action="">
 			<p>'.$dl->getLocalizedString("alreadyMod").'</p>
-			<button type="submit" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
+			<button type="button" onclick="a(\'account/addMod.php\', true, false, \'GET\')" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 			</form>
 		</div>', 'mod');
 		die();
@@ -91,7 +91,7 @@ if(!empty($_POST["user"])) {
     <h1>'.$dl->getLocalizedString("addMod").'</h1>
     <form class="form__inner" method="post" action="">
 		<p>'.$success.'</p>
-	    <button type="submit" class="btn-primary">'.$dl->getLocalizedString("addModOneMore").'</button>
+	    <button type="button" onclick="a(\'account/addMod.php\', true, false, \'GET\')" class="btn-primary">'.$dl->getLocalizedString("addModOneMore").'</button>
     </form>
 </div>', 'mod');
 } else {
@@ -164,7 +164,7 @@ if(!empty($_POST["user"])) {
 	', 'mod');
 		Captcha::displayCaptcha();
         echo '
-        <button type="submit" id="submit" class="btn-primary btn-block" disabled>' . $dl->getLocalizedString("addMod") . '</button>
+        <button type="button" onclick="a(\'account/addMod.php\', true, true, \'POST\')" id="submit" class="btn-primary btn-block" disabled>' . $dl->getLocalizedString("addMod") . '</button>
     </form>
     </div></div><script>
 function mod(id) {
@@ -195,8 +195,8 @@ function mod(id) {
               document.getElementsByTagName("h1")[0].innerHTML = "'.$dl->getLocalizedString("addMod").'";
               document.getElementsByTagName("p")[0].innerHTML = "'.$dl->getLocalizedString("addModDesc").'";
               document.getElementById("submit").innerHTML = "'.$dl->getLocalizedString("addMod").'";
-              document.getElementById("submit").type = "submit";
-              document.getElementById("submit").setAttribute("onclick", "");
+              document.getElementById("submit").type = "button";
+              document.getElementById("submit").setAttribute("onclick", "a(\'account/addMod.php\', true, true, \'POST\')");
       }
     }
 function change(id) {
@@ -242,7 +242,7 @@ $(document).on("keyup keypress change keydown",function(){
     <h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
     <form class="form__inner" method="post" action=".">
 		<p>'.$dl->getLocalizedString("noPermission").'</p>
-	        <button type="submit" class="btn-primary">'.$dl->getLocalizedString("Kish!").'</button>
+	        <button type="button" onclick="a(\'\', true, false, \'GET\')" class="btn-primary">'.$dl->getLocalizedString("Kish!").'</button>
     </form>
 </div>');
 ?>

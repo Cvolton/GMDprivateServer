@@ -19,7 +19,7 @@ if(!empty($_POST["type"]) AND !empty($_POST["amount"]) AND !empty($_POST["reward
 			<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 			<form class="form__inner" method="post" action="">
 			<p>'.$dl->getLocalizedString("invalidCaptcha").'</p>
-			<button type="submit" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
+			<button type="button" onclick="a(\'stats/addQuests.php\', true, false, \'GET\')" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 			</form>
 		</div>', 'mod');
 	die();
@@ -34,7 +34,7 @@ if(!empty($_POST["type"]) AND !empty($_POST["amount"]) AND !empty($_POST["reward
 				<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 				<form class="form__inner" method="post" action="">
 				<p>'.$dl->getLocalizedString("invalidPost").'</p>
-				<button type="submit" class="btn-primary">'.$dl->getLocalizedString("tryAgainBTN").'</button>
+				<button type="button" onclick="a(\'stats/addQuests.php\', true, false, \'GET\')" class="btn-primary">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 				</form>
 			</div>', 'mod');
 			die();
@@ -50,7 +50,7 @@ if(!empty($_POST["type"]) AND !empty($_POST["amount"]) AND !empty($_POST["reward
 			<form class="form__inner" method="post" action="">
 			<p>'.$success.'</p>
 			<p>'.$dl->getLocalizedString("fewMoreQuests").'</p>
-			<button type="submit" class="btn-primary">'.$dl->getLocalizedString("oneMoreQuest?").'</button>
+			<button type="button" onclick="a(\'stats/addQuests.php\', true, false, \'GET\')" class="btn-primary">'.$dl->getLocalizedString("oneMoreQuest?").'</button>
 			</form>
 		</div>', 'mod');
 		} else {
@@ -58,7 +58,7 @@ if(!empty($_POST["type"]) AND !empty($_POST["amount"]) AND !empty($_POST["reward
 			<h1>'.$dl->getLocalizedString("addQuest").'</h1>
 			<form class="form__inner" method="post" action="">
 			<p>'.$success.'</p>
-			<button type="submit" class="btn-primary">'.$dl->getLocalizedString("oneMoreQuest?").'</button>
+			<button type="button" onclick="a(\'stats/addQuests.php\', true, false, \'GET\')"" class="btn-primary">'.$dl->getLocalizedString("oneMoreQuest?").'</button>
 			</form>
 		</div>', 'mod');
 		}
@@ -108,7 +108,7 @@ if(!empty($_POST["type"]) AND !empty($_POST["amount"]) AND !empty($_POST["reward
 		</div>
 		', 'mod');
 		Captcha::displayCaptcha();
-        echo '<button  type="submit" class="btn-song btn-block" id="submit" disabled>'.$dl->getLocalizedString("questCreate").'</button>
+        echo '<button type="button" onclick="a(\'stats/addQuests.php\', true, false, \'POST\')" class="btn-song btn-block" id="submit" disabled>'.$dl->getLocalizedString("questCreate").'</button>
     </form>
 </div></div>
 <script>
@@ -156,8 +156,8 @@ function types(type) {
               document.getElementsByTagName("h1")[0].innerHTML = "'.$dl->getLocalizedString("addQuest").'";
               document.getElementsByTagName("p")[0].innerHTML = "'.$dl->getLocalizedString("addQuestDesc").'";
               document.getElementById("submit").innerHTML = "'.$dl->getLocalizedString("questCreate").'";
-              document.getElementById("submit").type = "submit";
-              document.getElementById("submit").setAttribute("onclick", "");
+              document.getElementById("submit").type = "button";
+              document.getElementById("submit").setAttribute("onclick", "a(\'stats/addQuests.php\', true, false, \'POST\')");
       }
     }
 function change(id) {
@@ -209,7 +209,7 @@ $(document).on("keyup keypress change keydown",function(){
     <h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
     <form class="form__inner" method="post" action=".">
 		<p>'.$dl->getLocalizedString("noPermission").'</p>
-	        <button type="submit" class="btn-primary">'.$dl->getLocalizedString("Kish!").'</button>
+	        <button type="button" onclick="a(\'\', true, false, \'GET\')" class="btn-primary">'.$dl->getLocalizedString("Kish!").'</button>
     </form>
 </div>', 'mod');
 }

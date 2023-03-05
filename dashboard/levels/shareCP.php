@@ -21,7 +21,7 @@ if(!empty($_POST["username"]) AND !empty($_POST["level"])) {
 				<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 				<form class="form__inner" method="post" action="">
 				<p>'.$dl->getLocalizedString("invalidCaptcha").'</p>
-				<button type="submit" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
+				<button type="button" onclick="a(\'levels/shareCP.php\', true, false, \'GET\')" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 				</form>
 			</div>', 'mod');
 		die();
@@ -36,7 +36,7 @@ if(!empty($_POST["username"]) AND !empty($_POST["level"])) {
 			<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 			<form class="form__inner" method="post" action="">
 			<p>'.$dl->getLocalizedString("alreadyShared").'</p>
-			<button type="submit" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
+			<button type="button" onclick="a(\'levels/shareCP.php\', true, false, \'GET\')" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 			</form>
 			</div>', 'mod');
 		die();
@@ -49,7 +49,7 @@ if(!empty($_POST["username"]) AND !empty($_POST["level"])) {
 			<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 			<form class="form__inner" method="post" action="">
 			<p>'.$dl->getLocalizedString("shareToAuthor").'</p>
-			<button type="submit" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
+			<button type="button" onclick="a(\'levels/shareCP.php\', true, false, \'GET\')" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 			</form>
 			</div>', 'mod');
 		die();
@@ -62,7 +62,7 @@ if(!empty($_POST["username"]) AND !empty($_POST["level"])) {
 			<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 			<form class="form__inner" method="post" action="">
 			<p>'.$dl->getLocalizedString("userIsBanned").'</p>
-			<button type="submit" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
+			<button type="button" onclick="a(\'levels/shareCP.php\', true, false, \'GET\')" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 			</form>
 			</div>', 'mod');
 		die();
@@ -84,8 +84,8 @@ if(!empty($_POST["username"]) AND !empty($_POST["level"])) {
     <h1>'.$dl->getLocalizedString("shareCPTitle").'</h1>
     <form class="form__inner" method="post" action="">
 		<p>'.$success.'</p>
-		<a class="a" href="../tools/cron/cron.php">'.$dl->getLocalizedString("updateCron").'</a>
-	    <button type="submit" class="btn-primary">'.$dl->getLocalizedString("shareCPOneMore").'</button>
+		<a class="a">'.$dl->getLocalizedString("updateCron").'</a>
+	    <button type="button" onclick="a(\'levels/shareCP.php\', true, false, \'GET\')" class="btn-primary">'.$dl->getLocalizedString("shareCPOneMore").'</button>
     </form>
 </div>', 'mod');
 } else {
@@ -116,34 +116,16 @@ if(!empty($_POST["username"]) AND !empty($_POST["level"])) {
 	', 'mod');
 		Captcha::displayCaptcha();
         echo '
-        <button type="submit" class="btn-primary">' . $dl->getLocalizedString("shareCP") . '</button>
+        <button type="button" onclick="a(\'levels/shareCP.php\', true, false, \'POST\')" class="btn-primary">' . $dl->getLocalizedString("shareCP") . '</button>
     </form>
-    </div>
-    <script>
-        document.addEventListener("submit", () => {
-            let selectData = [];
-            document.querySelectorAll("select > option").forEach(el => {
-                selectData.push(el.value);
-            });
-
-            var formData = new FormData();
-
-            formData.append("select_data", selectData);
-
-            var request = new XMLHttpRequest();
-            request.open("POST", "/");
-            request.send(formData);
-
-        });
-    </script>';
-  
+    </div>';
 }
 } else
 	$dl->printSong('<div class="form">
     <h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
     <form class="form__inner" method="post" action=".">
 		<p>'.$dl->getLocalizedString("noPermission").'</p>
-	        <button type="submit" class="btn-primary">'.$dl->getLocalizedString("Kish!").'</button>
+	        <button type="button" onclick="a(\'\', true, false, \'GET\')" class="btn-primary">'.$dl->getLocalizedString("Kish!").'</button>
     </form>
 </div>', 'mod');
 ?>

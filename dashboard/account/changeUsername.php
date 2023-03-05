@@ -24,7 +24,7 @@ if($_POST["oldnickname"] != "" AND $_POST["newnickname"] != "" AND $_POST["passw
 			<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 			<form class="form__inner" method="post" action="">
 			<p>'.$dl->getLocalizedString("invalidCaptcha").'</p>
-			<button type="submit" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
+			<button type="button" onclick="a(\'account/changeUsername.php\', true, true, \'GET\')"class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 			</form>
 		</div>', 'account');
 		die();
@@ -38,7 +38,7 @@ if($_POST["oldnickname"] != "" AND $_POST["newnickname"] != "" AND $_POST["passw
 		<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 		<form class="form__inner" method="post" action="">
 		<p>'.$dl->getLocalizedString("wrongNick").'</p>
-        <button type="submit" class="btn-primary">'.$dl->getLocalizedString("tryAgainBTN").'</button>
+        <button type="button" onclick="a(\'account/changeUsername.php\', true, true, \'GET\')"class="btn-primary">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 		</form>
 		</div>', 'account');
 		die();
@@ -47,7 +47,7 @@ if($_POST["oldnickname"] != "" AND $_POST["newnickname"] != "" AND $_POST["passw
 		<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 		<form class="form__inner" method="post" action="">
 		<p>'.$dl->getLocalizedString("sameNick").'</p>
-        <button type="submit" class="btn-primary">'.$dl->getLocalizedString("tryAgainBTN").'</button>
+        <button type="button" onclick="a(\'account/changeUsername.php\', true, true, \'GET\')"class="btn-primary">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 		</form>
 		</div>', 'account');
 		die();
@@ -64,7 +64,7 @@ if ($pass == 1) {
 				<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 				<form class="form__inner" method="post" action="">
 				<p>'.$dl->getLocalizedString("alreadyUsedNick").'</p>
-				<button type="submit" class="btn-primary">'.$dl->getLocalizedString("tryAgainBTN").'</button>
+				<button type="button" onclick="a(\'account/changeUsername.php\', true, true, \'GET\')"class="btn-primary">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 				</form>
 				</div>', 'account');
 				die();
@@ -82,7 +82,7 @@ if ($pass == 1) {
 		<h1>'.$dl->getLocalizedString("changeNickTitle").'</h1>
 		<form class="form__inner" method="post" action=".">
 		<p>'.$dl->getLocalizedString("changedNick").'</p>
-        <button type="submit" class="btn-primary">'.$dl->getLocalizedString("dashboard").'</button>
+        <button type="button" onclick="a(\'account/changeUsername.php\', true, true, \'GET\')"class="btn-primary">'.$dl->getLocalizedString("dashboard").'</button>
 		</form>
 		</div>', 'account');
 } else {
@@ -90,7 +90,7 @@ if ($pass == 1) {
 		<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 		<form class="form__inner" method="post" action="">
 		<p>'.$dl->getLocalizedString("wrongPass").'</p>
-        <button type="submit" class="btn-primary">'.$dl->getLocalizedString("tryAgainBTN").'</button>
+        <button type="button" onclick="a(\'account/changeUsername.php\', true, true, \'GET\')" class="btn-primary">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 		</form>
 		</div>', 'account');
 } 
@@ -105,7 +105,7 @@ if ($pass == 1) {
 		<div class="field"><input type="password" name="password" id="p3" placeholder="'.$dl->getLocalizedString("password").'"></div>
 		', 'account');
 		Captcha::displayCaptcha();
-        echo '<button style="margin-top:5px" type="submit" id="submit" class="btn-song btn-block" disabled>'.$dl->getLocalizedString("changeUsername").'</button>
+        echo '<button type="button" onclick="a(\'account/changeUsername.php\', true, true, \'POST\')" style="margin-top:5px" type="submit" id="submit" class="btn-song btn-block" disabled>'.$dl->getLocalizedString("changeUsername").'</button>
 		</form>
 		</div><script>
 $(document).on("keyup keypress change keydown",function(){
@@ -130,7 +130,7 @@ $(document).on("keyup keypress change keydown",function(){
 		<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 		<form class="form__inner" method="post" action="./login/login.php">
 		<p>'.$dl->getLocalizedString("noLogin?").'</p>
-	    <button type="submit" class="btn-song">'.$dl->getLocalizedString("LoginBtn").'</button>
+	    <button type="button" onclick="a(\'login/login.php\')" class="btn-song">'.$dl->getLocalizedString("LoginBtn").'</button>
 		</form>
 		</div>', 'account');
 }

@@ -26,13 +26,16 @@ if(!empty($_GET["author"]) AND !empty($_GET["name"])) {
 	$an = 0;
 	$nn = 0;
 }
+$pagelol = explode("/", $_SERVER["REQUEST_URI"]);
+$pagelol = $pagelol[count($pagelol)-2]."/".$pagelol[count($pagelol)-1];
+$pagelol = explode("?", $pagelol)[0];
 $table = '<div class="notify" style="display:'.$notify.'">'.$dl->getLocalizedString("deletedSong").' <b>'.$an.'</b> - <b>'.$nn.'</b>!</div><table class="table table-inverse"><tr><th>#</th><th></th><th>'.$dl->getLocalizedString("songIDw").'</th><th>'.$dl->getLocalizedString("songAuthor").'</th><th>'.$dl->getLocalizedString("name").'</th><th>'.$dl->getLocalizedString("size").'</th><th>'.$dl->getLocalizedString("time").'</th></tr>';
 $accountID = $_SESSION["accountID"];
 if(!isset($_GET["search"])) $_GET["search"] = "";
 $srcbtn = "";
 if(!empty(trim(ExploitPatch::remove($_GET["search"])))) {
 	$q = is_numeric(trim(ExploitPatch::remove($_GET["search"]))) ? "ID LIKE '%".trim(ExploitPatch::remove($_GET["search"]))."%'" : "(name LIKE '%".trim(ExploitPatch::remove($_GET["search"]))."%' OR authorName LIKE '%".trim(ExploitPatch::remove($_GET["search"]))."%')";
-	$srcbtn = '<a href="'.$_SERVER["SCRIPT_NAME"].'" style="width: 0%;display: flex;margin-left: 5px;align-items: center;justify-content: center;color: indianred; text-decoration:none" class="btn-primary" title="'.$dl->getLocalizedString("searchCancel").'"><i class="fa-solid fa-xmark"></i></a>';
+	$srcbtn = '<button type="button" onclick="a(\''.$pagelol.'\', true, true, \'GET\')"  href="'.$_SERVER["SCRIPT_NAME"].'" style="width: 0%;display: flex;margin-left: 5px;align-items: center;justify-content: center;color: indianred; text-decoration:none" class="btn-primary" title="'.$dl->getLocalizedString("searchCancel").'"><i class="fa-solid fa-xmark"></i></button>';
 	$query = $db->prepare("SELECT * FROM songs WHERE reuploadID = $accountID AND $q ORDER BY ID DESC LIMIT 10 OFFSET $page");
 	$query->execute();
 	$result = $query->fetchAll();
@@ -41,7 +44,7 @@ if(!empty(trim(ExploitPatch::remove($_GET["search"])))) {
 		<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 		<form class="form__inner" method="post" action="'.$_SERVER["SCRIPT_NAME"].'">
 			<p>'.$dl->getLocalizedString("emptySearch").'</p>
-			<button type="submit" class="btn-primary">'.$dl->getLocalizedString("tryAgainBTN").'</button>
+			<button type="button" onclick="a(\'stats/manageSongs.php\', true, false, \'GET\')" class="btn-primary">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 		</form>
 	</div>');
 		die();
@@ -57,7 +60,7 @@ if(empty($result)) {
     <h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
     <form class="form__inner" method="post" action=".">
 		<p>'.$dl->getLocalizedString("emptyPage").'</p>
-        <button type="submit" class="btn-primary">'.$dl->getLocalizedString("dashboard").'</button>
+        <button type="button" onclick="a(\'\', true, false, \'GET\')" class="btn-primary">'.$dl->getLocalizedString("dashboard").'</button>
     </form>
 </div>', 'account');
 	die();
@@ -79,17 +82,17 @@ foreach($result as &$action){
       	$size = '<div style="text-decoration:line-through;color:#8b2e2c">'.$size.'</div>';
       	$time = '<div style="text-decoration:line-through;color:#8b2e2c">'.$time.'</div>';
 	}
-	$btn = '<button type="button" name="btnsng" id="btn'.$songsid.'" title="'.$songsid.'.mp3" style="display: contents;color: white;margin: 0;" onclick="btnsong(\''.$songsid.'\');"><div class="icon" style="font-size:13px; height:25px;width:25px;background:#373A3F;margin-left: 0px;margin-right: -9px;"><i class="fa-solid fa-play" aria-hidden="false"></i></div></button>
+	$btn = '<button type="button" name="btnsng" id="btn'.$songsid.'" title="'.$author.' - '.$name.'" style="display: contents;color: white;margin: 0;" onclick="btnsong(\''.$songsid.'\');"><div class="icon" style="font-size:13px; height:25px;width:25px;background:#373A3F;margin-left: 0px;margin-right: -9px;"><i class="fa-solid fa-play" aria-hidden="false"></i></div></button>
 			<div name="audio" class="audio" id="'.$songsid.'" style="display: none">
-			<audio style="width:100%" name="song" id="song'.$songsid.'" preload="metadata" controls><source src="'.$download.'" type="audio/mpeg"></audio>
+			<audio title="'.$author.' - '.$name.'" style="width:100%" name="song" id="song'.$songsid.'" preload="metadata" controls><source src="'.$download.'" type="audio/mpeg"></audio>
 			<button style="margin: 0px;font-size: 25px;padding: 14px 19px;margin-left: 5px;" type="button" class="msgupd" onclick="btnsong(0)"><i class="fa-solid fa-xmark"></i></button></div>';
 	$table .= "<tr><th scope='row'>".$x."</th><td>".$btn."</td><td>".$songsid."</td><td>".$author."</td><td>".$name."</td><td>".$size."</td><td>".$time."</td><td>".$delete."</td></tr>";
 	$x++;
 }
-$table .= '</table><form method="get" class="form__inner">
+$table .= '</table><form method="get" name="searchform" class="form__inner">
 	<div class="field" style="display:flex">
 		<input style="border-top-right-radius: 0;border-bottom-right-radius: 0;" type="text" name="search" value="'.$_GET["search"].'" placeholder="'.$dl->getLocalizedString("search").'">
-		<button style="width: 6%;border-top-left-radius:0px !important;border-bottom-left-radius:0px !important" type="submit" class="btn-primary" title="'.$dl->getLocalizedString("search").'"><i class="fa-solid fa-magnifying-glass"></i></button>
+		<button type="button" onclick="a(\''.$pagelol.'\', true, true, \'GET\', 69)" style="width: 6%;border-top-left-radius:0px !important;border-bottom-left-radius:0px !important" type="submit" class="btn-primary" title="'.$dl->getLocalizedString("search").'"><i class="fa-solid fa-magnifying-glass"></i></button>
 		'.$srcbtn.'
 	</div>
 </form>';
@@ -113,12 +116,14 @@ $dl->printPage($table . $bottomrow.'<script>
 				});
 				var elems=document.getElementsByName("audio");
 				for(var i=0; i<elems.length; i++)elems[i].style.display="none";
+				for(var i=0; i<elems.length; i++)elems[i].classList.remove("playing");
 				var elems=document.getElementsByName("btnsng");
 				for(var i=0; i<elems.length; i++)elems[i].innerHTML = \'<div class="icon" style="font-size:13px; height:25px;width:25px;background:#373A3F;margin-left: 0px;margin-right: -9px;"><i class="fa-solid fa-play" aria-hidden="false"></i></div>\';
 				var elems=document.getElementsByTagName("audio");
 				for(var i=0; i<elems.length; i++)elems[i].pause();
 				if(id != 0) {
 					document.getElementById(id).style.display = "flex";
+					document.getElementById(id).classList.add("playing");
 					if(pausemaybe == false) {
 						document.getElementById("btn"+id).innerHTML = \'<div class="icon" style="font-size:13px; height:25px;width:25px;background:#373A3F;margin-left: 0px;margin-right: -9px;"><i class="fa-solid fa-pause" aria-hidden="false"></i></div>\';
 						document.getElementById("song"+id).volume = 0.2;
@@ -133,7 +138,7 @@ $dl->printPage($table . $bottomrow.'<script>
     <h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
     <form class="form__inner" method="post" action="./login/login.php">
 	<p>'.$dl->getLocalizedString("noLogin?").'</p>
-	        <button type="submit" class="btn-primary">'.$dl->getLocalizedString("LoginBtn").'</button>
+	        <button type="button" onclick="a(\'login/login.php\', true, false, \'GET\')" class="btn-primary">'.$dl->getLocalizedString("LoginBtn").'</button>
     </form>
 </div>', 'account');
 }

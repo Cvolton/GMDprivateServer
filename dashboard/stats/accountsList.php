@@ -17,6 +17,9 @@ if(isset($_GET["page"]) AND is_numeric($_GET["page"]) AND $_GET["page"] > 0){
 	$page = 0;
 	$actualpage = 1;
 }
+$pagelol = explode("/", $_SERVER["REQUEST_URI"]);
+$pagelol = $pagelol[count($pagelol)-2]."/".$pagelol[count($pagelol)-1];
+$pagelol = explode("?", $pagelol)[0];
 $table = '<table class="table table-inverse"><tr><th>#</th><th>'.$dl->getLocalizedString("username").'</th><th>'.$dl->getLocalizedString("accountID").'</th><th>'.$dl->getLocalizedString("registerDate").'</th><th>'.$dl->getLocalizedString("isAdmin").'</th><th>'.$dl->getLocalizedString("lastSeen").'</th></tr>';
 if(!isset($_GET["search"])) $_GET["search"] = "";
 if(!isset($_GET["type"])) $_GET["type"] = "";
@@ -31,13 +34,13 @@ if(!isset($_GET["search"]) OR empty(trim(ExploitPatch::remove($_GET["search"])))
 		<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 		<form class="form__inner" method="post" action=".">
 			<p>'.$dl->getLocalizedString("emptyPage").'</p>
-			<button type="submit" class="btn-primary">'.$dl->getLocalizedString("dashboard").'</button>
+			<button type="button" onclick="a(\'\', true, false, \'GET\')" class="btn-primary">'.$dl->getLocalizedString("dashboard").'</button>
 		</form>
 	</div>');
 		die();
 	} 
 } else {
-	$srcbtn = '<a href="'.$_SERVER["SCRIPT_NAME"].'" style="width: 0%;display: flex;margin-left: 5px;align-items: center;justify-content: center;color: indianred; text-decoration:none" class="btn-primary" title="'.$dl->getLocalizedString("searchCancel").'"><i class="fa-solid fa-xmark"></i></a>';
+	$srcbtn = '<button type="button" onclick="a(\''.$pagelol.'\', true, true, \'GET\')"  href="'.$_SERVER["SCRIPT_NAME"].'" style="width: 0%;display: flex;margin-left: 5px;align-items: center;justify-content: center;color: indianred; text-decoration:none" class="btn-primary" title="'.$dl->getLocalizedString("searchCancel").'"><i class="fa-solid fa-xmark"></i></button>';
 	$query = $db->prepare("SELECT * FROM accounts WHERE userName LIKE '%".trim(ExploitPatch::remove($_GET["search"]))."%' AND isActive = 1 ORDER BY accountID ASC LIMIT 10 OFFSET $page");
 	$query->execute();
 	$result = $query->fetchAll();
@@ -46,7 +49,7 @@ if(!isset($_GET["search"]) OR empty(trim(ExploitPatch::remove($_GET["search"])))
 		<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 		<form class="form__inner" method="post" action="'.$_SERVER["SCRIPT_NAME"].'">
 			<p>'.$dl->getLocalizedString("emptySearch").'</p>
-			<button type="submit" class="btn-primary">'.$dl->getLocalizedString("tryAgainBTN").'</button>
+			<button type="button" onclick="a(\'stats/accountsList.php\', true, false, \'GET\')" class="btn-primary">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 		</form>
 	</div>');
 		die();
@@ -57,7 +60,7 @@ foreach($result as &$action){
 	$isAdmin = $action["isAdmin"];
 	$accountID = $action["accountID"].' <text style="color:gray">|</text> '.$gs->getUserID($action["accountID"]);
   	if($action["accountID"] == $gs->getUserID($action["accountID"])) $accountID = $action["accountID"];
-  	$username = '<form style="margin:0" method="post" action="profile/"><button style="margin:0" class="accbtn" name="accountID" value="'.$action["accountID"].'">'.$action["userName"].'</button></form>';
+  	$username = '<form style="margin:0" method="post" action="./profile/"><button type="button" onclick="a(\'profile/'.$action["userName"].'\', true, true, \'POST\')" style="margin:0" class="accbtn" name="accountID" value="'.$action["accountID"].'">'.$action["userName"].'</button></form>';
   	$query = $db->prepare("SELECT lastPlayed FROM users WHERE extID=:id");
   	$query->execute([':id' => $action["accountID"]]);
   	$lastseen = $query->fetch();
@@ -95,10 +98,10 @@ foreach($result as &$action){
 	$table .= "<tr><th scope='row'>".$x."</th><td>".$username."</td><td>".$accountID."</td><td>".$registerDate."</td><td>".$resultRole."</td><td>".$lastPlayed."</td></tr>";
 	$x++;
 }
-$table .= '</table><form method="get" class="form__inner">
+$table .= '</table><form method="get" name="searchform" class="form__inner">
 	<div class="field" style="display:flex">
 		<input style="border-top-right-radius: 0;border-bottom-right-radius: 0;" type="text" name="search" value="'.$_GET["search"].'" placeholder="'.$dl->getLocalizedString("search").'">
-		<button style="width: 6%;border-top-left-radius:0px !important;border-bottom-left-radius:0px !important" type="submit" class="btn-primary" title="'.$dl->getLocalizedString("search").'"><i class="fa-solid fa-magnifying-glass"></i></button>
+		<button type="button" onclick="a(\''.$pagelol.'\', true, true, \'GET\', 69)" style="width: 6%;border-top-left-radius:0px !important;border-bottom-left-radius:0px !important" type="submit" class="btn-primary" title="'.$dl->getLocalizedString("search").'"><i class="fa-solid fa-magnifying-glass"></i></button>
 		'.$srcbtn.'
 	</div>
 </form>';

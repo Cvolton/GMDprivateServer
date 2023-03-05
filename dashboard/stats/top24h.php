@@ -26,25 +26,26 @@ if(empty($result)) {
     <h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
     <form class="form__inner" method="post" action=".">
 		<p>'.$dl->getLocalizedString("emptyPage").'</p>
-        <button type="submit" class="btn-primary">'.$dl->getLocalizedString("dashboard").'</button>
+        <button type="button" onclick="a(\'\', true, false, \'GET\')" class="btn-primary">'.$dl->getLocalizedString("dashboard").'</button>
     </form>
 </div>', 'mod');
 	die();
 } 
 foreach($result as &$action){
 	$userid = $action["extID"];
-	$username =  '<form style="margin:0" method="post" action="profile/"><button style="margin:0" class="accbtn" name="accountID" value="'.$action["extID"].'">'.$action["userName"].'</button></form>';
+	$username =  '<form style="margin:0" method="post" action="./profile/"><button type="button" onclick="a(\'profile/'.$action["userName"].'\', true, true, \'POST\')" style="margin:0" class="accbtn" name="accountID" value="'.$action["extID"].'">'.$action["userName"].'</button></form>';
 	$stars = $action["stars"];
-	$strs = end(str_split($stars));
-	if($strs == 1) $star = 0; elseif($strs < 5 AND $strs != 0 AND $stars > 20 OR $stars < 10) $star = 1; else $star = 2;
+	$strs = $stars[strlen($stars)-1];
+	if($strs == 1) $star = 0; elseif($strs < 5 AND $strs != 0 AND ($stars > 20 OR $stars < 10)) $star = 1; else $star = 2;
     $stars = $stars.' '.$dl->getLocalizedString("starsLevel$star");
 	if($stars < 1) break;
-	$coin = $db->prepare("SELECT coins FROM levelscores WHERE accountID = :id");
-	$coin->execute([':id' => $userid]);
-	$coins = $coin->fetchColumn();
-	if(empty($coins)) $coins = 0;
-	if($coins > 1) $coin = 1; elseif($coins == 0) $coin = 2; else $coin = 0;
-	$coins = $coins.' '.$dl->getLocalizedString("coins$coin");
+	$coin = $db->prepare("SELECT SUM(coins) FROM levelscores WHERE accountID = :id AND uploadDate > :time");
+	$coin->execute([':id' => $userid, ':time' => $time]);
+	$coins = $coin->fetch();
+	if(empty($coins["SUM(coins)"])) $coins["SUM(coins)"] = 0;
+	$cns = $coins[strlen($coins["SUM(coins)"])-1];
+  	if($cns == 1) $lvl = 0; elseif($cns < 5 AND $cns > 0 AND ($cns > 20 OR $cns < 10)) $lvl = 1; else $lvl = 2;
+	$coins = $coins["SUM(coins)"].' '.$dl->getLocalizedString("coins$lvl");
  	$table .= "<tr><th scope='row'>".$x."</th><td>".$userid."</td><td>".$username."</td><td>".$stars."</td><td>".$coins."</td></tr>";
 	$x++;
 }
@@ -53,7 +54,7 @@ if(empty(str_replace( '<table class="table table-inverse"><tr><th>#</th><th>'.$d
     <h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
     <form class="form__inner" method="post" action=".">
 		<p>'.$dl->getLocalizedString("emptyPage").'</p>
-        <button type="submit" class="btn-primary">'.$dl->getLocalizedString("dashboard").'</button>
+        <button type="button" onclick="a(\'\', true, false, \'GET\')" class="btn-primary">'.$dl->getLocalizedString("dashboard").'</button>
     </form>
 </div>', 'mod');
 	die();

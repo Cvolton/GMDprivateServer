@@ -19,7 +19,7 @@ if(!empty($_POST["packName"])) {
 				<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 				<form class="form__inner" method="post" action="">
 				<p>'.$dl->getLocalizedString("invalidCaptcha").'</p>
-				<button type="submit" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
+				<button type="button" onclick="a(\'levels/packCreate.php\', true, false, \'GET\')" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 				</form>
 			</div>', 'mod');
 		die();
@@ -30,7 +30,7 @@ if(!empty($_POST["packName"])) {
     <h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
     <form class="form__inner" method="post" action="">
 		<p>'.$dl->getLocalizedString("sameLevels").'</p>
-	        <button type="submit" class="btn-primary">'.$dl->getLocalizedString("tryAgainBTN").'</button>
+	        <button type="button" onclick="a(\'levels/packCreate.php\', true, false, \'GET\')" class="btn-primary">'.$dl->getLocalizedString("tryAgainBTN").'</button>
     </form>
 </div>', 'mod');
 		die();
@@ -44,7 +44,7 @@ if(!empty($_POST["packName"])) {
 			<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 			<form class="form__inner" method="post" action="">
 			<p>'.$dl->getLocalizedString("invalidPost").'</p>
-	        <button type="submit" class="btn-primary">'.$dl->getLocalizedString("tryAgainBTN").'</button>
+	        <button type="button" onclick="a(\'levels/packCreate.php\', true, false, \'GET\')" class="btn-primary">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 			</form>
 			</div>', 'mod');
 		die();
@@ -85,7 +85,7 @@ if(!empty($_POST["packName"])) {
     <h1>'.$dl->getLocalizedString("packCreateTitle").'</h1>
     <form class="form__inner" method="post" action="">
 		<p>'.$success.'</p>
-	    <button type="submit" class="btn-primary">'.$dl->getLocalizedString("packCreateOneMore").'</button>
+	    <button type="button" onclick="a(\'levels/packCreate.php\', true, false, \'GET\')" class="btn-primary">'.$dl->getLocalizedString("packCreateOneMore").'</button>
     </form>
 </div>', 'mod');
 } else {
@@ -133,7 +133,7 @@ if(!empty($_POST["packName"])) {
 		<input id="p4" name="level_3" type="number" placeholder="'.$dl->getLocalizedString("levelid").'">
     </div>', 'mod');
 		Captcha::displayCaptcha();
-        echo '<button type="submit" class="btn-primary btn-block" id="submit" disabled>' . $dl->getLocalizedString("packCreate") . '</button>
+        echo '<button type="button" onclick="a(\'levels/packCreate.php\', true, false, \'POST\')" class="btn-primary btn-block" id="submit" disabled>' . $dl->getLocalizedString("packCreate") . '</button>
     </form>
     </div></div>
     <script>
@@ -175,8 +175,8 @@ if(!empty($_POST["packName"])) {
               document.getElementsByTagName("h1")[0].innerHTML = "'.$dl->getLocalizedString("packCreateTitle").'";
               document.getElementsByTagName("p")[0].innerHTML = "'.$dl->getLocalizedString("packCreateDesc").'";
               document.getElementById("submit").innerHTML = "'.$dl->getLocalizedString("packCreate").'";
-              document.getElementById("submit").type = "submit";
-              document.getElementById("submit").setAttribute("onclick", "");
+              document.getElementById("submit").type = "button";
+              document.getElementById("submit").setAttribute("onclick", "a(\'levels/packCreate.php\', true, false, \'POST\')");
       }
     }
 function rgbToHex(r, g, b) {
@@ -246,7 +246,7 @@ $(document).on("keyup keypress change keydown",function(){
     <h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
     <form class="form__inner" method="post" action=".">
 		<p>'.$dl->getLocalizedString("noPermission").'</p>
-	        <button type="submit" class="btn-primary">'.$dl->getLocalizedString("Kish!").'</button>
+	        <button type="button" onclick="a(\'\', true, false, \'GET\')" class="btn-primary">'.$dl->getLocalizedString("Kish!").'</button>
     </form>
 </div>', 'mod');
 ?>

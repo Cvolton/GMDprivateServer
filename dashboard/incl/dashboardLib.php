@@ -78,6 +78,7 @@ class dashboardLib {
 		echo '</div></div></div></span>';
 	}
 	public function printFooter($sub = ''){
+		global $dbPath;
       	global $vk;
       	global $discord;
       	global $twitter;
@@ -89,7 +90,8 @@ class dashboardLib {
       	if($twitter != '') echo '<a href="'.$twitter.'"target="_blank"><img class="socials" style="width: 20px" src="'.$sub.'incl/socials/twitter.png"></a>';
       	if($vk != '') echo '<a href="'.$vk.'"target="_blank"><img class="socials" style="width: 20px" src="'.$sub.'incl/socials/vk.png"></a>';
       	if($twitch != '') echo '<a href="'.$twitch.'"target="_blank"><img class="socials" style="width: 20px" src="'.$sub.'incl/socials/twitch.png"></a>';
-        echo '</div></div></div>';
+        echo '</div></div></div></body>
+		</html>';
 	}
 	public function printLoginBox($content){
 		$this->printBox("<h1 id='center'>".$this->getLocalizedString("loginBox")."</h1>".$content);
@@ -308,7 +310,7 @@ class dashboardLib {
 						if(file_exists("download/".$gdps.".ipa") OR file_exists("../download/".$gdps.".ipa")) echo '<a class="dropdown-item" href="download/'.$gdps.'.ipa"><i class="fa-solid fa-mobile-screen-button" style="position: absolute;font-size: 10px;margin: 3px 5px 5px -3px;" aria-hidden="false"></i><div class="icon"><i class="fa-brands fa-apple" aria-hidden="false"></i></div>'.$this->getLocalizedString("forios").'</a></div>';
                         elseif(!empty($ios)) echo '<a class="dropdown-item" href="'.$ios.'"><i class="fa-solid fa-mobile-screen-button" style="position: absolute;font-size: 10px;margin: 3px 5px 5px -3px;" aria-hidden="false"></i><div class="icon"><i class="fa-brands fa-apple" aria-hidden="false"></i></div>'.$this->getLocalizedString("forios").'</a></div>';
 						if(!empty($thirdParty)) {
-							foreach($thirdParty as &$thp) $tp .= '<a title="'.$thp[3].'" class="dropdown-item" target="_blank" href="'.$thp[2].'"><div class="icon flag"><img style="border-radius:500px" class="imgflag" src="'.$thp[0].'"></div> '.$thp[1].'</a>';
+							foreach(array_merge($thirdParty) as &$thp) $tp .= '<a title="'.$thp[3].'" class="dropdown-item" target="_blank" href="'.$thp[2].'"><div class="icon flag"><img style="border-radius:500px" class="imgflag" src="'.$thp[0].'"></div> '.$thp[1].'</a>';
 							echo '<button type="button" title="'.$this->getLocalizedString("thanks").'" id="tpbtn" data-bs class="dropdown-item dropdown-toggle" onclick="tp(1)" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 									<div class="icon"><i class="fa-solid fa-handshake-simple" aria-hidden="true"></i></div> '.$this->getLocalizedString("third-party").'
 								</button>
@@ -380,20 +382,47 @@ $(document).change(function(){
 });
 </script>';
 		}		
-		echo'	</ul>
+		echo '</ul>
 			</div>
-		</nav>';
-		echo '<div class="form" style="margin:0px;position:absolute;bottom:50px;color:white;font-size:50px;width:max-content;right:50px;padding:25px;transition:0.3s;opacity:0;border-radius:500px" id="loadingloool"><i class="fa-solid fa-spinner fa-spin"></i></div>
+		</nav>
+		<div class="form" style="margin:0px;position:absolute;bottom:50px;color:white;font-size:50px;width:max-content;right:50px;padding:25px;transition:0.3s;opacity:0;border-radius:500px" id="loadingloool"><i class="fa-solid fa-spinner fa-spin"></i></div>
 <script>
 	cptch = document.querySelector("#verycoolcaptcha");
-	function a(page) {
-		if(window.location.pathname.indexOf(page) != "1" || page == "profile") {
+	function a(page, skipcheck = false, skipslash = false, method = "GET", getdata = false, formname = "") {
+		if((window.location.pathname.indexOf(page) != "1" || page == "profile") || skipcheck) {
 			phpCheck = page.substr(page.length - 4);
-			if(phpCheck != ".php" && page != "" && page != "profile/'.$gs->getAccountName($_SESSION["accountID"]).'") page = page + "/";
+			if(phpCheck != ".php" && page != "" && page != "profile/'.$gs->getAccountName($_SESSION["accountID"]).'" && !skipslash) page = page + "/";
 			document.getElementById("loadingloool").innerHTML = \'<i class="fa-solid fa-spinner fa-spin"></i>\';
 			document.getElementById("loadingloool").style.opacity = "1";
 			pg = new XMLHttpRequest();
-			pg.open("GET", page, true);
+			sendget = "";
+			if(getdata >= 0) {
+				if(getdata != 69) fd = new FormData(document.getElementsByTagName("form")[document.getElementsByTagName("form").length-getdata]);
+				else fd = new FormData(searchform);
+				delimiter = "?";
+				if(fd.get("page") !== null) {
+					sendget = sendget + delimiter + "page=" + encodeURIComponent(fd.get("page"));
+					delimiter = "&";
+				}
+				if(fd.get("search") !== null) {
+					sendget = sendget + delimiter + "search=" + encodeURIComponent(fd.get("search"));
+					delimiter = "&";
+				}
+				// I\'m sorry, guys
+				if(fd.get("type") !== null) {
+					sendget = sendget + delimiter + "type=" + encodeURIComponent(fd.get("type"));
+					delimiter = "&";
+				}
+				if(fd.get("who") !== null) {
+					sendget = sendget + delimiter + "who=" + encodeURIComponent(fd.get("who"));
+					delimiter = "&";
+				}
+				if(fd.get("ng") !== null) {
+					sendget = sendget + delimiter + "ng=" + encodeURIComponent(fd.get("ng"));
+					delimiter = "&";
+				}
+			} 
+			pg.open(method, page + sendget, true);
 			pg.responseType = "document";
 			htmlpage = document.querySelector("#htmlpage");
 			htmtitle = document.querySelectorAll("title")[0];
@@ -455,7 +484,22 @@ $(document).change(function(){
 					setTimeout(function () {document.getElementById("loadingloool").style.opacity = "0";}, 1000);
 				}
 			}
-			pg.send();
+			if(document.getElementById("progress") !== null) {
+				prog = document.getElementById("progress");
+				prog.value = "0";
+				pg.upload.onprogress = function (event) {
+					prog.max = event.total;
+					prog.style.display = "block";
+					prog.value = event.loaded;
+				}
+			}
+			if(method == "POST") {
+			    if(formname == "") fd = new FormData(document.getElementsByTagName("form")[document.getElementsByTagName("form").length-1]);
+				else fd = new FormData(document.getElementsByName(formname)[0]);
+				pg.send(fd);
+			} else if(getdata >= 0) {
+				pg.send(sendget);
+			} else pg.send();
 		}
 	}
 </script>';
@@ -506,29 +550,30 @@ $(document).change(function(){
 		$pageminus = $actualpage - 1;
 		$pageplus = $actualpage + 1;
       	if($pagecount < 2) return '';
-		$ng = strpos($_SERVER["REQUEST_URI"], '/songList.php') ? '<form method="get" style="margin:0"><button style="margin-right: 10px;border-radius: 500px;" class="btn btn-outline-secondary" type="submit" name="ng" value="1">Newgrounds?</button></form>' : '';
+		$pagelol = explode("/", $_SERVER["REQUEST_URI"]);
+		$pagelol = $pagelol[count($pagelol)-2]."/".$pagelol[count($pagelol)-1];
+		$pagelol = explode("?", $pagelol)[0];
+		$ng = strpos($_SERVER["REQUEST_URI"], '/songList.php') ? '<form method="get" style="margin:0"><input type="hidden" name="ng" value="1"><button type="button" onclick="a(\''.$pagelol.'\', true, true, \'GET\', 6)" style="margin-right: 10px;border-radius: 500px;" class="btn btn-outline-secondary" type="submit" name="ng" value="1">Newgrounds?</button></form>' : '';
 		$inputSearch = !empty($_GET["search"]) ? '<input type="hidden" name="search" value="'.$_GET["search"].'">' : '';
 		if(!empty($_GET["type"] OR !empty($_GET["who"]))) $inputSearch .= '<input type="hidden" name="type" value="'.$_GET["type"].'"><input type="hidden" name="who" value="'.$_GET["who"].'">';
 		if(!empty($_GET["ng"])) $inputSearch .= '<input type="hidden" name="ng" value="'.$_GET["ng"].'">';
-		if($_GET["ng"] == 1) $ng = '<form method="get" style="margin:0"><button name="ng" value="0" class="btn btn-outline-secondary" style="border-radius:500px;font-size:20px;margin-right:10px;display: flex;margin-left: 5px;align-items: center;justify-content: center;color: indianred; text-decoration:none"><i class="fa-solid fa-xmark"></i></button></form>';
+		if($_GET["ng"] == 1) $ng = '<button type="button" onclick="a(\''.$pagelol.'\', true, true, \'GET\', 6)" name="ng" value="0" class="btn btn-outline-secondary" style="border-radius:500px;font-size:20px;margin-right:10px;display: flex;margin-left: 5px;align-items: center;justify-content: center;color: indianred; text-decoration:none"><i class="fa-solid fa-xmark"></i></button>';
 		$bottomrow = '<div>'.sprintf($this->getLocalizedString("pageInfo"),$actualpage,$pagecount).'</div><div class="btn-group" style="margin-left:auto; margin-right:0;">';
-		$bottomrow .= $ng.'<form method="get" style="margin:0">'.$inputSearch.'<button type="submit" name="page" id="first" style="border-top-right-radius:0px !important;border-bottom-right-radius:0px !important;border-radius:500px" value=1 class="btn btn-outline-secondary"><i class="fa-solid fa-backward" aria-hidden="true"></i> '.$this->getLocalizedString("first").'</button></form><form method="get" style="margin:0">'.$inputSearch.'<button style="border-radius:0" name="page" type="submit" id="prev" value='. $pageminus .' class="btn btn-outline-secondary"><i class="fa-solid fa-chevron-left" aria-hidden="true"></i> '.$this->getLocalizedString("previous").'</button></form>';
+		$bottomrow .= $ng.'<form method="get" style="margin:0">'.$inputSearch.'<input type="hidden" name="page" value="0"><button type="button" onclick="a(\''.$pagelol.'\', true, true, \'GET\', 5)" name="page" id="first" style="border-top-right-radius:0px !important;border-bottom-right-radius:0px !important;border-radius:500px" value=1 class="btn btn-outline-secondary"><i class="fa-solid fa-backward" aria-hidden="true"></i> '.$this->getLocalizedString("first").'</button></form>
+		<form method="get" style="margin:0">'.$inputSearch.'<input type="hidden" name="page" value="'.$pageminus.'"><button style="border-radius:0" name="page" type="button" onclick="a(\''.$pagelol.'\', true, true, \'GET\', 4)" id="prev" value='. $pageminus .' class="btn btn-outline-secondary"><i class="fa-solid fa-chevron-left" aria-hidden="true"></i> '.$this->getLocalizedString("previous").'</button></form>';
 		//updated to ".."
 		$bottomrow .= '<a class="btn btn-outline-secondary" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">..</a>
 			<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink" style="padding:17px 17px 4px 17px;">
 				<form action="" method="get">
 					<div class="form-group">
+					'.$inputSearch.'
 						<input type="text" class="form-control" name="page" placeholder="'.$this->getLocalizedString("page").'">';
-		foreach($_GET as $key => $param){
-			if($key != "page"){
-				$bottomrow .= '<input type="hidden" name="'.$key.'" value="'.$param.'">';
-			}
-		}
 		$bottomrow .= '</div>
-					<button type="submit" class="btn btn-primary">'.$this->getLocalizedString("go").'</button>
+					<button type="button" onclick="a(\''.$pagelol.'\', true, true, \'GET\', 3)" class="btn btn-primary">'.$this->getLocalizedString("go").'</button>
 				</form>
 			</div>';
-		$bottomrow .= '<form method="get" style="margin:0">'.$inputSearch.'<button type="submit" name="page" style="border-radius:0px" value='.$pageplus.' id="next" class="btn btn-outline-secondary">'.$this->getLocalizedString("next").' <i class="fa-solid fa-chevron-right" aria-hidden="true"></i></button></form><form method="get" style="margin:0;">'.$inputSearch.'<button type="submit" name="page" id="last" style="border-top-left-radius:0px !important;border-bottom-left-radius:0px !important;border-radius:500px" value='. $pagecount .' class="btn btn-outline-secondary">'.$this->getLocalizedString("last").' <i class="fa-solid fa-forward" aria-hidden="true"></i></button></form>';
+		$bottomrow .= '<form method="get" style="margin:0">'.$inputSearch.'<input type="hidden" name="page" value="'.$pageplus.'"><button type="button" onclick="a(\''.$pagelol.'\', true, true, \'GET\', 2)" name="page" style="border-radius:0px"  id="next" class="btn btn-outline-secondary">'.$this->getLocalizedString("next").' <i class="fa-solid fa-chevron-right" aria-hidden="true"></i></button></form>
+		<form method="get" style="margin:0;">'.$inputSearch.'<input type="hidden" name="page" value="'.$pagecount.'"><button type="button" onclick="a(\''.$pagelol.'\', true, true, \'GET\', 1)" name="page" id="last" style="border-top-left-radius:0px !important;border-bottom-left-radius:0px !important;border-radius:500px" value='. $pagecount .' class="btn btn-outline-secondary">'.$this->getLocalizedString("last").' <i class="fa-solid fa-forward" aria-hidden="true"></i></button></form>';
 		$bottomrow .= "</div><script>
 			function disableElement(element){
 				if(element){

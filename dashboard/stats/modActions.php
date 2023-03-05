@@ -14,11 +14,14 @@ if($accounts == ""){
 	$dl->printBox(sprintf($dl->getLocalizedString("errorNoAccWithPerm"), "toolsModactions"));
 	exit();
 }
+$pagelol = explode("/", $_SERVER["REQUEST_URI"]);
+$pagelol = $pagelol[count($pagelol)-2]."/".$pagelol[count($pagelol)-1];
+$pagelol = explode("?", $pagelol)[0];
 if(!isset($_GET["search"])) $_GET["search"] = "";
 $srcbtn = "";
 if(!empty($_GET["search"])) {
 	$query = $db->prepare("SELECT accountID, userName FROM accounts WHERE accountID IN ($accounts) AND userName LIKE '%".ExploitPatch::remove($_GET["search"])."%' ORDER BY userName ASC");
-	$srcbtn = '<a href="'.$_SERVER["SCRIPT_NAME"].'" style="width: 0%;display: flex;margin-left: 5px;align-items: center;justify-content: center;color: indianred; text-decoration:none" class="btn-primary" title="'.$dl->getLocalizedString("searchCancel").'"><i class="fa-solid fa-xmark"></i></a>';
+	$srcbtn = '<button type="button" onclick="a(\''.$pagelol.'\', true, true, \'GET\')"  href="'.$_SERVER["SCRIPT_NAME"].'" style="width: 0%;display: flex;margin-left: 5px;align-items: center;justify-content: center;color: indianred; text-decoration:none" class="btn-primary" title="'.$dl->getLocalizedString("searchCancel").'"><i class="fa-solid fa-xmark"></i></button>';
 }
  else $query = $db->prepare("SELECT accountID, userName FROM accounts WHERE accountID IN ($accounts) ORDER BY userName ASC");
 $query->execute();
@@ -29,7 +32,7 @@ if(empty($result)) {
     <h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
     <form class="form__inner" method="post" action=".">
 		<p>'.$dl->getLocalizedString("emptyPage").'</p>
-        <button type="submit" class="btn-primary">'.$dl->getLocalizedString("dashboard").'</button>
+        <button type="button" onclick="a(\'\', true, false, \'GET\')" class="btn-primary">'.$dl->getLocalizedString("dashboard").'</button>
     </form>
 </div>', 'stats');
 	die();
@@ -89,7 +92,7 @@ foreach($result as &$mod){
 		if($lvlcount > 9 AND $lvlcount < 20) $lvl = 2;
 		$lvlcount = $lvlcount.' '.$dl->getLocalizedString("lvl$lvl");
 	}
-  	$username =  '<form style="margin:0" method="post" action="profile/"><button style="margin:0" class="accbtn" name="accountID" value="'.$mod["accountID"].'">'.$mod["userName"].'</button></form>';
+  	$username =  '<form style="margin:0" method="post" action="./profile/"><button type="button" onclick="a(\'profile/'.$mod["userName"].'\', true, true, \'POST\')" style="margin:0" class="accbtn" name="accountID" value="'.$mod["accountID"].'">'.$mod["userName"].'</button></form>';
 	$modtable .= "<tr><th scope='row'>".$row."</th><td>".$username."</td><td>".$resultRole."</td><td>".$actionscount."</td><td>".$lvlcount."</td><td>".$time."</td></tr>";
 }
 
@@ -110,10 +113,10 @@ $dl->printPage('<table class="table table-inverse">
   <tbody>
     '.$modtable.'
   </tbody>
-</table><form method="get" class="form__inner">
+</table><form method="get" name="searchform" class="form__inner">
 	<div class="field" style="display:flex">
 		<input style="border-top-right-radius: 0;border-bottom-right-radius: 0;" type="text" name="search" value="'.$_GET["search"].'" placeholder="'.$dl->getLocalizedString("search").'">
-		<button style="width: 6%;border-top-left-radius:0px !important;border-bottom-left-radius:0px !important" type="submit" class="btn-primary" title="'.$dl->getLocalizedString("search").'"><i class="fa-solid fa-magnifying-glass"></i></button>
+		<button type="button" onclick="a(\''.$pagelol.'\', true, true, \'GET\', 69)" style="width: 6%;border-top-left-radius:0px !important;border-bottom-left-radius:0px !important" type="submit" class="btn-primary" title="'.$dl->getLocalizedString("search").'"><i class="fa-solid fa-magnifying-glass"></i></button>
 		'.$srcbtn.'
 	</div>
 </form>', true, "stats");

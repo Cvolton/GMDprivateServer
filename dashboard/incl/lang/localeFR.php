@@ -8,7 +8,7 @@ $string["welcome"] = "Bienvenue dans ".$gdps.'!';
 $string["didntInstall"] = "<div style='color:#47a0ff'><b>Alerte!</b> Vous n'avez pas entièrement installé le tableau de bord! Cliquez sur le texte pour le faire.</div>";
 $string["levelsWeek"] = "Niveaux publiés en une semaine";
 $string["levels3Months"] = "Niveaux publiés en 3 mois";
-$string["footer"] = $gdps.", ".date('Y', time());
+$string["footer"] = $gdps."? 2020 - ".date('Y', time());
 $string["tipsAfterInstalling"] = "Bienvenue au tableau de bord! Nous te donnons certains conseils après l'installation:<br>
 1. Il y a de nouvelles permissions dans la base de données SQL dans la table 'roles'! Vous devriez y jeter un coup d'oeil...<br>
 2. Si vous placez 'icon.png' dans le dossier 'dashboard', alors le logo de votre GDPS va apparaître en haut à gauche!<br>
@@ -56,8 +56,8 @@ $string["forwindows"] = "Pour Windows";
 $string["forandroid"] = "Pour Android";
 $string["formac"] = "Pour Mac";
 $string["forios"] = "Pour iOS";
-$string["third-party"] = "Tiers";
-$string["thanks"] = "Merci à ces personnes!";
+$string["third-party"] = "Third-party";
+$string["thanks"] = "Thanks to these people!";
 $string["language"] = "Langues";
 
 $string["loginHeader"] = "Bienvenu, %s!";
@@ -253,10 +253,10 @@ $string["recordList"] = 'Liste des records';
 $string["status"] = 'Status';
 $string["checkRecord"] = 'Vérifier les records';
 $string["record"] = 'Record';
-$string["recordDeleted"] = 'Le record à été supprimé!';
+$string["recordDeleted"] = 'Record was deleted!';
 
-$string["didntActivatedEmail"] = 'Vous n\'avez pas activé votre compte par email!';
-$string["checkMail"] = 'Vous devrez vérifier vos mails...';
+$string["didntActivatedEmail"] = 'You didn\'t activated your account through email!';
+$string["checkMail"] = 'You should check your email...';
 
 /*
 	REUPLOAD
@@ -361,6 +361,8 @@ $string["suggestFeatured"] = "En vedette?";
 $string["whoAdded"] = "Qui l'a ajouté?";
 //modActionsList
 $string["banDesc"] = "Ici vous pouvez bannir un joueur du classement!";
+$string["playerTop"] = 'Top of players';
+$string["creatorTop"] = 'Top of creators';
 
 $string["admin"] = "Administrateur";
 $string["elder"] = "Ancien Modérateur";

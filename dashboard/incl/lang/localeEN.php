@@ -7,7 +7,7 @@ $string["welcome"] = "Welcome to ".$gdps.'!';
 $string["didntInstall"] = "<div style='color:#47a0ff'><b>Warning!</b> You haven't fully installed dashboard! Click on the text to do this.</div>";
 $string["levelsWeek"] = "Levels uploaded in a week";
 $string["levels3Months"] = "Levels uploaded in 3 months";
-$string["footer"] = $gdps.", ".date('Y', time());
+$string["footer"] = $gdps."? 2020 - ".date('Y', time());
 $string["tipsAfterInstalling"] = "Welcome to Dashboard! We give you some hints after installation:<br>
 1. It seems that new permissions have appeared in SQL in the 'roles' table! You should check it out...<br>
 2. If you put 'icon.png' to the 'dashboard' folder, then the icon of your GDPS will appear on the top left!<br>
@@ -360,6 +360,8 @@ $string["suggestFeatured"] = "Featured?";
 $string["whoAdded"] = "Who added?";
 //modActionsList
 $string["banDesc"] = "Here you can ban a player from leaderboard!";
+$string["playerTop"] = 'Top of players';
+$string["creatorTop"] = 'Top of creators';
 
 $string["admin"] = "Administrator";
 $string["elder"] = "Elder moderator";

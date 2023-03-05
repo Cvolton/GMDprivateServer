@@ -19,12 +19,15 @@ if(!isset($_GET["type"])) $_GET["type"] = "";
 if(!isset($_GET["ng"])) $_GET["ng"] = "";
 if(!isset($_GET["who"])) $_GET["who"] = "";
 $srcbtn = "";
+$pagelol = explode("/", $_SERVER["REQUEST_URI"]);
+$pagelol = $pagelol[count($pagelol)-2]."/".$pagelol[count($pagelol)-1];
+$pagelol = explode("?", $pagelol)[0];
 $table = '<table class="table table-inverse"><tr><th>#</th><th>'.$dl->getLocalizedString("mod").'</th><th>'.$dl->getLocalizedString("action").'</th><th>'.$dl->getLocalizedString("value").'</th><th>'.$dl->getLocalizedString("value2").'</th><th>'.$dl->getLocalizedString("value3").'</th><th>'.$dl->getLocalizedString("time").'</th></tr>';
 $seltype = !empty($_GET["type"]) ? ExploitPatch::number($_GET["type"]) : 0; 
 $selname = !empty($_GET["who"]) ? ExploitPatch::number($_GET["who"]) : 0;
 if(!empty($_GET["type"]) OR !empty($_GET["who"])) {
 	$where = 'WHERE';
-	$srcbtn = '<a href="'.$_SERVER["SCRIPT_NAME"].'" style="width: 0%;display: flex;margin-left: 5px;align-items: center;justify-content: center;color: indianred; text-decoration:none" class="btn-primary" title="'.$dl->getLocalizedString("searchCancel").'"><i class="fa-solid fa-xmark"></i></a>';
+	$srcbtn = '<button type="button" onclick="a(\''.$pagelol.'\', true, true, \'GET\')"  href="'.$_SERVER["SCRIPT_NAME"].'" style="width: 0%;display: flex;margin-left: 5px;align-items: center;justify-content: center;color: indianred; text-decoration:none" class="btn-primary" title="'.$dl->getLocalizedString("searchCancel").'"><i class="fa-solid fa-xmark"></i></button>';
 }
 else $where = '';
 $requesttype = !empty($_GET["type"]) ? 'type = '.ExploitPatch::number($_GET["type"]) : '';
@@ -39,7 +42,7 @@ if(empty($result)) {
     <h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
     <form class="form__inner" method="post" action=".">
 		<p>'.$dl->getLocalizedString("emptyPage").'</p>
-        <button type="submit" class="btn-primary">'.$dl->getLocalizedString("dashboard").'</button>
+        <button type="button" onclick="a(\'\', true, false, \'GET\')" class="btn-primary">'.$dl->getLocalizedString("dashboard").'</button>
     </form>
 </div>', 'stats');
 	die();
@@ -47,7 +50,7 @@ if(empty($result)) {
 foreach($result as &$action){
 	//detecting mod
 	$account = $action["account"];
-	$account =  '<form style="margin:0" method="post" action="profile/"><button style="margin:0" class="accbtn" name="accountID" value="'.$action["account"].'">'.$gs->getAccountName($account).'</button></form>';
+	$account =  '<form style="margin:0" method="post" action="./profile/"><button type="button" onclick="a(\'profile/'.$gs->getAccountName($account).'\', true, true, \'POST\')" style="margin:0" class="accbtn" name="accountID" value="'.$action["account"].'">'.$gs->getAccountName($account).'</button></form>';
 	//detecting action
 	$value = $action["value"];
 	$value2 = $action["value2"];
@@ -72,8 +75,16 @@ foreach($result as &$action){
     }
 	if($action["type"] == 13) $value = base64_decode($value);
   	if($action["type"] == 15) {
-    	if($value3 == 0) $value3 = '<div style="color:#a9ffa9">'.$dl->getLocalizedString("unban").'</div>';
-      	else $value3 = '<div style="color:#ffa9a9">'.$dl->getLocalizedString("isBan").'</div>';
+		switch($value4) {
+			case 'isBanned':
+				$value4  = $dl->getLocalizedString('playerTop');
+				break;
+			case 'isCreatorBanned':
+				$value4  = $dl->getLocalizedString('creatorTop');
+				break;
+		}
+    	if($value3 == 0) $value3 = $value4.', <div style="color:#a9ffa9">'.$dl->getLocalizedString("unban").'</div>';
+      	else $value3 = $value4.', <div style="color:#ffa9a9">'.$dl->getLocalizedString("isBan").'</div>';
       	if($value2 == 'banned' OR $value2 == 'none') $value2 = '<div style="color:gray">'.$dl->getLocalizedString("noReason").'</div>';
     } 
   	if($action["type"] == 26) {
@@ -96,7 +107,7 @@ foreach($result as &$action){
 		$value3 = $action["value2"].' | '.$action["value3"];
 	}
 	if($action["type"] == 20 OR $action["type"] == 24) {
-		$value = '<form style="margin:0" method="post" action="profile/"><button style="margin:0" class="accbtn" name="accountID" value="'.$value2.'">'.$value.'</button></form>';
+		$value = '<form style="margin:0" method="post" action="./profile/"><button type="button" onclick="a(\'profile/'.$value.'\', true, true, \'POST\')" style="margin:0" class="accbtn" name="accountID" value="'.$value2.'">'.$value.'</button></form>';
 		$clr = $db->prepare("SELECT commentColor FROM roles WHERE roleID = :id");
 		$clr->execute([':id' => $value3]);
 		$clr = $clr->fetch();
@@ -140,7 +151,7 @@ foreach($mods as &$mod) {
 	$name = $gs->getAccountName($mod["accountID"]);
 	$options .= '<option value="'.$mod["accountID"].'">'.$name.'</option>';
 };
-$table .= '</table><form method="get" class="form__inner">
+$table .= '</table><form method="get" name="searchform" class="form__inner">
 	<div class="field" style="display:flex">
 		<select id="sel1" style="border-top-right-radius: 0;margin:0;border-bottom-right-radius: 0;" name="type" value="'.$_GET["type"].'" placeholder="'.$dl->getLocalizedString("search").'">
 		    <option value="0">'.$dl->getLocalizedString("everyActions").'</option>
@@ -175,7 +186,7 @@ $table .= '</table><form method="get" class="form__inner">
 			<option value="0">'.$dl->getLocalizedString("everyMod").'</option>
 			'.$options.'
 		</select>
-		<button style="width: 6%;border-top-left-radius:0px !important;border-bottom-left-radius:0px !important" type="submit" class="btn-primary" title="'.$dl->getLocalizedString("search").'"><i class="fa-solid fa-magnifying-glass"></i></button>
+		<button type="button" onclick="a(\''.$pagelol.'\', true, true, \'GET\', 69)"  style="width: 6%;border-top-left-radius:0px !important;border-bottom-left-radius:0px !important" type="submit" class="btn-primary" title="'.$dl->getLocalizedString("search").'"><i class="fa-solid fa-magnifying-glass"></i></button>
 		'.$srcbtn.'
 	</div>
 </form>

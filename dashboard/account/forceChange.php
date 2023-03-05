@@ -22,7 +22,7 @@ if(!$gs->checkPermission($acc, 'dashboardForceChangePassNick')) {
     <h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 	<p id="bruh">'.$dl->getLocalizedString("noPermission").'</p>
     <form class="form__inner" method="post" action=".">
-	<button type="submit" class="btn-primary">'.$dl->getLocalizedString("Kish!").'</button>
+	<button type="button" onclick="a(\'\')" class="btn-primary">'.$dl->getLocalizedString("Kish!").'</button>
     </form>
 	</div>', 'mod');
 	die();
@@ -35,7 +35,7 @@ if(!empty($_POST["userID"]) AND !empty($_POST[$type])) {
 			<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 			<form class="form__inner" method="post" action="">
 			<p>'.$dl->getLocalizedString("invalidCaptcha").'</p>
-			<button type="submit" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
+			<button type="button" onclick="a(\'account/forceChange.php\', true, true, \'GET\')" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 			</form>
 		</div>', 'mod');
 		die();
@@ -53,7 +53,7 @@ if(!empty($_POST["userID"]) AND !empty($_POST[$type])) {
 				<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 				<form class="form__inner" method="post" action="">
 				<p>'.$dl->getLocalizedString("alreadyUsedNick").'</p>
-				<button type="submit" class="btn-primary">'.$dl->getLocalizedString("tryAgainBTN").'</button>
+				<button type="button" onclick="a(\'account/forceChange.php\', true, true, \'GET\')" class="btn-primary">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 				</form>
 				</div>', 'mod');
 				die();
@@ -71,7 +71,7 @@ if(!empty($_POST["userID"]) AND !empty($_POST[$type])) {
 		<h1>'.$dl->getLocalizedString("changeNickTitle").'</h1>
 		<form class="form__inner" method="post" action="">
 		<p>'.sprintf($dl->getLocalizedString("forceChangedNick"), $newnick).'</p>
-        <button type="submit" class="btn-primary">'.$dl->getLocalizedString("dashboard").'</button>
+        <button type="button" onclick="a(\'account/forceChange.php\', true, true, \'GET\')" class="btn-primary">'.$dl->getLocalizedString("dashboard").'</button>
 		</form>
 		</div>', 'mod');
   } elseif($type == 'Password') {
@@ -99,7 +99,7 @@ if(!empty($_POST["userID"]) AND !empty($_POST[$type])) {
 		<h1>'.$dl->getLocalizedString("changePassTitle").'</h1>
 		<form class="form__inner" method="post" action="">
 		<p>'.sprintf($dl->getLocalizedString("forceChangedPass"), $userName).'</p>
-        <button type="submit" class="btn-primary">'.$dl->getLocalizedString("dashboard").'</button>
+        <button type="button" onclick="a(\'account/forceChange.php\', true, true, \'GET\')"class="btn-primary">'.$dl->getLocalizedString("dashboard").'</button>
 		</form>
 		</div>', 'mod');
 	}
@@ -131,7 +131,7 @@ if(!empty($_POST["userID"]) AND !empty($_POST[$type])) {
 		', 'mod');
 		Captcha::displayCaptcha();
         echo '
-        <button type="submit" class="btn-primary btn-block" id="submit" name="type" value="'.$_POST["type"].'" disabled>'.$dl->getLocalizedString("ban").'</button>
+        <button type="button" onclick="a(\'account/forceChange.php\', true, true, \'POST\')" class="btn-primary btn-block" id="submit" name="type" value="'.$_POST["type"].'" disabled>'.$dl->getLocalizedString("ban").'</button>
     </form><script>
 $(document).on("keyup keypress change keydown",function(){
    const p1 = document.getElementById("p1");
