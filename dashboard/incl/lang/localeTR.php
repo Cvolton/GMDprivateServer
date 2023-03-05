@@ -7,7 +7,7 @@ $string["welcome"] = $gdps." sunucusuna hoş geldiniz!";
 $string["didntInstall"] = "<div style='color:#47a0ff'><b>Uyarı!</b> Dashboard'ı tam olarak kurmamışsınız! Buraya basarak tam kurulumu yapın.</div>";
 $string["levelsWeek"] = "Bir hafta içinde yüklenen bölümler";
 $string["levels3Months"] = "3 ayda yüklenen bölümler";
-$string["footer"] = $gdps."? 2020 - ".date('Y', time());
+$string["footer"] = $gdps.", ".date('Y', time());
 $string["tipsAfterInstalling"] = "Kontrol paneline hoş geldin! Kurulumdan sonra bir kaç tavsiye:<br>
 1. SQL içerisinde 'roles' tablosunda yeni izinler belirmiş gibi gözüküyor! Bunlara baksan çok iyi olur...<br>
 2. 'dashboard' klasörüne 'icon.png' koyarsan, ikonun en sol köşede belirir!<br>
@@ -55,8 +55,8 @@ $string["forwindows"] = "Windows";
 $string["forandroid"] = "Android";
 $string["formac"] = "Mac";
 $string["forios"] = "iOS";
-$string["third-party"] = "Third-party";
-$string["thanks"] = "Thanks to these people!";
+$string["third-party"] = "ÜÇüncü taraf";
+$string["thanks"] = "Bu insanlara teşekkürler!";
 $string["language"] = "Dil";
 
 $string["loginHeader"] = "Merhaba, %s!";
@@ -251,11 +251,11 @@ $string["askForDemons"] = 'Bir yöneticiden bu listeye eklemesini iste!';
 $string["recordList"] = 'Rekor listesi';
 $string["status"] = 'Durum';
 $string["checkRecord"] = 'Rekoru kontrol et';
-$string["record"] = 'Record';
-$string["recordDeleted"] = 'Record was deleted!';
+$string["record"] = 'Rekor';
+$string["recordDeleted"] = 'Rekor silindi!';
 
-$string["didntActivatedEmail"] = 'You didn\'t activated your account through email!';
-$string["checkMail"] = 'You should check your email...';
+$string["didntActivatedEmail"] = 'Hesabını e-posta üzerinden aktive etmedin!';
+$string["checkMail"] = 'E-postanı kontrol etmelisin...';
 
 /*
 	REUPLOAD
