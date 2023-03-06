@@ -388,7 +388,7 @@ $(document).change(function(){
 		<div class="form" style="margin:0px;position:absolute;bottom:50px;color:white;font-size:50px;width:max-content;right:50px;padding:25px;transition:0.3s;opacity:0;border-radius:500px" id="loadingloool"><i class="fa-solid fa-spinner fa-spin"></i></div>
 <script>
 	cptch = document.querySelector("#verycoolcaptcha");
-	function a(page, skipcheck = false, skipslash = false, method = "GET", getdata = false, formname = "") {
+	function a(page, skipcheck = false, skipslash = false, method = "GET", getdata = false, formname = "", isback = false) {
 		if((window.location.pathname.indexOf(page) != "1" || page == "profile") || skipcheck) {
 			phpCheck = page.substr(page.length - 4);
 			if(phpCheck != ".php" && page != "" && page != "profile/'.$gs->getAccountName($_SESSION["accountID"]).'" && !skipslash) page = page + "/";
@@ -463,7 +463,7 @@ $(document).change(function(){
 						scri.innerHTML = scrpts.textContent;
 						document.body.appendChild(scri);
 					}
-					history.pushState(null,null,page);
+					if(!isback) history.pushState(null,null,page);
 					if(page != "" && typeof document.getElementsByTagName("base")[0] == "undefined") {
 						base = document.createElement("base");
 						base.href = "../";
@@ -502,6 +502,11 @@ $(document).change(function(){
 			} else pg.send();
 		}
 	}
+	window.addEventListener("popstate", function(e) { 
+		goback = window.location.pathname.split("/");
+		backpage = goback[goback.length-2]+"/"+goback[goback.length-1];
+		a(backpage, true, false, "GET", false, "", true);
+	}, false);
 </script>';
 	}
 	public function printPage($content, $isSubdirectory = true, $navbar = "home"){
