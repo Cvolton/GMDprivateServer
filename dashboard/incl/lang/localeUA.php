@@ -258,6 +258,12 @@ $string["recordDeleted"] = 'Рекорд був видалений!';
 $string["didntActivatedEmail"] = 'Ви не підтвердили вашу почту!';
 $string["checkMail"] = 'Вам слід провірити ваш поштовий ящик...';
 
+$string["likeSong"] = "Додати пісню в улюбленні";
+$string["dislikeSong"] = "Забрати пісню з улюбленних";
+$string["favouriteSongs"] = "Улюблені пісні";
+$string["howMuchLiked"] = "Скільки лайкнуло?";
+$string["nooneLiked"] = "Ніхто не лайкнув";
+
 /*
 	REUPLOAD
 */
@@ -361,8 +367,8 @@ $string["suggestFeatured"] = "Featured?";
 $string["whoAdded"] = "Хто додав?";
 //modActionsList
 $string["banDesc"] = "Тут ви можете заблокувати користувача з лідерборду!";
-$string["playerTop"] = 'Топ игроков';
-$string["creatorTop"] = 'Топ строителей';
+$string["playerTop"] = 'Топ гравців';
+$string["creatorTop"] = 'Топ строітелів';
 
 $string["admin"] = "Адміністратор";
 $string["elder"] = "Старший модератор";
@@ -384,6 +390,9 @@ $string["action2"] = "дій";
 $string["lvl0"] = "рівень";
 $string["lvl1"] = "рівня";
 $string["lvl2"] = "рівней";
+$string["player0"] = "гравець"; 
+$string["player1"] = "гравця"; 
+$string["player2"] = "гравціі";
 $string["unban"] = "Розблокування";
 $string["isBan"] = "Блокування";
 

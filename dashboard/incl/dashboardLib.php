@@ -180,6 +180,7 @@ class dashboardLib {
 							<button onclick="a(\'account/changeUsername.php\')"class="dropdown-item" href=""><div class="icon"><i class="fa-solid fa-user" aria-hidden="false"></i></div>'.$this->getLocalizedString("changeUsername").'</button>
 							<button onclick="a(\'stats/unlisted.php\')"class="dropdown-item" href=""><div class="icon"><i class="fa-solid fa-list-ul" aria-hidden="false"></i></div>'.$this->getLocalizedString("unlistedLevels").'</button>
 							<button onclick="a(\'stats/manageSongs.php\')"class="dropdown-item" href=""><div class="icon"><i class="fa-solid fa-music" aria-hidden="false"></i></div>'.$this->getLocalizedString("manageSongs").'</button>
+							<button onclick="a(\'stats/favouriteSongs.php\')"class="dropdown-item" href=""><div class="icon"><i class="fa-solid fa-heart" aria-hidden="false"></i></div>'.$this->getLocalizedString("favouriteSongs").'</button>
 						</div>
 					</li>' . $browse . '</div></li>';
 					echo '<li class="nav-item dropdown '.$reuploadActive.'">

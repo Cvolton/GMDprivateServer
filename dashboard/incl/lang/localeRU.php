@@ -258,6 +258,12 @@ $string["recordDeleted"] = 'Рекорд был удалён!';
 $string["didntActivatedEmail"] = 'Вы не подтвердили вашу почту!';
 $string["checkMail"] = 'Вам следует проверить ваш почтовый ящик...';
 
+$string["likeSong"] = "Добавить песню в любимые";
+$string["dislikeSong"] = "Убрать песню из любимых";
+$string["favouriteSongs"] = "Любимые песни";
+$string["howMuchLiked"] = "Сколько лайкнуло?";
+$string["nooneLiked"] = "Никто не лайкнул";
+
 /*
 	REUPLOAD
 */
@@ -384,6 +390,9 @@ $string["action2"] = "действий";
 $string["lvl0"] = "уровень";
 $string["lvl1"] = "уровня";
 $string["lvl2"] = "уровней";
+$string["player0"] = "игрок";
+$string["player1"] = "игрока";
+$string["player2"] = "игроков";
 $string["unban"] = "Разбан";
 $string["isBan"] = "Бан";
 

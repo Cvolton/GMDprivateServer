@@ -353,6 +353,7 @@ input, select {
 	font-weight:700;
 	margin-left:5px;
 	color:white;
+	width: 100%;
 }
 
 .table .table {
@@ -864,6 +865,7 @@ hr {
 
 #comments {
 	margin: 10px 0px 0px 0px;
+	overflow-wrap: break-word;
    color: #535456;
    font-size: 13px;
    display: flex;

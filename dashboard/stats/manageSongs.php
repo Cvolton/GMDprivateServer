@@ -29,7 +29,7 @@ if(!empty($_GET["author"]) AND !empty($_GET["name"])) {
 $pagelol = explode("/", $_SERVER["REQUEST_URI"]);
 $pagelol = $pagelol[count($pagelol)-2]."/".$pagelol[count($pagelol)-1];
 $pagelol = explode("?", $pagelol)[0];
-$table = '<div class="notify" style="display:'.$notify.'">'.$dl->getLocalizedString("deletedSong").' <b>'.$an.'</b> - <b>'.$nn.'</b>!</div><table class="table table-inverse"><tr><th>#</th><th></th><th>'.$dl->getLocalizedString("songIDw").'</th><th>'.$dl->getLocalizedString("songAuthor").'</th><th>'.$dl->getLocalizedString("name").'</th><th>'.$dl->getLocalizedString("size").'</th><th>'.$dl->getLocalizedString("time").'</th></tr>';
+$table = '<div class="notify" style="display:'.$notify.'">'.$dl->getLocalizedString("deletedSong").' <b>'.$an.'</b> - <b>'.$nn.'</b>!</div><table class="table table-inverse"><tr><th>#</th><th></th><th>'.$dl->getLocalizedString("songIDw").'</th><th>'.$dl->getLocalizedString("songAuthor").'</th><th>'.$dl->getLocalizedString("name").'</th><th>'.$dl->getLocalizedString("size").'</th><th>'.$dl->getLocalizedString("time").'</th><th>'.$dl->getLocalizedString("howMuchLiked").'</th></tr>';
 $accountID = $_SESSION["accountID"];
 if(!isset($_GET["search"])) $_GET["search"] = "";
 $srcbtn = "";
@@ -82,11 +82,21 @@ foreach($result as &$action){
       	$size = '<div style="text-decoration:line-through;color:#8b2e2c">'.$size.'</div>';
       	$time = '<div style="text-decoration:line-through;color:#8b2e2c">'.$time.'</div>';
 	}
+	$wholiked = "";
+	$wholiked = $db->prepare("SELECT count(*) FROM favsongs WHERE songID = :id");
+	$wholiked->execute([':id' => $songsid]);
+	$wholiked = $wholiked->fetchColumn();
+	if($wholiked == 0) $likes = '<div style="color:gray">'.$dl->getLocalizedString("nooneLiked").'</div>';
+	else {
+		$strs = $wholiked[strlen($wholiked)-1];
+		if($strs == 1) $star = 0; elseif($strs < 5 AND $strs != 0 AND ($wholiked > 20 OR $wholiked < 10)) $star = 1; else $star = 2;
+		$likes = $wholiked.' '.$dl->getLocalizedString("player".$star);
+	}
 	$btn = '<button type="button" name="btnsng" id="btn'.$songsid.'" title="'.$author.' - '.$name.'" style="display: contents;color: white;margin: 0;" onclick="btnsong(\''.$songsid.'\');"><div class="icon" style="font-size:13px; height:25px;width:25px;background:#373A3F;margin-left: 0px;margin-right: -9px;"><i class="fa-solid fa-play" aria-hidden="false"></i></div></button>
 			<div name="audio" class="audio" id="'.$songsid.'" style="display: none">
 			<audio title="'.$author.' - '.$name.'" style="width:100%" name="song" id="song'.$songsid.'" preload="metadata" controls><source src="'.$download.'" type="audio/mpeg"></audio>
 			<button style="margin: 0px;font-size: 25px;padding: 14px 19px;margin-left: 5px;" type="button" class="msgupd" onclick="btnsong(0)"><i class="fa-solid fa-xmark"></i></button></div>';
-	$table .= "<tr><th scope='row'>".$x."</th><td>".$btn."</td><td>".$songsid."</td><td>".$author."</td><td>".$name."</td><td>".$size."</td><td>".$time."</td><td>".$delete."</td></tr>";
+	$table .= "<tr><th scope='row'>".$x."</th><td>".$btn."</td><td>".$songsid."</td><td>".$author."</td><td>".$name."</td><td>".$size."</td><td>".$time."</td><td>".$likes."</td><td>".$delete."</td></tr>";
 	$x++;
 }
 $table .= '</table><form method="get" name="searchform" class="form__inner">

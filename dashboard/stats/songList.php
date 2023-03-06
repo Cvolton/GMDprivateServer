@@ -34,7 +34,7 @@ $table = '<div class="notifyblue" style="display:'.$notify.'">'.$dl->getLocalize
 if(!isset($_GET["search"])) $_GET["search"] = "";
 if(!isset($_GET["type"])) $_GET["type"] = "";
 if(!isset($_GET["ng"])) $_GET["ng"] = "";
-$srcbtn = "";
+$srcbtn = $favs = "";
 if(!empty(trim(ExploitPatch::remove($_GET["search"])))) {
 	$ngw = $_GET["ng"] == 1 ? '' : 'AND reuploadID > 0';
 	$q = is_numeric(trim(ExploitPatch::remove($_GET["search"]))) ? "ID LIKE '%".trim(ExploitPatch::remove($_GET["search"]))."%'" : "(name LIKE '%".trim(ExploitPatch::remove($_GET["search"]))."%' OR authorName LIKE '%".trim(ExploitPatch::remove($_GET["search"]))."%')";
@@ -77,6 +77,13 @@ foreach($result as &$action){
 	$name = $action["name"];
 	$size = $action["size"];
 	$download = str_replace('http://', 'https://', $action["download"]);
+	if($_SESSION["accountID"] != 0) {
+		$favourites = $db->prepare("SELECT * FROM favsongs WHERE songID = :id AND accountID = :aid");
+		$favourites->execute([':id' => $songsid, ':aid' => $_SESSION["accountID"]]);
+		$favourites = $favourites->fetch();
+		if(!empty($favourites)) $favs = '<button title="'.$dl->getLocalizedString("dislikeSong").'" id="like'.$songsid.'" value="1" style="display:contents;cursor:pointer" onclick="like('.$songsid.')"><i id="likeicon'.$songsid.'" class="fa-solid fa-heart" style="font-size: 18px;color:#ff5c5c"></i></button>'; 
+		else $favs = '<button title="'.$dl->getLocalizedString("likeSong").'" id="like'.$songsid.'" onclick="like('.$songsid.')" value="0" style="display:contents;cursor:pointer"><i id="likeicon'.$songsid.'" class="fa-regular fa-heart" style="font-size: 18px;color:#ff5c5c"></i></button>';
+	}
 	if($action["reuploadID"] == 0) {
 		$download = str_replace('%3A', ':', $download);
 		$download = str_replace('%2F', '/', $download);
@@ -119,6 +126,7 @@ if($gs->checkPermission($_SESSION["accountID"], "dashboardManageSongs")){
 						<td>".$size."</td>
 						<td>".$time."</td>
 						<td>".$who."</td>
+						<td>".$favs."</td>
 						<td>".$manage."</td>
 						</tr>";
 	$x++;
@@ -131,6 +139,7 @@ if($gs->checkPermission($_SESSION["accountID"], "dashboardManageSongs")){
 						<td>".$name."</td>
 						<td>".$size."</td>
 						<td>".$time."</td>
+						<td>".$favs."</td>
 						</tr>";
 						$x++;
 }
@@ -178,6 +187,38 @@ $dl->printPage($table . $bottomrow.'<script>
 						document.getElementById("btn"+id).setAttribute("onclick", "btnsong(" + id + ", true)");
 					} else document.getElementById("btn"+id).setAttribute("onclick", "btnsong(" + id + ")");
 				}
+			}
+			function like(id) {
+				likebtn = document.getElementById("like" + id);
+				if(likebtn.value == 1) {
+					document.getElementById("likeicon" + id).classList.add("fa-regular");
+					document.getElementById("likeicon" + id).classList.remove("fa-solid");
+					likebtn.value = 0;
+					likebtn.title = "'.$dl->getLocalizedString("likeSong").'";
+				} else {
+					document.getElementById("likeicon" + id).classList.remove("fa-regular");
+					document.getElementById("likeicon" + id).classList.add("fa-solid");
+					likebtn.value = 1;
+					likebtn.title = "'.$dl->getLocalizedString("dislikeSong").'";
+				}
+				fav = new XMLHttpRequest();
+				fav.open("GET", "stats/favourite.php?id=" + id, true);
+				fav.onload = function () {
+					if(fav.response == "-1") {
+						if(likebtn.value == 1) {
+							document.getElementById("likeicon" + id).classList.add("fa-regular");
+							document.getElementById("likeicon" + id).classList.remove("fa-solid");
+							likebtn.value = 0;
+							likebtn.title = "'.$dl->getLocalizedString("likeSong").'";
+						} else {
+							document.getElementById("likeicon" + id).classList.remove("fa-regular");
+							document.getElementById("likeicon" + id).classList.add("fa-solid");
+							likebtn.value = 1;
+							likebtn.title = "'.$dl->getLocalizedString("dislikeSong").'";
+						}
+					}
+				}
+				fav.send();
 			}
 		</script>', true, "browse");
 ?>

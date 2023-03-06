@@ -257,6 +257,12 @@ $string["recordDeleted"] = 'Rekor silindi!';
 $string["didntActivatedEmail"] = 'Hesabını e-posta üzerinden aktive etmedin!';
 $string["checkMail"] = 'E-postanı kontrol etmelisin...';
 
+$string["likeSong"] = "Add song to favourites";
+$string["dislikeSong"] = "Remove song from favourites";
+$string["favouriteSongs"] = "Favourite songs";
+$string["howMuchLiked"] = "How much liked?";
+$string["nooneLiked"] = "Noone liked";
+
 /*
 	REUPLOAD
 */
@@ -383,6 +389,9 @@ $string["action2"] = "aksiyon";
 $string["lvl0"] = "bölüm";
 $string["lvl1"] = "bölüm";
 $string["lvl2"] = "bölüm";
+$string["player0"] = "player";
+$string["player1"] = "players";
+$string["player2"] = "players";
 $string["unban"] = "Unban";
 $string["isBan"] = "Ban";
 

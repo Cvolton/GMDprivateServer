@@ -257,6 +257,12 @@ $string["recordDeleted"] = 'Record was deleted!';
 $string["didntActivatedEmail"] = 'You didn\'t activated your account through email!';
 $string["checkMail"] = 'You should check your email...';
 
+$string["likeSong"] = "Add song to favourites";
+$string["dislikeSong"] = "Remove song from favourites";
+$string["favouriteSongs"] = "Favourite songs";
+$string["howMuchLiked"] = "How much liked?";
+$string["nooneLiked"] = "Noone liked";
+
 /*
 	REUPLOAD
 */
@@ -383,6 +389,9 @@ $string["action2"] = "actions";
 $string["lvl0"] = "level";
 $string["lvl1"] = "levels";
 $string["lvl2"] = "levels";
+$string["player0"] = "player";
+$string["player1"] = "players";
+$string["player2"] = "players";
 $string["unban"] = "Unban";
 $string["isBan"] = "Ban";
 
