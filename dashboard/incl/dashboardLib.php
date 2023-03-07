@@ -454,7 +454,6 @@ $(document).change(function(){
 							}
 						}
 					}
-					console.log(pg.response);
 					child = pg.response.querySelector("#htmlpage");
 					htmlpage.replaceWith(child);
 					if(typeof song != "undefined" && song != null) {
