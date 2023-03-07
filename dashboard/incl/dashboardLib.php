@@ -430,16 +430,16 @@ $(document).change(function(){
 			pg.onload = function (){
 				if(pg.response.getElementById("htmlpage") != null) {
 					document.getElementById("loadingloool").style.opacity = "0";
-					child = pg.response.querySelector("#htmlpage");
 					title = pg.response.querySelectorAll("title")[0];
 					scripts = pg.response.querySelectorAll("body script");
 					scripts = scripts[scripts.length-1];
-					if(typeof document.querySelectorAll("div.playing")[0] != "undefined") {
+					if((typeof document.querySelectorAll("div.playing")[0] != "undefined" && typeof htmlpage.querySelectorAll("div.playing")[0] != "undefined") && pg.response.getElementById(document.querySelectorAll("div.playing")[0].id) != null) {
 						audiopls = document.querySelectorAll("div.playing")[0];
 						if(typeof pg.response.getElementById(audiopls.id) != "undefined" && pg.response.getElementById(audiopls.id) != null) song = pg.response.getElementById(audiopls.id);
 						else song = document.createElement("div");
 						if(typeof song != "undefined" && song != null) {
 							song.classList.add("audio");
+							song.classList.add("playing");
 							song.id = audiopls.id;
 							song.setAttribute("name", "audio");
 							song.style.display = "flex";
@@ -448,10 +448,23 @@ $(document).change(function(){
 							aind.volume = audiopls.getElementsByTagName("audio")[0].volume;
 							aind.currentTime = audiopls.getElementsByTagName("audio")[0].currentTime;
 							if(audiopls.getElementsByTagName("audio")[0].paused) aind.pause();
-							else setTimeout(function () {aind.play();}, 1);
+							else {
+								if(pg.response.getElementById("btn"+song.id) !== null) pg.response.getElementById("btn"+song.id).innerHTML = \'<div class="icon" style="font-size:13px; height:25px;width:25px;background:#373A3F;margin-left: 0px;margin-right: -9px;"><i class="fa-solid fa-pause" aria-hidden="false"></i></div>\';
+								setTimeout(function () {aind.play();}, 0);
+							}
 						}
 					}
+					console.log(pg.response);
+					child = pg.response.querySelector("#htmlpage");
 					htmlpage.replaceWith(child);
+					if(typeof song != "undefined" && song != null) {
+						deleteDuplicates = $("#"+song.id+".audio").not(".playing");
+						for(var i=0; i<deleteDuplicates.length; i++) deleteDuplicates[i].remove();
+						if(document.getElementById("btn"+song.id) !== null && !song.getElementsByTagName("audio")[0].paused) {
+							document.getElementById("btn"+song.id).innerHTML = \'<div class="icon" style="font-size:13px; height:25px;width:25px;background:#373A3F;margin-left: 0px;margin-right: -9px;"><i class="fa-solid fa-pause" aria-hidden="false"></i></div>\';
+							document.getElementById("btn"+song.id).setAttribute("onclick", "btnsong("+song.id+", true)");
+						}
+					}
 					htmtitle.replaceWith(title);
 					var scrp = document.createElement("script");
 					if(typeof scripts.textContent != "undefined") scrp.innerHTML = scripts.textContent;
