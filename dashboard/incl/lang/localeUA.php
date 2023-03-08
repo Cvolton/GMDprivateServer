@@ -392,7 +392,7 @@ $string["lvl1"] = "рівня";
 $string["lvl2"] = "рівней";
 $string["player0"] = "гравець"; 
 $string["player1"] = "гравця"; 
-$string["player2"] = "гравціі";
+$string["player2"] = "гравців";
 $string["unban"] = "Розблокування";
 $string["isBan"] = "Блокування";
 
