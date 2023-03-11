@@ -426,6 +426,7 @@ $(document).change(function(){
 			pg.open(method, page + sendget, true);
 			pg.responseType = "document";
 			htmlpage = document.querySelector("#htmlpage");
+			navbar = document.querySelector("#navbarepta");
 			htmtitle = document.querySelectorAll("title")[0];
 			pg.onload = function (){
 				if(pg.response.getElementById("htmlpage") != null) {
@@ -433,6 +434,7 @@ $(document).change(function(){
 					title = pg.response.querySelectorAll("title")[0];
 					scripts = pg.response.querySelectorAll("body script");
 					scripts = scripts[scripts.length-1];
+					newnavbar = pg.response.querySelector("#navbarepta");
 					if((typeof document.querySelectorAll("div.playing")[0] != "undefined" && typeof htmlpage.querySelectorAll("div.playing")[0] != "undefined") && pg.response.getElementById(document.querySelectorAll("div.playing")[0].id) != null) {
 						audiopls = document.querySelectorAll("div.playing")[0];
 						if(typeof pg.response.getElementById(audiopls.id) != "undefined" && pg.response.getElementById(audiopls.id) != null) song = pg.response.getElementById(audiopls.id);
@@ -456,6 +458,7 @@ $(document).change(function(){
 					}
 					child = pg.response.querySelector("#htmlpage");
 					htmlpage.replaceWith(child);
+					navbar.replaceWith(newnavbar);
 					if(typeof song != "undefined" && song != null) {
 						deleteDuplicates = $("#"+song.id+".audio").not(".playing");
 						for(var i=0; i<deleteDuplicates.length; i++) deleteDuplicates[i].remove();
@@ -489,8 +492,9 @@ $(document).change(function(){
 						document.body.appendChild(base2);
 					}
 					if(typeof coolcaptcha != "undefined") { 
-						coolcaptcha.replaceWith(cptch);
-						document.getElementsByClassName("h-captcha")[0].style.display = "block";
+						if(cptch == null) coolcaptcha.replaceWith(captch);
+						else coolcaptcha.replaceWith(cptch);
+						$(".h-captcha").not("#captchadiv > #verycoolcaptcha")[0].style.display = "block";
 					}
 				} else {
 					document.getElementById("loadingloool").innerHTML = \'<i class="fa-solid fa-xmark" style="color:#ffb1ab;padding: 0px 8px;"></i>\';
@@ -520,6 +524,7 @@ $(document).change(function(){
 		backpage = goback[goback.length-2]+"/"+goback[goback.length-1];
 		a(backpage, true, false, "GET", false, "", true);
 	}, false);
+	setTimeout(function () {captch = cptch.cloneNode(true)}, 1);
 </script>';
 	}
 	public function printPage($content, $isSubdirectory = true, $navbar = "home"){
