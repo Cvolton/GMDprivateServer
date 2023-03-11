@@ -118,7 +118,11 @@ class dashboardLib {
 		require_once __DIR__."/../".$dbPath."incl/lib/mainLib.php";
       	include __DIR__."/../".$dbPath."incl/lib/connection.php";
 		$gs = new mainLib();
-		if($enableCaptcha) Captcha::displayCaptcha('no');
+		if($enableCaptcha) {
+			echo '<div id="captchadiv">';
+			Captcha::displayCaptcha('no');
+			echo "</div>";
+		}
 		$homeActive = $accountActive = $browseActive = $modActive = $reuploadActive = $statsActive = $msgActive = $profileActive = "";
 		switch($active){
 			case "home":
