@@ -17,7 +17,7 @@ class dashboardLib {
 						<meta charset="utf-8">
 						<meta name="color-scheme" content="dark">
 						<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit="no">';
-          	if($isSubdirectory) echo '<base href="../">';
+				if($isSubdirectory) echo '<base href="../">';
 				echo '<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
                           <script src="https://kit.fontawesome.com/10e18026cb.js" crossorigin="anonymous"></script>
                           <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
@@ -53,7 +53,9 @@ class dashboardLib {
 		if(isset($string[$stringName])){
 			return $string[$stringName];
 		}else{
-			return "lnf:$stringName";
+		    include __DIR__."/lang/localeEN.php";
+		    if(isset($string[$stringName])) return $string[$stringName];
+			else return "lnf:$stringName";
 		}
 	}
 	public function printBoxBody(){
@@ -172,10 +174,10 @@ class dashboardLib {
 							<button onclick="a(\'stats/packTable.php\')"class="dropdown-item" href=""><div class="icon"><i class="fa-regular fa-folder-open" aria-hidden="false"></i></div>'.$this->getLocalizedString("packTable").'</button>
 							<button onclick="a(\'stats/gauntletTable.php\')"class="dropdown-item" href=""><div class="icon"><i class="fa-solid fa-globe" aria-hidden="false"></i></div>'.$this->getLocalizedString("gauntletTable").'</button>
 							<button onclick="a(\'stats/songList.php\')"class="dropdown-item" href=""><div class="icon"><i class="fa-solid fa-music" aria-hidden="false"></i></div>'.$this->getLocalizedString("songs").'</button>
-							<button onclick="a(\'demonlist\')"class="dropdown-item" href="demonlist"><div class="icon"><i class="fa-solid fa-dragon" aria-hidden="false"></i></div>'.$this->getLocalizedString("demonlist").'</button>';
-		if(isset($_SESSION["accountID"]) AND $_SESSION["accountID"] != 0){
-			echo '
-					<li class="nav-item dropdown '.$accountActive.' ">
+							<button onclick="a(\'demonlist\')"class="dropdown-item" href=""><div class="icon"><i class="fa-solid fa-dragon" aria-hidden="false"></i></div>'.$this->getLocalizedString("demonlist").'</button>
+							<button onclick="a(\'clans\')"class="dropdown-item" href=""><div class="icon"><i class="fa-solid fa-dungeon" aria-hidden="false"></i></div>'.$this->getLocalizedString("clans").'</button>';
+		if(isset($_SESSION["accountID"]) AND $_SESSION["accountID"] != 0) {
+			echo '<li class="nav-item dropdown '.$accountActive.' ">
 						<a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 							<i class="fa-solid fa-user" aria-hidden="true"></i> '.$this->getLocalizedString("accountManagement").'
 						</a>
@@ -292,7 +294,7 @@ class dashboardLib {
 						<a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 							<i class="fa-solid fa-language" aria-hidden="true"></i> '.$this->getLocalizedString("language").'
 						</a>
-						<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+						<div class="dropdown-menu dropdown-menu-left" aria-labelledby="navbarDropdownMenuLink">
 							<a class="dropdown-item" href="lang/switchLang.php?lang=RU"><div class="icon flag"><img class="imgflag" src="incl/flags/ru.png"></div>Русский</a>
 							<a class="dropdown-item" href="lang/switchLang.php?lang=EN"><div class="icon flag"><img class="imgflag" src="incl/flags/us.png"></div>English</a>
 							<a class="dropdown-item" href="lang/switchLang.php?lang=TR" title="Translated by EMREOYUN"><div class="icon flag"><img class="imgflag" src="incl/flags/tr.png"></div>Türkçe</a>
@@ -305,7 +307,7 @@ class dashboardLib {
 						<a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 							<i class="fa-solid fa-download" aria-hidden="true"></i> '.$this->getLocalizedString("download").'
 						</a>
-						<div class="dropdown-menu" id="dptp" aria-labelledby="navbarDropdownMenuLink">';
+						<div class="dropdown-menu dropdown-menu-left" id="dptp" aria-labelledby="navbarDropdownMenuLink">';
 						if(file_exists("download/".$gdps.".zip") OR file_exists("../download/".$gdps.".zip")) echo '<a class="dropdown-item" href="download/'.$gdps.'.zip"><div class="icon"><i class="fa-brands fa-windows" aria-hidden="false"></i></div>'.$this->getLocalizedString("forwindows").'</a>';
                         elseif(!empty($pc)) echo '<a class="dropdown-item" href="'.$pc.'"><div class="icon"><i class="fa-brands fa-windows" aria-hidden="false"></i></div>'.$this->getLocalizedString("forwindows").'</a>';
 						if(file_exists("download/".$gdps.".dmg") OR file_exists("../download/".$gdps.".dmg")) echo '<a class="dropdown-item" href="download/'.$gdps.'.dmg"><i class="fa-solid fa-desktop" style="position: absolute;font-size: 10px;margin: 3px 5px 5px -6px;" aria-hidden="false"></i><div class="icon"><i class="fa-brands fa-apple" aria-hidden="false"></i></div>'.$this->getLocalizedString("formac").'</a>';
@@ -343,21 +345,20 @@ class dashboardLib {
 						<a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 							<i class="fa-solid fa-user-circle" aria-hidden="true"></i> '.sprintf($this->getLocalizedString("loginHeader"), $userName).'
 						</a>
-						<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-							<button onclick="a(\'profile/'.$gs->getAccountName($_SESSION["accountID"]).'\')"class="dropdown-item" href=""><div class="icon"><i class="fa-regular fa-id-badge"></i></div>'.$this->getLocalizedString("profile").'</button>
-							<a class="dropdown-item" href="login/logout.php"><div class="icon"><i class="fa-solid fa-sign-out" aria-hidden="false"></i></div>'.$this->getLocalizedString("logout").'</a>
+						<div class="dropdown-menu dropdown-menu-left" aria-labelledby="navbarDropdownMenuLink">
+							<button onclick="a(\'profile/'.$gs->getAccountName($_SESSION["accountID"]).'\')" class="dropdown-item" href=""><div class="icon"><i class="fa-regular fa-id-badge"></i></div>'.$this->getLocalizedString("profile").'</button>';
+							$claaan = $gs->isPlayerInClan($_SESSION["accountID"]);
+							if($claaan) echo '<button onclick="a(\'clan/'.$gs->getClanInfo($claaan, "clan").'\', false, true)" class="dropdown-item" href=""><div class="icon"><i class="fa-solid fa-dungeon"></i></div>'.$this->getLocalizedString("yourClan").'</button>';
+							echo '<a class="dropdown-item" href="login/logout.php"><div class="icon"><i class="fa-solid fa-sign-out" aria-hidden="false"></i></div>'.$this->getLocalizedString("logout").'</a>
 						</div>
 					</li>';
 		}else{
-			/*echo '<li class="nav-item">
-						<a class="nav-link" href="login/login.php"><i class="fa-solid fa-sign-in" aria-hidden="true"></i> '.$this->getLocalizedString("login").'</a>
-					</li>';*/
 			echo '<li class="nav-item dropdown">
 						<a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 							<i class="fa-solid fa-sign-in" aria-hidden="true"></i> '.$this->getLocalizedString("login").'
 						</a>
-						<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink" style="padding: 15px 15px 0px 15px;min-width: 275px;min-height: 208px;">
-									<form action="login/login.php" method="post">
+						<div class="dropdown-menu dropdown-menu-left" aria-labelledby="navbarDropdownMenuLink" style="padding: 15px 15px 0px 15px;min-width: 275px;min-height: 208px;">
+									<form action="login/login.php" method="post" name="loginthing">
 										<div class="form-group">
 											<input type="text" class="form-control login-input" id="usernameField" name="userName" placeholder="'.$this->getLocalizedString("username").'">
 										</div>
@@ -366,7 +367,7 @@ class dashboardLib {
 										</div>
 										<div style="display: flex;flex-wrap: wrap;justify-content: center"><button type="submit" class="btn-primary btn-block" id="submit" disabled>'.$this->getLocalizedString("login").'</button>
 										</form><form action="login/register.php" style="width: 80%;margin-top: 10px;margin-bottom: -5px">
-										<button type="submit"class="btn btn-primary">'.$this->getLocalizedString("register").'</button>
+										<button type="button" onclick="a(\'login/register.php\')" class="btn btn-primary">'.$this->getLocalizedString("register").'</button>
 										</div>
 									</form>
 						</div><script>
@@ -657,7 +658,7 @@ $(document).change(function(){
 	}
 	public function title($title) {
       	global $gdps;
-		echo '<title>'.$title.' | '.$gdps.'</title>';
+		echo '<title>'.$title.' | '.$gdps.'!</title>';
 	}
 }
 ?>

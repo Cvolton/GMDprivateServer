@@ -7,7 +7,7 @@ $string["welcome"] = "Welcome to ".$gdps.'!';
 $string["didntInstall"] = "<div style='color:#47a0ff'><b>Warning!</b> You haven't fully installed dashboard! Click on the text to do this.</div>";
 $string["levelsWeek"] = "Levels uploaded in a week";
 $string["levels3Months"] = "Levels uploaded in 3 months";
-$string["footer"] = $gdps.", ".date('Y', time());
+$string["footer"] = $gdps."? 2020 - ".date('Y', time());
 $string["tipsAfterInstalling"] = "Welcome to Dashboard! We give you some hints after installation:<br>
 1. It seems that new permissions have appeared in SQL in the 'roles' table! You should check it out...<br>
 2. If you put 'icon.png' to the 'dashboard' folder, then the icon of your GDPS will appear on the top left!<br>
@@ -22,6 +22,20 @@ $string["empty"] = "Empty...";
 $string["writeSomething"] = "Write something!";  
 $string["replies"] = "Replies";
 $string["replyToComment"] = "Reply to a comment";
+$string["settings"] = "Settings";
+$string["allowMessagesFrom"] = "Allow messages from...";
+$string["allowFriendReqsFrom"] = "Allow friend requests from...";
+$string["showCommentHistory"] = "Show comments history...";
+$string["yourYouTube"] = "Your YouTube channel";
+$string["yourVK"] = "Your page on VK";
+$string["yourTwitter"] = "Your page on Twitter";
+$string["yourTwitch"] = "Your Twitch channel";
+$string["saveSettings"] = "Save settings";
+$string["all"] = "All";
+$string["friends"] = "Friends";
+$string["none"] = "None";
+$string["youBlocked"] = "This player blocked you!";
+$string["cantMessage"] = "You can't message this player!";
   
 $string["accountManagement"] = "Account management";
 $string["changePassword"] = "Change password";
@@ -106,8 +120,8 @@ $string["wrongNick"] = "Wrong username!";
 $string["sameNick"] = "Usernames you entered are the same!";
 $string["alreadyUsedNick"] = "Username you entered is already taken!";
 $string["changeNickDesc"] = "Here you can change your username!";
-$string["oldNick"] = "Old username";
-$string["newNick"] = " New username";
+$string["oldNick"] = "Old username";
+$string["newNick"] = " New username";
 $string["password"] = "Password";
 
 $string["packCreate"] = "Create a Map Pack";
@@ -115,7 +129,7 @@ $string["packCreateTitle"] = "Create a Map Pack";
 $string["packCreateDesc"] = "Here you can create a Map Pack!";
 $string["packCreateSuccess"] = "You successfully created a Map Pack called";
 $string["packCreateOneMore"] = "One more Map Pack?";
-$string["packName"] = "Name of Map Pack";
+$string["packName"] = "Name of Map Pack";
 $string["color"] = "Color";
 $string["sameLevels"] = "You chose the same levels!";
 $string["show"] = "Show";
@@ -263,6 +277,47 @@ $string["favouriteSongs"] = "Favourite songs";
 $string["howMuchLiked"] = "How much liked?";
 $string["nooneLiked"] = "Noone liked";
 
+$string["clan"] = "Clan";
+$string["joinedAt"] = "Joined clan at: <b>%s</b>";
+$string["createdAt"] = "Created clan at: <b>%s</b>";
+$string["clanMembers"] = "Clan members";
+$string["noMembers"] = "No members";
+$string["clanOwner"] = "Clan owner";
+$string["noClanDesc"] = "<i>No description</i>";
+$string["noClan"] = "This clan doesn't exist!";
+$string["clanName"] = "Clan name";
+$string["clanDesc"] = "Clan description";
+$string["clanColor"] = "Clan color";
+$string["dangerZone"] = "Danger zone";
+$string["giveClan"] = "Give clan";
+$string["deleteClan"] = "Delete clan";
+$string["goBack"] = "Go back";
+$string["areYouSure"] = "Are you sure?";
+$string["giveClanDesc"] = "Here you can give your can to a player.";
+$string["notInYourClan"] = "This player is not in your clan!";
+$string["givedClan"] = "You successfully gived your clan to <b>%s</b>!";
+$string["deletedClan"] = "You deleted clan <b>%s</b>.";
+$string["deleteClanDesc"] = "Here you can delete your clan.";
+$string["yourClan"] = "Your clan";
+$string["members0"] = "<b>1</b> member";
+$string["members1"] = "<b>%d</b> members"; 
+$string["members2"] = "<b>%d</b> members"; 
+$string["noRequests"] = "There is no requests. Chill!";
+$string["pendingRequests"] = "Clan requests";
+$string["closedClan"] = "Closed clan";
+$string["kickMember"] = "Kick member";
+$string["leaveFromClan"] = "Leave clan";
+$string["askToJoin"] = "Send join request";
+$string["removeClanRequest"] = "Delete join request";
+$string["joinClan"] = "Join clan";
+$string["noClans"] = "There is no clans";
+$string["clans"] = "Clans";
+$string["alreadyInClan"] = "You're already in clan!";
+$string["createClan"] = "Create clan";
+$string["createdClan"] = "You successfully created clan <span style='font-weight:700;color:#%s'>%s</span>!";
+$string["createClanDesc"] = "Here you can create a clan!";
+$string["create"] = "Create";
+
 /*
 	REUPLOAD
 */
@@ -408,7 +463,7 @@ $string["banned"] = "was successfully banned!";
 $string["unbanned"] = "was successfully unbanned!";
 $string["ban"] = "Ban";
 $string["nothingFound"] = "This player doesn't exist!";
-$string["banUserID"] = "Username or account ID";
+$string["banUserID"] = "Username or account ID";
 $string["banUserPlace"] = "Ban a user";
 $string["banYourself"] = "You can't ban yourself!"; 
 $string["banYourSelfBtn!"] = "Ban someone else";

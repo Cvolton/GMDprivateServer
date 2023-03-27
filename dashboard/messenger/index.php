@@ -31,6 +31,36 @@ if(isset($_SESSION["accountID"]) AND $_SESSION["accountID"] != 0){
   	$check = $gs->getAccountName($notyou);
  	if(empty($check) OR $notyou == $accid) $dl->title($dl->getLocalizedString("messenger")); else $dl->title($dl->getLocalizedString("messenger").", ".$check);
 	if(!empty($notyou) AND is_numeric($notyou) AND $notyou != 0 AND $notyou != $accid AND !empty($check)) {
+	    $checkmsg = $db->prepare("SELECT mS FROM accounts WHERE accountID = :id");
+		$checkmsg->execute([':id' => $notyou]);
+		$checkmsg = $checkmsg->fetch();
+		if($checkmsg["mS"] == 1) {
+		    if(!$gs->isFriends($notyou, $_SESSION["accountID"])) exit($dl->printSong('<div class="form">
+              <h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
+         	   <form class="form__inner" method="post" action="">
+        	  <p>'.$dl->getLocalizedString("youBlocked").'</p>
+        	  <button type="button" onclick="a(\'\', true, true, \'GET\')" class="btn-primary" name="accountID" value="'.$accid.'">'.$dl->getLocalizedString("dashboard").'</button>
+  		 </form>
+		</div>'));
+		} elseif($checkmsg["mS"] == 2) exit($dl->printSong('<div class="form">
+                	   <h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
+               	 	   <form class="form__inner" method="post" action="">
+              		  <p>'.$dl->getLocalizedString("cantMessage").'</p>
+              		  <button type="button" onclick="a(\'\', true, true, \'GET\')" class="btn-primary" name="accountID" value="'.$accid.'">'.$dl->getLocalizedString("dashboard").'</button>
+      				 </form>
+    			</div>'));
+		   else {
+    	    $block = $db->prepare("SELECT * FROM blocks WHERE person1 = :p1 AND person2 = :p2");
+            $block->execute([':p1' => $notyou, ':p2' => $_SESSION["accountID"]]);
+            $block = $block->fetch();
+            if(!empty($block)) exit($dl->printSong('<div class="form">
+                	   <h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
+               	 	   <form class="form__inner" method="post" action="">
+              		  <p>'.$dl->getLocalizedString("cantMessage").'</p>
+              		  <button type="button" onclick="a(\'\', true, true, \'GET\')" class="btn-primary" name="accountID" value="'.$accid.'">'.$dl->getLocalizedString("dashboard").'</button>
+      				 </form>
+    			</div>'));
+		}
 		if(!empty($_POST["subject"]) AND !empty($_POST["msg"])) {
 			$sendsub = base64_encode(ExploitPatch::remove($_POST["subject"]));
           	$query = $db->prepare("SELECT timestamp FROM messages WHERE accID=:accid AND toAccountID=:toaccid ORDER BY timestamp DESC LIMIT 1");

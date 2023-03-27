@@ -32,7 +32,7 @@ if($redirect == 1) {
 	$IPcheck = $db->prepare("SELECT extID FROM users WHERE IP = :ip ORDER BY lastPlayed DESC");
 	$IPcheck->execute([':ip' => $gs->getIP()]);
 	$IPcheck = $IPcheck->fetch();
-	$querywhat = "SELECT * FROM favsongs INNER JOIN songs on favsongs.songID = songs.ID WHERE favsongs.accountID = :id ORDER BY favsongs.ID DESC LIMIT 20 OFFSET $offset"; // offset couldn't be used in prepare statement for some very odd reason
+	$querywhat = "SELECT * FROM favsongs INNER JOIN songs on favsongs.songID = songs.ID WHERE favsongs.accountID = :id ORDER BY favsongs.ID DESC LIMIT 20 OFFSET $offset"; 
 	$query = $db->prepare($querywhat);
 	$query->execute([':id' => $IPcheck["extID"]]);
 	$res = $query->fetchAll();
@@ -41,7 +41,13 @@ if($redirect == 1) {
 		$str .= ":7:../redirect?q=".urlencode($sel["download"]);
 		$str .= "|";
 	}
+	if(empty($str)) $str = "4:There is no songs!|4:If you liked some...|4:Update your IP!|4:Go to your profile to do that.";
 	$str = rtrim($str, "|");
+	$querywhat = "SELECT * FROM favsongs INNER JOIN songs on favsongs.songID = songs.ID WHERE favsongs.accountID = :id ORDER BY favsongs.ID DESC"; 
+	$query = $db->prepare($querywhat);
+	$query->execute([':id' => $IPcheck["extID"]]);
+	$res = $query->fetchAll();
+	$totalCount = count($res);
 	$str .= "#$totalCount:$offset:20";
 	echo "$str";
 }

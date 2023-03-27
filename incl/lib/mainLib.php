@@ -391,6 +391,37 @@ class mainLib {
 		}
 		return "1~|~".$song["ID"]."~|~2~|~".str_replace("#", "", $song["name"])."~|~3~|~".$song["authorID"]."~|~4~|~".$song["authorName"]."~|~5~|~".$song["size"]."~|~6~|~~|~10~|~".$dl."~|~7~|~~|~8~|~1";
 	}
+	public function getClanInfo($clan, $column = "*") {
+	    if(!is_numeric($clan)) return;
+	    include __DIR__ . "/connection.php";
+	    $claninfo = $db->prepare("SELECT `$column` FROM clans WHERE ID = :id");
+	    $claninfo->execute([':id' => $clan]);
+	    $claninfo = $claninfo->fetch();
+	    if(empty($claninfo)) return false;
+	    else {
+	        if($column != "*") {
+	            if($column != "clan" AND $column != "desc") return $claninfo[$column];
+	            else return base64_decode($claninfo[$column]);
+	        }
+	        else return array("ID" => $claninfo["ID"], "clan" => base64_decode($claninfo["clan"]), "desc" => base64_decode($claninfo["desc"]), "clanOwner" => $claninfo["clanOwner"], "color" => $claninfo["color"], "isClosed" => $claninfo["isClosed"], "creationDate" => $claninfo["creationDate"]);
+	    }
+	}
+	public function getClanID($clan) {
+	    include __DIR__ . "/connection.php";
+	    $claninfo = $db->prepare("SELECT ID FROM clans WHERE clan = :id");
+	    $claninfo->execute([':id' => base64_encode($clan)]);
+	    $claninfo = $claninfo->fetch();
+	    return $claninfo["ID"];
+	}
+	public function isPlayerInClan($id) {
+	    include __DIR__ . "/connection.php";
+	    if(!is_numeric($id)) return;
+	    $claninfo = $db->prepare("SELECT clan FROM users WHERE extID = :id");
+	    $claninfo->execute([':id' => $id]);
+	    $claninfo = $claninfo->fetch();
+	    if(!empty($claninfo)) return $claninfo["clan"];
+	    else return false;
+	}
 	public function sendDiscordPM($receiver, $message){
 		include __DIR__ . "/../../config/discord.php";
 		if(!$discordEnabled){
@@ -425,6 +456,7 @@ class mainLib {
 		$headr['User-Agent'] = 'GMDprivateServer (https://github.com/Cvolton/GMDprivateServer, 1.0)';
 		curl_setopt($crl, CURLOPT_CUSTOMREQUEST, "POST");                                                                     
 		curl_setopt($crl, CURLOPT_POSTFIELDS, $data_string);
+													   
 		$headr[] = 'Content-type: application/json';
 		$headr[] = 'Authorization: Bot '.$bottoken;
 		curl_setopt($crl, CURLOPT_HTTPHEADER,$headr);
@@ -711,6 +743,7 @@ class mainLib {
 	}
 	public function featureLevel($accountID, $levelID, $feature){
 		if(!is_numeric($accountID)) return false;
+
 		include __DIR__ . "/connection.php";
 		$query = "UPDATE levels SET starFeatured=:feature, rateDate=:now WHERE levelID=:levelID";
 		$query = $db->prepare($query);	
@@ -720,10 +753,12 @@ class mainLib {
 	}
 	public function verifyCoinsLevel($accountID, $levelID, $coins){
 		if(!is_numeric($accountID)) return false;
+
 		include __DIR__ . "/connection.php";
 		$query = "UPDATE levels SET starCoins=:coins WHERE levelID=:levelID";
 		$query = $db->prepare($query);	
 		$query->execute([':coins' => $coins, ':levelID'=>$levelID]);
+		
 		$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('3', :value, :levelID, :timestamp, :id)");
 		$query->execute([':value' => $coins, ':timestamp' => time(), ':id' => $accountID, ':levelID' => $levelID]);
 	}
@@ -786,7 +821,7 @@ class mainLib {
         if(!empty($query)) return true; 
         else return false;
 	}
-  	public function mail($mail = '', $user = '') {
+	 public function mail($mail = '', $user = '') {
 		if(empty($mail) OR empty($user)) return;
 		include __DIR__."/../../config/mail.php";
 		if($mailEnabled) {

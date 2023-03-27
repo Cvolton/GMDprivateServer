@@ -15,7 +15,9 @@ if(!$installed) {
       ALTER TABLE users ADD COLUMN IF NOT EXISTS banReason varchar(255) NOT NULL DEFAULT 'none' AFTER isCreatorBanned;
 	  ALTER TABLE accounts ADD COLUMN IF NOT EXISTS auth varchar(16) NOT NULL DEFAULT 'none' AFTER isActive;
 	  ALTER TABLE roles ADD COLUMN IF NOT EXISTS demonlistAdd INT NOT NULL DEFAULT '0' AFTER dashboardForceChangePassNick;
-	  ALTER TABLE roles ADD COLUMN IF NOT EXISTS demonlistApprove INT NOT NULL DEFAULT '0' AFTER demonlistAdd");
+	  ALTER TABLE roles ADD COLUMN IF NOT EXISTS demonlistApprove INT NOT NULL DEFAULT '0' AFTER demonlistAdd;
+	  ALTER TABLE users ADD COLUMN IF NOT EXISTS clan INT NOT NULL DEFAULT '0' AFTER userName;
+	  ALTER TABLE users ADD COLUMN IF NOT EXISTS joinedAt INT NOT NULL DEFAULT '0' AFTER clan");
 	} else {
 		$check = $db->query("SHOW COLUMNS FROM `roles` LIKE 'dashboardLevelPackCreate'");
       		$exist = $check->fetchAll();
@@ -44,6 +46,12 @@ if(!$installed) {
 		$check = $db->query("SHOW COLUMNS FROM `roles` LIKE 'demonlistApprove'");
       		$exist = $check->fetchAll();
       		if(empty($exist)) $db->query("ALTER TABLE roles ADD demonlistApprove INT NOT NULL DEFAULT '0' AFTER demonlistAdd");
+		$check = $db->query("SHOW COLUMNS FROM `users` LIKE 'clan'");
+      		$exist = $check->fetchAll();
+      		if(empty($exist)) $db->query("ALTER TABLE users ADD clan INT NOT NULL DEFAULT '0' AFTER userName");
+		$check = $db->query("SHOW COLUMNS FROM `users` LIKE 'joinedAt'");
+      		$exist = $check->fetchAll();
+      		if(empty($exist)) $db->query("ALTER TABLE users ADD joinedAt INT NOT NULL DEFAULT '0' AFTER clan");
 	}
 	$check = $db->query("SHOW TABLES LIKE 'replies'");
       		$exist = $check->fetchAll();
@@ -85,7 +93,28 @@ if(!$installed) {
 			 `accountID` int(20) NOT NULL DEFAULT '0',
 			 `timestamp` int(20) NOT NULL DEFAULT '0',
 			 PRIMARY KEY (`ID`)
-			) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
+			) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
+	$check = $db->query("SHOW TABLES LIKE 'clans'");
+      		$exist = $check->fetchAll();
+      		if(empty($exist)) $db->query("CREATE TABLE `clans` (
+			 `ID` int(11) NOT NULL AUTO_INCREMENT,
+			 `clan` varchar(255) NOT NULL DEFAULT '',
+			 `desc` varchar(2048) NOT NULL DEFAULT '',
+			 `clanOwner` int(11) NOT NULL DEFAULT '0',
+			 `color` varchar(6) NOT NULL DEFAULT 'FFFFFF',
+			 `isClosed` int(11) NOT NULL DEFAULT '0',
+			 `creationDate` int(11) NOT NULL DEFAULT '0',
+			 PRIMARY KEY (`ID`)
+			) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8");
+	$check = $db->query("SHOW TABLES LIKE 'favsongs'");
+      		$exist = $check->fetchAll();
+      		if(empty($exist)) $db->query("CREATE TABLE `clanrequests` (
+			 `ID` int(11) NOT NULL AUTO_INCREMENT,
+			 `accountID` int(11) NOT NULL DEFAULT '0',
+			 `clanID` int(11) NOT NULL DEFAULT '0',
+			 `timestamp` int(11) NOT NULL DEFAULT '0',
+			 PRIMARY KEY (`ID`)
+			) ENGINE=InnoDB DEFAULT CHARSET=utf8");
 	$lines = file($dbPath.'config/dashboard.php');
 	$first_line = $lines[2];
 	$lines = array_slice($lines, 1 + 2);

@@ -21,7 +21,7 @@ if($_SESSION["accountID"] != 0) {
 	$query = $db->prepare("SELECT * FROM favsongs INNER JOIN songs on favsongs.songID = songs.ID WHERE favsongs.accountID = :id ORDER BY favsongs.ID DESC LIMIT 10 OFFSET $page");
 	$query->execute([':id' => $_SESSION["accountID"]]);
 	$result = $query->fetchAll();
-	$x = count($result) - $page;
+	$x = 1;
 	if(empty($result)) {
 		$dl->printSong('<div class="form">
 		<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
@@ -57,12 +57,15 @@ if($_SESSION["accountID"] != 0) {
 						<td>'.$favtime.'</td>
 						<td>'.$favs.'</td>
 					</tr>';
-		$x--;
+		$x++;
 		echo "</td></tr>";
 	}
 	/*
 		bottom row
 	*/
+	$query = $db->prepare("SELECT * FROM favsongs INNER JOIN songs on favsongs.songID = songs.ID WHERE favsongs.accountID = :id ORDER BY favsongs.ID DESC");
+	$query->execute([':id' => $_SESSION["accountID"]]);
+	$result = $query->fetchAll();
 	$pagecount = ceil(count($result) / 10);
 	$bottomrow = $dl->generateBottomRow($pagecount, $actualpage);
 	/* 

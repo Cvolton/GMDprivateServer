@@ -7,7 +7,7 @@ $gs = new mainLib();
 if(!isset($_GET["id"])) header("Location: ".$gs->getAccountName(ExploitPatch::number($_POST["accountID"])));
 include "../".$dbPath."incl/lib/connection.php";
 $dl = new dashboardLib();
-$dl->printFooter('../');
+$clan = $none = "";
 if(!isset($_SESSION["accountID"]) OR $_SESSION["accountID"] == 0 AND empty($_POST["accountID"])) {
   	$dl->title($dl->getLocalizedString("profile"));
 	$dl->printSong('<div class="form">
@@ -21,14 +21,34 @@ if(!isset($_SESSION["accountID"]) OR $_SESSION["accountID"] == 0 AND empty($_POS
 }
 if(!empty($_POST["accountID"])) $accid = ExploitPatch::number($_POST["accountID"]);
 elseif(isset($_GET["id"])) {
+    $dl->printFooter('../../');
 	$getID = explode("/", $_GET["id"])[count(explode("/", $_GET["id"]))-1];
+	if($getID == "settings") {
+	    $getID = explode("/", $_GET["id"])[count(explode("/", $_GET["id"]))-2];
+	    $_POST["settings"] = 1;
+	}
 	$accid = ExploitPatch::remove($getID);
 	if(!is_numeric($accid)) $accid = $gs->getAccountIDFromName($accid);
 }
-else $accid = $_SESSION["accountID"];
+else {
+    $accid = $_SESSION["accountID"];
+    $dl->printFooter('../');
+}
 if(!$accid) $accid = $_SESSION["accountID"];
 $accname = $gs->getAccountName($accid);
 $dl->title($dl->getLocalizedString("profile").', '.$accname);
+if($accid != $_SESSION["accountID"]) {
+    $block = $db->prepare("SELECT * FROM blocks WHERE person1 = :p1 AND person2 = :p2");
+    $block->execute([':p1' => $accid, ':p2' => $_SESSION["accountID"]]);
+    $block = $block->fetch();
+    if(!empty($block)) exit($dl->printSong('<div class="form">
+            	   <h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
+           	 	   <form class="form__inner" method="post" action="">
+          		  <p>'.$dl->getLocalizedString("youBlocked").'</p>
+          		  <button type="button" onclick="a(\'\', true, true, \'GET\')" class="btn-primary" name="accountID" value="'.$accid.'">'.$dl->getLocalizedString("dashboard").'</button>
+  				 </form>
+			</div>'));
+}
 if(!empty($_POST["msg"])) {
   	  $query = $db->prepare("SELECT timestamp FROM acccomments WHERE userID=:accid ORDER BY timestamp DESC LIMIT 1");
       $query->execute([':accid' => $gs->getUserID($accid)]);
@@ -48,14 +68,79 @@ if(!empty($_POST["msg"])) {
 	$query = $db->prepare("INSERT INTO acccomments (userID, userName, comment, timestamp) VALUES (:id, :name, :msg, :time)");
   	$query->execute([':id' => $gs->getUserID($accid), ':name' => $accname, ':msg' => $msg, ':time' => time()]);
 }
-$query = $db->prepare("SELECT isBanned, banReason FROM users WHERE extID=:id");
-$query->execute([':id' => $accid]);
-$query = $query->fetch();
-if($query["banReason"] != 'none' OR $query["isBanned"] == 1) $maybeban = '<h1 style="text-decoration:line-through;color:#432529;margin:0px">'.$accname.'</h1>'; else $maybeban = '<h1 style="color:rgb('.$gs->getAccountCommentColor($accid).');margin:0px">'.$accname.'</h1>';
-if(isset($_SERVER["HTTP_REFERER"])) $back = '<form method="post" action="'.$_SERVER["HTTP_REFERER"].'"><button type="button" onclick="a(\''.$_SERVER["HTTP_REFERER"].'\', true, true, \'GET\')" class="goback"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i></button></form>'; else $back = '';
-$query = $db->prepare("SELECT extID, stars, demons, coins, userCoins, creatorPoints, diamonds, isCreatorBanned, dlPoints FROM users WHERE extID=:id");
+if(isset($_POST["settings"]) AND $_POST["settings"] == 1 AND $accid == $_SESSION["accountID"]) {
+    if(!isset($_POST["ichangedsmth"]) OR $_POST["ichangedsmth"] != 1) {
+        echo '<base href="../../">';
+        $query = $db->prepare("SELECT mS, frS, cS, youtubeurl, twitter, twitch FROM accounts WHERE accountID=:id");
+        $query->execute([':id' => $accid]);
+        $query = $query->fetch();
+    	exit($dl->printSong('<div class="form" style="width: 60vw;max-height: 80vh;position:relative">
+        	<div style="height: 100%;width: 100%;"><div style="display: flex;align-items: center;justify-content: center;flex-wrap:wrap">
+            	<form method="post" style="margin:0px" action=""><button type="button" onclick="a(\'profile/'.$accname.'\', true, true, \'GET\')" class="goback" style="margin-top:0px"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i></button></form>
+                  <div style="display: flex;flex-direction: column;align-items: center"><h1>'.$dl->getLocalizedString("settings").'</h1></div>
+                  <form method="post" style="display: flex;grid-gap:10px;width: 100%;margin-bottom: 15px">
+                          <div class="messenger" style="grid-gap: 10px;display: grid;">
+                            <div>
+                                <h2 style="text-align:left;margin:0;margin-bottom: 3px">'.$dl->getLocalizedString("allowMessagesFrom").'</h2>
+                                <select class="field" style="margin: 0px" name="messages">
+                                 <option value="0">'.$dl->getLocalizedString("all").'</option>
+                                 <option value="1">'.$dl->getLocalizedString("friends").'</option>
+                                 <option value="2">'.$dl->getLocalizedString("none").'</option>
+                                </select>
+                            </div>
+                            <div>
+                            <h2 style="text-align:left;margin:0;margin-bottom: 3px">'.$dl->getLocalizedString("allowFriendReqsFrom").'</h2>
+                                <select class="field" style="margin: 0px" name="friendreqs">
+                                 <option value="0">'.$dl->getLocalizedString("all").'</option>
+                                 <option value="1">'.$dl->getLocalizedString("none").'</option>
+                                </select>
+                            </div>
+                            <div>
+                            <h2 style="text-align:left;margin:0;margin-bottom: 3px">'.$dl->getLocalizedString("showCommentHistory").'</h2>
+                                <select class="field" style="margin: 0px" name="comments">
+                                 <option value="0">'.$dl->getLocalizedString("all").'</option>
+                                 <option value="1">'.$dl->getLocalizedString("friends").'</option>
+                                 <option value="2">'.$dl->getLocalizedString("none").'</option>
+                                </select>
+                            </div>
+                            <script>
+                                document.getElementsByName("messages")[0].value = '.$query["mS"].';
+                                document.getElementsByName("friendreqs")[0].value = '.$query["frS"].';
+                                document.getElementsByName("comments")[0].value = '.$query["cS"].';
+                            </script>
+                         </div>
+                         <div class="messenger" style="grid-gap: 10px;display: grid;">
+                            <div>
+                                <h2 style="text-align:left;margin:0;margin-bottom: 3px">'.$dl->getLocalizedString("yourYouTube").'</h2>
+                                <input class="form-control" type="text" value="'.$query["youtubeurl"].'" name="youtube" placeholder="youtube.com/channel/..."></input>
+                            </div>
+                            <div>
+                                <h2 style="text-align:left;margin:0;margin-bottom: 3px">'.$dl->getLocalizedString("yourVK").'</h2>
+                                <input class="form-control" type="text" value="'.$query["twitter"].'" name="twitter" placeholder="vk.com/..."></input>
+                            </div>
+                            <div>
+                                <h2 style="text-align:left;margin:0;margin-bottom: 3px">'.$dl->getLocalizedString("yourTwitch").'</h2>
+                                <input class="form-control" type="text" value="'.$query["twitch"].'" name="twitch" placeholder="twitch.tv/..."></input>
+                            </div>
+                    </div>
+                    <input type="hidden" name="ichangedsmth" value="1"></input>
+                    </form>
+                <button style="margin-bottom:10px" class="btn-song" type="button" onclick="a(\'profile/'.$accname.'/settings\', true, true, \'POST\')">'.$dl->getLocalizedString("saveSettings").'</button>
+            </div>
+    </div></div>'));
+    } else {
+        if(ExploitPatch::number($_POST["messages"]) > 2 OR ExploitPatch::number($_POST["messages"]) < 0 OR empty(ExploitPatch::number($_POST["messages"]))) $_POST["messages"] = 0;
+        if(ExploitPatch::number($_POST["friendreqs"]) > 1 OR ExploitPatch::number($_POST["friendreqs"]) < 0 OR empty(ExploitPatch::number($_POST["friendreqs"]))) $_POST["friendreqs"] = 0;
+        if(ExploitPatch::number($_POST["comments"]) > 2 OR ExploitPatch::number($_POST["comments"]) < 0 OR empty(ExploitPatch::number($_POST["comments"]))) $_POST["comments"] = 0;
+        $query = $db->prepare("UPDATE accounts SET mS = :ms, frS = :frs, cS = :cs, youtubeurl = :yt, twitter = :twt, twitch = :ttv WHERE accountID=:id");
+        $query->execute([':id' => $accid, ':ms' => ExploitPatch::number($_POST["messages"]), ':frs' => ExploitPatch::number($_POST["friendreqs"]), ':cs' => ExploitPatch::number($_POST["comments"]), ':yt' => ExploitPatch::remove($_POST["youtube"]), ':twt' => ExploitPatch::remove($_POST["twitter"]), ':ttv' => ExploitPatch::remove($_POST["twitch"])]);
+    }
+}
+$query = $db->prepare("SELECT extID, stars, demons, coins, userCoins, creatorPoints, diamonds, isCreatorBanned, dlPoints, isBanned, banReason, clan FROM users WHERE extID=:id");
 $query->execute([':id' => $accid]);
 $res = $query->fetch();
+if($res["isBanned"] == 1) $maybeban = '<h1 style="text-decoration:line-through;color:#432529;margin:0px">'.$accname.'</h1>'; else $maybeban = '<h1 style="color:rgb('.$gs->getAccountCommentColor($accid).');margin:0px">'.$accname.'</h1>';
+if(isset($_SERVER["HTTP_REFERER"])) $back = '<form method="post" action="'.$_SERVER["HTTP_REFERER"].'"><button type="button" onclick="a(\''.$_SERVER["HTTP_REFERER"].'\', true, true, \'GET\')" class="goback"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i></button></form>'; else $back = '';
 if($res["stars"] == 0) $st = ''; else $st = '<p class="profilepic">'.$res["stars"].' <i class="fa-solid fa-star"></i></p>';
 if($res["diamonds"] == 0) $dm = ''; else $dm = ' <p class="profilepic">'.$res["diamonds"].' <i class="fa-solid fa-gem"></i></p>';
 if($res["coins"] == 0) $gc = ''; else $gc = '<p class="profilepic">'.$res["coins"].' <i class="fa-solid fa-coins" style="color:#ffffbb"></i></p>';
@@ -79,15 +164,10 @@ foreach($msgs AS &$msg) {
   	$message = base64_decode($msg["comment"]);
   	$time = $msg["timestamp"];
 	$likes = $msg["likes"];
-  	if($likes >= 0) $likes = $likes.' <i class="fa-regular fa-thumbs-up"></i>'; else $likes = mb_substr($likes, 1).' <i class="fa-regular fa-thumbs-down"></i>';
-	if($_SESSION["accountID"] != 0) {
-		if($reply == 0) $none = 'display:none'; else $none = '';
-		$replies = '<button id="btnreply'.$msg["commentID"].'" onclick="reply('.$msg["commentID"].')" class="btn-rendel" style="padding: 7 10;margin-right: 10px;min-width: max-content;width: max-content;'.$none.'">'.$dl->getLocalizedString("replies").' ('.$reply.')</button>';
-		if($_SESSION["accountID"] != 0) $input = '<div class="field" style="display:flex;margin-right:10px">
-			<input id="inputReply'.$msg["commentID"].'" type="text" placeholder="'.$dl->getLocalizedString("replyToComment").'">
-			<button onclick="sendReply('.$msg["commentID"].')" id="btninput'.$msg["commentID"].'" style="width: max-content;margin-left: 10px;padding: 8px;" class="btn-rendel"><i style="color:white" class="fa-regular fa-paper-plane" aria-hidden="true"></i></button>
-		</div>';
-	}
+	if($likes >= 0) $likes = $likes.' <i class="fa-regular fa-thumbs-up"></i>'; else $likes = mb_substr($likes, 1).' <i class="fa-regular fa-thumbs-down"></i>';
+	if($reply == 0) $none = 'display:none';
+	$replies = '<button id="btnreply'.$msg["commentID"].'" onclick="reply('.$msg["commentID"].')" class="btn-rendel" style="padding: 7 10;margin-right: 10px;min-width: max-content;width: max-content;'.$none.'">'.$dl->getLocalizedString("replies").' ('.$reply.')</button>';
+	if($_SESSION["accountID"] != 0) $input = '<div class="field" style="display:flex;margin-right:10px"><input id="inputReply'.$msg["commentID"].'" type="text" placeholder="'.$dl->getLocalizedString("replyToComment").'"><button onclick="sendReply('.$msg["commentID"].')" id="btninput'.$msg["commentID"].'" style="width: max-content;margin-left: 10px;padding: 8px;" class="btn-rendel"><i style="color:white" class="fa-regular fa-paper-plane" aria-hidden="true"></i></button></div>';
   	$comments .= '<div style="width: 100%;display: flex;flex-wrap: wrap;justify-content: center;">
 			<div class="profile"><div style="display:flex"><h2 class="profilenick">'.$accname.'</h2><p style="text-align:right">'.$likes.'</p></div>
 			<h3 class="profilemsg">'.$message.'</h3>
@@ -118,17 +198,22 @@ if(empty($comments)) $comments = '<p class="profile" style="font-size:25px;color
 		}
 	});
 	</script>';
-	$msgtopl = '';
+	$msgtopl = '<form method="post" name="settingsform"><input type="hidden" name="settings" value="1"><button type="button" onclick="a(\'profile/'.$accname.'/settings\', true, true, \'POST\', false, \'settingsform\')" title="'.$dl->getLocalizedString("settings").'" class="msgupd" name="settings" value="1"><i class="fa-solid fa-user-gear" aria-hidden="true"></i></button></form>';
 }
 if($_SESSION["accountID"] == 0) $msgtopl = '';
 if($res["dlPoints"] != 0) $points = '<i style="position: absolute;font-size: 20;right: 50;color: gray;" class="fa-solid fa-medal"> '.$res["dlPoints"].'</i>';
+if($gs->isPlayerInClan($accid)) {
+	$claninfo = $gs->getClanInfo($res["clan"]);
+	if($claninfo["clanOwner"] == $accid) $own = '<i style="color:#ffff91" class="fa-solid fa-crown"></i>';
+	$clan = '<button type="button" onclick="a(\'clan/'.$claninfo["clan"].'\', true, true)" style="display:contents;cursor:pointer"><h2 class="music" style="grid-gap:5px;color:#'.$claninfo["color"].'">'.$claninfo["clan"].$own.'</h2></button>';
+}
 $dl->printSong('<div class="form" style="width: 60vw;max-height: 80vh;position:relative">
     	<div style="height: 100%;width: 100%;"><div style="display: flex;align-items: center;justify-content: center;">
         	'.$back.'
-              <div style="display: flex;flex-direction: column;align-items: center;margin:5px 0px 10px 0px">'.$maybeban.'</div>'.$msgtopl.$points.'
+              <div style="display: flex;flex-direction: column;align-items: center;margin:5px 0px 10px 0px">'.$maybeban.$clan.'</div>'.$msgtopl.$points.$discordbtn.'
         </div>
         <div class="form-control" style="display: flex;width: 100%;height: max-content;align-items: center;">'.$all.'</div>
-        <div class="form-control dmbox" style="display: flex;border-radius: 30px;margin-top: 20px;flex-wrap: wrap;padding-top: 0;max-height: 45vh;padding-bottom: 10px;min-width: 100%;height: max-content;margin-bottom: 17px;align-items: center;">
+        <div class="form-control dmbox" style="overflow-wrap: anywhere;display: flex;border-radius: 30px;margin-top: 20px;flex-wrap: wrap;padding-top: 0;max-height: 45vh;padding-bottom: 10px;min-width: 100%;height: max-content;margin-bottom: 17px;align-items: center;">
         	'.$comments.'
         </div>
 		'.$send.'

@@ -8,7 +8,7 @@ $string["welcome"] = "Bienvenue dans ".$gdps.'!';
 $string["didntInstall"] = "<div style='color:#47a0ff'><b>Alerte!</b> Vous n'avez pas entièrement installé le tableau de bord! Cliquez sur le texte pour le faire.</div>";
 $string["levelsWeek"] = "Niveaux publiés en une semaine";
 $string["levels3Months"] = "Niveaux publiés en 3 mois";
-$string["footer"] = $gdps.", ".date('Y', time());
+$string["footer"] = $gdps."? 2020 - ".date('Y', time());
 $string["tipsAfterInstalling"] = "Bienvenue au tableau de bord! Nous te donnons certains conseils après l'installation:<br>
 1. Il y a de nouvelles permissions dans la base de données SQL dans la table 'roles'! Vous devriez y jeter un coup d'oeil...<br>
 2. Si vous placez 'icon.png' dans le dossier 'dashboard', alors le logo de votre GDPS va apparaître en haut à gauche!<br>
@@ -23,6 +23,20 @@ $string["empty"] = "Vide...";
 $string["writeSomething"] = "Écrivez quelque chose!";  
 $string["replies"] = "Réponses";
 $string["replyToComment"] = "Répondre à un commentaire";
+$string["settings"] = "Settings";
+$string["allowMessagesFrom"] = "Allow messages from...";
+$string["allowFriendReqsFrom"] = "Allow friend requests from...";
+$string["showCommentHistory"] = "Show comments history...";
+$string["yourYouTube"] = "Your YouTube channel";
+$string["yourVK"] = "Your page on VK";
+$string["yourTwitter"] = "Your page on Twitter";
+$string["yourTwitch"] = "Your Twitch channel";
+$string["saveSettings"] = "Save settings";
+$string["all"] = "All";
+$string["friends"] = "Friends";
+$string["none"] = "None";
+$string["youBlocked"] = "This player blocked you!";
+$string["cantMessage"] = "You can't message this player!";
 
 $string["accountManagement"] = "Géstion du compte";
 $string["changePassword"] = "Changer le mot de passe";
@@ -263,6 +277,47 @@ $string["dislikeSong"] = "Retirer la chansons des favoris";
 $string["favouriteSongs"] = "Chansons favorites";
 $string["howMuchLiked"] = "Combien ont ils aimé?";
 $string["nooneLiked"] = "Personne n'a aimé";
+
+$string["clan"] = "Clan";
+$string["joinedAt"] = "Joined clan at: <b>%s</b>";
+$string["createdAt"] = "Created clan at: <b>%s</b>";
+$string["clanMembers"] = "Clan members";
+$string["noMembers"] = "No members";
+$string["clanOwner"] = "Clan owner";
+$string["noClanDesc"] = "<i>No description</i>";
+$string["noClan"] = "This clan doesn't exist!";
+$string["clanName"] = "Clan name";
+$string["clanDesc"] = "Clan description";
+$string["clanColor"] = "Clan color";
+$string["dangerZone"] = "Danger zone";
+$string["giveClan"] = "Give clan";
+$string["deleteClan"] = "Delete clan";
+$string["goBack"] = "Go back";
+$string["areYouSure"] = "Are you sure?";
+$string["giveClanDesc"] = "Here you can give your can to a player.";
+$string["notInYourClan"] = "This player is not in your clan!";
+$string["givedClan"] = "You successfully gived your clan to <b>%s</b>!";
+$string["deletedClan"] = "You deleted clan <b>%s</b>.";
+$string["deleteClanDesc"] = "Here you can delete your clan.";
+$string["yourClan"] = "Your clan";
+$string["members0"] = "<b>1</b> member";
+$string["members1"] = "<b>%d</b> members"; 
+$string["members2"] = "<b>%d</b> members"; 
+$string["noRequests"] = "There is no requests. Chill!";
+$string["pendingRequests"] = "Clan requests";
+$string["closedClan"] = "Closed clan";
+$string["kickMember"] = "Kick member";
+$string["leaveFromClan"] = "Leave clan";
+$string["askToJoin"] = "Send join request";
+$string["removeClanRequest"] = "Delete join request";
+$string["joinClan"] = "Join clan";
+$string["noClans"] = "There is no clans";
+$string["clans"] = "Clans";
+$string["alreadyInClan"] = "You're already in clan!";
+$string["createClan"] = "Create clan";
+$string["createdClan"] = "You successfully created clan <span style='font-weight:700;color:#%s'>%s</span>!";
+$string["createClanDesc"] = "Here you can create a clan!";
+$string["create"] = "Create";
 
 /*
 	REUPLOAD

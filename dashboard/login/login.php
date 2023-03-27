@@ -62,8 +62,14 @@ if(isset($_POST["userName"]) AND isset($_POST["password"])){
           $query->execute([':auth' => $auth, ':id' => $accountID]);
 		  setcookie('auth', $auth, 2147483647, '/');
     } else setcookie('auth', $auth["auth"], 2147483647, '/');
-	header('Location: ../');
-	$dl->printLoginBox('<p>'.$dl->getLocalizedString("loginSuccess").'<button type="submit" class="btn-primary" >'.$dl->getLocalizedString("clickHere").'</button></p>');
+	$dl->printSong('<div class="form">
+                        	   <h1>'.$dl->getLocalizedString("loginBox").'</h1>
+                       	 	   <form class="form__inner" method="post" action=".">
+                      		  <p>'.$dl->getLocalizedString("loginSuccess").'</p>
+							   <button style="margin-bottom:10px" type="submit" class="btn-primary">'.$dl->getLocalizedString("dashboard").'</button>
+              				 </form>
+        			</div>
+        			<script>setTimeout(()=>{a(\'\')}, 1500);</script>', 'profile');
 }else{
 	$loginbox = '<form class="field" action="" method="post">
 							<div class="form-group">

@@ -7,7 +7,7 @@ $string["welcome"] = "Ласкаво просимо до ".$gdps.'!';
 $string["didntInstall"] = "<div style='color:#47a0ff'><b>Увага!</b> Ви не до кінця встановили панель серверу! Нажміть на текст, щоб це зробити.</div>";
 $string["levelsWeek"] = "Викладено рівнів за тиждень";
 $string["levels3Months"] = "Викладено рівнів за 3 місяці";
-$string["footer"] = $gdps.", ".date('Y', time());
+$string["footer"] = $gdps."? 2020 - ".date('Y', time());
 $string["tipsAfterInstalling"] = "Ласкаво просимо до панелі серверу! Ми даємо вам декілька підсказок після встановлення:<br>
 1. Здається, в SQL у таблиці 'roles' з'явились нові права! Вам слід це перевірити...<br>
 2. Якщо ви помістите icon.png у папку 'dashboard', то зліва зверху появиться значок вашого серверу!<br>
@@ -22,6 +22,20 @@ $string["empty"] = "Порожньо...";
 $string["writeSomething"] = "Напишіть щось!";
 $string["replies"] = "Відповіді";
 $string["replyToComment"] = "Відповідь на коментар";
+$string["settings"] = "Налаштування";
+$string["allowMessagesFrom"] = "Дозволяти повідомлення від...";
+$string["allowFriendReqsFrom"] = "Дозволяти заявки в друзі від...";
+$string["showCommentHistory"] = "Показувати історію коментарів...";
+$string["yourYouTube"] = "Ваш канал на YouTube";
+$string["yourVK"] = "Ваша сторінка в ВКонтакте";
+$string["yourTwitter"] = "Ваша сторінка в Twitter";
+$string["yourTwitch"] = "Ваш канал на Twitch";
+$string["saveSettings"] = "Зберегти налаштування";
+$string["all"] = "Все";
+$string["friends"] = "Друзі";
+$string["none"] = "Ніхто";
+$string["youBlocked"] = "Цей гравець вас заблокував!";
+$string["cantMessage"] = "Ви не можете написати цьому гравцю!";
 
 $string["accountManagement"] = "Управніння акаунтом";
 $string["changePassword"] = "Змінити пароль";
@@ -263,6 +277,47 @@ $string["dislikeSong"] = "Забрати пісню з улюбленних";
 $string["favouriteSongs"] = "Улюблені пісні";
 $string["howMuchLiked"] = "Скільки лайкнуло?";
 $string["nooneLiked"] = "Ніхто не лайкнув";
+
+$string["clan"] = "Клан";
+$string["joinedAt"] = "Вступив(ла) у клан: <b>%s</b>";
+$string["createdAt"] = "Створив(ла) клан: <b>%s</b>";
+$string["clanMembers"] = "Учасники клану";
+$string["noMembers"] = "Учасників немає";
+$string["clanOwner"] = "Творець клану";
+$string["noClanDesc"] = "<i>У клану немає опису</i>";
+$string["noClan"] = "Такого клану не існує!";
+$string["clanName"] = "Назва клану";
+$string["clanDesc"] = "Опис клану";
+$string["clanColor"] = "Колір клану";
+$string["dangerZone"] = "Небезпечна зона";
+$string["giveClan"] = "Передати клан";
+$string["deleteClan"] = "Видалити клан";
+$string["goBack"] = "Повернутись назад";
+$string["areYouSure"] = "Ви впевнені?";
+$string["giveClanDesc"] = "Тут ви можете передати клан іншому гравцю.";
+$string["notInYourClan"] = "Цей гравець не перебуває у вашому клані!";
+$string["givedClan"] = "Ви успішно передали клан гравцю <b>%s</b>!";
+$string["deletedClan"] = "Ви видалили клан <b>%s</b>.";
+$string["deleteClanDesc"] = "Тут ви можете видалити ваш клан.";
+$string["yourClan"] = "Ваш клан";
+$string["members0"] = "<b>1</b> учасник"; 
+$string["members1"] = "<b>%d</b> учасникa"; 
+$string["members2"] = "<b>%d</b> учасників"; 
+$string["noRequests"] = "Заявок немає. Відпочиваємо!";
+$string["pendingRequests"] = "Заявки в клан";
+$string["closedClan"] = "Зачинений клан";
+$string["kickMember"] = "Вигнати учасника";
+$string["leaveFromClan"] = "Вийти з клану";
+$string["askToJoin"] = "Відправити заявку в клан";
+$string["removeClanRequest"] = "Видалити заявку в клан";
+$string["joinClan"] = "Приєднатися до клану";
+$string["noClans"] = "Поки що кланів немає";
+$string["clans"] = "Клани";
+$string["alreadyInClan"] = "Ви вже в клані!";
+$string["createClan"] = "Створити клан";
+$string["createdClan"] = "Ви успішно створили клан <span style='font-weight:700;color:#%s'>%s</span>!";
+$string["createClanDesc"] = "Тут ви можете створити клан!";
+$string["create"] = "Створити";
 
 /*
 	REUPLOAD

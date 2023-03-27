@@ -7,7 +7,7 @@ $string["welcome"] = "Добро пожаловать на ".$gdps.'!';
 $string["didntInstall"] = "<div style='color:#47a0ff'><b>Внимание!</b> Вы не до конца установили панель сервера! Нажмите на текст, чтобы это сделать.</div>";
 $string["levelsWeek"] = "Выложено уровней за неделю";
 $string["levels3Months"] = "Выложено уровней за 3 месяца";
-$string["footer"] = $gdps.", ".date('Y', time());
+$string["footer"] = $gdps."? 2020 - ".date('Y', time());
 $string["tipsAfterInstalling"] = "Добро пожаловать в панель сервера! Мы даём вам несколько подсказок после установки:<br>
 1. Кажется, в SQL в таблице 'roles' появились новые права! Вам следует это проверить...<br>
 2. Если вы поместите icon.png в папку 'dashboard', то слева сверху появится иконка вашего сервера!<br>
@@ -22,6 +22,20 @@ $string["empty"] = "Пустовато...";
 $string["writeSomething"] = "Напишите что-нибудь!";
 $string["replies"] = "Ответы";
 $string["replyToComment"] = "Ответ на комментарий";
+$string["settings"] = "Настройки";
+$string["allowMessagesFrom"] = "Разрешать сообщения от...";
+$string["allowFriendReqsFrom"] = "Разрешать заявки в друзья от...";
+$string["showCommentHistory"] = "Показывать историю комментариев...";
+$string["yourYouTube"] = "Ваш канал на YouTube";
+$string["yourVK"] = "Ваша страница во ВКонтакте";
+$string["yourTwitter"] = "Ваша страница в Twitter";
+$string["yourTwitch"] = "Ваш канал на Twitch";
+$string["saveSettings"] = "Сохранить настройки";
+$string["all"] = "Все";
+$string["friends"] = "Друзья";
+$string["none"] = "Никто";
+$string["youBlocked"] = "Этот игрок вас заблокировал!";
+$string["cantMessage"] = "Вы не можете написать этому игроку!";
 
 $string["accountManagement"] = "Управление аккаунтом";
 $string["changePassword"] = "Сменить пароль";
@@ -245,7 +259,7 @@ $string["nooneBeat"] = 'никто не прошёл'; //let it be lowercase
 $string["oneBeat"] = 'прошёл 1 игрок'; 
 $string["lower5Beat"] = 'прошло %d игрока'; 
 $string["above5Beat"] = 'прошло %d игроков'; 
-$string["demonlistLevel"] = '%s <text style="display: inline-flex;font-size: 25px;font-weight:400">от <form style="margin:0" method="post" action="profile/"><button style="margin-left:7;font-size:25" class="accbtn" name="accountID" value="%d">%s</button></form></text>';
+$string["demonlistLevel"] = '%s <text style="display: inline-flex;font-size: 25px;font-weight:400">от <form style="margin:0" method="post" action="profile/"><button style="margin-left:7px;font-size:25px" class="accbtn" name="accountID" value="%d">%s</button></form></text>';
 $string["noDemons"] = 'Кажется, в вашем топе демонов нет ни одного демона...';
 $string["addSomeDemons"] = 'Добавьте несколько демонов, чтобы заполнить топ!';
 $string["askForDemons"] = 'Попросите администратора сервера добавить несколько!';
@@ -263,6 +277,47 @@ $string["dislikeSong"] = "Убрать песню из любимых";
 $string["favouriteSongs"] = "Любимые песни";
 $string["howMuchLiked"] = "Сколько лайкнуло?";
 $string["nooneLiked"] = "Никто не лайкнул";
+
+$string["clan"] = "Клан";
+$string["joinedAt"] = "Вступил(а) в клан: <b>%s</b>";
+$string["createdAt"] = "Создал(а) клан: <b>%s</b>";
+$string["clanMembers"] = "Участники клана";
+$string["noMembers"] = "Участников нет";
+$string["clanOwner"] = "Создатель клана";
+$string["noClanDesc"] = "<i>У клана нет описания</i>";
+$string["noClan"] = "Такого клана не существует!";
+$string["clanName"] = "Название клана";
+$string["clanDesc"] = "Описание клана";
+$string["clanColor"] = "Цвет клана";
+$string["dangerZone"] = "Опасная зона";
+$string["giveClan"] = "Передать клан";
+$string["deleteClan"] = "Удалить клан";
+$string["goBack"] = "Вернуться назад";
+$string["areYouSure"] = "Вы уверены?";
+$string["giveClanDesc"] = "Здесь вы можете передать клан другому игроку.";
+$string["notInYourClan"] = "Этот игрок не состоит в вашем клане!";
+$string["givedClan"] = "Вы успешно передали клан игроку <b>%s</b>!";
+$string["deletedClan"] = "Вы удалили клан <b>%s</b>.";
+$string["deleteClanDesc"] = "Здесь вы можете удалить ваш клан.";
+$string["yourClan"] = "Ваш клан";
+$string["members0"] = "<b>1</b> участник";
+$string["members1"] = "<b>%d</b> участникa"; 
+$string["members2"] = "<b>%d</b> участников"; 
+$string["noRequests"] = "Заявок нет. Отдыхаем!";
+$string["pendingRequests"] = "Заявки в клан";
+$string["closedClan"] = "Закрытый клан";
+$string["kickMember"] = "Выгнать участника";
+$string["leaveFromClan"] = "Выйти из клана";
+$string["askToJoin"] = "Отправить заявку в клан";
+$string["removeClanRequest"] = "Удалить заявку в клан";
+$string["joinClan"] = "Присоединиться к клану";
+$string["noClans"] = "Пока кланов нет";
+$string["clans"] = "Кланы";
+$string["alreadyInClan"] = "Вы уже в клане!";
+$string["createClan"] = "Создать клан";
+$string["createdClan"] = "Вы успешно создали клан <span style='font-weight:700;color:#%s'>%s</span>!";
+$string["createClanDesc"] = "Здесь вы можете создать клан!";
+$string["create"] = "Создать";
 
 /*
 	REUPLOAD
