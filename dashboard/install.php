@@ -106,7 +106,7 @@ if(!$installed) {
 			 `creationDate` int(11) NOT NULL DEFAULT '0',
 			 PRIMARY KEY (`ID`)
 			) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8");
-	$check = $db->query("SHOW TABLES LIKE 'favsongs'");
+	$check = $db->query("SHOW TABLES LIKE 'clanrequests'");
       		$exist = $check->fetchAll();
       		if(empty($exist)) $db->query("CREATE TABLE `clanrequests` (
 			 `ID` int(11) NOT NULL AUTO_INCREMENT,
