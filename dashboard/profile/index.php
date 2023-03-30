@@ -115,8 +115,8 @@ if(isset($_POST["settings"]) AND $_POST["settings"] == 1 AND $accid == $_SESSION
                                 <input class="form-control" type="text" value="'.$query["youtubeurl"].'" name="youtube" placeholder="youtube.com/channel/..."></input>
                             </div>
                             <div>
-                                <h2 style="text-align:left;margin:0;margin-bottom: 3px">'.$dl->getLocalizedString("yourVK").'</h2>
-                                <input class="form-control" type="text" value="'.$query["twitter"].'" name="twitter" placeholder="vk.com/..."></input>
+                                <h2 style="text-align:left;margin:0;margin-bottom: 3px">'.$dl->getLocalizedString("yourTwitter").'</h2>
+                                <input class="form-control" type="text" value="'.$query["twitter"].'" name="twitter" placeholder="twitter.com/..."></input>
                             </div>
                             <div>
                                 <h2 style="text-align:left;margin:0;margin-bottom: 3px">'.$dl->getLocalizedString("yourTwitch").'</h2>
