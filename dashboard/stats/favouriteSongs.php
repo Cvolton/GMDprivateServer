@@ -41,10 +41,7 @@ if($_SESSION["accountID"] != 0) {
 		$favs = '<button title="'.$dl->getLocalizedString("dislikeSong").'" id="like'.$songID.'" value="1" style="display:contents;cursor:pointer" onclick="like('.$songID.')"><i id="likeicon'.$songID.'" class="fa-solid fa-heart" style="font-size: 18px;color:#ff5c5c"></i></button>'; 
 		if($liked["reuploadID"] > 0) {
 			$download = str_replace("http://", "https://", $liked["download"]);
-			$play = '<button type="button" name="btnsng" id="btn'.$songID.'" title="'.$author.' - '.$name.'" style="display: contents;color: white;margin: 0;" onclick="btnsong(\''.$songID.'\');"><div class="icon" style="font-size:13px; height:25px;width:25px;background:#373A3F;margin-left: 0px;margin-right: -9px;"><i class="fa-solid fa-play" aria-hidden="false"></i></div></button>
-				<div name="audio" class="audio" id="'.$songID.'" style="display: none">
-				<audio title="'.$author.' - '.$name.'" style="width:100%" name="song" id="song'.$songID.'" preload="metadata" controls><source src="'.$download.'" type="audio/mpeg"></audio>
-				<button style="margin: 0px;font-size: 25px;padding: 14px 19px;margin-left: 5px;" type="button" class="msgupd" onclick="btnsong(0)"><i class="fa-solid fa-xmark"></i></button></div>';
+			$play = '<button type="button" name="btnsng" id="btn'.$songID.'" title="'.$author.' - '.$name.'" style="display: contents;color: white;margin: 0;" download="'.$download.'" onclick="btnsong(\''.$songID.'\');"><div class="icon" style="font-size:13px; height:25px;width:25px;background:#373A3F;margin-left: 0px;margin-right: -9px;"><i id="icon'.$songID.'" name="iconlol" class="fa-solid fa-play" aria-hidden="false"></i></div></button>';
 		} else {
 			$play = '<button type="button" title="'.$songID.'.mp3" style="display: contents;color: #ffb1ab;margin: 0;"><div class="icon" style="font-size:13px; height:25px;width:25px;background:#373A3F;margin-left: 0px;margin-right: -9px;"><i class="fa-solid fa-xmark" aria-hidden="false"></i></div>';
 		}
@@ -86,29 +83,56 @@ if($_SESSION["accountID"] != 0) {
 			'.$dailytable.'
 		</tbody>
 	</table><script>
-				function btnsong(id, pausemaybe = false) {
+				function btnsong(id) {
 					$("#song"+id).on("pause play", function() {
 						if(document.getElementById("song" + id).paused) {
-							var elems=document.getElementsByName("btnsng");
-							for(var i=0; i<elems.length; i++)elems[i].innerHTML = \'<div class="icon" style="font-size:13px; height:25px;width:25px;background:#373A3F;margin-left: 0px;margin-right: -9px;"><i class="fa-solid fa-play" aria-hidden="false"></i></div>\';
-						} else document.getElementById("btn"+id).innerHTML = \'<div class="icon" style="font-size:13px; height:25px;width:25px;background:#373A3F;margin-left: 0px;margin-right: -9px;"><i class="fa-solid fa-pause" aria-hidden="false"></i></div>\';
+							var elems=document.getElementsByName("iconlol");
+							for(var i=0; i<elems.length; i++)elems[i].classList.replace("fa-pause", "fa-play");
+						} else document.getElementById("icon"+id).classList.replace("fa-play", "fa-pause");
 					});
-					var elems=document.getElementsByName("audio");
-					for(var i=0; i<elems.length; i++)elems[i].style.display="none";
-					for(var i=0; i<elems.length; i++)elems[i].classList.remove("playing");
-					var elems=document.getElementsByName("btnsng");
-					for(var i=0; i<elems.length; i++)elems[i].innerHTML = \'<div class="icon" style="font-size:13px; height:25px;width:25px;background:#373A3F;margin-left: 0px;margin-right: -9px;"><i class="fa-solid fa-play" aria-hidden="false"></i></div>\';
-					var elems=document.getElementsByTagName("audio");
-					for(var i=0; i<elems.length; i++)elems[i].pause();
-					if(id != 0) {
-						document.getElementById(id).style.display = "flex";
-						document.getElementById(id).classList.add("playing");
-						if(pausemaybe == false) {
-							document.getElementById("btn"+id).innerHTML = \'<div class="icon" style="font-size:13px; height:25px;width:25px;background:#373A3F;margin-left: 0px;margin-right: -9px;"><i class="fa-solid fa-pause" aria-hidden="false"></i></div>\';
-							document.getElementById("song"+id).volume = 0.2;
-							document.getElementById("song"+id).play();
-							document.getElementById("btn"+id).setAttribute("onclick", "btnsong(" + id + ", true)");
-						} else document.getElementById("btn"+id).setAttribute("onclick", "btnsong(" + id + ")");
+					if(document.getElementById(id) == null) {
+						deleteDuplicates = $(".audio");
+						for(var i=0; i<deleteDuplicates.length; i++) deleteDuplicates[i].remove();
+						var elems=document.getElementsByName("iconlol");
+						for(var i=0; i<elems.length; i++)elems[i].classList.replace("fa-pause", "fa-play");
+						if(id != 0) {
+							divsong = document.createElement("div");
+							audiosong = document.createElement("audio");
+							sourcesong = document.createElement("source");
+							divsong.name = "audio";
+							divsong.classList.add("audio");
+							divsong.id = id;
+							divsong.style.display = "flex";
+							audiosong.title = document.getElementById("btn"+id).title;
+							audiosong.style.width = "100%";
+							audiosong.name = "song";
+							audiosong.id = "song"+id;
+							audiosong.setAttribute("controls", "");
+							audiosong.volume = 0.2;
+							sourcesong.src = document.getElementById("btn"+id).getAttribute("download");
+							sourcesong.type = "audio/mpeg";
+							closesong = document.createElement("button");
+							closesong.type = "button";
+							closesong.classList.add("msgupd");
+							closesong.classList.add("closebtn");
+							closesong.setAttribute("onclick", "btnsong(0)");
+							closesong.innerHTML = \'<i class="fa-solid fa-xmark"></i>\';
+							audiosong.appendChild(sourcesong);
+							divsong.appendChild(audiosong);
+							divsong.appendChild(closesong);
+							document.body.appendChild(divsong);
+							audiosong.play();
+							document.getElementById("icon"+id).classList.replace("fa-play", "fa-pause");
+						} else {
+							divsong = audiosong = sourcesong = closesong = "";
+							var elems=document.getElementsByName("iconlol");
+							for(var i=0; i<elems.length; i++)elems[i].classList.replace("fa-pause", "fa-play");
+						}
+					} else {
+						if(document.getElementById("song" + id).paused) {
+							document.getElementById("song" + id).play();
+						}
+						else document.getElementById("song" + id).pause();
 					}
 				}
 				function like(id) {

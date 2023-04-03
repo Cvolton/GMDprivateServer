@@ -17,6 +17,27 @@
     display: none !important;
 }
 
+.closebtn {
+	margin: 0px !important;
+	font-size: 25px !important;
+	padding: 14px 19px !important;
+	margin-left: 5px !important;
+}
+
+.smallpage {
+	margin-top: 10px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-wrap:wrap;
+}
+
+.btns {
+	display:flex;
+	width:100%;
+	grid-gap:5px;
+}
+
 .music {
 	display: flex;
    margin: 0px;

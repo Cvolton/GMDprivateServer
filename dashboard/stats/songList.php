@@ -85,16 +85,11 @@ foreach($result as &$action){
 		else $favs = '<button title="'.$dl->getLocalizedString("likeSong").'" id="like'.$songsid.'" onclick="like('.$songsid.')" value="0" style="display:contents;cursor:pointer"><i id="likeicon'.$songsid.'" class="fa-regular fa-heart" style="font-size: 18px;color:#ff5c5c"></i></button>';
 	}
 	if($action["reuploadID"] == 0) {
-		$download = str_replace('%3A', ':', $download);
-		$download = str_replace('%2F', '/', $download);
 		$time = "<div style='color:gray'>Newgrounds</div>";
 		$who = "<div><a style='color:#a7a7ff' target='_blank' href='https://".$author.".newgrounds.com/audio';>".$author."</a></div>";
 		$btn = '<button type="button" title="'.$songsid.'.mp3" style="display: contents;color: #ffb1ab;margin: 0;"><div class="icon" style="font-size:13px; height:25px;width:25px;background:#373A3F;margin-left: 0px;margin-right: -9px;"><i class="fa-solid fa-xmark" aria-hidden="false"></i></div>';
 	} else {
-		$btn = '<button type="button" name="btnsng" id="btn'.$songsid.'" title="'.$author.' - '.$name.'" style="display: contents;color: white;margin: 0;" onclick="btnsong(\''.$songsid.'\');"><div class="icon" style="font-size:13px; height:25px;width:25px;background:#373A3F;margin-left: 0px;margin-right: -9px;"><i class="fa-solid fa-play" aria-hidden="false"></i></div></button>
-			<div name="audio" class="audio" id="'.$songsid.'" style="display: none">
-			<audio title="'.$author.' - '.$name.'" style="width:100%" name="song" id="song'.$songsid.'" preload="metadata" controls><source src="'.$download.'" type="audio/mpeg"></audio>
-			<button style="margin: 0px;font-size: 25px;padding: 14px 19px;margin-left: 5px;" type="button" class="msgupd" onclick="btnsong(0)"><i class="fa-solid fa-xmark"></i></button></div>';
+		$btn = '<button type="button" name="btnsng" id="btn'.$songsid.'" title="'.$author.' - '.$name.'" style="display: contents;color: white;margin: 0;" download="'.$download.'" onclick="btnsong(\''.$songsid.'\');"><div class="icon" style="font-size:13px; height:25px;width:25px;background:#373A3F;margin-left: 0px;margin-right: -9px;"><i id="icon'.$songsid.'" name="iconlol" class="fa-solid fa-play" aria-hidden="false"></i></div></button>';
 	}
 	$manage = '<td><a class="btn-rendel" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'.$dl->getLocalizedString("change").'</a>
 								<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink"  style="padding: 17px 17px 0px;top: 0px;left: 0px;position: absolute;transform: translate3d(971px, 200px, 0px);will-change: transform;">
@@ -163,31 +158,58 @@ $packcount = $query->fetchColumn();
 $pagecount = ceil($packcount / 10);
 $bottomrow = $dl->generateBottomRow($pagecount, $actualpage);
 $dl->printPage($table . $bottomrow.'<script>
-			function btnsong(id, pausemaybe = false) {
-				$("#song"+id).on("pause play", function() {
-					if(document.getElementById("song" + id).paused) {
-						var elems=document.getElementsByName("btnsng");
-						for(var i=0; i<elems.length; i++)elems[i].innerHTML = \'<div class="icon" style="font-size:13px; height:25px;width:25px;background:#373A3F;margin-left: 0px;margin-right: -9px;"><i class="fa-solid fa-play" aria-hidden="false"></i></div>\';
-					} else document.getElementById("btn"+id).innerHTML = \'<div class="icon" style="font-size:13px; height:25px;width:25px;background:#373A3F;margin-left: 0px;margin-right: -9px;"><i class="fa-solid fa-pause" aria-hidden="false"></i></div>\';
-				});
-				var elems=document.getElementsByName("audio");
-				for(var i=0; i<elems.length; i++)elems[i].style.display="none";
-				for(var i=0; i<elems.length; i++)elems[i].classList.remove("playing");
-				var elems=document.getElementsByName("btnsng");
-				for(var i=0; i<elems.length; i++)elems[i].innerHTML = \'<div class="icon" style="font-size:13px; height:25px;width:25px;background:#373A3F;margin-left: 0px;margin-right: -9px;"><i class="fa-solid fa-play" aria-hidden="false"></i></div>\';
-				var elems=document.getElementsByTagName("audio");
-				for(var i=0; i<elems.length; i++)elems[i].pause();
-				if(id != 0) {
-					document.getElementById(id).style.display = "flex";
-					document.getElementById(id).classList.add("playing");
-					if(pausemaybe == false) {
-						document.getElementById("btn"+id).innerHTML = \'<div class="icon" style="font-size:13px; height:25px;width:25px;background:#373A3F;margin-left: 0px;margin-right: -9px;"><i class="fa-solid fa-pause" aria-hidden="false"></i></div>\';
-						document.getElementById("song"+id).volume = 0.2;
-						document.getElementById("song"+id).play();
-						document.getElementById("btn"+id).setAttribute("onclick", "btnsong(" + id + ", true)");
-					} else document.getElementById("btn"+id).setAttribute("onclick", "btnsong(" + id + ")");
+			function btnsong(id) {
+					$("#song"+id).on("pause play", function() {
+						if(document.getElementById("song" + id).paused) {
+							var elems=document.getElementsByName("iconlol");
+							for(var i=0; i<elems.length; i++)elems[i].classList.replace("fa-pause", "fa-play");
+						} else document.getElementById("icon"+id).classList.replace("fa-play", "fa-pause");
+					});
+					if(document.getElementById(id) == null) {
+						deleteDuplicates = $(".audio");
+						for(var i=0; i<deleteDuplicates.length; i++) deleteDuplicates[i].remove();
+						var elems=document.getElementsByName("iconlol");
+						for(var i=0; i<elems.length; i++)elems[i].classList.replace("fa-pause", "fa-play");
+						if(id != 0) {
+							divsong = document.createElement("div");
+							audiosong = document.createElement("audio");
+							sourcesong = document.createElement("source");
+							divsong.name = "audio";
+							divsong.classList.add("audio");
+							divsong.id = id;
+							divsong.style.display = "flex";
+							audiosong.title = document.getElementById("btn"+id).title;
+							audiosong.style.width = "100%";
+							audiosong.name = "song";
+							audiosong.id = "song"+id;
+							audiosong.setAttribute("controls", "");
+							audiosong.volume = 0.2;
+							sourcesong.src = document.getElementById("btn"+id).getAttribute("download");
+							sourcesong.type = "audio/mpeg";
+							closesong = document.createElement("button");
+							closesong.type = "button";
+							closesong.classList.add("msgupd");
+							closesong.classList.add("closebtn");
+							closesong.setAttribute("onclick", "btnsong(0)");
+							closesong.innerHTML = \'<i class="fa-solid fa-xmark"></i>\';
+							audiosong.appendChild(sourcesong);
+							divsong.appendChild(audiosong);
+							divsong.appendChild(closesong);
+							document.body.appendChild(divsong);
+							audiosong.play();
+							document.getElementById("icon"+id).classList.replace("fa-play", "fa-pause");
+						} else {
+							divsong = audiosong = sourcesong = closesong = "";
+							var elems=document.getElementsByName("iconlol");
+							for(var i=0; i<elems.length; i++)elems[i].classList.replace("fa-pause", "fa-play");
+						}
+					} else {
+						if(document.getElementById("song" + id).paused) {
+							document.getElementById("song" + id).play();
+						}
+						else document.getElementById("song" + id).pause();
+					}
 				}
-			}
 			function like(id) {
 				likebtn = document.getElementById("like" + id);
 				if(likebtn.value == 1) {
