@@ -7,6 +7,11 @@
 @media (min-width: 1500px) {
 	.container {max-width: 1450px;}
 	.nav-link {width:max-content;}
+	.btn-group{position:initial !important; background: #00000000 !important;}
+}
+
+@media (min-width: 993px) and (max-width:1500px) {
+	body {overflow-y: auto !important}
 }
 
 * {
@@ -15,6 +20,14 @@
 
 #ads, .adsbygoogle, #ads_bottom_static {
     display: none !important;
+}
+
+.btn-group {
+	position: fixed;
+	bottom: 50px;
+	right: 20px;
+	backdrop-filter: blur(2px);
+	background: #00000050;
 }
 
 .closebtn {
