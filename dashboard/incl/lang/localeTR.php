@@ -69,7 +69,7 @@ $string["forwindows"] = "Windows";
 $string["forandroid"] = "Android";
 $string["formac"] = "Mac";
 $string["forios"] = "iOS";
-$string["third-party"] = "ÜÇüncü taraf";
+$string["third-party"] = "Üçüncü taraf";
 $string["thanks"] = "Bu insanlara teşekkürler!";
 $string["language"] = "Dil";
 
