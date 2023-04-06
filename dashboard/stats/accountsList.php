@@ -1,6 +1,5 @@
 <?php
 session_start();
-if($_SESSION["accountID"] != 71) exit("kish");
 require "../incl/dashboardLib.php";
 require "../".$dbPath."incl/lib/connection.php";
 require_once "../".$dbPath."incl/lib/exploitPatch.php";
