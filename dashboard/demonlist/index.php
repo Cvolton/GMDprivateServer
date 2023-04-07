@@ -6,7 +6,10 @@ include_once '../'.$dbPath.'incl/lib/mainLib.php';
 include '../'.$dbPath.'incl/lib/exploitPatch.php';
 $dl = new dashboardLib(); 
 $gs = new mainLib();
-$dl->printFooter('../');
+if($_GET["add"] == "1" OR $_GET["change"] == "1") {
+    $_POST["change"] = 1;
+    $dl->printFooter('../../');
+} else $dl->printFooter('../');
 if(!empty($_POST["sr"]) AND is_numeric($_POST["sr"])) {
 	$dl->title($dl->getLocalizedString('submitRecord'));
 	$sub = $db->prepare("SELECT * FROM dlsubmits WHERE accountID = :acc AND levelID = :lvl");
@@ -46,8 +49,22 @@ if(!empty($_POST["sr"]) AND is_numeric($_POST["sr"])) {
 	}
 } else {
 	if(!empty($_POST["change"]) AND $gs->checkPermission($_SESSION["accountID"], "demonlistAdd")) {
+		if(isset($_POST["place"]) AND !empty($_POST["id"])) {
+				$dl->title($dl->getLocalizedString('changeDemon'));
+				$place = ExploitPatch::number($_POST["place"]);
+				if($place == 0) {
+					$change = $db->prepare("DELETE FROM demonlist WHERE levelID = :id");
+					$change->execute([':id' => ExploitPatch::number($_POST["id"])]);
+					exit($dl->printSong('<div class="form">
+				<h1>'.$dl->getLocalizedString('changeDemon').'</h1>
+				<form class="form__inner" method="post" action="">
+					<p>'.$dl->getLocalizedString('deletedDemon').'</p>
+					<button style="margin-top:5px;margin-bottom:5px" type="button" onclick="a(\'demonlist\', true, false, \'GET\')" class="btn-song">'.$dl->getLocalizedString('demonlist').'</button>
+				</form></div>', 'browse'));
+				}
+		}
 		$dl->title($dl->getLocalizedString('addDemonTitle'));
-		if(!empty($_POST["id"]) AND !empty($_POST["place"]) AND !empty($_POST["points"])) {
+		if((!empty($_POST["id"]) AND !empty($_POST["place"]) AND !empty($_POST["points"])) OR (!empty($_POST["change"]) AND !empty($_POST["id"]) AND !empty($_POST["place"]))) {
 			$place = ExploitPatch::number($_POST["place"]);
 			if($place < 1) exit($dl->printSong('<div class="form">
 			<h1>'.$dl->getLocalizedString('addDemon').'</h1>
@@ -63,10 +80,11 @@ if(!empty($_POST["sr"]) AND is_numeric($_POST["sr"])) {
 			$ytlink = str_replace('youtu.be/', '', $ytlink);
 			$points = ExploitPatch::number($_POST["points"]);
 			$place -= 2;
-			if($place == "-1") $queryplace = 0; else $queryplace = $place;
+			if($place == "-1") $queryplace = 0; else $queryplace = $place + 1; // sorry about this terrible code, i don't wanna write it again
 			$dlist = $db->prepare("SELECT pseudoPoints FROM demonlist ORDER BY pseudoPoints DESC LIMIT 2 OFFSET $queryplace");
 			$dlist->execute();
 			$dlist = $dlist->fetchAll();
+			echo count($dlist);
 			if(count($dlist) < 1) $average = 30000;
 			else {
 			$count = 1;
@@ -76,20 +94,46 @@ if(!empty($_POST["sr"]) AND is_numeric($_POST["sr"])) {
 				}
 				$average = ($pseudo["number1"] + $pseudo["number2"]) / 2;
 			}
+			$dlc = $db->prepare("SELECT count(levelID) FROM demonlist");
+			$dlc->execute();
+			$dlc = $dlc->fetchColumn();
 			if($place == -1) $average = $average * 2;
+			elseif($place + 2 == $dlc) $average = $pseudo["number2"] / 2;
 			$place += 2;
-			$add = $db->prepare("INSERT INTO demonlist (levelID, authorID, pseudoPoints, giveablePoints, youtube) VALUES (:lid, :aid, :pp, :gp, :yt)");
-			$add->execute([':lid' => $lid, ':aid' => $gs->getLevelAuthor($lid), ':pp' => $average, ':gp' => $points, ':yt' => $ytlink]);
-			$dl->printSong('<div class="form">
-			<h1>'.$dl->getLocalizedString('addDemon').'</h1>
-			<form class="form__inner" method="post" action="">
-				<p>'.sprintf($dl->getLocalizedString('addedDemon'), $gs->getLevelName($lid), $place).'</p>
-				<button style="margin-top:5px;margin-bottom:5px" type="button" onclick="a(\'demonlist\', true, false, \'GET\')" class="btn-song">'.$dl->getLocalizedString('demonlist').'</button>
-			</form></div>', 'browse');
-		} else $dl->printSong('<div class="form">
+			if(empty($_GET["change"])) {
+				$add = $db->prepare("INSERT INTO demonlist (levelID, authorID, pseudoPoints, giveablePoints, youtube) VALUES (:lid, :aid, :pp, :gp, :yt)");
+				$add->execute([':lid' => $lid, ':aid' => $gs->getLevelAuthor($lid), ':pp' => $average, ':gp' => $points, ':yt' => $ytlink]);
+				$dl->printSong('<div class="form">
+				<h1>'.$dl->getLocalizedString('addDemon').'</h1>
+				<form class="form__inner" method="post" action="">
+					<p>'.sprintf($dl->getLocalizedString('addedDemon'), $gs->getLevelName($lid), $place).'</p>
+					<button style="margin-top:5px;margin-bottom:5px" type="button" onclick="a(\'demonlist\', true, false, \'GET\')" class="btn-song">'.$dl->getLocalizedString('demonlist').'</button>
+				</form></div>', 'browse');
+			} else {
+				$arrayoptions = [':id' => $lid, ':pp' => $average];
+				if(!empty($points)) {
+					$optns .= ', giveablePoints = :gp';
+					$arrayoptions[':gp'] = $points;
+				}
+				if(!empty($ytlink)) {
+					$optns .= ', youtube = :yt';
+					$arrayoptions[':yt'] = $ytlink;
+				}
+				$querylol = "UPDATE demonlist SET pseudoPoints = :pp".$optns." WHERE levelID = :id";
+				$change = $db->prepare($querylol);
+				$change->execute($arrayoptions);
+				$dl->printSong('<div class="form">
+				<h1>'.$dl->getLocalizedString('changeDemon').'</h1>
+				<form class="form__inner" method="post" action="">
+					<p>'.sprintf($dl->getLocalizedString('changedDemon'), $gs->getLevelName($lid), $place).'</p>
+					<button style="margin-top:5px;margin-bottom:5px" type="button" onclick="a(\'demonlist\', true, false, \'GET\')" class="btn-song">'.$dl->getLocalizedString('demonlist').'</button>
+				</form></div>', 'browse');
+			}
+		} elseif(empty($_GET["change"])) $dl->printSong('<div class="form">
 		<button type="button" onclick="a(\'demonlist\', true, false, \'GET\')" class="a a-btn"><h1>'.$dl->getLocalizedString('addDemon').'</h1></button>
 		<form class="form__inner" method="post" action="">
-			<p>'.$dl->getLocalizedString('addDemonDesc').'</p>
+			<div><p>'.$dl->getLocalizedString('addDemonDesc').'</p>
+			<button type="button" onclick="a(\'demonlist/change\', true, true, \'GET\')"  class="a a-btn"><p style="font-weight: 700;color: #007bff;">'.$dl->getLocalizedString('changeDemon').'</p></button></div>
 			<div class="field"><input type="number" name="id" placeholder="'.$dl->getLocalizedString('levelid').'"></div>
 			<div class="field"><input type="number" name="place" placeholder="'.$dl->getLocalizedString('place').'"></div>
 			<div class="field"><input type="text" name="ytlink" placeholder="'.$dl->getLocalizedString('ytlink').'"></div>
@@ -97,6 +141,23 @@ if(!empty($_POST["sr"]) AND is_numeric($_POST["sr"])) {
 			<input type="hidden" name="change" value="1">
 			<button style="margin-top:5px;margin-bottom:5px" type="button" onclick="a(\'demonlist\', true, false, \'POST\')" name="change" value="1" class="btn-song">'.$dl->getLocalizedString('add').'</button>
 		</form></div>', 'browse');
+		else {
+			$list = $db->prepare("SELECT * FROM demonlist ORDER BY pseudoPoints DESC");
+			$list->execute();
+			$list = $list->fetchAll();
+			foreach($list as &$ls) $levels .= '<option value="'.$ls["levelID"].'">'.$gs->getLevelName($ls["levelID"]).'</option>';
+			$dl->printSong('<div class="form">
+				<button type="button" onclick="a(\'demonlist\', true, false, \'GET\')" class="a a-btn"><h1>'.$dl->getLocalizedString('changeDemon').'</h1></button>
+				<form class="form__inner" method="post" action="">
+					<p>'.$dl->getLocalizedString('changeDemonDesc').'</p>
+					<div class="field"><select style="margin:0" name="id">'.$levels.'</select></div>
+					<div class="field"><input type="number" name="place" placeholder="'.$dl->getLocalizedString('place').'"></div>
+					<div class="field"><input type="text" name="ytlink" placeholder="'.$dl->getLocalizedString('ytlink').'"></div>
+					<div class="field"><input type="number" name="points" placeholder="'.$dl->getLocalizedString('giveablePoints').'"></div>
+					<input type="hidden" name="change" value="1">
+					<button style="margin-top:5px;margin-bottom:5px" type="button" onclick="a(\'demonlist/change\', true, true, \'POST\')" name="change" value="1" class="btn-song">'.$dl->getLocalizedString('add').'</button>
+			</form></div>', 'browse');
+		}
 	} elseif(!empty($_POST["approve"]) AND $gs->checkPermission($_SESSION["accountID"], "demonlistApprove")) {
 		$dl->title($dl->getLocalizedString('recordList'));
 		if(isset($_GET["page"]) AND is_numeric($_GET["page"]) AND $_GET["page"] > 0){
@@ -141,12 +202,14 @@ if(!empty($_POST["sr"]) AND is_numeric($_POST["sr"])) {
 		$dl->printPage($table . $bottomrow, true, "browse");
 	} else {
 		$dl->title($dl->getLocalizedString("demonlist"));
-		$list = $db->prepare("SELECT * FROM demonlist ORDER BY pseudoPoints DESC LIMIT 25");
+		$list = $db->prepare("SELECT * FROM demonlist ORDER BY pseudoPoints DESC");
 		$list->execute();
 		$list = $list->fetchAll();
 		$options = '';
 		$p = 1;
 		foreach($list as &$demons) {
+			$levelName = $gs->getLevelName($demons["levelID"]);
+			if(empty($levelName)) continue;
 			switch($p) {
 				case 1:
 					$place = '<i class="fa-solid fa-trophy" style="color:#ffd700"> 1</i>';
@@ -198,16 +261,18 @@ if(!empty($_POST["sr"]) AND is_numeric($_POST["sr"])) {
 			$submitbtn .= '<i style="margin-left:5px" class="fa-solid fa-medal"> '.$demons["giveablePoints"].', <text style="font-family:\'Google Sans\', \'Inter\'">'.$beat.'</text></i></div>';
 			$youtube = !empty($demons["youtube"]) ? '<iframe style="border-radius:10px;margin-right: 20;" width="300" height="169" src="https://www.youtube.com/embed/'.$demons["youtube"].'" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>' : '';
 			$options .= '<div class="form-control" style="display: inherit;border-radius: 30px;margin-top: 15px;flex-wrap: nowrap;padding: 20 0 20 20;min-width: 100%;justify-content: space-between;height: max-content;margin-bottom: 0px;align-items: center;"><div style="width: 60%;display: flex;height: 100%;flex-wrap: wrap;flex-direction: column;justify-content: space-between;"><div style="margin-right: 10px;">
-			<div><h1 style="width:100%;text-align:left">'.$place.' '.sprintf($dl->getLocalizedString('demonlistLevel'), $gs->getLevelName($demons["levelID"]), $demons["authorID"], $gs->getAccountName($demons["authorID"])).'</h1></div>
+			<div><h1 style="width:100%;text-align:left">'.$place.' '.sprintf($dl->getLocalizedString('demonlistLevel'), $levelName, $demons["authorID"], $gs->getAccountName($demons["authorID"])).'</h1></div>
 			<p style="margin-bottom: 10px;width:100%;text-align:left">'.$gs->getDesc($demons["levelID"], true).'</p></div>'.$submitbtn.'</div>'.$youtube.'
 			</div>';
 			$p++;
 		} if($p > 3) $pad = 'padding-right: 5px;';
-		$empty = $gs->checkPermission($_SESSION["accountID"], "demonlistAdd") ? $dl->getLocalizedString("addSomeDemons") : $dl->getLocalizedString("askForDemons");
-		if(empty($options)) $options = '<div class="form-control" style="height:23vh;display: inherit;border-radius: 30px;margin-top: 15px;flex-wrap: nowrap;padding: 20 0 20 20;min-width: 100%;justify-content: space-between;margin-bottom: 0px;align-items: center;"><h1 style="width:100%">'.$dl->getLocalizedString("errorGeneric").'</h1></div>
-		<div class="form-control" style="height:23vh;display: inherit;border-radius: 30px;margin-top: 15px;flex-wrap: nowrap;padding: 20 0 20 20;min-width: 100%;justify-content: space-between;margin-bottom: 0px;align-items: center;"><h1 style="width:100%">'.$dl->getLocalizedString("noDemons").'</h1></div>
-		<div class="form-control" style="height:23vh;display: inherit;border-radius: 30px;margin-top: 15px;flex-wrap: nowrap;padding: 20 0 20 20;min-width: 100%;justify-content: space-between;margin-bottom: 0px;align-items: center;"><h1 style="width:100%">'.$empty.'</h1></div>';
-		if($gs->checkPermission($_SESSION["accountID"], "demonlistAdd")) $changebtn = '<form method="post" name="changebtn"><input type="hidden" name="change" value="1"><button type="button" onclick="a(\'demonlist\', true, false, \'POST\', false, \'changebtn\')" title="'.$dl->getLocalizedString("addDemonTitle").'" style="position: absolute;padding: 15px;width: max-content;font-size: 21px;bottom: 14.5vh;right: 14.5vw;" class="btn-primary" name="change" value="1"><i class="fa-solid fa-plus"></i></button></form>'; else $changebtn = '';
+		if(empty($options)) {
+			$empty = $gs->checkPermission($_SESSION["accountID"], "demonlistAdd") ? $dl->getLocalizedString("addSomeDemons") : $dl->getLocalizedString("askForDemons");
+			$options = '<div class="form-control" style="height:23vh;display: inherit;border-radius: 30px;margin-top: 15px;flex-wrap: nowrap;padding: 20 0 20 20;min-width: 100%;justify-content: space-between;margin-bottom: 0px;align-items: center;"><h1 style="width:100%">'.$dl->getLocalizedString("errorGeneric").'</h1></div>
+			<div class="form-control" style="height:23vh;display: inherit;border-radius: 30px;margin-top: 15px;flex-wrap: nowrap;padding: 20 0 20 20;min-width: 100%;justify-content: space-between;margin-bottom: 0px;align-items: center;"><h1 style="width:100%">'.$dl->getLocalizedString("noDemons").'</h1></div>
+			<div class="form-control" style="height:23vh;display: inherit;border-radius: 30px;margin-top: 15px;flex-wrap: nowrap;padding: 20 0 20 20;min-width: 100%;justify-content: space-between;margin-bottom: 0px;align-items: center;"><h1 style="width:100%">'.$empty.'</h1></div>';
+		}
+		if($gs->checkPermission($_SESSION["accountID"], "demonlistAdd")) $changebtn = '<form method="post" name="changebtn"><input type="hidden" name="change" value="1"><button type="button" onclick="a(\'demonlist/add\', true, true, \'POST\', false, \'changebtn\')" title="'.$dl->getLocalizedString("addDemonTitle").'" style="position: absolute;padding: 15px;width: max-content;font-size: 21px;bottom: 14.5vh;right: 14.5vw;" class="btn-primary" name="change" value="1"><i class="fa-solid fa-plus"></i></button></form>'; else $changebtn = '';
 		if($gs->checkPermission($_SESSION["accountID"], "demonlistApprove")) $approvebtn = '<form method="post" name="approvebtn"><input type="hidden" name="approve" value="1"><button type="button" onclick="a(\'demonlist\', true, false, \'POST\', false, \'approvebtn\')" title="'.$dl->getLocalizedString("approve").'" style="position: absolute;padding: 15px;width: max-content;font-size: 21px;bottom: 14.5vh;left: 14.5vw;" class="btn-primary" name="approve" value="1"><i class="fa-solid fa-list"></i></button></form>'; else $approvebtn = '';
 		$dl->printSong('<div class="form" style="'.$pad.'max-width:70vw;width: 70vw;height:77vh;margin-top:10px;border-radius:45px;overflow:auto;overflow-x:hidden;max-height:80vh;justify-content:flex-start">'.$options.''.$changebtn.''.$approvebtn.'</div>', 'browse');
 	}

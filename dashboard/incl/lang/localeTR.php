@@ -7,7 +7,7 @@ $string["welcome"] = $gdps." sunucusuna hoş geldiniz!";
 $string["didntInstall"] = "<div style='color:#47a0ff'><b>Uyarı!</b> Dashboard'ı tam olarak kurmamışsınız! Buraya basarak tam kurulumu yapın.</div>";
 $string["levelsWeek"] = "Bir hafta içinde yüklenen bölümler";
 $string["levels3Months"] = "3 ayda yüklenen bölümler";
-$string["footer"] = $gdps.", ".date('Y', time());
+$string["footer"] = $gdps."? 2020 - ".date('Y', time());
 $string["tipsAfterInstalling"] = "Kontrol paneline hoş geldin! Kurulumdan sonra bir kaç tavsiye:<br>
 1. SQL içerisinde 'roles' tablosunda yeni izinler belirmiş gibi gözüküyor! Bunlara baksan çok iyi olur...<br>
 2. 'dashboard' klasörüne 'icon.png' koyarsan, ikonun en sol köşede belirir!<br>
@@ -267,6 +267,11 @@ $string["status"] = 'Durum';
 $string["checkRecord"] = 'Rekoru kontrol et';
 $string["record"] = 'Rekor';
 $string["recordDeleted"] = 'Rekor silindi!';
+$string["changeDemon"] = 'Change demon';
+$string["demonDeleted"] = 'Demon was deleted!';
+$string["changedDemon"] = 'You replaced <b>%s</b> to <b>%d</b> place!';
+$string["changeDemonDesc"] = 'Here you can change a demon!<br>
+If you want to delete demon, set place to 0.';
 
 $string["didntActivatedEmail"] = 'Hesabını e-posta üzerinden aktive etmedin!';
 $string["checkMail"] = 'E-postanı kontrol etmelisin...';

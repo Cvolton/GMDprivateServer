@@ -7,7 +7,7 @@ $string["welcome"] = "Добро пожаловать на ".$gdps.'!';
 $string["didntInstall"] = "<div style='color:#47a0ff'><b>Внимание!</b> Вы не до конца установили панель сервера! Нажмите на текст, чтобы это сделать.</div>";
 $string["levelsWeek"] = "Выложено уровней за неделю";
 $string["levels3Months"] = "Выложено уровней за 3 месяца";
-$string["footer"] = $gdps.", ".date('Y', time());
+$string["footer"] = $gdps."? 2020 - ".date('Y', time());
 $string["tipsAfterInstalling"] = "Добро пожаловать в панель сервера! Мы даём вам несколько подсказок после установки:<br>
 1. Кажется, в SQL в таблице 'roles' появились новые права! Вам следует это проверить...<br>
 2. Если вы поместите icon.png в папку 'dashboard', то слева сверху появится иконка вашего сервера!<br>
@@ -268,6 +268,11 @@ $string["status"] = 'Статус';
 $string["checkRecord"] = 'Проверить рекорд';
 $string["record"] = 'Рекорд';
 $string["recordDeleted"] = 'Рекорд был удалён!';
+$string["changeDemon"] = 'Изменить демон';
+$string["demonDeleted"] = 'Демон был удалён!';
+$string["changedDemon"] = 'Вы переставили <b>%s</b> на <b>%d</b> место!';
+$string["changeDemonDesc"] = 'Здесь вы можете изменить демон в демонлисте!<br>
+Если вы хотите удалить демон, укажите 0 место.';
 
 $string["didntActivatedEmail"] = 'Вы не подтвердили вашу почту!';
 $string["checkMail"] = 'Вам следует проверить ваш почтовый ящик...';

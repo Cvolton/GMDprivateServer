@@ -7,7 +7,7 @@ $string["welcome"] = "Welcome to ".$gdps.'!';
 $string["didntInstall"] = "<div style='color:#47a0ff'><b>Warning!</b> You haven't fully installed dashboard! Click on the text to do this.</div>";
 $string["levelsWeek"] = "Levels uploaded in a week";
 $string["levels3Months"] = "Levels uploaded in 3 months";
-$string["footer"] = $gdps.", ".date('Y', time());
+$string["footer"] = $gdps."? 2020 - ".date('Y', time());
 $string["tipsAfterInstalling"] = "Welcome to Dashboard! We give you some hints after installation:<br>
 1. It seems that new permissions have appeared in SQL in the 'roles' table! You should check it out...<br>
 2. If you put 'icon.png' to the 'dashboard' folder, then the icon of your GDPS will appear on the top left!<br>
@@ -267,6 +267,11 @@ $string["status"] = 'Status';
 $string["checkRecord"] = 'Check record';
 $string["record"] = 'Record';
 $string["recordDeleted"] = 'Record was deleted!';
+$string["changeDemon"] = 'Change demon';
+$string["demonDeleted"] = 'Demon was deleted!';
+$string["changedDemon"] = 'You replaced <b>%s</b> to <b>%d</b> place!';
+$string["changeDemonDesc"] = 'Here you can change a demon!<br>
+If you want to delete demon, set place to 0.';
 
 $string["didntActivatedEmail"] = 'You didn\'t activated your account through email!';
 $string["checkMail"] = 'You should check your email...';
