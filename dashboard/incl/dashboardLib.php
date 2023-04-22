@@ -154,7 +154,7 @@ class dashboardLib {
 				break;
 		}
 		echo '<nav id="navbarepta" class="navbar navbar-expand-lg navbar-dark menubar">
-			<a href="." onclick="a(\'\')" class="navbar-brand" style="margin-right:0.5rem;background:none;border:none"><img style="width:40px" src="icon.svg"></a>
+			<a href="." onclick="a(\'\')" class="navbar-brand" style="margin-right:0.5rem;background:none;border:none"><img style="width:30px" src="icon.png"></a>
 			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
 				<span class="navbar-toggler-icon"></span>
 			</button>
