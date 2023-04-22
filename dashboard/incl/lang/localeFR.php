@@ -13,6 +13,22 @@ $string["tipsAfterInstalling"] = "Bienvenue au tableau de bord! Nous te donnons 
 1. Il y a de nouvelles permissions dans la base de données SQL dans la table 'roles'! Vous devriez y jeter un coup d'oeil...<br>
 2. Si vous placez 'icon.png' dans le dossier 'dashboard', alors le logo de votre GDPS va apparaître en haut à gauche!<br>
 3. Vous devriez configurer config/dashboard.php!";
+$string["wwygdt"] = "What will you gonna do today?";
+$string["game"] = "Game";
+$string["guest"] = "guest";
+$string["account"] = "Account";
+$string["levelsOptDesc"] = "View levels list";
+$string["songsOptDesc"] = "View songs list";
+$string["yourClanOptDesc"] = "View clan \"%s\"";
+$string["clanOptDesc"] = "View clans list";
+$string["yourProfile"] = "Your profile";
+$string["profileOptDesc"] = "View your profile";
+$string["messengerOptDesc"] ="Open messenger";
+$string["addSongOptDesc"] = "Add song to server";
+$string["loginOptDesc"] = "Login to account";
+$string["createAcc"] = "Create an account";
+$string["registerOptDesc"] = "Register on %s";
+$string["downloadOptDesc"] = "Download %s";
 
 $string["tryCron"] = "Exécuter Cron";
 $string["cronSuccess"] = "Succès!";
@@ -85,6 +101,7 @@ $string["loginAlready"] = "Vous êtes déjà connecté!";
 $string["clickHere"] = "Tableau de bord";
 $string["enterUsername"] = "Entrez le nom d'utilisateur";
 $string["enterPassword"] = "Entrez le mot de passe";
+$string["loginDesc"] = "Here you can login to your account!";
 
 $string["register"] = "S'inscrire";
 $string["registerAcc"] = "Inscription du compte";

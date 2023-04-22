@@ -12,6 +12,22 @@ $string["tipsAfterInstalling"] = "Kontrol paneline hoş geldin! Kurulumdan sonra
 1. SQL içerisinde 'roles' tablosunda yeni izinler belirmiş gibi gözüküyor! Bunlara baksan çok iyi olur...<br>
 2. 'dashboard' klasörüne 'icon.png' koyarsan, ikonun en sol köşede belirir!<br>
 3. config/dashboard.php dosyanısı configüre et!";
+$string["wwygdt"] = "What will you gonna do today?";
+$string["game"] = "Game";
+$string["guest"] = "guest";
+$string["account"] = "Account";
+$string["levelsOptDesc"] = "View levels list";
+$string["songsOptDesc"] = "View songs list";
+$string["yourClanOptDesc"] = "View clan \"%s\"";
+$string["clanOptDesc"] = "View clans list";
+$string["yourProfile"] = "Your profile";
+$string["profileOptDesc"] = "View your profile";
+$string["messengerOptDesc"] ="Open messenger";
+$string["addSongOptDesc"] = "Add song to server";
+$string["loginOptDesc"] = "Login to account";
+$string["createAcc"] = "Create an account";
+$string["registerOptDesc"] = "Register on %s";
+$string["downloadOptDesc"] = "Download %s";
 
 $string["tryCron"] = "Cron çalıştır";
 $string["cronSuccess"] = "Başarılı!";
@@ -96,6 +112,7 @@ $string["smallPass"] = "Şifre çok kısa!";
 $string["passDontMatch"] = "Şifreler eşleşmiyor!";
 $string["emailDontMatch"] = "E-Postalar eşleşmiyor";
 $string["registered"] = "Hesap başarıyla oluşturuldu!";
+$string["loginDesc"] = "Here you can login to your account!";
 
 $string["changePassTitle"] = "Şifre değiştir";
 $string["changedPass"] = "Şifre başarıyla değiştirildi! Hesabına yeniden giriş yapman gerekiyor.";

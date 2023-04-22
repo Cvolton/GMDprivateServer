@@ -12,6 +12,22 @@ $string["tipsAfterInstalling"] = "Welcome to Dashboard! We give you some hints a
 1. It seems that new permissions have appeared in SQL in the 'roles' table! You should check it out...<br>
 2. If you put 'icon.png' to the 'dashboard' folder, then the icon of your GDPS will appear on the top left!<br>
 3. You should configure config/dashboard.php!";
+$string["wwygdt"] = "What will you gonna do today?";
+$string["game"] = "Game";
+$string["guest"] = "guest";
+$string["account"] = "Account";
+$string["levelsOptDesc"] = "View levels list";
+$string["songsOptDesc"] = "View songs list";
+$string["yourClanOptDesc"] = "View clan \"%s\"";
+$string["clanOptDesc"] = "View clans list";
+$string["yourProfile"] = "Your profile";
+$string["profileOptDesc"] = "View your profile";
+$string["messengerOptDesc"] ="Open messenger";
+$string["addSongOptDesc"] = "Add song to server";
+$string["loginOptDesc"] = "Login to account";
+$string["createAcc"] = "Create an account";
+$string["registerOptDesc"] = "Register on %s";
+$string["downloadOptDesc"] = "Download %s";
 
 $string["tryCron"] = "Run Cron";
 $string["cronSuccess"] = "Success!";
@@ -84,6 +100,7 @@ $string["loginAlready"] = "You already logged in!";
 $string["clickHere"] = "Dashboard";
 $string["enterUsername"] = "Enter username";
 $string["enterPassword"] = "Enter password";
+$string["loginDesc"] = "Here you can login to your account!";
 
 $string["register"] = "Register";
 $string["registerAcc"] = "Account registration";
