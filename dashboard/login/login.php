@@ -102,6 +102,10 @@ $(document).on("keyup keypress change keydown",function(){
 </script>';
 	$dl->title($dl->getLocalizedString("loginBox"));
 	$dl->printFooter('../');
-	$dl->printLoginBox($loginbox);
+	$dl->printSong('<div class="form">
+		<h1 style="margin-bottom:10px">'.$dl->getLocalizedString("loginBox").'</h1>
+		<p style="margin-bottom:15px">'.$dl->getLocalizedString('loginDesc').'</p>
+			'.$loginbox.'
+	</div>');
 }
 ?>

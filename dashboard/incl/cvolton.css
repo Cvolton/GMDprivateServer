@@ -1,17 +1,17 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap');
 
-@media screen and (max-width: 993px) {
+@media screen and (max-width: 1537px) {
 	body {overflow-y: auto !important}
+	.maindiv{width:100% !important}
+	.secondarydiv{flex-direction: column;}
+	.mainlist{width:80% !important}
+	.last{margin-bottom: 55px !important;}
 }
 
-@media (min-width: 1500px) {
+@media (min-width: 1537px) {
 	.container {max-width: 1450px;}
 	.nav-link {width:max-content;}
 	.btn-group{position:initial !important; background: #00000000 !important;}
-}
-
-@media (min-width: 993px) and (max-width:1500px) {
-	body {overflow-y: auto !important}
 }
 
 * {
@@ -973,4 +973,58 @@ progress::-webkit-progress-value {
 
 label {
 	margin: 0px;
+}
+
+.mainlist {
+	width: 48%;
+	padding: 5px 20 20px 20;
+	border-radius: 47px;
+}
+
+.maindiv {
+	margin-top:20px;
+	width: 70%;
+}
+
+.secondarydiv {
+	display: flex;
+   grid-gap: 10px;
+}
+
+.lilcard {
+	display: inherit;
+	border-radius: 30px;
+	margin: 0px;
+	flex-wrap: nowrap;
+	padding: 0 5 15 20;
+	min-width: 100%;
+	justify-content: space-between;
+	height: max-content;
+	margin-bottom: 0px;
+	align-items: center;
+	width:100%;
+	background: #29282c;
+	transition: 0.3s;
+}
+
+.lilcard:hover,
+.lilcard:active, 
+.lilcard:focus {
+	background: #47494e;
+}
+
+.lilcardcontent {
+	width: 100%;
+	display: flex;
+	height: 100%;
+	flex-wrap: wrap;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.dropdown-item.big {
+	padding: 15px;
+   padding-left: 25px;
+   border-radius: 500px;
+	.icon{height: 45px;width: 45px;}
 }
