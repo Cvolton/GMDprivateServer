@@ -12,7 +12,7 @@ $string["tipsAfterInstalling"] = "Welcome to Dashboard! We give you some hints a
 1. It seems that new permissions have appeared in SQL in the 'roles' table! You should check it out...<br>
 2. If you put 'icon.png' to the 'dashboard' folder, then the icon of your GDPS will appear on the top left!<br>
 3. You should configure config/dashboard.php!";
-$string["wwygdt"] = "What will you gonna do today?";
+$string["wwygdt"] = "What are you gonna do today?";
 $string["game"] = "Game";
 $string["guest"] = "guest";
 $string["account"] = "Account";
