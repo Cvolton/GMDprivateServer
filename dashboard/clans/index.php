@@ -24,6 +24,7 @@ $style = $closed = $create = "";
 foreach($clans as &$clan) {
 	$name = base64_decode($clan["clan"]);
 	$desc = base64_decode($clan["desc"]);
+	if(empty($desc)) $desc = $dl->getLocalizedString("noClanDesc");
 	$members = $db->prepare("SELECT count(clan) FROM users WHERE clan = :id");
 	$members->execute([':id' => $clan["ID"]]);
 	$members = $members->fetchColumn() - 1;
