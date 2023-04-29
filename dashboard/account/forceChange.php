@@ -27,7 +27,13 @@ if(!$gs->checkPermission($acc, 'dashboardForceChangePassNick')) {
 	</div>', 'mod');
 	die();
 }
-if($_POST["type"] == 0) $type = 'Password'; else $type = 'Nick';
+if($_POST["type"] == 0) {
+	$type = 'Password'; 
+	$inputtype = '<input type="hidden" name="type" value="0">';
+}else {
+	$type = 'Nick';
+	$inputtype = '<input type="hidden" name="type" value="1">';
+}
 $dl->title($dl->getLocalizedString("force".$type));
 if(!empty($_POST["userID"]) AND !empty($_POST[$type])) {
   	if(!Captcha::validateCaptcha()) {
@@ -126,12 +132,13 @@ if(!empty($_POST["userID"]) AND !empty($_POST[$type])) {
     	<button type="submit" name="type" value="0" class="btn-rendel">'.$dl->getLocalizedString('changePassTitle').'</button>
     </form>
     <form class="form__inner" method="post" action="">
+		'.$inputtype.'
         <div class="field"><input type="text" name="userID" id="p1" placeholder="'.$dl->getLocalizedString("banUserID").'"></div>
         <div class="field"><input type="'.$type.'" name="'.$type.'" id="p2" placeholder="'.$dl->getLocalizedString("new".$type).'"></div>
 		', 'mod');
 		Captcha::displayCaptcha();
         echo '
-        <button type="button" onclick="a(\'account/forceChange.php\', true, true, \'POST\')" class="btn-primary btn-block" id="submit" name="type" value="'.$_POST["type"].'" disabled>'.$dl->getLocalizedString("ban").'</button>
+        <button type="button" onclick="a(\'account/forceChange.php\', true, true, \'POST\')" class="btn-primary btn-block" id="submit" name="type" value="'.$_POST["type"].'" disabled>'.$dl->getLocalizedString("change").'</button>
     </form><script>
 $(document).on("keyup keypress change keydown",function(){
    const p1 = document.getElementById("p1");

@@ -88,8 +88,11 @@ foreach($result as &$action){
       	if($value2 == 'banned' OR $value2 == 'none') $value2 = '<div style="color:gray">'.$dl->getLocalizedString("noReason").'</div>';
     } 
   	if($action["type"] == 26) {
-		if($value2 == 'Password') $value2 = $dl->getLocalizedString("password");
-		else $value2 = $dl->getLocalizedString("username");
+		$username26 = $gs->getAccountName($action["value"]);
+		$value = '<button href="profile/'.$username26.'" class="accbtn" onclick="a(\'profile/'.$username26.'\', true, true)">'.$username26.'</button>';
+		$value2 = $action["value"];
+		if($value2 == 'Password') $value3 = $dl->getLocalizedString("password");
+		else $value3 = $dl->getLocalizedString("username");
 	}
 	if($action["type"] == 25 OR $action["type"] == 23) {
 		$value = $value4;
