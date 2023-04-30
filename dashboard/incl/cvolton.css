@@ -5,6 +5,7 @@
 	.maindiv{width:100% !important}
 	.secondarydiv{flex-direction: column;}
 	.mainlist{width:80% !important}
+	.new-form-control.songs {grid-template-columns: repeat(1, 100%) !important;}
 	.last{margin-bottom: 55px !important;}
 }
 
@@ -12,6 +13,14 @@
 	.container {max-width: 1450px;}
 	.nav-link {width:max-content;}
 	.btn-group{position:initial !important; background: #00000000 !important;}
+}
+
+@media (max-width: 992px) {
+    .profilenick{font-size: 15px !important;}
+    .profilepic{font-size: 15px !important;}
+    .songacc{font-size: 13px !important;}
+	.btn-group {right: 5px !important;}
+	.btn-group button, .btn-group a {font-size: 13px !important;padding: 5px;overflow-wrap: anywhere;}
 }
 
 * {
@@ -285,7 +294,8 @@ input, select {
   	border: 4px solid #181a1b;
 }
 
-.itemslist::-webkit-scrollbar-thumb {
+.itemslist::-webkit-scrollbar-thumb,
+.new-form-control::-webkit-scrollbar-thumb {
    background-color: #373A3F;
    border-radius: 100px;
 	border: 4px solid #141414;
@@ -789,7 +799,10 @@ option,
 
 .dropdown-item:active,
 .dropdown-item:hover,
-.dropdown-item:focus {
+.dropdown-item:focus,
+.dropdown-item.now:hover,
+.dropdown-item.now:active,
+.dropdown-item.now:focus {
     font-size: 104%;
     background: #47a0ff;
     padding: .25rem 2.2rem 0.3rem 1rem;
@@ -801,7 +814,10 @@ option,
 }
 .dropdown-item:hover > .icon,
 .dropdown-item:active > .icon,
-.dropdown-item:focus > .icon{
+.dropdown-item:focus > .icon,
+.dropdown-item.now:hover > .icon,
+.dropdown-item.now:active > .icon,
+.dropdown-item.now:focus > .icon{
 	background: #8abfff;
 }
 
@@ -907,43 +923,35 @@ hr {
    text-align: right;
    align-items: baseline;
 }
+
 .tooactive {
 	font-weight: 700;
 }
+
 .btn-outline-secondary:enabled {
 	cursor: pointer;
 }
 
-audio::-webkit-media-controls-panel,
-audio::-webkit-media-controls-mute-button,
-audio::-webkit-media-controls-timeline-container,
-audio::-webkit-media-controls-current-time-display,
-audio::-webkit-media-controls-time-remaining-display,
-audio::-webkit-media-controls-timeline,
-audio::-webkit-media-controls-volume-slider-container,
-audio::-webkit-media-controls-volume-slider,
-audio::-webkit-media-controls-seek-back-button,
-audio::-webkit-media-controls-seek-forward-button,
-audio::-webkit-media-controls-fullscreen-button,
-audio::-webkit-media-controls-rewind-button,
-audio::-webkit-media-controls-return-to-realtime-button,
-audio::-webkit-media-controls-toggle-closed-captions-button {
+audio::-webkit-media-controls-panel {
 	color-scheme: dark !important;
     background: #181a1b;
 	color:white;
 }
+
 .audio {
 	position: fixed;
 	left: 4px;
 	bottom: 45px;
 	width: calc(100% - 8px);
 }
+
 button > .icon:hover {
 	background: #47494e !important;
 	cursor: pointer;
 }
 
-.dropdown-item > .icon:hover {
+.dropdown-item > .icon:hover,
+.dropdown-item.now > .icon:hover  {
 	background: #8abfff !important;
 	cursor: pointer;
 }
@@ -952,7 +960,7 @@ progress {
   width: 100%;
   margin-top: 13px;
   margin-bottom: -8px;
-  display: block; /* default: inline-block */
+  display: block; 
   background: #141414;
   transition: 0.2s;
   border-radius: 500px;
@@ -966,7 +974,7 @@ progress::-webkit-progress-bar {
 
 progress::-webkit-progress-value {  
   border-radius: 500px;
-  background: #3EE667;
+  background: linear-gradient(90deg, rgba(255,187,187,1) 0%, rgba(255,255,187,1) 50%, rgba(187,255,187,1) 100%);
   transition: 0.2s;
   padding: 5px;
 } 
@@ -1027,4 +1035,44 @@ label {
    padding-left: 25px;
    border-radius: 500px;
 	.icon{height: 45px;width: 45px;}
+}
+
+.new-form {
+	position:relative;
+	padding-bottom: 20px;
+	height:70vh;
+	width: 100%;
+	margin-top:10px;
+	margin-bottom:20px;
+	border-radius:45px;
+	overflow:auto;
+	overflow-x:hidden;
+	max-height:80vh;
+	justify-content:flex-start;
+}
+
+.new-form-control {
+	display: inherit;
+	border-radius: 40px;
+	margin-top: 15px;
+	flex-wrap: wrap;
+	padding: 5px 0px 15px 15px;
+	overflow-y: scroll;
+	min-width: 100%;
+	justify-content: space-between;
+	height: 100%;
+	margin-bottom: 0px;
+	align-items: start;
+	align-content:start;
+}
+
+.dropdown-item.now {
+	background: #141414;
+   width: 95%;
+   .icon{background: #101010;}
+}
+
+.new-form-control.songs {
+	display: grid;
+	grid-template-columns: repeat(2, 49.5%);
 }

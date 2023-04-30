@@ -109,14 +109,14 @@ foreach($result as &$action){
 		</div></div>';
 	$x++;
 }
-$pagel = '<div class="form" style="position:relative;padding-bottom: 20px;max-width:60vw;width: 60vw;height:70vh;margin-top:10px;margin-bottom:20px;border-radius:45px;overflow:auto;overflow-x:hidden;max-height:80vh;justify-content:flex-start">
+$pagel = '<div class="form new-form">
 <h1 style="margin-bottom:5px">'.$dl->getLocalizedString("accounts").'</h1>
-<div class="form-control" style="display: inherit;border-radius: 45px;margin-top: 15px;flex-wrap: wrap;padding: 0px 15px 15px 15px;overflow-y: auto;min-width: 100%;justify-content: space-between;height: 100%;margin-bottom: 0px;align-items: start;align-content:start;">
+<div class="form-control new-form-control">
 		'.$members.'
-	</div></div><form method="get" name="searchform" class="form__inner">
+	</div></div><form name="searchform" class="form__inner">
 	<div class="field" style="display:flex">
-		<input style="border-top-right-radius: 0;border-bottom-right-radius: 0;" type="text" name="search" value="'.$_GET["search"].'" placeholder="'.$dl->getLocalizedString("search").'">
-		<button type="button" onclick="a(\''.$pagelol.'\', true, true, \'GET\', 69)" style="width: 6%;border-top-left-radius:0px !important;border-bottom-left-radius:0px !important" type="submit" class="btn-primary" title="'.$dl->getLocalizedString("search").'"><i class="fa-solid fa-magnifying-glass"></i></button>
+		<input id="searchinput" style="border-top-right-radius: 0;border-bottom-right-radius: 0;" type="text" name="search" value="'.$_GET["search"].'" placeholder="'.$dl->getLocalizedString("search").'">
+		<button id="searchbutton" type="button" onclick="a(\''.$pagelol.'\', true, true, \'GET\', 69)" style="width: 6%;border-top-left-radius:0px !important;border-bottom-left-radius:0px !important" type="submit" class="btn-primary" title="'.$dl->getLocalizedString("search").'"><i class="fa-solid fa-magnifying-glass"></i></button>
 		'.$srcbtn.'
 	</div>
 </form>';

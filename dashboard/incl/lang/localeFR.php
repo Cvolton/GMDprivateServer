@@ -13,7 +13,7 @@ $string["tipsAfterInstalling"] = "Bienvenue au tableau de bord! Nous te donnons 
 1. Il y a de nouvelles permissions dans la base de données SQL dans la table 'roles'! Vous devriez y jeter un coup d'oeil...<br>
 2. Si vous placez 'icon.png' dans le dossier 'dashboard', alors le logo de votre GDPS va apparaître en haut à gauche!<br>
 3. Vous devriez configurer config/dashboard.php!";
-$string["wwygdt"] = "What are you gonna do today?";
+$string["wwygdt"] = "What will you gonna do today?";
 $string["game"] = "Game";
 $string["guest"] = "guest";
 $string["account"] = "Account";

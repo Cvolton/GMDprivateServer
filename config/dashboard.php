@@ -16,6 +16,13 @@ $mac = '';
 $android = '';
 $ios = '';
 
+// Launcher executable names (like "launcher.exe"), place them to dashboard/download folder
+
+$pcLauncher = "";
+$macLauncher = "";
+$androidLauncher = "";
+$iosLauncher = "";
+
 // Footer socials settings, leave empty to disable
 
 $vk = ''; // Как https://vk.com/*твой вк*

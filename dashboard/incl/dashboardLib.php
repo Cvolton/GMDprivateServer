@@ -17,7 +17,7 @@ class dashboardLib {
 						<meta charset="utf-8">
 						<meta name="color-scheme" content="dark">
 						<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit="no">';
-				if($isSubdirectory) echo '<base href="../">';
+          	if($isSubdirectory) echo '<base href="../">';
 				echo '<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
                           <script src="https://kit.fontawesome.com/10e18026cb.js" crossorigin="anonymous"></script>
                           <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
@@ -28,7 +28,7 @@ class dashboardLib {
 						  <link href="incl/fontawesome/css/solid.css" rel="stylesheet">
                           <link async rel="stylesheet" href="incl/cvolton.css">
 						  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-                          <title>'.$gdps.' </title>';
+                          <title>'.$gdps.'</title>';
 		echo '</head>
 				<body><div style="height: 100%;display: contents;">';
 	}
@@ -114,6 +114,10 @@ class dashboardLib {
       	global $mac;
       	global $android;
         global $ios;
+        global $pcLauncher;
+        global $macLauncher;
+        global $androidLauncher;
+        global $iosLauncher;
 		global $thirdParty;
       	global $dbPath;
 		include_once __DIR__."/../".$dbPath."incl/lib/Captcha.php";
@@ -309,18 +313,22 @@ class dashboardLib {
 							<i class="fa-solid fa-download" aria-hidden="true"></i> '.$this->getLocalizedString("download").'
 						</a>
 						<div class="dropdown-menu dropdown-menu-right" id="dptp" aria-labelledby="navbarDropdownMenuLink">';
-						if(file_exists("download/".$gdps.".zip") OR file_exists("../download/".$gdps.".zip")) echo '<a class="dropdown-item dontblock" href="download/'.$gdps.'.zip"><div class="icon"><i class="fa-brands fa-windows" aria-hidden="false"></i></div>'.$this->getLocalizedString("forwindows").'</a>';
+						if((file_exists("download/".$gdps.".zip") OR file_exists("../download/".$gdps.".zip")) AND empty($pcLauncher)) echo '<a class="dropdown-item dontblock" href="download/'.$gdps.'.zip"><div class="icon"><i class="fa-brands fa-windows" aria-hidden="false"></i></div>'.$this->getLocalizedString("forwindows").'</a>';
+                        elseif(!empty($pcLauncher)) echo '<a class="dropdown-item dontblock" href="download/'.$pcLauncher.'"><div class="icon"><i class="fa-brands fa-windows" aria-hidden="false"></i></div>'.$this->getLocalizedString("forwindows").'</a>';
                         elseif(!empty($pc)) echo '<a class="dropdown-item dontblock" href="'.$pc.'"><div class="icon"><i class="fa-brands fa-windows" aria-hidden="false"></i></div>'.$this->getLocalizedString("forwindows").'</a>';
-						if(file_exists("download/".$gdps.".dmg") OR file_exists("../download/".$gdps.".dmg")) echo '<a class="dropdown-item dontblock" href="download/'.$gdps.'.dmg"><i class="fa-solid fa-desktop" style="position: absolute;font-size: 10px;margin: 3px 5px 5px -6px;" aria-hidden="false"></i><div class="icon"><i class="fa-brands fa-apple" aria-hidden="false"></i></div>'.$this->getLocalizedString("formac").'</a>';
+						if((file_exists("download/".$gdps.".dmg") OR file_exists("../download/".$gdps.".dmg")) AND empty($macLauncher)) echo '<a class="dropdown-item dontblock" href="download/'.$gdps.'.dmg"><i class="fa-solid fa-desktop" style="position: absolute;font-size: 10px;margin: 3px 5px 5px -6px;" aria-hidden="false"></i><div class="icon"><i class="fa-brands fa-apple" aria-hidden="false"></i></div>'.$this->getLocalizedString("formac").'</a>';
+                        elseif(!empty($macLauncher)) echo '<a class="dropdown-item dontblock" href="download/'.$macLauncher.'"><i class="fa-solid fa-desktop" style="position: absolute;font-size: 10px;margin: 3px 5px 5px -6px;" aria-hidden="false"></i><div class="icon"><i class="fa-brands fa-apple" aria-hidden="false"></i></div>'.$this->getLocalizedString("formac").'</a>';
                         elseif(!empty($mac)) echo '<a class="dropdown-item dontblock" href="'.$mac.'"><i class="fa-solid fa-desktop" style="position: absolute;font-size: 10px;margin: 3px 5px 5px -6px;" aria-hidden="false"></i><div class="icon"><i class="fa-brands fa-apple" aria-hidden="false"></i></div>'.$this->getLocalizedString("formac").'</a>';
-						if(file_exists("download/".$gdps.".apk") OR file_exists("../download/".$gdps.".apk")) echo '<a class="dropdown-item dontblock" href="download/'.$gdps.'.apk"><div class="icon"><i class="fa-brands fa-android" aria-hidden="false"></i></div>'.$this->getLocalizedString("forandroid").'</a>';
+						if((file_exists("download/".$gdps.".apk") OR file_exists("../download/".$gdps.".apk")) AND empty($androidLauncher)) echo '<a class="dropdown-item dontblock" href="download/'.$gdps.'.apk"><div class="icon"><i class="fa-brands fa-android" aria-hidden="false"></i></div>'.$this->getLocalizedString("forandroid").'</a>';
+                        elseif(!empty($androidLauncher)) echo '<a class="dropdown-item dontblock" href="download/'.$androidLauncher.'"><div class="icon"><i class="fa-brands fa-android" aria-hidden="false"></i></div>'.$this->getLocalizedString("forandroid").'</a>';
                         elseif(!empty($android)) echo '<a class="dropdown-item dontblock" href="'.$android.'"><div class="icon"><i class="fa-brands fa-android" aria-hidden="false"></i></div>'.$this->getLocalizedString("forandroid").'</a>';
-						if(file_exists("download/".$gdps.".ipa") OR file_exists("../download/".$gdps.".ipa")) echo '<a class="dropdown-item dontblock" href="download/'.$gdps.'.ipa"><i class="fa-solid fa-mobile-screen-button" style="position: absolute;font-size: 10px;margin: 3px 5px 5px -3px;" aria-hidden="false"></i><div class="icon"><i class="fa-brands fa-apple" aria-hidden="false"></i></div>'.$this->getLocalizedString("forios").'</a></div>';
+						if((file_exists("download/".$gdps.".ipa") OR file_exists("../download/".$gdps.".ipa")) AND empty($iosLauncher)) echo '<a class="dropdown-item dontblock" href="download/'.$gdps.'.ipa"><i class="fa-solid fa-mobile-screen-button" style="position: absolute;font-size: 10px;margin: 3px 5px 5px -3px;" aria-hidden="false"></i><div class="icon"><i class="fa-brands fa-apple" aria-hidden="false"></i></div>'.$this->getLocalizedString("forios").'</a></div>';
+                        elseif(!empty($iosLauncher)) echo '<a class="dropdown-item dontblock" href="download/'.$iosLauncher.'"><i class="fa-solid fa-mobile-screen-button" style="position: absolute;font-size: 10px;margin: 3px 5px 5px -3px;" aria-hidden="false"></i><div class="icon"><i class="fa-brands fa-apple" aria-hidden="false"></i></div>'.$this->getLocalizedString("forios").'</a></div>';
                         elseif(!empty($ios)) echo '<a class="dropdown-item dontblock" href="'.$ios.'"><i class="fa-solid fa-mobile-screen-button" style="position: absolute;font-size: 10px;margin: 3px 5px 5px -3px;" aria-hidden="false"></i><div class="icon"><i class="fa-brands fa-apple" aria-hidden="false"></i></div>'.$this->getLocalizedString("forios").'</a></div>';
 						if(!empty($thirdParty)) {
 							foreach($thirdParty as &$thp) {
 								if(isset($tpcheck[$thp[1]])) continue;
-								$tp .= '<a title="'.$thp[3].'" class="dropdown-item" target="_blank" href="'.$thp[2].'"><div class="icon flag"><img style="border-radius:500px" class="imgflag" src="'.$thp[0].'"></div> '.$thp[1].'</a>';
+								$tp .= '<a title="'.$thp[3].'" class="dropdown-item dontblock" target="_blank" href="'.$thp[2].'"><div class="icon flag"><img style="border-radius:500px" class="imgflag" src="'.$thp[0].'"></div> '.$thp[1].'</a>';
 								$tpcheck[$thp[1]] = "set";
 							}
 							echo '<button type="button" title="'.$this->getLocalizedString("thanks").'" id="tpbtn" data-bs class="dropdown-item dropdown-toggle" onclick="tp(1)" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -455,6 +463,11 @@ $(document).change(function(){
 					htmtitle.replaceWith(title);
 					var scrp = document.createElement("script");
 					scrp.id = "pagescript";
+					lastChar = page.substr(page.length - 1);
+					if(lastChar == "/") pageyes = page.split("/")[0];
+					else pageyes = page;
+					now = document.querySelector("[href=\'"+pageyes+"\']");
+					if(now !== null) now.classList.add("now");
 					if(typeof scripts.textContent != "undefined") scrp.innerHTML = scripts.textContent;
 					if(document.getElementById("pagescript") !== null) document.getElementById("pagescript").remove();
 					document.body.appendChild(scrp);
@@ -468,6 +481,10 @@ $(document).change(function(){
 					if(page == "" && typeof document.querySelector("base") == "object") {
 						base2 = document.querySelector("base");
 						base2.href = ".";
+						document.body.appendChild(base2);
+					} else if(typeof document.querySelector("base") == "object") {
+						base2 = document.querySelector("base");
+						base2.href = "../";
 						document.body.appendChild(base2);
 					}
 					if(typeof coolcaptcha != "undefined") { 

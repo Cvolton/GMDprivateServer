@@ -17,19 +17,9 @@ if(isset($_GET["page"]) AND is_numeric($_GET["page"]) AND $_GET["page"] > 0){
 	$page = 0;
 	$actualpage = 1;
 }
-if(!empty($_GET["author"]) AND !empty($_GET["name"])) {
-	$notify = "block"; 
-	$an = $_GET["author"];
-	$nn = $_GET["name"];
-} else { 
-	$notify = "none";
-	$an = 0;
-	$nn = 0;
-}
 $pagelol = explode("/", $_SERVER["REQUEST_URI"]);
 $pagelol = $pagelol[count($pagelol)-2]."/".$pagelol[count($pagelol)-1];
 $pagelol = explode("?", $pagelol)[0];
-$table = '<div class="notify" style="display:'.$notify.'">'.$dl->getLocalizedString("deletedSong").' <b>'.$an.'</b> - <b>'.$nn.'</b>!</div><table class="table table-inverse"><tr><th>#</th><th></th><th>'.$dl->getLocalizedString("songIDw").'</th><th>'.$dl->getLocalizedString("songAuthor").'</th><th>'.$dl->getLocalizedString("name").'</th><th>'.$dl->getLocalizedString("size").'</th><th>'.$dl->getLocalizedString("time").'</th><th>'.$dl->getLocalizedString("howMuchLiked").'</th></tr>';
 $accountID = $_SESSION["accountID"];
 if(!isset($_GET["search"])) $_GET["search"] = "";
 $srcbtn = "";
@@ -66,107 +56,166 @@ if(empty($result)) {
 	die();
 } 
 foreach($result as &$action){
+	$fontsize = 27;
 	$songsid = $action["ID"];
-	$time = $dl->convertToDate($action["reuploadTime"]);
-	$author = $action["authorName"];
-   	if(strlen($author) > 18) $author = "<details><summary>".$dl->getLocalizedString("spoiler")."</summary>$author</details>";
+	$songIDlol = '<button id="copy'.$action["ID"].'" class="accbtn" onclick="copysong('.$action["ID"].')">'.$action["ID"].'</button>';
+	$time = $dl->convertToDate($action["reuploadTime"], true);
+  	$author = $action["authorName"];
 	$name = $action["name"];
-	$download = str_replace('http://', 'https://', $action["download"]);
-  	if(strlen($name) > 30) $name = "<details><summary>".$dl->getLocalizedString("spoiler")."</summary>$name</details>";
-  	$delete = '<td><a style="color:#ff444c" class="btn-rendel" href="stats/deleteSong.php?ID='.$songsid.'">'.$dl->getLocalizedString("delete").'</a></td>';
 	$size = $action["size"];
+ 	$delete = '<button onclick="deletesong('.$songsid.')" style="color:#ffbbbb;margin-left:5px;width:max-content;padding:7px 10px;font-size:15px"  class="btn-rendel"><i class="fa-solid fa-xmark"></i></button>';
+	$download = str_replace('http://', 'https://', $action["download"]);
+	$btn = '<button type="button" name="btnsng" id="btn'.$songsid.'" title="'.$author.' — '.$name.'" style="display: contents;color: white;margin: 0;" download="'.$download.'" onclick="btnsong(\''.$songsid.'\');"><div class="icon" style="font-size:13px; height:25px;width:25px;background:#373A3F;margin-left: 5px;"><i id="icon'.$songsid.'" name="iconlol" class="fa-solid fa-play" aria-hidden="false"></i></div></button>';
+	if(strlen($author) + strlen($name) > 30) $fontsize = 17;
+	elseif(strlen($author) + strlen($name) > 20) $fontsize = 20;
     if($action["isDisabled"]) {
 		$songsid = '<div style="text-decoration:line-through;color:#8b2e2c">'.$songsid.'</div>';
 		$author = '<div style="text-decoration:line-through;color:#8b2e2c">'.$author.'</div>';
 		$name = '<div style="text-decoration:line-through;color:#8b2e2c">'.$name.'</div>';
       	$size = '<div style="text-decoration:line-through;color:#8b2e2c">'.$size.'</div>';
       	$time = '<div style="text-decoration:line-through;color:#8b2e2c">'.$time.'</div>';
+		$btn = '<button type="button" style="display: contents;color: #ffb1ab;margin: 0;"><div class="icon" style="font-size:13px; height:25px;width:25px;background:#373A3F;margin-left: 5px;"><i class="fa-solid fa-xmark" aria-hidden="false"></i></div></button>';
 	}
 	$wholiked = "";
 	$wholiked = $db->prepare("SELECT count(*) FROM favsongs WHERE songID = :id");
 	$wholiked->execute([':id' => $songsid]);
 	$wholiked = $wholiked->fetchColumn();
-	if($wholiked == 0) $likes = '<div style="color:gray">'.$dl->getLocalizedString("nooneLiked").'</div>';
-	else {
-		$strs = $wholiked[strlen($wholiked)-1];
-		if($strs == 1) $star = 0; elseif($strs < 5 AND $strs != 0 AND ($wholiked > 20 OR $wholiked < 10)) $star = 1; else $star = 2;
-		$likes = $wholiked.' '.$dl->getLocalizedString("player".$star);
-	}
-	$btn = '<button type="button" name="btnsng" id="btn'.$songsid.'" title="'.$author.' - '.$name.'" style="display: contents;color: white;margin: 0;" download="'.$download.'" onclick="btnsong(\''.$songsid.'\');"><div class="icon" style="font-size:13px; height:25px;width:25px;background:#373A3F;margin-left: 0px;margin-right: -9px;"><i id="icon'.$songsid.'" name="iconlol" class="fa-solid fa-play" aria-hidden="false"></i></div></button>';
-	$table .= "<tr><th scope='row'>".$x."</th><td>".$btn."</td><td>".$songsid."</td><td>".$author."</td><td>".$name."</td><td>".$size."</td><td>".$time."</td><td>".$likes."</td><td>".$delete."</td></tr>";
-	$x++;
+	if($wholiked == 0) $wholiked = '<span style="color:#333">0</span>';
+	$whoused = $db->prepare("SELECT count(*) FROM levels WHERE songID = :id");
+	$whoused->execute([':id' => $songsid]);
+	$whoused = $whoused->fetchColumn();
+	if($whoused == 0) $whoused = '<span style="color:#333">0</span>';
+	$songSize = '<p class="profilepic"><i class="fa-solid fa-weight-hanging"></i> '.$action["size"].' MB</p>';
+	$wholiked = '<p class="profilepic" style="display: inline-flex;justify-content: center;grid-gap: 7px;"><i class="fa-solid fa-heart"></i> '.$wholiked.'</p>';
+	$whoused = '<p class="profilepic" style="display: inline-flex;justify-content: center;grid-gap: 7px;"><i class="fa-solid fa-gamepad"></i> '.$whoused.'</p>';
+	$stats = $wholiked.$songSize.$whoused;
+	$songs .= '<div id="profile'.$songsid.'" style="width: 100%;display: flex;flex-wrap: wrap;justify-content: center;">
+			<div class="profile"><div style="display: flex;width: 100%;justify-content: space-between;margin-bottom: 7px;align-items: center;"><div style="display: flex;width: 100%; justify-content: space-between;align-items: center;">
+				<h2 style="margin: 0px;font-size: '.$fontsize.'px;margin-left:5px;display: flex;align-items: center;" class="profilenick">'.$author.' — '.$name.$btn.'</h2>'.$delete.'
+			</div></div>
+			<div class="form-control" style="display: flex;width: 100%;height: max-content;align-items: center;">'.$stats.'</div>
+			<div style="display: flex;justify-content: space-between;margin-top: 10px;"><h3 id="comments" style="margin: 0px;width: max-content;">'.$dl->getLocalizedString("songIDw").': <b>'.$songIDlol.'</b></h3><h3 id="comments" style="justify-content: flex-end;grid-gap: 0.5vh;margin: 0px;width: max-content;">'.$dl->getLocalizedString("date").': <b>'.$time.'</b></h3></div>
+		</div></div>';
 }
-$table .= '</table><form method="get" name="searchform" class="form__inner">
+$pagel = '<div class="form new-form">
+<h1 style="margin-bottom:5px">'.$dl->getLocalizedString("manageSongs").'</h1>
+<div class="form-control new-form-control songs">
+		'.$songs.'
+	</div></div><form name="searchform" class="form__inner">
 	<div class="field" style="display:flex">
-		<input style="border-top-right-radius: 0;border-bottom-right-radius: 0;" type="text" name="search" value="'.$_GET["search"].'" placeholder="'.$dl->getLocalizedString("search").'">
-		<button type="button" onclick="a(\''.$pagelol.'\', true, true, \'GET\', 69)" style="width: 6%;border-top-left-radius:0px !important;border-bottom-left-radius:0px !important" type="submit" class="btn-primary" title="'.$dl->getLocalizedString("search").'"><i class="fa-solid fa-magnifying-glass"></i></button>
+		<input id="searchinput" style="border-top-right-radius: 0;border-bottom-right-radius: 0;" type="text" name="search" value="'.$_GET["search"].'" placeholder="'.$dl->getLocalizedString("search").'">
+		<button id="searchbutton" type="button" onclick="a(\''.$pagelol.'\', true, true, \'GET\', 69)" style="width: 6%;border-top-left-radius:0px !important;border-bottom-left-radius:0px !important" type="submit" class="btn-primary" title="'.$dl->getLocalizedString("search").'"><i class="fa-solid fa-magnifying-glass"></i></button>
 		'.$srcbtn.'
 	</div>
 </form>';
-/*
-	bottom row
-*/
-//getting count
 if(!empty(trim(ExploitPatch::remove($_GET["search"])))) $query = $db->prepare("SELECT count(*) FROM songs WHERE reuploadID=:id AND $q");
 else $query = $db->prepare("SELECT count(*) FROM songs WHERE reuploadID=:id");
 $query->execute([':id' => $accountID]);
 $packcount = $query->fetchColumn();
 $pagecount = ceil($packcount / 10);
 $bottomrow = $dl->generateBottomRow($pagecount, $actualpage);
-$dl->printPage($table . $bottomrow.'<script>
+$dl->printPage($pagel . $bottomrow.'<script>
 			function btnsong(id) {
-					$("#song"+id).on("pause play", function() {
-						if(document.getElementById("song" + id).paused) {
-							var elems=document.getElementsByName("iconlol");
-							for(var i=0; i<elems.length; i++)elems[i].classList.replace("fa-pause", "fa-play");
-						} else document.getElementById("icon"+id).classList.replace("fa-play", "fa-pause");
-					});
-					if(document.getElementById(id) == null) {
-						deleteDuplicates = $(".audio");
-						for(var i=0; i<deleteDuplicates.length; i++) deleteDuplicates[i].remove();
+				$("#song"+id).on("pause play", function() {
+					if(document.getElementById("song" + id).paused) {
 						var elems=document.getElementsByName("iconlol");
 						for(var i=0; i<elems.length; i++)elems[i].classList.replace("fa-pause", "fa-play");
-						if(id != 0) {
-							divsong = document.createElement("div");
-							audiosong = document.createElement("audio");
-							sourcesong = document.createElement("source");
-							divsong.name = "audio";
-							divsong.classList.add("audio");
-							divsong.id = id;
-							divsong.style.display = "flex";
-							audiosong.title = document.getElementById("btn"+id).title;
-							audiosong.style.width = "100%";
-							audiosong.name = "song";
-							audiosong.id = "song"+id;
-							audiosong.setAttribute("controls", "");
-							audiosong.volume = 0.2;
-							sourcesong.src = document.getElementById("btn"+id).getAttribute("download");
-							sourcesong.type = "audio/mpeg";
-							closesong = document.createElement("button");
-							closesong.type = "button";
-							closesong.classList.add("msgupd");
-							closesong.classList.add("closebtn");
-							closesong.setAttribute("onclick", "btnsong(0)");
-							closesong.innerHTML = \'<i class="fa-solid fa-xmark"></i>\';
-							audiosong.appendChild(sourcesong);
-							divsong.appendChild(audiosong);
-							divsong.appendChild(closesong);
-							document.body.appendChild(divsong);
-							audiosong.play();
-							document.getElementById("icon"+id).classList.replace("fa-play", "fa-pause");
-						} else {
-							divsong = audiosong = sourcesong = closesong = "";
-							var elems=document.getElementsByName("iconlol");
-							for(var i=0; i<elems.length; i++)elems[i].classList.replace("fa-pause", "fa-play");
-						}
+					} else document.getElementById("icon"+id).classList.replace("fa-play", "fa-pause");
+				});
+				if(document.getElementById(id) == null) {
+					deleteDuplicates = $(".audio");
+					for(var i=0; i<deleteDuplicates.length; i++) deleteDuplicates[i].remove();
+					var elems=document.getElementsByName("iconlol");
+					for(var i=0; i<elems.length; i++)elems[i].classList.replace("fa-pause", "fa-play");
+					if(id != 0) {
+						divsong = document.createElement("div");
+						audiosong = document.createElement("audio");
+						sourcesong = document.createElement("source");
+						divsong.name = "audio";
+						divsong.classList.add("audio");
+						divsong.id = id;
+						divsong.style.display = "flex";
+						audiosong.title = document.getElementById("btn"+id).title;
+						audiosong.style.width = "100%";
+						audiosong.name = "song";
+						audiosong.id = "song"+id;
+						audiosong.setAttribute("controls", "");
+						audiosong.volume = 0.2;
+						sourcesong.src = document.getElementById("btn"+id).getAttribute("download");
+						sourcesong.type = "audio/mpeg";
+						closesong = document.createElement("button");
+						closesong.type = "button";
+						closesong.classList.add("msgupd");
+						closesong.classList.add("closebtn");
+						closesong.setAttribute("onclick", "btnsong(0)");
+						closesong.innerHTML = \'<i class="fa-solid fa-xmark"></i>\';
+						audiosong.appendChild(sourcesong);
+						divsong.appendChild(audiosong);
+						divsong.appendChild(closesong);
+						document.body.appendChild(divsong);
+						audiosong.play();
+						document.getElementById("icon"+id).classList.replace("fa-play", "fa-pause");
 					} else {
-						if(document.getElementById("song" + id).paused) {
-							document.getElementById("song" + id).play();
+						divsong = audiosong = sourcesong = closesong = "";
+						var elems=document.getElementsByName("iconlol");
+						for(var i=0; i<elems.length; i++)elems[i].classList.replace("fa-pause", "fa-play");
+					}
+				} else {
+					if(document.getElementById("song" + id).paused) {
+						document.getElementById("song" + id).play();
+					}
+					else document.getElementById("song" + id).pause();
+				}
+			}
+			function like(id) {
+				likebtn = document.getElementById("like" + id);
+				if(likebtn.value == 1) {
+					document.getElementById("likeicon" + id).classList.add("fa-regular");
+					document.getElementById("likeicon" + id).classList.remove("fa-solid");
+					likebtn.value = 0;
+					likebtn.title = "'.$dl->getLocalizedString("likeSong").'";
+				} else {
+					document.getElementById("likeicon" + id).classList.remove("fa-regular");
+					document.getElementById("likeicon" + id).classList.add("fa-solid");
+					likebtn.value = 1;
+					likebtn.title = "'.$dl->getLocalizedString("dislikeSong").'";
+				}
+				fav = new XMLHttpRequest();
+				fav.open("GET", "stats/favourite.php?id=" + id, true);
+				fav.onload = function () {
+					if(fav.response == "-1") {
+						if(likebtn.value == 1) {
+							document.getElementById("likeicon" + id).classList.add("fa-regular");
+							document.getElementById("likeicon" + id).classList.remove("fa-solid");
+							likebtn.value = 0;
+							likebtn.title = "'.$dl->getLocalizedString("likeSong").'";
+						} else {
+							document.getElementById("likeicon" + id).classList.remove("fa-regular");
+							document.getElementById("likeicon" + id).classList.add("fa-solid");
+							likebtn.value = 1;
+							likebtn.title = "'.$dl->getLocalizedString("dislikeSong").'";
 						}
-						else document.getElementById("song" + id).pause();
 					}
 				}
-		</script>', true, "account");
+				fav.send();
+			}
+			function copysong(id) {
+				navigator.clipboard.writeText(id);
+				document.getElementById("copy"+id).style.transition = "0.05s";
+				document.getElementById("copy"+id).style.color = "#bbffbb";
+				setTimeout(function(){document.getElementById("copy"+id).style.transition = "0.2s";}, 1)
+				setTimeout(function(){document.getElementById("copy"+id).style.color = "#007bff";}, 200)
+			}
+			function deletesong(id) {
+				del = new XMLHttpRequest();
+				del.open("GET", "stats/deleteSong.php?ID=" + id, true);
+				del.onload = function () {
+					dl = JSON.parse(del.response);
+					if(dl.success) document.getElementById("profile"+id).remove()
+				}
+				del.send();
+			}
+		</script>', true, "browse");
 } else {
 	$dl->printSong('<div class="form">
     <h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
