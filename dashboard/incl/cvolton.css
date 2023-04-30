@@ -19,7 +19,7 @@
     .profilenick{font-size: 15px !important;}
     .profilepic{font-size: 15px !important;}
     .songacc{font-size: 13px !important;}
-	.btn-group {right: 5px !important;}
+	.btn-group {right: 5px !important;bottom: 15px !important;}
 	.btn-group button, .btn-group a {font-size: 13px !important;padding: 5px;overflow-wrap: anywhere;}
 }
 
