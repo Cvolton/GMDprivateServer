@@ -1045,8 +1045,7 @@ label {
 	margin-top:10px;
 	margin-bottom:20px;
 	border-radius:45px;
-	overflow:auto;
-	overflow-x:hidden;
+	overflow:hidden;
 	max-height:80vh;
 	justify-content:flex-start;
 }
