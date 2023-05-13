@@ -124,7 +124,6 @@ if(!$installed) {
   	fwrite($file, "\$installed = true; // Like i said, it changed!\r");
 	fwrite($file, implode('', $lines));
   	fclose($file);
-  	if(!file_exists("./download")) mkdir("./download", 0755);
   	header('Location: .?installed=1');
 } else header('Location: .');
 ?>
