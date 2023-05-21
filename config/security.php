@@ -5,9 +5,12 @@ $preactivateAccounts = true; //false = acounts need to be activated at tools/acc
 
 /*
 	Captcha settings
-	Currently the only supported provider is hCaptcha
-	https://www.hcaptcha.com/
+	Supports: hCaptcha, reCaptcha, Cloudflare Turnstile (why not!)
+	hCaptcha: https://www.hcaptcha.com/
+	reCaptcha: https://www.google.com/recaptcha/
+	Cloudflare Turnstile: https://www.cloudflare.com/products/turnstile/
 */
 $enableCaptcha = false;
-$hCaptchaKey = "";
-$hCaptchaSecret = "";
+$captchaType = 1; // 1 for hCaptcha, 2 for reCaptcha and 3 for CF-Turnstile
+$CaptchaKey = "";
+$CaptchaSecret = "";
