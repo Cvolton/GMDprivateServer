@@ -19,6 +19,7 @@ function chkarray($source, $default = 0){
 include "../".$dbPath."incl/lib/connection.php";
 require "../".$dbPath."incl/lib/XORCipher.php";
 require "../".$dbPath."config/reuploadAcc.php";
+require "../".$dbPath."config/proxy.php";
 require_once "../".$dbPath."incl/lib/mainLib.php";
 $gs = new mainLib();
 if(isset($_SESSION["accountID"]) AND $_SESSION["accountID"] != 0){
@@ -40,6 +41,16 @@ if(!empty($_POST["levelid"])){
 	$url = $_POST["server"];
 	$post = ['gameVersion' => '21', 'binaryVersion' => '33', 'gdw' => '0', 'levelID' => $levelID, 'secret' => 'Wmfd2893gb7', 'inc' => '1', 'extras' => '0'];
 	$ch = curl_init($url);
+	// "StackOverflow is a lifesaver" - masckmaster 2023
+	if($proxytype == 1){
+		curl_setopt($ch, CURLOPT_PROXY, $host);
+	} elseif($proxytype == 2) {
+		curl_setopt($ch, CURLOPT_PROXY, $host);
+		curl_setopt($ch, CURLOPT_PROXYTYPE, CURLPROXY_SOCKS5);
+	}
+	if(!empty($auth)) { 
+	curl_setopt($ch, CURLOPT_PROXYUSERPWD, $auth); 
+	}
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 	curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
 	curl_setopt($ch, CURLOPT_PROTOCOLS, CURLPROTO_HTTP | CURLPROTO_HTTPS);

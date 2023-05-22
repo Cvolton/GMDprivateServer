@@ -2,6 +2,7 @@
 session_start();
 include "../incl/dashboardLib.php";
 include "../".$dbPath."incl/lib/connection.php";
+require "../".$dbPath."config/proxy.php";
 include "../".$dbPath."incl/lib/Captcha.php";
 require "../".$dbPath."incl/lib/XORCipher.php";
 require_once "../".$dbPath."incl/lib/generatePass.php";
@@ -71,6 +72,15 @@ if(!empty($_POST["usertarg"]) AND !empty($_POST["passtarg"]) AND !empty($_POST["
 	//echo $udid;
 	$post = ['userName' => $usertarg, 'udid' => $udid, 'password' => $passtarg, 'sID' => $sid, 'secret' => 'Wmfv3899gc9'];
 	$ch = curl_init($server . "/accounts/loginGJAccount.php");
+	if($proxytype == 1){
+		curl_setopt($ch, CURLOPT_PROXY, $host);
+	} elseif($proxytype == 2) {
+		curl_setopt($ch, CURLOPT_PROXY, $host);
+		curl_setopt($ch, CURLOPT_PROXYTYPE, CURLPROXY_SOCKS5);
+	}
+	if(!empty($auth)) { 
+	curl_setopt($ch, CURLOPT_PROXYUSERPWD, $auth); 
+	}
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 	curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
 	curl_setopt($ch, CURLOPT_PROTOCOLS, CURLPROTO_HTTP | CURLPROTO_HTTPS);
@@ -154,6 +164,15 @@ if(!empty($_POST["usertarg"]) AND !empty($_POST["passtarg"]) AND !empty($_POST["
 		var_dump($post);
 	}
 	$ch = curl_init($server . "/uploadGJLevel21.php");
+	if($proxytype == 1){
+		curl_setopt($ch, CURLOPT_PROXY, $host);
+	} elseif($proxytype == 2) {
+		curl_setopt($ch, CURLOPT_PROXY, $host);
+		curl_setopt($ch, CURLOPT_PROXYTYPE, CURLPROXY_SOCKS5);
+	}
+	if(!empty($auth)) { 
+	curl_setopt($ch, CURLOPT_PROXYUSERPWD, $auth); 
+	}
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 	curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
 	curl_setopt($ch, CURLOPT_PROTOCOLS, CURLPROTO_HTTP | CURLPROTO_HTTPS);
