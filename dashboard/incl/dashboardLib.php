@@ -124,12 +124,37 @@ class dashboardLib {
 		include_once __DIR__."/../".$dbPath."config/security.php";
 		require_once __DIR__."/../".$dbPath."incl/lib/mainLib.php";
       	include __DIR__."/../".$dbPath."incl/lib/connection.php";
+		if($enableCaptcha) switch($captchaType) {
+      	    case 1:
+      	        $captchaUsed = 'hcaptcha';
+      	        $captchaScript = 'if(typeof hcaptcha != "object") {
+    						cptscr = document.createElement("script");
+    						cptscr.id = "captchascript";
+    						cptscr.setAttribute("src", captchascript.getAttribute("src"));
+    						document.body.append(cptscr);
+						} else setTimeout(function () {hcaptcha.render("coolcaptcha")}, 1000);';
+      	        break;
+      	    case 2:
+      	        $captchaUsed = 'grecaptcha';
+      	        $captchaScript = 'if(typeof grecaptcha != "object") {
+    						cptscr = document.createElement("script");
+    						cptscr.id = "captchascript";
+    						cptscr.setAttribute("src", captchascript.getAttribute("src"));
+    						document.body.append(cptscr);
+						} else setTimeout(function () {grecaptcha.render("coolcaptcha")}, 1000);';
+      	        break;
+      	    case 3:
+      	        $captchaUsed = 'turnstile';
+      	        $captchaScript = 'if(typeof turnstile != "object") {
+    						cptscr = document.createElement("script");
+    						cptscr.id = "captchascript";
+    						cptscr.setAttribute("src", captchascript.getAttribute("src"));
+    						document.body.append(cptscr);
+    						console.log("penis");
+						} else setTimeout(function () {turnstile.implicitRender();}, 1000);';
+      	        break;
+      	}
 		$gs = new mainLib();
-		if($enableCaptcha) {
-			echo '<div id="captchadiv">';
-			Captcha::displayCaptcha('no');
-			echo "</div>";
-		}
 		$homeActive = $accountActive = $browseActive = $modActive = $reuploadActive = $statsActive = $msgActive = $profileActive = "";
 		switch($active){
 			case "home":
@@ -404,7 +429,7 @@ $(document).change(function(){
 		echo '</ul>
 			</div>
 		</nav>
-		<div class="form" style="margin:0px;position:absolute;bottom:50px;color:white;font-size:50px;width:max-content;right:50px;padding:25px;transition:0.3s;opacity:0;border-radius:500px" id="loadingloool"><i class="fa-solid fa-spinner fa-spin"></i></div>
+		<div class="form" style="margin:0px;position:absolute;bottom:50px;color:white;font-size:50px;width:max-content !important;right:50px;padding:25px;transition:0.3s;opacity:0;border-radius:500px" id="loadingloool"><i class="fa-solid fa-spinner fa-spin"></i></div>
 <script>
 	cptch = document.querySelector("#verycoolcaptcha");
 	$(document).click(function(event) {
@@ -450,14 +475,14 @@ $(document).change(function(){
 			navbar = document.querySelector("#navbarepta");
 			htmtitle = document.querySelectorAll("title")[0];
 			pg.onload = function (){
-    			if(typeof turnstile == "object" && typeof turnstile.getResponse() != "undefined") {
+    			'.($enableCaptcha ? 'if(typeof '.$captchaUsed.' == "object" && typeof '.$captchaUsed.'.getResponse() != "undefined") {
     			    try {
-    			        turnstile.reset();
+    			        if(document.getElementById("coolcaptcha") != null || typeof turnstile == "object") '.$captchaUsed.'.reset();
         			}
         			catch(e) {
                        console.log(e);
                     }
-    			}
+    			}' : '').'
 				if(pg.response.getElementById("htmlpage") != null) {
 					document.getElementById("loadingloool").style.opacity = "0";
 					title = pg.response.querySelectorAll("title")[0];
@@ -495,17 +520,9 @@ $(document).change(function(){
 						if(typeof document.querySelectorAll("base")[1] == "object") document.querySelectorAll("base")[1].remove();
 					}
 					if(typeof captchascript != "undefined") {
-				    	if(document.getElementById("captchascript") !== null) document.getElementById("captchascript").remove();
-						'.($captchaType == 3 ? 'if(typeof turnstile != "object") {
-    						cptscr = document.createElement("script");
-    						cptscr.id = "captchascript";
-    						cptscr.setAttribute("src", captchascript.getAttribute("src"));
-    						document.body.append(cptscr);
-						} else turnstile.implicitRender();' : 'cptscr = document.createElement("script");
-    						cptscr.id = "captchascript";
-    						cptscr.setAttribute("src", captchascript.getAttribute("src"));
-    						document.body.append(cptscr);
-						').'
+					    var elems = document.querySelectorAll("div[aria-hidden=true]");
+						for(var i=0; i<elems.length; i++)elems[i].remove();
+						'.$captchaScript.'
 					}
 				} else {
 					document.getElementById("loadingloool").innerHTML = \'<i class="fa-solid fa-xmark" style="color:#ffb1ab;padding: 0px 8px;"></i>\';
