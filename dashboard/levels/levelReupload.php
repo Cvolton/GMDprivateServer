@@ -172,7 +172,7 @@ if(!empty($_POST["levelid"])){
 												VALUES (:name ,:gameVersion, '27', 'Reupload', :desc, :version, :length, :audiotrack, '0', :password, :originalReup, :twoPlayer, :songID, '0', :coins, :reqstar, :extraString, :levelString, '', '', '$uploadDate', '$uploadDate', :originalReup, :userID, :extID, '0', :hostname, :starStars, :starCoins, :starDifficulty, :starDemon, :starAuto, :isLDM)");
 			$query->execute([':password' => 1, ':starDemon' => $starDemon, ':starAuto' => $starAuto, ':gameVersion' => $gameVersion, ':name' => $levelarray["a2"], ':desc' => $levelarray["a3"], ':version' => $levelarray["a5"], ':length' => $levelarray["a15"], ':audiotrack' => $levelarray["a12"], ':twoPlayer' => $twoPlayer, ':songID' => $songID, ':coins' => $coins, ':reqstar' => $reqstar, ':extraString' => $extraString, ':levelString' => "", ':originalReup' => $levelarray["a1"], ':hostname' => $hostname, ':starStars' => 0, ':starCoins' => 0, ':starDifficulty' => $starDiff, ':userID' => $userID, ':extID' => $extID, ':isLDM' => $isLDM]);
 			$levelID = $db->lastInsertId();
-			file_put_contents("../../data/levels/$levelID",$levelString);
+			file_put_contents("../".$dbPath."data/levels/$levelID",$levelString);
 		if($debug == 1) {
 			$dl->printSong('<div class="form">
 					<h1>'.$dl->getLocalizedString("levelReupload").'</h1>
