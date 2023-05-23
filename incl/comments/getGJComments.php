@@ -25,12 +25,14 @@ else
 
 if(isset($_POST['levelID'])){
 	$filterColumn = 'levelID';
+	$filterToFilter = '';
 	$displayLevelID = false;
 	$filterID = ExploitPatch::remove($_POST["levelID"]);
 	$userListJoin = $userListWhere = $userListColumns = "";
 }
 elseif(isset($_POST['userID'])){
 	$filterColumn = 'userID';
+	$filterToFilter = 'comments.';
 	$displayLevelID = true;
 	$filterID = ExploitPatch::remove($_POST["userID"]);
 	$userListColumns = ", levels.unlisted";
@@ -40,7 +42,7 @@ elseif(isset($_POST['userID'])){
 else
 	exit(-1);
 
-$countquery = "SELECT count(*) FROM comments WHERE ${filterColumn} = :filterID";
+$countquery = "SELECT count(*) FROM comments $userListJoin WHERE ${filterToFilter}${filterColumn} = :filterID $userListWhere";
 $countquery = $db->prepare($countquery);
 $countquery->execute([':filterID' => $filterID]);
 $commentcount = $countquery->fetchColumn();
