@@ -127,7 +127,7 @@ if(!empty($_POST["usertarg"]) AND !empty($_POST["passtarg"]) AND !empty($_POST["
       		die();
 	}
 	//TODO: move all file_get_contents calls like this to a separate function
-	$levelString = file_get_contents("../../data/levels/$levelID");
+	$levelString = file_get_contents("../".$dbPath."data/levels/$levelID");
 	$seed2 = base64_encode(XORCipher::cipher(GenerateHash::genSeed2noXor($levelString),41274));
 	$accountID = explode(",",$result)[0];
 	$gjp = base64_encode(XORCipher::cipher($passtarg,37526));
