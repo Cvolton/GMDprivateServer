@@ -16,8 +16,8 @@ if($query->rowCount() == 0){
 	$query->execute([':commentID' => $commentID]);
 	$creatorAccID = $query->fetchColumn();
 	if($creatorAccID == $accountID || $gs->checkPermission($accountID, "actionDeleteComment") == 1){
-		$query = $db->prepare("DELETE FROM comments WHERE commentID=:commentID AND levelID=:levelID LIMIT 1");
-		$query->execute([':commentID' => $commentID, ':levelID' => $levelID]);
+		$query = $db->prepare("DELETE FROM comments WHERE commentID=:commentID LIMIT 1");
+		$query->execute([':commentID' => $commentID]);
 	}
 }
 echo "1";
