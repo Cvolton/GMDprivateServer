@@ -450,6 +450,14 @@ $(document).change(function(){
 			navbar = document.querySelector("#navbarepta");
 			htmtitle = document.querySelectorAll("title")[0];
 			pg.onload = function (){
+    			if(typeof turnstile == "object" && typeof turnstile.getResponse() != "undefined") {
+    			    try {
+    			        turnstile.reset();
+        			}
+        			catch(e) {
+                       console.log(e);
+                    }
+    			}
 				if(pg.response.getElementById("htmlpage") != null) {
 					document.getElementById("loadingloool").style.opacity = "0";
 					title = pg.response.querySelectorAll("title")[0];
@@ -463,6 +471,7 @@ $(document).change(function(){
 					htmtitle.replaceWith(title);
 					var scrp = document.createElement("script");
 					scrp.id = "pagescript";
+					captchascript = document.getElementById("captchascript");
 					lastChar = page.substr(page.length - 1);
 					if(lastChar == "/") pageyes = page.split("/")[0];
 					else pageyes = page;
@@ -472,25 +481,31 @@ $(document).change(function(){
 					if(document.getElementById("pagescript") !== null) document.getElementById("pagescript").remove();
 					document.body.appendChild(scrp);
 					if(!isback) history.pushState(null,null,page);
-					if(page != "" && typeof document.getElementsByTagName("base")[0] == "undefined") {
+					if(typeof document.querySelector("base") != "object") {
 						base = document.createElement("base");
-						base.href = "../";
+						if(page != "") base.href = "../";
+						else base.href = ".";
 						document.body.appendChild(base);
+					} else {
+						base = document.querySelectorAll("base")[0];
+						if(page.indexOf("settings") != "-1") base.href = "../../";
+						else if(page != "") base.href = "../";
+						else base.href = ".";
+						document.body.appendChild(base);
+						if(typeof document.querySelectorAll("base")[1] == "object") document.querySelectorAll("base")[1].remove();
 					}
-					if(document.querySelector("base").getAttribute("href") == "/") document.querySelector("base").href = "../";
-					if(page == "" && typeof document.querySelector("base") == "object") {
-						base2 = document.querySelector("base");
-						base2.href = ".";
-						document.body.appendChild(base2);
-					} else if(typeof document.querySelector("base") == "object") {
-						base2 = document.querySelector("base");
-						base2.href = "../";
-						document.body.appendChild(base2);
-					}
-					if(typeof coolcaptcha != "undefined") { 
-						captch = captchaa;
-						coolcaptcha.replaceWith(captch);
-						$(".h-captcha").not("#captchadiv > #verycoolcaptcha")[0].style.display = "block";
+					if(typeof captchascript != "undefined") {
+				    	if(document.getElementById("captchascript") !== null) document.getElementById("captchascript").remove();
+						'.($captchaType == 3 ? 'if(typeof turnstile != "object") {
+    						cptscr = document.createElement("script");
+    						cptscr.id = "captchascript";
+    						cptscr.setAttribute("src", captchascript.getAttribute("src"));
+    						document.body.append(cptscr);
+						} else turnstile.implicitRender();' : 'cptscr = document.createElement("script");
+    						cptscr.id = "captchascript";
+    						cptscr.setAttribute("src", captchascript.getAttribute("src"));
+    						document.body.append(cptscr);
+						').'
 					}
 				} else {
 					document.getElementById("loadingloool").innerHTML = \'<i class="fa-solid fa-xmark" style="color:#ffb1ab;padding: 0px 8px;"></i>\';
@@ -527,7 +542,6 @@ $(document).change(function(){
 			else a(\'\', true, true, "GET", false, "", true);
 		}
 	}, false);
-	setTimeout(function () {captchaa = cptch.cloneNode(true)}, 1);
 </script>';
 	}
 	public function printPage($content, $isSubdirectory = true, $navbar = "home"){
