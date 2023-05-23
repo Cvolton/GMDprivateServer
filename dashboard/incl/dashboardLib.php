@@ -488,8 +488,8 @@ $(document).change(function(){
 						document.body.appendChild(base2);
 					}
 					if(typeof coolcaptcha != "undefined") { 
-						if(cptch == null) coolcaptcha.replaceWith(captch);
-						else coolcaptcha.replaceWith(cptch);
+						captch = captchaa;
+						coolcaptcha.replaceWith(captch);
 						$(".h-captcha").not("#captchadiv > #verycoolcaptcha")[0].style.display = "block";
 					}
 				} else {
@@ -527,7 +527,7 @@ $(document).change(function(){
 			else a(\'\', true, true, "GET", false, "", true);
 		}
 	}, false);
-	setTimeout(function () {captch = cptch.cloneNode(true)}, 1);
+	setTimeout(function () {captchaa = cptch.cloneNode(true)}, 1);
 </script>';
 	}
 	public function printPage($content, $isSubdirectory = true, $navbar = "home"){
