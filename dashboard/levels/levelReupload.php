@@ -205,7 +205,6 @@ if(!empty($_POST["levelid"])){
     <h1>'.$dl->getLocalizedString("levelReupload").'</h1>
     <form class="form__inner" method="post" action="">
 		<p>'.$dl->getLocalizedString("levelReuploadDesc").'</p>
-		<div class="notify" style="padding: 20px;margin: 0px;"><p>Перенос из оригинальной Geometry Dash может не работать</p></div>
         <div class="field"><input type="text" name="levelid" id="p1" placeholder="'.$dl->getLocalizedString("levelID").'"></div>
 		<details class="details">
 			<summary style="width: 100%;">'.$dl->getLocalizedString("advanced").'</summary>
