@@ -217,6 +217,7 @@ if(!empty($_POST["usertarg"]) AND !empty($_POST["passtarg"]) AND !empty($_POST["
     <h1>'.$dl->getLocalizedString("levelToGD").'</h1>
     <form class="form__inner" method="post" action="">
 		<p>'.$dl->getLocalizedString("levelToGDDesc").'</p>
+		<div class="notify" style="padding: 20px;margin: 0px;"><p>Перенос в оригинальную Geometry Dash может не работать</p></div>
         <div class="field"><input type="text" name="levelID" id="p1" placeholder="'.$dl->getLocalizedString("levelID").'"></div>
         <div class="field"><input type="text" name="usertarg" id="p2" placeholder="'.$dl->getLocalizedString("usernameTarget").'"></div>
         <div class="field"><input type="password" name="passtarg" id="p3" placeholder="'.$dl->getLocalizedString("passwordTarget").'"></div>
