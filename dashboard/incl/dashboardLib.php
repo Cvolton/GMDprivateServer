@@ -124,35 +124,9 @@ class dashboardLib {
 		include_once __DIR__."/../".$dbPath."config/security.php";
 		require_once __DIR__."/../".$dbPath."incl/lib/mainLib.php";
       	include __DIR__."/../".$dbPath."incl/lib/connection.php";
-		if($enableCaptcha) switch($captchaType) {
-      	    case 1:
-      	        $captchaUsed = 'hcaptcha';
-      	        $captchaScript = 'if(typeof hcaptcha != "object") {
-    						cptscr = document.createElement("script");
-    						cptscr.id = "captchascript";
-    						cptscr.setAttribute("src", captchascript.getAttribute("src"));
-    						document.body.append(cptscr);
-						} else setTimeout(function () {hcaptcha.render("coolcaptcha")}, 1000);';
-      	        break;
-      	    case 2:
-      	        $captchaUsed = 'grecaptcha';
-      	        $captchaScript = 'if(typeof grecaptcha != "object") {
-    						cptscr = document.createElement("script");
-    						cptscr.id = "captchascript";
-    						cptscr.setAttribute("src", captchascript.getAttribute("src"));
-    						document.body.append(cptscr);
-						} else setTimeout(function () {grecaptcha.render("coolcaptcha")}, 1000);';
-      	        break;
-      	    case 3:
-      	        $captchaUsed = 'turnstile';
-      	        $captchaScript = 'if(typeof turnstile != "object") {
-    						cptscr = document.createElement("script");
-    						cptscr.id = "captchascript";
-    						cptscr.setAttribute("src", captchascript.getAttribute("src"));
-    						document.body.append(cptscr);
-    						console.log("penis");
-						} else setTimeout(function () {turnstile.implicitRender();}, 1000);';
-      	        break;
+		if($enableCaptcha) {
+      	    $captchaTypes = ['hcaptcha', 'grecaptcha', 'turnstile'];
+      	    $captchaUsed = $captchaTypes[$captchaType-1];
       	}
 		$gs = new mainLib();
 		$homeActive = $accountActive = $browseActive = $modActive = $reuploadActive = $statsActive = $msgActive = $profileActive = "";
@@ -477,7 +451,7 @@ $(document).change(function(){
 			pg.onload = function (){
     			'.($enableCaptcha ? 'if(typeof '.$captchaUsed.' == "object" && typeof '.$captchaUsed.'.getResponse() != "undefined") {
     			    try {
-    			        if(document.getElementById("coolcaptcha") != null || typeof turnstile == "object") '.$captchaUsed.'.reset();
+    			        if(document.getElementById("coolcaptcha") != null) '.$captchaUsed.'.reset();
         			}
         			catch(e) {
                        console.log(e);
@@ -522,7 +496,16 @@ $(document).change(function(){
 					if(typeof captchascript != "undefined") {
 					    var elems = document.querySelectorAll("div[aria-hidden=true]");
 						for(var i=0; i<elems.length; i++)elems[i].remove();
-						'.$captchaScript.'
+						if(typeof turnstile != "object" && typeof grecaptcha != "object" && typeof hcaptcha != "object") {
+    						cptscr = document.createElement("script");
+    						cptscr.id = "captchascript";
+    						cptscr.setAttribute("src", captchascript.getAttribute("src"));
+    						document.body.append(cptscr);
+						} else {
+						    if(typeof turnstile == "object") turnstile.implicitRender();
+						    if(typeof grecaptcha == "object") grecaptcha.render("coolcaptcha");
+						    if(typeof hcaptcha == "object") hcaptcha.render("coolcaptcha");
+						}
 					}
 				} else {
 					document.getElementById("loadingloool").innerHTML = \'<i class="fa-solid fa-xmark" style="color:#ffb1ab;padding: 0px 8px;"></i>\';
