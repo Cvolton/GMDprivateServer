@@ -13,10 +13,10 @@ class Captcha {
 				echo "<div class=\"h-captcha\" $vis id=\"" . $very . "coolcaptcha\" data-sitekey=\"${CaptchaKey}\" data-theme='dark' style='border-width: 0px !important;border-radius: 20px !important;'></div>";
 			} elseif ($captchaType == 2) {
 				echo "<script src='https://www.google.com/recaptcha/api.js' id='captchascript' async defer></script>";
-				echo "<div class=\"g-recaptcha\" $vis id=\"" . $very . "coolcaptcha\" data-sitekey=\"${CaptchaKey}\"></div>";
+				echo "<div class=\"g-recaptcha\" $vis id=\"" . $very . "coolcaptcha\" data-sitekey=\"${CaptchaKey}\" data-theme='dark'></div>";
 			} elseif ($captchaType == 3) {
 				echo "<script src='https://challenges.cloudflare.com/turnstile/v0/api.js' id='captchascript' async defer></script>";
-				echo "<div class=\"cf-turnstile\" $vis id=\"" . $very . "coolcaptcha\" data-sitekey=\"${CaptchaKey}\" data-callback=\"javascriptCallback\"></div>";
+				echo "<div class=\"cf-turnstile\" $vis id=\"" . $very . "coolcaptcha\" data-sitekey=\"${CaptchaKey}\" data-theme='dark' data-callback=\"javascriptCallback\"></div>";
 			}
 		}
 	}
