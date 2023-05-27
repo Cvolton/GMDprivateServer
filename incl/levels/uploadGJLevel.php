@@ -86,7 +86,7 @@ $query = $db->prepare("INSERT INTO levels (levelName, gameVersion, binaryVersion
 VALUES (:levelName, :gameVersion, :binaryVersion, :userName, :levelDesc, :levelVersion, :levelLength, :audioTrack, :auto, :password, :original, :twoPlayer, :songID, :objects, :coins, :requestedStars, :extraString, :levelString, :levelInfo, :secret, :uploadDate, :userID, :id, :uploadDate, :unlisted, :hostname, :ldm, :wt, :wt2, :unlisted2, :settingsString)");
 
 
-if($levelString != "" AND $levelName != "" AND LevelParser::validate($levelString)){
+if($levelString != "" AND $levelName != "" AND LevelParser::validate($levelString, $binaryVersion)){
 	$querye=$db->prepare("SELECT levelID FROM levels WHERE levelName = :levelName AND userID = :userID");
 	$querye->execute([':levelName' => $levelName, ':userID' => $userID]);
 	$levelID = $querye->fetchColumn();
