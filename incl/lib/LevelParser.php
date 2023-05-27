@@ -92,7 +92,7 @@ class LevelParser {
             if (preg_match('/[^\x20-\x7e]/', $data)) return false;
             $objs = explode(';', $data);
             // Skip level header
-            for ($i = 1; $i < 2; $i++) {
+            for ($i = 1; $i < count($objs); $i++) {
                 $obj = self::map($objs[$i], ',');
                 // Clamp groups based on version
                 if (array_key_exists(80, $obj)) {
