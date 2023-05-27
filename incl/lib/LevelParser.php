@@ -55,19 +55,6 @@ class LevelParser {
         return base64_decode(strtr($string, '-_', '+/'), true);
     }
 
-    public static function decodeAllB64($string) {
-        // https://www.debugpointer.com/regex/regex-for-base64
-        // In case of emergency break glass. This may work as an alternative due to lenient php function or very large level string
-        // if (preg_match('/^(?:[A-Za-z0-9+\/]{4})*(?:[A-Za-z0-9+\/]{4}|[A-Za-z0-9+\/]{3}=|[A-Za-z0-9+\/]{2}={2})$/'. $string)) {
-        if (base64_encode(base64_decode($string, true)) === $string) {
-
-        }
-
-        if (strpos('-') === false || strpos('_') === false) {
-
-        }
-    }
-
     /**
      * Validates level data for various things (currently only ACE exploit)
      *
