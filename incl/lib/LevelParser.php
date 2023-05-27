@@ -64,12 +64,13 @@ class LevelParser {
         include '../../config/security.php';
         try {
             $data = $levelString;
+
             // Decode (strict mode) if falsy then
             $decoded = self::base64_urldecode($levelString);
             if ($decoded !== false) $data = $decoded;
 
             // Check for zlib magic
-            if(substr($data, 0, 3) === "\x1b\x8b\x08") {
+            if(bin2hex(substr($data, 0, 3)) === '1f8b08') {
                 $data = zlib_decode($data, $maxUncompressedLevelSize);
                 if (!$data) {
                     return false;
