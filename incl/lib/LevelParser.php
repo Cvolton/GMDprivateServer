@@ -70,7 +70,8 @@ class LevelParser {
             if ($decoded !== false) $data = $decoded;
 
             // Check for zlib magic
-            if(bin2hex(substr($data, 0, 3)) === '1f8b08') {
+            $magic = bin2hex(substr($data, 0, 3));
+            if($magic === '1f8b08' || substr($magic, 0, 2) === '78') {
                 $data = zlib_decode($data, $maxUncompressedLevelSize);
                 if (!$data) {
                     return false;
