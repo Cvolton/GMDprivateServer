@@ -63,8 +63,7 @@ foreach($result as &$action){
   	if(empty($levelDesc)) $levelDesc = '<text style="color:gray">'.$dl->getLocalizedString("noDesc").'</text>';
 	$levelpass = $action["password"];
 	$likes = $action["likes"] > 0 ? $action["likes"] : '<span style="color:gray">'.$action["likes"].'</span>';
-	$dislikes = $action["dislikes"] > 0 ? $action["dislikes"] : '<span style="color:gray">'.$action["dislikes"].'</span>';
-	$stats = '<div class="profilepic" style="display:inline-flex;grid-gap:3px;color:white"><i style="color:#ffffc0" class="fa-regular fa-thumbs-up"></i> '.$likes. ' | <i style="color:#ffc0c0" class="fa-regular fa-thumbs-down"></i> '.$dislikes.'</div>';
+	$stats = '<div class="profilepic" style="display:inline-flex;grid-gap:3px;color:white"><i class="fa-regular fa-thumbs-up"></i> '.$likes.'</div>';
 	if($modcheck) {
     	$levelpass = substr($levelpass, 1);
       	$levelpass = preg_replace('/(0)\1+/', '', $levelpass);
