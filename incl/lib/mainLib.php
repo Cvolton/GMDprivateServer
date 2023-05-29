@@ -391,6 +391,18 @@ class mainLib {
 		}
 		return "1~|~".$song["ID"]."~|~2~|~".str_replace("#", "", $song["name"])."~|~3~|~".$song["authorID"]."~|~4~|~".$song["authorName"]."~|~5~|~".$song["size"]."~|~6~|~~|~10~|~".$dl."~|~7~|~~|~8~|~1";
 	}
+	public function getSongInfo($id, $column = "*") {
+	    if(!is_numeric($id)) return;
+	    include __DIR__ . "/connection.php";
+	    $sinfo = $db->prepare("SELECT `$column` FROM songs WHERE ID = :id");
+	    $sinfo->execute([':id' => $id]);
+	    $sinfo = $sinfo->fetch();
+	    if(empty($sinfo)) return false;
+	    else {
+	        if($column != "*")  return $sinfo[$column];
+	        else return array("ID" => $sinfo["ID"], "name" => $sinfo["name"], "authorName" => $sinfo["authorName"], "size" => $sinfo["size"], "download" => $sinfo["download"], "reuploadTime" => $sinfo["reuploadTime"], "reuploadID" => $sinfo["reuploadID"]);
+	    }
+	}
 	public function getClanInfo($clan, $column = "*") {
 	    if(!is_numeric($clan)) return;
 	    include __DIR__ . "/connection.php";
