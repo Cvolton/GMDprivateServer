@@ -7,6 +7,7 @@
 	.mainlist{width:80% !important}
 	.new-form-control.songs {grid-template-columns: repeat(1, 100%) !important;}
 	.last{margin-bottom: 55px !important;}
+	.profileform{width:75vw !important;max-height: max-content !important;margin: 20px 0px 50px 0px !important;}
 }
 
 @media (min-width: 1537px) {
@@ -19,8 +20,30 @@
     .profilenick{font-size: 15px !important;}
     .profilepic{font-size: 15px !important;}
     .songacc{font-size: 13px !important;}
+    .songidyeah{font-size: 11px !important;}
 	.btn-group {right: 5px !important;bottom: 15px !important;}
-	.btn-group button, .btn-group a {font-size: 13px !important;padding: 5px;overflow-wrap: anywhere;}
+	.btn-group button, .btn-group a {font-size: 13px !important;overflow-wrap: anywhere;}
+	.mainpagecardh1 {font-size:27px !important;}
+	.mph1 {font-size:20px !important;height: 40px !important; width: 40px !important;}
+	.welcomeh1 {font-size:29px !important;}
+	.welcomep, .mpp {font-size:17px !important;}
+	.welcomeh3 {font-size:20px !important;}
+	.mpsmall {font-size:12px !important;}
+	.profileform{width:95vw !important;}
+	.profilemsg{font-size:14px !important;}
+	.mainlist{width:95% !important}
+	.msgbox, .dmbox{min-width:85vw !important}
+	.form, .demonlist{width:95vw !important}
+	.dlh1 {font-size:25px !important;}
+	.dltext, .dltext button {font-size:20px !important;}
+	.dlp {font-size:15px !important;}
+	.dlposttext, .dlposttext button {font-size:10px !important;}
+	.dlcard {display: grid !important;}
+	.dlcard iframe {margin-top: 10px !important; width: 100% !important;}
+	.accnamedesc, .acccontrol {width:100% !important;}
+	.profacclist {flex-direction: column !important;}
+	.songauthor {font-size:10px !important;}
+	.songname {font-size:15px !important;}
 }
 
 * {
@@ -33,7 +56,7 @@
 
 .btn-group {
 	position: fixed;
-	bottom: 50px;
+	bottom: -50px;
 	right: 20px;
 	backdrop-filter: blur(2px);
 	background: #00000050;
@@ -273,7 +296,9 @@ input, select {
 	max-width: 500px;
 	min-width:500px;
 	max-height:50vh;
-	overflow: auto;
+	overflow: scroll;
+	overflow-x: hidden;
+	padding: 5px 0px 15px 15px !important;
 }
 
 ::-webkit-scrollbar {
@@ -364,7 +389,8 @@ input, select {
 	text-align:center;
 	min-width: 500px;
 	max-height: 50vh;
-	overflow:auto;
+	overflow:scroll;
+	overflow-x: hidden;
 }
 
 .receiver {
@@ -717,7 +743,7 @@ body {
     padding: 0px;
     background: none;
     border: none;
-		 height: 40px;
+	height: 40px;
 }
 
 .color123 > input::-webkit-color-swatch {
@@ -974,7 +1000,7 @@ progress::-webkit-progress-bar {
 
 progress::-webkit-progress-value {  
   border-radius: 500px;
-  background: linear-gradient(90deg, rgba(255,187,187,1) 0%, rgba(255,255,187,1) 50%, rgba(187,255,187,1) 100%);
+  background: linear-gradient(-90deg, rgba(106,255,115,1) 0%, rgba(0,255,86,1) 100%);
   transition: 0.2s;
   padding: 5px;
 } 
@@ -1074,4 +1100,184 @@ label {
 .new-form-control.songs {
 	display: grid;
 	grid-template-columns: repeat(2, 49.5%);
+}
+
+.songidyeah {
+	font-size: 13px;
+}
+
+.btn-outline-secondary i {
+    font-size: 20px;
+}
+
+.mainpagecardh1 {
+	width: max-content;
+	text-align: left;
+}
+
+.mpp {
+	margin-bottom: 10px;
+	width:100%;
+	text-align:left;
+}
+
+.profileform {
+	width: 60vw;
+	max-height: 80vh;
+	position:relative;
+}
+
+.dlemptycard {
+	height: 23vh;
+	display: inherit;
+	border-radius: 30px;
+	margin-top: 15px;
+	flex-wrap: nowrap;
+	padding: 20 0 20 20;
+	min-width: 100%;
+	justify-content: space-between;
+	margin-bottom: 0px;
+	align-items: center;
+}
+
+.demonlist {
+	padding-right: 5px;
+	width: 70vw;
+	height: 77vh;
+	margin-top: 10px;
+	border-radius: 45px;
+	overflow: scroll;
+	overflow-x: hidden;
+	max-height: 80vh;
+	justify-content: flex-start;
+	position: relative;
+}
+
+.dlbutton {
+	position: fixed;
+	padding: 15px;
+	width: max-content;
+	font-size: 21px;
+	bottom: 6.5vh;
+}
+
+.dlcard {
+	display: inherit;
+	border-radius: 30px;
+	margin-top: 15px;
+	flex-wrap: nowrap;
+	padding: 20px;
+	min-width: 100%;
+	justify-content: space-between;
+	height: max-content;
+	margin-bottom: 0px;
+	align-items: center;
+}
+
+.dlseconddiv {
+	display: flex;
+	height: 100%;
+	flex-wrap: wrap;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.dltext {
+	display: inline-flex;
+	font-size: 25px;
+	font-weight:400
+}
+
+.dlp {
+	margin-bottom: 10px;
+	width:100%;
+	text-align:left;
+}
+
+.dlposttext {
+	display: inline-flex;
+	align-items: center;
+	width: max-content;
+}
+
+.messengerbox {
+	padding-right: 5px;
+}
+
+.profcard1 {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    margin-bottom: 7px;
+    align-items: center;
+}
+
+.profh1 {
+    text-align:left !important;
+    margin: 0px !important;
+    font-size: 30px;
+}
+
+.profacclist {
+    display: flex;
+    width: 100%;
+}
+
+.acccontrol {
+    width: 30%;
+    border-radius: 25px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.acccontrol2 {
+    display: grid;
+    grid-template-columns: repeat(2, 50%);
+    justify-items: center;
+    align-items: center;
+    width: 100%;
+}
+
+.songbtnpic {
+    font-size:13px;
+    height:25px;
+    width:25px;
+    background:#373A3F;
+    margin: 0px;
+}
+
+.songpic {
+    display: flex;
+    align-items: center;
+    grid-gap: 5px;
+}
+
+.accnamedesc {
+    width: 70%;
+    margin-left: 5px;
+}
+
+.songauthor {
+    font-size: 12.5px;
+}
+
+.songfullname {
+    width: 90%;
+}
+
+.songname {
+    font-size: 17.5px;
+    color: white;
+}
+
+.acccontrol2 .profilepic,
+.acccontrol .profilepic {
+    margin: 0px;
+    font-size: 20px;
+}
+
+.messengerbox h1 {
+    margin-right: 15px;
 }

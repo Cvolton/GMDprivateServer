@@ -7,7 +7,7 @@ $string["welcome"] = "Welcome to ".$gdps.'!';
 $string["didntInstall"] = "<div style='color:#47a0ff'><b>Warning!</b> You haven't fully installed dashboard! Click on the text to do this.</div>";
 $string["levelsWeek"] = "Levels uploaded in a week";
 $string["levels3Months"] = "Levels uploaded in 3 months";
-$string["footer"] = $gdps.", ".date('Y', time());
+$string["footer"] = $gdps."? 2020 - ".date('Y', time());
 $string["tipsAfterInstalling"] = "Welcome to Dashboard! We give you some hints after installation:<br>
 1. It seems that new permissions have appeared in SQL in the 'roles' table! You should check it out...<br>
 2. If you put 'icon.png' to the 'dashboard' folder, then the icon of your GDPS will appear on the top left!<br>
@@ -275,7 +275,7 @@ $string["nooneBeat"] = 'noone has beaten'; //let it be lowercase
 $string["oneBeat"] = '1 player has beaten'; 
 $string["lower5Beat"] = '%d players have beaten'; // russian syntax, sorry
 $string["above5Beat"] = '%d players have beaten'; 
-$string["demonlistLevel"] = '%s <text style="display: inline-flex;font-size: 25px;font-weight:400">by <form style="margin:0" method="post" action="profile/"><button style="margin-left:7;font-size:25" class="accbtn" name="accountID" value="%d">%s</button></form></text>';
+$string["demonlistLevel"] = '%s <text class="dltext">by <button type="button" onclick="a(\'profile/%3$s\', true, true)" style="margin-left:7px;font-size:25px" class="accbtn" name="accountID" value="%d">%s</button></text>';
 $string["noDemons"] = 'It seems that your demonlist doesn\'t have any demons...';
 $string["addSomeDemons"] = 'Add some demons to fill up demonlist!';
 $string["askForDemons"] = 'Ask server\'s administrator to add some!';

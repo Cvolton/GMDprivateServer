@@ -9,7 +9,6 @@ $gs = new mainLib();
 include "../".$dbPath."incl/lib/connection.php";
 $dl->title($dl->getLocalizedString("songs"));
 $dl->printFooter('../');
-if($gs->checkPermission($_SESSION["accountID"], "dashboardManageSongs")) $me = '<th>'.$dl->getLocalizedString("whoAdded").'</th>'; else $me = '';
 if(isset($_GET["page"]) AND is_numeric($_GET["page"]) AND $_GET["page"] > 0){
 	$page = ($_GET["page"] - 1) * 10;
 	$actualpage = $_GET["page"];
@@ -30,7 +29,6 @@ if(!empty($_GET["author"]) AND !empty($_GET["name"])) {
 $pagelol = explode("/", $_SERVER["REQUEST_URI"]);
 $pagelol = $pagelol[count($pagelol)-2]."/".$pagelol[count($pagelol)-1];
 $pagelol = explode("?", $pagelol)[0];
-$table = '<div class="notifyblue" style="display:'.$notify.'">'.$dl->getLocalizedString("renamedSong").' <b>'.$an.'</b> - <b>'.$nn.'</b>!</div><table class="table table-inverse"><tr><th>#</th><th></th><th>'.$dl->getLocalizedString("songIDw").'</th><th>'.$dl->getLocalizedString("songAuthor").'</th><th>'.$dl->getLocalizedString("name").'</th><th>'.$dl->getLocalizedString("size").'</th><th>'.$dl->getLocalizedString("time").'</th>'.$me.'</tr>';
 if(!isset($_GET["search"])) $_GET["search"] = "";
 if(!isset($_GET["type"])) $_GET["type"] = "";
 if(!isset($_GET["ng"])) $_GET["ng"] = "";
@@ -39,7 +37,7 @@ if(!empty(trim(ExploitPatch::remove($_GET["search"])))) {
 	$ngw = $_GET["ng"] == 1 ? '' : 'AND reuploadID > 0';
 	$q = is_numeric(trim(ExploitPatch::remove($_GET["search"]))) ? "ID LIKE '%".trim(ExploitPatch::remove($_GET["search"]))."%'" : "(name LIKE '%".trim(ExploitPatch::remove($_GET["search"]))."%' OR authorName LIKE '%".trim(ExploitPatch::remove($_GET["search"]))."%')";
 	$srcbtn = '<button type="button" onclick="a(\''.$pagelol.'\', true, true, \'GET\')"  href="'.$_SERVER["SCRIPT_NAME"].'" style="width: 0%;display: flex;margin-left: 5px;align-items: center;justify-content: center;color: indianred; text-decoration:none" class="btn-primary" title="'.$dl->getLocalizedString("searchCancel").'"><i class="fa-solid fa-xmark"></i></button>';
-	$query = $db->prepare("SELECT * FROM songs WHERE $q $ngw ORDER BY ID DESC LIMIT 10 OFFSET $page");
+	$query = $db->prepare("SELECT * FROM songs WHERE $q $ngw ORDER BY reuploadTime DESC LIMIT 10 OFFSET $page");
 	$query->execute();
 	$result = $query->fetchAll();
 	if(empty($result)) {
@@ -54,7 +52,7 @@ if(!empty(trim(ExploitPatch::remove($_GET["search"])))) {
 	} 
 } else {
 	$ngw = $_GET["ng"] == 1 ? '' : 'WHERE reuploadID > 0';
-	$query = $db->prepare("SELECT * FROM songs $ngw ORDER BY ID ASC LIMIT 10 OFFSET $page");
+	$query = $db->prepare("SELECT * FROM songs $ngw ORDER BY reuploadTime DESC LIMIT 10 OFFSET $page");
 	$query->execute();
 	$result = $query->fetchAll();
 }
@@ -73,7 +71,7 @@ foreach($result as &$action){
 	$fontsize = 27;
 	$check = $gs->checkPermission($_SESSION["accountID"], "dashboardManageSongs");
 	$songsid = $action["ID"];
-	$songIDlol = '<button id="copy'.$action["ID"].'" class="accbtn" onclick="copysong('.$action["ID"].')">'.$action["ID"].'</button>';
+	$songIDlol = '<button id="copy'.$action["ID"].'" class="accbtn songidyeah" onclick="copysong('.$action["ID"].')">'.$action["ID"].'</button>';
 	$time = $dl->convertToDate($action["reuploadTime"], true);
 	$who = '<button type="button" onclick="a(\'profile/'.$gs->getAccountName($action['reuploadID']).'\', true, true, \'POST\')" style="margin:0;font-size:20px" class="accbtn songacc" name="accountID" value="'.$action["reuploadID"].'">'.$gs->getAccountName($action['reuploadID']).'</button>';
   	$author = $action["authorName"];
@@ -89,8 +87,8 @@ foreach($result as &$action){
 	}
 	if($action["reuploadID"] == 0) {
 		$time = "<div style='color:gray'>Newgrounds</div>";
-		$who = "<div><a style='color:#a7a7ff' target='_blank' href='https://".$author.".newgrounds.com/audio';>".$author."</a></div>";
-		$btn = '<button type="button" title="'.$songsid.'.mp3" style="display: contents;color: #ffb1ab;margin: 0;"><div class="icon" style="font-size:13px; height:25px;width:25px;background:#373A3F;margin-left: 0px;margin-right: -9px;"><i class="fa-solid fa-xmark" aria-hidden="false"></i></div></button>';
+		$who = "<a style='color:#a7a7ff;font-size: 20px;' class='songacc' target='_blank' href='https://".$author.".newgrounds.com/audio';>".$author."</a>";
+		$btn = '<button type="button" title="'.$songsid.'.mp3" style="display: contents;color: #ffb1ab;margin: 0;"><div class="icon" style="font-size:13px; height:25px;width:25px;background:#373A3F;margin-left: 5px;"><i class="fa-solid fa-xmark" aria-hidden="false"></i></div></button>';
 	} else {
 		$btn = '<button type="button" name="btnsng" id="btn'.$songsid.'" title="'.$author.' - '.$name.'" style="display: contents;color: white;margin: 0;" download="'.$download.'" onclick="btnsong(\''.$songsid.'\');"><div class="icon" style="font-size:13px; height:25px;width:25px;background:#373A3F;margin-left: 5px;"><i id="icon'.$songsid.'" name="iconlol" class="fa-solid fa-play" aria-hidden="false"></i></div></button>';
 	}
@@ -122,7 +120,7 @@ foreach($result as &$action){
 				<h2 style="margin: 0px;font-size: '.$fontsize.'px;margin-left:5px;display: flex;align-items: center;" class="profilenick">'.$author.' — '.$name.$btn.'</h2>'.$favs.$manage.'
 			</div></div>
 			<div class="form-control" style="display: flex;width: 100%;height: max-content;align-items: center;">'.$stats.'</div>
-			<div style="display: flex;justify-content: space-between;margin-top: 10px;"><h3 id="comments" style="margin: 0px;width: max-content;">'.$dl->getLocalizedString("songIDw").': <b>'.$songIDlol.'</b></h3><h3 id="comments" style="justify-content: flex-end;grid-gap: 0.5vh;margin: 0px;width: max-content;">'.$dl->getLocalizedString("date").': <b>'.$time.'</b></h3></div>
+			<div style="display: flex;justify-content: space-between;margin-top: 10px;"><h3 id="comments" class="songidyeah" style="margin: 0px;width: max-content;align-items: center;">'.$dl->getLocalizedString("songIDw").': <b>'.$songIDlol.'</b></h3><h3 id="comments" class="songidyeah"  style="justify-content: flex-end;grid-gap: 0.5vh;margin: 0px;width: max-content;">'.$dl->getLocalizedString("date").': <b>'.$time.'</b></h3></div>
 		</div></div>';
 }
 $pagel = '<div class="form new-form">

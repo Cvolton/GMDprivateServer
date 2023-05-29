@@ -8,7 +8,7 @@ if(!isset($_GET["id"])) header("Location: ".$gs->getAccountName(ExploitPatch::nu
 include "../".$dbPath."incl/lib/connection.php";
 $dl = new dashboardLib();
 $clan = $none = "";
-if(!isset($_SESSION["accountID"]) OR $_SESSION["accountID"] == 0 AND empty($_POST["accountID"])) {
+if(!isset($_SESSION["accountID"]) OR $_SESSION["accountID"] == 0 AND empty($_POST["accountID"]) AND empty($_GET["id"])) {
   	$dl->title($dl->getLocalizedString("profile"));
 	$dl->printSong('<div class="form">
     <h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
@@ -207,7 +207,7 @@ if($gs->isPlayerInClan($accid)) {
 	if($claninfo["clanOwner"] == $accid) $own = '<i style="color:#ffff91" class="fa-solid fa-crown"></i>';
 	$clan = '<button type="button" onclick="a(\'clan/'.$claninfo["clan"].'\', true, true)" style="display:contents;cursor:pointer"><h2 class="music" style="grid-gap:5px;color:#'.$claninfo["color"].'">'.$claninfo["clan"].$own.'</h2></button>';
 }
-$dl->printSong('<div class="form" style="width: 60vw;max-height: 80vh;position:relative">
+$dl->printSong('<div class="form profileform">
     	<div style="height: 100%;width: 100%;"><div style="display: flex;align-items: center;justify-content: center;">
         	'.$back.'
               <div style="display: flex;flex-direction: column;align-items: center;margin:5px 0px 10px 0px">'.$maybeban.$clan.'</div>'.$msgtopl.$points.$discordbtn.'

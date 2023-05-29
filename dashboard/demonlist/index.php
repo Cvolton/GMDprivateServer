@@ -6,6 +6,8 @@ include_once '../'.$dbPath.'incl/lib/mainLib.php';
 include '../'.$dbPath.'incl/lib/exploitPatch.php';
 $dl = new dashboardLib(); 
 $gs = new mainLib();
+$approveCheck = $gs->checkPermission($_SESSION["accountID"], "demonlistApprove");
+$addCheck = $gs->checkPermission($_SESSION["accountID"], "demonlistAdd");
 if($_GET["add"] == "1" OR $_GET["change"] == "1") {
     $_POST["change"] = 1;
     $dl->printFooter('../../');
@@ -48,7 +50,7 @@ if(!empty($_POST["sr"]) AND is_numeric($_POST["sr"])) {
 		</form></div>', 'browse');
 	}
 } else {
-	if(!empty($_POST["change"]) AND $gs->checkPermission($_SESSION["accountID"], "demonlistAdd")) {
+	if(!empty($_POST["change"]) AND $addCheck) {
 		if(isset($_POST["place"]) AND !empty($_POST["id"])) {
 				$dl->title($dl->getLocalizedString('changeDemon'));
 				$place = ExploitPatch::number($_POST["place"]);
@@ -158,7 +160,7 @@ if(!empty($_POST["sr"]) AND is_numeric($_POST["sr"])) {
 					<button style="margin-top:5px;margin-bottom:5px" type="button" onclick="a(\'demonlist/change\', true, true, \'POST\')" name="change" value="1" class="btn-song">'.$dl->getLocalizedString('add').'</button>
 			</form></div>', 'browse');
 		}
-	} elseif(!empty($_POST["approve"]) AND $gs->checkPermission($_SESSION["accountID"], "demonlistApprove")) {
+	} elseif(!empty($_POST["approve"]) AND $approveCheck) {
 		$dl->title($dl->getLocalizedString('recordList'));
 		if(isset($_GET["page"]) AND is_numeric($_GET["page"]) AND $_GET["page"] > 0){
 			$page = ($_GET["page"] - 1) * 10;
@@ -167,7 +169,7 @@ if(!empty($_POST["sr"]) AND is_numeric($_POST["sr"])) {
 			$page = 0;
 			$actualpage = 1;
 		}
-		$table = '<table style="position:relative" class="table table-inverse"><tr><th>#</th><th>'.$dl->getLocalizedString("levelid").'</th><th>'.$dl->getLocalizedString("levelname").'</th><th>'.$dl->getLocalizedString("username").'</th><th>'.$dl->getLocalizedString("atts").'</th><th>'.$dl->getLocalizedString("status").'</th></tr>';
+		$table = '<table style="position:relative" class="table table-inverse"><button type="button" onclick="a(\'demonlist\', true, false, \'GET\')" class="btn-block" style="position: absolute;padding: 15px;cursor: pointer;margin-left: -20px;margin-top: -20px;width: max-content;font-size: 21px;z-index: 2;" href="demonlist"><i class="fa-solid fa-arrow-left"></i></button><tr><th>#</th><th>'.$dl->getLocalizedString("levelid").'</th><th>'.$dl->getLocalizedString("levelname").'</th><th>'.$dl->getLocalizedString("username").'</th><th>'.$dl->getLocalizedString("atts").'</th><th>'.$dl->getLocalizedString("status").'</th></tr>';
 			$query = $db->prepare("SELECT * FROM dlsubmits ORDER BY levelID DESC LIMIT 10 OFFSET $page");
 			$query->execute();
 			$result = $query->fetchAll();
@@ -192,7 +194,7 @@ if(!empty($_POST["sr"]) AND is_numeric($_POST["sr"])) {
 			$table .= "<tr><th scope='row'>".$x."</th><td>".$levelid."</td><td>".$levelname."</td><td>".$player."</td><td>".$atts."</td><td>".$approve."</td></tr>";
 			$x++;
 		}
-		$table .= '<button type="button" onclick="a(\'demonlist\', true, false, \'GET\')" class="btn-block" style="position: absolute;padding: 15px;top: 6vh;cursor: pointer;left: 13vw;width: max-content;font-size: 21px" href="demonlist"><i class="fa-solid fa-arrow-left"></i></button></table>';
+		$table .= '</table>';
 		if(!empty(trim(ExploitPatch::remove($_GET["search"])))) $query = $db->prepare("SELECT count(*) FROM dlsubmits WHERE accountID LIKE '%".trim(ExploitPatch::remove($_GET["search"]))."%'");
 		else $query = $db->prepare("SELECT count(*) FROM dlsubmits");
 		$query->execute();
@@ -224,7 +226,7 @@ if(!empty($_POST["sr"]) AND is_numeric($_POST["sr"])) {
 					$place = '<i class="fa"># '.$p.'</i>';
 					break;
 			}
-			$submitbtn = '<div style="display:inline-flex;align-items:center;width:max-content">';
+			$submitbtn = '<div class="dlposttext">';
 			if($_SESSION["accountID"] != 0) {
 				$sub = $db->prepare("SELECT * FROM dlsubmits WHERE accountID = :acc AND levelID = :lvl");
 				$sub->execute([':acc' => $_SESSION["accountID"], ':lvl' => $demons["levelID"]]);
@@ -259,22 +261,22 @@ if(!empty($_POST["sr"]) AND is_numeric($_POST["sr"])) {
 					break;
 			} else $beat = $dl->getLocalizedString('nooneBeat');
 			$submitbtn .= '<i style="margin-left:5px" class="fa-solid fa-medal"> '.$demons["giveablePoints"].', <text style="font-family:\'Google Sans\', \'Inter\'">'.$beat.'</text></i></div>';
-			$youtube = !empty($demons["youtube"]) ? '<iframe style="border-radius:10px;margin-right: 20;" width="300" height="169" src="https://www.youtube.com/embed/'.$demons["youtube"].'" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>' : '';
-			$options .= '<div class="form-control" style="display: inherit;border-radius: 30px;margin-top: 15px;flex-wrap: nowrap;padding: 20 0 20 20;min-width: 100%;justify-content: space-between;height: max-content;margin-bottom: 0px;align-items: center;"><div style="width: 60%;display: flex;height: 100%;flex-wrap: wrap;flex-direction: column;justify-content: space-between;"><div style="margin-right: 10px;">
-			<div><h1 style="width:100%;text-align:left">'.$place.' '.sprintf($dl->getLocalizedString('demonlistLevel'), $levelName, $demons["authorID"], $gs->getAccountName($demons["authorID"])).'</h1></div>
-			<p style="margin-bottom: 10px;width:100%;text-align:left">'.$gs->getDesc($demons["levelID"], true).'</p></div>'.$submitbtn.'</div>'.$youtube.'
+			$youtube = !empty($demons["youtube"]) ? '<iframe style="border-radius:10px;" width="300" height="169" src="https://www.youtube.com/embed/'.$demons["youtube"].'" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>' : '';
+			$options .= '<div class="form-control dlcard"><div class="dlseconddiv"><div style="margin-right: 10px;">
+			<div><h1 class="dlh1" style="width:100%;text-align:left">'.$place.' '.sprintf($dl->getLocalizedString('demonlistLevel'), $levelName, $demons["authorID"], $gs->getAccountName($demons["authorID"])).'</h1></div>
+			<p class="dlp">'.$gs->getDesc($demons["levelID"], true).'</p></div>'.$submitbtn.'</div>'.$youtube.'
 			</div>';
 			$p++;
-		} if($p > 3) $pad = 'padding-right: 5px;';
-		if(empty($options)) {
-			$empty = $gs->checkPermission($_SESSION["accountID"], "demonlistAdd") ? $dl->getLocalizedString("addSomeDemons") : $dl->getLocalizedString("askForDemons");
-			$options = '<div class="form-control" style="height:23vh;display: inherit;border-radius: 30px;margin-top: 15px;flex-wrap: nowrap;padding: 20 0 20 20;min-width: 100%;justify-content: space-between;margin-bottom: 0px;align-items: center;"><h1 style="width:100%">'.$dl->getLocalizedString("errorGeneric").'</h1></div>
-			<div class="form-control" style="height:23vh;display: inherit;border-radius: 30px;margin-top: 15px;flex-wrap: nowrap;padding: 20 0 20 20;min-width: 100%;justify-content: space-between;margin-bottom: 0px;align-items: center;"><h1 style="width:100%">'.$dl->getLocalizedString("noDemons").'</h1></div>
-			<div class="form-control" style="height:23vh;display: inherit;border-radius: 30px;margin-top: 15px;flex-wrap: nowrap;padding: 20 0 20 20;min-width: 100%;justify-content: space-between;margin-bottom: 0px;align-items: center;"><h1 style="width:100%">'.$empty.'</h1></div>';
+		} 
+		if(empty($options) OR $_GET["e"] == 1) {
+			$empty = $addCheck ? $dl->getLocalizedString("addSomeDemons") : $dl->getLocalizedString("askForDemons");
+			$options = '<div class="form-control dlemptycard"><h1 class="welcomeh1" style="width:100%">'.$dl->getLocalizedString("errorGeneric").'</h1></div>
+			<div class="form-control dlemptycard"><h1 class="welcomeh1" style="width:100%">'.$dl->getLocalizedString("noDemons").'</h1></div>
+			<div class="form-control dlemptycard"><h1 class="welcomeh1" style="width:100%">'.$empty.'</h1></div>';
 		}
-		if($gs->checkPermission($_SESSION["accountID"], "demonlistAdd")) $changebtn = '<form method="post" name="changebtn"><input type="hidden" name="change" value="1"><button type="button" onclick="a(\'demonlist/add\', true, true, \'POST\', false, \'changebtn\')" title="'.$dl->getLocalizedString("addDemonTitle").'" style="position: absolute;padding: 15px;width: max-content;font-size: 21px;bottom: 14.5vh;right: 14.5vw;" class="btn-primary" name="change" value="1"><i class="fa-solid fa-plus"></i></button></form>'; else $changebtn = '';
-		if($gs->checkPermission($_SESSION["accountID"], "demonlistApprove")) $approvebtn = '<form method="post" name="approvebtn"><input type="hidden" name="approve" value="1"><button type="button" onclick="a(\'demonlist\', true, false, \'POST\', false, \'approvebtn\')" title="'.$dl->getLocalizedString("approve").'" style="position: absolute;padding: 15px;width: max-content;font-size: 21px;bottom: 14.5vh;left: 14.5vw;" class="btn-primary" name="approve" value="1"><i class="fa-solid fa-list"></i></button></form>'; else $approvebtn = '';
-		$dl->printSong('<div class="form" style="'.$pad.'max-width:70vw;width: 70vw;height:77vh;margin-top:10px;border-radius:45px;overflow:auto;overflow-x:hidden;max-height:80vh;justify-content:flex-start">'.$options.''.$changebtn.''.$approvebtn.'</div>', 'browse');
+		if($addCheck) $changebtn = '<form style="margin:0" method="post" name="changebtn"><input type="hidden" name="change" value="1"><button type="button" onclick="a(\'demonlist/add\', true, true, \'POST\', false, \'changebtn\')" title="'.$dl->getLocalizedString("addDemonTitle").'" style="right: 0.5vw;" class="btn-primary dlbutton" name="change" value="1"><i class="fa-solid fa-plus"></i></button></form>'; else $changebtn = '';
+		if($approveCheck) $approvebtn = '<form style="margin:0" method="post" name="approvebtn"><input type="hidden" name="approve" value="1"><button type="button" onclick="a(\'demonlist\', true, false, \'POST\', false, \'approvebtn\')" title="'.$dl->getLocalizedString("approve").'" style="left: 1.5vw;" class="btn-primary dlbutton" name="approve" value="1"><i class="fa-solid fa-list"></i></button></form>'; else $approvebtn = '';
+		$dl->printSong('<div class="form demonlist">'.$options.''.$changebtn.''.$approvebtn.'</div>', 'browse');
 	}
 }
 ?>

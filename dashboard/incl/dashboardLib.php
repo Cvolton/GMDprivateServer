@@ -124,7 +124,7 @@ class dashboardLib {
 		include_once __DIR__."/../".$dbPath."config/security.php";
 		require_once __DIR__."/../".$dbPath."incl/lib/mainLib.php";
       	include __DIR__."/../".$dbPath."incl/lib/connection.php";
-		if($enableCaptcha) {
+      	if($enableCaptcha) {
       	    $captchaTypes = ['hcaptcha', 'grecaptcha', 'turnstile'];
       	    $captchaUsed = $captchaTypes[$captchaType-1];
       	}
@@ -195,7 +195,7 @@ class dashboardLib {
 					</li>' . $browse . '</div></li>';
 					echo '<li class="nav-item dropdown '.$reuploadActive.'">
 						<a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-							<i class="fa-solid fa-upload" style="margin-right:5" aria-hidden="true"></i> '.$this->getLocalizedString("reuploadSection").'
+							<i class="fa-solid fa-upload" style="margin-right:5" aria-hidden="true"></i>'.$this->getLocalizedString("reuploadSection").'
 						</a>
                             
 						<div class="dropdown-menu" id="cronview" aria-labelledby="navbarDropdownMenuLink">';
@@ -597,12 +597,12 @@ $(document).change(function(){
 		$inputSearch = !empty($_GET["search"]) ? '<input type="hidden" name="search" value="'.$_GET["search"].'">' : '';
 		if(!empty($_GET["type"] OR !empty($_GET["who"]))) $inputSearch .= '<input type="hidden" name="type" value="'.$_GET["type"].'"><input type="hidden" name="who" value="'.$_GET["who"].'">';
 		if(!empty($_GET["ng"])) $inputSearch .= '<input type="hidden" name="ng" value="'.$_GET["ng"].'">';
-		if($_GET["ng"] == 1) $ng = '<button type="button" onclick="a(\''.$pagelol.'\', true, true, \'GET\', 6)" name="ng" value="0" class="btn btn-outline-secondary" style="border-radius:500px;font-size:20px;margin-right:10px;display: flex;margin-left: 5px;align-items: center;justify-content: center;color: indianred; text-decoration:none"><i class="fa-solid fa-xmark"></i></button>';
-		$bottomrow = '<div>'.sprintf($this->getLocalizedString("pageInfo"),$actualpage,$pagecount).'</div><div class="btn-group" style="margin-left:auto; margin-right:0;z-index:1;">';
-		$bottomrow .= $ng.'<form method="get" style="margin:0">'.$inputSearch.'<input type="hidden" name="page" value="0"><button type="button" onclick="a(\''.$pagelol.'\', true, true, \'GET\', 5)" name="page" id="first" style="border-top-right-radius:0px !important;border-bottom-right-radius:0px !important;border-radius:500px" value=1 class="btn btn-outline-secondary"><i class="fa-solid fa-backward" aria-hidden="true"></i> '.$this->getLocalizedString("first").'</button></form>
-		<form method="get" style="margin:0">'.$inputSearch.'<input type="hidden" name="page" value="'.$pageminus.'"><button style="border-radius:0" name="page" type="button" onclick="a(\''.$pagelol.'\', true, true, \'GET\', 4)" id="prev" value='. $pageminus .' class="btn btn-outline-secondary"><i class="fa-solid fa-chevron-left" aria-hidden="true"></i> '.$this->getLocalizedString("previous").'</button></form>';
+		if($_GET["ng"] == 1) $ng = '<button type="button" onclick="a(\''.$pagelol.'\', true, true, \'GET\', 6)" name="ng" value="0" class="btn btn-outline-secondary" style="border-radius:500px;font-size:20px;margin-right:10px;display: flex;margin-left: 0px;align-items: center;justify-content: center;color: indianred; text-decoration:none"><i class="fa-solid fa-xmark"></i></button>';
+		$bottomrow = '<div style="margin-bottom:100px">'.sprintf($this->getLocalizedString("pageInfo"),$actualpage,$pagecount).'</div><div class="btn-group" style="margin-bottom:100px;margin-left:auto; margin-right:0;z-index:1;">';
+		$bottomrow .= $ng.'<form method="get" style="margin:0">'.$inputSearch.'<input type="hidden" name="page" value="0"><button type="button" onclick="a(\''.$pagelol.'\', true, true, \'GET\', 5)" name="page" id="first" style="border-top-right-radius:0px !important;border-bottom-right-radius:0px !important;border-radius:500px" value=1 class="btn btn-outline-secondary"><i class="fa-solid fa-backward" aria-hidden="true"></i></button></form>
+		<form method="get" style="margin:0">'.$inputSearch.'<input type="hidden" name="page" value="'.$pageminus.'"><button style="border-radius:0" name="page" type="button" onclick="a(\''.$pagelol.'\', true, true, \'GET\', 4)" id="prev" value='. $pageminus .' class="btn btn-outline-secondary"><i class="fa-solid fa-chevron-left" aria-hidden="true"></i></button></form>';
 		//updated to ".."
-		$bottomrow .= '<a class="btn btn-outline-secondary" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">..</a>
+		$bottomrow .= '<button class="btn btn-outline-secondary" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">..</button>
 			<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink" style="padding:17px 17px 4px 17px;">
 				<form action="" method="get">
 					<div class="form-group">
@@ -612,8 +612,8 @@ $(document).change(function(){
 					<button type="button" onclick="a(\''.$pagelol.'\', true, true, \'GET\', 3)" class="btn btn-primary">'.$this->getLocalizedString("go").'</button>
 				</form>
 			</div>';
-		$bottomrow .= '<form method="get" style="margin:0">'.$inputSearch.'<input type="hidden" name="page" value="'.$pageplus.'"><button type="button" onclick="a(\''.$pagelol.'\', true, true, \'GET\', 2)" name="page" style="border-radius:0px"  id="next" class="btn btn-outline-secondary">'.$this->getLocalizedString("next").' <i class="fa-solid fa-chevron-right" aria-hidden="true"></i></button></form>
-		<form method="get" style="margin:0;">'.$inputSearch.'<input type="hidden" name="page" value="'.$pagecount.'"><button type="button" onclick="a(\''.$pagelol.'\', true, true, \'GET\', 1)" name="page" id="last" style="border-top-left-radius:0px !important;border-bottom-left-radius:0px !important;border-radius:500px" value='. $pagecount .' class="btn btn-outline-secondary">'.$this->getLocalizedString("last").' <i class="fa-solid fa-forward" aria-hidden="true"></i></button></form>';
+		$bottomrow .= '<form method="get" style="margin:0">'.$inputSearch.'<input type="hidden" name="page" value="'.$pageplus.'"><button type="button" onclick="a(\''.$pagelol.'\', true, true, \'GET\', 2)" name="page" style="border-radius:0px"  id="next" class="btn btn-outline-secondary"><i class="fa-solid fa-chevron-right" aria-hidden="true"></i></button></form>
+		<form method="get" style="margin:0;">'.$inputSearch.'<input type="hidden" name="page" value="'.$pagecount.'"><button type="button" onclick="a(\''.$pagelol.'\', true, true, \'GET\', 1)" name="page" id="last" style="border-top-left-radius:0px !important;border-bottom-left-radius:0px !important;border-radius:500px" value='. $pagecount .' class="btn btn-outline-secondary"><i class="fa-solid fa-forward" aria-hidden="true"></i></button></form>';
 		$bottomrow .= "</div><script>
 			function disableElement(element){
 				if(element){

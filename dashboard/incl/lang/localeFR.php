@@ -8,27 +8,27 @@ $string["welcome"] = "Bienvenue dans ".$gdps.'!';
 $string["didntInstall"] = "<div style='color:#47a0ff'><b>Alerte!</b> Vous n'avez pas entièrement installé le tableau de bord! Cliquez sur le texte pour le faire.</div>";
 $string["levelsWeek"] = "Niveaux publiés en une semaine";
 $string["levels3Months"] = "Niveaux publiés en 3 mois";
-$string["footer"] = $gdps.", ".date('Y', time());
+$string["footer"] = $gdps."? 2020 - ".date('Y', time());
 $string["tipsAfterInstalling"] = "Bienvenue au tableau de bord! Nous te donnons certains conseils après l'installation:<br>
 1. Il y a de nouvelles permissions dans la base de données SQL dans la table 'roles'! Vous devriez y jeter un coup d'oeil...<br>
 2. Si vous placez 'icon.png' dans le dossier 'dashboard', alors le logo de votre GDPS va apparaître en haut à gauche!<br>
 3. Vous devriez configurer config/dashboard.php!";
-$string["wwygdt"] = "Qu'allez vous faire aujourd'hui?";
-$string["game"] = "Jeu";
-$string["guest"] = "invité";
-$string["account"] = "Compte";
-$string["levelsOptDesc"] = "Voir la liste des nixeaux";
-$string["songsOptDesc"] = "Voir la liste des chansons";
-$string["yourClanOptDesc"] = "Voir la liste du clan \"%s\"";
-$string["clanOptDesc"] = "Voir la liste des clans";
-$string["yourProfile"] = "Votre profile";
-$string["profileOptDesc"] = "Voir votre profile";
-$string["messengerOptDesc"] ="Ouvrir la messagerie";
-$string["addSongOptDesc"] = "Ajouter une chanson dans votre serveur";
-$string["loginOptDesc"] = "Se connecter au compte";
-$string["createAcc"] = "Créer un compte";
-$string["registerOptDesc"] = "Créer dans %s";
-$string["downloadOptDesc"] = "Télécharger %s";
+$string["wwygdt"] = "What are you gonna do today?";
+$string["game"] = "Game";
+$string["guest"] = "guest";
+$string["account"] = "Account";
+$string["levelsOptDesc"] = "View levels list";
+$string["songsOptDesc"] = "View songs list";
+$string["yourClanOptDesc"] = "View clan \"%s\"";
+$string["clanOptDesc"] = "View clans list";
+$string["yourProfile"] = "Your profile";
+$string["profileOptDesc"] = "View your profile";
+$string["messengerOptDesc"] ="Open messenger";
+$string["addSongOptDesc"] = "Add song to server";
+$string["loginOptDesc"] = "Login to account";
+$string["createAcc"] = "Create an account";
+$string["registerOptDesc"] = "Register on %s";
+$string["downloadOptDesc"] = "Download %s";
 
 $string["tryCron"] = "Exécuter Cron";
 $string["cronSuccess"] = "Succès!";
@@ -101,7 +101,7 @@ $string["loginAlready"] = "Vous êtes déjà connecté!";
 $string["clickHere"] = "Tableau de bord";
 $string["enterUsername"] = "Entrez le nom d'utilisateur";
 $string["enterPassword"] = "Entrez le mot de passe";
-$string["loginDesc"] = "Tu peux to connecter dans ton compte ici!";
+$string["loginDesc"] = "Here you can login to your account!";
 
 $string["register"] = "S'inscrire";
 $string["registerAcc"] = "Inscription du compte";
@@ -276,7 +276,7 @@ $string["nooneBeat"] = 'personne ne l\'a battu'; //let it be lowercase
 $string["oneBeat"] = '1 joueur l\'a battu'; 
 $string["lower5Beat"] = '%d joueurs l\'ont battu'; // russian syntax, sorry
 $string["above5Beat"] = '%d joueurs l\'ont battu'; 
-$string["demonlistLevel"] = '%s <text style="display: inline-flex;font-size: 25px;font-weight:400">par <form style="margin:0" method="post" action="profile/"><button style="margin-left:7;font-size:25" class="accbtn" name="accountID" value="%d">%s</button></form></text>';
+$string["demonlistLevel"] = '%s <text class="dltext">par <button type="button" onclick="a(\'profile/%3$s\', true, true)" style="margin-left:7px;font-size:25px" class="accbtn" name="accountID" value="%d">%s</button></text>';
 $string["noDemons"] = 'Ça à l\'air que votre demonlist n\'a aucun demon...';
 $string["addSomeDemons"] = 'Ajoutez certains demons pour remplir la demonlist!';
 $string["askForDemons"] = 'Demandez l\'administrateur du serveur\'s qu\'il en ajoute!';

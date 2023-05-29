@@ -7,7 +7,7 @@ $string["welcome"] = "Добро пожаловать на ".$gdps.'!';
 $string["didntInstall"] = "<div style='color:#47a0ff'><b>Внимание!</b> Вы не до конца установили панель сервера! Нажмите на текст, чтобы это сделать.</div>";
 $string["levelsWeek"] = "Выложено уровней за неделю";
 $string["levels3Months"] = "Выложено уровней за 3 месяца";
-$string["footer"] = $gdps.", ".date('Y', time());
+$string["footer"] = $gdps."? 2020 - ".date('Y', time());
 $string["tipsAfterInstalling"] = "Добро пожаловать в панель сервера! Мы даём вам несколько подсказок после установки:<br>
 1. Кажется, в SQL в таблице 'roles' появились новые права! Вам следует это проверить...<br>
 2. Если вы поместите icon.png в папку 'dashboard', то слева сверху появится иконка вашего сервера!<br>
@@ -275,7 +275,7 @@ $string["nooneBeat"] = 'никто не прошёл'; //let it be lowercase
 $string["oneBeat"] = 'прошёл 1 игрок'; 
 $string["lower5Beat"] = 'прошло %d игрока'; 
 $string["above5Beat"] = 'прошло %d игроков'; 
-$string["demonlistLevel"] = '%s <text style="display: inline-flex;font-size: 25px;font-weight:400">от <form style="margin:0" method="post" action="profile/"><button style="margin-left:7px;font-size:25px" class="accbtn" name="accountID" value="%d">%s</button></form></text>';
+$string["demonlistLevel"] = '%s <text class="dltext">от <button type="button" onclick="a(\'profile/%3$s\', true, true)" style="margin-left:7px;font-size:25px" class="accbtn" name="accountID" value="%d">%s</button></text>';
 $string["noDemons"] = 'Кажется, в вашем топе демонов нет ни одного демона...';
 $string["addSomeDemons"] = 'Добавьте несколько демонов, чтобы заполнить топ!';
 $string["askForDemons"] = 'Попросите администратора сервера добавить несколько!';

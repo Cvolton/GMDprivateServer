@@ -34,7 +34,7 @@ if(empty($result)) {
 foreach($result as &$action){
 	$fontsize = 27;
 	$songsid = $action["songID"];
-	$songIDlol = '<button id="copy'.$action["ID"].'" class="accbtn" onclick="copysong('.$action["ID"].')">'.$action["ID"].'</button>';
+	$songIDlol = '<button id="copy'.$action["ID"].'" class="accbtn songidyeah" onclick="copysong('.$action["ID"].')">'.$action["ID"].'</button>';
 	$time = $dl->convertToDate($action["timestamp"], true);
   	$author = $action["authorName"];
 	$name = $action["name"];
@@ -65,7 +65,7 @@ foreach($result as &$action){
 				<h2 style="margin: 0px;font-size: '.$fontsize.'px;margin-left:5px;display: flex;align-items: center;" class="profilenick">'.$author.' — '.$name.$btn.'</h2>'.$favs.'
 			</div></div>
 			<div class="form-control" style="display: flex;width: 100%;height: max-content;align-items: center;">'.$stats.'</div>
-			<div style="display: flex;justify-content: space-between;margin-top: 10px;"><h3 id="comments" style="margin: 0px;width: max-content;">'.$dl->getLocalizedString("songIDw").': <b>'.$songIDlol.'</b></h3><h3 id="comments" style="justify-content: flex-end;grid-gap: 0.5vh;margin: 0px;width: max-content;">'.$dl->getLocalizedString("date").': <b>'.$time.'</b></h3></div>
+			<div style="display: flex;justify-content: space-between;margin-top: 10px;"><h3 id="comments" class="songidyeah" style="margin: 0px;width: max-content;">'.$dl->getLocalizedString("songIDw").': <b>'.$songIDlol.'</b></h3><h3 id="comments" class="songidyeah" style="justify-content: flex-end;grid-gap: 0.5vh;margin: 0px;width: max-content;">'.$dl->getLocalizedString("date").': <b>'.$time.'</b></h3></div>
 		</div></div>';
 }
 $pagel = '<div class="form new-form">

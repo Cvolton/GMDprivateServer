@@ -104,7 +104,7 @@ if(isset($_SESSION["accountID"]) AND $_SESSION["accountID"] != 0){
 			$msgs .= '<div class="messenger"><p>'.$dl->getLocalizedString("noMsgs").'</p></div>';
 		}
         $_SESSION["msgNew"] = $newMsgs = 0;
-        $dl->printSong('<div class="form">
+        $dl->printSong('<div class="form messengerbox">
 			<div style="display: inherit;align-items: center;margin: -5px;">
               <form method="post" action="profile/"><button type="button" onclick="a(\'profile/'.$check.'\', true, true, \'GET\')" class="goback" name="accountID" value="'.$notyou.'"><i class="fa-regular fa-user" aria-hidden="true"></i></button></form>
               <button type="button" class="a a-btn" onclick="a(\'messenger\', true)"><h1>'.$check.'</h1></button>
@@ -169,16 +169,16 @@ $(document).on("keyup keypress change keydown",function(){
 				$recid = $row["accID"];
 				$notify = '<i class="fa fa-circle" aria-hidden="true" style="font-size: 10px;margin-left:5px;color: #e35151;"></i>';
 				$options .= '<div class="messenger"><text class="receiver">'.$receiver.''.$notify.'</text><br>
-				<button type="button" onclick="a(\'messenger/'.$gs->getAccountName($recid).'\', true, true)" class="btn-rendel" style="margin-top:5px;width:100%;display:inline-block">'.$dl->getLocalizedString("write").'</button></div>';
+				<button type="button" onclick="a(\'messenger/'.$gs->getAccountName($recid).'\', true, true)" class="btn-rendel" style="margin-top:5px;width:100%">'.$dl->getLocalizedString("write").'</button></div>';
 			}
 		}
       	if(empty($options)) $options = '<div class="icon" style="height: 70px;width: 70px;margin-left: 0px;background:#36393e"><text class="receiver" style="font-size:50px"><i class="fa-regular fa-face-sad-cry"></i></text></div>';
-		$dl->printSong('<div class="form">
+		$dl->printSong('<div class="form messengerbox">
 			<h1>'.$dl->getLocalizedString("messenger").'</h1>
 			<form class="form__inner" method="post" action="messenger/">
 			<div class="msgbox" style="width:100%">'.$options.'</div></form>
             <form class="field" method="post" action="messenger/">
-            <div class="messenger" style="width:100%"><input class="field" id="p1" type="text" name="receiver" placeholder="'.$dl->getLocalizedString("banUserID").'"></input>
+            <div class="messenger" style="width:97%;margin-right:5px"><input class="field" id="p1" type="text" name="receiver" placeholder="'.$dl->getLocalizedString("banUserID").'"></input>
 			<input type="hidden" id="p2" value="Sus amongus" placeholder="It breaks something, so keep it hidden"></input>
             <button type="button" onclick="a(\'messenger\', true, false, \'POST\')"; class="btn-rendel btn-block" id="submit" style="margin-top:5px" disabled>'.$dl->getLocalizedString("write").'</button></div></form>
 		<script>

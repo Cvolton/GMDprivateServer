@@ -37,13 +37,13 @@ if(isset($_POST["userName"]) AND isset($_POST["password"])){
 	if($query6->fetchColumn() > 20) exit(json_encode(['success' => false, 'error' => '-3']));
 	$auth = ExploitPatch::remove($_GET["auth"]);
 	if(empty($auth)) exit(json_encode(['success' => false, 'error' => '-3']));
-	$query = $db->prepare("SELECT userName FROM accounts WHERE auth = :id");
+	$query = $db->prepare("SELECT userName, accountID FROM accounts WHERE auth = :id");
   	$query->execute([':id' => $auth]);
   	$fetch = $query->fetch();
 	if(!$fetch[0]) {
 		$query = $db->prepare("INSERT INTO actions (type, value, timestamp, value2) VALUES ('6',:accid,:time,:ip)");
 		$query->execute([':accid' => 0, ':time' => time(), ':ip' => $gs->getIP()]);
 		exit(json_encode(['success' => false, 'error' => '-4']));
-	} else exit(json_encode(['success' => true, 'user' => $fetch["userName"], 'color' => $gs->getAccountCommentColor($gs->getAccountIDFromName($fetch["userName"]))]));
+	} else exit(json_encode(['success' => true, 'user' => $fetch["userName"], 'color' => $gs->getAccountCommentColor($fetch["accountID"])]));
 } else exit(json_encode(['success' => false, 'error' => '0']));
 ?>

@@ -72,7 +72,7 @@ if(!empty($clan)) {
                 $mbrs = $mbrs->fetchAll();
                 foreach($mbrs as &$mbr) $members .= '<option value="'.$mbr["extID"].'">'.$mbr["userName"].'</option>';
                 exit($dl->printSong('<div class="form" style="width: 60vw;max-height: 80vh;position:relative">
-            	<div style="height: 100%;width: 100%;"><div style="margin-top: 10px;display: flex;align-items: center;justify-content: center;flex-wrap:wrap">
+            	<div style="height: 100%;width: 100%;"><div class="smallpage">
                 	<form method="post" style="margin:0px" action=""><button type="button" onclick="a(\'clan/'.$clan["clan"].'/settings\', true, true, \'GET\')" class="goback" style="margin-top:0px"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i></button></form>
                 	<div style="display: flex;flex-direction: column;align-items: center"><h1 style="margin: 0px">'.$dl->getLocalizedString("areYouSure").'</h1></div>
                 	<p style="margin-bottom: 10px;">'.$dl->getLocalizedString("giveClanDesc").'</p>
@@ -100,7 +100,7 @@ if(!empty($clan)) {
         			</div>', 'profile'));
                 }
                 exit($dl->printSong('<div class="form" style="width: 60vw;max-height: 80vh;position:relative">
-            	<div style="height: 100%;width: 100%;"><div style="margin-top: 10px;display: flex;align-items: center;justify-content: center;flex-wrap:wrap">
+            	<div style="height: 100%;width: 100%;"><div class="smallpage">
                 	<form method="post" style="margin:0px" action=""><button type="button" onclick="a(\'clan/'.$clan["clan"].'/settings\', true, true, \'GET\')" class="goback" style="margin-top:0px"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i></button></form>
                 	<div style="display: flex;flex-direction: column;align-items: center"><h1 style="margin: 0px">'.$dl->getLocalizedString("areYouSure").'</h1></div>
                 	<p style="margin-bottom: 10px;">'.$dl->getLocalizedString("deleteClanDesc").'</p>
@@ -112,7 +112,7 @@ if(!empty($clan)) {
                 	    <input type="hidden" name="yesdelete" value="1"></input>
                 	    <input type="hidden" name="delclan" value="1"></input>
                 	</form>
-                	<div style="display:flex;width:100%;grid-gap:5px"><button style="margin-bottom:10px" class="btn-song btn-success" type="button" onclick="a(\'clan/'.$clan["clan"].'/settings\', true, true, \'POST\', false, \'nolol\')">'.$dl->getLocalizedString("goBack").'</button>
+                	<div class="btns"><button style="margin-bottom:10px" class="btn-song btn-success" type="button" onclick="a(\'clan/'.$clan["clan"].'/settings\', true, true, \'POST\', false, \'nolol\')">'.$dl->getLocalizedString("goBack").'</button>
                 	<button style="margin-bottom:10px;width:50%" style="margin-bottom:10px;width: 50%;" class="btn-song btn-size" type="button" onclick="a(\'clan/'.$clan["clan"].'/settings\', true, true, \'POST\', false, \'delete\')">'.$dl->getLocalizedString("deleteClan").'</button></div>
                 	</div>
         </div>', 'profile'));

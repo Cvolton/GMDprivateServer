@@ -40,7 +40,7 @@ if($_FILES && $_FILES['filename']['error'] == UPLOAD_ERR_OK) {
             $db_fid = -5;
         } else {
             $length = 10;
-            $db_fid = rand(5, 999999);
+            $db_fid = rand(2, 999999);
             move_uploaded_file($_FILES['filename']['tmp_name'], "$db_fid.mp3");
             $size = ($_FILES['filename']['size'] / 1048576);
             $size = round($size, 2);
@@ -91,7 +91,7 @@ if($_FILES && $_FILES['filename']['error'] == UPLOAD_ERR_OK) {
         <div style="width:100%;text-align:center">
           <label for="upload" id="labelupload" class="btn-upload-song">
           	 <i style="margin:0;font-size: 17" class="fa-solid fa-music icon"></i> 
-              <input id="upload" type="file" name="filename" size="10" accept=".mp3, .ogg, .mpeg">
+              <input id="upload" type="file" name="filename" size="10" accept="audio/mpeg, audio/ogg, audio/mp3">
                   <text style="font-size: 21">
                     <span>
                         '.$dl->getLocalizedString("chooseFile").'
