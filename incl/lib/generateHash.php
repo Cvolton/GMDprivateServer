@@ -1,16 +1,12 @@
 <?php
 //credits to pavlukivan for decoding and to IAD for most of genSolo
 class GenerateHash {
-	public static function genMulti($lvlsarray) {
+	public static function genMulti($lvlsmultistring) {
 		include dirname(__FILE__)."/connection.php";
 		$hash = "";
-		foreach($lvlsarray as $id){
-			$query=$db->prepare("SELECT levelID, starStars, starCoins FROM levels WHERE levelID = :id");
-			$query->execute([':id' => $id]);
-			$result2 = $query->fetchAll();
-			$result = $result2[0];
-			$idstring = strval($result["levelID"]);
-			$hash = $hash . $idstring[0].$idstring[strlen($idstring)-1].$result["starStars"].$result["starCoins"];
+		foreach($lvlsmultistring as $result) {
+			$id = strval($result['levelID']);
+			$hash = $hash . $id[0].$id[strlen($id)-1].$result["stars"].$result["coins"];
 		}
 		return sha1($hash . "xI25fpAapCQg");
 	}
