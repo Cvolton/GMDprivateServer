@@ -261,7 +261,7 @@ $result = $query->fetchAll();
 $levelcount = $query->rowCount();
 foreach($result as &$level1) {
 	if($level1["levelID"]!=""){
-		$lvlsmultistring[] = $level1["levelID"];
+		$lvlsmultistring[] = ["levelID" => $level1["levelID"], "stars" => $level1["starStars"], 'coins' => $level1["starCoins"]];
 		if(!empty($gauntlet)){
 			$lvlstring .= "44:$gauntlet:";
 		}
