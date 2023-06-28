@@ -394,7 +394,7 @@ class mainLib {
 	public function getSongInfo($id, $column = "*") {
 	    if(!is_numeric($id)) return;
 	    include __DIR__ . "/connection.php";
-	    $sinfo = $db->prepare("SELECT `$column` FROM songs WHERE ID = :id");
+	    $sinfo = $db->prepare("SELECT $column FROM songs WHERE ID = :id");
 	    $sinfo->execute([':id' => $id]);
 	    $sinfo = $sinfo->fetch();
 	    if(empty($sinfo)) return false;
@@ -406,7 +406,7 @@ class mainLib {
 	public function getClanInfo($clan, $column = "*") {
 	    if(!is_numeric($clan)) return;
 	    include __DIR__ . "/connection.php";
-	    $claninfo = $db->prepare("SELECT `$column` FROM clans WHERE ID = :id");
+	    $claninfo = $db->prepare("SELECT $column FROM clans WHERE ID = :id");
 	    $claninfo->execute([':id' => $clan]);
 	    $claninfo = $claninfo->fetch();
 	    if(empty($claninfo)) return false;
