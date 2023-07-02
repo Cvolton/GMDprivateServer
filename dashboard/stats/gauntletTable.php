@@ -37,7 +37,7 @@ foreach($result as &$pack){
 		$levelDesc = base64_decode($action["levelDesc"]);
 		if(empty($levelDesc)) $levelDesc = '<text style="color:gray">'.$dl->getLocalizedString("noDesc").'</text>';
 		$levelpass = $action["password"];
-		$likes = $level["likes"];
+		$likes = $action["likes"];
 		$stats = '<div class="profilepic" style="display:inline-flex;grid-gap:3px;color:white">'.($likes >= 0 ? '<i class="fa-regular fa-thumbs-up"></i>' : '<i class="fa-regular fa-thumbs-down"></i').' '.$likes. '</div>';
 		if($modcheck) {
 			$levelpass = substr($levelpass, 1);
