@@ -7,7 +7,7 @@ $string["welcome"] = $gdps." sunucusuna hoş geldiniz!";
 $string["didntInstall"] = "<div style='color:#47a0ff'><b>Uyarı!</b> Dashboard'ı tam olarak kurmamışsınız! Buraya basarak tam kurulumu yapın.</div>";
 $string["levelsWeek"] = "Bir hafta içinde yüklenen bölümler";
 $string["levels3Months"] = "3 ayda yüklenen bölümler";
-$string["footer"] = $gdps.", ".date('Y', time());
+$string["footer"] = $gdps."? 2020 - ".date('Y', time());
 $string["tipsAfterInstalling"] = "Kontrol paneline hoş geldin! Kurulumdan sonra bir kaç tavsiye:<br>
 1. SQL içerisinde 'roles' tablosunda yeni izinler belirmiş gibi gözüküyor! Bunlara baksan çok iyi olur...<br>
 2. 'dashboard' klasörüne 'icon.png' koyarsan, ikonun en sol köşede belirir!<br>
@@ -275,7 +275,7 @@ $string["nooneBeat"] = 'kimse geçemedi'; //let it be lowercase
 $string["oneBeat"] = '1 oyuncu geçti'; 
 $string["lower5Beat"] = '%d oyuncu geçti'; // russian syntax, sorry
 $string["above5Beat"] = '%d oyuncu geçti'; 
-$string["demonlistLevel"] = '%s<text class="dltext"><button type="button" onclick="a(\'profile/%3$s\', true, true)" style="margin-right:7px;margin-left:7px;font-size:25px" class="accbtn" name="accountID" value="%d">%s</button> tarafından</text>';
+$string["demonlistLevel"] = '%s<text class="dltext"><button type="button" onclick="a(\'profile/%3$s\', true, true)" style="font-size:25px" class="accbtn" name="accountID" value="%d">%s</button> tarafından</text>';
 $string["noDemons"] = 'Görünüşe göre demon listesi demon seviyesi bölüm içermiyor...';
 $string["addSomeDemons"] = 'Listeyi doldurmak için demon seviyesi bölüm ekle!';
 $string["askForDemons"] = 'Bir yöneticiden bu listeye eklemesini iste!';
@@ -339,6 +339,10 @@ $string["createClan"] = "Klan oluştur";
 $string["createdClan"] = "<span style='font-weight:700;color:#%s'>%s</span> klanını oluşturdun!";
 $string["createClanDesc"] = "Burada klan oluşturabilirsin!";
 $string["create"] = "Oluştur";
+$string["mainSettings"] = "Main settings";
+
+$string["suggestedName"] = '<button type="button" onclick="a(\'profile/%1$s\', true, true)" class="accbtn" name="accountID">%1$s</button><text class="dltext"> suggested <b>%4$s%3$s</b> for</text><text class="levelname">%2$s</text>'; // %1$s - Mod username, %2$s - level name, %3$s - x stars, %4$s - Featured/Epic (%4$s%3$s - Featured, x stars)
+$string["reportedName"] = '%1$s<text class="dltext"> was reported</text><text class="levelname">%2$s</text>';
 
 /*
 	REUPLOAD

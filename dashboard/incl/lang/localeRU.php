@@ -7,7 +7,7 @@ $string["welcome"] = "Добро пожаловать на ".$gdps.'!';
 $string["didntInstall"] = "<div style='color:#47a0ff'><b>Внимание!</b> Вы не до конца установили панель сервера! Нажмите на текст, чтобы это сделать.</div>";
 $string["levelsWeek"] = "Выложено уровней за неделю";
 $string["levels3Months"] = "Выложено уровней за 3 месяца";
-$string["footer"] = $gdps.", ".date('Y', time());
+$string["footer"] = $gdps."? 2020 - ".date('Y', time());
 $string["tipsAfterInstalling"] = "Добро пожаловать в панель сервера! Мы даём вам несколько подсказок после установки:<br>
 1. Кажется, в SQL в таблице 'roles' появились новые права! Вам следует это проверить...<br>
 2. Если вы поместите icon.png в папку 'dashboard', то слева сверху появится иконка вашего сервера!<br>
@@ -275,7 +275,7 @@ $string["nooneBeat"] = 'никто не прошёл'; //let it be lowercase
 $string["oneBeat"] = 'прошёл 1 игрок'; 
 $string["lower5Beat"] = 'прошло %d игрока'; 
 $string["above5Beat"] = 'прошло %d игроков'; 
-$string["demonlistLevel"] = '%s <text class="dltext">от <button type="button" onclick="a(\'profile/%3$s\', true, true)" style="margin-left:7px;font-size:25px" class="accbtn" name="accountID" value="%d">%s</button></text>';
+$string["demonlistLevel"] = '%s <text class="dltext">от <button type="button" onclick="a(\'profile/%3$s\', true, true)" style="font-size:25px" class="accbtn" name="accountID" value="%d">%s</button></text>';
 $string["noDemons"] = 'Кажется, в вашем топе демонов нет ни одного демона...';
 $string["addSomeDemons"] = 'Добавьте несколько демонов, чтобы заполнить топ!';
 $string["askForDemons"] = 'Попросите администратора сервера добавить несколько!';
@@ -339,6 +339,10 @@ $string["createClan"] = "Создать клан";
 $string["createdClan"] = "Вы успешно создали клан <span style='font-weight:700;color:#%s'>%s</span>!";
 $string["createClanDesc"] = "Здесь вы можете создать клан!";
 $string["create"] = "Создать";
+$string["mainSettings"] = "Основные настройки";
+
+$string["suggestedName"] = '<button type="button" onclick="a(\'profile/%1$s\', true, true)" class="accbtn" name="accountID">%1$s</button><text class="dltext"> предложил оценить </text><text class="levelname">%2$s</text><text class="dltext"> на <b>%4$s%3$s</b></text>';
+$string["reportedName"] = '%1$s<text class="dltext"> зарепортили</text><text class="levelname">%2$s</text>';
 
 /*
 	REUPLOAD
