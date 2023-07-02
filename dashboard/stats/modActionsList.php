@@ -22,7 +22,6 @@ $srcbtn = "";
 $pagelol = explode("/", $_SERVER["REQUEST_URI"]);
 $pagelol = $pagelol[count($pagelol)-2]."/".$pagelol[count($pagelol)-1];
 $pagelol = explode("?", $pagelol)[0];
-$table = '<table class="table table-inverse"><tr><th>#</th><th>'.$dl->getLocalizedString("mod").'</th><th>'.$dl->getLocalizedString("action").'</th><th>'.$dl->getLocalizedString("value").'</th><th>'.$dl->getLocalizedString("value2").'</th><th>'.$dl->getLocalizedString("value3").'</th><th>'.$dl->getLocalizedString("time").'</th></tr>';
 $seltype = !empty($_GET["type"]) ? ExploitPatch::number($_GET["type"]) : 0; 
 $selname = !empty($_GET["who"]) ? ExploitPatch::number($_GET["who"]) : 0;
 if(!empty($_GET["type"]) OR !empty($_GET["who"])) {
@@ -48,10 +47,7 @@ if(empty($result)) {
 	die();
 } 
 foreach($result as &$action){
-	//detecting mod
-	$account = $action["account"];
-	$account =  '<form style="margin:0" method="post" action="./profile/"><button type="button" onclick="a(\'profile/'.$gs->getAccountName($account).'\', true, true, \'POST\')" style="margin:0" class="accbtn" name="accountID" value="'.$action["account"].'">'.$gs->getAccountName($account).'</button></form>';
-	//detecting action
+	$account =  $gs->getAccountName($action["account"]);
 	$value = $action["value"];
 	$value2 = $action["value2"];
 	$value3 = $action["value3"];
@@ -86,9 +82,9 @@ foreach($result as &$action){
 				$value4  = "Загрузка уровней";
 				break;
 		}
-    	if($value3 == 0) $value3 = $value4.', <div style="color:#a9ffa9">'.$dl->getLocalizedString("unban").'</div>';
-      	else $value3 = $value4.', <div style="color:#ffa9a9">'.$dl->getLocalizedString("isBan").'</div>';
-      	if($value2 == 'banned' OR $value2 == 'none') $value2 = '<div style="color:gray">'.$dl->getLocalizedString("noReason").'</div>';
+    	if($value3 == 0) $value3 = $value4.', <span style="color:#a9ffa9">'.$dl->getLocalizedString("unban").'</span>';
+      	else $value3 = $value4.', <span style="color:#ffa9a9">'.$dl->getLocalizedString("isBan").'</span>';
+      	if($value2 == 'banned' OR $value2 == 'none') $value2 = '<span style="color:gray">'.$dl->getLocalizedString("noReason").'</span>';
     } 
   	if($action["type"] == 26) {
 		$username26 = $gs->getAccountName($action["value"]);
@@ -139,14 +135,24 @@ foreach($result as &$action){
   	if($action["type"] == 17 OR $action["type"] == 21) { 
       	if($value3 == 1) $star = 0; elseif($value3 < 5) $star = 1; else $star = 2;
       	if($action["value4"] == 1) $coin = 0; elseif($action["value4"] != 0) $coin = 1; else $coin = 2; 
-		$value = '<div style="color:rgb('.$action["value7"].');font-weight:700">'.$value.'</div>';
+		$value = '<span style="color:rgb('.$action["value7"].');font-weight:700">'.$value.'</span>';
       	$value3 = $value3.' '.$dl->getLocalizedString("starsLevel$star").', '.$action["value4"].' '.$dl->getLocalizedString("coins$coin");
 	}
-	if(strlen($action["value"]) > 18) $value = "<details><summary>".$dl->getLocalizedString("spoiler")."</summary>$value</details>";
-  	if(strlen($action["value2"]) > 18) $value2 = "<details><summary>".$dl->getLocalizedString("spoiler")."</summary>$value2</details>";
-	$time = $dl->convertToDate($action["timestamp"]);
+	if(mb_strlen($action["value"]) > 18) $value = "<details><summary>".$dl->getLocalizedString("spoiler")."</summary>$value</details>";
+  	if(mb_strlen($action["value2"]) > 18) $value2 = "<details><summary>".$dl->getLocalizedString("spoiler")."</summary>$value2</details>";
+	$time = $dl->convertToDate($action["timestamp"], true);
 	if($action["type"] == 5) $value2 = $gs->getLevelName($value);
-	$table .= "<tr><th scope='row'>".$x."</th><td>".$account."</td><td>".$actionname."</td><td>".$value."</td><td>".$value2."</td><td>".$value3."</td><td>".$time."</td></tr>";
+	$v1 = '<div class="mavdiv"><p class="profilepic"><i class="fa-solid fa-1" style="background: #29282c; padding: 5px 11.5px; border-radius: 500px;"></i> '.$value.'</p></div>';
+	$v2 = '<div class="mavdiv"><p class="profilepic"><i class="fa-solid fa-2" style="background: #29282c; padding: 5px 9.5px; border-radius: 500px;"></i> '.$value2.'</p></div>';
+	$v3 = '<div class="mavdiv"><p class="profilepic"><i class="fa-solid fa-3" style="background: #29282c; padding: 5px 6.5px; border-radius: 500px;"></i> '.$value3.'</p></div>';
+	$stats = $v1.$v2.$v3;
+	$members .= '<div style="width: 100%;display: flex;flex-wrap: wrap;justify-content: center;">
+			<div class="profile"><div style="display: flex;width: 100%;justify-content: space-between;margin-bottom: 7px;align-items: center;"><div class="acclistdiv">
+				<h1 class="dlh1 profh1 suggest"><button type="button" onclick="a(\'profile/'.$account.'\', true, true)" class="accbtn" name="accountID">'.$account.'</button><text class="dltext"> '.$actionname.'</text></h1>
+			</div></div>
+			<div class="form-control" style="display: flex;width: 100%;height: max-content;align-items: center;">'.$stats.'</div>
+			<div class="acccomments"><h3 class="comments" style="margin: 0px;width: max-content;">'.$dl->getLocalizedString("ID").': <b>'.$action["ID"].'</b></h3><h3 class="comments" style="justify-content: flex-end;grid-gap: 0.5vh;margin: 0px;width: max-content;">'.$dl->getLocalizedString("date").': <b>'.$time.'</b></h3></div>
+		</div></div>';
 	$x++;
 }
 $mods = $db->prepare("SELECT * FROM roleassign GROUP BY accountID");
@@ -157,7 +163,11 @@ foreach($mods as &$mod) {
 	$name = $gs->getAccountName($mod["accountID"]);
 	$options .= '<option value="'.$mod["accountID"].'">'.$name.'</option>';
 };
-$table .= '</table><form method="get" name="searchform" class="form__inner">
+$pagel = '<div class="form new-form">
+<h1 style="margin-bottom:5px">'.$dl->getLocalizedString("modActionsList").'</h1>
+<div class="form-control new-form-control">
+		'.$members.'
+	</div></div><form method="get" name="searchform" class="form__inner">
 	<div class="field" style="display:flex">
 		<select id="sel1" style="border-top-right-radius: 0;margin:0;border-bottom-right-radius: 0;" name="type" value="'.$_GET["type"].'" placeholder="'.$dl->getLocalizedString("search").'">
 		    <option value="0">'.$dl->getLocalizedString("everyActions").'</option>
@@ -195,19 +205,14 @@ $table .= '</table><form method="get" name="searchform" class="form__inner">
 		<button type="button" onclick="a(\''.$pagelol.'\', true, true, \'GET\', 69)"  style="width: 6%;border-top-left-radius:0px !important;border-bottom-left-radius:0px !important" type="submit" class="btn-primary" title="'.$dl->getLocalizedString("search").'"><i class="fa-solid fa-magnifying-glass"></i></button>
 		'.$srcbtn.'
 	</div>
-</form>
-<script>
-	document.querySelector("#sel1").value='.$seltype.';
-	document.querySelector("#sel2").value='.$selname.';
-</script>';
-/*
-	bottom row
-*/
-//getting count
+</form>';
 $query = $db->prepare("SELECT count(*) FROM modactions $where $requesttype $requestwho");
 $query->execute();
 $packcount = $query->fetchColumn();
 $pagecount = ceil($packcount / 10);
 $bottomrow = $dl->generateBottomRow($pagecount, $actualpage);
-$dl->printPage($table . $bottomrow, true, "stats");
+$dl->printPage($pagel.$bottomrow.'<script>
+	document.querySelector("#sel1").value='.$seltype.';
+	document.querySelector("#sel2").value='.$selname.';
+</script>', true, "stats");
 ?>

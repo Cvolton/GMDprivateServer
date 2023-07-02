@@ -144,14 +144,14 @@ if(!empty($_POST["user"])) {
 			<h2 class="messagenotyou" style="font-size: 15px;color: #c0c0c0;" id="stats'.$mod["assignID"].'"><i class="fa-solid fa-circle-dot" style="color:rgb('.$gs->getAccountCommentColor($mod["accountID"]).')"></i> '.$modName.' | <i class="fa-regular fa-clock"></i> '.$dl->convertToDate($time["timestamp"], true).'</h2>
 		</button>';
 	}
-	$dl->printSong('<div class="form-control itemsbox" style="height: 392px;">
-	<div class="itemslist" style="width:50%">
+	$dl->printSong('<div class="form-control itemsbox">
+	<div class="itemoverflow"><div class="itemslist">
     <button type="submit" onclick="mod(0)" class="btn-primary itembtn">
         <h2 class="subjectnotyou">'.$dl->getLocalizedString("addMod").'</h2>
         <h2 class="messagenotyou" style="font-size: 15px;color: #c0c0c0;">'.$dl->getLocalizedString("makeNewMod").'</h2>
     </button>'.$allMods.'
-    </div>
-	<div class="form" style="margin:0;width:80%">
+    </div></div>
+	<div class="form" style="margin:0;width:100%">
     <h1>'.$dl->getLocalizedString("addMod").'</h1>
     <form class="form__inner form__create" method="post" action="">
     <p>'.$dl->getLocalizedString("addModDesc").'</p>

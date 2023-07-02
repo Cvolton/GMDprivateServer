@@ -22,6 +22,7 @@ $clans->execute();
 $clans = $clans->fetchAll();
 $style = $closed = $create = "";
 foreach($clans as &$clan) {
+	$closed = '';
 	$name = base64_decode($clan["clan"]);
 	$desc = base64_decode($clan["desc"]);
 	if(empty($desc)) $desc = $dl->getLocalizedString("noClanDesc");
@@ -32,9 +33,10 @@ foreach($clans as &$clan) {
     if($dontmind == 1) $dm = 0; elseif($dontmind < 5 AND $dontmind > 0) $dm = 1; else $dm = 2;
     if($members > 9 AND $members < 20) $dm = 2;
 	if($clan["isClosed"] == 1) $closed = ' <i style="font-size:15px;color:#36393e" class="fa-solid fa-lock"></i>';
-	$options .= '<div class="profile" style="display: inherit;border-radius: 30px;margin-top: 15px;flex-wrap: nowrap;padding: 0 5 15 20;min-width: 100%;justify-content: space-between;height: max-content;margin-bottom: 0px;align-items: center;"><div style="width: 100%;display: flex;height: 100%;flex-wrap: wrap;flex-direction: column;justify-content: space-between;"><div style="margin-right: 10px;">
-		<div style="display: flex;justify-content: space-between;align-items: center;"><h1 style="width:max-content;text-align:left">'.sprintf($dl->getLocalizedString('demonlistLevel'), '<span style="color:#'.$clan["color"].';grid-gap: 3px;display: inline-flex;">'.$name.$closed.'</span>', $clan["clanOwner"], $gs->getAccountName($clan["clanOwner"])).'</h1><div style="display: flex;grid-gap: 5px;align-items: center;"><h3 style="margin: 0;font-size: 20px;">'.sprintf($dl->getLocalizedString("members".$dm), $members).'</h3><button style="width:max-content;padding:15px;height:max-content" type="button" onclick="a(\'clan/'.$name.'\', true, true)" class="btn-rendel"><i class="fa-solid fa-magnifying-glass"></i></button></div></div>
-		<p style="margin-bottom: 10px;width:100%;text-align:left">'.$desc.'</p></div></div>
+	$options .= '<div class="profile clanscard"><div style="margin-right: 10px;width: 100%">
+		<div class="clansname"><h1>'.sprintf($dl->getLocalizedString('demonlistLevel'), '<span style="color:#'.$clan["color"].';grid-gap: 3px;display: inline-flex;">'.$name.$closed.'</span>', $clan["clanOwner"], $gs->getAccountName($clan["clanOwner"])).'</h1>
+		<div class="clansmembercount"><h3 style="margin: 0;font-size: 20px;">'.sprintf($dl->getLocalizedString("members".$dm), $members).'</h3><button style="width:max-content;padding:15px;height:max-content" type="button" onclick="a(\'clan/'.$name.'\', true, true)" class="btn-rendel"><i class="fa-solid fa-magnifying-glass"></i></button></div></div>
+		<p class="clansdesc">'.$desc.'</p></div>
 	</div>';
 }
 if(empty($options)) {
@@ -42,9 +44,9 @@ if(empty($options)) {
 	$options = '<h1>'.$dl->getLocalizedString("noClans").'</h1>';
 }
 if($_SESSION["accountID"] != 0 AND !$isPlayerInClan) $create = '<button style="width: max-content;height: max-content;padding: 13px 14px;font-size: 25px;position: absolute;bottom: 0;right: 0px;" class="btn-rendel" type="button" onclick="a(\'clans/create\')"><i class="fa-solid fa-plus"></i></button>';
-$dl->printSong('<div class="form" style="position:relative;padding-bottom: 20px;max-width:60vw;width: 60vw;height:77vh;margin-top:10px;border-radius:45px;overflow:auto;overflow-x:hidden;max-height:80vh;justify-content:flex-start">
+$dl->printSong('<div class="form clan-form">
 	<h1 style="margin-bottom:5px">'.$dl->getLocalizedString("clans").'</h1>
-	<div class="form-control" style="'.$style.'display: inherit;border-radius: 45px;margin-top: 15px;flex-wrap: wrap;padding: 0px 15px 15px 15px;overflow-y: auto;min-width: 100%;justify-content: space-between;height: 100%;margin-bottom: 0px;align-items: start;align-content:start;">
+	<div class="form-control clan-form-control" style="'.$style.'">
 		'.$options.'
 	</div>'.$create.'
 </div>', 'browse');

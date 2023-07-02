@@ -68,8 +68,8 @@ foreach($result as &$action){
 	$levelDesc = base64_decode($action["levelDesc"]);
   	if(empty($levelDesc)) $levelDesc = '<text style="color:gray">'.$dl->getLocalizedString("noDesc").'</text>';
 	$levelpass = $action["password"];
-	$likes = $action["likes"] > 0 ? $action["likes"] : '<span style="color:gray">'.$action["likes"].'</span>';
-	$stats = '<div class="profilepic" style="display:inline-flex;grid-gap:3px;color:white"><i class="fa-regular fa-thumbs-up"></i> '.$likes.'</div>';
+	$likes = $level["likes"];
+	$stats = '<div class="profilepic" style="display:inline-flex;grid-gap:3px;color:white">'.($likes >= 0 ? '<i class="fa-regular fa-thumbs-up"></i>' : '<i class="fa-regular fa-thumbs-down"></i').' '.$likes. '</div>';
 	$levelpass = substr($levelpass, 1);
   	$levelpass = preg_replace('/(0)\1+/', '', $levelpass);
 	if($levelpass == 0 OR empty($levelpass)) $lp = '<p class="profilepic"><i class="fa-solid fa-unlock"></i> '.$dl->getLocalizedString("nopass").'</p>';
@@ -144,65 +144,5 @@ $query->execute();
 $packcount = $query->fetchColumn();
 $pagecount = ceil($packcount / 10);
 $bottomrow = $dl->generateBottomRow($pagecount, $actualpage);
-$dl->printPage($pagel . $bottomrow.'<script>
-function copysong(id) {
-	navigator.clipboard.writeText(id);
-	document.getElementById("copy"+id).style.transition = "0.05s";
-	document.getElementById("copy"+id).style.color = "#bbffbb";
-	setTimeout(function(){document.getElementById("copy"+id).style.transition = "0.2s";}, 1)
-	setTimeout(function(){document.getElementById("copy"+id).style.color = "#007bff";}, 200)
-}
-function btnsong(id) {
-				$("#song"+id).on("pause play", function() {
-					if(document.getElementById("song" + id).paused) {
-						var elems=document.getElementsByName("iconlol");
-						for(var i=0; i<elems.length; i++)elems[i].classList.replace("fa-pause", "fa-play");
-					} else document.getElementById("icon"+id).classList.replace("fa-play", "fa-pause");
-				});
-				if(document.getElementById(id) == null) {
-					deleteDuplicates = $(".audio");
-					for(var i=0; i<deleteDuplicates.length; i++) deleteDuplicates[i].remove();
-					var elems=document.getElementsByName("iconlol");
-					for(var i=0; i<elems.length; i++)elems[i].classList.replace("fa-pause", "fa-play");
-					if(id != 0) {
-						divsong = document.createElement("div");
-						audiosong = document.createElement("audio");
-						sourcesong = document.createElement("source");
-						divsong.name = "audio";
-						divsong.classList.add("audio");
-						divsong.id = id;
-						divsong.style.display = "flex";
-						audiosong.title = document.getElementById("btn"+id).title;
-						audiosong.style.width = "100%";
-						audiosong.name = "song";
-						audiosong.id = "song"+id;
-						audiosong.setAttribute("controls", "");
-						audiosong.volume = 0.2;
-						sourcesong.src = document.getElementById("btn"+id).getAttribute("download");
-						sourcesong.type = "audio/mpeg";
-						closesong = document.createElement("button");
-						closesong.type = "button";
-						closesong.classList.add("msgupd");
-						closesong.classList.add("closebtn");
-						closesong.setAttribute("onclick", "btnsong(0)");
-						closesong.innerHTML = \'<i class="fa-solid fa-xmark"></i>\';
-						audiosong.appendChild(sourcesong);
-						divsong.appendChild(audiosong);
-						divsong.appendChild(closesong);
-						document.body.appendChild(divsong);
-						audiosong.play();
-						document.getElementById("icon"+id).classList.replace("fa-play", "fa-pause");
-					} else {
-						divsong = audiosong = sourcesong = closesong = "";
-						var elems=document.getElementsByName("iconlol");
-						for(var i=0; i<elems.length; i++)elems[i].classList.replace("fa-pause", "fa-play");
-					}
-				} else {
-					if(document.getElementById("song" + id).paused) {
-						document.getElementById("song" + id).play();
-					}
-					else document.getElementById("song" + id).pause();
-				}
-			}
-</script>', true, "mod");
+$dl->printPage($pagel.$bottomrow, true, "mod");
 ?>

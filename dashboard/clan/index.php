@@ -190,10 +190,10 @@ if(!empty($clan)) {
             	<div style="height: 100%;width: 100%;"><div style="display: flex;align-items: center;justify-content: center;flex-wrap:wrap">
                 	<form method="post" style="margin:0px" action=""><button type="button" onclick="a(\'clan/'.$clan["clan"].'\', true, true, \'GET\')" class="goback" style="margin-top:0px"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i></button></form>
                       <div style="display: flex;flex-direction: column;align-items: center"><h1>'.$dl->getLocalizedString("settings").'</h1></div>
-					  <h2 style="color: #ffbbbb;width: 100%;text-align: right;margin: 0;margin-top: -10px;margin-bottom: -10px;font-weight: 500;">'.$dl->getLocalizedString("dangerZone").'</h2>
                       <div style="width: 100%">
-                      <form method="post" style="display: flex;grid-gap:10px;width: 100%;margin-bottom: 15px" name="mainsettings">
-                              <div class="messenger" style="grid-gap: 10px;display: grid;align-content: space-between;">
+                      <form method="post" class="mainsettings" name="mainsettings">
+                              <div style="width: 100%;"><h2 style="color: gray;width: 100%;text-align: left;margin: 0;margin-bottom: -10px;font-weight: 500;">'.$dl->getLocalizedString("mainSettings").'</h2>
+							  <div class="messenger" style="height:100%;grid-gap: 10px;display: grid;align-content: space-between;">
                                   <div>
                                     <h2 style="text-align:left;margin:0;margin-bottom: 3px;">'.$dl->getLocalizedString("clanName").'</h2>
                                     <input class="form-control" name="clanname" value="'.$clan["clan"].'" placeholder="'.$clan["clan"].'" type="text"></input>
@@ -206,8 +206,9 @@ if(!empty($clan)) {
                                     <h2 style="text-align:left;margin:0;margin-bottom: 3px;">'.$dl->getLocalizedString("clanColor").'</h2>
                                     <div class="field color123"><input name="clancolor" value="#'.$clan["color"].'" placeholder="'.$dl->getLocalizedString("clanDesc").'" type="color"></input></div>
                                   </div>
-                              </div>
-                              <div class="messenger" style="width:55%;grid-gap: 10px;padding-bottom: 0px;display: grid;align-items: flex-end;">
+                              </div></div>
+                              <div class="secondsettingsform"><h2 style="color: #ffbbbb;width: 100%;text-align: right;margin: 0;margin-bottom: -10px;font-weight: 500;">'.$dl->getLocalizedString("dangerZone").'</h2>
+							  <div class="messenger" style="height:100%;grid-gap: 10px;padding-bottom: 0px;display: grid;align-items: flex-end;">
 							  <div style="display: flex;justify-content: space-between;align-items: center;">
 								<h2 style="text-align:left;margin:0;font-size: 20px;">'.$dl->getLocalizedString("closedClan").'</h2>
 								<button style="display:contents;cursor:pointer;font-size: 35px;" type="button" onclick="clanClose()" style="display:contents">'.$clIcon.'</button>
@@ -230,7 +231,7 @@ if(!empty($clan)) {
                                         <button style="height: max-content;" class="btn-song btn-size" type="button" onclick="a(\'clan/'.$clan['clan'].'/settings\', true, true, \'POST\', false, \'deleteclan\')">'.$dl->getLocalizedString("deleteClan").'</button>
                                     </form></div>
                                 </div>
-                              </div>
+                              </div></div>
                         </div>
                        </form>
                     <button style="margin-bottom:10px" class="btn-song" type="button" onclick="a(\'clan/'.$clan["clan"].'/settings\', true, true, \'POST\', false, \'mainsettings\')">'.$dl->getLocalizedString("saveSettings").'</button>
@@ -301,7 +302,7 @@ if(!empty($clan)) {
 		}
 	}
     if($clan["isClosed"] == 1) $closed = ' <i style="font-size:15px;color:#36393e" class="fa-solid fa-lock"></i>';
-    $clanname = "<h1 style='color:#".$clan["color"].";margin: 0px;margin-top: 0px;font-weight:700;display: flex;grid-gap: 5px;align-items: center;'>".$clan["clan"].$closed."</h1>";
+    $clanname = "<h1 class='clanname' style='color:#".$clan["color"].";'>".$clan["clan"].$closed."</h1>";
     $mbrs = $db->prepare("SELECT * FROM users WHERE clan = :cid");
     $mbrs->execute([':cid' => $clan["ID"]]);
     $mbrs = $mbrs->fetchAll();
@@ -317,14 +318,14 @@ if(!empty($clan)) {
         $stats = $st.$dm.$gc.$uc.$dn.$cp;
         if(empty($stats)) $stats = '<p style="font-size:25px;color:#212529">'.$dl->getLocalizedString("empty").'</p>';
         if($mbr["extID"] != $clan["clanOwner"]) $members .= '<div style="width: 100%;display: flex;flex-wrap: wrap;justify-content: center;">
-			<div class="profile"><div style="display:flex"><button style="display:contents;cursor:pointer" type="button" onclick="a(\'profile/'.$mbr["userName"].'\', true, true, \'GET\')"><h2 style="color:rgb('.$gs->getAccountCommentColor($mbr["extID"]).')" class="profilenick">'.$mbr["userName"].'</h2></button>'.$kick.'</div>
+			<div class="profile"><div class="clanmemberndiv"><button style="display:contents;cursor:pointer" type="button" onclick="a(\'profile/'.$mbr["userName"].'\', true, true, \'GET\')"><h2 style="color:rgb('.$gs->getAccountCommentColor($mbr["extID"]).')" class="profilenick clanmembernick">'.$mbr["userName"].'</h2></button>'.$kick.'</div>
 			<div class="form-control" style="display: flex;width: 100%;height: max-content;align-items: center;">'.$stats.'</div>
 			<h3 id="comments" style="justify-content: flex-end;grid-gap: 0.5vh;">'.sprintf($dl->getLocalizedString("joinedAt"), $dl->convertToDate($mbr["joinedAt"], true)).'</h3>
 		</div></div>';
 		else $owner = '<div style="width: 100%;display: flex;flex-wrap: wrap;justify-content: center;">
-			<div class="profile"><div style="display:flex"><button style="display:contents;cursor:pointer" type="button" onclick="a(\'profile/'.$mbr["userName"].'\', true, true, \'GET\')"><h1 style="margin: 0;margin-bottom: 10px;color:rgb('.$gs->getAccountCommentColor($mbr["extID"]).')" class="profilenick">'.$mbr["userName"].' <i style="color:#ffff91" class="fa-solid fa-crown"></i></h1></button></div>
+			<div class="profile"><div style="display:flex"><button style="display:contents;cursor:pointer" type="button" onclick="a(\'profile/'.$mbr["userName"].'\', true, true, \'GET\')"><h1 style="margin: 0;margin-bottom: 10px;color:rgb('.$gs->getAccountCommentColor($mbr["extID"]).')" class="profilenick clanownernick">'.$mbr["userName"].' <i style="color:#ffff91" class="fa-solid fa-crown"></i></h1></button></div>
 			<div class="form-control" style="display: flex;width: 100%;height: max-content;align-items: center;">'.$stats.'</div>
-			<h3 id="comments" style="justify-content: flex-end;grid-gap: 0.5vh;font-size: 16px">'.sprintf($dl->getLocalizedString("createdAt"), $dl->convertToDate($clan["creationDate"], true)).'</h3>
+			<h3 class="comments clancreatetext">'.sprintf($dl->getLocalizedString("createdAt"), $dl->convertToDate($clan["creationDate"], true)).'</h3>
 		</div></div>';
     }
     if(empty($members)) $members .= '<div style="width: 100%;display: flex;flex-wrap: wrap;justify-content: center;">
@@ -352,19 +353,19 @@ if(!empty($clan)) {
 						'.$membermenu.'
 					</div>
 				</li>';
-    $dl->printSong('<div class="form" style="width: 60vw;max-height: 80vh;position:relative;overflow-y: auto;overflow-x: hidden;">
+    $dl->printSong('<div class="form profileform">
     	<div style="height: 100%;width: 100%;"><div style="display: flex;align-items: center;justify-content: center;">
     	<style>.menu-arrow::after {display:none}</style>
         	'.$back.'<div style="display: flex;flex-direction: column;align-items: center">'.$clanname.'</div>'.$settings.$menu.'
         </div>
-        <p style="max-height: 90px;overflow: auto;">'.$clan["desc"].'</p>
+        <p class="clandesc">'.$clan["desc"].'</p>
         <div>
-            <h3 style="margin:0px;color:gray;text-align:right;margin-bottom:5px;font-size:20px">'.$dl->getLocalizedString("clanOwner").'</h3>
-            <div class="form-control" style="overflow-wrap: anywhere;display: flex;border-radius: 30px;flex-wrap: wrap;padding-top: 0;max-height: 45vh;padding-bottom: 10px;min-width: 100%;height: max-content;margin-bottom: 5px;align-items: center;">'.$owner.'</div>
+            <h3 class="clanownertext">'.$dl->getLocalizedString("clanOwner").'</h3>
+            <div class="form-control clan-owner-form">'.$owner.'</div>
         </div>
         <div>
-            <div style="width:100%;display:flex;justify-content: space-between;"><h3 style="width:max-content;margin:0px;color:gray;text-align:left;margin-bottom:5px;font-size:20px">'.$dl->getLocalizedString("clanMembers").'</h3>
-            <h3 style="width:max-content;margin:0px;color:gray;text-align:right;margin-bottom:5px;font-size:20px">'.sprintf($dl->getLocalizedString("members".$dm), $membercount).'</h3></div>
+            <div style="width:100%;display:flex;justify-content: space-between;"><h3 class="clanmemberstext" style="text-align: left;">'.$dl->getLocalizedString("clanMembers").'</h3>
+            <h3 class="clanmemberstext" style="text-align: right;">'.sprintf($dl->getLocalizedString("members".$dm), $membercount).'</h3></div>
             <div class="form-control dmbox" style="overflow-wrap: anywhere;display: flex;border-radius: 30px;flex-wrap: wrap;padding-top: 0;max-height: 33.5vh;padding-bottom: 10px;min-width: 100%;height: max-content;margin-bottom: 17px;align-items: center;">
         	'.$members.'
 </div></div></div>', 'profile');

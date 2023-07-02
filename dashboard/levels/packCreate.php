@@ -76,8 +76,8 @@ if(!empty($_POST["packName"])) {
 			$diff = 6;
 			break;
 	}
-	$query = $db->prepare("INSERT INTO mappacks (name, levels, stars, coins, difficulty, rgbcolors, colors2) VALUES (:name, :levels, :stars, :coins, :diff, :rgb, :c2)");
-	$query->execute([':name' => $name, ':levels' => $levels, ':stars' => $stars, ':coins' => $coins, ':diff' => $diff, ':rgb' => $color, ':c2' => 'none']);
+	$query = $db->prepare("INSERT INTO mappacks (name, levels, stars, coins, difficulty, rgbcolors, colors2, timestamp) VALUES (:name, :levels, :stars, :coins, :diff, :rgb, :c2, :time)");
+	$query->execute([':name' => $name, ':levels' => $levels, ':stars' => $stars, ':coins' => $coins, ':diff' => $diff, ':rgb' => $color, ':c2' => ExploitPatch::remove(str_replace("#", '', $_POST["color"])), ':time' => time()]);
 	$query = $db->prepare("INSERT INTO modactions  (type, value, timestamp, account, value2, value3, value4, value7) VALUES ('17',:value,:timestamp,:account,:levels, :stars, :coins, :rgb)");
 	$query->execute([':value' => $name, ':timestamp' => time(), ':account' => $accountID, ':levels' => $levels, ':stars' => $stars, ':coins' => $coins, ':rgb' => $color]);
 	$success = $dl->getLocalizedString("packCreateSuccess").' <b style="color:'.$_POST["color"].'">'.$name."</b>!";
@@ -96,13 +96,13 @@ if(!empty($_POST["packName"])) {
         <h2 class="subjectnotyou" style="color:rgb('.$pack["rgbcolors"].')" id="name'.$pack["ID"].'">'.$pack["name"].' <i style="opacity:0; margin-right: 10px; color: white; font-size: 13px;transition:0.2s" id="spin'.$pack["ID"].'" class="fa-solid fa-spinner fa-spin"></i></h2>
         <h2 class="messagenotyou" style="font-size: 15px;color: #c0c0c0;" id="stats'.$pack["ID"].'"><i class="fa-solid fa-star"></i> '.$pack["stars"].' | <i class="fa-solid fa-coins"></i> '.$pack["coins"].'</h2>
     </button>';
-	$dl->printSong('<div class="form-control itemsbox" style="height: 485px;">
-	<div class="itemslist">
+	$dl->printSong('<div class="form-control itemsbox">
+	<div class="itemoverflow"><div class="itemslist">
     <button type="submit" onclick="pack(0)" class="btn-primary itembtn">
         <h2 class="subjectnotyou">'.$dl->getLocalizedString("packCreate").'</h2>
         <h2 class="messagenotyou" style="font-size: 15px;color: #c0c0c0;">'.$dl->getLocalizedString("createNewPack").'</h2>
     </button>'.$allPacks.'
-    </div>
+    </div></div>
     <div class="form" style="margin:0;width:100%">
     <h1>' . $dl->getLocalizedString("packCreateTitle") . '</h1>
     <form class="form__inner form__create" method="post" action="">

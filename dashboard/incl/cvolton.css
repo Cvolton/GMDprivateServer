@@ -8,21 +8,25 @@
 	.new-form-control.songs {grid-template-columns: repeat(1, 100%) !important;}
 	.last{margin-bottom: 55px !important;}
 	.profileform{width:75vw !important;max-height: max-content !important;margin: 20px 0px 50px 0px !important;}
+	.packfc .profilepic {font-size: 15px !important;}
+	.itemsbox {width: 75% !important;}
 }
 
 @media (min-width: 1537px) {
 	.container {max-width: 1450px;}
 	.nav-link {width:max-content;}
-	.btn-group{position:initial !important; background: #00000000 !important;}
+	.btn-group {position:initial !important; background: #00000000 !important;}
 }
 
 @media (max-width: 992px) {
-    .profilenick{font-size: 15px !important;}
-    .profilepic{font-size: 15px !important;}
-    .songacc{font-size: 13px !important;}
-    .songidyeah{font-size: 11px !important;}
-	.btn-group {right: 5px !important;bottom: 15px !important;}
-	.btn-group button, .btn-group a {font-size: 13px !important;overflow-wrap: anywhere;}
+	.form h1 {font-size:28px !important;}
+	.form__inner p {font-size:17px !important;}
+    .profilenick {font-size: 15px !important;}
+    .profilepic {font-size: 15px !important;}
+    .songacc {font-size: 13px !important;}
+    .songidyeah {font-size: 11px !important;}
+	.btn-group {right: 5px !important;}
+	.btn-group button, .btn-group a, .btn-group i {font-size: 13px !important;overflow-wrap: anywhere; height: 100%;}
 	.mainpagecardh1 {font-size:27px !important;}
 	.mph1 {font-size:20px !important;height: 40px !important; width: 40px !important;}
 	.welcomeh1 {font-size:29px !important;}
@@ -44,6 +48,35 @@
 	.profacclist {flex-direction: column !important;}
 	.songauthor {font-size:10px !important;}
 	.songname {font-size:15px !important;}
+	.clandesc {font-size:15px !important;}
+	.clanname {font-size:25px !important;}
+	.msgupd, .goback {font-size: 15px !important; padding: 10px !important;}
+	.clanname i {font-size:10px !important;}
+	.clancreatetext {font-size:14px !important;}
+	.clanownernick, .a-btn h1, .profilename, .messengerbox h1 {font-size:25px !important;}
+	.clanmembernick {font-size:18px !important;}
+	.clanownertext, .clanmemberstext {font-size:16px !important;}
+	.mainsettings {flex-direction: column !important;}
+	.secondsettingsform {width: 100% !important;}
+	.music {font-size:13px !important;}
+	.dlpoints {font-size: 15px !important; right: 5% !important; top: 3%}
+	.itemsbox {flex-direction: column !important; margin-left: 2.5vw !important; width: 95vw !important; margin-bottom: 50px !important; margin-top: 15px !important}
+	.itemslist {width: max-content !important; flex-direction: row !important; flex-wrap: nowrap !important;}
+	.itembtn {width: max-content !important; margin-right: 0px !important;}
+	.itemoverflow {overflow-x: auto; max-width: 100%; padding-right: 10px;}
+	.acccomments {flex-direction: column-reverse !important; align-items: center !important;}
+	.acccomments h3 {font-size:11px !important;}
+	.acclistnick, .acclistdiv {flex-direction: column; align-items: center; margin-left: 0px !important;}
+	.accresultrole {font-size: 13px !important; text-align: center !important;}
+	.clansname h1 {font-size:25px !important; display: flex; flex-direction: column; margin-bottom: 0px !important;}
+	.clansname {align-items: flex-start !important; flex-direction: column !important;}
+	.clansdesc {font-size:15px !important;}
+	.clansmembercount {margin-bottom:5px !important; margin-top:5px !important;}
+	.clansmembercount h3 {font-size:17px !important;}
+	.clansmembercount button {padding: 10px !important; font-size:13px !important;}
+	.suggest .accbtn, .suggest .levelname {font-size:23px !important;}
+	.suggest .dltext {font-size:18px !important;}
+	.buffer {margin: 0px !important;}
 }
 
 * {
@@ -92,7 +125,6 @@
    align-items: center;
 	font-size: 16px;
 }
-
 
 input, select {
 	cursor: pointer;
@@ -256,7 +288,7 @@ input, select {
 .messengeryou {
 	padding: 10px;
     margin-top: 10px;
-    width: 50%;
+    width: 53%;
 	justify-self: right;
     border-radius: 20px;
     background: #29282c;
@@ -286,14 +318,13 @@ input, select {
 .messengernotyou {
 	padding: 10px;
     margin-top: 10px;
-    width: 50%;
+    width: 53%;
 	justify-self: left;
     border-radius: 20px;
     background: #29282c;
 }
 
 .dmbox {
-	max-width: 500px;
 	min-width:500px;
 	max-height:50vh;
 	overflow: scroll;
@@ -313,27 +344,29 @@ input, select {
  
 .msgbox::-webkit-scrollbar-thumb,
 .form::-webkit-scrollbar-thumb,
-.dmbox::-webkit-scrollbar-thumb {
+.clandesc::-webkit-scrollbar-thumb {
    background-color: #373A3F;
    border-radius: 100px;
   	border: 4px solid #181a1b;
 }
 
 .itemslist::-webkit-scrollbar-thumb,
-.new-form-control::-webkit-scrollbar-thumb {
+.new-form-control::-webkit-scrollbar-thumb,
+.dmbox::-webkit-scrollbar-thumb,
+.itemoverflow::-webkit-scrollbar-thumb,
+.clan-form-control::-webkit-scrollbar-thumb {
    background-color: #373A3F;
    border-radius: 100px;
 	border: 4px solid #141414;
 }
 
 .itemslist {
-	overflow: auto;
+   overflow: auto;
    border-radius: 20px;
    grid-gap: 10px;
    display: flex;
-   margin: 10px 0px 10px 0px;
+   margin: 10px 0px 10px 10px;
    flex-wrap: wrap;
-   width: 65%;
    align-content: flex-start;
 }
 
@@ -341,25 +374,6 @@ input, select {
    background-color: #181a1b;
    border-radius: 100px;
   	border: 4px solid #373A3F;
-}
-
-.itemsbox {
-	border-radius: 30px !important;
-	width: 50% !important;
-	padding: 0px !important;
-	padding-left: 10px !important;
-	display: flex;
-	margin-top: 8%;
-}
-
-.itembtn {
-	padding: 10px !important;
-	border-radius: 20px !important;
-	height:max-content;
-	margin: 0px;
-	margin-right: 10px;
-	width: 100% !important;
-	border: none !important;
 }
 
 .messageyou {
@@ -443,7 +457,7 @@ input, select {
 .form-control,
 #input {
     border-radius: 500px;
-    border: 1px solid #181a1b;
+    border: 0px solid #141414;
     background-color: rgb(0 0 0 / 2%);
     outline: none;
     width: 100%;
@@ -749,8 +763,8 @@ body {
 .color123 > input::-webkit-color-swatch {
     border: none;
     border-radius: 500px;
-
 }
+
 .form__inner {
     display: grid;
     grid-template-columns: 1fr;
@@ -939,15 +953,16 @@ hr {
 	display: block;
 }
 
-#comments {
+#comments,
+.comments {
 	margin: 10px 0px 0px 0px;
 	overflow-wrap: break-word;
-   color: #535456;
-   font-size: 13px;
-   display: flex;
-   justify-content: space-between;
-   text-align: right;
-   align-items: baseline;
+	color: #535456;
+	font-size: 13px;
+	display: flex;
+	justify-content: space-between;
+	text-align: right;
+	align-items: baseline;
 }
 
 .tooactive {
@@ -1088,7 +1103,8 @@ label {
 	height: 100%;
 	margin-bottom: 0px;
 	align-items: start;
-	align-content:start;
+	align-content: start;
+	overflow-x: hidden;
 }
 
 .dropdown-item.now {
@@ -1185,23 +1201,22 @@ label {
 .dltext {
 	display: inline-flex;
 	font-size: 25px;
-	font-weight:400
+	font-weight: 400;
+	grid-gap: 5px;
+	flex-wrap: wrap;
 }
 
 .dlp {
 	margin-bottom: 10px;
 	width:100%;
 	text-align:left;
+	overflow-wrap: anywhere;
 }
 
 .dlposttext {
 	display: inline-flex;
 	align-items: center;
 	width: max-content;
-}
-
-.messengerbox {
-	padding-right: 5px;
 }
 
 .profcard1 {
@@ -1216,6 +1231,7 @@ label {
     text-align:left !important;
     margin: 0px !important;
     font-size: 30px;
+	overflow-wrap: anywhere;
 }
 
 .profacclist {
@@ -1278,6 +1294,349 @@ label {
     font-size: 20px;
 }
 
+.msgbox.list,
+.dmbox.list {
+	display: flex;
+	max-width: 500px;
+	border-radius: 35px;
+}
+
 .messengerbox h1 {
-    margin-right: 15px;
+	margin-bottom:  0px;
+}
+
+.message {
+	width: 100%;
+}
+
+.message.you {
+	display: flex;
+    justify-content: flex-end;
+}
+
+.message.notyou {
+	display: flex;
+    justify-content: flex-start;
+}
+
+.clanname {
+	margin: 0px;
+	margin-top: 0px;
+	font-weight: 700;
+	display: flex;
+	grid-gap: 5px;
+	align-items: center;
+}
+
+.clandesc {
+	max-height: 90px;
+	overflow: scroll;
+	overflow-x: hidden;
+	padding-left: 15px;
+}
+
+.clanownertext {
+	margin: 0px;
+	color: gray;
+	text-align: right;
+	margin-bottom: 5px;
+	font-size: 20px;
+	margin-top: 5px;
+}
+
+.clanmemberstext {
+	width: max-content;
+	margin: 0px;
+	color: gray;
+	margin-bottom: 5px;
+	font-size: 20px;
+	margin-top: 5px;
+}
+
+.clan-owner-form {
+	overflow-wrap: anywhere;
+	display: flex;
+	border-radius: 30px;
+	flex-wrap: wrap;
+	padding-top: 0px;
+	max-height: 45vh;
+	padding-bottom: 10px;
+	min-width: 100%;
+	height: max-content;
+	margin-bottom: 5px;
+	align-items: center;
+}
+
+.clancreatetext {
+	justify-content: flex-end;
+	grid-gap: 0.5vh;
+	font-size: 16px;
+}
+
+.clanmemberndiv {
+	display: flex;
+	margin-bottom: 10px;
+    align-items: center;
+}
+
+.clanmemberndiv h2 {
+	margin-bottom: 0px;
+}
+
+.secondsettingsform {
+	width: 70%;
+}
+
+.mainsettings {
+	display: flex;
+	grid-gap: 10px;
+	width: 100%;
+	margin-bottom: 30px;
+}
+
+.profilewclanname {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	margin: 5px 0px 10px 0px;
+}
+
+.profilename {
+	margin: 0px !important;
+}
+
+.dlpoints {
+	position: absolute;
+	font-size: 20px;
+	right: 50px;
+	color: gray;
+}
+
+body:has(.audio) {
+	.btn-group {bottom: 15px !important; position: fixed !important;}
+}
+
+.draganddrop {
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    background: #00000080;
+    transition: 0.3s;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2;
+}
+
+.dadh1 i {
+	font-size: 150px;
+    margin-bottom: 15px;
+    margin-right: 33px;
+}
+
+.dadh1 {
+	display: flex;
+    flex-direction: column;
+}
+
+.itemsbox {
+	border-radius: 30px;
+	width: 50%;
+	padding: 0px;
+	display: flex;
+	margin: auto;
+	height: 55vh;
+}
+
+.itembtn {
+	padding: 10px;
+	border-radius: 20px;
+	height: max-content;
+	margin: 0px;
+	margin-right: 10px;
+	width: 100%;
+	border: none;
+}
+
+.itemoverflow {
+	border-radius: 30px;
+	overflow: auto;
+    width: 70%;
+}
+
+.acccomments {
+	display: flex;
+	justify-content: space-between;
+	margin-top: 10px;
+}
+
+.acclistnick {
+	margin: 0px;
+	font-size: 27px;
+	margin-left:5px;
+	display: flex;
+}
+
+.accresultrole {
+	margin: 0px;
+	width: 100%;
+	text-align: right;
+}
+
+.acclistdiv {
+	display: flex;
+	width: 100%;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.clanscard {
+	display: inherit;
+	border-radius: 30px;
+	margin-top: 15px;
+	flex-wrap: nowrap;
+	padding: 0px 5px 15px 20px;
+	min-width: 100%;
+	justify-content: space-between;
+	height: max-content;
+	margin-bottom: 0px;
+	align-items: center;
+}
+
+.clansname {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.clansname h1 {
+	width: max-content;
+	text-align: left;
+	overflow-wrap: anywhere;
+}
+
+.clansdesc {
+	margin-bottom: 10px;
+	width:100%;
+	text-align: left;
+	overflow-wrap: anywhere;
+}
+
+.clan-form-control {
+	display: inherit;
+	border-radius: 45px;
+	margin-top: 15px;
+	flex-wrap: wrap;
+	padding: 0px 0px 15px 15px;
+	overflow-y: scroll;
+	overflow-x: hidden;
+	min-width: 100%;
+	justify-content: space-between;
+	height: 100%;
+	margin-bottom: 0px;
+	align-items: start;
+	align-content:start;
+}
+
+.clan-form {
+	position: relative;
+	padding-bottom: 20px;
+	width: 60vw;
+	height: 77vh;
+	margin-top: 10px;
+	border-radius: 45px;
+	overflow: auto;
+	overflow-x: hidden;
+	max-height: 80vh;
+	justify-content: flex-start;
+}
+
+.clansmembercount {
+	display: flex;
+	grid-gap: 5px;
+	align-items: center;
+}
+
+.packname h1 {
+	margin: 0px;
+	margin-bottom: 5px;
+	font-weight: 700;
+}
+
+.packcard {
+	border-radius: 30px;
+	margin-top: 15px;
+	background: #1e2124;
+}
+
+.packh2 {
+	text-align: right;
+	margin: 15px 5px 5px 0px;
+	font-style: italic;
+}
+
+.commentsdiv {
+	display: flex;
+	justify-content: space-between;
+	margin-top: 10px;
+}
+
+.packlevels {
+	height: 225px;
+	overflow-y: scroll;
+}
+
+.longfc {
+	display: flex;
+	width: 100%;
+	height: max-content;
+	align-items: center;
+}
+
+.gauntletlevels {
+	height: 375px;
+	overflow-y: scroll;
+	margin-top: 10px;
+}
+
+.suggested {
+	height: max-content;
+	border-radius: 33px;
+	margin-top: 10px;
+}
+
+.suggest .accbtn {
+	font-size: 30px;
+}
+
+.sugnamedesc {
+	width: 100%;
+}
+
+.suggest .dltext,
+.suggest .dltext b {
+	font-size: 22px;
+}
+
+.suggest .levelname {
+	font-size: 30px;
+}
+
+.suggest,
+.suggest .dltext {
+	display: flex;
+	grid-gap: 5px;
+	align-items: baseline;
+	flex-wrap: wrap;
+}
+
+.mavdiv {
+	width: 100%;
+	display: flex;
+	align-items: center;
+}
+
+.mavdiv details {
+	width: 100%;
 }

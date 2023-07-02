@@ -66,8 +66,8 @@ foreach($result as &$action){
  	$delete = '<button onclick="deletesong('.$songsid.')" style="color:#ffbbbb;margin-left:5px;width:max-content;padding:7px 10px;font-size:15px"  class="btn-rendel"><i class="fa-solid fa-xmark"></i></button>';
 	$download = str_replace('http://', 'https://', $action["download"]);
 	$btn = '<button type="button" name="btnsng" id="btn'.$songsid.'" title="'.$author.' — '.$name.'" style="display: contents;color: white;margin: 0;" download="'.$download.'" onclick="btnsong(\''.$songsid.'\');"><div class="icon" style="font-size:13px; height:25px;width:25px;background:#373A3F;margin-left: 5px;"><i id="icon'.$songsid.'" name="iconlol" class="fa-solid fa-play" aria-hidden="false"></i></div></button>';
-	if(strlen($author) + strlen($name) > 30) $fontsize = 17;
-	elseif(strlen($author) + strlen($name) > 20) $fontsize = 20;
+	if(mb_strlen($author) + mb_strlen($name) > 30) $fontsize = 17;
+	elseif(mb_strlen($author) + mb_strlen($name) > 20) $fontsize = 20;
     if($action["isDisabled"]) {
 		$songsid = '<div style="text-decoration:line-through;color:#8b2e2c">'.$songsid.'</div>';
 		$author = '<div style="text-decoration:line-through;color:#8b2e2c">'.$author.'</div>';
@@ -120,58 +120,6 @@ $packcount = $query->fetchColumn();
 $pagecount = ceil($packcount / 10);
 $bottomrow = $dl->generateBottomRow($pagecount, $actualpage);
 $dl->printPage($pagel . $bottomrow.'<script>
-			function btnsong(id) {
-				$("#song"+id).on("pause play", function() {
-					if(document.getElementById("song" + id).paused) {
-						var elems=document.getElementsByName("iconlol");
-						for(var i=0; i<elems.length; i++)elems[i].classList.replace("fa-pause", "fa-play");
-					} else document.getElementById("icon"+id).classList.replace("fa-play", "fa-pause");
-				});
-				if(document.getElementById(id) == null) {
-					deleteDuplicates = $(".audio");
-					for(var i=0; i<deleteDuplicates.length; i++) deleteDuplicates[i].remove();
-					var elems=document.getElementsByName("iconlol");
-					for(var i=0; i<elems.length; i++)elems[i].classList.replace("fa-pause", "fa-play");
-					if(id != 0) {
-						divsong = document.createElement("div");
-						audiosong = document.createElement("audio");
-						sourcesong = document.createElement("source");
-						divsong.name = "audio";
-						divsong.classList.add("audio");
-						divsong.id = id;
-						divsong.style.display = "flex";
-						audiosong.title = document.getElementById("btn"+id).title;
-						audiosong.style.width = "100%";
-						audiosong.name = "song";
-						audiosong.id = "song"+id;
-						audiosong.setAttribute("controls", "");
-						audiosong.volume = 0.2;
-						sourcesong.src = document.getElementById("btn"+id).getAttribute("download");
-						sourcesong.type = "audio/mpeg";
-						closesong = document.createElement("button");
-						closesong.type = "button";
-						closesong.classList.add("msgupd");
-						closesong.classList.add("closebtn");
-						closesong.setAttribute("onclick", "btnsong(0)");
-						closesong.innerHTML = \'<i class="fa-solid fa-xmark"></i>\';
-						audiosong.appendChild(sourcesong);
-						divsong.appendChild(audiosong);
-						divsong.appendChild(closesong);
-						document.body.appendChild(divsong);
-						audiosong.play();
-						document.getElementById("icon"+id).classList.replace("fa-play", "fa-pause");
-					} else {
-						divsong = audiosong = sourcesong = closesong = "";
-						var elems=document.getElementsByName("iconlol");
-						for(var i=0; i<elems.length; i++)elems[i].classList.replace("fa-pause", "fa-play");
-					}
-				} else {
-					if(document.getElementById("song" + id).paused) {
-						document.getElementById("song" + id).play();
-					}
-					else document.getElementById("song" + id).pause();
-				}
-			}
 			function like(id) {
 				likebtn = document.getElementById("like" + id);
 				if(likebtn.value == 1) {
@@ -203,13 +151,6 @@ $dl->printPage($pagel . $bottomrow.'<script>
 					}
 				}
 				fav.send();
-			}
-			function copysong(id) {
-				navigator.clipboard.writeText(id);
-				document.getElementById("copy"+id).style.transition = "0.05s";
-				document.getElementById("copy"+id).style.color = "#bbffbb";
-				setTimeout(function(){document.getElementById("copy"+id).style.transition = "0.2s";}, 1)
-				setTimeout(function(){document.getElementById("copy"+id).style.color = "#007bff";}, 200)
 			}
 			function deletesong(id) {
 				del = new XMLHttpRequest();

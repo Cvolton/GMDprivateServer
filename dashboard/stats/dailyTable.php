@@ -34,67 +34,75 @@ if(empty($result)) {
 </div>', 'stats');
 	die();
 } 
-//printing data
+$modcheck = $gs->checkPermission($_SESSION["accountID"], "dashboardModTools");
 foreach($result as &$daily){
-	//getting level data
-  	if($daily["type"] == 0) $type = 'Daily'; else $type = 'Weekly';
-    $query = $db->prepare("SELECT levelName,userID,starStars,coins FROM levels WHERE levelID = :levelID");
+	$typeArray = ['Daily', 'Weekly'];
+  	$type = $typeArray[$daily["type"]];
+    $query = $db->prepare("SELECT * FROM levels WHERE levelID = :levelID");
 	$query->execute([':levelID' => $daily["levelID"]]);
 	$level = $query->fetch();
-  	$stars = $level["starStars"];
-        if($stars < 5) $star = 1;
-        elseif($stars > 4) $star = 2;
-        else $star = 0;
-		$stars = $level["starStars"].' '.$dl->getLocalizedString("starsLevel$star");
-    $coins = $level["coins"];
-        if($coins == 1) $coin = 0;
-     	else $coin = 1;
-		$coins = $level["coins"].' '.$dl->getLocalizedString("coins$coin");
-      	if($level["coins"] == 0) $coins = '<div style="color:grey">'.$dl->getLocalizedString("noCoins").'</div>';
-	if($query->rowCount() == 0){
-		$level["levelName"] = $dl->getLocalizedString("deletedLevel");
-		$level["userID"] = 0;
-		$stars = -1;
-		$coins = -1;
-	}
-  	$user =  '<form style="margin:0" method="post" action="./profile/"><button type="button" onclick="a(\'profile/'.$gs->getUserName($level["userID"]).'\', true, true, \'POST\')" style="margin:0" class="accbtn" name="accountID" value="">'.$gs->getUserName($level["userID"]).'</button></form>';
-	$dailytable .= '<tr>
-					<th scope="row">'.$x.'</th>
-					<td>'.$daily["levelID"].'</th>
-					<td>'.$level["levelName"].'</td>
-					<td>'.$user.'</td>
-					<td>'.$stars.'</td>
-					<td>'.$coins.'</td>
-					<td>'.date('d.m.Y', $daily["timestamp"]).'</td>
-                    <td>'.$type.'</td>
-				</tr>';
-	$x--;
-	echo "</td></tr>";
+	$dtt = $dl->convertToDate($daily['timestamp'], true);
+	if(!empty($level)) {
+		$levelid = $level["levelID"];
+		$levelname = $level["levelName"];
+		$levelIDlol = '<button id="copy'.$level["levelID"].'" class="accbtn songidyeah" onclick="copysong('.$level["levelID"].')">'.$level["levelID"].'</button>';
+		$levelDesc = base64_decode($level["levelDesc"]);
+		if(empty($levelDesc)) $levelDesc = '<text style="color:gray">'.$dl->getLocalizedString("noDesc").'</text>';
+		$levelpass = $level["password"];
+		$likes = $level["likes"];
+		$stats = '<div class="profilepic" style="display:inline-flex;grid-gap:3px;color:white">'.($likes >= 0 ? '<i class="fa-regular fa-thumbs-up"></i>' : '<i class="fa-regular fa-thumbs-down"></i').' '.$likes. '</div>';
+		if($modcheck) {
+			$levelpass = substr($levelpass, 1);
+			$levelpass = preg_replace('/(0)\1+/', '', $levelpass);
+			if($levelpass == 0 OR empty($levelpass)) $lp = '<p class="profilepic"><i class="fa-solid fa-unlock"></i> '.$dl->getLocalizedString("nopass").'</p>';
+			else {
+				if(strlen($levelpass) < 4) while(strlen($levelpass) < 4) $levelpass = '0'.$levelpass;
+				$lp = '<p class="profilepic"><i class="fa-solid fa-lock"></i> '.$levelpass.'</p>';
+			}
+			if($level["requestedStars"] <= 0 && $level["requestedStars"] > 10) $rs = '<p class="profilepic"><i class="fa-solid fa-star-half-stroke"></i> 0</p>';
+			else $rs = '<p class="profilepic"><i class="fa-solid fa-star-half-stroke"></i> '.$level["requestedStars"].'</p>';
+		} else $lp = $rs = '';
+		if($level["songID"] > 0) {
+			$songlol = $gs->getSongInfo($level["songID"]);
+			$btn = '<button type="button" name="btnsng" id="btn'.$level["songID"].'" title="'.$songlol["authorName"].' — '.$songlol["name"].'" style="display: contents;color: white;margin: 0;" download="'.str_replace('http://', 'https://', $songlol["download"]).'" onclick="btnsong(\''.$level["songID"].'\');"><div class="icon songbtnpic""><i id="icon'.$level["songID"].'" name="iconlol" class="fa-solid fa-play" aria-hidden="false"></i></div></button>';
+			$songid = '<div class="profilepic songpic">'.$btn.'<div class="songfullname"><div class="songauthor">'.$songlol["authorName"].'</div><div class="songname">'.$songlol["name"].'</div></div></div>';
+		} else $songid = '<p class="profilepic"><i class="fa-solid fa-music"></i> '.strstr($gs->getAudioTrack($level["audioTrack"]), ' by ', true).'</p>';
+		$username =  '<form style="margin:0" method="post" action="./profile/"><button type="button" onclick="a(\'profile/'.$level["userName"].'\', true, true, \'POST\')" style="margin:0" class="accbtn" name="accountID">'.$level["userName"].'</button></form>';
+		$time = $dl->convertToDate($level["uploadDate"], true);
+		$diff = $gs->getDifficulty($level["starDifficulty"], $level["auto"], $level["starDemonDiff"]);
+		$st = '<p class="profilepic"><i class="fa-solid fa-star"></i> '.$diff.', '.$level["starStars"].'</p>';
+		$ln = '<p class="profilepic"><i class="fa-solid fa-clock"></i> '.$gs->getLength($level['levelLength']).'</p>';
+		$dailyl = '<p class="profilepic"><i class="fa-solid fa-circle-play"></i> '.$type.'</p>';
+		$dt = '<p class="profilepic"><i class="fa-regular fa-clock"></i> '.$dtt.'</p>';
+		$dls = '<p class="profilepic"><i class="fa-solid fa-reply fa-rotate-270"></i> '.$level['downloads'].'</p>';
+		$all = $dailyl.$dt.$dls.$stats.$st.$ln.$lp.$rs;
+		$levels .= '<div style="width: 100%;display: flex;flex-wrap: wrap;justify-content: center;">
+			<div class="profile">
+			<div class="profacclist">
+    			<div class="accnamedesc">
+        			<div class="profcard1">
+        				<h1 class="dlh1 profh1">'.sprintf($dl->getLocalizedString("demonlistLevel"), $levelname, 0, $level["userName"]).'</h1>
+        			</div>
+    			    <p class="dlp">'.$levelDesc.'</p>
+    			</div>
+    			<div class="form-control acccontrol">
+        			<div class="acccontrol2">
+        			    '.$all.'
+        			</div>
+        			'.$songid.'
+    			</div>
+    		</div>
+			<div style="display: flex;justify-content: space-between;margin-top: 10px;"><h3 id="comments" class="songidyeah" style="margin: 0px;width: max-content;align-items: center;">'.$dl->getLocalizedString("levelid").': <b>'.$levelIDlol.'</b></h3><h3 id="comments" class="songidyeah"  style="justify-content: flex-end;grid-gap: 0.5vh;margin: 0px;width: max-content;">'.$dl->getLocalizedString("date").': <b>'.$time.'</b></h3></div>
+		</div></div>';
+	} else $levels .= '<div class=" form-control new-form-control dmbox list" style="margin: 0px"><div class="messenger"><p>'.$dl->getLocalizedString("deletedLevel").'</p></div></div>';
 }
-/*
-	bottom row
-*/
+$pagel = '<div class="form new-form">
+	<h1 style="margin-bottom:5px">'.$dl->getLocalizedString("dailyTable").'</h1>
+	<div class="form-control new-form-control">
+		'.$levels.'
+	</div>
+</div>';
 $pagecount = ceil($dailycount / 10);
 $bottomrow = $dl->generateBottomRow($pagecount, $actualpage);
-/* 
-	printing
-*/
-$dl->printPage('<table class="table table-inverse">
-	<thead>
-		<tr>
-			<th>#</th>
-			<th>'.$dl->getLocalizedString("ID").'</th>
-			<th>'.$dl->getLocalizedString("name").'</th>
-			<th>'.$dl->getLocalizedString("author").'</th>
-			<th>'.$dl->getLocalizedString("stars").'</th>
-			<th>'.$dl->getLocalizedString("userCoins").'</th>
-			<th>'.$dl->getLocalizedString("time").'</th>
-            <th>'.$dl->getLocalizedString("type").'</th>
-		</tr>
-	</thead>
-	<tbody>
-		'.$dailytable.'
-	</tbody>
-</table>'
-.$bottomrow, true, "stats");
+$dl->printPage($pagel.$bottomrow, true, "stats");
 ?>

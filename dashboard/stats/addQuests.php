@@ -83,13 +83,13 @@ if(!empty($_POST["type"]) AND !empty($_POST["amount"]) AND !empty($_POST["reward
 			<h2 class="messagenotyou" style="font-size: 15px;color: #c0c0c0;" id="stats'.$quest["ID"].'">'.$questType.' | <i class="fa-solid fa-check"></i> '.$quest["amount"].' | <i class="fa-solid fa-gem"></i> '.$quest["reward"].'</h2>
 		</button>';
 	}
-		$dl->printSong('<div class="form-control itemsbox" style="height: 430px;">
-		<div class="itemslist" style="width:50%">
+		$dl->printSong('<div class="form-control itemsbox">
+		<div class="itemoverflow"><div class="itemslist" style="width:50%">
     <button type="submit" onclick="quest(0)" class="btn-primary itembtn">
         <h2 class="subjectnotyou">'.$dl->getLocalizedString("questCreate").'</h2>
         <h2 class="messagenotyou" style="font-size: 15px;color: #c0c0c0;">'.$dl->getLocalizedString("createNewQuest").'</h2>
     </button>'.$allQuests.'
-    </div>
+    </div></div>
 	<div class="form" style="margin:0;width:100%">
     <h1>'.$dl->getLocalizedString("addQuest").'</h1>
     <form class="form__inner" method="post" action="">

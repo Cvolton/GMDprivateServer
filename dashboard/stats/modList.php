@@ -2,64 +2,54 @@
 session_start();
 require "../incl/dashboardLib.php";
 require "../".$dbPath."incl/lib/connection.php";
-require_once "../".$dbPath."incl/lib/exploitPatch.php";
-error_reporting(0);
 $dl = new dashboardLib();
 require_once "../".$dbPath."incl/lib/mainLib.php";
+require "../".$dbPath."incl/lib/exploitPatch.php";
 $gs = new mainLib();
-include "../".$dbPath."incl/lib/connection.php";
-$dl->title($dl->getLocalizedString("accounts"));
+$dl->title($dl->getLocalizedString("modActions"));
 $dl->printFooter('../');
-if(isset($_GET["page"]) AND is_numeric($_GET["page"]) AND $_GET["page"] > 0){
-	$page = ($_GET["page"] - 1) * 10;
-	$actualpage = $_GET["page"];
-}else{
-	$page = 0;
-	$actualpage = 1;
+$modtable = "";
+$accounts = implode(",",$gs->getAccountsWithPermission("toolModactions"));
+if($accounts == ""){
+	$dl->printSong('<div class="form">
+    <h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
+    <form class="form__inner" method="post" action=".">
+		<p>'.$dl->getLocalizedString("emptyPage").'</p>
+        <button type="button" onclick="a(\'\', true, false, \'GET\')" class="btn-primary">'.$dl->getLocalizedString("dashboard").'</button>
+    </form>
+</div>', 'stats');
+	die();
 }
 $pagelol = explode("/", $_SERVER["REQUEST_URI"]);
 $pagelol = $pagelol[count($pagelol)-2]."/".$pagelol[count($pagelol)-1];
 $pagelol = explode("?", $pagelol)[0];
 if(!isset($_GET["search"])) $_GET["search"] = "";
-if(!isset($_GET["type"])) $_GET["type"] = "";
-if(!isset($_GET["ng"])) $_GET["ng"] = "";
-$srcbtn = $members = "";
-if(!isset($_GET["search"]) OR empty(trim(ExploitPatch::remove($_GET["search"])))) {
-	$query = $db->prepare("SELECT * FROM accounts INNER JOIN users WHERE isActive = 1 AND accounts.accountID = users.extID ORDER BY accountID ASC LIMIT 10 OFFSET $page");
-	$query->execute();
-	$result = $query->fetchAll();
-	if(empty($result)) {
-		$dl->printSong('<div class="form">
-		<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
-		<form class="form__inner" method="post" action=".">
-			<p>'.$dl->getLocalizedString("emptyPage").'</p>
-			<button type="button" onclick="a(\'\', true, false, \'GET\')" class="btn-primary">'.$dl->getLocalizedString("dashboard").'</button>
-		</form>
-	</div>');
-		die();
-	} 
-} else {
+$srcbtn = "";
+if(!empty($_GET["search"])) {
+	$query = $db->prepare("SELECT * FROM accounts INNER JOIN users WHERE isActive = 1 AND accounts.accountID = users.extID AND accounts.accountID IN ($accounts) AND accounts.userName LIKE '%".ExploitPatch::remove($_GET["search"])."%' ORDER BY accounts.userName ASC");
 	$srcbtn = '<button type="button" onclick="a(\''.$pagelol.'\', true, true, \'GET\')"  href="'.$_SERVER["SCRIPT_NAME"].'" style="width: 0%;display: flex;margin-left: 5px;align-items: center;justify-content: center;color: indianred; text-decoration:none" class="btn-primary" title="'.$dl->getLocalizedString("searchCancel").'"><i class="fa-solid fa-xmark"></i></button>';
-	$query = $db->prepare("SELECT * FROM accounts INNER JOIN users WHERE accounts.userName LIKE '%".trim(ExploitPatch::remove($_GET["search"]))."%' AND isActive = 1 AND accounts.accountID = users.extID ORDER BY accountID ASC LIMIT 10 OFFSET $page");
-	$query->execute();
-	$result = $query->fetchAll();
-	if(empty($result)) {
-		$dl->printSong('<div class="form">
-		<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
-		<form class="form__inner" method="post" action="'.$_SERVER["SCRIPT_NAME"].'">
-			<p>'.$dl->getLocalizedString("emptySearch").'</p>
-			<button type="button" onclick="a(\'stats/accountsList.php\', true, false, \'GET\')" class="btn-primary">'.$dl->getLocalizedString("tryAgainBTN").'</button>
-		</form>
-	</div>');
-		die();
-	} 
-}
-$x = $page + 1;
-foreach($result as &$action){
+} else $query = $db->prepare("SELECT * FROM accounts INNER JOIN users WHERE isActive = 1 AND accounts.accountID = users.extID AND accounts.accountID IN ($accounts) ORDER BY accounts.userName ASC");
+$query->execute();
+$result = $query->fetchAll();
+$row = 0;
+if(empty($result)) {
+	$dl->printSong('<div class="form">
+    <h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
+    <form class="form__inner" method="post" action=".">
+		<p>'.$dl->getLocalizedString("emptyPage").'</p>
+        <button type="button" onclick="a(\'\', true, false, \'GET\')" class="btn-primary">'.$dl->getLocalizedString("dashboard").'</button>
+    </form>
+</div>', 'stats');
+	die();
+} 
+foreach($result as &$action) {
 	$clan = $own = '';
+	$query = $db->prepare("SELECT * FROM (SELECT count(*) AS actionCount FROM modactions WHERE account = :id) actionCount JOIN (SELECT count(*) AS levelsRated FROM modactions WHERE account = :id AND type = 1) levelsRated");
+	$query->execute([':id' => $action["accountID"]]);
+	$counts = $query->fetch();
 	$accUserID = $gs->getUserID($action["accountID"]);
 	$accountID = $action["accountID"].' <text style="font-weight: 100;">|</text> '.$accUserID;
-  	if($action["accountID"] == $accUserID) $accountID = $action["accountID"];
+	if($action["accountID"] == $accUserID) $accountID = $action["accountID"];
 	$query = $db->prepare("SELECT roleID FROM roleassign WHERE accountID =:accid");
 	$query->execute([':accid' => $accountID]);
 	$resultPls = $query->fetch();
@@ -98,9 +88,11 @@ foreach($result as &$action){
     if($action["userCoins"] == 0) $uc = ''; else $uc = '<p class="profilepic">'.$action["userCoins"].' <i class="fa-solid fa-coins"></i></p>';
     if($action["demons"] == 0) $dn = ''; else $dn = '<p class="profilepic">'.$action["demons"].' <i class="fa-solid fa-dragon"></i></p>';
     if($action["creatorPoints"] == 0) $cp = ''; else $cp = '<p class="profilepic">'.$action["creatorPoints"].' <i class="fa-solid fa-screwdriver-wrench"></i></p>';
-    $stats = $st.$dm.$gc.$uc.$dn.$cp;
+	$ac = '<p class="profilepic">'.$counts["actionCount"].' <i class="fa-solid fa-circle-play"></i></p>';
+    $lr = '<p class="profilepic">'.$counts["levelsRated"].' <i class="fa-regular fa-star"></i></p>';
+    $stats = $st.$dm.$gc.$uc.$dn.$cp.$ac.$lr;
     if(empty($stats)) $stats = '<p style="font-size:25px;color:#212529">'.$dl->getLocalizedString("empty").'</p>';
-	$registerDate = date("d.m.Y", $action["registerDate"]);
+	$registerDate = $dl->convertToDate($action["registerDate"], true);
 	$members .= '<div style="width: 100%;display: flex;flex-wrap: wrap;justify-content: center;">
 			<div class="profile"><div style="display: flex;width: 100%;justify-content: space-between;margin-bottom: 7px;align-items: center;"><button style="display:contents;cursor:pointer" type="button" onclick="a(\'profile/'.$action["userName"].'\', true, true, \'GET\')"><div class="acclistdiv">
 				<h2 style="color:rgb('.$gs->getAccountCommentColor($action["accountID"]).');" class="profilenick acclistnick">'.$action["userName"].' '.$clan.'</h2><h2 class="accresultrole">'.$resultRole.'</h2>
@@ -111,7 +103,7 @@ foreach($result as &$action){
 	$x++;
 }
 $pagel = '<div class="form new-form">
-<h1 style="margin-bottom:5px">'.$dl->getLocalizedString("accounts").'</h1>
+<h1 style="margin-bottom:5px">'.$dl->getLocalizedString("modActions").'</h1>
 <div class="form-control new-form-control">
 		'.$members.'
 	</div></div><form name="searchform" class="form__inner">
@@ -121,11 +113,5 @@ $pagel = '<div class="form new-form">
 		'.$srcbtn.'
 	</div>
 </form>';
-if(empty(trim(ExploitPatch::remove($_GET["search"])))) $query = $db->prepare("SELECT count(*) FROM accounts INNER JOIN users WHERE isActive = 1 AND accounts.accountID = users.extID");
-else $query = $db->prepare("SELECT count(*) FROM accounts INNER JOIN users WHERE accounts.userName LIKE '%".trim(ExploitPatch::remove($_GET["search"]))."%' AND isActive = 1 AND accounts.accountID = users.extID");
-$query->execute();
-$packcount = $query->fetchColumn();
-$pagecount = ceil($packcount / 10);
-$bottomrow = $dl->generateBottomRow($pagecount, $actualpage);
-$dl->printPage($pagel . $bottomrow, true, "browse");
+$dl->printPage($pagel.$bottomrow, true, "stats");
 ?>

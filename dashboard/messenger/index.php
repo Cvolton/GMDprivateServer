@@ -87,31 +87,28 @@ if(isset($_SESSION["accountID"]) AND $_SESSION["accountID"] != 0){
 		$res = $query->fetchAll();
 		$msgs = '';
 		foreach($res as $i => $msg) {
-			if($msg["accID"] == $accid) { 
-              $div = 'you';
-              
-            }
-              else $div = 'notyou';
+			if($msg["accID"] == $accid) $div = 'you';
+            else $div = 'notyou';
 			$subject = base64_decode($msg["subject"]);
 			$body = $xor->plaintext(base64_decode($msg["body"]), 14251);
-			$msgs .= '<div class="messenger'.$div.'"><h2 class="subject'.$div.'">'.$subject.'</h2>
+			$msgs .= '<div class="message '.$div.'"><div class="messenger'.$div.'"><h2 class="subject'.$div.'">'.$subject.'</h2>
 			<h3 class="message'.$div.'">'.$body.'</h3>
-			<h3 id="comments" style="justify-content:flex-end">'.$dl->convertToDate($msg["timestamp"], true).'</h3></div>';
-			$_POST["subject"] = '';
-			$_POST["msg"] = '';
+			<h3 id="comments" style="justify-content:flex-end">'.$dl->convertToDate($msg["timestamp"], true).'</h3></div></div>';
 		}
 		if(count($res) == 0) {
 			$msgs .= '<div class="messenger"><p>'.$dl->getLocalizedString("noMsgs").'</p></div>';
 		}
         $_SESSION["msgNew"] = $newMsgs = 0;
         $dl->printSong('<div class="form messengerbox">
-			<div style="display: inherit;align-items: center;margin: -5px;">
-              <form method="post" action="profile/"><button type="button" onclick="a(\'profile/'.$check.'\', true, true, \'GET\')" class="goback" name="accountID" value="'.$notyou.'"><i class="fa-regular fa-user" aria-hidden="true"></i></button></form>
+			<div style="display: inherit;align-items: center;margin: -5px -5px 15px -5px;">
+              <button type="button" onclick="a(\'profile/'.$check.'\', true, true, \'GET\')" class="goback" name="accountID" value="'.$notyou.'"><i class="fa-regular fa-user" aria-hidden="true"></i></button>
               <button type="button" class="a a-btn" onclick="a(\'messenger\', true)"><h1>'.$check.'</h1></button>
-              <form method="post" action=""><button type="button" onclick="a(\'messenger/'.$check.'\', true, true, \'GET\')" class="msgupd" name="accountID" value="'.$notyou.'"><i class="fa-solid fa-arrows-rotate" aria-hidden="true"></i></button></form>
+              <button type="button" onclick="a(\'messenger/'.$check.'\', true, true, \'GET\')" class="msgupd" name="accountID" value="'.$notyou.'"><i class="fa-solid fa-arrows-rotate" aria-hidden="true"></i></button>
             </div>
-			<form class="form__inner dmbox" method="post" action="">'.$msgs.'</form>
-			<form class="form__inner dmbox" method="post" action="">
+			<form class="form__inner" method="post" action="">
+				<div class=" form-control new-form-control dmbox list" style="margin: 0px">'.$msgs.'</div>
+			</form>
+			<form class="form__inner" method="post" action="">
 				<div class="field"><input type="text" name="subject" id="p1" placeholder="'.$dl->getLocalizedString("subject").'"></input></div>
 				<div class="field"><input type="text" name="msg" id="p2" placeholder="'.$dl->getLocalizedString("msg").'"></input></div>
 				<input type="hidden" name="accountID" value="'.$notyou.'"></input>
@@ -158,7 +155,7 @@ $(document).on("keyup keypress change keydown",function(){
           	$notify = '';
             if($new2 != 0) $notify = '<i class="fa fa-circle" aria-hidden="true" style="font-size: 10px;margin-left:5px;color: #e35151;"></i>';
 			$options .= '<div class="messenger"><text class="receiver">'.$receiver.''.$notify.'</text><br>
-			<button type="button" onclick="a(\'messenger/'.$gs->getAccountName($recid).'\', true, true)" class="btn-rendel" style="margin-top:5px;width:100%;display:inline-block">'.$dl->getLocalizedString("write").'</button></div>';
+			<button type="button" onclick="a(\'messenger/'.$gs->getAccountName($recid).'\', true, true)" class="btn-rendel" style="margin-top:5px;width:100%">'.$dl->getLocalizedString("write").'</button></div>';
 		}
 		if(strpos($options, '<i class="fa fa-circle" aria-hidden="true" style="font-size: 10px;margin-left:5px;color: #e35151;"></i>') === FALSE AND $_SESSION["msgNew"] == 1) {
 			$query = $db->prepare("SELECT accID FROM messages WHERE toAccountID=:acc AND isNew=0");
@@ -176,9 +173,12 @@ $(document).on("keyup keypress change keydown",function(){
 		$dl->printSong('<div class="form messengerbox">
 			<h1>'.$dl->getLocalizedString("messenger").'</h1>
 			<form class="form__inner" method="post" action="messenger/">
-			<div class="msgbox" style="width:100%">'.$options.'</div></form>
+			<div class="form-control new-form-control msgbox list">
+				'.$options.'
+			</div>
+			</form>
             <form class="field" method="post" action="messenger/">
-            <div class="messenger" style="width:97%;margin-right:5px"><input class="field" id="p1" type="text" name="receiver" placeholder="'.$dl->getLocalizedString("banUserID").'"></input>
+            <div class="messenger"><input class="field" id="p1" type="text" name="receiver" placeholder="'.$dl->getLocalizedString("banUserID").'"></input>
 			<input type="hidden" id="p2" value="Sus amongus" placeholder="It breaks something, so keep it hidden"></input>
             <button type="button" onclick="a(\'messenger\', true, false, \'POST\')"; class="btn-rendel btn-block" id="submit" style="margin-top:5px" disabled>'.$dl->getLocalizedString("write").'</button></div></form>
 		<script>

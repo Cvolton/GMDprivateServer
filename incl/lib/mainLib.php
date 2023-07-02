@@ -110,7 +110,7 @@ class mainLib {
 				$demon = 1;
 				break;
 			default:
-				$diffname = "N/A: " . $stars;
+				$diffname = "N/A";
 				$diff = 0;
 				$demon = 0;
 				break;
@@ -376,6 +376,7 @@ class mainLib {
 	}
 	public function getSongString($song){
 		include __DIR__ . "/connection.php";
+		include __DIR__ . "/exploitPatch.php";
 		/*$query3=$db->prepare("SELECT ID,name,authorID,authorName,size,isDisabled,download FROM songs WHERE ID = :songid LIMIT 1");
 		$query3->execute([':songid' => $songID]);*/
 		if($song['ID'] == 0 || empty($song['ID'])){
@@ -389,7 +390,7 @@ class mainLib {
 		if(strpos($dl, ':') !== false){
 			$dl = urlencode($dl);
 		}
-		return "1~|~".$song["ID"]."~|~2~|~".str_replace("#", "", $song["name"])."~|~3~|~".$song["authorID"]."~|~4~|~".$song["authorName"]."~|~5~|~".$song["size"]."~|~6~|~~|~10~|~".$dl."~|~7~|~~|~8~|~1";
+		return "1~|~".$song["ID"]."~|~2~|~".ExploitPatch::rutoen(str_replace("#", "", $song["name"]))."~|~3~|~".$song["authorID"]."~|~4~|~".ExploitPatch::rutoen($song["authorName"])."~|~5~|~".$song["size"]."~|~6~|~~|~10~|~".$dl."~|~7~|~~|~8~|~1";
 	}
 	public function getSongInfo($id, $column = "*") {
 	    if(!is_numeric($id)) return;
@@ -468,7 +469,6 @@ class mainLib {
 		$headr['User-Agent'] = 'GMDprivateServer (https://github.com/Cvolton/GMDprivateServer, 1.0)';
 		curl_setopt($crl, CURLOPT_CUSTOMREQUEST, "POST");                                                                     
 		curl_setopt($crl, CURLOPT_POSTFIELDS, $data_string);
-													   
 		$headr[] = 'Content-type: application/json';
 		$headr[] = 'Authorization: Bot '.$bottoken;
 		curl_setopt($crl, CURLOPT_HTTPHEADER,$headr);
@@ -494,7 +494,9 @@ class mainLib {
 		curl_close($crl);
 		$userinfo = json_decode($response, true);
 		//var_dump($userinfo);
-		return $userinfo["username"] . "#" . $userinfo["discriminator"];
+		if($userinfo["discriminator"] != "0") $userinfo["discriminator"] = '#'.$userinfo["discriminator"];
+		else $userinfo["discriminator"] = '';
+		return $userinfo["username"].$userinfo["discriminator"];
 	}
 	public function getDesc($lid, $dashboard = false) {
 		include __DIR__ . "/connection.php";
@@ -524,7 +526,7 @@ class mainLib {
 		$desc->execute([':id' => $lid]);
 		$desc = $desc->fetch();
 		return $desc["extID"];
-	} 
+	}
 	public function isRated($lid) {
 		include __DIR__ . "/connection.php";
 		$desc = $db->prepare("SELECT starStars FROM levels WHERE levelID = :id");
@@ -746,12 +748,12 @@ class mainLib {
 	public function rateLevel($accountID, $levelID, $stars, $difficulty, $auto, $demon){
 		if(!is_numeric($accountID)) return false;
 		include __DIR__ . "/connection.php";
-		//lets assume the perms check is done properly before
+		$diffName = $this->getDiffFromStars($stars)["name"];
 		$query = "UPDATE levels SET starDemon=:demon, starAuto=:auto, starDifficulty=:diff, starStars=:stars, rateDate=:now WHERE levelID=:levelID";
 		$query = $db->prepare($query);	
 		$query->execute([':demon' => $demon, ':auto' => $auto, ':diff' => $difficulty, ':stars' => $stars, ':levelID'=>$levelID, ':now' => time()]);
 		$query = $db->prepare("INSERT INTO modactions (type, value, value2, value3, timestamp, account) VALUES ('1', :value, :value2, :levelID, :timestamp, :id)");
-		$query->execute([':value' => $this->getDiffFromStars($stars)["name"], ':timestamp' => time(), ':id' => $accountID, ':value2' => $stars, ':levelID' => $levelID]);
+		$query->execute([':value' => $diffName, ':timestamp' => time(), ':id' => $accountID, ':value2' => $stars, ':levelID' => $levelID]);
 	}
 	public function featureLevel($accountID, $levelID, $feature){
 		if(!is_numeric($accountID)) return false;
@@ -833,7 +835,7 @@ class mainLib {
         if(!empty($query)) return true; 
         else return false;
 	}
-	 public function mail($mail = '', $user = '') {
+	public function mail($mail = '', $user = '') {
 		if(empty($mail) OR empty($user)) return;
 		include __DIR__."/../../config/mail.php";
 		if($mailEnabled) {

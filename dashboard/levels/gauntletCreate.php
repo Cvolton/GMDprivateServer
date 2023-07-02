@@ -75,8 +75,8 @@ if($_POST["checkbox_data"] == 'on') {
 		die();
 	}
 	$levels = ExploitPatch::remove($_POST['level_1']) . ',' . ExploitPatch::remove($_POST['level_2']) . ',' . ExploitPatch::remove($_POST['level_3']). ',' . ExploitPatch::remove($_POST['level_4']). ',' . ExploitPatch::remove($_POST['level_5']);
-	$query = $db->prepare("INSERT INTO gauntlets (level1, level2, level3, level4, level5) VALUES (:l1, :l2, :l3, :l4, :l5)");
-	$query->execute([':l1' => ExploitPatch::remove($_POST["level_1"]), ':l2' => ExploitPatch::remove($_POST["level_2"]), ':l3' => ExploitPatch::remove($_POST["level_3"]), ':l4' => ExploitPatch::remove($_POST["level_4"]), ':l5' => ExploitPatch::remove($_POST["level_5"])]);
+	$query = $db->prepare("INSERT INTO gauntlets (level1, level2, level3, level4, level5, timestamp) VALUES (:l1, :l2, :l3, :l4, :l5, :t)");
+	$query->execute([':l1' => ExploitPatch::remove($_POST["level_1"]), ':l2' => ExploitPatch::remove($_POST["level_2"]), ':l3' => ExploitPatch::remove($_POST["level_3"]), ':l4' => ExploitPatch::remove($_POST["level_4"]), ':l5' => ExploitPatch::remove($_POST["level_5"]), ':t' => time()]);
 	$query = $db->prepare("INSERT INTO modactions  (type, value, timestamp, account) VALUES ('18',:value,:timestamp,:account)");
 	$query->execute([':value' => $levels, ':timestamp' => time(), ':account' => $accountID]);
 	$dl->printSong('<div class="form">
@@ -99,13 +99,13 @@ if($_POST["checkbox_data"] == 'on') {
 			<h2 class="messagenotyou" style="font-size: 15px;color: #c0c0c0;" id="stats'.$gauntlet["ID"].'"><i class="fa-solid fa-star"></i> '.$stars["SUM(starStars)"].'</h2>
 		</button>';
 	}
-	$dl->printSong('<div class="form-control itemsbox" style="height: 465px;">
-	<div class="itemslist">
+	$dl->printSong('<div class="form-control itemsbox">
+	<div class="itemoverflow"><div class="itemslist">
     <button type="submit" onclick="gauntlet(0)" class="btn-primary itembtn">
         <h2 class="subjectnotyou">'.$dl->getLocalizedString("gauntletCreate").'</h2>
         <h2 class="messagenotyou" style="font-size: 15px;color: #c0c0c0;">'.$dl->getLocalizedString("createNewGauntlet").'</h2>
     </button>'.$allGauntlets.'
-    </div>
+    </div></div>
 	<div class="form" style="margin:0;width:100%">
 		<h1>' . $dl->getLocalizedString("gauntletCreateTitle") . '</h1>
 		<form class="form__inner form__create" method="post" action="">

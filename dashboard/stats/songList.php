@@ -25,7 +25,6 @@ if(!empty($_GET["author"]) AND !empty($_GET["name"])) {
 	$an = 0;
 	$nn = 0;
 }
-
 $pagelol = explode("/", $_SERVER["REQUEST_URI"]);
 $pagelol = $pagelol[count($pagelol)-2]."/".$pagelol[count($pagelol)-1];
 $pagelol = explode("?", $pagelol)[0];
@@ -56,7 +55,7 @@ if(!empty(trim(ExploitPatch::remove($_GET["search"])))) {
 	$query->execute();
 	$result = $query->fetchAll();
 }
-$x = $page + 1;
+$x = 0;
 if(empty($result)) {
 	$dl->printSong('<div class="form">
     <h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
@@ -68,6 +67,7 @@ if(empty($result)) {
 	die();
 } 
 foreach($result as &$action){
+	$x++;
 	$fontsize = 27;
 	$check = $gs->checkPermission($_SESSION["accountID"], "dashboardManageSongs");
 	$songsid = $action["ID"];
@@ -92,17 +92,17 @@ foreach($result as &$action){
 	} else {
 		$btn = '<button type="button" name="btnsng" id="btn'.$songsid.'" title="'.$author.' - '.$name.'" style="display: contents;color: white;margin: 0;" download="'.$download.'" onclick="btnsong(\''.$songsid.'\');"><div class="icon" style="font-size:13px; height:25px;width:25px;background:#373A3F;margin-left: 5px;"><i id="icon'.$songsid.'" name="iconlol" class="fa-solid fa-play" aria-hidden="false"></i></div></button>';
 	}
-	if($check) $manage = '<a style="margin-left:5px;width:max-content;color:white;padding:8px;font-size:13px" class="btn-rendel" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa-solid fa-pencil"></i></a><div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink"  style="padding: 17px 17px 0px;top: 0px;left: 0px;position: absolute;transform: translate3d(971px, 200px, 0px);will-change: transform;">
-									 <form class="form__inner" method="post" action="stats/renameSong.php">
+	if($check) $manage = '<a style="margin-left:5px;width:max-content;color:white;padding:8px;font-size:13px" class="btn-rendel" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa-solid fa-pencil"></i></a><div onclick="event.stopPropagation()" class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink"  style="padding: 17px 17px 0px;top: 0px;left: 0px;position: absolute;transform: translate3d(971px, 200px, 0px);will-change: transform;">
+									 <form class="form__inner" method="post" name="songrename'.$songsid.'">
 										<div class="field" style="display:none"><input type="hidden" name="ID" value="'.$songsid.'"></div>
 										<div class="field" style="display:none"><input type="hidden" name="page" value="'.$actualpage.'"></div>
 										<div class="field"><input type="text" name="author" id="p1" value="'.$author.'" placeholder="'.$author.'"></div>
 										<div class="field"><input type="text" name="name" id="p2" value="'.$name.'" placeholder="'.$name.'"></div>
-										<button type="submit" class="btn-song" id="submit">'.$dl->getLocalizedString("change").'</button>
+										<button type="button" class="btn-song" id="submit" onclick="rename('.$songsid.')">'.$dl->getLocalizedString("change").'</button>
 									</form>
 								</div>';
-	if(strlen($author) + strlen($name) > 30) $fontsize = 17;
-	elseif(strlen($author) + strlen($name) > 20) $fontsize = 20;
+	if(mb_strlen($author) + mb_strlen($name) > 30) $fontsize = 17;
+	elseif(mb_strlen($author) + mb_strlen($name) > 20) $fontsize = 20;
     if($action["isDisabled"]) {
 		$songsid = '<div style="text-decoration:line-through;color:#8b2e2c">'.$songsid.'</div>';
 		$author = '<div style="text-decoration:line-through;color:#8b2e2c">'.$author.'</div>';
@@ -117,7 +117,7 @@ foreach($result as &$action){
 	$stats = $songSize.$who;
 	$songs .= '<div style="width: 100%;display: flex;flex-wrap: wrap;justify-content: center;">
 			<div class="profile"><div style="display: flex;width: 100%;justify-content: space-between;margin-bottom: 7px;align-items: center;"><div style="display: flex;width: 100%; justify-content: space-between;align-items: center;">
-				<h2 style="margin: 0px;font-size: '.$fontsize.'px;margin-left:5px;display: flex;align-items: center;" class="profilenick">'.$author.' — '.$name.$btn.'</h2>'.$favs.$manage.'
+				<h2 style="margin: 0px;font-size: '.$fontsize.'px;margin-left:5px;display: flex;align-items: center;" class="profilenick"><text id="songname'.$songsid.'">'.$author.' — '.$name.'</text>'.$btn.'</h2>'.$favs.$manage.'
 			</div></div>
 			<div class="form-control" style="display: flex;width: 100%;height: max-content;align-items: center;">'.$stats.'</div>
 			<div style="display: flex;justify-content: space-between;margin-top: 10px;"><h3 id="comments" class="songidyeah" style="margin: 0px;width: max-content;align-items: center;">'.$dl->getLocalizedString("songIDw").': <b>'.$songIDlol.'</b></h3><h3 id="comments" class="songidyeah"  style="justify-content: flex-end;grid-gap: 0.5vh;margin: 0px;width: max-content;">'.$dl->getLocalizedString("date").': <b>'.$time.'</b></h3></div>
@@ -141,58 +141,6 @@ $packcount = $query->fetchColumn();
 $pagecount = ceil($packcount / 10);
 $bottomrow = $dl->generateBottomRow($pagecount, $actualpage);
 $dl->printPage($pagel . $bottomrow.'<script>
-			function btnsong(id) {
-				$("#song"+id).on("pause play", function() {
-					if(document.getElementById("song" + id).paused) {
-						var elems=document.getElementsByName("iconlol");
-						for(var i=0; i<elems.length; i++)elems[i].classList.replace("fa-pause", "fa-play");
-					} else document.getElementById("icon"+id).classList.replace("fa-play", "fa-pause");
-				});
-				if(document.getElementById(id) == null) {
-					deleteDuplicates = $(".audio");
-					for(var i=0; i<deleteDuplicates.length; i++) deleteDuplicates[i].remove();
-					var elems=document.getElementsByName("iconlol");
-					for(var i=0; i<elems.length; i++)elems[i].classList.replace("fa-pause", "fa-play");
-					if(id != 0) {
-						divsong = document.createElement("div");
-						audiosong = document.createElement("audio");
-						sourcesong = document.createElement("source");
-						divsong.name = "audio";
-						divsong.classList.add("audio");
-						divsong.id = id;
-						divsong.style.display = "flex";
-						audiosong.title = document.getElementById("btn"+id).title;
-						audiosong.style.width = "100%";
-						audiosong.name = "song";
-						audiosong.id = "song"+id;
-						audiosong.setAttribute("controls", "");
-						audiosong.volume = 0.2;
-						sourcesong.src = document.getElementById("btn"+id).getAttribute("download");
-						sourcesong.type = "audio/mpeg";
-						closesong = document.createElement("button");
-						closesong.type = "button";
-						closesong.classList.add("msgupd");
-						closesong.classList.add("closebtn");
-						closesong.setAttribute("onclick", "btnsong(0)");
-						closesong.innerHTML = \'<i class="fa-solid fa-xmark"></i>\';
-						audiosong.appendChild(sourcesong);
-						divsong.appendChild(audiosong);
-						divsong.appendChild(closesong);
-						document.body.appendChild(divsong);
-						audiosong.play();
-						document.getElementById("icon"+id).classList.replace("fa-play", "fa-pause");
-					} else {
-						divsong = audiosong = sourcesong = closesong = "";
-						var elems=document.getElementsByName("iconlol");
-						for(var i=0; i<elems.length; i++)elems[i].classList.replace("fa-pause", "fa-play");
-					}
-				} else {
-					if(document.getElementById("song" + id).paused) {
-						document.getElementById("song" + id).play();
-					}
-					else document.getElementById("song" + id).pause();
-				}
-			}
 			function like(id) {
 				likebtn = document.getElementById("like" + id);
 				if(likebtn.value == 1) {
@@ -225,12 +173,15 @@ $dl->printPage($pagel . $bottomrow.'<script>
 				}
 				fav.send();
 			}
-			function copysong(id) {
-				navigator.clipboard.writeText(id);
-				document.getElementById("copy"+id).style.transition = "0.05s";
-				document.getElementById("copy"+id).style.color = "#bbffbb";
-				setTimeout(function(){document.getElementById("copy"+id).style.transition = "0.2s";}, 1)
-				setTimeout(function(){document.getElementById("copy"+id).style.color = "#007bff";}, 200)
+			function rename(id) {
+				nfd = new FormData(document.getElementsByName("songrename"+id)[0]);
+				ren = new XMLHttpRequest();
+				ren.open("POST", "stats/renameSong.php", true);
+				ren.onload = function () {
+					r = JSON.parse(ren.response);
+					if(r.success) document.getElementById("songname"+id).innerHTML = nfd.get("author") + " — " + nfd.get("name");
+				}
+				ren.send(nfd);
 			}
 		</script>', true, "browse");
 ?>

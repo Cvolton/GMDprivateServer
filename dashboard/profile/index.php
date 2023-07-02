@@ -8,7 +8,7 @@ if(!isset($_GET["id"])) header("Location: ".$gs->getAccountName(ExploitPatch::nu
 include "../".$dbPath."incl/lib/connection.php";
 $dl = new dashboardLib();
 $clan = $none = "";
-if(!isset($_SESSION["accountID"]) OR $_SESSION["accountID"] == 0 AND empty($_POST["accountID"]) AND empty($_GET["id"])) {
+if((!isset($_SESSION["accountID"]) OR $_SESSION["accountID"] == 0) AND (empty($_POST["accountID"]) AND empty($_GET["id"]))) {
   	$dl->title($dl->getLocalizedString("profile"));
 	$dl->printSong('<div class="form">
     <h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
@@ -53,7 +53,7 @@ if(!empty($_POST["msg"])) {
   	  $query = $db->prepare("SELECT timestamp FROM acccomments WHERE userID=:accid ORDER BY timestamp DESC LIMIT 1");
       $query->execute([':accid' => $gs->getUserID($accid)]);
       $res = $query->fetch();
-      $time = time() - 30;
+      $time = time() - 10;
       if($res["timestamp"] > $time) {
      		$dl->printSong('<div class="form">
             	   <h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
@@ -139,7 +139,7 @@ if(isset($_POST["settings"]) AND $_POST["settings"] == 1 AND $accid == $_SESSION
 $query = $db->prepare("SELECT extID, stars, demons, coins, userCoins, creatorPoints, diamonds, isCreatorBanned, dlPoints, isBanned, banReason, clan FROM users WHERE extID=:id");
 $query->execute([':id' => $accid]);
 $res = $query->fetch();
-if($res["isBanned"] == 1) $maybeban = '<h1 style="text-decoration:line-through;color:#432529;margin:0px">'.$accname.'</h1>'; else $maybeban = '<h1 style="color:rgb('.$gs->getAccountCommentColor($accid).');margin:0px">'.$accname.'</h1>';
+if($res["banReason"] != 'none' OR $res["isBanned"] == 1) $maybeban = '<h1 class="profilename" style="text-decoration:line-through;color:#432529;">'.$accname.'</h1>'; else $maybeban = '<h1 class="profilename" style="color:rgb('.$gs->getAccountCommentColor($accid).');">'.$accname.'</h1>';
 if(isset($_SERVER["HTTP_REFERER"])) $back = '<form method="post" action="'.$_SERVER["HTTP_REFERER"].'"><button type="button" onclick="a(\''.$_SERVER["HTTP_REFERER"].'\', true, true, \'GET\')" class="goback"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i></button></form>'; else $back = '';
 if($res["stars"] == 0) $st = ''; else $st = '<p class="profilepic">'.$res["stars"].' <i class="fa-solid fa-star"></i></p>';
 if($res["diamonds"] == 0) $dm = ''; else $dm = ' <p class="profilepic">'.$res["diamonds"].' <i class="fa-solid fa-gem"></i></p>';
@@ -158,6 +158,7 @@ $msgs->execute([':uid' => $gs->getUserID($accid)]);
 $msgs = $msgs->fetchAll();
 $comments = $send = '';
 foreach($msgs AS &$msg) {
+	$none = '';
 	$reply = $db->prepare("SELECT count(*) FROM replies WHERE commentID = :id");
 	$reply->execute([':id' => $msg["commentID"]]);
 	$reply = $reply->fetchColumn();	
@@ -165,7 +166,7 @@ foreach($msgs AS &$msg) {
   	$time = $msg["timestamp"];
 	$likes = $msg["likes"];
 	if($likes >= 0) $likes = $likes.' <i class="fa-regular fa-thumbs-up"></i>'; else $likes = mb_substr($likes, 1).' <i class="fa-regular fa-thumbs-down"></i>';
-	if($reply == 0) $none = 'display:none';
+	if($reply < 1) $none = 'display:none';
 	$replies = '<button id="btnreply'.$msg["commentID"].'" onclick="reply('.$msg["commentID"].')" class="btn-rendel" style="padding: 7 10;margin-right: 10px;min-width: max-content;width: max-content;'.$none.'">'.$dl->getLocalizedString("replies").' ('.$reply.')</button>';
 	if($_SESSION["accountID"] != 0) $input = '<div class="field" style="display:flex;margin-right:10px"><input id="inputReply'.$msg["commentID"].'" type="text" placeholder="'.$dl->getLocalizedString("replyToComment").'"><button onclick="sendReply('.$msg["commentID"].')" id="btninput'.$msg["commentID"].'" style="width: max-content;margin-left: 10px;padding: 8px;" class="btn-rendel"><i style="color:white" class="fa-regular fa-paper-plane" aria-hidden="true"></i></button></div>';
   	$comments .= '<div style="width: 100%;display: flex;flex-wrap: wrap;justify-content: center;">
@@ -201,7 +202,7 @@ if(empty($comments)) $comments = '<p class="profile" style="font-size:25px;color
 	$msgtopl = '<form method="post" name="settingsform"><input type="hidden" name="settings" value="1"><button type="button" onclick="a(\'profile/'.$accname.'/settings\', true, true, \'POST\', false, \'settingsform\')" title="'.$dl->getLocalizedString("settings").'" class="msgupd" name="settings" value="1"><i class="fa-solid fa-user-gear" aria-hidden="true"></i></button></form>';
 }
 if($_SESSION["accountID"] == 0) $msgtopl = '';
-if($res["dlPoints"] != 0) $points = '<i style="position: absolute;font-size: 20;right: 50;color: gray;" class="fa-solid fa-medal"> '.$res["dlPoints"].'</i>';
+if($res["dlPoints"] != 0) $points = '<i class="fa-solid fa-medal dlpoints"> '.$res["dlPoints"].'</i>';
 if($gs->isPlayerInClan($accid)) {
 	$claninfo = $gs->getClanInfo($res["clan"]);
 	if($claninfo["clanOwner"] == $accid) $own = '<i style="color:#ffff91" class="fa-solid fa-crown"></i>';
@@ -210,7 +211,7 @@ if($gs->isPlayerInClan($accid)) {
 $dl->printSong('<div class="form profileform">
     	<div style="height: 100%;width: 100%;"><div style="display: flex;align-items: center;justify-content: center;">
         	'.$back.'
-              <div style="display: flex;flex-direction: column;align-items: center;margin:5px 0px 10px 0px">'.$maybeban.$clan.'</div>'.$msgtopl.$points.$discordbtn.'
+              <div class="profilewclanname">'.$maybeban.$clan.'</div>'.$msgtopl.$points.'
         </div>
         <div class="form-control" style="display: flex;width: 100%;height: max-content;align-items: center;">'.$all.'</div>
         <div class="form-control dmbox" style="overflow-wrap: anywhere;display: flex;border-radius: 30px;margin-top: 20px;flex-wrap: wrap;padding-top: 0;max-height: 45vh;padding-bottom: 10px;min-width: 100%;height: max-content;margin-bottom: 17px;align-items: center;">

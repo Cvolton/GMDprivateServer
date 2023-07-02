@@ -18,7 +18,9 @@ if(!$installed) {
 	  ALTER TABLE roles ADD COLUMN IF NOT EXISTS demonlistApprove INT NOT NULL DEFAULT '0' AFTER demonlistAdd;
 	  ALTER TABLE users ADD COLUMN IF NOT EXISTS clan INT NOT NULL DEFAULT '0' AFTER userName;
 	  ALTER TABLE users ADD COLUMN IF NOT EXISTS joinedAt INT NOT NULL DEFAULT '0' AFTER clan;
-   	  ALTER TABLE users ADD COLUMN IF NOT EXISTS dlPoints INT NOT NULL DEFAULT '0' AFTER joinedAt");
+   	  ALTER TABLE users ADD COLUMN IF NOT EXISTS dlPoints INT NOT NULL DEFAULT '0' AFTER joinedAt;
+	  ALTER TABLE gauntlets ADD COLUMN IF NOT EXISTS timestamp INT NOT NULL DEFAULT '0' AFTER level5;
+	  ALTER TABLE mappacks ADD COLUMN IF NOT EXISTS timestamp INT NOT NULL DEFAULT '0' AFTER colors2");
 	} else {
 		$check = $db->query("SHOW COLUMNS FROM `roles` LIKE 'dashboardLevelPackCreate'");
       		$exist = $check->fetchAll();
@@ -56,6 +58,12 @@ if(!$installed) {
 		$check = $db->query("SHOW COLUMNS FROM `users` LIKE 'dlPoints'");
       		$exist = $check->fetchAll();
       		if(empty($exist)) $db->query("ALTER TABLE users ADD dlPoints INT NOT NULL DEFAULT '0' AFTER joinedAt");
+		$check = $db->query("SHOW COLUMNS FROM `gauntlets` LIKE 'timestamp'");
+      		$exist = $check->fetchAll();
+      		if(empty($exist)) $db->query("ALTER TABLE gauntlets ADD timestamp INT NOT NULL DEFAULT '0' AFTER level5");
+		$check = $db->query("SHOW COLUMNS FROM `mappacks` LIKE 'timestamp'");
+      		$exist = $check->fetchAll();
+      		if(empty($exist)) $db->query("ALTER TABLE mappacks ADD timestamp INT NOT NULL DEFAULT '0' AFTER colors2");
 	}
 	$check = $db->query("SHOW TABLES LIKE 'replies'");
       		$exist = $check->fetchAll();

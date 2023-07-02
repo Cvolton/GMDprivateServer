@@ -9,6 +9,9 @@ class dashboardLib {
 	public function printHeader($isSubdirectory = true){
 		$this->handleLangStart();
       	global $gdps;
+		if(file_exists("../../incl/cvolton.css")) $css = filemtime("../../incl/cvolton.css");
+		elseif(file_exists("../incl/cvolton.css")) $css = filemtime("../incl/cvolton.css");
+		else $css = filemtime("incl/cvolton.css");
 		echo '<!DOCTYPE html>
 				<html lang="en">
 					<head>
@@ -26,7 +29,7 @@ class dashboardLib {
 						  <link href="incl/fontawesome/css/fontawesome.css" rel="stylesheet">
 						  <link href="incl/fontawesome/css/brands.css" rel="stylesheet">
 						  <link href="incl/fontawesome/css/solid.css" rel="stylesheet">
-                          <link async rel="stylesheet" href="incl/cvolton.css">
+                          <link async rel="stylesheet" href="incl/cvolton.css?'.$css.'">
 						  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
                           <title>'.$gdps.'</title>';
 		echo '</head>
@@ -157,7 +160,7 @@ class dashboardLib {
 				break;
 		}
 		echo '<nav id="navbarepta" class="navbar navbar-expand-lg navbar-dark menubar">
-			<a href="." onclick="a(\'\')" class="navbar-brand" style="margin-right:0.5rem;background:none;border:none"><img style="width:30px" src="icon.png"></a>
+			<button href="." onclick="a(\'\')" class="navbar-brand" style="margin-right:0.5rem;background:none;border:none"><img style="width:30px" src="icon.png"></button>
 			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
 				<span class="navbar-toggler-icon"></span>
 			</button>
@@ -271,7 +274,7 @@ class dashboardLib {
 						</a>
 						<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
 							<a type="button" href="stats/dailyTable.php"  onclick="a(\'stats/dailyTable.php\')" class="dropdown-item"><div class="icon"><i class="fa-regular fa-sun" aria-hidden="false"></i></div>'.$this->getLocalizedString("dailyTable").'</a>
-							<a type="button" href="stats/modActions.php" onclick="a(\'stats/modActions.php\')"class="dropdown-item"><div class="icon"><i class="fa-solid fa-universal-access" aria-hidden="false"></i></div>'.$this->getLocalizedString("modActions").'</a>
+							<a type="button" href="stats/modList.php" onclick="a(\'stats/modList.php\')"class="dropdown-item"><div class="icon"><i class="fa-solid fa-universal-access" aria-hidden="false"></i></div>'.$this->getLocalizedString("modActions").'</a>
 							<a type="button" href="stats/modActionsList.php" onclick="a(\'stats/modActionsList.php\')"class="dropdown-item"><div class="icon"><i class="fa-solid fa-list" aria-hidden="false"></i></div>'.$this->getLocalizedString("modActionsList").'</a>
 							<a type="button" href="stats/top24h.php" onclick="a(\'stats/top24h.php\')"class="dropdown-item"><div class="icon"><i class="fa-solid fa-list-ol" aria-hidden="false"></i></div>'.$this->getLocalizedString("leaderboardTime").'</a>
 						</div>
@@ -405,130 +408,202 @@ $(document).change(function(){
 		</nav>
 		<div class="form" style="margin:0px;position:absolute;bottom:50px;color:white;font-size:50px;width:max-content !important;right:50px;padding:25px;transition:0.3s;opacity:0;border-radius:500px" id="loadingloool"><i class="fa-solid fa-spinner fa-spin"></i></div>
 <script>
+	if(!window.localStorage.volume) window.localStorage.volume = 0.2;
 	cptch = document.querySelector("#verycoolcaptcha");
 	$(document).click(function(event) {
 		if(event.target && !event.target.classList.contains("dontblock") && (event.target.classList.contains("dropdown-item") || event.target.classList.contains("icon") || event.target.classList.contains("nav-link") || event.target.classList.contains("fa-solid") || event.target.classList.contains("fa-regular"))) event.preventDefault();
 	});
 	function a(page, skipcheck = false, skipslash = false, method = "GET", getdata = false, formname = "", isback = false) {
-		if((window.location.pathname.indexOf(page) != "1" || page == "profile") || skipcheck) {
-			phpCheck = page.substr(page.length - 4);
-			if(phpCheck != ".php" && page != "" && page != "profile/'.$gs->getAccountName($_SESSION["accountID"]).'" && !skipslash) page = page + "/";
-			document.getElementById("loadingloool").innerHTML = \'<i class="fa-solid fa-spinner fa-spin"></i>\';
-			document.getElementById("loadingloool").style.opacity = "1";
-			pg = new XMLHttpRequest();
-			sendget = "";
-			if(getdata >= 0) {
-				if(getdata != 69) fd = new FormData(document.getElementsByTagName("form")[document.getElementsByTagName("form").length-getdata]);
-				else fd = new FormData(searchform);
-				delimiter = "?";
-				if(fd.get("page") !== null) {
-					sendget = sendget + delimiter + "page=" + encodeURIComponent(fd.get("page"));
-					delimiter = "&";
-				}
-				if(fd.get("search") !== null) {
-					sendget = sendget + delimiter + "search=" + encodeURIComponent(fd.get("search"));
-					delimiter = "&";
-				}
-				// I\'m sorry, guys
-				if(fd.get("type") !== null) {
-					sendget = sendget + delimiter + "type=" + encodeURIComponent(fd.get("type"));
-					delimiter = "&";
-				}
-				if(fd.get("who") !== null) {
-					sendget = sendget + delimiter + "who=" + encodeURIComponent(fd.get("who"));
-					delimiter = "&";
-				}
-				if(fd.get("ng") !== null) {
-					sendget = sendget + delimiter + "ng=" + encodeURIComponent(fd.get("ng"));
-					delimiter = "&";
-				}
-			} 
-			pg.open(method, page + sendget, true);
-			pg.responseType = "document";
-			htmlpage = document.querySelector("#htmlpage");
-			navbar = document.querySelector("#navbarepta");
-			htmtitle = document.querySelectorAll("title")[0];
-			pg.onload = function (){
-    			'.($enableCaptcha ? 'if(typeof '.$captchaUsed.' == "object" && typeof '.$captchaUsed.'.getResponse() != "undefined") {
-    			    try {
-    			        if(document.getElementById("coolcaptcha") != null) '.$captchaUsed.'.reset();
-        			}
-        			catch(e) {
-                       console.log(e);
-                    }
-    			}' : '').'
-				if(pg.response.getElementById("htmlpage") != null) {
-					document.getElementById("loadingloool").style.opacity = "0";
-					title = pg.response.querySelectorAll("title")[0];
-					scripts = pg.response.querySelectorAll("body script");
-					scripts = scripts[scripts.length-1];
-					newnavbar = pg.response.querySelector("#navbarepta");
-					if(typeof document.getElementsByClassName("audio")[0] !== "undefined" && pg.response.getElementById("btn"+document.getElementsByClassName("audio")[0].id) !== null) if(!document.getElementsByTagName("audio")[0].paused) pg.response.getElementById("icon"+document.getElementsByClassName("audio")[0].id).classList.replace("fa-play", "fa-pause");
-					child = pg.response.querySelector("#htmlpage");
-					htmlpage.replaceWith(child);
-					navbar.replaceWith(newnavbar);
-					htmtitle.replaceWith(title);
-					var scrp = document.createElement("script");
-					scrp.id = "pagescript";
-					captchascript = document.getElementById("captchascript");
-					lastChar = page.substr(page.length - 1);
-					if(lastChar == "/") pageyes = page.split("/")[0];
-					else pageyes = page;
-					now = document.querySelector("[href=\'"+pageyes+"\']");
-					if(now !== null) now.classList.add("now");
-					if(typeof scripts.textContent != "undefined") scrp.innerHTML = scripts.textContent;
-					if(document.getElementById("pagescript") !== null) document.getElementById("pagescript").remove();
-					document.body.appendChild(scrp);
-					if(!isback) history.pushState(null,null,page);
-					if(typeof document.querySelector("base") != "object") {
-						base = document.createElement("base");
-						if(page != "") base.href = "../";
-						else base.href = ".";
-						document.body.appendChild(base);
-					} else {
-						base = document.querySelectorAll("base")[0];
-						if(page.indexOf("settings") != "-1") base.href = "../../";
-						else if(page != "") base.href = "../";
-						else base.href = ".";
-						document.body.appendChild(base);
-						if(typeof document.querySelectorAll("base")[1] == "object") document.querySelectorAll("base")[1].remove();
+		try {
+			if((window.location.pathname.indexOf(page) != "1" || page == "profile") || skipcheck) {
+				phpCheck = page.substr(page.length - 4);
+				if(phpCheck != ".php" && page != "" && page != "profile/'.$gs->getAccountName($_SESSION["accountID"]).'" && !skipslash) page = page + "/";
+				document.getElementById("loadingloool").innerHTML = \'<i class="fa-solid fa-spinner fa-spin"></i>\';
+				document.getElementById("loadingloool").style.opacity = "1";
+				pg = new XMLHttpRequest();
+				sendget = "";
+				if(getdata >= 0) {
+					if(getdata != 69) fd = new FormData(document.getElementsByTagName("form")[document.getElementsByTagName("form").length-getdata]);
+					else fd = new FormData(searchform);
+					delimiter = "?";
+					if(fd.get("page") !== null) {
+						sendget = sendget + delimiter + "page=" + encodeURIComponent(fd.get("page"));
+						delimiter = "&";
 					}
-					if(typeof captchascript != "undefined") {
-					    var elems = document.querySelectorAll("div[aria-hidden=true]");
-						for(var i=0; i<elems.length; i++)elems[i].remove();
-						if(typeof turnstile != "object" && typeof grecaptcha != "object" && typeof hcaptcha != "object") {
-    						cptscr = document.createElement("script");
-    						cptscr.id = "captchascript";
-    						cptscr.setAttribute("src", captchascript.getAttribute("src"));
-    						document.body.append(cptscr);
+					if(fd.get("search") !== null) {
+						sendget = sendget + delimiter + "search=" + encodeURIComponent(fd.get("search"));
+						delimiter = "&";
+					}
+					// I\'m sorry, guys
+					if(fd.get("type") !== null) {
+						sendget = sendget + delimiter + "type=" + encodeURIComponent(fd.get("type"));
+						delimiter = "&";
+					}
+					if(fd.get("who") !== null) {
+						sendget = sendget + delimiter + "who=" + encodeURIComponent(fd.get("who"));
+						delimiter = "&";
+					}
+					if(fd.get("ng") !== null) {
+						sendget = sendget + delimiter + "ng=" + encodeURIComponent(fd.get("ng"));
+						delimiter = "&";
+					}
+				} 
+				pg.open(method, page + sendget, true);
+				pg.responseType = "document";
+				htmlpage = document.querySelector("#htmlpage");
+				navbar = document.querySelector("#navbarepta");
+				htmtitle = document.querySelectorAll("title")[0];
+				pg.onload = function (){
+					'.($enableCaptcha ? 'try {
+						if(typeof '.$captchaUsed.' == "object" && typeof '.$captchaUsed.'.getResponse() != "undefined" && document.getElementById("coolcaptcha") != null) '.$captchaUsed.'.reset();
+					} catch(e) {
+						console.log(e);
+					}' : '').'
+					if(pg.response.getElementById("htmlpage") != null) {
+						document.getElementById("loadingloool").style.opacity = "0";
+						title = pg.response.querySelectorAll("title")[0];
+						scripts = pg.response.querySelectorAll("body script");
+						scripts = scripts[scripts.length-1];
+						newnavbar = pg.response.querySelector("#navbarepta");
+						if(typeof document.getElementsByClassName("audio")[0] !== "undefined" && pg.response.getElementById("btn"+document.getElementsByClassName("audio")[0].id) !== null) if(!document.getElementsByTagName("audio")[0].paused) pg.response.getElementById("icon"+document.getElementsByClassName("audio")[0].id).classList.replace("fa-play", "fa-pause");
+						child = pg.response.querySelector("#htmlpage");
+						htmlpage.replaceWith(child);
+						navbar.replaceWith(newnavbar);
+						htmtitle.replaceWith(title);
+						var scrp = document.createElement("script");
+						scrp.id = "pagescript";
+						captchascript = document.getElementById("captchascript");
+						bottomrowscript = document.getElementById("bottomrowscript");
+						lastChar = page.substr(page.length - 1);
+						if(lastChar == "/") pageyes = page.split("/")[0];
+						else pageyes = page;
+						now = document.querySelector("[href=\'"+pageyes+"\']");
+						if(now !== null) now.classList.add("now");
+						if(typeof scripts.textContent != "undefined") scrp.innerHTML = scripts.textContent;
+						if(typeof bottomrowscript != "undefined" && bottomrowscript != null) scrp.innerHTML += bottomrowscript.textContent;
+						if(document.getElementById("pagescript") !== null) document.getElementById("pagescript").remove();
+						document.body.appendChild(scrp);
+						if(!isback) history.pushState(null,null,page);
+						if(typeof document.querySelector("base") != "object") {
+							base = document.createElement("base");
+							if(page != "") base.href = "../";
+							else base.href = ".";
+							document.body.appendChild(base);
 						} else {
-						    if(typeof turnstile == "object") turnstile.implicitRender();
-						    if(typeof grecaptcha == "object") grecaptcha.render("coolcaptcha");
-						    if(typeof hcaptcha == "object") hcaptcha.render("coolcaptcha");
+							base = document.querySelectorAll("base")[0];
+							if(page.indexOf("settings") != "-1") base.href = "../../";
+							else if(page != "") base.href = "../";
+							else base.href = ".";
+							document.body.appendChild(base);
+							if(typeof document.querySelectorAll("base")[1] == "object") document.querySelectorAll("base")[1].remove();
 						}
+						try {
+							if(typeof captchascript != "undefined") {
+								var elems = document.querySelectorAll("div[aria-hidden=true]");
+								for(var i=0; i<elems.length; i++)elems[i].remove();
+								if(typeof turnstile != "object" && typeof grecaptcha != "object" && typeof hcaptcha != "object") {
+									cptscr = document.createElement("script");
+									cptscr.id = "captchascript";
+									cptscr.setAttribute("src", captchascript.getAttribute("src"));
+									document.body.append(cptscr);
+								} else {
+									if(typeof turnstile == "object") turnstile.implicitRender();
+									if(typeof grecaptcha == "object") grecaptcha.render("coolcaptcha");
+									if(typeof hcaptcha == "object") hcaptcha.render("coolcaptcha");
+								}
+							}
+						} catch(e) {
+							console.log(e);
+						}
+					} else {
+						document.getElementById("loadingloool").innerHTML = \'<i class="fa-solid fa-xmark" style="color:#ffb1ab;padding: 0px 8px;"></i>\';
+						setTimeout(function () {document.getElementById("loadingloool").style.opacity = "0";}, 1000);
 					}
-				} else {
-					document.getElementById("loadingloool").innerHTML = \'<i class="fa-solid fa-xmark" style="color:#ffb1ab;padding: 0px 8px;"></i>\';
-					setTimeout(function () {document.getElementById("loadingloool").style.opacity = "0";}, 1000);
 				}
-			}
-			if(document.getElementById("progress") !== null) {
-				prog = document.getElementById("progress");
-				prog.value = "0";
-				pg.upload.onprogress = function (event) {
-					prog.max = event.total;
-					prog.style.display = "block";
-					prog.value = event.loaded;
+				if(document.getElementById("progress") !== null) {
+					prog = document.getElementById("progress");
+					prog.value = "0";
+					pg.upload.onprogress = function (event) {
+						prog.max = event.total;
+						prog.style.display = "block";
+						prog.value = event.loaded;
+					}
 				}
+				if(method == "POST") {
+					if(formname == "") fd = new FormData(document.getElementsByTagName("form")[document.getElementsByTagName("form").length-1]);
+					else fd = new FormData(document.getElementsByName(formname)[0]);
+					pg.send(fd);
+				} else if(getdata >= 0) {
+					pg.send(sendget);
+				} else pg.send();
 			}
-			if(method == "POST") {
-			    if(formname == "") fd = new FormData(document.getElementsByTagName("form")[document.getElementsByTagName("form").length-1]);
-				else fd = new FormData(document.getElementsByName(formname)[0]);
-				pg.send(fd);
-			} else if(getdata >= 0) {
-				pg.send(sendget);
-			} else pg.send();
+		} catch(e) {
+            console.log(e);
+        }
+	}
+	function copysong(id) {
+		navigator.clipboard.writeText(id);
+		document.getElementById("copy"+id).style.transition = "0.05s";
+		document.getElementById("copy"+id).style.color = "#bbffbb";
+		setTimeout(function(){document.getElementById("copy"+id).style.transition = "0.2s";}, 1)
+		setTimeout(function(){document.getElementById("copy"+id).style.color = "#007bff";}, 200)
+	}
+	function btnsong(id) {
+		if(document.getElementById(id) == null) {
+			deleteDuplicates = $(".audio");
+			for(var i=0; i<deleteDuplicates.length; i++) deleteDuplicates[i].remove();
+			var elems=document.getElementsByName("iconlol");
+			for(var i=0; i<elems.length; i++)elems[i].classList.replace("fa-pause", "fa-play");
+			if(id != 0) {
+				divsong = document.createElement("div");
+				audiosong = document.createElement("audio");
+				sourcesong = document.createElement("source");
+				divsong.name = "audio";
+				divsong.classList.add("audio");
+				divsong.id = id;
+				divsong.style.display = "flex";
+				audiosong.title = document.getElementById("btn"+id).title;
+				audiosong.style.width = "100%";
+				audiosong.name = "song";
+				audiosong.id = "song"+id;
+				audiosong.setAttribute("controls", "");
+				audiosong.volume = window.localStorage.volume;
+				sourcesong.src = document.getElementById("btn"+id).getAttribute("download");
+				sourcesong.type = "audio/mpeg";
+				closesong = document.createElement("button");
+				closesong.type = "button";
+				closesong.classList.add("msgupd");
+				closesong.classList.add("closebtn");
+				closesong.setAttribute("onclick", "btnsong(0)");
+				closesong.innerHTML = \'<i class="fa-solid fa-xmark"></i>\';
+				audiosong.appendChild(sourcesong);
+				divsong.appendChild(audiosong);
+				divsong.appendChild(closesong);
+				document.body.appendChild(divsong);
+				audiosong.play();
+				document.getElementById("icon"+id).classList.replace("fa-play", "fa-pause");
+			} else {
+				divsong = audiosong = sourcesong = closesong = "";
+				var elems=document.getElementsByName("iconlol");
+				for(var i=0; i<elems.length; i++)elems[i].classList.replace("fa-pause", "fa-play");
+			}
+		} else {
+			if(document.getElementById("song" + id).paused) {
+				document.getElementById("song" + id).play();
+			}
+			else document.getElementById("song" + id).pause();
 		}
+		if(typeof pauseplay != "undefined") pauseplay.unbind();
+		if(typeof volumechange != "undefined") volumechange.unbind();
+		pauseplay = $("#song"+id).on("pause play", function() {
+			if(document.getElementById("song" + id).paused) {
+				var elems=document.getElementsByName("iconlol");
+				for(var i=0; i<elems.length; i++)elems[i].classList.replace("fa-pause", "fa-play");
+			} else document.getElementById("icon"+id).classList.replace("fa-play", "fa-pause");
+		});
+		volumechange = $("#song"+id).on("volumechange", function(e) {
+			window.localStorage.volume = e.target.volume;
+		});
 	}
 	window.addEventListener("popstate", function(e) { 
 		goback = window.location.pathname.split("/");
@@ -581,7 +656,7 @@ $(document).change(function(){
 	public function convertToDate($timestamp, $acc = false){
 		if($acc) {
 			if($timestamp == 0) return $this->getLocalizedString("never");
-			if(date("d", $timestamp) == date("d", time())) return date("G:i", $timestamp);
+			if(date("d.m.Y", $timestamp) == date("d.m.Y", time())) return date("G:i", $timestamp);
 			elseif(date("Y", $timestamp) == date("Y", time())) return date("d.m", $timestamp);
 			else return date("d.m.Y", $timestamp);
 		} else return date("d.m.Y G:i:s", $timestamp);
@@ -614,7 +689,7 @@ $(document).change(function(){
 			</div>';
 		$bottomrow .= '<form method="get" style="margin:0">'.$inputSearch.'<input type="hidden" name="page" value="'.$pageplus.'"><button type="button" onclick="a(\''.$pagelol.'\', true, true, \'GET\', 2)" name="page" style="border-radius:0px"  id="next" class="btn btn-outline-secondary"><i class="fa-solid fa-chevron-right" aria-hidden="true"></i></button></form>
 		<form method="get" style="margin:0;">'.$inputSearch.'<input type="hidden" name="page" value="'.$pagecount.'"><button type="button" onclick="a(\''.$pagelol.'\', true, true, \'GET\', 1)" name="page" id="last" style="border-top-left-radius:0px !important;border-bottom-left-radius:0px !important;border-radius:500px" value='. $pagecount .' class="btn btn-outline-secondary"><i class="fa-solid fa-forward" aria-hidden="true"></i></button></form>';
-		$bottomrow .= "</div><script>
+		$bottomrow .= "</div><script id='bottomrowscript'>
 			function disableElement(element){
 				if(element){
 					element.className += first.className ? ' disabled' : 'disabled';

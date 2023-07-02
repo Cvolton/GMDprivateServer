@@ -38,7 +38,6 @@ if(!empty($_SESSION["accountID"]) AND $_SESSION["accountID"] != 0 AND $gs->check
 			case 1:
 				$ok = $db->prepare("UPDATE dlsubmits SET approve = 1 WHERE auth = :str");
 				$ok->execute([':str' => $str]);
-				$gs->dlApprove($str, $_SESSION["accountID"]);
 				exit($dl->printSong('<div class="form">
 			<h1>'.sprintf($dl->getLocalizedString('demonlistRecord'), $gs->getAccountName($sub["accountID"])).'</h1>
 			<form class="form__inner" method="post" action="demonlist">
@@ -49,7 +48,6 @@ if(!empty($_SESSION["accountID"]) AND $_SESSION["accountID"] != 0 AND $gs->check
 			default:
 				$ok = $db->prepare("UPDATE dlsubmits SET approve = -1 WHERE auth = :str");
 				$ok->execute([':str' => $str]);
-				$gs->dlDeny($str, $_SESSION["accountID"]);
 				exit($dl->printSong('<div class="form">
 			<h1>'.sprintf($dl->getLocalizedString('demonlistRecord'), $gs->getAccountName($sub["accountID"])).'</h1>
 			<form class="form__inner" method="post" action="demonlist">
