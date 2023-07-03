@@ -6,7 +6,6 @@ require "../incl/dashboardLib.php";
 error_reporting(E_ALL);
 include "../".$dbPath."incl/lib/connection.php";
 require_once "../".$dbPath."incl/lib/exploitPatch.php";
-$dl = new dashboardLib();
 $json = json_decode(file_get_contents('php://input'), true);
 $search = trim(ExploitPatch::remove(urldecode($json["search"])));
 if(!empty($search)) {
