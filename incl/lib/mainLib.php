@@ -376,7 +376,7 @@ class mainLib {
 	}
 	public function getSongString($song){
 		include __DIR__ . "/connection.php";
-		include __DIR__ . "/exploitPatch.php";
+		include_once __DIR__ . "/exploitPatch.php";
 		/*$query3=$db->prepare("SELECT ID,name,authorID,authorName,size,isDisabled,download FROM songs WHERE ID = :songid LIMIT 1");
 		$query3->execute([':songid' => $songID]);*/
 		if($song['ID'] == 0 || empty($song['ID'])){
