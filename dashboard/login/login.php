@@ -8,11 +8,8 @@ $dl = new dashboardLib();
 require "../".$dbPath."incl/lib/generatePass.php";
 require_once "../".$dbPath."incl/lib/mainLib.php";
 $gs = new mainLib();
-if(isset($_SESSION["accountID"]) AND $_SESSION["accountID"] != 0){
-	header('Location: ../');
-	exit();
-}
-if(isset($_POST["userName"]) AND isset($_POST["password"])){
+if(isset($_SESSION["accountID"]) AND $_SESSION["accountID"] != 0) header('Location: ../');
+if(isset($_POST["userName"]) AND isset($_POST["password"])) {
 	$userName = $_POST["userName"];
 	$password = $_POST["password"];
 	$valid = GeneratePass::isValidUsrname($userName, $password);
@@ -62,15 +59,8 @@ if(isset($_POST["userName"]) AND isset($_POST["password"])){
           $query->execute([':auth' => $auth, ':id' => $accountID]);
 		  setcookie('auth', $auth, 2147483647, '/');
     } else setcookie('auth', $auth["auth"], 2147483647, '/');
-	$dl->printSong('<div class="form">
-                        	   <h1>'.$dl->getLocalizedString("loginBox").'</h1>
-                       	 	   <form class="form__inner" method="post" action=".">
-                      		  <p>'.$dl->getLocalizedString("loginSuccess").'</p>
-							   <button style="margin-bottom:10px" type="submit" class="btn-primary">'.$dl->getLocalizedString("dashboard").'</button>
-              				 </form>
-        			</div>
-        			<script>setTimeout(()=>{a(\'\')}, 1500);</script>', 'profile');
-}else{
+	header('Location: ../');
+} else {
 	$loginbox = '<form class="field" action="" method="post">
 							<div class="form-group">
 								<input type="text" class="form-control login-input" id="p1" name="userName" placeholder="'.$dl->getLocalizedString("enterUsername").'">
