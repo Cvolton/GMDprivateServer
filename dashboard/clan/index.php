@@ -20,6 +20,8 @@ if($getID == "settings") {
     $getID = explode("/", $_GET["id"])[count(explode("/", $_GET["id"]))-2];
     $_POST["settings"] = 1;
     $dl->printFooter('../../');
+    echo '<base href="../../">';
+    if(isset($_GET['pending'])) $_POST['pending'] = 1;
 } else $dl->printFooter('../');
 $clanid = ExploitPatch::remove($getID);
 if(!is_numeric($clanid)) $clanid = $gs->getClanID($clanid);
@@ -41,7 +43,6 @@ if(isset($_SERVER["HTTP_REFERER"])) $back = '<form method="post" style="margin:0
 if(!empty($clan)) {
     if(isset($_POST["settings"]) AND $_POST["settings"] == 1 AND $clan["clanOwner"] == $_SESSION["accountID"]) {
         if(!isset($_POST["ichangedsmth"])) {
-            echo '<base href="../../">';
             if(isset($_POST["givethisclan"])) {
                 if(isset($_POST["newOwner"])) {
                     $newOwner = ExploitPatch::number($_POST["newOwner"]);
