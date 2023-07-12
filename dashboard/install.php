@@ -65,6 +65,7 @@ if(!$installed) {
       		$exist = $check->fetchAll();
       		if(empty($exist)) $db->query("ALTER TABLE mappacks ADD timestamp INT NOT NULL DEFAULT '0' AFTER colors2");
 	}
+	$db->query("ALTER TABLE `levels` CHANGE `settingsString` `settingsString` VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '';");
 	$check = $db->query("SHOW TABLES LIKE 'replies'");
       		$exist = $check->fetchAll();
       		if(empty($exist)) $db->query("CREATE TABLE `replies` (
