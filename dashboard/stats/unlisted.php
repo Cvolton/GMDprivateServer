@@ -69,7 +69,7 @@ foreach($result as &$action){
   	if(empty($levelDesc)) $levelDesc = '<text style="color:gray">'.$dl->getLocalizedString("noDesc").'</text>';
 	$levelpass = $action["password"];
 	$likes = $action["likes"];
-	$stats = '<div class="profilepic" style="display:inline-flex;grid-gap:3px;color:white">'.($likes >= 0 ? '<i class="fa-regular fa-thumbs-up"></i>' : '<i class="fa-regular fa-thumbs-down"></i').' '.$likes. '</div>';
+	$stats = '<div class="profilepic" style="display:inline-flex;grid-gap:3px;color:gray">'.($likes >= 0 ? '<i class="fa-regular fa-thumbs-up"></i>' : '<i class="fa-regular fa-thumbs-down"></i>').' '.$likes. '</div>';
 	$levelpass = substr($levelpass, 1);
   	$levelpass = preg_replace('/(0)\1+/', '', $levelpass);
 	if($levelpass == 0 OR empty($levelpass)) $lp = '<p class="profilepic"><i class="fa-solid fa-unlock"></i> '.$dl->getLocalizedString("nopass").'</p>';
