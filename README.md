@@ -27,6 +27,6 @@ Using this for XOR encryption - https://github.com/sathoro/php-xor-cipher - (inc
 
 Using this for cloud save encryption - https://github.com/defuse/php-encryption - (incl/lib/defuse-crypto.phar)
 
-Using this for mail verification - https://github.com/phpmailer/phpmailer - (src/ folder)
+Using this for mail verification - https://github.com/phpmailer/phpmailer - (config/mail)
 
 Most of the stuff in generateHash.php has been figured out by pavlukivan and Italian APK Downloader, so credits to them
