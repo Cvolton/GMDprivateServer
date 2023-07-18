@@ -27,7 +27,7 @@ if(isset($_POST["userName"]) AND isset($_POST["password"])) {
 			else $dl->printSong('<div class="form">
             <h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
             <form class="field" action="" method="post">
-            <p>'.$dl->getLocalizedString("activateDesc").'</p><br>
+            <p><a href="login/activate.php">'.$dl->getLocalizedString("activateDesc").'</p></a><br>
             <button type="submit" class="btn btn-primary">'.$dl->getLocalizedString("tryAgainBTN").'</button>
             </form>
             </div>');
