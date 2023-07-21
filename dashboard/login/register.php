@@ -98,7 +98,7 @@ if(!empty($_POST["username"]) AND !empty($_POST["email"]) AND !empty($_POST["rep
 						<h1>'.$dl->getLocalizedString("registerAcc").'</h1>
 						<form class="form__inner" method="post" action="."style="grid-gap: 0px;">
 						<p>'.$dl->getLocalizedString("registered").'</p>
-      						'.(!$preactivateAccounts ? $dl->getLocalizedString('activateDesc') : '').'
+      						<p><a href="./activate.php">'.(!$preactivateAccounts ? $dl->getLocalizedString('activateDesc') : '').'</a>
 						<button type="submit" class="btn-song">'.$dl->getLocalizedString("dashboard").'</button>
 						</form>
 					</div>');
