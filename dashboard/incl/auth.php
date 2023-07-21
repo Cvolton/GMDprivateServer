@@ -7,7 +7,7 @@ class au {
     else include_once "../$dbPath".''."incl/lib/connection.php";
     $check = $db->query("SHOW COLUMNS FROM `accounts` LIKE 'auth'");
     $exist = $check->fetchAll();
-    if(empty($exist)) return false;
+    if(empty($exist)) return 'no';
     if($_SESSION["accountID"] != 0) {
         $query = $db->prepare("SELECT auth FROM accounts WHERE accountID = :id");
         $query->execute([':id' => $_SESSION["accountID"]]);

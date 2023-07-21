@@ -406,7 +406,7 @@ class mainLib {
 	}
 	public function getClanInfo($clan, $column = "*") {
 		global $dashCheck;
-	    if(!is_numeric($clan) || !$dashCheck) return false;
+	    if(!is_numeric($clan) || $dashCheck == 'no') return false;
 	    include __DIR__ . "/connection.php";
 	    $claninfo = $db->prepare("SELECT $column FROM clans WHERE ID = :id");
 	    $claninfo->execute([':id' => $clan]);
@@ -422,7 +422,7 @@ class mainLib {
 	}
 	public function getClanID($clan) {
 		global $dashCheck;
-	    if(!is_numeric($clan) || !$dashCheck) return false;
+	    if(!is_numeric($clan) || $dashCheck == 'no') return false;
 	    include __DIR__ . "/connection.php";
 	    $claninfo = $db->prepare("SELECT ID FROM clans WHERE clan = :id");
 	    $claninfo->execute([':id' => base64_encode($clan)]);
@@ -431,7 +431,7 @@ class mainLib {
 	}
 	public function isPlayerInClan($id) {
 		global $dashCheck;
-	    if(!is_numeric($id) || !$dashCheck) return false;
+	    if(!is_numeric($id) || $dashCheck == 'no') return false;
 	    include __DIR__ . "/connection.php";
 	    $claninfo = $db->prepare("SELECT clan FROM users WHERE extID = :id");
 	    $claninfo->execute([':id' => $id]);
