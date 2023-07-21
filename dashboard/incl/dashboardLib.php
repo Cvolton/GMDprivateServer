@@ -3,7 +3,7 @@ $dbPath = '../'; // Path to main directory. It needs to point to main endpoint f
 include __DIR__."/../".$dbPath."config/dashboard.php";
 include_once "auth.php";
 $au = new au();
-$au->auth($dbPath);
+$dashCheck = $au->auth($dbPath);
 // Dashboard library
 class dashboardLib {
 	public function printHeader($isSubdirectory = true){
