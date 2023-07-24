@@ -386,7 +386,7 @@ class dashboardLib {
 										</div>
 									</form>
 						</div><script>
-$(document).change(function(){
+$(document).on("keyup keypress change keydown",function(){
    const p1 = document.getElementById("usernameField");
    const p2 = document.getElementById("passwordField");
    const btn = document.getElementById("submit");
