@@ -1,4 +1,5 @@
 <?php
+$test;
 session_start();
 require "incl/dashboardLib.php";
 $dl = new dashboardLib();
