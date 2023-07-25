@@ -82,7 +82,7 @@ if(isset($_POST["settings"]) AND $_POST["settings"] == 1 AND $accid == $_SESSION
                           <div class="messenger" style="grid-gap: 10px;display: grid;">
                             <div>
                                 <h2 style="text-align:left;margin:0;margin-bottom: 3px">'.$dl->getLocalizedString("allowMessagesFrom").'</h2>
-                                <select class="field" style="margin: 0px" name="messages">
+                                <select class="field Options" style="margin: 0px;" name="messages">
                                  <option value="0">'.$dl->getLocalizedString("all").'</option>
                                  <option value="1">'.$dl->getLocalizedString("friends").'</option>
                                  <option value="2">'.$dl->getLocalizedString("none").'</option>
@@ -90,14 +90,14 @@ if(isset($_POST["settings"]) AND $_POST["settings"] == 1 AND $accid == $_SESSION
                             </div>
                             <div>
                             <h2 style="text-align:left;margin:0;margin-bottom: 3px">'.$dl->getLocalizedString("allowFriendReqsFrom").'</h2>
-                                <select class="field" style="margin: 0px" name="friendreqs">
+                                <select class="field Options" style="margin: 0px" name="friendreqs">
                                  <option value="0">'.$dl->getLocalizedString("all").'</option>
                                  <option value="1">'.$dl->getLocalizedString("none").'</option>
                                 </select>
                             </div>
                             <div>
                             <h2 style="text-align:left;margin:0;margin-bottom: 3px">'.$dl->getLocalizedString("showCommentHistory").'</h2>
-                                <select class="field" style="margin: 0px" name="comments">
+                                <select class="field Options" style="margin: 0px" name="comments">
                                  <option value="0">'.$dl->getLocalizedString("all").'</option>
                                  <option value="1">'.$dl->getLocalizedString("friends").'</option>
                                  <option value="2">'.$dl->getLocalizedString("none").'</option>

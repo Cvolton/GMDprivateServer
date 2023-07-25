@@ -307,6 +307,11 @@ input, select {
     background: #29282c;
 }
 
+.Options {
+	appearance: none;
+	transition: ease 0.5s;
+}
+
 .profile {
 	padding: 10px;
     margin-top: 10px;
@@ -456,8 +461,7 @@ input, select {
 .field:focus,
 .form-control,
 #input {
-    border-radius: 500px;
-    border: 0px solid #141414;
+	border-radius: 500px;
     background-color: rgb(0 0 0 / 2%);
     outline: none;
     width: 100%;
