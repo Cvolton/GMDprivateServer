@@ -458,6 +458,7 @@ input, select {
 
 .card input,
 .form-control,
+.field input,
 #input {
 	border-radius: 500px;
     border: 0px solid #141414;
@@ -470,7 +471,6 @@ input, select {
     color: gray;
 }
 
-.field input,
 .field:focus {
 	border-radius: 500px;
     background-color: rgb(0 0 0 / 2%);

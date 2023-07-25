@@ -74,7 +74,7 @@ if($claaan) {
 				</button>';
 $dl->printSong($install.'<div class="maindiv">
 	<h1 class="welcomeh1" style="width:100%;color:white;text-align:center">'.sprintf($dl->getLocalizedString("loginHeader"), "<text style=''>".$namebtn."</text>").'</h1>
-	<p class="welcomep" id="bruh">'.$dl->getLocalizedString("welcome").'</p>
+	<p class="welcomep" id="bruh">'.$dl->getLocalizedString("welcome").'
 	<h3 class="welcomeh3" style="color: white;font-style: italic;">'.$dl->getLocalizedString("wwygdt").'</h3>
 	<div class="secondarydiv">
 		<div class="form mainlist">
