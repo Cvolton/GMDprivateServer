@@ -1,5 +1,5 @@
 <?php
-$installed = true; // Like i said, it changed!
+$installed = false; // DON'T CHANGE IT! It changes automatically
 
 $gdps = "GDPS"; // Used to title and download
 $lrEnabled = 1; // 1 = Level reupload enabled, 0 = disabled
