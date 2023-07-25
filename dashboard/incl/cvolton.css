@@ -456,11 +456,22 @@ input, select {
     border-top: 3px solid #181a1b !important;
 }
 
-.field input,
 .card input,
-.field:focus,
 .form-control,
 #input {
+	border-radius: 500px;
+    border: 0px solid #141414;
+    background-color: rgb(0 0 0 / 2%);
+    outline: none;
+    width: 100%;
+    padding: 7px 10px;
+    font-size: 13px;
+    background: #141414;
+    color: gray;
+}
+
+.field input,
+.field:focus {
 	border-radius: 500px;
     background-color: rgb(0 0 0 / 2%);
     outline: none;
@@ -470,6 +481,7 @@ input, select {
     background: #141414;
     color: gray;
 }
+
 
 .details .field input {
   display: block;
