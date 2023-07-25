@@ -49,7 +49,7 @@ if(isset($_POST["name"]) AND isset($_POST["desc"]) AND isset($_POST["color"])) {
 								<div class="field"><input type="text" name="name" id="p1" placeholder="'.$dl->getLocalizedString("clanName").'"></div>
 								<div class="field"><input type="text" name="desc" placeholder="'.$dl->getLocalizedString("clanDesc").'"></div>
 								<div class="field color123"><input type="color" id="color" name="color" placeholder="'.$dl->getLocalizedString("clanColor").'"></div>
-                      		  <button type="button" id="submit" onclick="a(\'clans/create\', true, false, \'POST\')" class="btn-primary btn-block" disabled>'.$dl->getLocalizedString("create").'</button>
+                      		  <button type="button" id="submit" onclick="a(\'create\', true, false, \'POST\')" class="btn-primary btn-block" disabled>'.$dl->getLocalizedString("create").'</button>
               				 </form>
         			</div>
 					<script>
