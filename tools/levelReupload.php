@@ -17,13 +17,8 @@ include "../incl/lib/connection.php";
 require "../incl/lib/XORCipher.php";
 require "../config/reuploadAcc.php";
 require_once "../incl/lib/mainLib.php";
-require_once "../incl/lib/Captcha.php";
 $gs = new mainLib();
 if(!empty($_POST["levelid"])){
-
-	if(!Captcha::validateCaptcha())
-		exit("Invalid captcha response");
-
 	$levelID = $_POST["levelid"];
 	$levelID = preg_replace("/[^0-9]/", '', $levelID);
 	$url = $_POST["server"];
@@ -141,9 +136,8 @@ if(!empty($_POST["levelid"])){
 		    <summary>Advanced options</summary>
 		    URL: <input type="text" name="server" value="http://www.boomlings.com/database/downloadGJLevel22.php"><br>
 			Debug Mode (0=off, 1=on): <input type="text" name="debug" value="0"><br>
-		</details>';
-		Captcha::displayCaptcha();
-		echo '<input type="submit" value="Reupload"></form>';
+		</details>
+		<input type="submit" value="Reupload"></form>';
 }
 ?>
 </body>

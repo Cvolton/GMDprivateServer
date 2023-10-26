@@ -1,0 +1,4 @@
+ALTER TABLE `levels` ADD `unlisted2` INT NOT NULL DEFAULT '0' AFTER `isLDM`;
+ALTER TABLE `levels` ADD `wt` INT NOT NULL DEFAULT '0' AFTER `unlisted2`;
+ALTER TABLE `levels` ADD `wt2` INT NOT NULL DEFAULT '0' AFTER `wt`;
+ALTER TABLE `levels` ADD INDEX(`unlisted2`);

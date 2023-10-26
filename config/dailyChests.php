@@ -23,6 +23,6 @@ $chest2items = [1, 2, 3, 4, 5, 6];
 $chest2minKeys = 1;
 $chest2maxKeys = 6;
 //REWARD TIMES (in seconds)
-$chest1wait = 14400;
-$chest2wait = 86400;
+$chest1wait = 3600;
+$chest2wait = 14400;
 ?>

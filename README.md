@@ -1,7 +1,4 @@
 # GMDprivateServer
-## Note
-This is a custom version of Cvolton's GMDprivateServer. I removed stuff **that i find useless** or that I dont like.
-
 ## Geometry Dash Private Server
 Basically a Geometry Dash Server Emulator
 
