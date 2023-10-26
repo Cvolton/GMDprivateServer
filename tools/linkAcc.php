@@ -8,7 +8,12 @@
 include "../incl/lib/connection.php";
 require_once "../incl/lib/generatePass.php";
 require_once "../incl/lib/exploitPatch.php";
+require_once "../incl/lib/Captcha.php";
 if(!empty($_POST["userhere"]) AND !empty($_POST["passhere"]) AND !empty($_POST["usertarg"]) AND !empty($_POST["passtarg"])){
+
+	if(!Captcha::validateCaptcha())
+		exit("Invalid captcha response");
+
 	$userhere = ExploitPatch::remove($_POST["userhere"]);
 	$passhere = ExploitPatch::remove($_POST["passhere"]);
 	$usertarg = ExploitPatch::remove($_POST["usertarg"]);
@@ -84,8 +89,9 @@ if(!empty($_POST["userhere"]) AND !empty($_POST["passhere"]) AND !empty($_POST["
 		<summary>Advanced options</summary>
 		URL: <input type="text" name="server" value="http://www.boomlings.com/database/accounts/loginGJAccount.php"><br>
 		Debug Mode (0=off, 1=on): <input type="text" name="debug" value="0"><br>
-	</details>
-	<input type="submit" value="Link Accounts"></form>';
+	</details>';
+	Captcha::displayCaptcha();
+	echo '<input type="submit" value="Link Accounts"></form>';
 }
 ?>
 </body>
