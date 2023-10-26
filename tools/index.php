@@ -1,4 +1,3 @@
-<a href="../dashboard">Check out the dashboard beta here</a>
 <?php
 function listdir($dir){
 	$dirstring = "";
