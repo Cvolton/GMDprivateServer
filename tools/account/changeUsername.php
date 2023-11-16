@@ -11,6 +11,11 @@ if($userName != "" AND $newusr != "" AND $password != ""){
 	if ($pass == 1) {
 		if(strlen($newusr) > 20)
 			exit("Username too long - 20 characters max. <a href='changeUsername.php'>Try again</a>");
+		$query = $db->prepare("SELECT userName FROM accounts WHERE userName=:newusr");
+		$query->execute(["newusr" => $newusr]);
+		if ($query->rowCount() == 1) {
+			exit("This nickname is taken. <a href='changeUsername.php'>Try again</a>");
+		}
 		$query = $db->prepare("UPDATE accounts SET username=:newusr WHERE userName=:userName");	
 		$query->execute([':newusr' => $newusr, ':userName' => $userName]);
 		if($query->rowCount()==0){
