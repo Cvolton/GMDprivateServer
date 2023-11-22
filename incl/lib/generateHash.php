@@ -11,16 +11,13 @@ class GenerateHash {
 		return sha1($hash . "xI25fpAapCQg");
 	}
 	public static function genSolo($levelstring) {
-		$hash = "aaaaa";
 		$len = strlen($levelstring);
-		$divided = intval($len/40);
-		$p = 0;
-		for($k = 0; $k < $len ; $k= $k+$divided){
-			if($p > 39) break;
-			$hash[$p] = $levelstring[$k]; 
-			$p++;
-		}
-		return sha1($hash . "xI25fpAapCQg");
+		if($len < 41)return sha1("{$levelstring}xI25fpAapCQg");
+		$hash = '????????????????????????????????????????xI25fpAapCQg';
+		$m = intdiv($len, 40);
+		$i = 40;
+		while($i)$hash[--$i] = $levelstring[$i*$m];
+		return sha1($hash);
 	}
 	public static function genSolo2($lvlsmultistring) {
 		return sha1($lvlsmultistring . "xI25fpAapCQg");
