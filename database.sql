@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jul 14, 2022 at 08:19 AM
--- Server version: 10.6.7-MariaDB-2ubuntu1
--- PHP Version: 8.1.2
+-- Generation Time: Nov 23, 2023 at 12:16 AM
+-- Server version: 10.11.2-MariaDB-1
+-- PHP Version: 8.1.12-1ubuntu4.3
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -29,9 +29,9 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `acccomments` (
   `userID` int(11) NOT NULL,
-  `userName` varchar(50) COLLATE utf8mb3_unicode_ci NOT NULL,
-  `comment` longtext COLLATE utf8mb3_unicode_ci NOT NULL,
-  `secret` varchar(10) COLLATE utf8mb3_unicode_ci NOT NULL DEFAULT 'unused',
+  `userName` varchar(50) NOT NULL,
+  `comment` longtext NOT NULL,
+  `secret` varchar(10) NOT NULL DEFAULT 'unused',
   `commentID` int(11) NOT NULL,
   `timestamp` int(11) NOT NULL,
   `likes` int(11) NOT NULL DEFAULT 0,
@@ -45,19 +45,19 @@ CREATE TABLE `acccomments` (
 --
 
 CREATE TABLE `accounts` (
-  `userName` varchar(255) COLLATE utf8mb3_unicode_ci NOT NULL,
-  `password` varchar(255) COLLATE utf8mb3_unicode_ci NOT NULL,
-  `gjp2` varchar(255) COLLATE utf8mb3_unicode_ci DEFAULT NULL,
-  `email` varchar(255) COLLATE utf8mb3_unicode_ci NOT NULL,
+  `userName` varchar(255) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `gjp2` varchar(255) DEFAULT NULL,
+  `email` varchar(255) NOT NULL,
   `accountID` int(11) NOT NULL,
   `isAdmin` int(11) NOT NULL DEFAULT 0,
   `mS` int(11) NOT NULL DEFAULT 0,
   `frS` int(11) NOT NULL DEFAULT 0,
   `cS` int(11) NOT NULL DEFAULT 0,
-  `youtubeurl` varchar(255) COLLATE utf8mb3_unicode_ci NOT NULL DEFAULT '',
-  `twitter` varchar(255) COLLATE utf8mb3_unicode_ci NOT NULL DEFAULT '',
-  `twitch` varchar(255) COLLATE utf8mb3_unicode_ci NOT NULL DEFAULT '',
-  `salt` varchar(255) COLLATE utf8mb3_unicode_ci NOT NULL DEFAULT '',
+  `youtubeurl` varchar(255) NOT NULL DEFAULT '',
+  `twitter` varchar(255) NOT NULL DEFAULT '',
+  `twitch` varchar(255) NOT NULL DEFAULT '',
+  `salt` varchar(255) NOT NULL DEFAULT '',
   `registerDate` int(11) NOT NULL DEFAULT 0,
   `friendsCount` int(11) NOT NULL DEFAULT 0,
   `discordID` bigint(20) NOT NULL DEFAULT 0,
@@ -74,9 +74,9 @@ CREATE TABLE `accounts` (
 CREATE TABLE `actions` (
   `ID` int(11) NOT NULL,
   `type` int(11) NOT NULL DEFAULT 0,
-  `value` varchar(255) COLLATE utf8mb3_unicode_ci NOT NULL DEFAULT '0',
+  `value` varchar(255) NOT NULL DEFAULT '0',
   `timestamp` int(11) NOT NULL DEFAULT 0,
-  `value2` varchar(255) COLLATE utf8mb3_unicode_ci NOT NULL DEFAULT '0',
+  `value2` varchar(255) NOT NULL DEFAULT '0',
   `value3` int(11) NOT NULL DEFAULT 0,
   `value4` int(11) NOT NULL DEFAULT 0,
   `value5` int(11) NOT NULL DEFAULT 0,
@@ -119,7 +119,7 @@ CREATE TABLE `actions_likes` (
 --
 
 CREATE TABLE `bannedips` (
-  `IP` varchar(255) COLLATE utf8mb3_unicode_ci NOT NULL DEFAULT '127.0.0.1',
+  `IP` varchar(255) NOT NULL DEFAULT '127.0.0.1',
   `ID` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
 
@@ -143,9 +143,9 @@ CREATE TABLE `blocks` (
 
 CREATE TABLE `comments` (
   `userID` int(11) NOT NULL,
-  `userName` varchar(50) COLLATE utf8mb3_unicode_ci NOT NULL,
-  `comment` longtext COLLATE utf8mb3_unicode_ci NOT NULL,
-  `secret` varchar(10) COLLATE utf8mb3_unicode_ci NOT NULL DEFAULT 'none',
+  `userName` varchar(50) NOT NULL,
+  `comment` longtext NOT NULL,
+  `secret` varchar(10) NOT NULL DEFAULT 'none',
   `levelID` int(11) NOT NULL,
   `commentID` int(11) NOT NULL,
   `timestamp` int(11) NOT NULL,
@@ -188,7 +188,7 @@ CREATE TABLE `dailyfeatures` (
 CREATE TABLE `friendreqs` (
   `accountID` int(11) NOT NULL,
   `toAccountID` int(11) NOT NULL,
-  `comment` varchar(1000) COLLATE utf8mb3_unicode_ci NOT NULL,
+  `comment` varchar(1000) NOT NULL,
   `uploadDate` int(11) NOT NULL,
   `ID` int(11) NOT NULL,
   `isNew` tinyint(1) NOT NULL DEFAULT 1
@@ -232,10 +232,10 @@ CREATE TABLE `gauntlets` (
 CREATE TABLE `levels` (
   `gameVersion` int(11) NOT NULL,
   `binaryVersion` int(11) NOT NULL DEFAULT 0,
-  `userName` mediumtext COLLATE utf8mb3_unicode_ci NOT NULL,
+  `userName` mediumtext NOT NULL,
   `levelID` int(11) NOT NULL,
-  `levelName` varchar(255) COLLATE utf8mb3_unicode_ci NOT NULL,
-  `levelDesc` mediumtext COLLATE utf8mb3_unicode_ci NOT NULL,
+  `levelName` varchar(255) NOT NULL,
+  `levelDesc` mediumtext NOT NULL,
   `levelVersion` int(11) NOT NULL,
   `levelLength` int(11) NOT NULL DEFAULT 0,
   `audioTrack` int(11) NOT NULL,
@@ -247,10 +247,10 @@ CREATE TABLE `levels` (
   `objects` int(11) NOT NULL DEFAULT 0,
   `coins` int(11) NOT NULL DEFAULT 0,
   `requestedStars` int(11) NOT NULL DEFAULT 0,
-  `extraString` mediumtext COLLATE utf8mb3_unicode_ci NOT NULL,
-  `levelString` longtext COLLATE utf8mb3_unicode_ci DEFAULT NULL,
-  `levelInfo` mediumtext COLLATE utf8mb3_unicode_ci NOT NULL,
-  `secret` mediumtext COLLATE utf8mb3_unicode_ci NOT NULL,
+  `extraString` mediumtext NOT NULL,
+  `levelString` longtext DEFAULT NULL,
+  `levelInfo` mediumtext NOT NULL,
+  `secret` mediumtext NOT NULL,
   `starDifficulty` int(11) NOT NULL DEFAULT 0 COMMENT '0=N/A 10=EASY 20=NORMAL 30=HARD 40=HARDER 50=INSANE 50=AUTO 50=DEMON',
   `downloads` int(11) NOT NULL DEFAULT 300,
   `likes` int(11) NOT NULL DEFAULT 100,
@@ -266,17 +266,17 @@ CREATE TABLE `levels` (
   `starEpic` int(11) NOT NULL DEFAULT 0,
   `starDemonDiff` int(11) NOT NULL DEFAULT 0,
   `userID` int(11) NOT NULL,
-  `extID` varchar(255) COLLATE utf8mb3_unicode_ci NOT NULL,
+  `extID` varchar(255) NOT NULL,
   `unlisted` int(11) NOT NULL,
   `originalReup` int(11) NOT NULL DEFAULT 0 COMMENT 'used for levelReupload.php',
-  `hostname` varchar(255) COLLATE utf8mb3_unicode_ci NOT NULL,
+  `hostname` varchar(255) NOT NULL,
   `isCPShared` int(11) NOT NULL DEFAULT 0,
   `isDeleted` int(11) NOT NULL DEFAULT 0,
   `isLDM` int(11) NOT NULL DEFAULT 0,
   `unlisted2` int(11) NOT NULL DEFAULT 0,
   `wt` int(11) NOT NULL DEFAULT 0,
   `wt2` int(11) NOT NULL DEFAULT 0,
-  `settingsString` mediumtext COLLATE utf8mb3_unicode_ci NOT NULL DEFAULT ''
+  `settingsString` mediumtext NOT NULL DEFAULT ''
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
 
 -- --------------------------------------------------------
@@ -295,7 +295,7 @@ CREATE TABLE `levelscores` (
   `coins` int(11) NOT NULL DEFAULT 0,
   `clicks` int(11) NOT NULL DEFAULT 0,
   `time` int(11) NOT NULL DEFAULT 0,
-  `progresses` text COLLATE utf8mb3_unicode_ci NOT NULL DEFAULT '',
+  `progresses` text NOT NULL DEFAULT '',
   `dailyID` int(11) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
 
@@ -309,7 +309,7 @@ CREATE TABLE `links` (
   `ID` int(11) NOT NULL,
   `accountID` int(11) NOT NULL,
   `targetAccountID` int(11) NOT NULL,
-  `server` varchar(255) COLLATE utf8mb3_unicode_ci NOT NULL,
+  `server` varchar(255) NOT NULL,
   `timestamp` int(11) NOT NULL,
   `userID` int(11) NOT NULL,
   `targetUserID` int(11) NOT NULL
@@ -323,13 +323,13 @@ CREATE TABLE `links` (
 
 CREATE TABLE `mappacks` (
   `ID` int(11) NOT NULL,
-  `name` varchar(100) COLLATE utf8mb3_unicode_ci NOT NULL,
-  `levels` varchar(512) COLLATE utf8mb3_unicode_ci NOT NULL COMMENT 'entered as "ID of level 1, ID of level 2, ID of level 3" for example "13,14,15" (without the "s)',
+  `name` varchar(100) NOT NULL,
+  `levels` varchar(512) NOT NULL COMMENT 'entered as "ID of level 1, ID of level 2, ID of level 3" for example "13,14,15" (without the "s)',
   `stars` int(11) NOT NULL,
   `coins` int(11) NOT NULL,
   `difficulty` int(11) NOT NULL,
-  `rgbcolors` varchar(11) COLLATE utf8mb3_unicode_ci NOT NULL COMMENT 'entered as R,G,B',
-  `colors2` varchar(11) COLLATE utf8mb3_unicode_ci NOT NULL DEFAULT 'none'
+  `rgbcolors` varchar(11) NOT NULL COMMENT 'entered as R,G,B',
+  `colors2` varchar(11) NOT NULL DEFAULT 'none'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
 
 -- --------------------------------------------------------
@@ -340,14 +340,14 @@ CREATE TABLE `mappacks` (
 
 CREATE TABLE `messages` (
   `userID` int(11) NOT NULL,
-  `userName` varchar(50) COLLATE utf8mb3_unicode_ci NOT NULL,
-  `body` longtext COLLATE utf8mb3_unicode_ci NOT NULL,
-  `subject` longtext COLLATE utf8mb3_unicode_ci NOT NULL,
+  `userName` varchar(50) NOT NULL,
+  `body` longtext NOT NULL,
+  `subject` longtext NOT NULL,
   `accID` int(11) NOT NULL,
   `messageID` int(11) NOT NULL,
   `toAccountID` int(11) NOT NULL,
   `timestamp` int(11) NOT NULL,
-  `secret` varchar(25) COLLATE utf8mb3_unicode_ci NOT NULL DEFAULT 'unused',
+  `secret` varchar(25) NOT NULL DEFAULT 'unused',
   `isNew` int(11) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
 
@@ -360,15 +360,15 @@ CREATE TABLE `messages` (
 CREATE TABLE `modactions` (
   `ID` int(11) NOT NULL,
   `type` int(11) NOT NULL DEFAULT 0,
-  `value` varchar(255) COLLATE utf8mb3_unicode_ci NOT NULL DEFAULT '0',
+  `value` varchar(255) NOT NULL DEFAULT '0',
   `timestamp` int(11) NOT NULL DEFAULT 0,
-  `value2` varchar(255) COLLATE utf8mb3_unicode_ci NOT NULL DEFAULT '0',
+  `value2` varchar(255) NOT NULL DEFAULT '0',
   `value3` int(11) NOT NULL DEFAULT 0,
-  `value4` varchar(255) COLLATE utf8mb3_unicode_ci NOT NULL DEFAULT '0',
+  `value4` varchar(255) NOT NULL DEFAULT '0',
   `value5` int(11) NOT NULL DEFAULT 0,
   `value6` int(11) NOT NULL DEFAULT 0,
   `account` int(11) NOT NULL DEFAULT 0,
-  `value7` varchar(255) COLLATE utf8mb3_unicode_ci NOT NULL DEFAULT '0'
+  `value7` varchar(255) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
 
 -- --------------------------------------------------------
@@ -380,7 +380,7 @@ CREATE TABLE `modactions` (
 CREATE TABLE `modipperms` (
   `categoryID` int(11) NOT NULL,
   `actionFreeCopy` int(11) NOT NULL DEFAULT 0
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -390,7 +390,7 @@ CREATE TABLE `modipperms` (
 
 CREATE TABLE `modips` (
   `ID` int(11) NOT NULL,
-  `IP` varchar(69) COLLATE utf8mb3_unicode_ci NOT NULL,
+  `IP` varchar(69) NOT NULL,
   `isMod` int(11) NOT NULL,
   `accountID` int(11) NOT NULL,
   `modipCategory` int(11) NOT NULL
@@ -407,7 +407,7 @@ CREATE TABLE `quests` (
   `type` int(11) NOT NULL,
   `amount` int(11) NOT NULL,
   `reward` int(11) NOT NULL,
-  `name` varchar(255) COLLATE utf8mb3_unicode_ci NOT NULL
+  `name` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
 
 -- --------------------------------------------------------
@@ -419,7 +419,7 @@ CREATE TABLE `quests` (
 CREATE TABLE `reports` (
   `ID` int(11) NOT NULL,
   `levelID` int(11) NOT NULL,
-  `hostname` varchar(255) COLLATE utf8mb3_unicode_ci NOT NULL
+  `hostname` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
 
 -- --------------------------------------------------------
@@ -432,7 +432,7 @@ CREATE TABLE `roleassign` (
   `assignID` bigint(20) NOT NULL,
   `roleID` bigint(20) NOT NULL,
   `accountID` bigint(20) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
 -- --------------------------------------------------------
 
@@ -484,7 +484,7 @@ CREATE TABLE `roles` (
   `isDefault` int(11) NOT NULL DEFAULT 0,
   `commentColor` varchar(11) NOT NULL DEFAULT '000,000,000',
   `modBadgeLevel` int(11) NOT NULL DEFAULT 0
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
 -- --------------------------------------------------------
 
@@ -494,12 +494,12 @@ CREATE TABLE `roles` (
 
 CREATE TABLE `songs` (
   `ID` int(11) NOT NULL,
-  `name` varchar(100) COLLATE utf8mb3_unicode_ci NOT NULL,
+  `name` varchar(100) NOT NULL,
   `authorID` int(11) NOT NULL,
-  `authorName` varchar(100) COLLATE utf8mb3_unicode_ci NOT NULL,
-  `size` varchar(100) COLLATE utf8mb3_unicode_ci NOT NULL,
-  `download` varchar(1337) COLLATE utf8mb3_unicode_ci NOT NULL,
-  `hash` varchar(256) COLLATE utf8mb3_unicode_ci NOT NULL DEFAULT '',
+  `authorName` varchar(100) NOT NULL,
+  `size` varchar(100) NOT NULL,
+  `download` varchar(1337) NOT NULL,
+  `hash` varchar(256) NOT NULL DEFAULT '',
   `isDisabled` int(11) NOT NULL DEFAULT 0,
   `levelsCount` int(11) NOT NULL DEFAULT 0,
   `reuploadTime` int(11) NOT NULL DEFAULT 0
@@ -521,7 +521,7 @@ CREATE TABLE `suggest` (
   `suggestAuto` int(11) NOT NULL DEFAULT 0,
   `suggestDemon` int(11) NOT NULL DEFAULT 0,
   `timestamp` int(11) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb3;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
 -- --------------------------------------------------------
 
@@ -532,19 +532,20 @@ CREATE TABLE `suggest` (
 CREATE TABLE `users` (
   `isRegistered` int(11) NOT NULL,
   `userID` int(11) NOT NULL,
-  `extID` varchar(100) COLLATE utf8mb3_unicode_ci NOT NULL,
-  `userName` varchar(69) COLLATE utf8mb3_unicode_ci NOT NULL DEFAULT 'undefined',
+  `extID` varchar(100) NOT NULL,
+  `userName` varchar(69) NOT NULL DEFAULT 'undefined',
   `stars` int(11) NOT NULL DEFAULT 0,
   `demons` int(11) NOT NULL DEFAULT 0,
   `icon` int(11) NOT NULL DEFAULT 0,
   `color1` int(11) NOT NULL DEFAULT 0,
   `color2` int(11) NOT NULL DEFAULT 3,
+  `color3` int(11) NOT NULL DEFAULT 0,
   `iconType` int(11) NOT NULL DEFAULT 0,
   `coins` int(11) NOT NULL DEFAULT 0,
   `userCoins` int(11) NOT NULL DEFAULT 0,
   `special` int(11) NOT NULL DEFAULT 0,
   `gameVersion` int(11) NOT NULL DEFAULT 0,
-  `secret` varchar(69) COLLATE utf8mb3_unicode_ci NOT NULL DEFAULT 'none',
+  `secret` varchar(69) NOT NULL DEFAULT 'none',
   `accIcon` int(11) NOT NULL DEFAULT 0,
   `accShip` int(11) NOT NULL DEFAULT 0,
   `accBall` int(11) NOT NULL DEFAULT 0,
@@ -552,8 +553,10 @@ CREATE TABLE `users` (
   `accDart` int(11) NOT NULL DEFAULT 0,
   `accRobot` int(11) DEFAULT 0,
   `accGlow` int(11) NOT NULL DEFAULT 0,
+  `accSwing` int(11) NOT NULL DEFAULT 0,
+  `accJetpack` int(11) NOT NULL DEFAULT 0,
   `creatorPoints` double NOT NULL DEFAULT 0,
-  `IP` varchar(69) COLLATE utf8mb3_unicode_ci NOT NULL DEFAULT '127.0.0.1',
+  `IP` varchar(69) NOT NULL DEFAULT '127.0.0.1',
   `lastPlayed` int(11) NOT NULL DEFAULT 0,
   `diamonds` int(11) NOT NULL DEFAULT 0,
   `moons` int(11) NOT NULL DEFAULT 0,
