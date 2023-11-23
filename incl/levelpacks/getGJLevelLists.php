@@ -90,11 +90,11 @@ switch($type){
 		break;
 }
 //ACTUAL QUERY EXECUTION
-$querybase = "FROM lists LEFT JOIN users ON lists.accountID = users.extID $morejoins";
+$querybase = "FROM lists LEFT JOIN users ON lists.accountID LIKE users.extID $morejoins";
 if(!empty($params)){
 	$querybase .= " WHERE (" . implode(" ) AND ( ", $params) . ")";
 }
-$query = "SELECT lists.*, users.userID, users.userName, users.extID $querybase $morejoins ";
+$query = "SELECT lists.*, UNIX_TIMESTAMP(uploadDate) AS uploadDateUnix, UNIX_TIMESTAMP(updateDate) AS updateDateUnix, users.userID, users.userName, users.extID $querybase $morejoins ";
 if($order){
 	if($ordergauntlet){
 		$query .= "ORDER BY $order ASC";
@@ -115,11 +115,11 @@ $totallvlcount = $countquery->fetchColumn();
 $result = $query->fetchAll();
 $levelcount = $query->rowCount();
 foreach($result as &$list) {
-	if($list["levelID"]!=""){
-		//$lvlsmultistring[] = ["listID" => $list["listID"], "stars" => $list["starStars"], 'coins' => $list["starCoins"]];
-		$lvlstring .= "1:{$list['listID']}:2:{$list['listName']}:3:{$list['listDesc']}:5:{$list['listVersion']}:49:{$list['accountID']}:50:{$list['userName']}:10:{$list['downloads']}:7:{$list['starDifficulty']}:14:{$list['likes']}:19:{$list['starFeatured']}:51:{$list['listlevels']}:28:{$list['uploadDate']}:29:{$list['updateDate']}"."|";
-		$userstring .= $gs->getUserString($list)."|";
-	}
+	//$lvlsmultistring[] = ["listID" => $list["listID"], "stars" => $list["starStars"], 'coins' => $list["starCoins"]];
+	if(!$list['uploadDateUnix']) $list['uploadDateUnix'] = 0;
+	if(!$list['updateDateUnix']) $list['updateDateUnix'] = 0;
+	$lvlstring .= "1:{$list['listID']}:2:{$list['listName']}:3:{$list['listDesc']}:5:{$list['listVersion']}:49:{$list['accountID']}:50:{$list['userName']}:10:{$list['downloads']}:7:{$list['starDifficulty']}:14:{$list['likes']}:19:{$list['starFeatured']}:51:{$list['listlevels']}:28:{$list['uploadDateUnix']}:29:{$list['updateDateUnix']}"."|";
+	$userstring .= $gs->getUserString($list)."|";
 }
 $lvlstring = substr($lvlstring, 0, -1);
 $userstring = substr($userstring, 0, -1);
