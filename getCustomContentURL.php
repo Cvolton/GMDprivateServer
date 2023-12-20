@@ -1,3 +1,1 @@
-<?php
-echo "https://geometrydashfiles.b-cdn.net";
-?>
+https://geometrydashfiles.b-cdn.net
