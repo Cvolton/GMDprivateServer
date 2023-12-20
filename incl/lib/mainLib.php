@@ -731,4 +731,12 @@ class mainLib {
 		$query = $db->prepare($query);
 		$query->execute([':account' => $accountID, ':level' => $levelID, ':diff' => $difficulty, ':stars' => $stars, ':feat' => $feat, ':auto' => $auto, ':demon' => $demon, ':timestamp' => time()]);
 	}
+	public function getListOwner($listID) {
+		if(!is_numeric($listID)) return false;
+		include __DIR__ . "/connection.php";
+		$query = $db->prepare('SELECT * FROM lists WHERE listID = :id');
+		$query->execute([':id' => $listID]);
+		$query = $query->fetch();
+		return $query['accountID'];
+	}
 }
