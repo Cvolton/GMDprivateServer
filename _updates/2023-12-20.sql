@@ -9,6 +9,7 @@
  `starDifficulty` int(11) NOT NULL,
  `likes` int(11) NOT NULL DEFAULT '0',
  `starFeatured` int(11) NOT NULL DEFAULT '0',
+ `starStars` int(11) NOT NULL DEFAULT '0',
  `listlevels` varchar(2048) NOT NULL,
  `uploadDate` int(11) NOT NULL DEFAULT '0',
  `updateDate` int(11) NOT NULL DEFAULT '0',
