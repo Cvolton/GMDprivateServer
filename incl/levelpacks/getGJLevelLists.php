@@ -22,11 +22,16 @@ if(!empty($_POST["diff"])){
 }else{
 	$diff = "-";
 }
+if(!empty($_POST["demonFilter"])){
+	$demonFilter = ExploitPatch::number($_POST["demonFilter"]);
+}else{
+	$demonFilter = 0;
+}
 
 
 //ADDITIONAL PARAMETERS
 if(!empty($_POST["star"]) OR (!empty($_POST["featured"]) AND $_POST["featured"]==1)){
-	$params[] = "NOT starFeatured = 0";
+	$params[] = "NOT starStars = 0";
 }
 
 //DIFFICULTY FILTERS
@@ -38,14 +43,13 @@ switch($diff){
 		$params[] = "starDifficulty = '0'";
 		break;
 	case -2:
-		$params[] = "starDifficulty > '5'";
+		$params[] = "starDifficulty = 5+".$demonFilter;
 		break;
 	case "-";
 		break;
 	default:
 		if($diff){
-			$diff = str_replace(",", "0,", $diff) . "0";
-			$params[] = "starDifficulty IN ($diff) AND starAuto = '0' AND starDemon = '0'";
+			$params[] = "starDifficulty IN ($diff)";
 		}
 		break;
 }
@@ -58,6 +62,7 @@ if(isset($_POST["page"]) AND is_numeric($_POST["page"])){
 }else{
 	$offset = 0;
 }
+$params[] = "unlisted = 0";
 switch($type){
 	case 0:
 		$order = "likes";
@@ -75,11 +80,28 @@ switch($type){
 	case 2:
 		$order = "likes";
 		break;
+	case 3: // TRENDING
+		$order = "downloads";
+		$params[] = 'lists.uploadDate > '.(time()-604800);
+		break;
+	case 4: // RECENT
+		$order = "uploadDate";
+		break;
 	case 5:
 		$params[] = "lists.accountID = '$str'";
 		break;
+	case 6: // TOP LISTS
+		$params[] = "lists.starStars > 0";
+		$params[] = "lists.starFeatured > 0";
+		$order = "downloads";
+		break;
+	case 11: // RATED
+		$params[] = "lists.starStars > 0";
+		$order = "downloads";
+		break;
 	case 12: //FOLLOWED
 		$followed = ExploitPatch::numbercolon($_POST["followed"]);
+		if(empty($followed)) $followed = 0; // No SQL syntax error today
 		$params[] = "lists.accountID IN ($followed)";
 		break;
 	case 13: //FRIENDS
@@ -88,13 +110,19 @@ switch($type){
 		$whereor = implode(",", $peoplearray);
 		$params[] = "lists.accountID IN ($whereor)";
 		break;
+	case 7: // MAGIC
+	case 27: // SENT
+		$params[] = "suggest.suggestLevelId < 0";
+		$order = "suggest.timestamp";
+		$morejoins = "LEFT JOIN suggest ON lists.listID*-1 LIKE suggest.suggestLevelId";
+		break;
 }
 //ACTUAL QUERY EXECUTION
 $querybase = "FROM lists LEFT JOIN users ON lists.accountID LIKE users.extID $morejoins";
 if(!empty($params)){
 	$querybase .= " WHERE (" . implode(" ) AND ( ", $params) . ")";
 }
-$query = "SELECT lists.*, UNIX_TIMESTAMP(uploadDate) AS uploadDateUnix, UNIX_TIMESTAMP(updateDate) AS updateDateUnix, users.userID, users.userName, users.extID $querybase $morejoins ";
+$query = "SELECT lists.*, UNIX_TIMESTAMP(uploadDate) AS uploadDateUnix, UNIX_TIMESTAMP(updateDate) AS updateDateUnix, users.userID, users.userName, users.extID $querybase";
 if($order){
 	$query .= "ORDER BY $order DESC";
 }
@@ -113,10 +141,12 @@ $levelcount = $query->rowCount();
 foreach($result as &$list) {
 	if(!$list['uploadDateUnix']) $list['uploadDateUnix'] = 0;
 	if(!$list['updateDateUnix']) $list['updateDateUnix'] = 0;
-	$lvlstring .= "1:{$list['listID']}:2:{$list['listName']}:3:{$list['listDesc']}:5:{$list['listVersion']}:49:{$list['accountID']}:50:{$list['userName']}:10:{$list['downloads']}:7:{$list['starDifficulty']}:14:{$list['likes']}:19:{$list['starFeatured']}:51:{$list['listlevels']}:28:{$list['uploadDateUnix']}:29:{$list['updateDateUnix']}"."|";
+	$listCount = count(explode(',', $list['listlevels']));
+	$lvlstring .= "1:{$list['listID']}:2:{$list['listName']}:3:{$list['listDesc']}:5:{$list['listVersion']}:49:{$list['accountID']}:50:{$list['userName']}:10:{$list['downloads']}:7:{$list['starDifficulty']}:14:{$list['likes']}:19:{$list['starFeatured']}:51:{$list['listlevels']}:55:{$list['starStars']}:56:{$listCount}:28:{$list['uploadDateUnix']}:29:{$list['updateDateUnix']}"."|";
 	$userstring .= $gs->getUserString($list)."|";
 }
-if(!empty($str) AND is_numeric($str)) {
+if(empty($lvlstring)) exit("-1");
+if(!empty($str) AND is_numeric($str) AND $levelcount == 1) {
 	$ip = $gs->getIP();
 	$query6 = $db->prepare("SELECT count(*) FROM actions_downloads WHERE levelID=:listID AND ip=INET6_ATON(:ip)");
 	$query6->execute([':listID' => '-'.$str, ':ip' => $ip]);
@@ -133,6 +163,6 @@ $userstring = substr($userstring, 0, -1);
 echo $lvlstring."#".$userstring;
 echo "#".$totallvlcount.":".$offset.":10";
 echo "#";
-echo "Sa1ntSosetHuiItDoesntWorkWithoutThisLine";
-//echo GenerateHash::genMulti($lvlstring);
+echo "Sa1ntSosetHuiHelloFromGreenCatsServerLOL";
+//echo GenerateHash::genMulti($lvlsmultistring);
 ?>
