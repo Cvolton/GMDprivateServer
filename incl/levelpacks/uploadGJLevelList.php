@@ -16,7 +16,9 @@ $original = ExploitPatch::number($_POST["original"]);
 $unlisted = ExploitPatch::number($_POST["unlisted"]);
 $secret = ExploitPatch::remove($_POST["secret"]);
 
-if($secret != "Wmfd2893gb7") exit("-1");
+if($secret != "Wmfd2893gb7") exit("-100");
+if(count(explode(',', $listLevels)) == 0) exit("-6");
+if(!is_numeric($accountID)) exit("-9");
 
 if($listID != 0) {
 	$list = $db->prepare('SELECT * FROM lists WHERE listID = :listID');
