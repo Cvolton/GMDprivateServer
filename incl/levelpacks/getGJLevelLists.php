@@ -63,9 +63,9 @@ switch($type){
 		$order = "likes";
 		if(!empty($str)){
 			if(is_numeric($str)){
-				$params = array("levelID = '$str'");
+				$params = array("listID = '$str'");
 			}else{
-				$params[] = "levelName LIKE '%$str%'";
+				$params[] = "listName LIKE '%$str%'";
 			}
 		}
 		break;
