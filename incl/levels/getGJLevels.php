@@ -237,7 +237,7 @@ $querybase = "FROM levels LEFT JOIN songs ON levels.songID = songs.ID LEFT JOIN 
 if(!empty($params)){
 	$querybase .= " WHERE (" . implode(" ) AND ( ", $params) . ")";
 }
-$query = "SELECT levels.*, songs.ID, songs.name, songs.authorID, songs.authorName, songs.size, songs.isDisabled, songs.download, users.userName, users.extID $querybase $morejoins ";
+$query = "SELECT levels.*, songs.ID, songs.name, songs.authorID, songs.authorName, songs.size, songs.isDisabled, songs.download, users.userName, users.extID $querybase";
 if($order){
 	if($ordergauntlet){
 		$query .= "ORDER BY $order ASC";
