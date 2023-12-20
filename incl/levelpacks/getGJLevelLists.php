@@ -96,11 +96,7 @@ if(!empty($params)){
 }
 $query = "SELECT lists.*, UNIX_TIMESTAMP(uploadDate) AS uploadDateUnix, UNIX_TIMESTAMP(updateDate) AS updateDateUnix, users.userID, users.userName, users.extID $querybase $morejoins ";
 if($order){
-	if($ordergauntlet){
-		$query .= "ORDER BY $order ASC";
-	}else{
-		$query .= "ORDER BY $order DESC";
-	}
+	$query .= "ORDER BY $order DESC";
 }
 $query .= " LIMIT 10 OFFSET $offset";
 //echo $query;
@@ -115,7 +111,6 @@ $totallvlcount = $countquery->fetchColumn();
 $result = $query->fetchAll();
 $levelcount = $query->rowCount();
 foreach($result as &$list) {
-	//$lvlsmultistring[] = ["listID" => $list["listID"], "stars" => $list["starStars"], 'coins' => $list["starCoins"]];
 	if(!$list['uploadDateUnix']) $list['uploadDateUnix'] = 0;
 	if(!$list['updateDateUnix']) $list['updateDateUnix'] = 0;
 	$lvlstring .= "1:{$list['listID']}:2:{$list['listName']}:3:{$list['listDesc']}:5:{$list['listVersion']}:49:{$list['accountID']}:50:{$list['userName']}:10:{$list['downloads']}:7:{$list['starDifficulty']}:14:{$list['likes']}:19:{$list['starFeatured']}:51:{$list['listlevels']}:28:{$list['uploadDateUnix']}:29:{$list['updateDateUnix']}"."|";
@@ -126,5 +121,6 @@ $userstring = substr($userstring, 0, -1);
 echo $lvlstring."#".$userstring;
 echo "#".$totallvlcount.":".$offset.":10";
 echo "#";
-//echo GenerateHash::genMulti($lvlsmultistring);
+echo "Sa1ntSosetHuiItDoesntWorkWithoutThisLine";
+//echo GenerateHash::genMulti($lvlstring);
 ?>
