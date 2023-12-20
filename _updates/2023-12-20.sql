@@ -1,4 +1,4 @@
-	CREATE TABLE `lists` (
+CREATE TABLE `lists` (
  `listID` int(11) NOT NULL AUTO_INCREMENT,
  `listName` varchar(2048) NOT NULL,
  `listDesc` varchar(2048) NOT NULL,
@@ -16,4 +16,12 @@
  `original` int(11) NOT NULL DEFAULT '0',
  `unlisted` int(11) NOT NULL DEFAULT '0',
  PRIMARY KEY (`listID`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE TABLE `platscores` (
+ `ID` int(11) NOT NULL AUTO_INCREMENT,
+ `accountID` int(11) NOT NULL DEFAULT '0',
+ `levelID` int(11) NOT NULL DEFAULT '0',
+ `time` int(11) NOT NULL DEFAULT '0',
+ `timestamp` int(11) NOT NULL DEFAULT '0',
+ PRIMARY KEY (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8
