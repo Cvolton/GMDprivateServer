@@ -116,6 +116,18 @@ foreach($result as &$list) {
 	$lvlstring .= "1:{$list['listID']}:2:{$list['listName']}:3:{$list['listDesc']}:5:{$list['listVersion']}:49:{$list['accountID']}:50:{$list['userName']}:10:{$list['downloads']}:7:{$list['starDifficulty']}:14:{$list['likes']}:19:{$list['starFeatured']}:51:{$list['listlevels']}:28:{$list['uploadDateUnix']}:29:{$list['updateDateUnix']}"."|";
 	$userstring .= $gs->getUserString($list)."|";
 }
+if(!empty($str) AND is_numeric($str)) {
+	$ip = $gs->getIP();
+	$query6 = $db->prepare("SELECT count(*) FROM actions_downloads WHERE levelID=:listID AND ip=INET6_ATON(:ip)");
+	$query6->execute([':listID' => '-'.$str, ':ip' => $ip]);
+	if($query6->fetchColumn() < 2){
+		$query2=$db->prepare("UPDATE lists SET downloads = downloads + 1 WHERE listID = :listID");
+		$query2->execute([':listID' => $str]);
+		$query6 = $db->prepare("INSERT INTO actions_downloads (levelID, ip) VALUES 
+				(:listID,INET6_ATON(:ip))");
+		$query6->execute([':listID' => '-'.$str, ':ip' => $ip]);
+	}
+}
 $lvlstring = substr($lvlstring, 0, -1);
 $userstring = substr($userstring, 0, -1);
 echo $lvlstring."#".$userstring;
