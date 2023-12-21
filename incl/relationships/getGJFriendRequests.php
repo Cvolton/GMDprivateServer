@@ -5,7 +5,7 @@ require_once "../lib/exploitPatch.php";
 require_once "../lib/GJPCheck.php";
 $reqstring = "";
 $getSent = !empty($_POST["getSent"]) ? ExploitPatch::remove($_POST["getSent"]) : 0;
-if(empty($_POST["accountID"]) OR (!isset($_POST["page"]) OR !is_numeric($_POST["page"])) OR empty($_POST["gjp"])){
+if(empty($_POST["accountID"]) OR (!isset($_POST["page"]) OR !is_numeric($_POST["page"])) OR empty($_POST["gjp2"])){
 	exit("-1");
 }
 $accountID = GJPCheck::getAccountIDOrDie();
