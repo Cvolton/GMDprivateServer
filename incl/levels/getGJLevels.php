@@ -104,6 +104,9 @@ if(!empty($_POST["len"])){
 if($len != "-" AND !empty($len)){
 	$params[] = "levelLength IN ($len)";
 }
+if(!empty($_POST['legendary']) && !empty($_POST['mythic'])) $params[] = 'starEpic = 2 OR starEpic = 3';
+elseif(!empty($_POST['mythic'])) $params[] = 'starEpic = 2';
+elseif(!empty($_POST['legendary'])) $params[] = 'starEpic = 3';
 
 //DIFFICULTY FILTERS
 switch($diff){
