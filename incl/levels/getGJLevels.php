@@ -9,9 +9,9 @@ $gs = new mainLib();
 require "../lib/generateHash.php";
 
 //initializing variables
-$lvlstring = ""; $userstring = ""; $songsstring = ""; $lvlsmultistring = []; $str = ""; $order = "uploadDate";
-$orderenabled = true; $ordergauntlet = false;
-$params = array("NOT unlisted = 1");
+$lvlstring = ""; $userstring = ""; $songsstring = ""; $lvlsmultistring = []; $epicParams = []; $str = ""; $order = "uploadDate";
+$orderenabled = true; $ordergauntlet = false; $isIDSearch = false;
+$params = array("unlisted = 0");
 $morejoins = "";
 
 if(!empty($_POST["gameVersion"])){
@@ -54,9 +54,6 @@ if(!empty($_POST["original"]) AND $_POST["original"]==1){
 }
 if(!empty($_POST["coins"]) AND $_POST["coins"]==1){
 		$params[] = "starCoins = 1 AND NOT levels.coins = 0";
-}
-if(!empty($_POST["epic"]) AND $_POST["epic"]==1){
-	$params[] = "starEpic = 1";
 }
 if(!empty($_POST["uncompleted"]) AND $_POST["uncompleted"]==1){
 	$completedLevels = ExploitPatch::numbercolon($_POST["completedLevels"]);
@@ -104,9 +101,11 @@ if(!empty($_POST["len"])){
 if($len != "-" AND !empty($len)){
 	$params[] = "levelLength IN ($len)";
 }
-if(!empty($_POST['legendary']) && !empty($_POST['mythic'])) $params[] = 'starEpic = 2 OR starEpic = 3';
-elseif(!empty($_POST['mythic'])) $params[] = 'starEpic = 2';
-elseif(!empty($_POST['legendary'])) $params[] = 'starEpic = 3';
+if(!empty($_POST["epic"])) $epicParams[] = "starEpic = 1";
+if(!empty($_POST["mythic"])) $epicParams[] = "starEpic = 2";
+if(!empty($_POST["legendary"])) $epicParams[] = "starEpic = 3";
+$epicFilter = implode(" OR ", $epicParams);
+if(!empty($epicFilter)) $params[] = $epicFilter;
 
 //DIFFICULTY FILTERS
 switch($diff){
@@ -169,6 +168,7 @@ switch($type){
 		if(!empty($str)){
 			if(is_numeric($str)){
 				$params = array("levelID = '$str'");
+				$isIDSearch = true;
 			}else{
 				$params[] = "levelName LIKE '%$str%'";
 			}
@@ -262,6 +262,10 @@ $result = $query->fetchAll();
 $levelcount = $query->rowCount();
 foreach($result as &$level1) {
 	if($level1["levelID"]!=""){
+		if($isIDSearch AND $level1['unlisted'] > 1) {
+			if(!isset($accountID)) $accountID = GJPCheck::getAccountIDOrDie();
+			if(!$gs->isFriends($accountID, $level1['extID']) && $accountID != $level1['extID']) break;
+		}
 		$lvlsmultistring[] = ["levelID" => $level1["levelID"], "stars" => $level1["starStars"], 'coins' => $level1["starCoins"]];
 		if(!empty($gauntlet)){
 			$lvlstring .= "44:$gauntlet:";
