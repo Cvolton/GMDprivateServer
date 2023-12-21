@@ -1,5 +1,5 @@
 <?php
-error_reporting(E_ALL);
+error_reporting(0);
 chdir(dirname(__FILE__));
 echo "Please wait...<br>";
 ob_flush();
@@ -38,7 +38,7 @@ $query = $db->prepare("UPDATE users
 	    ) AS featuredTable ON usersTable.userID = featuredTable.userID
 	    LEFT JOIN
 	    (
-	        SELECT count(*) as epic, userID FROM levels WHERE starEpic != 0 AND isCPShared = 0 GROUP BY(userID) 
+	        SELECT count(*)+(starEpic-1) as epic, userID FROM levels WHERE starEpic != 0 AND isCPShared = 0 GROUP BY(userID) 
 	    ) AS epicTable ON usersTable.userID = epicTable.userID
 	) calculated
 	ON users.userID = calculated.userID
@@ -60,7 +60,7 @@ foreach($result as $level){
 		$deservedcp++;
 	}
 	if($level["starEpic"] != 0){
-		$deservedcp += 2;
+		$deservedcp += $level["starEpic"]; // Epic - 1, Legendary - 2, Mythic - 3
 	}
 	$query = $db->prepare("SELECT userID FROM cpshares WHERE levelID = :levelID");
 	$query->execute([':levelID' => $level["levelID"]]);
