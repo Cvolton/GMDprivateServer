@@ -25,7 +25,7 @@ if($listID != 0) {
 	$list->execute([':listID' => $listID]);
 	$list = $list->fetch();
 	if(!empty($list)) {
-		$list = $db->prepare('UPDATE lists SET listDesc = :listDesc, listVersion = :listVersion, accountID = :accountID, userName = :userName, listlevels = :listlevels, starDifficulty = :difficulty, original = :original, unlisted = :unlisted, uploadDate = :timestamp WHERE listID = :listID');
+		$list = $db->prepare('UPDATE lists SET listDesc = :listDesc, listVersion = :listVersion, accountID = :accountID, userName = :userName, listlevels = :listlevels, starDifficulty = :difficulty, original = :original, unlisted = :unlisted, updateDate = :timestamp WHERE listID = :listID');
 		$list->execute([':listID' => $listID, ':listDesc' => $listDesc, ':listVersion' => $listVersion, ':accountID' => $accountID, ':userName' => $gs->getAccountName($accountID), ':listlevels' => $listLevels, ':difficulty' => $difficulty, ':original' => $original, ':unlisted' => $unlisted, ':timestamp' => time()]);
 		exit($listID);
 	} else exit(-1);
