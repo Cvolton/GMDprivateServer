@@ -22,6 +22,7 @@ CREATE TABLE `platscores` (
  `accountID` int(11) NOT NULL DEFAULT '0',
  `levelID` int(11) NOT NULL DEFAULT '0',
  `time` int(11) NOT NULL DEFAULT '0',
+ `points` int(11) NOT NULL DEFAULT '0',
  `timestamp` int(11) NOT NULL DEFAULT '0',
  PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8
