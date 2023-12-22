@@ -6,10 +6,11 @@ require_once "../lib/GJPCheck.php";
 require_once "../lib/exploitPatch.php";
 require_once "../lib/mainLib.php";
 $gs = new mainLib();
-if(!isset($_POST["gjp"]) OR !isset($_POST["rating"]) OR !isset($_POST["levelID"]) OR !isset($_POST["accountID"])){
+$gjp2check = isset($_POST['gjp2']) ? $_POST['gjp2'] : $_POST['gjp'];
+if(!isset($gjp2check) OR !isset($_POST["rating"]) OR !isset($_POST["levelID"]) OR !isset($_POST["accountID"])){
 	exit("-1");
 }
-$gjp = ExploitPatch::remove($_POST["gjp"]);
+$gjp = ExploitPatch::remove($gjp2check);
 $rating = ExploitPatch::remove($_POST["rating"]);
 $levelID = ExploitPatch::remove($_POST["levelID"]);
 $id = GJPCheck::getAccountIDOrDie();
