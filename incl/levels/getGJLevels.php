@@ -242,11 +242,11 @@ switch($type){
 		break;
 }
 //ACTUAL QUERY EXECUTION
-$querybase = "FROM levels LEFT JOIN songs ON levels.songID = songs.ID LEFT JOIN users ON levels.userID = users.userID $morejoins";
+$querybase = "FROM levels LEFT JOIN songs ON levels.songID = songs.ID LEFT JOIN users ON levels.userID = users.userID $sugg $morejoins";
 if(!empty($params)){
 	$querybase .= " WHERE (" . implode(" ) AND ( ", $params) . ")";
 }
-$query = "SELECT levels.*, songs.ID, songs.name, songs.authorID, songs.authorName, songs.size, songs.isDisabled, songs.download, users.userName, users.extID $querybase";
+$query = "SELECT levels.*, songs.ID, songs.name, songs.authorID, songs.authorName, songs.size, songs.isDisabled, songs.download, users.userName, users.extID$sug $querybase";
 if($order){
 	if($ordergauntlet){
 		$query .= "ORDER BY $order ASC";
