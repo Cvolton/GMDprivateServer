@@ -198,7 +198,7 @@ switch($type){
 		$order = "rateDate DESC,uploadDate";
 		break;
 	case 7: //MAGIC
-		$params[] = "objects > 9999";
+		$params[] = "objects > 9999"; // L
 		break;
 	case 10: //MAP PACKS
 	case 19: //unknown but same as map packs (on real GD type 10 has star rated filter and 19 doesn't)
@@ -233,6 +233,12 @@ switch($type){
 		$morejoins = "INNER JOIN dailyfeatures ON levels.levelID = dailyfeatures.levelID";
 		$params[] = "dailyfeatures.type = 2";
 		$order = "dailyfeatures.feaID";
+		break;
+	case 27: // SENT LEVELS
+		$sug = ", suggest.suggestLevelId, suggest.timestamp";
+        	$sugg = "LEFT JOIN suggest ON levels.levelID = suggest.suggestLevelId";
+		$params[] = "suggestLevelId > 0";
+    		$order = 'suggest.timestamp';
 		break;
 }
 //ACTUAL QUERY EXECUTION
