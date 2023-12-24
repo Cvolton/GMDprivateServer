@@ -302,10 +302,17 @@ class Commands {
 			case '!acc':
 			case '!setacc':
 				if(!$gs->checkPermission($accountID, "commandSetacc")) return false;
-				$acc = ExploitPatch::number($carray[1]);
-				if(empty($acc)) return false;
+				if(is_numeric($carray[1])) {
+					$acc = ExploitPatch::number($carray[1]);
+					$accName = $gs->getAccountName($acc);
+				}
+				else {
+					$accName = ExploitPatch::charclean($carray[1]);
+					$acc = $gs->getAccountIDFromName($accName);
+				}
+				if(empty($acc) OR empty($accName)) return false;
 				$query = $db->prepare("UPDATE lists SET accountID = :accID, userName = :name WHERE listID=:listID");
-				$query->execute([':listID' => $listID, ':accID' => $acc, ':name' => $gs->getAccountName($acc)]);
+				$query->execute([':listID' => $listID, ':accID' => $acc, ':name' => $accName]);
 				$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('35', :value, :levelID, :timestamp, :id)");
 				$query->execute([':value' => $acc, ':timestamp' => time(), ':id' => $accountID, ':levelID' => $listID]);
 				break;
