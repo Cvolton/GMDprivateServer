@@ -238,6 +238,7 @@ class Commands {
 		return false;
 	}
 	public static function doListCommands($accountID, $command, $listID) {
+		if(substr($command,0,1) != '!') return false;
 		$listID = $listID * -1;
 		include dirname(__FILE__)."/../lib/connection.php";
 		require_once "../lib/exploitPatch.php";
