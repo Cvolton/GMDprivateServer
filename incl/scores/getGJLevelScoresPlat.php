@@ -66,7 +66,7 @@ foreach ($result as &$score) {
 	$x++;
 	$time = date("d/m/Y G.i", $score["timestamp"]);
 	$scoreType = $score[$mode];
-	$lvlstr .= "1:{$user['userName']}:2:{$extID}:9:{$user['icon']}:10:{$user['color1']}:11:{$user['color2']}:14:{$user['iconType']}:15:{$user['color3']}:16:{$user['userID']}:3:{$scoreType}:6:{$x}:42:{$time}|";
+	$lvlstr .= "1:{$user['userName']}:2:{$user['userID']}:9:{$user['icon']}:10:{$user['color1']}:11:{$user['color2']}:14:{$user['iconType']}:15:{$user['color3']}:16:{$extID}:3:{$scoreType}:6:{$x}:42:{$time}|";
 }
 echo substr($lvlstr, 0, -1);
 ?>
