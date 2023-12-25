@@ -248,9 +248,17 @@ class Commands {
 		switch($carray[0]) {
 			case '!r':
 			case '!rate':
+				$getList = $db->prepare('SELECT * FROM lists WHERE listID = :listID');
+				$getList->execute([':listID' => $listID]);
+				$getList = $getList->fetch();
 				$reward = ExploitPatch::number($carray[1]);
-				$diff = ExploitPatch::remove($carray[2]);
+				$diff = ExploitPatch::charclean($carray[2]);
 				$featured = is_numeric($carray[3]) ? ExploitPatch::number($carray[3]) : ExploitPatch::number($carray[4]);
+				$count = is_numeric($carray[4]) ? ExploitPatch::number($carray[4]) : ExploitPatch::number($carray[5]);
+				if(empty($count)) {
+					$levelsCount = $getList['listlevels'];
+					$count = count(explode(',', $levelsCount));
+				}
 				if(!is_numeric($diff)) {
 					$diff = strtolower($diff);
 					if(isset($carray[3]) AND strtolower($carray[3]) == "demon") {
@@ -261,9 +269,10 @@ class Commands {
 						$diff = $diffList[$diff];
 					}
 				}
+				if(!isset($diff)) $diff = $getList['starDifficulty'];
 				if($gs->checkPermission($accountID, "commandRate")) {
-					$query = $db->prepare("UPDATE lists SET starStars = :reward, starDifficulty = :diff, starFeatured = :feat WHERE listID = :listID");
-					$query->execute([':listID' => $listID, ':reward' => $reward, ':diff' => $diff, ':feat' => $featured]);
+					$query = $db->prepare("UPDATE lists SET starStars = :reward, starDifficulty = :diff, starFeatured = :feat, countForReward = :count WHERE listID = :listID");
+					$query->execute([':listID' => $listID, ':reward' => $reward, ':diff' => $diff, ':feat' => $featured, ':count' => $count]);
 					$query = $db->prepare("INSERT INTO modactions (type, value, value2, value3, timestamp, account) VALUES ('30', :value, :value2, :listID, :timestamp, :id)");
 					$query->execute([':value' => $reward, ':value2' => $diff, ':timestamp' => time(), ':id' => $accountID, ':listID' => $listID]);
 				} elseif($gs->checkPermission($accountID, "actionSuggestRating")) {
