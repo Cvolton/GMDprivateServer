@@ -25,13 +25,13 @@ if($listID != 0) {
 	$list->execute([':listID' => $listID]);
 	$list = $list->fetch();
 	if(!empty($list)) {
-		$list = $db->prepare('UPDATE lists SET listDesc = :listDesc, listVersion = :listVersion, accountID = :accountID, userName = :userName, listlevels = :listlevels, starDifficulty = :difficulty, original = :original, unlisted = :unlisted, updateDate = :timestamp WHERE listID = :listID');
-		$list->execute([':listID' => $listID, ':listDesc' => $listDesc, ':listVersion' => $listVersion, ':accountID' => $accountID, ':userName' => $gs->getAccountName($accountID), ':listlevels' => $listLevels, ':difficulty' => $difficulty, ':original' => $original, ':unlisted' => $unlisted, ':timestamp' => time()]);
+		$list = $db->prepare('UPDATE lists SET listDesc = :listDesc, listVersion = :listVersion, accountID = :accountID, listlevels = :listlevels, starDifficulty = :difficulty, original = :original, unlisted = :unlisted, updateDate = :timestamp WHERE listID = :listID');
+		$list->execute([':listID' => $listID, ':listDesc' => $listDesc, ':listVersion' => $listVersion, ':accountID' => $accountID, ':listlevels' => $listLevels, ':difficulty' => $difficulty, ':original' => $original, ':unlisted' => $unlisted, ':timestamp' => time()]);
 		exit($listID);
 	} else exit(-1);
 }
 
-$list = $db->prepare('INSERT INTO lists (listName, listDesc, listVersion, accountID, userName, listlevels, starDifficulty, original, unlisted, uploadDate) VALUES (:listName, :listDesc, :listVersion, :accountID, :userName, :listlevels, :difficulty, :original, :unlisted, :timestamp)');
-$list->execute([':listName' => $listName, ':listDesc' => $listDesc, ':listVersion' => $listVersion, ':accountID' => $accountID, ':userName' => $gs->getAccountName($accountID), ':listlevels' => $listLevels, ':difficulty' => $difficulty, ':original' => $original, ':unlisted' => $unlisted, ':timestamp' => time()]);
+$list = $db->prepare('INSERT INTO lists (listName, listDesc, listVersion, accountID, listlevels, starDifficulty, original, unlisted, uploadDate) VALUES (:listName, :listDesc, :listVersion, :accountID, :listlevels, :difficulty, :original, :unlisted, :timestamp)');
+$list->execute([':listName' => $listName, ':listDesc' => $listDesc, ':listVersion' => $listVersion, ':accountID' => $accountID, ':listlevels' => $listLevels, ':difficulty' => $difficulty, ':original' => $original, ':unlisted' => $unlisted, ':timestamp' => time()]);
 echo $db->lastInsertId();
 ?>
