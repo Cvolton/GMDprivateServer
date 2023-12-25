@@ -755,9 +755,15 @@ class mainLib {
 	public function getListOwner($listID) {
 		if(!is_numeric($listID)) return false;
 		include __DIR__ . "/connection.php";
-		$query = $db->prepare('SELECT * FROM lists WHERE listID = :id');
+		$query = $db->prepare('SELECT accountID FROM lists WHERE listID = :id');
 		$query->execute([':id' => $listID]);
-		$query = $query->fetch();
-		return $query['accountID'];
+		return $query->fetchColumn();
+	}
+	public function getListLevels($listID) {
+		if(!is_numeric($listID)) return false;
+		include __DIR__ . "/connection.php";
+		$query = $db->prepare('SELECT listlevels FROM lists WHERE listID = :id');
+		$query->execute([':id' => $listID]);
+		return $query->fetchColumn();
 	}
 }
