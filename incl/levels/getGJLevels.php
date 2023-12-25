@@ -233,6 +233,10 @@ switch($type){
 		$params[] = "dailyfeatures.type = 2";
 		$order = "dailyfeatures.feaID";
 		break;
+	case 25: // LIST LEVELS
+		$listLevels = $gs->getListLevels($str);
+		$params = array("levelID IN (".$listLevels.")");
+		break;
 	case 27: // SENT LEVELS
 		$sug = ", suggest.suggestLevelId, suggest.timestamp";
         	$sugg = "LEFT JOIN suggest ON levels.levelID = suggest.suggestLevelId";
