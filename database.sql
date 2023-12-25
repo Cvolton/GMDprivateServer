@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: localhost
--- Время создания: Дек 25 2023 г., 16:14
+-- Время создания: Дек 25 2023 г., 20:59
 -- Версия сервера: 5.7.27-30
 -- Версия PHP: 7.1.33
 
@@ -336,6 +336,7 @@ CREATE TABLE `lists` (
   `starFeatured` int(11) NOT NULL DEFAULT '0',
   `starStars` int(11) NOT NULL DEFAULT '0',
   `listlevels` varchar(2048) CHARACTER SET utf8 NOT NULL,
+  `countForReward` int(11) NOT NULL DEFAULT '0',
   `uploadDate` int(11) NOT NULL DEFAULT '0',
   `updateDate` int(11) NOT NULL DEFAULT '0',
   `original` int(11) NOT NULL DEFAULT '0',
