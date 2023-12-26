@@ -254,7 +254,7 @@ class Commands {
 				$reward = ExploitPatch::number($carray[1]);
 				$diff = ExploitPatch::charclean($carray[2]);
 				$featured = is_numeric($carray[3]) ? ExploitPatch::number($carray[3]) : ExploitPatch::number($carray[4]);
-				$count = is_numeric($carray[4]) ? ExploitPatch::number($carray[4]) : ExploitPatch::number($carray[5]);
+				$count = is_numeric($carray[3]) ? ExploitPatch::number($carray[4]) : ExploitPatch::number($carray[5]);
 				if(empty($count)) {
 					$levelsCount = $getList['listlevels'];
 					$count = count(explode(',', $levelsCount));
