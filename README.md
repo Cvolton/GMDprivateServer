@@ -2,7 +2,7 @@
 ## Geometry Dash Private Server
 Basically a Geometry Dash Server Emulator
 
-Supported version of Geometry Dash: 1.0 - 2.11
+Supported version of Geometry Dash: 1.0 - 2.2 (unfinished)
 
 (See [the backwards compatibility section of this article](https://github.com/Cvolton/GMDprivateServer/wiki/Deliberate-differences-from-real-GD) for more information)
 
@@ -15,7 +15,7 @@ Required version of PHP: 5.5+ (tested up to 8.1.2)
 ### Setup
 1) Upload the files on a webserver
 2) Import database.sql into a MySQL/MariaDB database
-3) Edit the links in GeometryDash.exe (some are base64 encoded since 2.1, remember that)
+3) Edit the links in GeometryDash.exe (some are base64 encoded in 2.1, remember that)
 
 #### Updating the server
 See [README.md in the `_updates`](_updates/README.md)
