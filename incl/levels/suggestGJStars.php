@@ -6,8 +6,8 @@ require_once "../lib/GJPCheck.php";
 require_once "../lib/exploitPatch.php";
 require_once "../lib/mainLib.php";
 $gs = new mainLib();
-
-$gjp = ExploitPatch::remove($_POST["gjp"]);
+$gjp2check = isset($_POST['gjp2']) ? $_POST['gjp2'] : $_POST['gjp'];
+$gjp = ExploitPatch::remove($gjp2check);
 $stars = ExploitPatch::remove($_POST["stars"]);
 $feature = ExploitPatch::remove($_POST["feature"]);
 $levelID = ExploitPatch::remove($_POST["levelID"]);

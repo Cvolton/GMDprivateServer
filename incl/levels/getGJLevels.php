@@ -9,9 +9,9 @@ $gs = new mainLib();
 require "../lib/generateHash.php";
 
 //initializing variables
-$lvlstring = ""; $userstring = ""; $songsstring = ""; $lvlsmultistring = []; $str = ""; $order = "uploadDate";
-$orderenabled = true; $ordergauntlet = false;
-$params = array("NOT unlisted = 1");
+$lvlstring = ""; $userstring = ""; $songsstring = ""; $lvlsmultistring = []; $epicParams = []; $str = ""; $order = "uploadDate";
+$orderenabled = true; $ordergauntlet = false; $isIDSearch = false;
+$params = array("unlisted = 0");
 $morejoins = "";
 
 if(!empty($_POST["gameVersion"])){
@@ -46,17 +46,11 @@ if($gameVersion==0){
 }else{
 	$params[] = "levels.gameVersion <= '$gameVersion'";
 }
-if(!empty($_POST["featured"]) AND $_POST["featured"]==1){
-	$params[] = "starFeatured = 1";
-}
 if(!empty($_POST["original"]) AND $_POST["original"]==1){
 	$params[] = "original = 0";
 }
 if(!empty($_POST["coins"]) AND $_POST["coins"]==1){
 		$params[] = "starCoins = 1 AND NOT levels.coins = 0";
-}
-if(!empty($_POST["epic"]) AND $_POST["epic"]==1){
-	$params[] = "starEpic = 1";
 }
 if(!empty($_POST["uncompleted"]) AND $_POST["uncompleted"]==1){
 	$completedLevels = ExploitPatch::numbercolon($_POST["completedLevels"]);
@@ -104,6 +98,12 @@ if(!empty($_POST["len"])){
 if($len != "-" AND !empty($len)){
 	$params[] = "levelLength IN ($len)";
 }
+if(!empty($_POST["featured"])) $epicParams[] = "starFeatured = 1";
+if(!empty($_POST["epic"])) $epicParams[] = "starEpic = 1";
+if(!empty($_POST["mythic"])) $epicParams[] = "starEpic = 2";
+if(!empty($_POST["legendary"])) $epicParams[] = "starEpic = 3";
+$epicFilter = implode(" OR ", $epicParams);
+if(!empty($epicFilter)) $params[] = $epicFilter;
 
 //DIFFICULTY FILTERS
 switch($diff){
@@ -166,6 +166,7 @@ switch($type){
 		if(!empty($str)){
 			if(is_numeric($str)){
 				$params = array("levelID = '$str'");
+				$isIDSearch = true;
 			}else{
 				$params[] = "levelName LIKE '%$str%'";
 			}
@@ -187,7 +188,8 @@ switch($type){
 		break;
 	case 6: //featured
 	case 17: //featured GDW //TODO: make this list of daily levels
-		$params[] = "NOT starFeatured = 0";
+		if($gameVersion > 21) $params[] = "NOT starFeatured = 0 OR NOT starEpic = 0";
+		else $params[] = "NOT starFeatured = 0";
 		$order = "rateDate DESC,uploadDate";
 		break;
 	case 16: //HALL OF FAME
@@ -195,7 +197,7 @@ switch($type){
 		$order = "rateDate DESC,uploadDate";
 		break;
 	case 7: //MAGIC
-		$params[] = "objects > 9999";
+		$params[] = "objects > 9999"; // L
 		break;
 	case 10: //MAP PACKS
 	case 19: //unknown but same as map packs (on real GD type 10 has star rated filter and 19 doesn't)
@@ -231,13 +233,23 @@ switch($type){
 		$params[] = "dailyfeatures.type = 2";
 		$order = "dailyfeatures.feaID";
 		break;
+	case 25: // LIST LEVELS
+		$listLevels = $gs->getListLevels($str);
+		$params = array("levelID IN (".$listLevels.")");
+		break;
+	case 27: // SENT LEVELS
+		$sug = ", suggest.suggestLevelId, suggest.timestamp";
+        	$sugg = "LEFT JOIN suggest ON levels.levelID = suggest.suggestLevelId";
+		$params[] = "suggestLevelId > 0";
+    		$order = 'suggest.timestamp';
+		break;
 }
 //ACTUAL QUERY EXECUTION
-$querybase = "FROM levels LEFT JOIN songs ON levels.songID = songs.ID LEFT JOIN users ON levels.userID = users.userID $morejoins";
+$querybase = "FROM levels LEFT JOIN songs ON levels.songID = songs.ID LEFT JOIN users ON levels.userID = users.userID $sugg $morejoins";
 if(!empty($params)){
 	$querybase .= " WHERE (" . implode(" ) AND ( ", $params) . ")";
 }
-$query = "SELECT levels.*, songs.ID, songs.name, songs.authorID, songs.authorName, songs.size, songs.isDisabled, songs.download, users.userName, users.extID $querybase $morejoins ";
+$query = "SELECT levels.*, songs.ID, songs.name, songs.authorID, songs.authorName, songs.size, songs.isDisabled, songs.download, users.userName, users.extID$sug $querybase";
 if($order){
 	if($ordergauntlet){
 		$query .= "ORDER BY $order ASC";
@@ -259,6 +271,10 @@ $result = $query->fetchAll();
 $levelcount = $query->rowCount();
 foreach($result as &$level1) {
 	if($level1["levelID"]!=""){
+		if($isIDSearch AND $level1['unlisted'] > 1) {
+			if(!isset($accountID)) $accountID = GJPCheck::getAccountIDOrDie();
+			if(!$gs->isFriends($accountID, $level1['extID']) && $accountID != $level1['extID']) break;
+		}
 		$lvlsmultistring[] = ["levelID" => $level1["levelID"], "stars" => $level1["starStars"], 'coins' => $level1["starCoins"]];
 		if(!empty($gauntlet)){
 			$lvlstring .= "44:$gauntlet:";

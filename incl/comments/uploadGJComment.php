@@ -11,7 +11,7 @@ $userName = !empty($_POST['userName']) ? ExploitPatch::remove($_POST['userName']
 $gameVersion = !empty($_POST['gameVersion']) ? ExploitPatch::number($_POST['gameVersion']) : 0;
 $comment = ExploitPatch::remove($_POST['comment']);
 $comment = ($gameVersion < 20) ? base64_encode($comment) : $comment;
-$levelID = ExploitPatch::number($_POST["levelID"]);
+$levelID = ($_POST['levelID'] < 0 ? '-' : '').ExploitPatch::number($_POST["levelID"]);
 $percent = !empty($_POST["percent"]) ? ExploitPatch::remove($_POST["percent"]) : 0;
 
 $id = $mainLib->getIDFromPost();
