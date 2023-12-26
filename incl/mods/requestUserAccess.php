@@ -10,8 +10,8 @@ $accountID = GJPCheck::getAccountIDOrDie();
 
 if ($gs->getMaxValuePermission($accountID,"actionRequestMod") >= 1) { // checks if they have mod
 	$permState = $gs->getMaxValuePermission($accountID,"modBadgeLevel"); // checks mod badge level so it knows what to show					   
-	if ($permState >= 2){ // if the mod badge level is higher than 2, it will still show elder mod message
-		exit("2");
+	if ($permState >= 3){ // if the mod badge level is higher than 2, it will still show elder mod message
+		exit("3");
 	}
 	echo $permState; 
 }
