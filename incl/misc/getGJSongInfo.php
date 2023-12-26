@@ -11,8 +11,6 @@ $query3=$db->prepare("SELECT ID,name,authorID,authorName,size,isDisabled,downloa
 $query3->execute([':songid' => $songid]);
 //todo: move this logic away from this file
 if($query3->rowCount() == 0) {
-	if ($songid > 5000000) exit("-1"); //this is custom music, if do not exit they will to take a long time
-	//fixed by WOSHIZHAZHA120
 	$url = 'http://www.boomlings.com/database/getGJSongInfo.php';
 	$data = array('songID' => $songid, 'secret' => 'Wmfd2893gb7');
 	$options = array(
