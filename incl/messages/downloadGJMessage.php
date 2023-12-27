@@ -3,6 +3,9 @@ chdir(dirname(__FILE__));
 include "../lib/connection.php";
 require_once "../lib/GJPCheck.php";
 require_once "../lib/exploitPatch.php";
+require_once "../lib/mainLib.php";
+$gs = new mainLib();
+include "../../config/timestamps.php";
 
 $accountID = GJPCheck::getAccountIDOrDie();
 $messageID = ExploitPatch::remove($_POST["messageID"]);
@@ -25,6 +28,10 @@ if(empty($_POST["isSender"])){
 $query=$db->prepare("SELECT userName,userID,extID FROM users WHERE extID = :accountID");
 $query->execute([':accountID' => $accountID]);
 $result12 = $query->fetch();
-$uploadDate = date("d/m/Y G.i", $result["timestamp"]);
+if ($timestampsMode == 0) {
+	$uploadDate = $gs->makeTime($result["timestamp"]);
+} else {
+	$uploadDate = date("d/m/Y G.i", $result["timestamp"]);
+}
 echo "6:".$result12["userName"].":3:".$result12["userID"].":2:".$result12["extID"].":1:".$result["messageID"].":4:".$result["subject"].":8:".$result["isNew"].":9:".$isSender.":5:".$result["body"].":7:".$uploadDate."";
 ?>
