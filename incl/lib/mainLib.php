@@ -134,6 +134,9 @@ class mainLib {
 			case 4:
 				return "XL";
 				break;
+			case 5:
+				return "Platformer";
+				break;
 			default:
 				return "Unknown";
 				break;
