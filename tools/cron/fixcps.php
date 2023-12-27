@@ -21,11 +21,12 @@ set_time_limit(0);
 $cplog = "";
 $people = array();
 include "../../incl/lib/connection.php";
+include "../../config/cp.php";
 //getting users
 $query = $db->prepare("UPDATE users
 	LEFT JOIN
 	(
-	    SELECT usersTable.userID, (IFNULL(starredTable.starred, 0) + IFNULL(featuredTable.featured, 0) + (IFNULL(epicTable.epic,0)*2)) as CP FROM (
+	    SELECT usersTable.userID, ((IFNULL(starredTable.starred, 0)*:star_cp) + (IFNULL(featuredTable.featured, 0)*:featured_cp) + (IFNULL(epicTable.epic,0)*:epic_cp)) as CP FROM (
             SELECT userID FROM users
         ) AS usersTable
         LEFT JOIN
@@ -43,7 +44,7 @@ $query = $db->prepare("UPDATE users
 	) calculated
 	ON users.userID = calculated.userID
 	SET users.creatorPoints = IFNULL(calculated.CP, 0)");
-$query->execute();
+$query->execute([":star_cp" => $star_cp, ":featured_cp" => $featured_cp, ":epic_cp" => $epic_cp]);
 echo "Calculated base CP<br>";
 /*
 	CP SHARING
@@ -54,13 +55,13 @@ $result = $query->fetchAll();
 foreach($result as $level){
 	$deservedcp = 0;
 	if($level["starStars"] != 0){
-		$deservedcp++;
+		$deservedcp += $star_cp;
 	}
 	if($level["starFeatured"] != 0){
-		$deservedcp++;
+		$deservedcp += $featured_cp;
 	}
 	if($level["starEpic"] != 0){
-		$deservedcp += 2;
+		$deservedcp += $epic_cp;
 	}
 	$query = $db->prepare("SELECT userID FROM cpshares WHERE levelID = :levelID");
 	$query->execute([':levelID' => $level["levelID"]]);
@@ -75,39 +76,43 @@ foreach($result as $level){
 /*
 	NOW to update GAUNTLETS CP
 */
-$query = $db->prepare("SELECT level1,level2,level3,level4,level5 FROM gauntlets");
-$query->execute();
-$result = $query->fetchAll();
-//getting gauntlets
-foreach($result as $gauntlet){
-	//getting lvls
-	for($x = 1; $x < 6; $x++){
-		$query = $db->prepare("SELECT userID, levelID FROM levels WHERE levelID = :levelID");
-		$query->execute([':levelID' => $gauntlet["level".$x]]);
-		$result = $query->fetch();
-		//getting users
-		if($result["userID"] != ""){
-			$cplog .= $result["userID"] . " - +1\r\n";
-			$people[$result["userID"]] += 1;
+if ($gauntlets_cp != 0) {
+	$query = $db->prepare("SELECT level1,level2,level3,level4,level5 FROM gauntlets");
+	$query->execute();
+	$result = $query->fetchAll();
+	//getting gauntlets
+	foreach($result as $gauntlet){
+		//getting lvls
+		for($x = 1; $x < 6; $x++){
+			$query = $db->prepare("SELECT userID, levelID FROM levels WHERE levelID = :levelID");
+			$query->execute([':levelID' => $gauntlet["level".$x]]);
+			$result = $query->fetch();
+			//getting users
+			if($result["userID"] != ""){
+				$cplog .= $result["userID"] . " - +$gauntlets_cp\r\n";
+				$people[$result["userID"]] += $gauntlets_cp;
+			}
 		}
 	}
 }
 /*
 	NOW to update DAILY CP
 */
-$query = $db->prepare("SELECT levelID FROM dailyfeatures WHERE timestamp < :time");
-$query->execute([':time' => time()]);
-$result = $query->fetchAll();
-//getting gauntlets
-foreach($result as $daily){
-	//getting lvls
-	$query = $db->prepare("SELECT userID, levelID FROM levels WHERE levelID = :levelID");
-	$query->execute([':levelID' => $daily["levelID"]]);
-	$result = $query->fetch();
-	//getting users
-	if($result["userID"] != ""){
-		$people[$result["userID"]] += 1;
-		$cplog .= $result["userID"] . " - +1\r\n";
+if ($daily_cp != 0) {
+	$query = $db->prepare("SELECT levelID FROM dailyfeatures WHERE timestamp < :time");
+	$query->execute([':time' => time()]);
+	$result = $query->fetchAll();
+	//getting gauntlets
+	foreach($result as $daily){
+		//getting lvls
+		$query = $db->prepare("SELECT userID, levelID FROM levels WHERE levelID = :levelID");
+		$query->execute([':levelID' => $daily["levelID"]]);
+		$result = $query->fetch();
+		//getting users
+		if($result["userID"] != ""){
+			$people[$result["userID"]] += $daily_cp;
+			$cplog .= $result["userID"] . " - +$daily_cp\r\n";
+		}
 	}
 }
 /*
