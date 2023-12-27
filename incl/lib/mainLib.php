@@ -769,4 +769,16 @@ class mainLib {
 		$query->execute([':id' => $listID]);
 		return $query->fetchColumn();
 	}
+	public function getListDiffName($diff) {
+		if($diff == -1) return 'N/A';
+		$diffs = ['Auto', 'Easy', 'Normal', 'Hard', 'Harder', 'Extreme', 'Easy Demon', 'Medium Demon', 'Hard Demon', 'Insane Demon', 'Extreme Demon'];
+		return $diffs[$diff];
+	}
+	public function getListName($listID) {
+		if(!is_numeric($listID)) return false;
+		include __DIR__ . "/connection.php";
+		$query = $db->prepare('SELECT listName FROM lists WHERE listID = :id');
+		$query->execute([':id' => $listID]);
+		return $query->fetchColumn();
+	}
 }
