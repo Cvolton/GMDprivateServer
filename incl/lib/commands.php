@@ -254,7 +254,7 @@ class Commands {
 				$reward = ExploitPatch::number($carray[1]);
 				$diff = ExploitPatch::charclean($carray[2]);
 				$featured = is_numeric($carray[3]) ? ExploitPatch::number($carray[3]) : ExploitPatch::number($carray[4]);
-				$count = is_numeric($carray[3]) ? ExploitPatch::number($carray[4]) : ExploitPatch::number($carray[5]);
+				$count = is_numeric($carray[4]) ? ExploitPatch::number($carray[4]) : ExploitPatch::number($carray[5]);
 				if(empty($count)) {
 					$levelsCount = $getList['listlevels'];
 					$count = count(explode(',', $levelsCount));
@@ -298,10 +298,8 @@ class Commands {
 				if(!isset($carray[1])) $carray[1] = 1;
 				$query = $db->prepare("UPDATE lists SET unlisted = :unlisted WHERE listID=:listID");
 				$query->execute([':listID' => $listID, ':unlisted' => $carray[1]]);
-				if($accountID != $accCheck) {
-					$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('33', :value, :levelID, :timestamp, :id)");
-					$query->execute([':value' => $carray[1], ':timestamp' => time(), ':id' => $accountID, ':levelID' => $listID]);
-				}
+				$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('33', :value, :listID, :timestamp, :id)");
+				$query->execute([':value' => $carray[1], ':timestamp' => time(), ':id' => $accountID, ':listID' => $listID]);
 				break;
 			case '!d':
 			case '!delete':
@@ -319,8 +317,30 @@ class Commands {
 				if(empty($acc)) return false;
 				$query = $db->prepare("UPDATE lists SET accountID = :accID WHERE listID=:listID");
 				$query->execute([':listID' => $listID, ':accID' => $acc]);
-				$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('35', :value, :levelID, :timestamp, :id)");
-				$query->execute([':value' => $acc, ':timestamp' => time(), ':id' => $accountID, ':levelID' => $listID]);
+				$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('35', :value, :listID, :timestamp, :id)");
+				$query->execute([':value' => $acc, ':timestamp' => time(), ':id' => $accountID, ':listID' => $listID]);
+				break;
+			case '!re':
+			case '!rename':
+				$accCheck = $gs->getListOwner($listID);
+				if(!$gs->checkPermission($accountID, "commandRenameAll") AND $accountID != $accCheck) return false;
+				$carray[0] = '';
+				$name = trim(ExploitPatch::charclean(implode(' ', $carray)));
+				$query = $db->prepare("UPDATE lists SET listName = :name WHERE listID = :listID");
+				$query->execute([':listID' => $listID, ':name' => $name]);
+				$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('36', :value, :listID, :timestamp, :id)");
+				$query->execute([':value' => $name, ':timestamp' => time(), ':id' => $accountID, ':listID' => $listID]);
+				break;
+			case '!desc':
+			case '!description':
+				$accCheck = $gs->getListOwner($listID);
+				if(!$gs->checkPermission($accountID, "commandDescriptionAll") AND $accountID != $accCheck) return false;
+				$carray[0] = '';
+				$name = base64_encode(trim(ExploitPatch::charclean(implode(' ', $carray))));
+				$query = $db->prepare("UPDATE lists SET listDesc = :name WHERE listID = :listID");
+				$query->execute([':listID' => $listID, ':name' => $name]);
+				$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('37', :value, :listID, :timestamp, :id)");
+				$query->execute([':value' => $name, ':timestamp' => time(), ':id' => $accountID, ':listID' => $listID]);
 				break;
 		}
 		return true;
