@@ -325,11 +325,12 @@ class Commands {
 				$accCheck = $gs->getListOwner($listID);
 				if(!$gs->checkPermission($accountID, "commandRenameAll") AND $accountID != $accCheck) return false;
 				$carray[0] = '';
+				$oldName = $gs->getListName($listID);
 				$name = trim(ExploitPatch::charclean(implode(' ', $carray)));
 				$query = $db->prepare("UPDATE lists SET listName = :name WHERE listID = :listID");
 				$query->execute([':listID' => $listID, ':name' => $name]);
-				$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('36', :value, :listID, :timestamp, :id)");
-				$query->execute([':value' => $name, ':timestamp' => time(), ':id' => $accountID, ':listID' => $listID]);
+				$query = $db->prepare("INSERT INTO modactions (type, value, value2, value3, timestamp, account) VALUES ('36', :value, :value2, :listID, :timestamp, :id)");
+				$query->execute([':value' => $name, ':value2' => $oldName, ':timestamp' => time(), ':id' => $accountID, ':listID' => $listID]);
 				break;
 			case '!desc':
 			case '!description':
