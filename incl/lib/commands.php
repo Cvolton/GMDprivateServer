@@ -298,7 +298,7 @@ class Commands {
 				if(!isset($carray[1])) $carray[1] = 1;
 				$query = $db->prepare("UPDATE lists SET unlisted = :unlisted WHERE listID=:listID");
 				$query->execute([':listID' => $listID, ':unlisted' => $carray[1]]);
-				if($accountID != $accCheck)
+				if($accountID != $accCheck) {
 					$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('33', :value, :levelID, :timestamp, :id)");
 					$query->execute([':value' => $carray[1], ':timestamp' => time(), ':id' => $accountID, ':levelID' => $listID]);
 				}
