@@ -213,6 +213,10 @@ $string["modAboveYourRole"] = "Вы пытаетесь выдать игроку
 $string["makeNewMod"] = "Назначьте кого-нибудь модератором!";
 $string["reassignMod"] = "Переназначить модератора";
 $string["reassign"] = "Переназначить";
+$string['demotePlayer'] = "Снять игрока с поста модератора";
+$string['demotedPlayer'] = "Вы успешно сняли игрока <b>%s</b> с поста модератора!";
+$string['addedModNew'] = "Вы успешно сделали модератором игрока <b>%s</b>!";
+$string['demoted'] = 'Снят';
 
 $string["shareCPTitle"] = "Поделиться Креатор Поинтами";
 $string["shareCPDesc"] = "Здесь вы можете поделиться Креатор Поинтами c игроком!";
@@ -224,6 +228,7 @@ $string["shareCPSuccess"] = "Вы успешно поделились Креат
 $string["shareCPSuccess2"] = "c игроком";
 $string["updateCron"] = "Возможно, вам следует обновить Креатор Поинты.";
 $string["shareCPOneMore"] = "Ещё поделиться?";
+$string['shareCPSuccessNew'] = 'Вы успешно поделились Креатор Поинтами уровня <b>%1$s</b> с игроком <b>%2$s</b>!';
 
 $string["messenger"] = "Мессенджер";
 $string["write"] = "Написать";
@@ -340,9 +345,14 @@ $string["createdClan"] = "Вы успешно создали клан <span styl
 $string["createClanDesc"] = "Здесь вы можете создать клан!";
 $string["create"] = "Создать";
 $string["mainSettings"] = "Основные настройки";
+$string["takenClanName"] = "Данное название клана уже занято!";
 
 $string["suggestedName"] = '<button type="button" onclick="a(\'profile/%1$s\', true, true)" class="accbtn" name="accountID">%1$s</button><text class="dltext"> предложил оценить </text><text class="levelname">%2$s</text><text class="dltext"> на <b>%4$s%3$s</b></text>';
 $string["reportedName"] = '%1$s<text class="dltext"> зарепортили</text><text class="levelname">%2$s</text>';
+
+$string['listTable'] = "Списки уровней";
+$string['listTableMod'] = "Скрытые списки уровней";
+$string['listTableYour'] = "Ваши cкрытые списки уровней";
 
 /*
 	REUPLOAD
@@ -509,7 +519,7 @@ $string["modAction8"] = "Переименовал(а) уровень";
 $string["modAction9"] = "Сменил(а) пароль уровню";
 $string["modAction10"] = "Сменил(а) демон-сложность уровню";
 $string["modAction11"] = "Поделился(лась) CP";
-$string["modAction12"] = "Скрыл(а)/показал(а) уровень";
+$string["modAction12"] = "Скрыл(а)/открыл(а) уровень";
 $string["modAction13"] = "Сменил(а) описание уровню";
 $string["modAction14"] = "Включил(а)/выключил(а) LDM уровню";
 $string["modAction15"] = "Забанил(а)/разбанил(а) в лидербордах";
@@ -524,6 +534,14 @@ $string["modAction23"] = "Изменил(а) квест";
 $string["modAction24"] = "Переназначил(а) игрока";
 $string["modAction25"] = "Создал(а) квест";
 $string["modAction26"] = "Сменил(а) никнейм/пароль игроку";
+$string["modAction30"] = "Оценил(а) список уровней";
+$string["modAction31"] = "Отправил(а) на оценку список уровней";
+$string["modAction32"] = "Снял(а)/добавил(а) Featured списку уровней";
+$string["modAction33"] = "Скрыл(а)/открыл(а) список уровней";
+$string["modAction34"] = "Удалил(а) список уровней";
+$string["modAction35"] = "Изменил(а) автора списка уровней";
+$string["modAction36"] = "Изменил(а) название списка уровней";
+$string["modAction37"] = "Изменил(а) описание списка уровней";
 $string["everyActions"] = "Любые действия";
 $string["everyMod"] = "Все модераторы";
 $string["Kish!"] = "Кыш!";
@@ -531,5 +549,6 @@ $string["noPermission"] = "У вас нет прав!";
 $string["noLogin?"] = "Вы не вошли в аккаунт!";
 $string["LoginBtn"] = "Войти в аккаунт";
 $string["dashboard"] = "Панель сервера";
+$string["userID"] = 'ID игрока';
 //errors
 $string["errorNoAccWithPerm"] = "Ошибка: аккаунтов с правом '%s' не было найдено";

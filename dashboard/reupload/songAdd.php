@@ -3,6 +3,7 @@ session_start();
 require_once "../incl/dashboardLib.php";
 require "../".$dbPath."incl/lib/Captcha.php";
 include "../".$dbPath."incl/lib/connection.php";
+include "../".$dbPath."incl/lib/exploitPatch.php";
 $dl = new dashboardLib();
 require_once "../".$dbPath."incl/lib/mainLib.php";
 $gs = new mainLib();
@@ -30,7 +31,7 @@ if(!empty($_POST["url"])){
 		</div>', 'reupload');
 		die();
 	}
-	$songID = $gs->songReupload($_POST["url"], $_POST["author"], $_POST["name"], $_SESSION["accountID"]);
+	$songID = $gs->songReupload($_POST["url"], strip_tags(ExploitPatch::rucharclean($_POST["author"], 30)), strip_tags(ExploitPatch::rucharclean($_POST["name"], 40)), $_SESSION["accountID"]);
 	if($songID < 0){
 		$existed = str_replace('-3', '', $songID);
 		if($songID != $existed) {

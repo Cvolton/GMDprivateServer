@@ -8,7 +8,7 @@ $id = ExploitPatch::number($_GET["id"]);
 $gs = new mainLib();
 if(!empty($id)) {
 	if(!empty($_GET["name"]) AND !empty($_GET["type"]) AND !empty($_GET["amount"]) AND !empty($_GET["reward"]) AND $gs->checkPermission($_SESSION["accountID"], 'toolQuestsCreate')) {
-		$name = ExploitPatch::remove($_GET["name"]);
+		$name = ExploitPatch::charclean($_GET["name"]);
 		if(!is_numeric($_GET["type"]) OR !is_numeric($_GET["amount"]) OR !is_numeric($_GET["reward"])) die("-1");
 		if($_GET["type"] > 3) $type = 3; elseif($_GET["type"] < 1) $type = 1; else $type = ExploitPatch::number($_GET["type"]);
 		$amount = ExploitPatch::number($_GET["amount"]);

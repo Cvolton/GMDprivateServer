@@ -8,12 +8,18 @@ $id = ExploitPatch::number($_GET["id"]);
 $gs = new mainLib();
 if(!empty($id)) {
 	if(!empty($_GET["role"]) AND !empty($_GET["acc"]) AND $gs->checkPermission($_SESSION["accountID"], 'dashboardAddMod')) {
-		$role = ExploitPatch::number($_GET["role"]);
+		$role = $_GET['role'] != '-1' ? ExploitPatch::number($_GET["role"]) : '-1';
 		$mod = ExploitPatch::number($_GET["acc"]);
 		$mod2 = $gs->getAccountName($mod);
-		if($role < $gs->getMaxValuePermission($_SESSION["accountID"], 'roleID')) die("-1");
-		$change = $db->prepare("UPDATE roleassign SET roleID = :r WHERE assignID = :i");
-		if($change->execute([':r' => $role, ':i' => $id])) echo 1; else die(-1);
+		if($role != "-1") {
+			if($role < $gs->getMaxValuePermission($_SESSION["accountID"], 'roleID')) die("-1");
+			$change = $db->prepare("UPDATE roleassign SET roleID = :r WHERE assignID = :i");
+			$change = $change->execute([':r' => $role, ':i' => $id]);
+		} else {
+			$change = $db->prepare("DELETE FROM roleassign WHERE assignID = :i");
+			$change = $change->execute([':i' => $id]);
+		}
+		if($change) echo "1"; else die("-1");
 		$query = $db->prepare("INSERT INTO modactions  (type, value, timestamp, account, value2, value3) VALUES ('24', :value, :timestamp, :account, :value2, :value3)");
 		$query->execute([':value' => $mod2, ':timestamp' => time(), ':account' => $_SESSION["accountID"], ':value2' => $mod, ':value3' => $role]);
 	} else {

@@ -36,8 +36,8 @@ foreach($result as &$action){
 	$songsid = $action["songID"];
 	$songIDlol = '<button id="copy'.$action["ID"].'" class="accbtn songidyeah" onclick="copysong('.$action["ID"].')">'.$action["ID"].'</button>';
 	$time = $dl->convertToDate($action["timestamp"], true);
-  	$author = $action["authorName"];
-	$name = $action["name"];
+  	$author = htmlspecialchars($action["authorName"]);
+	$name = htmlspecialchars($action["name"]);
 	$size = $action["size"];
 	$who = '<button type="button" onclick="a(\'profile/'.$gs->getAccountName($action['reuploadID']).'\', true, true, \'POST\')" style="margin:0;font-size:20px" class="accbtn songacc" name="accountID" value="'.$action["reuploadID"].'">'.$gs->getAccountName($action['reuploadID']).'</button>';
  	$download = str_replace('http://', 'https://', $action["download"]);
@@ -111,7 +111,7 @@ $dl->printPage($pagel . $bottomrow.'<script>
 				}
 				fav.send();
 			}
-		</script>', true, "browse");
+		</script>', true, "account");
 } else {
 	$dl->printSong('<div class="form">
     <h1>'.$dl->getLocalizedString("errorGeneric").'</h1>

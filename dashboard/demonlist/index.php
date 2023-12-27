@@ -264,7 +264,7 @@ if(!empty($_POST["sr"]) AND is_numeric($_POST["sr"])) {
 			$youtube = !empty($demons["youtube"]) ? '<iframe style="border-radius:10px;" width="300" height="169" src="https://www.youtube.com/embed/'.$demons["youtube"].'" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>' : '';
 			$options .= '<div class="form-control dlcard"><div class="dlseconddiv"><div style="margin-right: 10px;">
 			<div><h1 class="dlh1" style="width:100%;text-align:left">'.$place.' '.sprintf($dl->getLocalizedString('demonlistLevel'), $levelName, $demons["authorID"], $gs->getAccountName($demons["authorID"])).'</h1></div>
-			<p class="dlp">'.$gs->getDesc($demons["levelID"], true).'</p></div>'.$submitbtn.'</div>'.$youtube.'
+			<p class="dlp">'.htmlspecialchars($gs->getDesc($demons["levelID"], true)).'</p></div>'.$submitbtn.'</div>'.$youtube.'
 			</div>';
 			$p++;
 		} 

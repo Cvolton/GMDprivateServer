@@ -378,7 +378,7 @@ class mainLib {
 	}
 	public function getSongString($song){
 		include __DIR__ . "/connection.php";
-		include __DIR__ . "/exploitPatch.php";
+		include_once __DIR__ . "/exploitPatch.php";
 		/*$query3=$db->prepare("SELECT ID,name,authorID,authorName,size,isDisabled,download FROM songs WHERE ID = :songid LIMIT 1");
 		$query3->execute([':songid' => $songID]);*/
 		if($song['ID'] == 0 || empty($song['ID'])){
@@ -407,7 +407,8 @@ class mainLib {
 	    }
 	}
 	public function getClanInfo($clan, $column = "*") {
-	    if(!is_numeric($clan)) return;
+		global $dashCheck;
+	    if(!is_numeric($clan) || $dashCheck == 'no') return false;
 	    include __DIR__ . "/connection.php";
 	    $claninfo = $db->prepare("SELECT $column FROM clans WHERE ID = :id");
 	    $claninfo->execute([':id' => $clan]);
@@ -422,6 +423,8 @@ class mainLib {
 	    }
 	}
 	public function getClanID($clan) {
+		global $dashCheck;
+	    if(!is_numeric($clan) || $dashCheck == 'no') return false;
 	    include __DIR__ . "/connection.php";
 	    $claninfo = $db->prepare("SELECT ID FROM clans WHERE clan = :id");
 	    $claninfo->execute([':id' => base64_encode($clan)]);
@@ -429,6 +432,8 @@ class mainLib {
 	    return $claninfo["ID"];
 	}
 	public function isPlayerInClan($id) {
+		global $dashCheck;
+	    if(!is_numeric($clan) || $dashCheck == 'no') return false;
 	    include __DIR__ . "/connection.php";
 	    if(!is_numeric($id)) return;
 	    $claninfo = $db->prepare("SELECT clan FROM users WHERE extID = :id");
@@ -438,6 +443,8 @@ class mainLib {
 	    else return false;
 	}
 	public function isPendingRequests($clan) {
+		global $dashCheck;
+	    if(!is_numeric($clan) || $dashCheck == 'no') return false;
 		include __DIR__ . "/connection.php";
 	    if(!is_numeric($clan)) return;
 	    $claninfo = $db->prepare("SELECT count(*) FROM clanrequests WHERE clanID = :id");
@@ -507,12 +514,12 @@ class mainLib {
 		else $userinfo["discriminator"] = '';
 		return $userinfo["username"].$userinfo["discriminator"];
 	}
-	public function getDesc($lid) {
+	public function getDesc($lid, $dashboard = false) {
 		include __DIR__ . "/connection.php";
 		$desc = $db->prepare("SELECT levelDesc FROM levels WHERE levelID = :id");
 		$desc->execute([':id' => $lid]);
 		$desc = $desc->fetch();
-		if(empty($desc["levelDesc"])) return '*Нет описания*';
+		if(empty($desc["levelDesc"])) return !$dashboard ? '*This level doesn\'t have description*' : '<text style="font-style:italic">This level doesn\'t have description</text>';
 		else return base64_decode($desc["levelDesc"]);
 	}
 	public function getLevelName($lid) {
@@ -527,7 +534,7 @@ class mainLib {
 		$info = $db->prepare("SELECT downloads, likes, dislikes, requestedStars FROM levels WHERE levelID = :id");
 		$info->execute([':id' => $lid]);
 		$info = $info->fetch();
-		$likes = $info["likes"] - $info["dislikes"];
+		$likes = $info["likes"]; // - $info['dislikes']
 		if(!empty($info)) return array('dl' => $info["downloads"], 'likes' => $likes, 'req' => $info["requestedStars"]);
 	}
 	public function getLevelAuthor($lid) {

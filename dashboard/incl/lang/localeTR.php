@@ -213,6 +213,10 @@ $string["modAboveYourRole"] = "Senden daha yüksek bir rolü vermeye çalışıy
 $string["makeNewMod"] = "Birini moderatör yap!";
 $string["reassignMod"] = "Yeniden moderatör ata";
 $string["reassign"] = "Yeniden ata";
+$string['demotePlayer'] = "Demote player";
+$string['demotedPlayer'] = "You successfully demoted player <b>%s</b>!";
+$string['addedModNew'] = "You successfully granted a moderator to player <b>%s</b>!";
+$string['demoted'] = 'Demoted';
 
 $string["shareCPTitle"] = "Creator Point ekle";
 $string["shareCPDesc"] = "Burada kullanıcılara CP ekleyebilirsin!";
@@ -224,6 +228,7 @@ $string["shareCPSuccess"] = "Başarıyla bu bölüm için CP paylaşıldı. ";
 $string["shareCPSuccess2"] = "Paylaşılan kullanıcı:";
 $string["updateCron"] = "Belki de CP güncellemen lazım.";
 $string["shareCPOneMore"] = "Başka ekle?";
+$string['shareCPSuccessNew'] = 'You successfully shared Creator Points of level <b>%1$s</b> to player <b>%2$s</b>!';
 
 $string["messenger"] = "Messenger";
 $string["write"] = "Yaz";
@@ -340,9 +345,14 @@ $string["createdClan"] = "<span style='font-weight:700;color:#%s'>%s</span> klan
 $string["createClanDesc"] = "Burada klan oluşturabilirsin!";
 $string["create"] = "Oluştur";
 $string["mainSettings"] = "Main settings";
+$string["takenClanName"] = "This clan name was already taken!";
 
 $string["suggestedName"] = '<button type="button" onclick="a(\'profile/%1$s\', true, true)" class="accbtn" name="accountID">%1$s</button><text class="dltext"> suggested <b>%4$s%3$s</b> for</text><text class="levelname">%2$s</text>'; // %1$s - Mod username, %2$s - level name, %3$s - x stars, %4$s - Featured/Epic (%4$s%3$s - Featured, x stars)
 $string["reportedName"] = '%1$s<text class="dltext"> was reported</text><text class="levelname">%2$s</text>';
+
+$string['listTable'] = "Lists";
+$string['listTableMod'] = "Unlisted lists";
+$string['listTableYour'] = "Your unlisted lists";
 
 /*
 	REUPLOAD
@@ -524,6 +534,14 @@ $string["modAction23"] = "(23)Quest değiştirdi";
 $string["modAction24"] = "(24)Oyuncuyu yeniden atadı";
 $string["modAction25"] = "(25)Quest oluşturdu";
 $string["modAction26"] = "(26)Kullanıcı adı/şifre değiştirdi";
+$string["modAction30"] = "Rated list";
+$string["modAction31"] = "Sent list";
+$string["modAction32"] = "Un/featured list";
+$string["modAction33"] = "Un/published list";
+$string["modAction34"] = "Deleted list";
+$string["modAction35"] = "Changed list's creator";
+$string["modAction36"] = "Changed list's name";
+$string["modAction37"] = "Changed list's description";
 $string["everyActions"] = "Tüm eylemler";
 $string["everyMod"] = "Tüm moderatörler";
 $string["Kish!"] = "Uzak dur!";
@@ -531,5 +549,6 @@ $string["noPermission"] = "İznin yok!";
 $string["noLogin?"] = "Hesabına giriş yapmadın!";
 $string["LoginBtn"] = "Hesaba giriş yap";
 $string["dashboard"] = "Dashboard";
+$string["userID"] = 'User ID';
 //errors
 $string["errorNoAccWithPerm"] = "HATA: '%s' izni hiçbir hesapta bulunamadı.";

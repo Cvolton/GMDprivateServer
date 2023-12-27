@@ -74,8 +74,8 @@ foreach($result as &$action){
 	$songIDlol = '<button id="copy'.$action["ID"].'" class="accbtn songidyeah" onclick="copysong('.$action["ID"].')">'.$action["ID"].'</button>';
 	$time = $dl->convertToDate($action["reuploadTime"], true);
 	$who = '<button type="button" onclick="a(\'profile/'.$gs->getAccountName($action['reuploadID']).'\', true, true, \'POST\')" style="margin:0;font-size:20px" class="accbtn songacc" name="accountID" value="'.$action["reuploadID"].'">'.$gs->getAccountName($action['reuploadID']).'</button>';
-  	$author = $action["authorName"];
-	$name = $action["name"];
+  	$author = htmlspecialchars($action["authorName"]);
+	$name = htmlspecialchars($action["name"]);
 	$size = $action["size"];
 	$download = str_replace('http://', 'https://', $action["download"]);
 	if($_SESSION["accountID"] != 0) {

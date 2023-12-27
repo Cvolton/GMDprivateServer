@@ -27,8 +27,8 @@ elseif(isset($_GET["id"])) {
 	    $getID = explode("/", $_GET["id"])[count(explode("/", $_GET["id"]))-2];
 	    $_POST["settings"] = 1;
 	}
-	$accid = ExploitPatch::remove($getID);
-	if(!is_numeric($accid)) $accid = $gs->getAccountIDFromName($accid);
+	$accid = ExploitPatch::charclean($getID);
+	if(!is_numeric($accid)) $accid = $gs->getAccountIDFromName(str_replace('%20', ' ', $accid));
 }
 else {
     $accid = $_SESSION["accountID"];
@@ -64,7 +64,7 @@ if(!empty($_POST["msg"])) {
 			</div>', 'profile');
      die();
     }
-	$msg = base64_encode(ExploitPatch::remove($_POST["msg"]));
+	$msg = base64_encode(ExploitPatch::rucharclean($_POST["msg"]));
 	$query = $db->prepare("INSERT INTO acccomments (userID, userName, comment, timestamp) VALUES (:id, :name, :msg, :time)");
   	$query->execute([':id' => $gs->getUserID($accid), ':name' => $accname, ':msg' => $msg, ':time' => time()]);
 }
@@ -82,7 +82,7 @@ if(isset($_POST["settings"]) AND $_POST["settings"] == 1 AND $accid == $_SESSION
                           <div class="messenger" style="grid-gap: 10px;display: grid;">
                             <div>
                                 <h2 style="text-align:left;margin:0;margin-bottom: 3px">'.$dl->getLocalizedString("allowMessagesFrom").'</h2>
-                                <select class="field Options" style="margin: 0px;" name="messages">
+                                <select class="field field-options" style="margin: 0px" name="messages">
                                  <option value="0">'.$dl->getLocalizedString("all").'</option>
                                  <option value="1">'.$dl->getLocalizedString("friends").'</option>
                                  <option value="2">'.$dl->getLocalizedString("none").'</option>
@@ -90,14 +90,14 @@ if(isset($_POST["settings"]) AND $_POST["settings"] == 1 AND $accid == $_SESSION
                             </div>
                             <div>
                             <h2 style="text-align:left;margin:0;margin-bottom: 3px">'.$dl->getLocalizedString("allowFriendReqsFrom").'</h2>
-                                <select class="field Options" style="margin: 0px" name="friendreqs">
+                                <select class="field field-options" style="margin: 0px" name="friendreqs">
                                  <option value="0">'.$dl->getLocalizedString("all").'</option>
                                  <option value="1">'.$dl->getLocalizedString("none").'</option>
                                 </select>
                             </div>
                             <div>
                             <h2 style="text-align:left;margin:0;margin-bottom: 3px">'.$dl->getLocalizedString("showCommentHistory").'</h2>
-                                <select class="field Options" style="margin: 0px" name="comments">
+                                <select class="field field-options" style="margin: 0px" name="comments">
                                  <option value="0">'.$dl->getLocalizedString("all").'</option>
                                  <option value="1">'.$dl->getLocalizedString("friends").'</option>
                                  <option value="2">'.$dl->getLocalizedString("none").'</option>
@@ -136,12 +136,13 @@ if(isset($_POST["settings"]) AND $_POST["settings"] == 1 AND $accid == $_SESSION
         $query->execute([':id' => $accid, ':ms' => ExploitPatch::number($_POST["messages"]), ':frs' => ExploitPatch::number($_POST["friendreqs"]), ':cs' => ExploitPatch::number($_POST["comments"]), ':yt' => ExploitPatch::remove($_POST["youtube"]), ':twt' => ExploitPatch::remove($_POST["twitter"]), ':ttv' => ExploitPatch::remove($_POST["twitch"])]);
     }
 }
-$query = $db->prepare("SELECT extID, stars, demons, coins, userCoins, creatorPoints, diamonds, isCreatorBanned, dlPoints, isBanned, banReason, clan FROM users WHERE extID=:id");
+$query = $db->prepare("SELECT * FROM users WHERE extID=:id");
 $query->execute([':id' => $accid]);
 $res = $query->fetch();
 if($res["banReason"] != 'none' OR $res["isBanned"] == 1) $maybeban = '<h1 class="profilename" style="text-decoration:line-through;color:#432529;">'.$accname.'</h1>'; else $maybeban = '<h1 class="profilename" style="color:rgb('.$gs->getAccountCommentColor($accid).');">'.$accname.'</h1>';
 if(isset($_SERVER["HTTP_REFERER"])) $back = '<form method="post" action="'.$_SERVER["HTTP_REFERER"].'"><button type="button" onclick="a(\''.$_SERVER["HTTP_REFERER"].'\', true, true, \'GET\')" class="goback"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i></button></form>'; else $back = '';
 if($res["stars"] == 0) $st = ''; else $st = '<p class="profilepic">'.$res["stars"].' <i class="fa-solid fa-star"></i></p>';
+if($res["moons"] == 0) $ms = ''; else $ms = '<p class="profilepic">'.$res["moons"].' <i class="fa-solid fa-moon"></i></p>';
 if($res["diamonds"] == 0) $dm = ''; else $dm = ' <p class="profilepic">'.$res["diamonds"].' <i class="fa-solid fa-gem"></i></p>';
 if($res["coins"] == 0) $gc = ''; else $gc = '<p class="profilepic">'.$res["coins"].' <i class="fa-solid fa-coins" style="color:#ffffbb"></i></p>';
 if($res["userCoins"] == 0) $uc = ''; else $uc = '<p class="profilepic">'.$res["userCoins"].' <i class="fa-solid fa-coins"></i></p>';
@@ -151,7 +152,7 @@ if($res["isCreatorBanned"] == 1) {
 	$creatorban = 'style="text-decoration: line-through"';
 } else $banhaha = $creatorban = '';
 if($res["creatorPoints"] == 0) $cp = ''; else $cp = '<p class="profilepic" '.$banhaha.'>'.$res["creatorPoints"].' <i class="fa-solid fa-screwdriver-wrench" '.$creatorban.'></i></p>';
-$all = $st.''.$dm.''.$gc.''.$uc.''.$dn.''.$cp;
+$all = $st.$ms.$dm.$gc.$uc.$dn.$cp;
 if(empty($all)) $all = '<p style="font-size:25px;color:#212529">'.$dl->getLocalizedString("empty").'</p>';
 $msgs = $db->prepare("SELECT * FROM acccomments WHERE userID=:uid ORDER BY commentID DESC");
 $msgs->execute([':uid' => $gs->getUserID($accid)]);
@@ -171,7 +172,7 @@ foreach($msgs AS &$msg) {
 	if($_SESSION["accountID"] != 0) $input = '<div class="field" style="display:flex;margin-right:10px"><input id="inputReply'.$msg["commentID"].'" type="text" placeholder="'.$dl->getLocalizedString("replyToComment").'"><button onclick="sendReply('.$msg["commentID"].')" id="btninput'.$msg["commentID"].'" style="width: max-content;margin-left: 10px;padding: 8px;" class="btn-rendel"><i style="color:white" class="fa-regular fa-paper-plane" aria-hidden="true"></i></button></div>';
   	$comments .= '<div style="width: 100%;display: flex;flex-wrap: wrap;justify-content: center;">
 			<div class="profile"><div style="display:flex"><h2 class="profilenick">'.$accname.'</h2><p style="text-align:right">'.$likes.'</p></div>
-			<h3 class="profilemsg">'.$message.'</h3>
+			<h3 class="profilemsg">'.htmlspecialchars($message).'</h3>
 			<h3 id="comments"><div id="replyBtn'.$msg["commentID"].'">'.$replies.'</div><i style="display: none;margin-right: 10px;color: white;font-size: 13px;" id="spin'.$msg["commentID"].'" class="fa-solid fa-spinner fa-spin"></i>'.$input.''.$dl->convertToDate($time, true).'</h3></div>
 			<div style="width: 90%;" id="reply'.$msg["commentID"].'"></div>
 		</div>';

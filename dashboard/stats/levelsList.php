@@ -26,7 +26,7 @@ $pagelol = explode("?", $pagelol)[0];
 $modcheck = $gs->checkPermission($_SESSION["accountID"], "dashboardModTools");
 if(!empty(trim(ExploitPatch::remove($_GET["search"])))) {
 	$srcbtn = '<button type="button" onclick="a(\''.$pagelol.'\', true, true, \'GET\')"  href="'.$_SERVER["SCRIPT_NAME"].'" style="width: 0%;display: flex;margin-left: 5px;align-items: center;justify-content: center;color: indianred; text-decoration:none" class="btn-primary" title="'.$dl->getLocalizedString("searchCancel").'"><i class="fa-solid fa-xmark"></i></button>';
-	$query = $db->prepare("SELECT * FROM levels WHERE unlisted<>1 AND levelName LIKE '%".trim(ExploitPatch::remove($_GET["search"]))."%' LIMIT 10 OFFSET $page");
+	$query = $db->prepare("SELECT * FROM levels WHERE unlisted = 0 AND levelName LIKE '%".trim(ExploitPatch::remove($_GET["search"]))."%' LIMIT 10 OFFSET $page");
 	$query->execute();
 	$result = $query->fetchAll();
 	if(empty($result)) {
@@ -40,7 +40,7 @@ if(!empty(trim(ExploitPatch::remove($_GET["search"])))) {
 		die();
 	} 
 } else {
-	$query = $db->prepare("SELECT * FROM levels WHERE unlisted<>1 ORDER BY levelID DESC LIMIT 10 OFFSET $page");
+	$query = $db->prepare("SELECT * FROM levels WHERE unlisted = 0 ORDER BY levelID DESC LIMIT 10 OFFSET $page");
 	$query->execute();
 	$result = $query->fetchAll();
 	if(empty($result)) {
@@ -59,7 +59,7 @@ foreach($result as &$action){
 	$levelid = $action["levelID"];
 	$levelname = $action["levelName"];
 	$levelIDlol = '<button id="copy'.$action["levelID"].'" class="accbtn songidyeah" onclick="copysong('.$action["levelID"].')">'.$action["levelID"].'</button>';
-	$levelDesc = base64_decode($action["levelDesc"]);
+	$levelDesc = htmlspecialchars(base64_decode($action["levelDesc"]));
   	if(empty($levelDesc)) $levelDesc = '<text style="color:gray">'.$dl->getLocalizedString("noDesc").'</text>';
 	$levelpass = $action["password"];
 	$likes = $action["likes"];
@@ -87,15 +87,20 @@ foreach($result as &$action){
       	$stars = '<div class="dropdown-menu" style="padding:17px 17px 0px 17px; top:0%;">
 									 <form class="form__inner" method="post" action="levels/rateLevel.php">
 										<div class="field"><input type="number" id="p1" name="rateStars" placeholder="'.$dl->getLocalizedString("stars").'"></div>
-                                        <div class="ratecheck"><input type="radio" style="margin-right:5px;margin-left: 2px" name="featured" value="0">'.$dl->getLocalizedString("isAdminNo").'</input>
-                                        <input type="radio" style="margin-right:5px;margin-left: 2px" name="featured" value="1">Featured</input>
-                                        <input type="radio" style="margin-right:5px;margin-left: 2px" name="featured" value="2">Epic</div>
+										<select name="featured" onclick="event.stopPropagation();">
+											<option value="0">'.$dl->getLocalizedString("isAdminNo").'</option>
+											<option value="1">Featured</option>
+											<option value="2">Epic</option>
+											<option value="3">Legendary</option>
+											<option value="4">Mythic</option>
+										</select>
 										<button type="submit" class="btn-song" id="submit" name="level" value="'.$levelid.'">'.$dl->getLocalizedString("rate").'</button>
 									</form>
 								</div>';
 	} elseif($action["starStars"] != 0) $stars = '';
-	if(!empty($stars)) $st = '<a class="dropdown" href="#" data-toggle="dropdown"><p class="profilepic"><i class="fa-solid fa-star"></i> '.$diff.', '.$action["starStars"].'</p></a>'.$stars;
-	else $st = '<p class="profilepic"><i class="fa-solid fa-star"></i> '.$diff.', '.$action["starStars"].'</p>';
+	if($action['levelLength'] == 5) $starIcon = 'moon'; else $starIcon = 'star';
+	if(!empty($stars)) $st = '<a class="dropdown" href="#" data-toggle="dropdown"><p class="profilepic"><i class="fa-solid fa-'.$starIcon.'"></i> '.$diff.', '.$action["starStars"].'</p></a>'.$stars;
+	else $st = '<p class="profilepic"><i class="fa-solid fa-'.$starIcon.'"></i> '.$diff.', '.$action["starStars"].'</p>';
 	$ln = '<p class="profilepic"><i class="fa-solid fa-clock"></i> '.$gs->getLength($action['levelLength']).'</p>';
 	$dls = '<p class="profilepic"><i class="fa-solid fa-reply fa-rotate-270"></i> '.$action['downloads'].'</p>';
 	$all = $dls.$stats.$st.$ln.$lp.$rs;

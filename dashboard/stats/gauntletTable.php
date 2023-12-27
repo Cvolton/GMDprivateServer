@@ -34,7 +34,7 @@ foreach($result as &$pack){
 		$levelid = $action["levelID"];
 		$levelname = $action["levelName"];
 		$levelIDlol = '<button id="copy'.$action["levelID"].'" class="accbtn songidyeah" onclick="copysong('.$action["levelID"].')">'.$action["levelID"].'</button>';
-		$levelDesc = base64_decode($action["levelDesc"]);
+		$levelDesc = htmlspecialchars(base64_decode($action["levelDesc"]));
 		if(empty($levelDesc)) $levelDesc = '<text style="color:gray">'.$dl->getLocalizedString("noDesc").'</text>';
 		$levelpass = $action["password"];
 		$likes = $action["likes"];
@@ -58,7 +58,8 @@ foreach($result as &$pack){
 		$username =  '<form style="margin:0" method="post" action="./profile/"><button type="button" onclick="a(\'profile/'.$action["userName"].'\', true, true, \'POST\')" style="margin:0" class="accbtn" name="accountID">'.$action["userName"].'</button></form>';
 		$time = $dl->convertToDate($action["uploadDate"], true);
 		$diff = $gs->getDifficulty($action["starDifficulty"], $action["auto"], $action["starDemonDiff"]);
-		$st = '<p class="profilepic"><i class="fa-solid fa-star"></i> '.$diff.', '.$action["starStars"].'</p>';
+		if($action['levelLength'] == 5) $starIcon = 'moon'; else $starIcon = 'star';
+		$st = '<p class="profilepic"><i class="fa-solid fa-'.$starIcon.'"></i> '.$diff.', '.$action["starStars"].'</p>';
 		$ln = '<p class="profilepic"><i class="fa-solid fa-clock"></i> '.$gs->getLength($action['levelLength']).'</p>';
 		$dls = '<p class="profilepic"><i class="fa-solid fa-reply fa-rotate-270"></i> '.$action['downloads'].'</p>';
 		$all = $dls.$stats.$st.$ln.$lp.$rs;
@@ -97,7 +98,7 @@ foreach($result as &$pack){
 	</div>';
 	$x++;
 }
-$dl->printSong('<div class="form clan-form"><h1>'.$dl->getLocalizedString('packTable').'</h1>
+$dl->printSong('<div class="form clan-form"><h1>'.$dl->getLocalizedString('gauntletTable').'</h1>
 	<div class="form-control clan-form-control">
 		'.$packtable.'
 	</div>

@@ -7,7 +7,7 @@ require_once "../".$dbPath."incl/lib/mainLib.php";
 require "../".$dbPath."incl/lib/exploitPatch.php";
 $gs = new mainLib();
 include "../".$dbPath."incl/lib/connection.php";
-$dl->title($dl->getLocalizedString("levels"));
+$dl->title($dl->getLocalizedString("unlistedMod"));
 $dl->printFooter('../');
 if(!$gs->checkPermission($_SESSION["accountID"], "dashboardModTools")) exit($dl->printSong('<div class="form">
     <h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
@@ -65,7 +65,7 @@ foreach($result as &$action){
 	$levelid = $action["levelID"];
 	$levelname = $action["levelName"];
 	$levelIDlol = '<button id="copy'.$action["levelID"].'" class="accbtn songidyeah" onclick="copysong('.$action["levelID"].')">'.$action["levelID"].'</button>';
-	$levelDesc = base64_decode($action["levelDesc"]);
+	$levelDesc = htmlspecialchars(base64_decode($action["levelDesc"]));
   	if(empty($levelDesc)) $levelDesc = '<text style="color:gray">'.$dl->getLocalizedString("noDesc").'</text>';
 	$levelpass = $action["password"];
 	$likes = $action["likes"];
@@ -87,19 +87,8 @@ foreach($result as &$action){
 	$username =  '<form style="margin:0" method="post" action="./profile/"><button type="button" onclick="a(\'profile/'.$action["userName"].'\', true, true, \'POST\')" style="margin:0" class="accbtn" name="accountID">'.$action["userName"].'</button></form>';
 	$time = $dl->convertToDate($action["uploadDate"], true);
 	$diff = $gs->getDifficulty($action["starDifficulty"], $action["auto"], $action["starDemonDiff"]);
-	if($action["starStars"] == 0 AND $modcheck) {
-      	$stars = '<div class="dropdown-menu" style="padding:17px 17px 0px 17px; top:0%;">
-									 <form class="form__inner" method="post" action="levels/rateLevel.php">
-										<div class="field"><input type="number" id="p1" name="rateStars" placeholder="'.$dl->getLocalizedString("stars").'"></div>
-                                        <div class="ratecheck"><input type="radio" style="margin-right:5px;margin-left: 2px" name="featured" value="0">'.$dl->getLocalizedString("isAdminNo").'</input>
-                                        <input type="radio" style="margin-right:5px;margin-left: 2px" name="featured" value="1">Featured</input>
-                                        <input type="radio" style="margin-right:5px;margin-left: 2px" name="featured" value="2">Epic</div>
-										<button type="submit" class="btn-song" id="submit" name="level" value="'.$levelid.'">'.$dl->getLocalizedString("rate").'</button>
-									</form>
-								</div>';
-	} elseif($action["starStars"] != 0) $stars = '';
-	if(!empty($stars)) $st = '<a class="dropdown" href="#" data-toggle="dropdown"><p class="profilepic"><i class="fa-solid fa-star"></i> '.$diff.', '.$action["starStars"].'</p></a>'.$stars;
-	else $st = '<p class="profilepic"><i class="fa-solid fa-star"></i> '.$diff.', '.$action["starStars"].'</p>';
+	if($action['levelLength'] == 5) $starIcon = 'moon'; else $starIcon = 'star';
+	$st = '<p class="profilepic"><i class="fa-solid fa-'.$starIcon.'"></i> '.$diff.', '.$action["starStars"].'</p>';
 	$ln = '<p class="profilepic"><i class="fa-solid fa-clock"></i> '.$gs->getLength($action['levelLength']).'</p>';
 	$dls = '<p class="profilepic"><i class="fa-solid fa-reply fa-rotate-270"></i> '.$action['downloads'].'</p>';
 	$all = $dls.$stats.$st.$ln.$lp.$rs;
@@ -124,7 +113,7 @@ foreach($result as &$action){
 	$x++;
 }
 $pagel = '<div class="form new-form">
-<h1 style="margin-bottom:5px">'.$dl->getLocalizedString("levels").'</h1>
+<h1 style="margin-bottom:5px">'.$dl->getLocalizedString("unlistedMod").'</h1>
 <div class="form-control new-form-control">
 		'.$levels.'
 	</div></div><form name="searchform" class="form__inner">

@@ -17,7 +17,7 @@ if(isset($_GET["page"]) AND is_numeric($_GET["page"]) AND $_GET["page"] > 0){
 	$page = 0;
 	$actualpage = 1;
 }
-$query = $db->prepare("SELECT * FROM suggest ORDER BY ID DESC LIMIT 10 OFFSET $page");
+$query = $db->prepare("SELECT * FROM suggest WHERE suggestLevelId > 0 ORDER BY ID DESC LIMIT 10 OFFSET $page");
 $query->execute();
 $result = $query->fetchAll();
 $x = $page + 1;
@@ -50,7 +50,7 @@ foreach($result as &$action){
 		$levelid = $level["levelID"];
 		$levelname = $level["levelName"];
 		$levelIDlol = '<button id="copy'.$level["levelID"].'" class="accbtn songidyeah" onclick="copysong('.$level["levelID"].')">'.$level["levelID"].'</button>';
-		$levelDesc = base64_decode($level["levelDesc"]);
+		$levelDesc = htmlspecialchars(base64_decode($level["levelDesc"]));
 		if(empty($levelDesc)) $levelDesc = '<text style="color:gray">'.$dl->getLocalizedString("noDesc").'</text>';
 		$levelpass = $level["password"];
 		$likes = $level["likes"];
@@ -85,8 +85,9 @@ foreach($result as &$action){
 										</form>
 									</div>';
 		} elseif($level["starStars"] != 0) $stars = '';
-		if(!empty($stars)) $st = '<a class="dropdown" href="#" data-toggle="dropdown"><p class="profilepic"><i class="fa-solid fa-star"></i> '.$diff.', '.$level["starStars"].'</p></a>'.$stars;
-		else $st = '<p class="profilepic"><i class="fa-solid fa-star"></i> '.$diff.', '.$level["starStars"].'</p>';
+		if($level['levelLength'] == 5) $starIcon = 'moon'; else $starIcon = 'star';
+		if(!empty($stars)) $st = '<a class="dropdown" href="#" data-toggle="dropdown"><p class="profilepic"><i class="fa-solid fa-'.$starIcon.'"></i> '.$diff.', '.$level["starStars"].'</p></a>'.$stars;
+		else $st = '<p class="profilepic"><i class="fa-solid fa-'.$starIcon.'"></i> '.$diff.', '.$level["starStars"].'</p>';
 		$ln = '<p class="profilepic"><i class="fa-solid fa-clock"></i> '.$gs->getLength($level['levelLength']).'</p>';
 		$dls = '<p class="profilepic"><i class="fa-solid fa-reply fa-rotate-270"></i> '.$level['downloads'].'</p>';
 		$all = $dls.$stats.$st.$ln.$lp.$rs;

@@ -22,7 +22,7 @@
 	.form h1 {font-size:28px !important;}
 	.form__inner p {font-size:17px !important;}
     .profilenick {font-size: 15px !important;}
-    .profilepic {font-size: 15px !important;}
+    .mavdiv .accbtn, .profilepic {font-size: 15px !important;}
     .songacc {font-size: 13px !important;}
     .songidyeah {font-size: 11px !important;}
 	.btn-group {right: 5px !important;}
@@ -63,7 +63,7 @@
 	.itemsbox {flex-direction: column !important; margin-left: 2.5vw !important; width: 95vw !important; margin-bottom: 50px !important; margin-top: 15px !important}
 	.itemslist {width: max-content !important; flex-direction: row !important; flex-wrap: nowrap !important;}
 	.itembtn {width: max-content !important; margin-right: 0px !important;}
-	.itemoverflow {overflow-x: auto; max-width: 100%; padding-right: 10px;}
+	.itemoverflow {overflow-x: auto !important; max-width: 100%; padding-right: 10px;overflow-y: hidden !important;}
 	.acccomments {flex-direction: column-reverse !important; align-items: center !important;}
 	.acccomments h3 {font-size:11px !important;}
 	.acclistnick, .acclistdiv {flex-direction: column; align-items: center; margin-left: 0px !important;}
@@ -77,6 +77,7 @@
 	.suggest .accbtn, .suggest .levelname {font-size:23px !important;}
 	.suggest .dltext {font-size:18px !important;}
 	.buffer {margin: 0px !important;}
+	.quests-form {height: 80% !important;}
 }
 
 * {
@@ -183,8 +184,14 @@ input, select {
 }
 
 .profilepic {
-	font-size: 25px;
-  	margin: 0px 5px 0px 5px;
+    font-size: 25px;
+    display: flex;
+    width: 100%;
+    margin: 0px 5px 0px 5px;
+    align-items: center;
+    justify-content: center;
+    grid-gap: 5px;
+	color: #c0c0c0;
 }
 
 .icon, .icon:visited {
@@ -307,9 +314,10 @@ input, select {
     background: #29282c;
 }
 
-.Options {
+
+.field-options {
 	appearance: none;
-	transition: ease 0.5s;
+	transition: 0.2s;
 }
 
 .profile {
@@ -456,11 +464,11 @@ input, select {
     border-top: 3px solid #181a1b !important;
 }
 
+.field input,
 .card input,
 .form-control,
-.field input,
 #input {
-	border-radius: 500px;
+    border-radius: 500px;
     border: 0px solid #141414;
     background-color: rgb(0 0 0 / 2%);
     outline: none;
@@ -481,7 +489,6 @@ input, select {
     background: #141414;
     color: gray;
 }
-
 
 .details .field input {
   display: block;
@@ -1315,6 +1322,11 @@ label {
 	display: flex;
 	max-width: 500px;
 	border-radius: 35px;
+	justify-content: center;
+    align-content: flex-start;
+    align-items: center;
+	padding: 15px 0px 15px 15px;
+	grid-gap: 10px;
 }
 
 .messengerbox h1 {
@@ -1478,7 +1490,8 @@ body:has(.audio) {
 .itemoverflow {
 	border-radius: 30px;
 	overflow: auto;
-    width: 70%;
+    width: 100%;
+	overflow-x: hidden;
 }
 
 .acccomments {
@@ -1560,7 +1573,7 @@ body:has(.audio) {
 	padding-bottom: 20px;
 	width: 60vw;
 	height: 77vh;
-	margin-top: 10px;
+	margin-top: 1.5%;
 	border-radius: 45px;
 	overflow: auto;
 	overflow-x: hidden;
@@ -1572,12 +1585,6 @@ body:has(.audio) {
 	display: flex;
 	grid-gap: 5px;
 	align-items: center;
-}
-
-.packname h1 {
-	margin: 0px;
-	margin-bottom: 5px;
-	font-weight: 700;
 }
 
 .packcard {
@@ -1655,4 +1662,30 @@ body:has(.audio) {
 
 .mavdiv details {
 	width: 100%;
+}
+
+.packname p {
+	margin-bottom: 10px;
+}
+
+.clan-form h1 {
+	margin: 10px 0px 0px;
+}
+
+.packname h1 {
+	margin: 0px;
+	margin-bottom: 5px;
+	font-weight: 700;
+}
+
+.clan-form.clans h1 {
+    margin: 15px 0 15px;
+}
+
+.messenger.msgs {
+	margin-top: 0px;
+}
+
+.mavdiv .accbtn {
+	font-size: 25px;
 }

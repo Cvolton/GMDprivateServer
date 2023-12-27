@@ -93,12 +93,13 @@ foreach($result as &$action){
 		$clan = '<span style="display:contents;cursor:pointer"><h2 class="music" style="width: max-content;margin-left: 5px;grid-gap:5px;color:#'.$claninfo["color"].'">'.$claninfo["clan"].$own.'</h2></span>';
 	}
 	if($action["stars"] == 0) $st = ''; else $st = '<p class="profilepic">'.$action["stars"].' <i class="fa-solid fa-star"></i></p>';
+	if($action["moons"] == 0) $ms = ''; else $ms = '<p class="profilepic">'.$action["moons"].' <i class="fa-solid fa-moon"></i></p>';
     if($action["diamonds"] == 0) $dm = ''; else $dm = ' <p class="profilepic">'.$action["diamonds"].' <i class="fa-solid fa-gem"></i></p>';
     if($action["coins"] == 0) $gc = ''; else $gc = '<p class="profilepic">'.$action["coins"].' <i class="fa-solid fa-coins" style="color:#ffffbb"></i></p>';
     if($action["userCoins"] == 0) $uc = ''; else $uc = '<p class="profilepic">'.$action["userCoins"].' <i class="fa-solid fa-coins"></i></p>';
     if($action["demons"] == 0) $dn = ''; else $dn = '<p class="profilepic">'.$action["demons"].' <i class="fa-solid fa-dragon"></i></p>';
     if($action["creatorPoints"] == 0) $cp = ''; else $cp = '<p class="profilepic">'.$action["creatorPoints"].' <i class="fa-solid fa-screwdriver-wrench"></i></p>';
-    $stats = $st.$dm.$gc.$uc.$dn.$cp;
+    $stats = $st.$ms.$dm.$gc.$uc.$dn.$cp;
     if(empty($stats)) $stats = '<p style="font-size:25px;color:#212529">'.$dl->getLocalizedString("empty").'</p>';
 	$registerDate = date("d.m.Y", $action["registerDate"]);
 	$members .= '<div style="width: 100%;display: flex;flex-wrap: wrap;justify-content: center;">

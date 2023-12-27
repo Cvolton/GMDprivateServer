@@ -138,8 +138,8 @@ if(!empty($_POST["usertarg"]) AND !empty($_POST["passtarg"]) AND !empty($_POST["
 	'gjp' => $gjp,
 	'userName' => $usertarg,
 	'levelID' => "0",
-	'levelName' => $levelInfo["levelName"],
-	'levelDesc' => $levelInfo["levelDesc"],
+	'levelName' => strip_tags($levelInfo["levelName"]),
+	'levelDesc' => strip_tags($levelInfo["levelDesc"]),
 	'levelVersion' => $levelInfo["levelVersion"],
 	'levelLength' => $levelInfo["levelLength"],
 	'audioTrack' => $levelInfo["audioTrack"],
@@ -159,6 +159,9 @@ if(!empty($_POST["usertarg"]) AND !empty($_POST["passtarg"]) AND !empty($_POST["
 	'seed2' => $seed2,
 	'levelString' => $levelString,
 	'levelInfo' => $levelInfo["levelInfo"],
+	'songIDs' => $levelInfo['songIDs'],
+	'sfxIDs' => $levelInfo['sfxIDs'],
+	'ts' => $levelInfo['ts'],
 	'secret' => "Wmfd2893gb7"];
 	if($debug == 1){
 		var_dump($post);

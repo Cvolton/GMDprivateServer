@@ -36,7 +36,7 @@ if(!empty(trim(ExploitPatch::remove($_GET["search"])))) {
 			<p>'.$dl->getLocalizedString("emptySearch").'</p>
 			<button type="button" onclick="a(\'stats/manageSongs.php\', true, false, \'GET\')" class="btn-primary">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 		</form>
-	</div>');
+	</div>', "account");
 		die();
 	} 
 } else {
@@ -60,8 +60,8 @@ foreach($result as &$action){
 	$songsid = $action["ID"];
 	$songIDlol = '<button id="copy'.$action["ID"].'" class="accbtn songidyeah" onclick="copysong('.$action["ID"].')">'.$action["ID"].'</button>';
 	$time = $dl->convertToDate($action["reuploadTime"], true);
-  	$author = $action["authorName"];
-	$name = $action["name"];
+  	$author = htmlspecialchars($action["authorName"]);
+	$name = htmlspecialchars($action["name"]);
 	$size = $action["size"];
  	$delete = '<button onclick="deletesong('.$songsid.')" style="color:#ffbbbb;margin-left:5px;width:max-content;padding:7px 10px;font-size:15px"  class="btn-rendel"><i class="fa-solid fa-xmark"></i></button>';
 	$download = str_replace('http://', 'https://', $action["download"]);
@@ -161,7 +161,7 @@ $dl->printPage($pagel . $bottomrow.'<script>
 				}
 				del.send();
 			}
-		</script>', true, "browse");
+		</script>', true, "account");
 } else {
 	$dl->printSong('<div class="form">
     <h1>'.$dl->getLocalizedString("errorGeneric").'</h1>

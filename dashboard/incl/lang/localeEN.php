@@ -213,6 +213,10 @@ $string["modAboveYourRole"] = "You\'re trying to give a role above yours!";
 $string["makeNewMod"] = "Make someone moderator!";
 $string["reassignMod"] = "Reassign moderator";
 $string["reassign"] = "Reassign";
+$string['demotePlayer'] = "Demote player";
+$string['demotedPlayer'] = "You successfully demoted player <b>%s</b>!";
+$string['addedModNew'] = "You successfully granted a moderator to player <b>%s</b>!";
+$string['demoted'] = 'Demoted';
 
 $string["shareCPTitle"] = "Share Creator Points";
 $string["shareCPDesc"] = "Here you can share Creator Points with player!";
@@ -224,6 +228,7 @@ $string["shareCPSuccess"] = "You successfully shared Creator Points of level";
 $string["shareCPSuccess2"] = "to player";
 $string["updateCron"] = "Maybe you should update Creator Points.";
 $string["shareCPOneMore"] = "One more share?";
+$string['shareCPSuccessNew'] = 'You successfully shared Creator Points of level <b>%1$s</b> to player <b>%2$s</b>!';
 
 $string["messenger"] = "Messenger";
 $string["write"] = "Write";
@@ -340,9 +345,14 @@ $string["createdClan"] = "You successfully created clan <span style='font-weight
 $string["createClanDesc"] = "Here you can create a clan!";
 $string["create"] = "Create";
 $string["mainSettings"] = "Main settings";
+$string["takenClanName"] = "This clan name was already taken!";
 
 $string["suggestedName"] = '<button type="button" onclick="a(\'profile/%1$s\', true, true)" class="accbtn" name="accountID">%1$s</button><text class="dltext"> suggested <b>%4$s%3$s</b> for</text><text class="levelname">%2$s</text>'; // %1$s - Mod username, %2$s - level name, %3$s - x stars, %4$s - Featured/Epic (%4$s%3$s - Featured, x stars)
 $string["reportedName"] = '%1$s<text class="dltext"> was reported</text><text class="levelname">%2$s</text>';
+
+$string['listTable'] = "Lists";
+$string['listTableMod'] = "Unlisted lists";
+$string['listTableYour'] = "Your unlisted lists";
 
 /*
 	REUPLOAD
@@ -509,7 +519,7 @@ $string["modAction8"] = "Renamed a level";
 $string["modAction9"] = "Changed level password";
 $string["modAction10"] = "Changed demon difficulty";
 $string["modAction11"] = "Shared CP";
-$string["modAction12"] = "Un/published";
+$string["modAction12"] = "Un/published level";
 $string["modAction13"] = "Changed level description";
 $string["modAction14"] = "Enabled/disabled LDM";
 $string["modAction15"] = "Leaderboard un/banned";
@@ -524,6 +534,14 @@ $string["modAction23"] = "Changed quest";
 $string["modAction24"] = "Reassigned a player";
 $string["modAction25"] = "Created a quest";
 $string["modAction26"] = "Changed player's username/password";
+$string["modAction30"] = "Rated list";
+$string["modAction31"] = "Sent list";
+$string["modAction32"] = "Un/featured list";
+$string["modAction33"] = "Un/published list";
+$string["modAction34"] = "Deleted list";
+$string["modAction35"] = "Changed list's creator";
+$string["modAction36"] = "Changed list's name";
+$string["modAction37"] = "Changed list's description";
 $string["everyActions"] = "Any actions";
 $string["everyMod"] = "All moderators";
 $string["Kish!"] = "Go away!";
@@ -531,5 +549,6 @@ $string["noPermission"] = "You don't have permission!";
 $string["noLogin?"] = "You are not logged into your account!";
 $string["LoginBtn"] = "Login into account";
 $string["dashboard"] = "Dashboard";
+$string["userID"] = 'User ID';
 //errors
 $string["errorNoAccWithPerm"] = "Error: No accounts with the '%s' permission have been found";

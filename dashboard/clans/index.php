@@ -23,8 +23,8 @@ $clans = $clans->fetchAll();
 $style = $closed = $create = "";
 foreach($clans as &$clan) {
 	$closed = '';
-	$name = base64_decode($clan["clan"]);
-	$desc = base64_decode($clan["desc"]);
+	$name = htmlspecialchars(base64_decode($clan["clan"]));
+	$desc = htmlspecialchars(base64_decode($clan["desc"]));
 	if(empty($desc)) $desc = $dl->getLocalizedString("noClanDesc");
 	$members = $db->prepare("SELECT count(clan) FROM users WHERE clan = :id");
 	$members->execute([':id' => $clan["ID"]]);
@@ -43,8 +43,8 @@ if(empty($options)) {
 	$style = "align-items: center !important;align-content: center !important;justify-content:center !important;";
 	$options = '<h1>'.$dl->getLocalizedString("noClans").'</h1>';
 }
-if($_SESSION["accountID"] != 0 AND !$isPlayerInClan) $create = '<button style="width: max-content;height: max-content;padding: 13px 14px;font-size: 25px;position: absolute;bottom: 0;right: 0px;" class="btn-rendel" type="button" onclick="a(\'clans/create\')"><i class="fa-solid fa-plus"></i></button>';
-$dl->printSong('<div class="form clan-form">
+if($_SESSION["accountID"] != 0 AND !$isPlayerInClan) $create = '<button style="width: max-content;height: max-content;padding: 13px 14px;font-size: 25px;position: absolute;bottom: 0;right: 0px;" class="btn-rendel" type="button" onclick="a(\'clans/create.php\')"><i class="fa-solid fa-plus"></i></button>';
+$dl->printSong('<div class="form clan-form clans">
 	<h1 style="margin-bottom:5px">'.$dl->getLocalizedString("clans").'</h1>
 	<div class="form-control clan-form-control" style="'.$style.'">
 		'.$options.'

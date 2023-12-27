@@ -46,7 +46,7 @@ foreach($result as &$daily){
 		$levelid = $level["levelID"];
 		$levelname = $level["levelName"];
 		$levelIDlol = '<button id="copy'.$level["levelID"].'" class="accbtn songidyeah" onclick="copysong('.$level["levelID"].')">'.$level["levelID"].'</button>';
-		$levelDesc = base64_decode($level["levelDesc"]);
+		$levelDesc = htmlspecialchars(base64_decode($level["levelDesc"]));
 		if(empty($levelDesc)) $levelDesc = '<text style="color:gray">'.$dl->getLocalizedString("noDesc").'</text>';
 		$levelpass = $level["password"];
 		$likes = $level["likes"];
@@ -70,7 +70,8 @@ foreach($result as &$daily){
 		$username =  '<form style="margin:0" method="post" action="./profile/"><button type="button" onclick="a(\'profile/'.$level["userName"].'\', true, true, \'POST\')" style="margin:0" class="accbtn" name="accountID">'.$level["userName"].'</button></form>';
 		$time = $dl->convertToDate($level["uploadDate"], true);
 		$diff = $gs->getDifficulty($level["starDifficulty"], $level["auto"], $level["starDemonDiff"]);
-		$st = '<p class="profilepic"><i class="fa-solid fa-star"></i> '.$diff.', '.$level["starStars"].'</p>';
+		if($level['levelLength'] == 5) $starIcon = 'moon'; else $starIcon = 'star';
+		$st = '<p class="profilepic"><i class="fa-solid fa-'.$starIcon.'"></i> '.$diff.', '.$level["starStars"].'</p>';
 		$ln = '<p class="profilepic"><i class="fa-solid fa-clock"></i> '.$gs->getLength($level['levelLength']).'</p>';
 		$dailyl = '<p class="profilepic"><i class="fa-solid fa-circle-play"></i> '.$type.'</p>';
 		$dt = '<p class="profilepic"><i class="fa-regular fa-clock"></i> '.$dtt.'</p>';

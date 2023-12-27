@@ -34,7 +34,7 @@ foreach($result as &$level){
 	$levelid = $level["levelID"];
 	$levelname = $level["levelName"];
 	$levelIDlol = '<button id="copy'.$level["levelID"].'" class="accbtn songidyeah" onclick="copysong('.$level["levelID"].')">'.$level["levelID"].'</button>';
-	$levelDesc = base64_decode($level["levelDesc"]);
+	$levelDesc = htmlspecialchars(base64_decode($level["levelDesc"]));
 	if(empty($levelDesc)) $levelDesc = '<text style="color:gray">'.$dl->getLocalizedString("noDesc").'</text>';
 	$levelpass = $level["password"];
 	$likes = $level["likes"];
@@ -58,19 +58,8 @@ foreach($result as &$level){
 	$username =  '<form style="margin:0" method="post" action="./profile/"><button type="button" onclick="a(\'profile/'.$level["userName"].'\', true, true, \'POST\')" style="margin:0" class="accbtn" name="accountID">'.$level["userName"].'</button></form>';
 	$time = $dl->convertToDate($level["uploadDate"], true);
 	$diff = $gs->getDifficulty($level["starDifficulty"], $level["auto"], $level["starDemonDiff"]);
-	if($level["starStars"] == 0 AND $modcheck) {
-		$stars = '<div class="dropdown-menu" style="padding:17px 17px 0px 17px; top:0%;">
-									 <form class="form__inner" method="post" action="levels/rateLevel.php">
-										<div class="field"><input type="number" id="p1" name="rateStars" placeholder="'.$dl->getLocalizedString("stars").'"></div>
-										<div class="ratecheck"><input type="radio" style="margin-right:5px;margin-left: 2px" name="featured" value="0">'.$dl->getLocalizedString("isAdminNo").'</input>
-										<input type="radio" style="margin-right:5px;margin-left: 2px" name="featured" value="1">Featured</input>
-										<input type="radio" style="margin-right:5px;margin-left: 2px" name="featured" value="2">Epic</div>
-										<button type="submit" class="btn-song" id="submit" name="level" value="'.$levelid.'">'.$dl->getLocalizedString("rate").'</button>
-									</form>
-								</div>';
-	} elseif($level["starStars"] != 0) $stars = '';
-	if(!empty($stars)) $st = '<a class="dropdown" href="#" data-toggle="dropdown"><p class="profilepic"><i class="fa-solid fa-star"></i> '.$diff.', '.$level["starStars"].'</p></a>'.$stars;
-	else $st = '<p class="profilepic"><i class="fa-solid fa-star"></i> '.$diff.', '.$level["starStars"].'</p>';
+	if($level['levelLength'] == 5) $starIcon = 'moon'; else $starIcon = 'star';
+	$st = '<p class="profilepic"><i class="fa-solid fa-'.$starIcon.'"></i> '.$diff.', '.$level["starStars"].'</p>';
 	$ln = '<p class="profilepic"><i class="fa-solid fa-clock"></i> '.$gs->getLength($level['levelLength']).'</p>';
 	$dls = '<p class="profilepic"><i class="fa-solid fa-reply fa-rotate-270"></i> '.$level['downloads'].'</p>';
 	$all = $dls.$stats.$st.$ln.$lp.$rs;

@@ -35,27 +35,19 @@ class dashboardLib {
 		echo '</head>
 				<body><div style="height: 100%;display: contents;">';
 	}
-	public function getLocalizedString($stringName, $lang = ''){
+	public function getLocalizedString($stringName, $lang = '') {
 		if(empty($lang)) {
-			if(!isset($_COOKIE["lang"]) OR !ctype_alpha($_COOKIE["lang"])){
+			if(!isset($_COOKIE["lang"]) OR !ctype_alpha($_COOKIE["lang"])) {
 				if(file_exists('/lang/locale'.strtoupper(substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2))).'.php') $lang = strtoupper(substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2));
 				else $lang = "EN";
-			}else{
-				$lang = $_COOKIE["lang"];
-			}
+			} else $lang = $_COOKIE["lang"];
 		}
+		$lang = substr($lang, 0, 2);
 		$locale = __DIR__ . "/lang/locale".$lang.".php";
-		if(file_exists($locale)){
-			include $locale;
-		}else{
-			include __DIR__ . "/lang/localeRU.php";
-		}
-		if($lang == "TEST"){
-			return "$stringName";
-		}
-		if(isset($string[$stringName])){
-			return $string[$stringName];
-		}else{
+		if(file_exists($locale)) include $locale;
+		else include __DIR__ . "/lang/localeRU.php";
+		if(isset($string[$stringName])) return $string[$stringName];
+		else {
 		    include __DIR__."/lang/localeEN.php";
 		    if(isset($string[$stringName])) return $string[$stringName];
 			else return "lnf:$stringName";
@@ -180,6 +172,7 @@ class dashboardLib {
 							<a type="button" href="stats/levelsList.php" onclick="a(\'stats/levelsList.php\')"class="dropdown-item"><div class="icon"><i class="fa-solid fa-gamepad" style="margin-top: 1px;"></i></div>'.$this->getLocalizedString("levels").'</a>
 							<a type="button" href="stats/packTable.php" onclick="a(\'stats/packTable.php\')"class="dropdown-item"><div class="icon"><i class="fa-regular fa-folder-open" aria-hidden="false"></i></div>'.$this->getLocalizedString("packTable").'</a>
 							<a type="button" href="stats/gauntletTable.php" onclick="a(\'stats/gauntletTable.php\')"class="dropdown-item"><div class="icon"><i class="fa-solid fa-globe" aria-hidden="false"></i></div>'.$this->getLocalizedString("gauntletTable").'</a>
+							<a type="button" href="stats/listsTable.php" onclick="a(\'stats/listsTable.php\')"class="dropdown-item"><div class="icon"><i class="fa-solid fa-list-ul" aria-hidden="false"></i></div>'.$this->getLocalizedString("listTable").'</a>
 							<a type="button" href="stats/songList.php" onclick="a(\'stats/songList.php\')"class="dropdown-item"><div class="icon"><i class="fa-solid fa-music" aria-hidden="false"></i></div>'.$this->getLocalizedString("songs").'</a>
 							<a type="button" href="demonlist" onclick="a(\'demonlist\')"class="dropdown-item"><div class="icon"><i class="fa-solid fa-dragon" aria-hidden="false"></i></div>'.$this->getLocalizedString("demonlist").'</a>
 							<a type="button" href="clans" onclick="a(\'clans\')"class="dropdown-item"><div class="icon"><i class="fa-solid fa-dungeon" aria-hidden="false"></i></div>'.$this->getLocalizedString("clans").'</a>';
@@ -194,6 +187,7 @@ class dashboardLib {
 							<a type="button" href="stats/unlisted.php" onclick="a(\'stats/unlisted.php\')"class="dropdown-item"><div class="icon"><i class="fa-solid fa-list-ul" aria-hidden="false"></i></div>'.$this->getLocalizedString("unlistedLevels").'</a>
 							<a type="button" href="stats/manageSongs.php" onclick="a(\'stats/manageSongs.php\')"class="dropdown-item"><div class="icon"><i class="fa-solid fa-music" aria-hidden="false"></i></div>'.$this->getLocalizedString("manageSongs").'</a>
 							<a type="button" href="stats/favouriteSongs.php" onclick="a(\'stats/favouriteSongs.php\')"class="dropdown-item"><div class="icon"><i class="fa-solid fa-heart" aria-hidden="false"></i></div>'.$this->getLocalizedString("favouriteSongs").'</a>
+							<a type="button" href="stats/listsTableYour.php" onclick="a(\'stats/listsTableYour.php\')"class="dropdown-item"><div class="icon"><i class="fa-solid fa-list" aria-hidden="false"></i></div>'.$this->getLocalizedString("listTableYour").'</a>
 						</div>
 					</li>' . $browse . '</div></li>';
 					echo '<li class="nav-item dropdown '.$reuploadActive.'">
@@ -251,7 +245,8 @@ class dashboardLib {
 								echo '<a type="button" href="levels/packCreate.php" onclick="a(\'levels/packCreate.php\')"class="dropdown-item"><i class="fa-solid fa-plus" style="position: absolute;font-size: 10px;margin: 3px 5px 5px -3px;" aria-hidden="false"></i><div class="icon"><i class="fa-regular fa-folder-open" style="margin-left: 2px;" aria-hidden="false"></i></div>'.$this->getLocalizedString("packManage").'</a>
 							<a type="button" href="levels/gauntletCreate.php" onclick="a(\'levels/gauntletCreate.php\')"class="dropdown-item"><i class="fa-solid fa-plus" style="position: absolute;font-size: 10px;margin: 3px 5px 5px -3px;" aria-hidden="false"></i><div class="icon"><i class="fa-solid fa-globe" aria-hidden="false"></i></div>'.$this->getLocalizedString("gauntletManage").'</a>';}
 							echo '<a type="button" href="stats/unlistedMod.php" onclick="a(\'stats/unlistedMod.php\')"class="dropdown-item"><div class="icon"><i class="fa-solid fa-list-ul" aria-hidden="false"></i></div>'.$this->getLocalizedString("unlistedMod").'</a>
-							<a type="button" href="stats/suggestList.php" onclick="a(\'stats/suggestList.php\')"class="dropdown-item"><div class="icon"><i class="fa-solid fa-list" aria-hidden="false"></i></div>'.$this->getLocalizedString("suggestLevels").'</a>';
+							<a type="button" href="stats/suggestList.php" onclick="a(\'stats/suggestList.php\')"class="dropdown-item"><div class="icon"><i class="fa-solid fa-list" aria-hidden="false"></i></div>'.$this->getLocalizedString("suggestLevels").'</a>
+							<a type="button" href="stats/listsTableMod.php" onclick="a(\'stats/listsTableMod.php\')"class="dropdown-item"><div class="icon"><i class="fa-solid fa-list-ul" aria-hidden="false"></i></div>'.$this->getLocalizedString("listTableMod").'</a>';
 							if($gs->checkPermission($_SESSION["accountID"], "toolQuestsCreate")) {
 								echo '<a type="button" href="stats/addQuests.php" onclick="a(\'stats/addQuests.php\')"class="dropdown-item"><i class="fa-solid fa-plus" style="position: absolute;font-size: 10px;margin: 5px 5px 5px -5px;" aria-hidden="false"></i><div class="icon"><i class="fa-solid fa-list-ol" aria-hidden="false"></i></div>'.$this->getLocalizedString("addQuest").'</a>';} 
 							echo '<a type="button" href="stats/reportMod.php" onclick="a(\'stats/reportMod.php\')"class="dropdown-item"><div class="icon"><i class="fa-solid fa-exclamation" aria-hidden="false"></i></div>'.$this->getLocalizedString("reportMod").'</a>';
@@ -282,19 +277,17 @@ class dashboardLib {
 				</ul>
 				<ul class="nav navbar-nav ml-auto">';
 					if($msgEnabled == 1 AND isset($_SESSION["accountID"]) AND $_SESSION["accountID"] != 0) { 
-                        	$new = '';
-							$msg = $db->prepare("SELECT isNew FROM messages WHERE toAccountID=:acc AND isNew=0");
-                        	$msg->execute([':acc' => $_SESSION["accountID"]]);
-                        	$msg = $msg->fetchAll();
-                        	if(count($msg) != 0) {
-								$_SESSION["msgNew"] = 1;
-                              	$new = '<i class="fa-solid fa-circle" id="notify" aria-hidden="true" style="font-size: 10px;margin-left: -5;margin-right: 3px;color: #e35151;"></i></div>';
-							} else {
-								$new = '';
-						}
-                      echo '<li class="nav-item dropdown">
+                        $new = '';
+						$msg = $db->prepare("SELECT isNew FROM messages WHERE toAccountID=:acc AND isNew=0");
+                        $msg->execute([':acc' => $_SESSION["accountID"]]);
+                        $msg = $msg->fetchAll();
+                        if(count($msg) != 0) {
+							$_SESSION["msgNew"] = 1;
+                            $new = '<i class="fa-solid fa-circle" id="notify" aria-hidden="true" style="font-size: 10px;margin-left: -5;margin-right: 3px;color: #e35151;"></i></div>';
+						} else $new = '';
+						echo '<li class="nav-item dropdown">
 						<div style="display:flex"><a type="button" href="messenger" style="background: none;border: none;" onclick="a(\'messenger\')"class="nav-link '.$msgActive.'" id="navbarDropdownMenuLink">
-							<i class="fa-solid fa-comments" aria-hidden="true"></i> '.$this->getLocalizedString("messenger").'</a>'.$new;
+						<i class="fa-solid fa-comments" aria-hidden="true"></i> '.$this->getLocalizedString("messenger").'</a>'.$new;
                     }
       				echo '
 					<li class="nav-item dropdown">
@@ -302,11 +295,11 @@ class dashboardLib {
 							<i class="fa-solid fa-language" aria-hidden="true"></i> '.$this->getLocalizedString("language").'
 						</a>
 						<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
-							<a class="dropdown-item dontblock" href="lang/switchLang.php?lang=RU"><div class="icon flag"><img class="imgflag" src="incl/flags/ru.png"></div>Русский</a>
-							<a class="dropdown-item dontblock" href="lang/switchLang.php?lang=EN"><div class="icon flag"><img class="imgflag" src="incl/flags/us.png"></div>English</a>
-							<a class="dropdown-item dontblock" href="lang/switchLang.php?lang=TR" title="Translated by EMREOYUN"><div class="icon flag"><img class="imgflag" src="incl/flags/tr.png"></div>Türkçe</a>
-                            <a class="dropdown-item dontblock" href="lang/switchLang.php?lang=UA" title="Translated by Jamichi"><div class="icon flag"><img class="imgflag" src="incl/flags/ua.png"></div>Українська</a>
-                            <a class="dropdown-item dontblock" href="lang/switchLang.php?lang=FR" title="Translated by masckmaster2007"><div class="icon flag"><img class="imgflag" src="incl/flags/fr.png"></div>Français</a>
+							<a class="dropdown-item dontblock" href="lang/switchLang.php?lang=RU"><div class="icon flag"><img class="imgflag" src="incl/flags/ru.png?2"></div>Русский</a>
+							<a class="dropdown-item dontblock" href="lang/switchLang.php?lang=EN"><div class="icon flag"><img class="imgflag" src="incl/flags/us.png?2"></div>English</a>
+							<a class="dropdown-item dontblock" href="lang/switchLang.php?lang=TR" title="Translated by EMREOYUN"><div class="icon flag"><img class="imgflag" src="incl/flags/tr.png?2"></div>Türkçe</a>
+                            <a class="dropdown-item dontblock" href="lang/switchLang.php?lang=UA" title="Translated by Jamichi"><div class="icon flag"><img class="imgflag" src="incl/flags/ua.png?2"></div>Українська</a>
+                            <a class="dropdown-item dontblock" href="lang/switchLang.php?lang=FR" title="Translated by masckmaster2007"><div class="icon flag"><img class="imgflag" src="incl/flags/fr.png?2"></div>Français</a>
 						</div>';
 						if(!empty(glob("../download/".$gdps.".*")) OR !empty(glob("download/".$gdps.".*")) OR !empty($pc) OR !empty($mac) OR !empty($android) OR !empty($ios)) {
 							echo '
@@ -367,7 +360,7 @@ class dashboardLib {
 							echo '<a class="dropdown-item dontblock" href="login/logout.php"><div class="icon"><i class="fa-solid fa-sign-out" aria-hidden="false"></i></div>'.$this->getLocalizedString("logout").'</a>
 						</div>
 					</li>';
-		}else{
+		} else {
 			echo '<li class="nav-item dropdown">
 						<a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 							<i class="fa-solid fa-sign-in" aria-hidden="true"></i> '.$this->getLocalizedString("login").'
@@ -434,7 +427,6 @@ $(document).on("keyup keypress change keydown",function(){
 						sendget = sendget + delimiter + "search=" + encodeURIComponent(fd.get("search"));
 						delimiter = "&";
 					}
-					// I\'m sorry, guys
 					if(fd.get("type") !== null) {
 						sendget = sendget + delimiter + "type=" + encodeURIComponent(fd.get("type"));
 						delimiter = "&";
@@ -486,7 +478,8 @@ $(document).on("keyup keypress change keydown",function(){
 						if(!isback) history.pushState(null,null,page);
 						if(typeof document.querySelector("base") != "object") {
 							base = document.createElement("base");
-							if(page != "") base.href = "../";
+							if(page.indexOf("settings") != "-1") base.href = "../../";
+							else if(page != "") base.href = "../";
 							else base.href = ".";
 							document.body.appendChild(base);
 						} else {
@@ -495,7 +488,7 @@ $(document).on("keyup keypress change keydown",function(){
 							else if(page != "") base.href = "../";
 							else base.href = ".";
 							document.body.appendChild(base);
-							if(typeof document.querySelectorAll("base")[1] == "object") document.querySelectorAll("base")[1].remove();
+							if(typeof document.querySelectorAll("base")[1] == "object") document.querySelectorAll("base")[0].remove();
 						}
 						try {
 							if(typeof captchascript != "undefined") {
@@ -607,17 +600,13 @@ $(document).on("keyup keypress change keydown",function(){
 	}
 	window.addEventListener("popstate", function(e) { 
 		goback = window.location.pathname.split("/");
-		if(goback[goback.length-1] != "") {
-			backpage = goback[goback.length-2]+"/"+goback[goback.length-1];
-			if(backpage != "undefined/") a(backpage, true, true, "GET", false, "", true);
-			else a(\'\', true, true, "GET", false, "", true);
-		} else {
-			backpage = goback[goback.length-3]+"/"+goback[goback.length-2];
-			if(backpage != "undefined/") a(backpage, true, false, "GET", false, "", true);
-			else a(\'\', true, true, "GET", false, "", true);
-		}
+		if(goback[goback.length-1] != "") backpage = goback[goback.length-2]+"/"+goback[goback.length-1];
+		else backpage = goback[goback.length-2];
+		if(backpage != "dashboard") a(backpage, true, true, "GET", false, "", true);
+		else a("", true, true, "GET", false, "", true);
 	}, false);
 </script>';
+	if((date("F", time()) == "December" AND date("j", time()) > 17) OR (date("F", time()) == "January" AND date("j", time()) < 10)) echo "<script>var embedimSnow=document.getElementById(\"embedim--snow\");if(!embedimSnow){function embRand(a,b){return Math.floor(Math.random()*(b-a+1))+a}var embCSS='.embedim-snow{position: absolute;width: 10px;height: 10px;background: white;border-radius: 50%;margin-top:-10px}';var embHTML='';for(i=1;i<200;i++){embHTML+='<i class=\"embedim-snow\"></i>';var rndX=(embRand(0,1000000)*0.0001),rndO=embRand(-100000,100000)*0.0001,rndT=(embRand(3,7)*10).toFixed(2),rndS=(embRand(0,6000)*0.0001).toFixed(2);embCSS+='.embedim-snow:nth-child('+i+'){'+'opacity:'+(embRand(1,10000)*0.0001).toFixed(2)+';'+'transform:translate('+rndX.toFixed(2)+'vw,-10px) scale('+rndS+');'+'animation:fall-'+i+' '+embRand(10,30)+'s -'+embRand(0,30)+'s linear infinite'+'}'+'@keyframes fall-'+i+'{'+rndT+'%{'+'transform:translate('+(rndX+rndO).toFixed(2)+'vw,'+rndT+'vh) scale('+rndS+')'+'}'+'to{'+'transform:translate('+(rndX+(rndO/2)).toFixed(2)+'vw, 105vh) scale('+rndS+')'+'}'+'}'}embedimSnow=document.createElement('div');embedimSnow.id='embedim--snow';embedimSnow.innerHTML='<style>#embedim--snow{position:fixed;left:0;top:0;bottom:0;width:100vw;height:100vh;overflow:hidden;z-index:9999999;pointer-events:none}'+embCSS+'</style>'+embHTML;document.body.appendChild(embedimSnow)}</script>";
 	}
 	public function printPage($content, $isSubdirectory = true, $navbar = "home"){
 		$this->printHeader($isSubdirectory);
@@ -676,7 +665,6 @@ $(document).on("keyup keypress change keydown",function(){
 		$bottomrow = '<div style="margin-bottom:100px">'.sprintf($this->getLocalizedString("pageInfo"),$actualpage,$pagecount).'</div><div class="btn-group" style="margin-bottom:100px;margin-left:auto; margin-right:0;z-index:1;">';
 		$bottomrow .= $ng.'<form method="get" style="margin:0">'.$inputSearch.'<input type="hidden" name="page" value="0"><button type="button" onclick="a(\''.$pagelol.'\', true, true, \'GET\', 5)" name="page" id="first" style="border-top-right-radius:0px !important;border-bottom-right-radius:0px !important;border-radius:500px" value=1 class="btn btn-outline-secondary"><i class="fa-solid fa-backward" aria-hidden="true"></i></button></form>
 		<form method="get" style="margin:0">'.$inputSearch.'<input type="hidden" name="page" value="'.$pageminus.'"><button style="border-radius:0" name="page" type="button" onclick="a(\''.$pagelol.'\', true, true, \'GET\', 4)" id="prev" value='. $pageminus .' class="btn btn-outline-secondary"><i class="fa-solid fa-chevron-left" aria-hidden="true"></i></button></form>';
-		//updated to ".."
 		$bottomrow .= '<button class="btn btn-outline-secondary" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">..</button>
 			<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink" style="padding:17px 17px 4px 17px;">
 				<form action="" method="get">
@@ -691,9 +679,7 @@ $(document).on("keyup keypress change keydown",function(){
 		<form method="get" style="margin:0;">'.$inputSearch.'<input type="hidden" name="page" value="'.$pagecount.'"><button type="button" onclick="a(\''.$pagelol.'\', true, true, \'GET\', 1)" name="page" id="last" style="border-top-left-radius:0px !important;border-bottom-left-radius:0px !important;border-radius:500px" value='. $pagecount .' class="btn btn-outline-secondary"><i class="fa-solid fa-forward" aria-hidden="true"></i></button></form>';
 		$bottomrow .= "</div><script id='bottomrowscript'>
 			function disableElement(element){
-				if(element){
-					element.className += first.className ? ' disabled' : 'disabled';
-				}
+				if(element) element.className += first.className ? ' disabled' : 'disabled';
 			}
 			var pagecount = $pagecount;
 			var actualpage = $actualpage;

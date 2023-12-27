@@ -212,8 +212,12 @@ $string["addedMod"] = "Vous avez donné les permissions modérateur à un joueur
 $string["addModOneMore"] = "Un moderateur de plus?";
 $string["modAboveYourRole"] = "Tu essayes de donner un rôle supérieur au tiens!";
 $string["makeNewMod"] = "Rendre quelqu'un moderateur!";
-$string["reassignMod"] = "Retirer un moderateur"; // man idk how to say it :'(
+$string["reassignMod"] = "Retirer un moderateur"; // man idk how to say it :'( // sorry
 $string["reassign"] = "Retirer";
+$string['demotePlayer'] = "Demote player";
+$string['demotedPlayer'] = "You successfully demoted player <b>%s</b>!";
+$string['addedModNew'] = "You successfully granted a moderator to player <b>%s</b>!";
+$string['demoted'] = 'Demoted';
 
 $string["shareCPTitle"] = "Partager les Points Créateur";
 $string["shareCPDesc"] = "Ici vous pouvez partager les Points Créateur avec un joueur!";
@@ -225,6 +229,7 @@ $string["shareCPSuccess"] = "Vous avez partagé les Points Créateur de ce nivea
 $string["shareCPSuccess2"] = "vers le joueur";
 $string["updateCron"] = "Vous devez peut-être mettre à jour vos Points Créateur.";
 $string["shareCPOneMore"] = "Un Partage de plus?";
+$string['shareCPSuccessNew'] = 'You successfully shared Creator Points of level <b>%1$s</b> to player <b>%2$s</b>!';
 
 $string["messenger"] = "Messages";
 $string["write"] = "Écrire";
@@ -341,9 +346,14 @@ $string["createdClan"] = "Vous avez créé le clan <span style='font-weight:700;
 $string["createClanDesc"] = "Ici vous pouvez créer un clan!";
 $string["create"] = "Créer";
 $string["mainSettings"] = "Main settings";
+$string["takenClanName"] = "This clan name was already taken!";
 
 $string["suggestedName"] = '<button type="button" onclick="a(\'profile/%1$s\', true, true)" class="accbtn" name="accountID">%1$s</button><text class="dltext"> suggested <b>%4$s%3$s</b> for</text><text class="levelname">%2$s</text>'; // %1$s - Mod username, %2$s - level name, %3$s - x stars, %4$s - Featured/Epic (%4$s%3$s - Featured, x stars)
 $string["reportedName"] = '%1$s<text class="dltext"> was reported</text><text class="levelname">%2$s</text>';
+
+$string['listTable'] = "Lists";
+$string['listTableMod'] = "Unlisted lists";
+$string['listTableYour'] = "Your unlisted lists";
 
 /*
 	REUPLOAD
@@ -525,6 +535,14 @@ $string["modAction23"] = "Quête modifiée";
 $string["modAction24"] = "Reassigned a player";
 $string["modAction25"] = "A créé une quête";
 $string["modAction26"] = "A changé le nom d'utilisateur/mot de passe du joueur";
+$string["modAction30"] = "Rated list";
+$string["modAction31"] = "Sent list";
+$string["modAction32"] = "Un/featured list";
+$string["modAction33"] = "Un/published list";
+$string["modAction34"] = "Deleted list";
+$string["modAction35"] = "Changed list's creator";
+$string["modAction36"] = "Changed list's name";
+$string["modAction37"] = "Changed list's description";
 $string["everyActions"] = "Toutes les actions";
 $string["everyMod"] = "Tous les modérateurs";
 $string["Kish!"] = "Part d'ici!";
@@ -532,5 +550,6 @@ $string["noPermission"] = "Vous n'avez pas la permission!";
 $string["noLogin?"] = "Vous n'êtes pas connecté à votre compte!";
 $string["LoginBtn"] = "Se connecter au compte";
 $string["dashboard"] = "Tableau de bord";
+$string["userID"] = 'User ID';
 //errors
 $string["errorNoAccWithPerm"] = "Erreur: Aucun compte avec la permission '%s' a été trouvé";

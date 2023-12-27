@@ -31,7 +31,7 @@ if($_SESSION["accountID"] != 0) {
 			$x++;
 		}
 	} else {
-		$body = base64_encode(ExploitPatch::remove($_GET["body"]));
+		$body = base64_encode(strip_tags(ExploitPatch::rucharclean($_GET["body"])));
 		$reply = $db->prepare("INSERT INTO replies (commentID, accountID, body, timestamp) VALUES (:cid, :acc, :body, :time)");
 		$reply->execute([':cid' => $id, ':acc' => $_SESSION["accountID"], ':body' => $body, ':time' => time()]);
 		echo 1;

@@ -17,7 +17,7 @@ if(strpos($songEnabled, '1') === false) {
 	</div>', 'reupload');
 	die();
 }
-if(isset($_SESSION["accountID"]) AND $_SESSION["accountID"] != 0){
+if(isset($_SESSION["accountID"]) AND $_SESSION["accountID"] != 0) {
 if($_FILES && $_FILES['filename']['error'] == UPLOAD_ERR_OK) {
 	if(!Captcha::validateCaptcha()) {
 		$dl->printSong('<div class="form">
@@ -29,43 +29,45 @@ if($_FILES && $_FILES['filename']['error'] == UPLOAD_ERR_OK) {
 		</div>', 'reupload');
 		die();
 	} else {
-		$file_type = $_FILES['filename']['type'];
+		$info = new finfo(FILEINFO_MIME);
+		$file_type = explode(';', $info->buffer(file_get_contents($_FILES['filename']['tmp_name'])))[0];
 		$allowed = array("audio/mpeg", "audio/ogg", "audio/mp3");
-		if(!in_array($file_type, $allowed)) {
-			$db_fid = -7;
-		} else {
-			$maxsize = $songSize * 1024 * 1024;
-			if($_FILES['filename']['size'] >= $maxsize) {
-				$db_fid = -5;
-			} else {
-				$length = 10;
-				$db_fid = rand(2, 999999);
-				move_uploaded_file($_FILES['filename']['tmp_name'], "$db_fid.mp3");
-				$size = ($_FILES['filename']['size'] / 1048576);
-				$size = round($size, 2);
-				$hash = "";
-				$types = array('.mp3', '.ogg', '.mpeg');
-				$nAu = explode(' - ', str_replace($types, '', $_FILES['filename']['name']));
-				if(empty($nAu[1])) $nAu = explode(' — ', str_replace($types, '', $_FILES['filename']['name']));
-				if(!empty($nAu[1])) {
-					if(!empty($_POST['name'])) $name = ExploitPatch::remove($_POST['name']);
-					else $name = trim(ExploitPatch::remove($nAu[1]));
-					if(!empty($_POST['author'])) $author = ExploitPatch::remove($_POST['author']);
-					else $author = trim(ExploitPatch::remove($nAu[0]));
-				} else {
-					$name = ExploitPatch::remove($_POST['name']);
-					$author = ExploitPatch::remove($_POST['author']);
+		if(!in_array($file_type, $allowed)) $db_fid = -7;
+		else {
+			if($_FILES['filename']['size'] == 0) $db_fid = -6;
+			else {
+				$maxsize = $songSize * 1024 * 1024;
+				if($_FILES['filename']['size'] >= $maxsize) $db_fid = -5;
+				else {
+					$length = 10;
+					$db_fid = rand(2, 999999);
+					move_uploaded_file($_FILES['filename']['tmp_name'], "$db_fid.mp3");
+					$size = ($_FILES['filename']['size'] / 1048576);
+					$size = round($size, 2);
+					$hash = "";
+					$types = array('.mp3', '.ogg', '.mpeg');
+					$nAu = explode(' - ', str_replace($types, '', $_FILES['filename']['name']), 2);
+					if(empty($nAu[1])) $nAu = explode(' — ', str_replace($types, '', $_FILES['filename']['name']), 2);
+					if(!empty($nAu[1])) {
+						if(!empty($_POST['name'])) $name = ExploitPatch::rucharclean($_POST['name']);
+						else $name = trim(ExploitPatch::rucharclean($nAu[1]));
+						if(!empty($_POST['author'])) $author = ExploitPatch::rucharclean($_POST['author']);
+						else $author = trim(ExploitPatch::rucharclean($nAu[0]));
+					} else {
+						$name = ExploitPatch::rucharclean($_POST['name']);
+						$author = ExploitPatch::rucharclean($_POST['author']);
+					}
+					if(empty($name)) $name = "Unnamed";
+					if(empty($author)) $author = "Reupload";
+					$servername = $_SERVER['SERVER_NAME'];
+					$accountID = $_SESSION["accountID"];
+					$path = str_replace($_SERVER['DOCUMENT_ROOT'], '', $_SERVER['SCRIPT_FILENAME']);
+					$path =  str_replace('index.php', '', $path);
+					$song = "https://".$servername."".$path."".$db_fid.".mp3";
+					$query = $db->prepare("INSERT INTO songs (ID, name, authorID, authorName, size, download, hash, reuploadTime, reuploadID) VALUES (:id, :name, '9', :author, :size, :download, :hash, :reuploadTime, :reuploadID)");
+					$query->execute([':id' => $db_fid, ':name' => mb_substr($name, 0, 40), ':download' => $song, ':author' => mb_substr($author, 0, 30), ':size' => $size, ':hash' => $hash, ':reuploadTime' => time(), ':reuploadID' => $accountID]);
 				}
-				if(empty($name)) $name = "Unnamed";
-				if(empty($author)) $author = "Reupload";
-				$servername = $_SERVER['SERVER_NAME'];
-				$accountID = $_SESSION["accountID"];
-				$path = str_replace($_SERVER['DOCUMENT_ROOT'], '', $_SERVER['SCRIPT_FILENAME']);
-				$path =  str_replace('index.php', '', $path);
-				$song = "https://".$servername."".$path."".$db_fid.".mp3";
-				$query = $db->prepare("INSERT INTO songs (ID, name, authorID, authorName, size, download, hash, reuploadTime, reuploadID) VALUES (:id, :name, '9', :author, :size, :download, :hash, :reuploadTime, :reuploadID)");
-				$query->execute([':id' => $db_fid, ':name' => $name, ':download' => $song, ':author' => $author, ':size' => $size, ':hash' => $hash, ':reuploadTime' => time(), ':reuploadID' => $accountID]);
-			} 
+			}			
 		}
 		if($db_fid < 0) {
 			$dl->printSong('<div class="form">

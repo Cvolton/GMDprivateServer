@@ -59,22 +59,9 @@ foreach($result as &$action) {
 		if(empty($resultRole)){
 			$resultRole = $dl->getLocalizedString("player");
 		} else {
-			switch($resultRole) {
-				case 1:
-					$resultRole = $dl->getLocalizedString("admin");
-					break;
-				case 2:
-					$resultRole = $dl->getLocalizedString("elder");
-					break;
-				case 3:
-					$resultRole = $dl->getLocalizedString("moder");
-					break;
-				default:
-					$query = $db->prepare("SELECT roleName FROM roles WHERE roleID = :id");
-					$query->execute([':id' => $resultRole]);
-					$resultRole = $query->fetch()["roleName"];
-					break;
-			}
+			$query = $db->prepare("SELECT roleName FROM roles WHERE roleID = :id");
+			$query->execute([':id' => $resultRole]);
+			$resultRole = $query->fetch()["roleName"];
 		}
 	}
 	if($action["clan"] != 0) {
@@ -83,6 +70,7 @@ foreach($result as &$action) {
 		$clan = '<span style="display:contents;cursor:pointer"><h2 class="music" style="width: max-content;margin-left: 5px;grid-gap:5px;color:#'.$claninfo["color"].'">'.$claninfo["clan"].$own.'</h2></span>';
 	}
 	if($action["stars"] == 0) $st = ''; else $st = '<p class="profilepic">'.$action["stars"].' <i class="fa-solid fa-star"></i></p>';
+    if($action["moons"] == 0) $ms = ''; else $ms = ' <p class="profilepic">'.$action["moons"].' <i class="fa-solid fa-moon"></i></p>';
     if($action["diamonds"] == 0) $dm = ''; else $dm = ' <p class="profilepic">'.$action["diamonds"].' <i class="fa-solid fa-gem"></i></p>';
     if($action["coins"] == 0) $gc = ''; else $gc = '<p class="profilepic">'.$action["coins"].' <i class="fa-solid fa-coins" style="color:#ffffbb"></i></p>';
     if($action["userCoins"] == 0) $uc = ''; else $uc = '<p class="profilepic">'.$action["userCoins"].' <i class="fa-solid fa-coins"></i></p>';
@@ -90,7 +78,7 @@ foreach($result as &$action) {
     if($action["creatorPoints"] == 0) $cp = ''; else $cp = '<p class="profilepic">'.$action["creatorPoints"].' <i class="fa-solid fa-screwdriver-wrench"></i></p>';
 	$ac = '<p class="profilepic">'.$counts["actionCount"].' <i class="fa-solid fa-circle-play"></i></p>';
     $lr = '<p class="profilepic">'.$counts["levelsRated"].' <i class="fa-regular fa-star"></i></p>';
-    $stats = $st.$dm.$gc.$uc.$dn.$cp.$ac.$lr;
+    $stats = $st.$ms.$dm.$gc.$uc.$dn.$cp.$ac.$lr;
     if(empty($stats)) $stats = '<p style="font-size:25px;color:#212529">'.$dl->getLocalizedString("empty").'</p>';
 	$registerDate = $dl->convertToDate($action["registerDate"], true);
 	$members .= '<div style="width: 100%;display: flex;flex-wrap: wrap;justify-content: center;">

@@ -8,8 +8,8 @@ include_once '../'.$dbPath.'incl/lib/mainLib.php';
 $gs = new mainLib();
 $dl->printFooter('../');
 if(!empty($_SESSION["accountID"]) AND $_SESSION["accountID"] != 0 AND $gs->checkPermission($_SESSION["accountID"], 'demonlistApprove')) {
-	$str = ExploitPatch::remove($_GET["str"]);
-	$type = ExploitPatch::remove($_POST["type"]);
+	$str = ExploitPatch::charclean($_GET["str"]);
+	$type = ExploitPatch::number($_POST["type"]);
 	$sub = $db->prepare("SELECT * FROM dlsubmits WHERE auth = :str");
 	$sub->execute([':str' => $str]);
 	$sub = $sub->fetch();

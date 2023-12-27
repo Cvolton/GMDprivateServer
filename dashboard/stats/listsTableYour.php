@@ -4,13 +4,20 @@ require "../incl/dashboardLib.php";
 $dl = new dashboardLib();
 require_once "../".$dbPath."incl/lib/mainLib.php";
 $gs = new mainLib();
-$dl->title($dl->getLocalizedString("packTable"));
+$dl->title($dl->getLocalizedString("listTableYour"));
 $dl->printFooter('../');
 include "../".$dbPath."incl/lib/connection.php";
+if(!isset($_SESSION["accountID"]) || $_SESSION["accountID"] == 0) exit($dl->printSong('<div class="form">
+    <h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
+	<form class="form__inner" method="post" action="./login/login.php">
+	<p>'.$dl->getLocalizedString("noLogin?").'</p>
+	        <button type="button" onclick="a(\'login/login.php\', true, false, \'GET\')" class="btn-primary">'.$dl->getLocalizedString("LoginBtn").'</button>
+    </form>
+</div>', 'account'));
 $x = 1;
 $packtable = "";
-$query = $db->prepare("SELECT * FROM mappacks ORDER BY ID ASC");
-$query->execute();
+$query = $db->prepare("SELECT * FROM lists WHERE unlisted != 0 AND accountID = :accID ORDER BY listID DESC");
+$query->execute([':accID' => $_SESSION['accountID']]);
 $result = $query->fetchAll();
 if(empty($result)) {
 	$dl->printSong('<div class="form">
@@ -19,23 +26,24 @@ if(empty($result)) {
 		<p>'.$dl->getLocalizedString("emptyPage").'</p>
         <button type="button" onclick="a(\'\', true, false, \'GET\')" class="btn-primary">'.$dl->getLocalizedString("dashboard").'</button>
     </form>
-</div>', 'browse');
+</div>', 'account');
 	die();
 } 
 $modcheck = $gs->checkPermission($_SESSION["accountID"], "dashboardModTools");
 foreach($result as &$pack){
-	$lvlarray = explode(",", $pack["levels"]);
+	$lvlarray = explode(",", $pack["listlevels"]);
 	$lvltable = "";
-  	$color = $pack['rgbcolors'];
-    $starspack = $pack["stars"];
-    if($pack["stars"] == 0) $starspack = '<span style="color:grey">0</span>';
-  	$coinspack = $pack["coins"];
-    if($pack["coins"] == 0) $coinspack = '<span style="color:grey">0</span>';
-	$pst = '<p class="profilepic"><i class="fa-solid fa-star"></i> '.$starspack.'</p>';
-	$pcc =  '<p class="profilepic"><i class="fa-solid fa-coins"></i> '.$coinspack.'</p>';
-	$diffarray = ['Auto', 'Easy', 'Normal', 'Hard', 'Harder', 'Insane', 'Demon'];
-	$pd = '<p class="profilepic"><i class="fa-solid fa-face-smile-beam"></i> '.$diffarray[$pack['difficulty']].'</p>';
-	$packall = $pst.$pd.$pcc;
+	$listDesc = htmlspecialchars(base64_decode($pack['listDesc']));
+	if(empty($listDesc)) $listDesc = '<text style="color:gray">'.$dl->getLocalizedString("noDesc").'</text>';
+    $starspack = $pack["starStars"];
+    if($pack["starStars"] == 0) $starspack = '<span style="color:grey">0</span>';
+  	$coinspack = $pack["countForReward"];
+	$pst = '<p class="profilepic"><i class="fa-solid fa-gem"></i> '.$starspack.'</p>';
+	if($pack["countForReward"] != 0) $pcc =  '<p class="profilepic"><i class="fa-solid fa-circle-check"></i> '.$coinspack.'</p>'; else $pcc = '';
+	$pd = '<p class="profilepic"><i class="fa-solid fa-face-smile-beam"></i> '.$gs->getListDiffName($pack['starDifficulty']).'</p>';
+	$lk = '<p class="profilepic"><i class="fa-solid fa-thumbs-'.($pack['likes'] - $pack['dislikes'] > 0 ? 'up' : 'down').'"></i> '.abs($pack['likes'] - $pack['dislikes']).'</p>';
+	$dload = '<p class="profilepic"><i class="fa-solid fa-reply fa-rotate-270"></i> '.$pack['downloads'].'</p>';
+	$packall = $dload.$lk.$pst.$pd.$pcc;
 	foreach($lvlarray as &$lvl) {
 		$query = $db->prepare("SELECT * FROM levels WHERE levelID = :levelID");
 		$query->execute([':levelID' => $lvl]);
@@ -46,8 +54,9 @@ foreach($result as &$pack){
 		$levelDesc = htmlspecialchars(base64_decode($action["levelDesc"]));
 		if(empty($levelDesc)) $levelDesc = '<text style="color:gray">'.$dl->getLocalizedString("noDesc").'</text>';
 		$levelpass = $action["password"];
-		$likes = $action["likes"];
-		$stats = '<div class="profilepic" style="display:inline-flex;grid-gap:3px;color:#c0c0c0">'.($likes >= 0 ? '<i class="fa-regular fa-thumbs-up"></i>' : '<i class="fa-regular fa-thumbs-down"></i>').' '.abs($likes). '</div>';
+		$likes = $action["likes"] > 0 ? $action["likes"] : '<span style="color:gray">'.$action["likes"].'</span>';
+		$dislikes = $action["dislikes"] > 0 ? $action["dislikes"] : '<span style="color:gray">'.$action["dislikes"].'</span>';
+		$stats = '<div class="profilepic" style="display:inline-flex;grid-gap:3px;color:white"><i style="color:#ffffc0" class="fa-regular fa-thumbs-up"></i> '.$likes. ' | <i style="color:#ffc0c0" class="fa-regular fa-thumbs-down"></i> '.$dislikes.'</div>';
 		if($modcheck) {
 			$levelpass = substr($levelpass, 1);
 			$levelpass = preg_replace('/(0)\1+/', '', $levelpass);
@@ -94,7 +103,8 @@ foreach($result as &$pack){
 	$packtable .= '<div style="width: 100%;display: flex;flex-wrap: wrap;justify-content: center;">
 		<div class="profile packcard">
 			<div class="packname">
-				<h1 style="color:rgb('.$pack["rgbcolors"].')">'.$pack["name"].'</h1>
+				<h1>'.sprintf($dl->getLocalizedString("demonlistLevel"), htmlspecialchars($pack["listName"]), 0, htmlspecialchars($gs->getAccountName($pack['accountID']))).'</h1>
+				<p>'.$listDesc.'</p>
 			</div>
 			<div class="form-control longfc">
         		'.$packall.'
@@ -103,16 +113,16 @@ foreach($result as &$pack){
 				'.$lvltable.'
 			</div>
 			<div class="commentsdiv" style="margin: 0px 5px">
-				<h2 class="comments">ID: '.$pack["ID"].'</h2>
-				'.($pack["timestamp"] != 0 ? '<h2 class="comments">'.$dl->getLocalizedString('date').': '.$dl->convertToDate($pack["timestamp"], true).'</h2>' : '').'
+				<h2 class="comments">ID: '.$pack["listID"].'</h2>
+				<h2 class="comments">'.$dl->getLocalizedString('date').': '.$dl->convertToDate($pack["uploadDate"], true).'</h2>
 			</div>
 		</div>
 	</div>';
 	$x++;
 }
-$dl->printSong('<div class="form clan-form"><h1>'.$dl->getLocalizedString('packTable').'</h1>
+$dl->printSong('<div class="form clan-form"><h1>'.$dl->getLocalizedString('listTableYour').'</h1>
 	<div class="form-control clan-form-control">
 		'.$packtable.'
 	</div>
-</div>', 'browse');
+</div>', 'account');
 ?>

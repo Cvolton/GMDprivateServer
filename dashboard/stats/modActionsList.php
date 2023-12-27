@@ -48,103 +48,114 @@ if(empty($result)) {
 } 
 foreach($result as &$action){
 	$account =  $gs->getAccountName($action["account"]);
-	$value = $action["value"];
-	$value2 = $action["value2"];
-	$value3 = $action["value3"];
-	$value4 = $action["value4"];
-	if($action["type"] == 5){
-      	$value = $value3;
-		if(is_numeric($value2)) $value3 = date("d.m.Y", $value2);
-	}
-	if($action["type"] == 15) $value = $gs->getAccountName($value);
+	$value = htmlspecialchars($action["value"]);
+	$value2 = htmlspecialchars($action["value2"]);
+	$value3 = htmlspecialchars($action["value3"]);
+	$value4 = htmlspecialchars($action["value4"]);
+	$value5 = htmlspecialchars($action["value5"]);
+	$value6 = htmlspecialchars($action["value6"]);
 	$actionname = $dl->getLocalizedString("modAction".$action["type"]);
-  	
-  	if($action["type"] == 1) {
-		if($value2 == 1) $star = 0; elseif($value2 < 5 AND $value2 != 0) $star = 1; else $star = 2;
-      	$value2 = $value2.' '.$dl->getLocalizedString("starsLevel$star");
-		if($value == 0) $value = '<text style="color:gray">'.$dl->getLocalizedString("isAdminNo").'</text>';
-    }
-	if($action["type"] == 2 OR $action["type"] == 3 OR $action["type"] == 4){
-		if($action["value"] == 1) $value = '<text style="color:gray">'.$dl->getLocalizedString("isAdminYes").'</text>';
-      	else $value = '<text style="color:gray">'.$dl->getLocalizedString("isAdminNo").'</text>';
-		$value2 = $gs->getLevelName($value3);
-    }
-	if($action["type"] == 13) $value = base64_decode($value);
-  	if($action["type"] == 15) {
-		switch($value4) {
-			case 'isBanned':
-				$value4  = $dl->getLocalizedString('playerTop');
-				break;
-			case 'isCreatorBanned':
-				$value4  = $dl->getLocalizedString('creatorTop');
-				break;
-			case 'isUploadBanned':
-				$value4  = "Загрузка уровней";
-				break;
-		}
-    	if($value3 == 0) $value3 = $value4.', <span style="color:#a9ffa9">'.$dl->getLocalizedString("unban").'</span>';
-      	else $value3 = $value4.', <span style="color:#ffa9a9">'.$dl->getLocalizedString("isBan").'</span>';
-      	if($value2 == 'banned' OR $value2 == 'none') $value2 = '<span style="color:gray">'.$dl->getLocalizedString("noReason").'</span>';
-    } 
-  	if($action["type"] == 26) {
-		$username26 = $gs->getAccountName($action["value"]);
-		$value = '<button href="profile/'.$username26.'" class="accbtn" onclick="a(\'profile/'.$username26.'\', true, true)">'.$username26.'</button>';
-		$value2 = $action["value"];
-		if($value2 == 'Password') $value3 = $dl->getLocalizedString("password");
-		else $value3 = $dl->getLocalizedString("username");
-	}
-	if($action["type"] == 25 OR $action["type"] == 23) {
-		$value = $value4;
-		switch($action["value"]) {
-			case 1:
-				$value2 = $dl->getLocalizedString("orbs");
-				break;
-			case 2:
-				$value2 = $dl->getLocalizedString("coins");
-				break;
-			case 3:
-				$value2 = $dl->getLocalizedString("stars");
-				break;
-		}
-		$value3 = $action["value2"].' | '.$action["value3"];
-	}
-	if($action["type"] == 20 OR $action["type"] == 24) {
-		$value = '<form style="margin:0" method="post" action="./profile/"><button type="button" onclick="a(\'profile/'.$value.'\', true, true, \'POST\')" style="margin:0" class="accbtn" name="accountID" value="'.$value2.'">'.$value.'</button></form>';
-		$clr = $db->prepare("SELECT commentColor FROM roles WHERE roleID = :id");
-		$clr->execute([':id' => $value3]);
-		$clr = $clr->fetch();
-		switch($value3) {
-			case 1:
-				$value3 = $dl->getLocalizedString("admin");
-				break;
-			case 2:
-				$value3 = $dl->getLocalizedString("elder");
-				break;
-			case 3:
-				$value3 = $dl->getLocalizedString("moder");
-				break;
-			default:
-				$name = $db->prepare("SELECT roleName FROM roles WHERE roleID = :id");
-				$name->execute([':id' => $value3]);
-				$name = $name->fetch();
-				$value3 = $name["roleName"];
-				break;
-		}
-		$value3 = '<text style="color:rgb('.$clr["commentColor"].')">'.$value3.'</text>';
-	}
-  	if($action["type"] == 17 OR $action["type"] == 21) { 
-      	if($value3 == 1) $star = 0; elseif($value3 < 5) $star = 1; else $star = 2;
-      	if($action["value4"] == 1) $coin = 0; elseif($action["value4"] != 0) $coin = 1; else $coin = 2; 
-		$value = '<span style="color:rgb('.$action["value7"].');font-weight:700">'.$value.'</span>';
-      	$value3 = $value3.' '.$dl->getLocalizedString("starsLevel$star").', '.$action["value4"].' '.$dl->getLocalizedString("coins$coin");
+	switch($action["type"]) {
+		case 1:
+			if($value2 == 1) $star = 0; elseif($value2 < 5 AND $value2 != 0) $star = 1; else $star = 2;
+			$value2 = $value2.' '.$dl->getLocalizedString("starsLevel$star");
+			if($value == 0) $value = '<text style="color:gray">'.$dl->getLocalizedString("isAdminNo").'</text>';
+			break;
+		case 2:
+		case 3:
+		case 4:
+			if($action["value"] == 1) $value = '<text style="color:gray">'.$dl->getLocalizedString("isAdminYes").'</text>';
+			else $value = '<text style="color:gray">'.$dl->getLocalizedString("isAdminNo").'</text>';
+			$value2 = $gs->getLevelName($value3);
+			break;
+		case 5:
+			$value = $value3;
+			if(is_numeric($value2)) $value3 = date("d.m.Y", $value2);
+			$value2 = $gs->getLevelName($value);
+			break;
+		case 11:
+			$value2 = $gs->getLevelName($value3);
+			break;
+		case 13:
+			$value = base64_decode($value);
+			break;
+		case 15:
+			$value = $gs->getAccountName($value);
+			switch($value4) {
+				case 'isBanned':
+					$value4  = $dl->getLocalizedString('playerTop');
+					break;
+				case 'isCreatorBanned':
+					$value4  = $dl->getLocalizedString('creatorTop');
+					break;
+				case 'isUploadBanned':
+					$value4  = "Загрузка уровней";
+					break;
+			}
+			if($value3 == 0) $value3 = $value4.', <span style="color:#a9ffa9">'.$dl->getLocalizedString("unban").'</span>';
+			else $value3 = $value4.', <span style="color:#ffa9a9">'.$dl->getLocalizedString("isBan").'</span>';
+			if($value2 == 'banned' OR $value2 == 'none') $value2 = '<span style="color:gray">'.$dl->getLocalizedString("noReason").'</span>';
+			break;
+		case 17:
+		case 21:
+			if($value3 == 1) $star = 0; elseif($value3 < 5) $star = 1; else $star = 2;
+			if($action["value4"] == 1) $coin = 0; elseif($action["value4"] != 0) $coin = 1; else $coin = 2; 
+			$value = '<span style="color:rgb('.$action["value7"].');font-weight:700">'.$value.'</span>';
+			$value3 = $value3.' '.$dl->getLocalizedString("starsLevel$star").', '.$action["value4"].' '.$dl->getLocalizedString("coins$coin");
+			break;
+		case 20:
+		case 24:
+			$value = '<form style="margin:0" method="post" action="./profile/"><button type="button" onclick="a(\'profile/'.$value.'\', true, true, \'POST\')" style="margin:0" class="accbtn" name="accountID" value="'.$value2.'">'.$value.'</button></form>';
+			if($value3 != "-1") {
+				$clr = $db->prepare("SELECT commentColor, roleName FROM roles WHERE roleID = :id");
+				$clr->execute([':id' => $value3]);
+				$clr = $clr->fetch();
+			} else {
+				$clr['roleName'] = $dl->getLocalizedString('demoted');
+				$clr['commentColor'] = '227, 81, 81';
+			}
+			$value3 = '<text style="color:rgb('.$clr["commentColor"].')">'.$clr['roleName'].'</text>';
+			break;
+		case 23:
+		case 25:
+			$value = $value4;
+			$questTypes = ['Unknown', $dl->getLocalizedString("orbs"), $dl->getLocalizedString("coins"), $dl->getLocalizedString("stars")]; 
+			$value2 = $questTypes[$action['value']];
+			$value3 = $action["value2"].' | '.$action["value3"];
+			break;
+		case 26:
+			$username26 = $gs->getAccountName($action["value"]);
+			$value = '<button href="profile/'.$username26.'" class="accbtn" onclick="a(\'profile/'.$username26.'\', true, true)">'.$username26.'</button>';
+			$value2 = $action["value"];
+			if($value2 == 'Password') $value3 = $dl->getLocalizedString("password");
+			else $value3 = $dl->getLocalizedString("username");
+			break;
+		case 30:
+		case 31:
+			$value = $gs->getListName($action["value3"]).', '.$action['value3'];
+			$value2 = $gs->getListDiffName($action["value2"]);
+			$value3 = $action['value'];
+			break;
+		case 32:
+		case 33:
+			$value = $gs->getListName($action["value3"]);
+			$value2 = $action['value'];
+			break;
+		case 35:
+			$value = $gs->getListName($action["value3"]);
+			$value2 = $gs->getAccountName($action['value']);
+			break;
+		case 37:
+			$value = base64_decode($action['value']);
+			$value2 = $gs->getListName($action["value3"]);
+			break;
 	}
 	if(mb_strlen($action["value"]) > 18) $value = "<details><summary>".$dl->getLocalizedString("spoiler")."</summary>$value</details>";
   	if(mb_strlen($action["value2"]) > 18) $value2 = "<details><summary>".$dl->getLocalizedString("spoiler")."</summary>$value2</details>";
 	$time = $dl->convertToDate($action["timestamp"], true);
-	if($action["type"] == 5) $value2 = $gs->getLevelName($value);
-	$v1 = '<div class="mavdiv"><p class="profilepic"><i class="fa-solid fa-1" style="background: #29282c; padding: 5px 11.5px; border-radius: 500px;"></i> '.$value.'</p></div>';
-	$v2 = '<div class="mavdiv"><p class="profilepic"><i class="fa-solid fa-2" style="background: #29282c; padding: 5px 9.5px; border-radius: 500px;"></i> '.$value2.'</p></div>';
-	$v3 = '<div class="mavdiv"><p class="profilepic"><i class="fa-solid fa-3" style="background: #29282c; padding: 5px 6.5px; border-radius: 500px;"></i> '.$value3.'</p></div>';
+	$v1 = '<div class="mavdiv"><div class="profilepic"><i class="fa-solid fa-1" style="background: #29282c; padding: 5px 11.5px; border-radius: 500px;"></i> '.$value.'</div></div>';
+	$v2 = '<div class="mavdiv"><div class="profilepic"><i class="fa-solid fa-2" style="background: #29282c; padding: 5px 9.5px; border-radius: 500px;"></i> '.$value2.'</div></div>';
+	$v3 = '<div class="mavdiv"><div class="profilepic"><i class="fa-solid fa-3" style="background: #29282c; padding: 5px 6.5px; border-radius: 500px;"></i> '.$value3.'</div></div>';
 	$stats = $v1.$v2.$v3;
 	$members .= '<div style="width: 100%;display: flex;flex-wrap: wrap;justify-content: center;">
 			<div class="profile"><div style="display: flex;width: 100%;justify-content: space-between;margin-bottom: 7px;align-items: center;"><div class="acclistdiv">
@@ -197,6 +208,14 @@ $pagel = '<div class="form new-form">
             <option value="24">'.$dl->getLocalizedString("modAction24").'</option>
 			<option value="25">'.$dl->getLocalizedString("modAction25").'</option>
 			<option value="26">'.$dl->getLocalizedString("modAction26").'</option>
+			<option value="30">'.$dl->getLocalizedString("modAction30").'</option>
+			<option value="31">'.$dl->getLocalizedString("modAction31").'</option>
+			<option value="32">'.$dl->getLocalizedString("modAction32").'</option>
+			<option value="33">'.$dl->getLocalizedString("modAction33").'</option>
+			<option value="34">'.$dl->getLocalizedString("modAction34").'</option>
+			<option value="35">'.$dl->getLocalizedString("modAction35").'</option>
+			<option value="36">'.$dl->getLocalizedString("modAction36").'</option>
+			<option value="37">'.$dl->getLocalizedString("modAction37").'</option>
 		</select>
 		<select id="sel2" style="border-radius: 0;margin:0;width:35%" name="who" value="'.$_GET["who"].'" placeholder="'.$dl->getLocalizedString("search").'">
 			<option value="0">'.$dl->getLocalizedString("everyMod").'</option>
