@@ -293,12 +293,13 @@ class Commands {
 				break;
 			case '!un':
 			case '!unlist':
-				if(!$gs->checkPermission($accountID, "commandUnlistAll") AND $accountID != $gs->getListOwner($listID)) return false;
+				$accCheck = $gs->getListOwner($listID);
+				if(!$gs->checkPermission($accountID, "commandUnlistAll") AND $accountID != $accCheck) return false;
 				if(!isset($carray[1])) $carray[1] = 1;
 				$query = $db->prepare("UPDATE lists SET unlisted = :unlisted WHERE listID=:listID");
 				$query->execute([':listID' => $listID, ':unlisted' => $carray[1]]);
-				$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('33', :value, :levelID, :timestamp, :id)");
-				$query->execute([':value' => $carray[1], ':timestamp' => time(), ':id' => $accountID, ':levelID' => $listID]);
+				$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('33', :value, :listID, :timestamp, :id)");
+				$query->execute([':value' => $carray[1], ':timestamp' => time(), ':id' => $accountID, ':listID' => $listID]);
 				break;
 			case '!d':
 			case '!delete':
@@ -311,19 +312,36 @@ class Commands {
 			case '!acc':
 			case '!setacc':
 				if(!$gs->checkPermission($accountID, "commandSetacc")) return false;
-				if(is_numeric($carray[1])) {
-					$acc = ExploitPatch::number($carray[1]);
-					$accName = $gs->getAccountName($acc);
-				}
-				else {
-					$accName = ExploitPatch::charclean($carray[1]);
-					$acc = $gs->getAccountIDFromName($accName);
-				}
-				if(empty($acc) OR empty($accName)) return false;
-				$query = $db->prepare("UPDATE lists SET accountID = :accID, userName = :name WHERE listID=:listID");
-				$query->execute([':listID' => $listID, ':accID' => $acc, ':name' => $accName]);
-				$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('35', :value, :levelID, :timestamp, :id)");
-				$query->execute([':value' => $acc, ':timestamp' => time(), ':id' => $accountID, ':levelID' => $listID]);
+				if(is_numeric($carray[1])) $acc = ExploitPatch::number($carray[1]);
+				else $acc = $gs->getAccountIDFromName(ExploitPatch::charclean($carray[1]));
+				if(empty($acc)) return false;
+				$query = $db->prepare("UPDATE lists SET accountID = :accID WHERE listID=:listID");
+				$query->execute([':listID' => $listID, ':accID' => $acc]);
+				$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('35', :value, :listID, :timestamp, :id)");
+				$query->execute([':value' => $acc, ':timestamp' => time(), ':id' => $accountID, ':listID' => $listID]);
+				break;
+			case '!re':
+			case '!rename':
+				$accCheck = $gs->getListOwner($listID);
+				if(!$gs->checkPermission($accountID, "commandRenameAll") AND $accountID != $accCheck) return false;
+				$carray[0] = '';
+				$oldName = $gs->getListName($listID);
+				$name = trim(ExploitPatch::charclean(implode(' ', $carray)));
+				$query = $db->prepare("UPDATE lists SET listName = :name WHERE listID = :listID");
+				$query->execute([':listID' => $listID, ':name' => $name]);
+				$query = $db->prepare("INSERT INTO modactions (type, value, value2, value3, timestamp, account) VALUES ('36', :value, :value2, :listID, :timestamp, :id)");
+				$query->execute([':value' => $name, ':value2' => $oldName, ':timestamp' => time(), ':id' => $accountID, ':listID' => $listID]);
+				break;
+			case '!desc':
+			case '!description':
+				$accCheck = $gs->getListOwner($listID);
+				if(!$gs->checkPermission($accountID, "commandDescriptionAll") AND $accountID != $accCheck) return false;
+				$carray[0] = '';
+				$name = base64_encode(trim(ExploitPatch::charclean(implode(' ', $carray))));
+				$query = $db->prepare("UPDATE lists SET listDesc = :name WHERE listID = :listID");
+				$query->execute([':listID' => $listID, ':name' => $name]);
+				$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('37', :value, :listID, :timestamp, :id)");
+				$query->execute([':value' => $name, ':timestamp' => time(), ':id' => $accountID, ':listID' => $listID]);
 				break;
 		}
 		return true;
