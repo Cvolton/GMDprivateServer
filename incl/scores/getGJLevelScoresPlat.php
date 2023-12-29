@@ -12,7 +12,8 @@ $scores['time'] = ExploitPatch::number($_POST["time"]);
 $scores['points'] = ExploitPatch::number($_POST["points"]);
 $uploadDate = time();
 $lvlstr = '';
-$mode = ExploitPatch::number($_POST['mode']) == 1 ? 'points' : 'time';
+$mode = $_POST['mode'] == 1 ? 'points' : 'time';
+$order = $mode == 'time' ? 'ASC' : 'DESC';
 //UPDATING SCORE
 $query2 = $db->prepare("SELECT {$mode} FROM platscores WHERE accountID = :accountID AND levelID = :levelID");
 $query2->execute([':accountID' => $accountID, ':levelID' => $levelID]);
@@ -38,15 +39,15 @@ switch($type){
 		$friends = $gs->getFriends($accountID);
 		$friends[] = $accountID;
 		$friends = implode(",",$friends);
-		$query2 = $db->prepare("SELECT * FROM platscores WHERE levelID = :levelID AND accountID IN ($friends) ORDER BY {$mode} DESC");
+		$query2 = $db->prepare("SELECT * FROM platscores WHERE levelID = :levelID AND accountID IN ($friends) AND (time > 0 OR points > 0) ORDER BY {$mode} {$order}");
 		$query2args = [':levelID' => $levelID];
 		break;
 	case 1:
-		$query2 = $db->prepare("SELECT * FROM platscores WHERE levelID = :levelID ORDER BY {$mode} DESC");
+		$query2 = $db->prepare("SELECT * FROM platscores WHERE levelID = :levelID AND (time > 0 OR points > 0) ORDER BY {$mode} {$order}");
 		$query2args = [':levelID' => $levelID];
 		break;
 	case 2:
-		$query2 = $db->prepare("SELECT * FROM platscores WHERE levelID = :levelID AND timestamp > :time ORDER BY {$mode} DESC");
+		$query2 = $db->prepare("SELECT * FROM platscores WHERE levelID = :levelID AND timestamp > :time AND (time > 0 OR points > 0) ORDER BY {$mode} {$order}");
 		$query2args = [':levelID' => $levelID, ':time' => $uploadDate - 604800];
 		break;
 	default:
