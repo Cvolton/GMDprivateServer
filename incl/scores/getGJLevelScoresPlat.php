@@ -19,15 +19,18 @@ $query2 = $db->prepare("SELECT {$mode} FROM platscores WHERE accountID = :accoun
 $query2->execute([':accountID' => $accountID, ':levelID' => $levelID]);
 $oldPercent = $query2->fetchColumn();
 if($query2->rowCount() == 0) {
-	if(($mode == "time" AND $oldPercent > $scores['time'] AND $scores['time'] > 0) OR ($mode == "points" AND $oldPercent < $scores['points'] AND ($scores['time'] > 0 AND $scores['points'] > 0))) $query = $db->prepare("INSERT INTO platscores (accountID, levelID, {$mode}, timestamp) VALUES (:accountID, :levelID, :{$mode}, :timestamp)");
+	if(($mode == "time" AND $scores['time'] > 0) OR ($mode == "points" AND ($scores['time'] > 0 AND $scores['points'] > 0))) {
+		$query = $db->prepare("INSERT INTO platscores (accountID, levelID, {$mode}, timestamp) VALUES (:accountID, :levelID, :{$mode}, :timestamp)");
+		$query->execute([':accountID' => $accountID, ':levelID' => $levelID, ":{$mode}" => $scores[$mode], ':timestamp' => $uploadDate]);
+	}
 } else {
 	if(($mode == "time" AND $oldPercent > $scores['time'] AND $scores['time'] > 0) OR ($mode == "points" AND $oldPercent < $scores['points'] AND ($scores['time'] > 0 AND $scores['points'] > 0))) {
 		$query = $db->prepare("UPDATE platscores SET {$mode}=:{$mode}, timestamp=:timestamp WHERE accountID=:accountID AND levelID=:levelID");
 	} else {
 		$query = $db->prepare("SELECT count(*) FROM platscores WHERE {$mode}=:{$mode} AND timestamp=:timestamp AND accountID=:accountID AND levelID=:levelID");
 	}
+	$query->execute([':accountID' => $accountID, ':levelID' => $levelID, ":{$mode}" => $scores[$mode], ':timestamp' => $uploadDate]);
 }
-$query->execute([':accountID' => $accountID, ':levelID' => $levelID, ":{$mode}" => $scores[$mode], ':timestamp' => $uploadDate]);
 //GETTING SCORES
 if(!isset($_POST["type"])){
 	$type = 1;
