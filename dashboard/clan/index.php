@@ -345,6 +345,7 @@ if(!empty($clan)) {
     if(empty($members)) $members .= '<div style="width: 100%;display: flex;flex-wrap: wrap;justify-content: center;">
 			    <h1 style="margin: 10;margin-top: 20px;">'.$dl->getLocalizedString("noMembers").'</h1>
 			</div>';
+	$clan['desc'] = htmlspecialchars($clan['desc']);
 	if(empty($clan["desc"])) $clan["desc"] = $dl->getLocalizedString("noClanDesc");
     if($clan["clanOwner"] == $_SESSION["accountID"]) $settings = '<form method="post" style="margin:0px" name="settingsform"><input type="hidden" name="settings" value="1"><button style="margin-top: 5px;margin-bottom:5px;position: relative" type="button" onclick="a(\'clan/'.$clan["clan"].'/settings\', true, true, \'POST\', false, \'settingsform\')" title="'.$dl->getLocalizedString("settings").'" class="msgupd" name="settings" value="1">'.($gs->isPendingRequests($clan['ID']) ? '<i style=" position: absolute;top: 18%; left: 18%;font-size: 40%; border: solid 3px #212529;border-radius: 500px;color: #e35151;" class="fa-solid fa-circle" aria-hidden="true"></i>' : '').'<i class="fa-solid fa-gear" aria-hidden="true"></i></button></form>';
     elseif($isPlayerInClan == $clan["ID"]) $membermenu = '<form name="leave" style="margin:0"><input name="leave" type="hidden" value="1"></input></form><button type="button" onclick="a(\'clan/'.$clan["clan"].'\', true, true, \'POST\', false, \'leave\')" class="dropdown-item"><div class="icon"><i class="fa-solid fa-arrow-right-from-bracket"></i></div>'.$dl->getLocalizedString("leaveFromClan").'</button>';
@@ -372,7 +373,7 @@ if(!empty($clan)) {
     	<style>.menu-arrow::after {display:none}</style>
         	'.$back.'<div style="display: flex;flex-direction: column;align-items: center">'.$clanname.'</div>'.$settings.$menu.'
         </div>
-        <p class="clandesc">'.htmlspecialchars($clan["desc"]).'</p>
+        <p class="clandesc">'.$clan["desc"].'</p>
         <div>
             <h3 class="clanownertext">'.$dl->getLocalizedString("clanOwner").'</h3>
             <div class="form-control clan-owner-form">'.$owner.'</div>
