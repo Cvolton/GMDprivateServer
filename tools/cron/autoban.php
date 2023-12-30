@@ -3,7 +3,7 @@ include "../../incl/lib/connection.php";
 ob_flush();
 flush();
 $query = $db->prepare("
-SELECT 10+IFNULL(FLOOR(coins.coins*1.25)+(coins1.coins),0) as coins, 3+IFNULL(FLOOR(levels.demons*1.0625)+(demons.demons),0) as demons, 200+FLOOR((IFNULL(levels.stars,0)+IFNULL(gauntlets.stars,0)+IFNULL(mappacks.stars,0))+IFNULL(stars.stars,0)*1.25) as stars, 25+IFNULL(moons.moons,0) as moons FROM
+SELECT 10+IFNULL(FLOOR(coins.coins*1.25)+(coins1.coins),0) as coins, 3+IFNULL(FLOOR(levels.demons*1.0625)+(demons.demons),0) as demons, 212+FLOOR((IFNULL(levels.stars,0)+IFNULL(gauntlets.stars,0)+IFNULL(mappacks.stars,0))+IFNULL(stars.stars,0)*1.25) as stars, 25+IFNULL(moons.moons,0) as moons FROM
 		(SELECT SUM(coins) as coins FROM levels WHERE starCoins <> 0) coins
 	JOIN
 		(SELECT SUM(starDemon) as demons, SUM(starStars) as stars FROM levels) levels
