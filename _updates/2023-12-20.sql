@@ -31,3 +31,5 @@ ALTER TABLE `levels` CHANGE `songs` `songIDs` VARCHAR(2048) CHARACTER SET utf8 C
 ALTER TABLE `levels` CHANGE `sfxs` `sfxIDs` VARCHAR(2048) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '';
 ALTER TABLE `lists` DROP `userName`;
 ALTER TABLE `lists`  ADD `countForReward` INT NOT NULL DEFAULT '0' AFTER `listlevels`;
+ALTER TABLE `levels` CHANGE `songIDs` `songIDs` VARCHAR(2048) CHARACTER SET utf8mb3 COLLATE utf8mb3_unicode_ci NULL DEFAULT '';
+ALTER TABLE `levels` CHANGE `sfxIDs` `sfxIDs` VARCHAR(2048) CHARACTER SET utf8mb3 COLLATE utf8mb3_unicode_ci NULL DEFAULT '';
