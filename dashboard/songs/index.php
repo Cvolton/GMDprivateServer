@@ -61,9 +61,7 @@ if($_FILES && $_FILES['filename']['error'] == UPLOAD_ERR_OK) {
 					if(empty($author)) $author = "Reupload";
 					$servername = $_SERVER['SERVER_NAME'];
 					$accountID = $_SESSION["accountID"];
-					$path = str_replace($_SERVER['DOCUMENT_ROOT'], '', $_SERVER['SCRIPT_FILENAME']);
-					$path =  str_replace('index.php', '', $path);
-					$song = "https://".$servername."".$path."".$db_fid.".mp3";
+					$song = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]".$db_fid.".mp3";
 					$query = $db->prepare("INSERT INTO songs (ID, name, authorID, authorName, size, download, hash, reuploadTime, reuploadID) VALUES (:id, :name, '9', :author, :size, :download, :hash, :reuploadTime, :reuploadID)");
 					$query->execute([':id' => $db_fid, ':name' => mb_substr($name, 0, 40), ':download' => $song, ':author' => mb_substr($author, 0, 30), ':size' => $size, ':hash' => $hash, ':reuploadTime' => time(), ':reuploadID' => $accountID]);
 				}
