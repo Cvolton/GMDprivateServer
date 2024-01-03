@@ -142,6 +142,9 @@ if(!empty($_POST["levelid"])){
 			$starStars = chkarray($levelarray["a18"]);
 			$isLDM = chkarray($levelarray["a40"]);
 			$password = chkarray($levelarray["a27"]);
+			$songIDs = isset($levelarray["a52"]) ? $levelarray["a52"] : '';
+			$sfxIDs = isset($levelarray["a53"]) ? $levelarray["a53"] : '';
+			$ts = chkarray($levelarray["a57"]);
 			if($password != "0"){
 				$password = XORCipher::cipher(base64_decode($password),26364);
 			}
@@ -157,7 +160,7 @@ if(!empty($_POST["levelid"])){
 			//query
 			$query = $db->prepare("INSERT INTO levels (levelName, gameVersion, binaryVersion, userName, levelDesc, levelVersion, levelLength, audioTrack, auto, password, original, twoPlayer, songID, objects, coins, requestedStars, extraString, levelString, levelInfo, secret, uploadDate, updateDate, originalReup, userID, extID, unlisted, hostname, starStars, starCoins, starDifficulty, starDemon, starAuto, isLDM, songIDs, sfxIDs, ts)
 												VALUES (:name ,:gameVersion, '27', 'Reupload', :desc, :version, :length, :audiotrack, '0', :password, :originalReup, :twoPlayer, :songID, '0', :coins, :reqstar, :extraString, :levelString, '', '', '$uploadDate', '$uploadDate', :originalReup, :userID, :extID, '0', :hostname, :starStars, :starCoins, :starDifficulty, :starDemon, :starAuto, :isLDM, :songIDs, :sfxIDs, :ts)");
-			$query->execute([':password' => $password, ':starDemon' => $starDemon, ':starAuto' => $starAuto, ':gameVersion' => $gameVersion, ':name' => strip_tags($levelarray["a2"]), ':desc' => strip_tags($levelarray["a3"]), ':version' => $levelarray["a5"], ':length' => $levelarray["a15"], ':audiotrack' => $levelarray["a12"], ':twoPlayer' => $twoPlayer, ':songID' => $songID, ':coins' => $coins, ':reqstar' => $reqstar, ':extraString' => $extraString, ':levelString' => "", ':originalReup' => $levelarray["a1"], ':hostname' => $hostname, ':starStars' => 0, ':starCoins' => 0, ':starDifficulty' => $starDiff, ':userID' => $userID, ':extID' => $extID, ':isLDM' => $isLDM, ':songIDs' => $levelarray["a52"], ':sfxIDs' => $levelarray["a53"], ':ts' => $levelarray["a57"]]);
+			$query->execute([':password' => $password, ':starDemon' => $starDemon, ':starAuto' => $starAuto, ':gameVersion' => $gameVersion, ':name' => strip_tags($levelarray["a2"]), ':desc' => strip_tags($levelarray["a3"]), ':version' => $levelarray["a5"], ':length' => $levelarray["a15"], ':audiotrack' => $levelarray["a12"], ':twoPlayer' => $twoPlayer, ':songID' => $songID, ':coins' => $coins, ':reqstar' => $reqstar, ':extraString' => $extraString, ':levelString' => "", ':originalReup' => $levelarray["a1"], ':hostname' => $hostname, ':starStars' => 0, ':starCoins' => 0, ':starDifficulty' => $starDiff, ':userID' => $userID, ':extID' => $extID, ':isLDM' => $isLDM, ':songIDs' => $songIDs, ':sfxIDs' => $sfxIDs, ':ts' => $ts]);
 			$levelID = $db->lastInsertId();
 			file_put_contents("../".$dbPath."data/levels/$levelID", $levelString);
 		if($debug == 1) {
