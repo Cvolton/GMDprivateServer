@@ -32,8 +32,21 @@ elseif(isset($_GET["id"])) {
 	$accid = ExploitPatch::charclean($getID);
 	if(!is_numeric($accid)) $accid = $gs->getAccountIDFromName(str_replace('%20', ' ', $accid));
 	if(!$accid) {
-		$userID = $gs->getUserID(ExploitPatch::remove($getID));
-		if($userID) $accid = $gs->getExtID($userID);
+		$userCheck = $db->prepare("SELECT * FROM users WHERE userName = :name LIMIT 1");
+		$userCheck->execute([":name" => ExploitPatch::remove($getID)]);
+		$userCheck = $userCheck->fetch();
+		if($userCheck) {
+			$userID = $userCheck['userID'];
+			$accid = $userCheck['extID'];
+		} else {
+			$userCheck = $db->prepare("SELECT * FROM users WHERE extID = :id");
+			$userCheck->execute([":id" => ExploitPatch::remove($getID)]);
+			$userCheck = $userCheck->fetch();
+			if($userCheck) {
+				$userID = $userCheck['userID'];
+				$accid = $userCheck['extID'];
+			}
+		}
 	}
 }
 else {
