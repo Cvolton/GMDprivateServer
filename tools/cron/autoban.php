@@ -2,8 +2,7 @@
 include "../../incl/lib/connection.php";
 ob_flush();
 flush();
-$query = $db->prepare("
-SELECT 10+IFNULL(FLOOR(coins.coins*1.25)+(coins1.coins),0) as coins, 3+IFNULL(FLOOR(levels.demons*1.0625)+(demons.demons),0) as demons, 212+FLOOR((IFNULL(levels.stars,0)+IFNULL(gauntlets.stars,0)+IFNULL(mappacks.stars,0))+IFNULL(stars.stars,0)*1.25) as stars, 25+IFNULL(moons.moons,0) as moons FROM
+$query = $db->prepare("SELECT 10+IFNULL(FLOOR(coins.coins*1.25)+IFNULL(coins1.coins, 0),0) as coins, 3+IFNULL(FLOOR(levels.demons*1.0625)+IFNULL(demons.demons,0),0) as demons, 212+FLOOR((IFNULL(levels.stars,0)+IFNULL(gauntlets.stars,0)+IFNULL(mappacks.stars,0))+IFNULL(stars.stars,0)*1.25) as stars, 25+IFNULL(moons.moons,0) as moons FROM
 		(SELECT SUM(coins) as coins FROM levels WHERE starCoins <> 0) coins
 	JOIN
 		(SELECT SUM(starDemon) as demons, SUM(starStars) as stars FROM levels) levels
@@ -37,8 +36,7 @@ SELECT 10+IFNULL(FLOOR(coins.coins*1.25)+(coins1.coins),0) as coins, 3+IFNULL(FL
 	JOIN
 		(SELECT SUM(stars) as stars FROM mappacks) mappacks
 	JOIN 
-		(SELECT SUM(starStars) as moons FROM levels WHERE levelLength = 5) moons
-	");
+		(SELECT SUM(starStars) as moons FROM levels WHERE levelLength = 5) moons");
 $query->execute();
 $levelstuff = $query->fetch();
 $stars = $levelstuff['stars']; $coins = $levelstuff['coins']; $demons = $levelstuff['demons']; $moons = $levelstuff['moons']; 
