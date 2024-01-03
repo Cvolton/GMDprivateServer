@@ -13,12 +13,21 @@ $comment = ExploitPatch::remove($_POST['comment']);
 $comment = ($gameVersion < 20) ? base64_encode($comment) : $comment;
 $levelID = ExploitPatch::number($_POST["levelID"]);
 $percent = !empty($_POST["percent"]) ? ExploitPatch::remove($_POST["percent"]) : 0;
+$accountID = !empty($_POST['accountID']) ? ExploitPatch::number($_POST['accountID']) : "";
 
 $id = $mainLib->getIDFromPost();
 $register = is_numeric($id);
 $userID = $mainLib->getUserID($id, $userName);
 $uploadDate = time();
 $decodecomment = base64_decode($comment);
+
+$checkCommentBan = $db->prepare("SELECT * FROM comment_bans WHERE accountID = :accountID");
+$checkCommentBan->execute([':accountID' => $accountID]);
+
+if ($checkCommentBan->rowCount() > 0) {
+    die("-10");
+}
+
 if(Commands::doCommands($id, $decodecomment, $levelID)){
 	exit($gameVersion > 20 ? "temp_0_Command executed successfully!" : "-1");
 }
