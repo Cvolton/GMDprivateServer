@@ -4,7 +4,6 @@ include "../incl/dashboardLib.php";
 include "../".$dbPath."incl/lib/exploitPatch.php";
 include_once "../".$dbPath."incl/lib/mainLib.php";
 $gs = new mainLib();
-if(!isset($_GET["id"])) header("Location: ".$gs->getAccountName(ExploitPatch::number($_POST["accountID"])));
 include "../".$dbPath."incl/lib/connection.php";
 $dl = new dashboardLib();
 $clan = $none = "";
@@ -32,6 +31,10 @@ elseif(isset($_GET["id"])) {
 	}
 	$accid = ExploitPatch::charclean($getID);
 	if(!is_numeric($accid)) $accid = $gs->getAccountIDFromName(str_replace('%20', ' ', $accid));
+	if(!$accid) {
+		$userID = $gs->getUserID(ExploitPatch::remove($getID));
+		if($userID) $accid = $gs->getExtID($userID);
+	}
 }
 else {
     $accid = $_SESSION["accountID"];
@@ -42,7 +45,7 @@ if(!$userID) $userID = $gs->getUserID($accid);
 if(is_numeric($accid)) $accname = $gs->getAccountName($accid);
 else $accname = $gs->getUserName($userID);
 $dl->title($dl->getLocalizedString("profile").', '.$accname);
-if($accid != $_SESSION["accountID"]) {
+if($accid != $_SESSION["accountID"] && is_numeric($accid)) {
     $block = $db->prepare("SELECT * FROM blocks WHERE person1 = :p1 AND person2 = :p2");
     $block->execute([':p1' => $accid, ':p2' => $_SESSION["accountID"]]);
     $block = $block->fetch();
@@ -141,8 +144,8 @@ if(isset($_POST["settings"]) AND $_POST["settings"] == 1 AND $accid == $_SESSION
         $query->execute([':id' => $accid, ':ms' => ExploitPatch::number($_POST["messages"]), ':frs' => ExploitPatch::number($_POST["friendreqs"]), ':cs' => ExploitPatch::number($_POST["comments"]), ':yt' => ExploitPatch::remove($_POST["youtube"]), ':twt' => ExploitPatch::remove($_POST["twitter"]), ':ttv' => ExploitPatch::remove($_POST["twitch"])]);
     }
 }
-$query = $db->prepare("SELECT * FROM users WHERE extID=:id");
-$query->execute([':id' => $accid]);
+$query = $db->prepare("SELECT * FROM users WHERE userID=:id");
+$query->execute([':id' => $userID]);
 $res = $query->fetch();
 if($res["banReason"] != 'none' OR $res["isBanned"] == 1) $maybeban = '<h1 class="profilename" style="text-decoration:line-through;color:#432529;">'.$accname.'</h1>'; else $maybeban = '<h1 class="profilename" style="color:rgb('.$gs->getAccountCommentColor($accid).');">'.$accname.'</h1>';
 if(isset($_SERVER["HTTP_REFERER"])) $back = '<form method="post" action="'.$_SERVER["HTTP_REFERER"].'"><button type="button" onclick="a(\''.$_SERVER["HTTP_REFERER"].'\', true, true, \'GET\')" class="goback"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i></button></form>'; else $back = '';
