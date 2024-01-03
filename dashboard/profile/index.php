@@ -19,7 +19,10 @@ if((!isset($_SESSION["accountID"]) OR $_SESSION["accountID"] == 0) AND (empty($_
 </div>', 'profile');
   	die();
 }
-if(!empty($_POST["accountID"])) $accid = ExploitPatch::number($_POST["accountID"]);
+if(!empty($_POST["accountID"])) {
+	$accid = ExploitPatch::remove($_POST["accountID"]);
+	if(!is_numeric($accid)) $userID = $gs->getUserID($accid);
+}
 elseif(isset($_GET["id"])) {
     $dl->printFooter('../../');
 	$getID = explode("/", $_GET["id"])[count(explode("/", $_GET["id"]))-1];
@@ -35,7 +38,9 @@ else {
     $dl->printFooter('../');
 }
 if(!$accid) $accid = $_SESSION["accountID"];
-$accname = $gs->getAccountName($accid);
+if(!$userID) $userID = $gs->getUserID($accid);
+if(is_numeric($accid)) $accname = $gs->getAccountName($accid);
+else $accname = $gs->getUserName($userID);
 $dl->title($dl->getLocalizedString("profile").', '.$accname);
 if($accid != $_SESSION["accountID"]) {
     $block = $db->prepare("SELECT * FROM blocks WHERE person1 = :p1 AND person2 = :p2");
@@ -51,7 +56,7 @@ if($accid != $_SESSION["accountID"]) {
 }
 if(!empty($_POST["msg"])) {
   	  $query = $db->prepare("SELECT timestamp FROM acccomments WHERE userID=:accid ORDER BY timestamp DESC LIMIT 1");
-      $query->execute([':accid' => $gs->getUserID($accid)]);
+      $query->execute([':accid' => $userID]);
       $res = $query->fetch();
       $time = time() - 10;
       if($res["timestamp"] > $time) {
@@ -66,7 +71,7 @@ if(!empty($_POST["msg"])) {
     }
 	$msg = base64_encode(ExploitPatch::rucharclean($_POST["msg"]));
 	$query = $db->prepare("INSERT INTO acccomments (userID, userName, comment, timestamp) VALUES (:id, :name, :msg, :time)");
-  	$query->execute([':id' => $gs->getUserID($accid), ':name' => $accname, ':msg' => $msg, ':time' => time()]);
+  	$query->execute([':id' => $userID, ':name' => $accname, ':msg' => $msg, ':time' => time()]);
 }
 if(isset($_POST["settings"]) AND $_POST["settings"] == 1 AND $accid == $_SESSION["accountID"]) {
     if(!isset($_POST["ichangedsmth"]) OR $_POST["ichangedsmth"] != 1) {
@@ -155,7 +160,7 @@ if($res["creatorPoints"] == 0) $cp = ''; else $cp = '<p class="profilepic" '.$ba
 $all = $st.$ms.$dm.$gc.$uc.$dn.$cp;
 if(empty($all)) $all = '<p style="font-size:25px;color:#212529">'.$dl->getLocalizedString("empty").'</p>';
 $msgs = $db->prepare("SELECT * FROM acccomments WHERE userID=:uid ORDER BY commentID DESC");
-$msgs->execute([':uid' => $gs->getUserID($accid)]);
+$msgs->execute([':uid' => $userID]);
 $msgs = $msgs->fetchAll();
 $comments = $send = '';
 foreach($msgs AS &$msg) {
