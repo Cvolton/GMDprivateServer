@@ -17,7 +17,7 @@ if(file_exists("../logs/fixcpslog.txt")){
 	}
 }
 file_put_contents("../logs/fixcpslog.txt",time());
-set_time_limit(0);
+if(function_exists("set_time_limit")) set_time_limit(0);
 $cplog = "";
 $people = array();
 include "../../incl/lib/connection.php";
