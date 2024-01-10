@@ -100,9 +100,10 @@ if($gs->checkPermission($_SESSION["accountID"], "dashboardLevelPackCreate")) {
 		$query = $db->prepare('SELECT ID FROM gauntlets');
 		$query->execute();
 		$query = $query->fetchAll();
+		$gauntletArray = [];
 		foreach($query AS &$key) $gauntletArray[] = $key['ID'];
 		for($x = 1; $x <= $gs->getGauntletCount(); $x++) {
-			if(is_array($gauntletArray) && !in_array($x, $gauntletArray)) $gauntletOptions .= '<option id="gauntlet_id_option'.$x.'" value="'.$x.'">'.$gs->getGauntletName($x).' Gauntlet</option>';
+			if(!in_array($x, $gauntletArray)) $gauntletOptions .= '<option id="gauntlet_id_option'.$x.'" value="'.$x.'">'.$gs->getGauntletName($x).' Gauntlet</option>';
 		}
 		$dl->printSong('<div class="form-control itemsbox">
 		<div class="itemoverflow"><div class="itemslist">
