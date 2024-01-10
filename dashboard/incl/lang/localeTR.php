@@ -167,8 +167,8 @@ $string["level4"] = "4 bölüm";
 $string["level5"] = "5 bölüm";
 $string["gauntletChange"] = "Gauntlet Değiştir";
 $string["createNewGauntlet"] = "Yeni Gauntlet Oluştur!"; // Translate word "create" like its call to action
-$string["gauntletCreateSuccessNew"] = 'You successfully created <b>%1$s</b>!';
-$string["gauntletSelectAutomatic"] = "Choose Gauntlet automatically";
+$string["gauntletCreateSuccessNew"] = 'Başarıyla <b>%1$s</b> adlı Gauntlet oluşturuldu!';
+$string["gauntletSelectAutomatic"] = "Otomatik olarak Gauntlet Seç";
 
 $string["addQuest"] = "Quest Ekle";
 $string["addQuestDesc"] = "Burada quest ekleyebilirsin!";
@@ -382,7 +382,7 @@ $string["size"] = "Boyut";
 $string["delete"] = "Sil";
 $string["change"] = "Değiştir";
 $string["chooseFile"] = "Bir şarkı seç";
-$string['yourNewSong'] = "Take a look at your new song!";
+$string['yourNewSong'] = "Yeni şarkına bir göz at!";
 ///errors
 $string["songAddError-2"] = "Geçersiz URL (Şarkının bu linkte bulunduğundan emin olun.)";
 $string["songAddError-3"] = "Bu şarkı zaten transfer edilmiş. ID:";
