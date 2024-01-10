@@ -61,9 +61,29 @@ if($_FILES && $_FILES['filename']['error'] == UPLOAD_ERR_OK) {
 					if(empty($author)) $author = "Reupload";
 					$servername = $_SERVER['SERVER_NAME'];
 					$accountID = $_SESSION["accountID"];
+					$name = mb_substr($name, 0, 40);
+					$author = mb_substr($author, 0, 40);
 					$song = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]".$db_fid.".mp3";
 					$query = $db->prepare("INSERT INTO songs (ID, name, authorID, authorName, size, download, hash, reuploadTime, reuploadID) VALUES (:id, :name, '9', :author, :size, :download, :hash, :reuploadTime, :reuploadID)");
-					$query->execute([':id' => $db_fid, ':name' => mb_substr($name, 0, 40), ':download' => $song, ':author' => mb_substr($author, 0, 30), ':size' => $size, ':hash' => $hash, ':reuploadTime' => time(), ':reuploadID' => $accountID]);
+					$query->execute([':id' => $db_fid, ':name' => $name, ':download' => $song, ':author' => $author, ':size' => $size, ':hash' => $hash, ':reuploadTime' => time(), ':reuploadID' => $accountID]);
+					$fontsize = 27;
+					$songIDlol = '<button id="copy'.$db_fid.'" class="accbtn songidyeah" onclick="copysong('.$db_fid.')">'.$db_fid.'</button>';
+					$time = $dl->convertToDate(time(), true);
+					$btn = '<button type="button" name="btnsng" id="btn'.$db_fid.'" title="'.$author.' — '.$name.'" style="display: contents;color: white;margin: 0;" download="'.$song.'" onclick="btnsong(\''.$db_fid.'\');"><div class="icon" style="font-size:13px; height:25px;width:25px;background:#373A3F;margin-left: 5px;"><i id="icon'.$db_fid.'" name="iconlol" class="fa-solid fa-play" aria-hidden="false"></i></div></button>';
+					if(mb_strlen($author) + mb_strlen($name) > 30) $fontsize = 17;
+					elseif(mb_strlen($author) + mb_strlen($name) > 20) $fontsize = 20;
+					$songSize = '<p class="profilepic"><i class="fa-solid fa-weight-hanging"></i> '.$size.' MB</p>';
+					$wholiked = '<p class="profilepic" style="display: inline-flex;justify-content: center;grid-gap: 7px;"><i class="fa-solid fa-heart"></i> <span style="color:#333">0</span></p>';
+					$whoused = '<p class="profilepic" style="display: inline-flex;justify-content: center;grid-gap: 7px;"><i class="fa-solid fa-gamepad"></i> <span style="color:#333">0</span></p>';
+					$favs = '<button title="'.$dl->getLocalizedString("likeSong").'" id="like'.$db_fid.'" onclick="like('.$db_fid.')" value="0" style="display:contents;cursor:pointer"><i id="likeicon'.$db_fid.'" class="fa-regular fa-heart" style="font-size: 25px;color:#ff5c5c"></i></button>';
+					$stats = $wholiked.$songSize.$whoused;
+					$songs = '<div id="profile'.$db_fid.'" style="width: 100%;display: flex;flex-wrap: wrap;justify-content: center;">
+							<div class="profile"><div style="display: flex;width: 100%;justify-content: space-between;margin-bottom: 7px;align-items: center;"><div style="display: flex;width: 100%; justify-content: space-between;align-items: center;">
+								<h2 style="margin: 0px;font-size: '.$fontsize.'px;margin-left:5px;display: flex;align-items: center;" class="profilenick">'.$author.' — '.$name.$btn.'</h2>'.$favs.'
+							</div></div>
+							<div class="form-control" style="display: flex;width: 100%;height: max-content;align-items: center;">'.$stats.'</div>
+							<div style="display: flex;justify-content: space-between;margin-top: 10px;"><h3 id="comments" class="songidyeah" style="margin: 0px;width: max-content;">'.$dl->getLocalizedString("songIDw").': <b>'.$songIDlol.'</b></h3><h3 id="comments" class="songidyeah" style="justify-content: flex-end;grid-gap: 0.5vh;margin: 0px;width: max-content;">'.$dl->getLocalizedString("date").': <b>'.$time.'</b></h3></div>
+						</div></div>';
 				}
 			}			
 		}
@@ -79,16 +99,42 @@ if($_FILES && $_FILES['filename']['error'] == UPLOAD_ERR_OK) {
 			$dl->printSong('<div class="form">
 			<h1>'.$dl->getLocalizedString("songAdded").'</h1>
 			<form class="form__inner" method="post" action="">
-			<p>'.$dl->getLocalizedString("songID").'<b style="font-size: inherit;" class="accbtn songidyeah" id="copy'.$db_fid.'" onclick="copysong('.$db_fid.')">'.$db_fid.'</b></p>
+			<p>'.$dl->getLocalizedString("yourNewSong").'</p>
+			<div class="songUploadDiv">'.$songs.'</div>
 			<button type="button" onclick="a(\'songs\', true, false, \'GET\')" class="btn-primary">'.$dl->getLocalizedString("songAddAnotherBTN").'</button>
 			</form><script>
-			function copysong(id) {
-				navigator.clipboard.writeText(id);
-				document.getElementById("copy"+id).style.transition = "0.05s";
-				document.getElementById("copy"+id).style.color = "#bbffbb";
-				setTimeout(function(){document.getElementById("copy"+id).style.transition = "0.2s";}, 1)
-				setTimeout(function(){document.getElementById("copy"+id).style.color = "#007bff";}, 200)
-			}
+				function like(id) {
+					likebtn = document.getElementById("like" + id);
+					if(likebtn.value == 1) {
+						document.getElementById("likeicon" + id).classList.add("fa-regular");
+						document.getElementById("likeicon" + id).classList.remove("fa-solid");
+						likebtn.value = 0;
+						likebtn.title = "'.$dl->getLocalizedString("likeSong").'";
+					} else {
+						document.getElementById("likeicon" + id).classList.remove("fa-regular");
+						document.getElementById("likeicon" + id).classList.add("fa-solid");
+						likebtn.value = 1;
+						likebtn.title = "'.$dl->getLocalizedString("dislikeSong").'";
+					}
+					fav = new XMLHttpRequest();
+					fav.open("GET", "stats/favourite.php?id=" + id, true);
+					fav.onload = function () {
+						if(fav.response == "-1") {
+							if(likebtn.value == 1) {
+								document.getElementById("likeicon" + id).classList.add("fa-regular");
+								document.getElementById("likeicon" + id).classList.remove("fa-solid");
+								likebtn.value = 0;
+								likebtn.title = "'.$dl->getLocalizedString("likeSong").'";
+							} else {
+								document.getElementById("likeicon" + id).classList.remove("fa-regular");
+								document.getElementById("likeicon" + id).classList.add("fa-solid");
+								likebtn.value = 1;
+								likebtn.title = "'.$dl->getLocalizedString("dislikeSong").'";
+							}
+						}
+					}
+					fav.send();
+				}
 			</script>', 'reupload');
 		}
 	}

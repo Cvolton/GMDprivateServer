@@ -10,6 +10,7 @@
 	.profileform{width:75vw !important;max-height: max-content !important;margin: 20px 0px 50px 0px !important;}
 	.packfc .profilepic {font-size: 15px !important;}
 	.itemsbox {width: 75% !important;}
+	.songUploadDiv {min-width: 55vw !important;}
 }
 
 @media (min-width: 1537px) {
@@ -78,6 +79,22 @@
 	.suggest .dltext {font-size:18px !important;}
 	.buffer {margin: 0px !important;}
 	.quests-form {height: 80% !important;}
+	.audioDiv {width: 98% !important; left: 1% !important; grid-gap: 0px !important;}
+	.audioDiv .cover, .audioDiv .image {width: 67px !important; height: 67px !important}
+	.audioDiv .name {margin: 0px !important; font-size: 18px !important;}
+	.audioDiv .track {width: 78% !important; margin-left: 10px !important;}
+	.audioDiv .length {min-width: 0px !important; width: 100% !important;}
+	.audioDiv .author {font-size: 15px !important;}
+	.audioDiv .volumeDiv {height: 65px !important;}
+	.audioDiv .queueDiv {bottom: 110% !important;}
+	.queueDiv .track {width: 100% !important; margin-left: 0px !important;}
+	.audioDiv .length.volume {min-width: 65px !important; bottom: 28px !important;}
+	.audioDiv .anotherVolume {opacity: 1 !important; visibility: initial !important;}
+	.audioDiv i.volume {opacity: 0 !important; visibility: hidden !important;}
+	.audioDiv.showButton {width: max-content !important; padding: 15px !important;}
+	.audioDiv.showButton i {font-size: 20px !important;}
+	.audioDiv .cover i {font-size: 40px !important;}
+	.queueDiv .cover, .queueDiv .image {width: 55px !important; height: 55px !important}
 }
 
 * {
@@ -357,7 +374,8 @@ input, select {
  
 .msgbox::-webkit-scrollbar-thumb,
 .form::-webkit-scrollbar-thumb,
-.clandesc::-webkit-scrollbar-thumb {
+.clandesc::-webkit-scrollbar-thumb,
+.audioDiv .queueDiv::-webkit-scrollbar-thumb {
    background-color: #373A3F;
    border-radius: 100px;
   	border: 4px solid #181a1b;
@@ -1688,4 +1706,279 @@ body:has(.audio) {
 
 .mavdiv .accbtn {
 	font-size: 25px;
+}
+
+.audioDiv {
+	display: flex;
+	background: #181a1b;
+	border-radius: 20px;
+	position: fixed;
+	bottom: 45px;
+	left: 30px;
+	padding: 10px;
+	align-items: center;
+	grid-gap: 10px;
+	min-width: 350px;
+	z-index: 2;
+	opacity: 0;
+	visibility: hidden;
+	transition: 0.2s;
+}
+
+.audioDiv p {
+	width: max-content;
+}
+
+.audioDiv .name {
+	font-weight: 700;
+	font-size: 24px;
+	color: white;
+	max-width: calc(100% - 62px);
+    margin-right: 62px;
+    text-align: left;
+}
+
+.audioDiv .author {
+	font-size: 20px;
+	max-width: calc(100% - 62px);
+	text-align: left;
+}
+
+.audioDiv .image {
+	width: 81px;
+	height: 81px;
+	aspect-ratio: 1/1;
+	border-radius: 15px;
+	position: absolute;
+	top: 0px;
+}
+
+.audioDiv .track {
+	display: flex;
+	flex-direction: column;
+	line-height: 1;
+	grid-gap: 7px;
+	position: relative
+}
+/*
+.audioDiv .length {
+	margin: 0px;
+	width: 300px;
+	background: #121212;
+	color: white;
+	border-radius: 500px;
+	height: 13px;
+}
+*/
+.audioDiv .cover {
+	position: relative;
+	width: 81px;
+	height: 81px;
+	cursor: pointer
+}
+
+.audioDiv .cover i {
+	z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    background: #0000006b;
+    font-size: 50px;
+	opacity: 0;
+	transition: 0.25s;
+}
+
+.audioDiv .cover:hover i {
+	opacity: 1;
+}
+
+.audioDiv .length {
+  -webkit-appearance: none;
+  height: 10px;
+  background: #121212;
+  border-radius: 500px;
+  background-image: linear-gradient(#c0c0c0, #c0c0c0);
+  background-size: 0% 100%;
+  background-repeat: no-repeat;
+  min-width: 300px;
+  width: 100%;
+}
+
+.audioDiv .length::-webkit-slider-runnable-track  {
+  -webkit-appearance: none;
+  box-shadow: none;
+  border: none;
+  background: transparent;
+}
+
+.audioDiv .length.volume {
+    rotate: 270deg;
+    margin: 0px;
+	position: absolute;
+	bottom: 30px;
+	right: -22px;
+	min-width: 70px;
+    width: 100%;
+}
+
+.audioDiv i.volume {
+	color: white;
+	font-size: 17px;
+	transition: 0.2s;
+	position: absolute;
+	bottom: 0px;
+	opacity: 0;
+	visibility: hidden;
+}
+
+.audioDiv i.volume.show {
+	opacity: 1;
+	visibility: initial;
+}
+
+.audioDiv .volumeDiv {
+	display: flex;
+	position: relative;
+	height: 75px;
+	width: 25px;
+}
+
+.audioDiv .duration {
+	display: flex;
+    font-size: 18px;
+    align-items: center;
+    grid-gap: 5px;
+}
+
+.audioDiv .duration button:disabled {
+	color: gray;
+}
+
+.audioDiv .queueDiv {
+    position: absolute;
+    right: 0px;
+    top: auto;
+    bottom: 104px;
+    left: 0px;
+    width: max-content;
+    display: flex;
+    flex-direction: column-reverse;
+    overflow-y: auto;
+    overflow-x: hidden;
+    max-height: 205px;
+	opacity: 0;
+	visibility: hidden;
+	transition: 0.2s;
+}
+
+.queueDiv .item {
+	display: flex;
+    width: 100%;
+    align-items: center;
+    grid-gap: 17px;
+}
+
+.queueDiv .cover, .queueDiv .image{
+	width: 55px;
+	height: 55px;
+}
+
+.queueDiv .cover i {
+	font-size: 30px;
+}
+
+.audioDiv .anotherVolume {
+	opacity: 0;
+	visibility: hidden;
+	transition: 0.2s;
+}
+
+.audioDiv .anotherVolume.show {
+	opacity: 1;
+	visibility: initial;
+}
+
+.queueDiv .name {
+	font-size: 21px;
+}
+
+.queueDiv .author {
+	font-size: 17px;
+}
+
+.queueDiv:has(.item) {
+	opacity: 1;
+	visibility: initial;
+}
+
+.audioDiv button i {
+	cursor: pointer;
+}
+
+.audioDiv .indicator {
+	display: none;
+}
+
+.audioDiv .track .buttons {
+	position: absolute;
+	top: 1px;
+	right: 8px;
+	display: flex;
+	grid-gap: 10px;
+}
+
+.audioDiv .track .buttons button,
+.queueDiv .track .buttons {
+	background: transparent;
+	border: none;
+	outline: none;
+	padding: 0px;
+	font-size: 18px;
+}
+
+.queueDiv .track {
+	width: 100%;
+}
+
+.queueDiv .name {
+	margin: 0px;
+}
+
+.audioDiv.showButton {
+	opacity: 0;
+	visibility: hidden;
+	width: max-content;
+	border-radius: 500px;
+	color: white;
+	min-width: 0px;
+    padding: 20px;
+	z-index: 3;
+}
+
+.audioDiv.showButton i {
+	font-size: 40px;
+}
+
+.audioDiv.showButton:has(.indicator) {
+	opacity: 1;
+	visibility: initial;
+}
+
+.audioDiv.showButton.show {
+	opacity: 0;
+	visibility: hidden;
+}
+
+.audioDiv.show {
+	opacity: 1;
+	visibility: initial;
+}
+
+.songUploadDiv {
+	width: 100%;
+	padding: 0px 10px 10px 10px;
+	background: #141414;
+	border-radius: 30px;
+	min-width: 35vw;
 }

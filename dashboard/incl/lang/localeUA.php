@@ -157,7 +157,7 @@ $string["createNewPack"] = "Створіть новий Мап-Пак!";
 $string["gauntletCreate"] = "Створити Гаунтлет";
 $string["gauntletCreateTitle"] = "Створення Гаунтлета";
 $string["gauntletCreateDesc"] = "Тут ви можете створити Гаунтлет!";
-$string["gauntletCreateSuccess"] = "Ви успішно створилиГаунтлет!";
+$string["gauntletCreateSuccess"] = "Ви успішно створили Гаунтлет!";
 $string["gauntletCreateOneMore"] = "Ще один Гаунтлет?";
 $string["chooseLevels"] = "Виберіть рівні!";
 $string["checkbox"] = "Підтвердити";
@@ -168,6 +168,8 @@ $string["level4"] = "4 рівень";
 $string["level5"] = "5 рівень";
 $string["gauntletChange"] = "Змінити Гаунтлет";
 $string["createNewGauntlet"] = "Створіть новий Гаунтлет!";
+$string["gauntletCreateSuccessNew"] = 'Ви успішно створили <b>%1$s</b>!';
+$string["gauntletSelectAutomatic"] = "Выбрать Гаунтлет автоматически";
 
 $string["addQuest"] = "Додати квест";
 $string["addQuestDesc"] = "Тут ви можете створити квест!";
@@ -381,6 +383,7 @@ $string["size"] = "Розмір";
 $string["delete"] = "Видалити";
 $string["change"] = "Змінити";
 $string["chooseFile"] = "Виберіть пісню";
+$string['yourNewSong'] = "Взгляните на вашу новоиспечённую песню!";
 ///errors
 $string["songAddError-2"] = "Невірний URL (можливо, посилання не пряма).";
 $string["songAddError-3"] = "Пісня вже завантажена під ID:";

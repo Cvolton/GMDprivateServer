@@ -151,7 +151,7 @@ $string["color"] = "Renk";
 $string["sameLevels"] = "Aynı bölümleri seçtin!";
 $string["show"] = "Göster";
 $string["packChange"] = "Harita Paketi Değiştir";
-$string["createNewPack"] = "Yeni Harita Paketi Oluştur!"; // Translate word "create" like "You'll need to create new map pack!", but its call to action
+$string["createNewPack"] = "Yeni Harita Paketi Oluştur!"; // Translate word "create" like its call to action
 
 $string["gauntletCreate"] = "Gauntlet Oluştur";
 $string["gauntletCreateTitle"] = "Gauntlet Oluştur";
@@ -166,7 +166,9 @@ $string["level3"] = "3 bölüm";
 $string["level4"] = "4 bölüm";
 $string["level5"] = "5 bölüm";
 $string["gauntletChange"] = "Gauntlet Değiştir";
-$string["createNewGauntlet"] = "Yeni Gauntlet Oluştur!"; // Translate word "create" like "You'll need to create new gauntlet!", but its call to action
+$string["createNewGauntlet"] = "Yeni Gauntlet Oluştur!"; // Translate word "create" like its call to action
+$string["gauntletCreateSuccessNew"] = 'You successfully created <b>%1$s</b>!';
+$string["gauntletSelectAutomatic"] = "Choose Gauntlet automatically";
 
 $string["addQuest"] = "Quest Ekle";
 $string["addQuestDesc"] = "Burada quest ekleyebilirsin!";
@@ -380,6 +382,7 @@ $string["size"] = "Boyut";
 $string["delete"] = "Sil";
 $string["change"] = "Değiştir";
 $string["chooseFile"] = "Bir şarkı seç";
+$string['yourNewSong'] = "Take a look at your new song!";
 ///errors
 $string["songAddError-2"] = "Geçersiz URL (Şarkının bu linkte bulunduğundan emin olun.)";
 $string["songAddError-3"] = "Bu şarkı zaten transfer edilmiş. ID:";

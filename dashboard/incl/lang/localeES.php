@@ -151,7 +151,7 @@ $string["color"] = "Color";
 $string["sameLevels"] = "¡Has escogido los mismos niveles!";
 $string["show"] = "Mostrar";
 $string["packChange"] = "Cambiar Map Pack";
-$string["createNewPack"] = "¡Crea un nuevo Map Pack!"; // Translate word "create" like "You'll need to create new map pack!", but its call to action
+$string["createNewPack"] = "¡Crea un nuevo Map Pack!"; // Translate word "create" like its call to action
 // gauntlets
 $string["gauntletCreate"] = "Añadir";
 $string["gauntletCreateTitle"] = "Crear Gauntlet";
@@ -166,7 +166,9 @@ $string["level3"] = "Nivel 3";
 $string["level4"] = "Nivel 4";
 $string["level5"] = "Nivel 5";
 $string["gauntletChange"] = "Cambiar Gauntlet";
-$string["createNewGauntlet"] = "¡Crea un nuevo Gauntlet!"; // Translate word "create" like "You'll need to create new gauntlet!", but its call to action
+$string["createNewGauntlet"] = "¡Crea un nuevo Gauntlet!"; // Translate word "create" like its call to action
+$string["gauntletCreateSuccessNew"] = 'You successfully created <b>%1$s</b>!';
+$string["gauntletSelectAutomatic"] = "Choose Gauntlet automatically";
 // quests
 $string["addQuest"] = "Crear misión";
 $string["addQuestDesc"] = "¡Aquí puedes crear una misión!";
@@ -376,6 +378,7 @@ $string["size"] = "Tamaño";
 $string["delete"] = "Eliminar";
 $string["change"] = "Cambiar";
 $string["chooseFile"] = "Elige una canción";
+$string['yourNewSong'] = "Take a look at your new song!";
 // errors
 $string["songAddError-2"] = "URL inválida";
 $string["songAddError-3"] = "Esta canción ya fue subida con la ID:";

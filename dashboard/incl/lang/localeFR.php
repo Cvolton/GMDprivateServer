@@ -152,7 +152,7 @@ $string["color"] = "Couleur";
 $string["sameLevels"] = "Vous avez choisi les mêmes niveaux!";
 $string["show"] = "Montrer.";
 $string["packChange"] = "Modifiez le Map Pack";
-$string["createNewPack"] = "Créez un nouveau Map Pack!"; // Translate word "create" like "You'll need to create new map pack!", but its call to action
+$string["createNewPack"] = "Créez un nouveau Map Pack!"; // Translate word "create" like its call to action
 
 $string["gauntletCreate"] = "Créer un Gauntlet";
 $string["gauntletCreateTitle"] = "Créer un Gauntlet";
@@ -167,7 +167,9 @@ $string["level3"] = "Niveau 3";
 $string["level4"] = "Niveau 4";
 $string["level5"] = "Niveau 5";
 $string["gauntletChange"] = "Modifiez le Gauntlet";
-$string["createNewGauntlet"] = "Créez un nouveau Gauntlet!"; // Translate word "create" like "You'll need to create new gauntlet!", but its call to action
+$string["createNewGauntlet"] = "Créez un nouveau Gauntlet!"; // Translate word "create" like its call to action
+$string["gauntletCreateSuccessNew"] = 'You successfully created <b>%1$s</b>!';
+$string["gauntletSelectAutomatic"] = "Choose Gauntlet automatically";
 
 $string["addQuest"] = "Ajouter une quête";
 $string["addQuestDesc"] = "Ici vous pouvez ajouter une quête!";
@@ -348,7 +350,7 @@ $string["create"] = "Créer";
 $string["mainSettings"] = "Réglages principaux";
 $string["takenClanName"] = "Le nom du clan est déjà prit!";
 
-// HOW DO I TRANSLATE THIS
+// HOW DO I TRANSLATE THIS // sorry
 $string["suggestedName"] = '<button type="button" onclick="a(\'profile/%1$s\', true, true)" class="accbtn" name="accountID">%1$s</button><text class="dltext"> à suggéré <b>%4$s%3$s</b> pour</text><text class="levelname">%2$s</text>'; // %1$s - Mod username, %2$s - level name, %3$s - x stars, %4$s - Featured/Epic (%4$s%3$s - Featured, x stars)
 $string["reportedName"] = '%1$s<text class="dltext"> a été signalé</text><text class="levelname">%2$s</text>';
 
@@ -382,6 +384,7 @@ $string["size"] = "Taille";
 $string["delete"] = "Supprimer";
 $string["change"] = "Changer";
 $string["chooseFile"] = "Choisir une chanson";
+$string['yourNewSong'] = "Take a look at your new song!";
 ///errors
 $string["songAddError-2"] = "URL Invalide";
 $string["songAddError-3"] = "Cette chanson à été déjà reupload avec ID:";

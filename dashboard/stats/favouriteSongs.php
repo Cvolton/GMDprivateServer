@@ -44,14 +44,6 @@ foreach($result as &$action){
 	$btn = '<button type="button" name="btnsng" id="btn'.$songsid.'" title="'.$author.' — '.$name.'" style="display: contents;color: white;margin: 0;" download="'.$download.'" onclick="btnsong(\''.$songsid.'\');"><div class="icon" style="font-size:13px; height:25px;width:25px;background:#373A3F;margin-left: 5px;"><i id="icon'.$songsid.'" name="iconlol" class="fa-solid fa-play" aria-hidden="false"></i></div></button>';
 	if(mb_strlen($author) + mb_strlen($name) > 30) $fontsize = 17;
 	elseif(mb_strlen($author) + mb_strlen($name) > 20) $fontsize = 20;
-    if($action["isDisabled"]) {
-		$songsid = '<div style="text-decoration:line-through;color:#8b2e2c">'.$songsid.'</div>';
-		$author = '<div style="text-decoration:line-through;color:#8b2e2c">'.$author.'</div>';
-		$name = '<div style="text-decoration:line-through;color:#8b2e2c">'.$name.'</div>';
-      	$size = '<div style="text-decoration:line-through;color:#8b2e2c">'.$size.'</div>';
-      	$time = '<div style="text-decoration:line-through;color:#8b2e2c">'.$time.'</div>';
-		$btn = '<button type="button" style="display: contents;color: #ffb1ab;margin: 0;"><div class="icon" style="font-size:13px; height:25px;width:25px;background:#373A3F;margin-left: 5px;"><i class="fa-solid fa-xmark" aria-hidden="false"></i></div></button>';
-	}
 	$favourites = $db->prepare("SELECT * FROM favsongs WHERE songID = :id AND accountID = :aid");
 	$favourites->execute([':id' => $songsid, ':aid' => $_SESSION["accountID"]]);
 	$favourites = $favourites->fetch();

@@ -55,7 +55,7 @@ if(!empty($_POST["url"])){
 		$dl->printSong('<div class="form">
 		<h1>'.$dl->getLocalizedString("songAdd").'</h1>
 		<form class="form__inner" method="post" action="">
-				<p>'.$dl->getLocalizedString("songID").''.$songID.'</p>
+				<p>'.$dl->getLocalizedString("songID").'<b style="font-size: inherit;" class="accbtn songidyeah" id="copy'.$songID.'" onclick="copysong('.$songID.')">'.$songID.'</b></p>
 				<button type="button" onclick="a(\'reupload/songAdd.php\', true, true, \'GET\')"class="btn-song">'.$dl->getLocalizedString("songAddAnotherBTN").'</button>
 			</form>
 		</div>', 'reupload');
