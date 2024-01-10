@@ -23,10 +23,16 @@ See [README.md in the `_updates`](_updates/README.md)
 ### Credits
 Base for account settings and the private messaging system by someguy28
 
-Using this for XOR encryption - https://github.com/sathoro/php-xor-cipher - (incl/lib/XORCipher.php)
+XOR encryption — https://github.com/sathoro/php-xor-cipher — (incl/lib/XORCipher.php)
 
-Using this for cloud save encryption - https://github.com/defuse/php-encryption - (incl/lib/defuse-crypto.phar)
+Cloud save encryption — https://github.com/defuse/php-encryption — (incl/lib/defuse-crypto.phar)
 
-Using this for mail verification - https://github.com/phpmailer/phpmailer - (config/mail)
+Mail verification — https://github.com/phpmailer/phpmailer — (config/mail)
+
+JQuery — https://github.com/jquery/jquery — (dashboard/lib/jq.js)
+
+Image dominant color picker — https://github.com/swaydeng/imgcolr — (dashboard/lib/imgcolr.js)
+
+Media cover — https://github.com/aadsm/jsmediatags — (dashboard/lib/jsmediatags.js)
 
 Most of the stuff in generateHash.php has been figured out by pavlukivan and Italian APK Downloader, so credits to them
