@@ -48,36 +48,36 @@ $dinfog = !empty($_POST["dinfog"]) ? ExploitPatch::remove($_POST["dinfog"]) : ''
 
 if(empty($_POST["udid"]) AND empty($_POST["accountID"]))
 	exit("-1");
-
-$demonsCount = $db->prepare("SELECT IFNULL(easyNormal, 0) as easyNormal,
-IFNULL(mediumNormal, 0) as mediumNormal,
-IFNULL(hardNormal, 0) as hardNormal,
-IFNULL(insaneNormal, 0) as insaneNormal,
-IFNULL(extremeNormal, 0) as extremeNormal,
-IFNULL(easyPlatformer, 0) as easyPlatformer,
-IFNULL(mediumPlatformer, 0) as mediumPlatformer,
-IFNULL(hardPlatformer, 0) as hardPlatformer,
-IFNULL(insanePlatformer, 0) as insanePlatformer,
-IFNULL(extremePlatformer, 0) as extremePlatformer
-FROM (
-    (SELECT count(*) AS easyNormal FROM levels WHERE starDemonDiff = 3 AND levelLength != 5 AND levelID IN (".$dinfo.") AND starDemon != 0) easyNormal
-    JOIN (SELECT count(*) AS mediumNormal FROM levels WHERE starDemonDiff = 4 AND levelLength != 5 AND levelID IN (".$dinfo.") AND starDemon != 0) mediumNormal
-    JOIN (SELECT count(*) AS hardNormal FROM levels WHERE starDemonDiff = 0 AND levelLength != 5 AND levelID IN (".$dinfo.") AND starDemon != 0) hardNormal
-    JOIN (SELECT count(*) AS insaneNormal FROM levels WHERE starDemonDiff = 5 AND levelLength != 5 AND levelID IN (".$dinfo.") AND starDemon != 0) insaneNormal
-    JOIN (SELECT count(*) AS extremeNormal FROM  levels WHERE starDemonDiff = 6 AND levelLength != 5 AND levelID IN (".$dinfo.") AND starDemon != 0) extremeNormal
-    
-    JOIN (SELECT count(*) AS easyPlatformer FROM levels WHERE starDemonDiff = 3 AND levelLength = 5 AND levelID IN (".$dinfo.") AND starDemon != 0) easyPlatformer
-    JOIN (SELECT count(*) AS mediumPlatformer FROM levels WHERE starDemonDiff = 4 AND levelLength = 5 AND levelID IN (".$dinfo.") AND starDemon != 0) mediumPlatformer
-    JOIN (SELECT count(*) AS hardPlatformer FROM levels WHERE starDemonDiff = 0 AND levelLength = 5 AND levelID IN (".$dinfo.") AND starDemon != 0) hardPlatformer
-    JOIN (SELECT count(*) AS insanePlatformer FROM levels WHERE starDemonDiff = 5 AND levelLength = 5 AND levelID IN (".$dinfo.") AND starDemon != 0) insanePlatformer
-    JOIN (SELECT count(*) AS extremePlatformer FROM levels WHERE starDemonDiff = 6 AND levelLength = 5 AND levelID IN (".$dinfo.") AND starDemon != 0) extremePlatformer
-)");
-$demonsCount->execute(); // Doesn't work with [':levels' => $dinfo] way
-$demonsCount = $demonsCount->fetch();
-$allDemons = $demonsCount["easyNormal"]+$demonsCount["mediumNormal"]+$demonsCount["hardNormal"]+$demonsCount["insaneNormal"]+$demonsCount["extremeNormal"]+$demonsCount["easyPlatformer"]+$demonsCount["mediumPlatformer"]+$demonsCount["hardPlatformer"]+$demonsCount["insanePlatformer"]+$demonsCount["extremePlatformer"]+$dinfow+$dinfog;
-$demonsCountDiff = $demons - $allDemons;
-$dinfo = ($demonsCount["easyNormal"]+$demonsCountDiff).','.$demonsCount["mediumNormal"].','.$demonsCount["hardNormal"].','.$demonsCount["insaneNormal"].','.$demonsCount["extremeNormal"].','.$demonsCount["easyPlatformer"].','.$demonsCount["mediumPlatformer"].','.$demonsCount["hardPlatformer"].','.$demonsCount["insanePlatformer"].','.$demonsCount["extremePlatformer"].','.$dinfow.','.$dinfog;
-
+if(!empty($dinfo)) {
+	$demonsCount = $db->prepare("SELECT IFNULL(easyNormal, 0) as easyNormal,
+	IFNULL(mediumNormal, 0) as mediumNormal,
+	IFNULL(hardNormal, 0) as hardNormal,
+	IFNULL(insaneNormal, 0) as insaneNormal,
+	IFNULL(extremeNormal, 0) as extremeNormal,
+	IFNULL(easyPlatformer, 0) as easyPlatformer,
+	IFNULL(mediumPlatformer, 0) as mediumPlatformer,
+	IFNULL(hardPlatformer, 0) as hardPlatformer,
+	IFNULL(insanePlatformer, 0) as insanePlatformer,
+	IFNULL(extremePlatformer, 0) as extremePlatformer
+	FROM (
+		(SELECT count(*) AS easyNormal FROM levels WHERE starDemonDiff = 3 AND levelLength != 5 AND levelID IN (".$dinfo.") AND starDemon != 0) easyNormal
+		JOIN (SELECT count(*) AS mediumNormal FROM levels WHERE starDemonDiff = 4 AND levelLength != 5 AND levelID IN (".$dinfo.") AND starDemon != 0) mediumNormal
+		JOIN (SELECT count(*) AS hardNormal FROM levels WHERE starDemonDiff = 0 AND levelLength != 5 AND levelID IN (".$dinfo.") AND starDemon != 0) hardNormal
+		JOIN (SELECT count(*) AS insaneNormal FROM levels WHERE starDemonDiff = 5 AND levelLength != 5 AND levelID IN (".$dinfo.") AND starDemon != 0) insaneNormal
+		JOIN (SELECT count(*) AS extremeNormal FROM  levels WHERE starDemonDiff = 6 AND levelLength != 5 AND levelID IN (".$dinfo.") AND starDemon != 0) extremeNormal
+		
+		JOIN (SELECT count(*) AS easyPlatformer FROM levels WHERE starDemonDiff = 3 AND levelLength = 5 AND levelID IN (".$dinfo.") AND starDemon != 0) easyPlatformer
+		JOIN (SELECT count(*) AS mediumPlatformer FROM levels WHERE starDemonDiff = 4 AND levelLength = 5 AND levelID IN (".$dinfo.") AND starDemon != 0) mediumPlatformer
+		JOIN (SELECT count(*) AS hardPlatformer FROM levels WHERE starDemonDiff = 0 AND levelLength = 5 AND levelID IN (".$dinfo.") AND starDemon != 0) hardPlatformer
+		JOIN (SELECT count(*) AS insanePlatformer FROM levels WHERE starDemonDiff = 5 AND levelLength = 5 AND levelID IN (".$dinfo.") AND starDemon != 0) insanePlatformer
+		JOIN (SELECT count(*) AS extremePlatformer FROM levels WHERE starDemonDiff = 6 AND levelLength = 5 AND levelID IN (".$dinfo.") AND starDemon != 0) extremePlatformer
+	)");
+	$demonsCount->execute(); // Doesn't work with [':levels' => $dinfo] way
+	$demonsCount = $demonsCount->fetch();
+	$allDemons = $demonsCount["easyNormal"]+$demonsCount["mediumNormal"]+$demonsCount["hardNormal"]+$demonsCount["insaneNormal"]+$demonsCount["extremeNormal"]+$demonsCount["easyPlatformer"]+$demonsCount["mediumPlatformer"]+$demonsCount["hardPlatformer"]+$demonsCount["insanePlatformer"]+$demonsCount["extremePlatformer"]+$dinfow+$dinfog;
+	$demonsCountDiff = min($demons - $allDemons, 3);
+	$dinfo = ($demonsCount["easyNormal"]+$demonsCountDiff).','.$demonsCount["mediumNormal"].','.$demonsCount["hardNormal"].','.$demonsCount["insaneNormal"].','.$demonsCount["extremeNormal"].','.$demonsCount["easyPlatformer"].','.$demonsCount["mediumPlatformer"].','.$demonsCount["hardPlatformer"].','.$demonsCount["insanePlatformer"].','.$demonsCount["extremePlatformer"].','.$dinfow.','.$dinfog;
+}
 $id = $gs->getIDFromPost();
 $userID = $gs->getUserID($id, $userName);
 $uploadDate = time();
