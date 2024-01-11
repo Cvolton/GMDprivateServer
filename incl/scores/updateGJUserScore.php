@@ -74,7 +74,9 @@ FROM (
 )");
 $demonsCount->execute(); // Doesn't work with [':levels' => $dinfo] way
 $demonsCount = $demonsCount->fetch();
-$dinfo = $demonsCount["easyNormal"].','.$demonsCount["mediumNormal"].','.$demonsCount["hardNormal"].','.$demonsCount["insaneNormal"].','.$demonsCount["extremeNormal"].','.$demonsCount["easyPlatformer"].','.$demonsCount["mediumPlatformer"].','.$demonsCount["hardPlatformer"].','.$demonsCount["insanePlatformer"].','.$demonsCount["extremePlatformer"].','.$dinfow.','.$dinfog;
+$allDemons = $demonsCount["easyNormal"]+$demonsCount["mediumNormal"]+$demonsCount["hardNormal"]+$demonsCount["insaneNormal"]+$demonsCount["extremeNormal"]+$demonsCount["easyPlatformer"]+$demonsCount["mediumPlatformer"]+$demonsCount["hardPlatformer"]+$demonsCount["insanePlatformer"]+$demonsCount["extremePlatformer"]+$dinfow+$dinfog;
+$demonsCountDiff = $demons - $allDemons;
+$dinfo = ($demonsCount["easyNormal"]+$demonsCountDiff).','.$demonsCount["mediumNormal"].','.$demonsCount["hardNormal"].','.$demonsCount["insaneNormal"].','.$demonsCount["extremeNormal"].','.$demonsCount["easyPlatformer"].','.$demonsCount["mediumPlatformer"].','.$demonsCount["hardPlatformer"].','.$demonsCount["insanePlatformer"].','.$demonsCount["extremePlatformer"].','.$dinfow.','.$dinfog;
 
 $id = $gs->getIDFromPost();
 $userID = $gs->getUserID($id, $userName);
