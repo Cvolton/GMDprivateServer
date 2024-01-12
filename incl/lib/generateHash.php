@@ -1,5 +1,10 @@
 <?php
 //credits to pavlukivan for decoding and to IAD for most of genSolo
+if(!function_exists("intdiv")) {
+	function intdiv($a, $b){
+		return ($a - $a % $b) / $b;
+	}
+}
 class GenerateHash {
 	public static function genMulti($lvlsmultistring) {
 		include dirname(__FILE__)."/connection.php";
