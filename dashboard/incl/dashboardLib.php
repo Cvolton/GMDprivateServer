@@ -40,14 +40,14 @@ class dashboardLib {
 	public function getLocalizedString($stringName, $lang = '') {
 		if(empty($lang)) {
 			if(!isset($_COOKIE["lang"]) OR !ctype_alpha($_COOKIE["lang"])) {
-				if(file_exists('/lang/locale'.strtoupper(substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2))).'.php') $lang = strtoupper(substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2));
+				if(file_exists(__DIR__.'/lang/locale'.strtoupper(substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2))).'.php') $lang = strtoupper(substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2));
 				else $lang = "EN";
 			} else $lang = $_COOKIE["lang"];
 		}
 		$lang = substr($lang, 0, 2);
-		$locale = __DIR__ . "/lang/locale".$lang.".php";
+		$locale = __DIR__."/lang/locale".$lang.".php";
 		if(file_exists($locale)) include $locale;
-		else include __DIR__ . "/lang/localeRU.php";
+		else include __DIR__."/lang/localeEN.php";
 		if(isset($string[$stringName])) return $string[$stringName];
 		else {
 		    include __DIR__."/lang/localeEN.php";
