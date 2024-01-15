@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: localhost
--- Время создания: Дек 25 2023 г., 20:59
+-- Время создания: Янв 15 2024 г., 15:02
 -- Версия сервера: 5.7.27-30
 -- Версия PHP: 7.1.33
 
@@ -244,8 +244,8 @@ CREATE TABLE `levels` (
   `original` int(11) NOT NULL,
   `twoPlayer` int(11) NOT NULL DEFAULT '0',
   `songID` int(11) NOT NULL DEFAULT '0',
-  `songIDs` varchar(2048) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
-  `sfxIDs` varchar(2048) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `songIDs` varchar(2048) COLLATE utf8_unicode_ci DEFAULT '',
+  `sfxIDs` varchar(2048) COLLATE utf8_unicode_ci DEFAULT '',
   `objects` int(11) NOT NULL DEFAULT '0',
   `coins` int(11) NOT NULL DEFAULT '0',
   `requestedStars` int(11) NOT NULL DEFAULT '0',
@@ -598,6 +598,7 @@ CREATE TABLE `users` (
   `accGlow` int(11) NOT NULL DEFAULT '0',
   `accSwing` int(11) NOT NULL DEFAULT '0',
   `accJetpack` int(11) NOT NULL DEFAULT '0',
+  `dinfo` varchar(100) COLLATE utf8_unicode_ci DEFAULT '',
   `creatorPoints` double NOT NULL DEFAULT '0',
   `IP` varchar(69) COLLATE utf8_unicode_ci NOT NULL DEFAULT '127.0.0.1',
   `lastPlayed` int(11) NOT NULL DEFAULT '0',
