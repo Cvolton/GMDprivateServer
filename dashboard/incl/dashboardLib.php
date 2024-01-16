@@ -433,6 +433,7 @@ $(document).on("keyup keypress change keydown",function(){
 			</div>
 			<div id="audioQueue" class="audioDiv queueDiv"></div>
 			<script>
+   				if(!window.localStorage.volume) window.localStorage.volume = 0.2;
 				player = document.getElementById("audioPlayer");
 				player.showButton = document.getElementById("audioPlayerButton");
 				player.isPlaying = false;
@@ -707,7 +708,6 @@ $(document).on("keyup keypress change keydown",function(){
 		</div>
 <script>
 	if(document.querySelector("[alt=\'www.000webhost.com\']") != null) document.querySelector("[alt=\'www.000webhost.com\']").parentElement.parentElement.style = "z-index: 0;position: fixed;bottom: 0px;"
-	if(!window.localStorage.volume) window.localStorage.volume = 0.2;
 	cptch = document.querySelector("#verycoolcaptcha");
 	$(document).click(function(event) {
 		if(event.target && !event.target.classList.contains("dontblock") && (event.target.classList.contains("dropdown-item") || event.target.classList.contains("icon") || event.target.classList.contains("nav-link") || event.target.classList.contains("fa-solid") || event.target.classList.contains("fa-regular"))) event.preventDefault();
