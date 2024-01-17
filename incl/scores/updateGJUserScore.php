@@ -42,9 +42,9 @@ $moons = !empty($_POST["moons"]) ? ExploitPatch::remove($_POST["moons"]) : 0;
 $color3 = !empty($_POST["color3"]) ? ExploitPatch::remove($_POST["color3"]) : 0;
 $accSwing = !empty($_POST["accSwing"]) ? ExploitPatch::remove($_POST["accSwing"]) : 0;
 $accJetpack = !empty($_POST["accJetpack"]) ? ExploitPatch::remove($_POST["accJetpack"]) : 0;
-$dinfo = !empty($_POST["dinfo"]) ? ExploitPatch::remove($_POST["dinfo"]) : '';
-$dinfow = !empty($_POST["dinfow"]) ? ExploitPatch::remove($_POST["dinfow"]) : '';
-$dinfog = !empty($_POST["dinfog"]) ? ExploitPatch::remove($_POST["dinfog"]) : '';
+$dinfo = !empty(ExploitPatch::numbercolon($_POST["dinfo"])) ? ExploitPatch::numbercolon($_POST["dinfo"]) : '';
+$dinfow = !empty(ExploitPatch::number($_POST["dinfow"])) ? ExploitPatch::number($_POST["dinfow"]) : 0;
+$dinfog = !empty(ExploitPatch::number($_POST["dinfog"])) ? ExploitPatch::number($_POST["dinfog"]) : 0;
 
 if(empty($_POST["udid"]) AND empty($_POST["accountID"]))
 	exit("-1");
