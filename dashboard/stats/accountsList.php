@@ -57,34 +57,21 @@ if(!isset($_GET["search"]) OR empty(trim(ExploitPatch::remove($_GET["search"])))
 $x = $page + 1;
 foreach($result as &$action){
 	$clan = $own = '';
-	$accUserID = $gs->getUserID($action["accountID"]);
+	$accUserID = $action["userID"];
 	$accountID = $action["accountID"].' <text style="font-weight: 100;">|</text> '.$accUserID;
   	if($action["accountID"] == $accUserID) $accountID = $action["accountID"];
-	$query = $db->prepare("SELECT roleID FROM roleassign WHERE accountID =:accid");
+	$query = $db->prepare("SELECT roleID FROM roleassign WHERE accountID = :accid");
 	$query->execute([':accid' => $accountID]);
 	$resultPls = $query->fetch();
 	if(!$resultPls) $resultRole = $dl->getLocalizedString("player");
 	else {
 		$resultRole = $resultPls["roleID"];
-		if(empty($resultRole)){
+		if(empty($resultRole)) {
 			$resultRole = $dl->getLocalizedString("player");
 		} else {
-			switch($resultRole) {
-				case 1:
-					$resultRole = $dl->getLocalizedString("admin");
-					break;
-				case 2:
-					$resultRole = $dl->getLocalizedString("elder");
-					break;
-				case 3:
-					$resultRole = $dl->getLocalizedString("moder");
-					break;
-				default:
-					$query = $db->prepare("SELECT roleName FROM roles WHERE roleID = :id");
-					$query->execute([':id' => $resultRole]);
-					$resultRole = $query->fetch()["roleName"];
-					break;
-			}
+			$query = $db->prepare("SELECT roleName FROM roles WHERE roleID = :id");
+			$query->execute([':id' => $resultRole]);
+			$resultRole = $query->fetch()["roleName"];
 		}
 	}
 	if($action["clan"] != 0) {
@@ -102,6 +89,7 @@ foreach($result as &$action){
     $stats = $st.$ms.$dm.$gc.$uc.$dn.$cp;
     if(empty($stats)) $stats = '<p style="font-size:25px;color:#212529">'.$dl->getLocalizedString("empty").'</p>';
 	$registerDate = date("d.m.Y", $action["registerDate"]);
+	if($action['userName'] == "Undefined") $action['userName'] = $gs->getUserName($action['userID']);
 	$members .= '<div style="width: 100%;display: flex;flex-wrap: wrap;justify-content: center;">
 			<div class="profile"><div style="display: flex;width: 100%;justify-content: space-between;margin-bottom: 7px;align-items: center;"><button style="display:contents;cursor:pointer" type="button" onclick="a(\'profile/'.$action["userName"].'\', true, true, \'GET\')"><div class="acclistdiv">
 				<h2 style="color:rgb('.$gs->getAccountCommentColor($action["accountID"]).');" class="profilenick acclistnick">'.$action["userName"].' '.$clan.'</h2><h2 class="accresultrole">'.$resultRole.'</h2>

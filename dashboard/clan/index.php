@@ -13,7 +13,6 @@ if(!$clansEnabled) exit($dl->printSong('<div class="form">
 include "../".$dbPath."incl/lib/exploitPatch.php";
 include_once "../".$dbPath."incl/lib/mainLib.php";
 $gs = new mainLib();
-if(!isset($_GET["id"])) header("Location: ".$gs->getClanInfo(ExploitPatch::number($_POST["accountID"])), "clan");
 include "../".$dbPath."incl/lib/connection.php";
 $getID = explode("/", $_GET["id"])[count(explode("/", $_GET["id"]))-1];
 if($getID == "settings") {
@@ -182,7 +181,7 @@ if(!empty($clan)) {
 			}
 			if($clan["isClosed"] == 1) {
 				$clIcon = '<i id="closeicon" class="fa-solid fa-toggle-on"></i>';
-				$pending = '<div><h2 style="text-align:right;margin:0;margin-bottom: 3px">'.$dl->getLocalizedString("pendingRequests").'</h2>
+				$pending = '<form style="margin:0" method="post" name="pending"><div><h2 style="text-align:right;margin:0;margin-bottom: 3px">'.$dl->getLocalizedString("pendingRequests").'</h2>
                                         <input type="hidden" name="pending" value="1">
                                         <button style="height: max-content; '.($gs->isPendingRequests($clan['ID']) ? 'border: solid 2px #e35151' : '').'" class="btn-rendel" type="button" onclick="a(\'clan/'.$clan['clan'].'/settings\', true, true, \'POST\', false, \'pending\')">'.$dl->getLocalizedString("pendingRequests").'</button>
                                     </form></div>';
@@ -218,7 +217,7 @@ if(!empty($clan)) {
 								<input type="hidden" name="ichangedsmth" value="1"></input>
 								<input type="hidden" name="settings" value="1"></input>
 							  </div><form style="margin:0" reason="Idk why, but it broked and deletes from page, so dont remove it"></form>
-                                <div style="display: grid;grid-gap: 5px;margin:0"><form style="margin:0" method="post" name="pending">
+                                <div style="display: grid;grid-gap: 5px;margin:0">
 									'.$pending.'
                                     <div>
 									<h2 style="text-align:right;margin:0;margin-bottom: 3px;">'.$dl->getLocalizedString("giveClan").'</h2>
