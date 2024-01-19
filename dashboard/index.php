@@ -6,7 +6,7 @@ require $dbPath."incl/lib/connection.php";
 require $dbPath."incl/lib/mainLib.php";
 $gs = new mainLib();
 require $dbPath."config/dashboard.php";
-if(!$installed) $install = '<div class="notify"><a href="install.php">'.$dl->getLocalizedString("didntInstall").'</a></div>'; else $install = '';
+if(!$installed) header('Location: install.php');
 if(isset($_GET["installed"])) $install = '<div style="margin-top:20px;margin-bottom:0px;width:80%" class="notify"><p>'.$dl->getLocalizedString("tipsAfterInstalling").'</p></div>'; 
 $dl->printFooter();
 $downloadlinks = '';
