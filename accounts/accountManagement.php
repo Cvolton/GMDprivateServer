@@ -1,3 +1,3 @@
 <?php
-header("Location: ../tools");
+header("Location: ../dashboard");
 ?>

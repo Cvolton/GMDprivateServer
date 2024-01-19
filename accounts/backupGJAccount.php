@@ -13,7 +13,7 @@ use Defuse\Crypto\KeyProtectedByPassword;
 use Defuse\Crypto\Crypto;
 use Defuse\Crypto\Key;*/
 //here im getting all the data
-$userName = ExploitPatch::remove($_POST["userName"]);
+$userName = ExploitPatch::charclean($_POST["userName"]);
 $password = !empty($_POST["password"]) ? $_POST["password"] : "";
 $saveData = ExploitPatch::remove($_POST["saveData"]);
 

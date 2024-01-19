@@ -12,9 +12,9 @@ if(!isset($preactivateAccounts)){
 
 if($_POST["userName"] != ""){
 	//here im getting all the data
-	$userName = ExploitPatch::remove($_POST["userName"]);
-	$password = ExploitPatch::remove($_POST["password"]);
-	$email = ExploitPatch::remove($_POST["email"]);
+	$userName = ExploitPatch::charclean($_POST["userName"]);
+	$password = $_POST["password"];
+	$email = ExploitPatch::rucharclean($_POST["email"]);
 	$secret = "";
 	//checking if username is within the GD length limit
 	if(strlen($userName) > 20)
