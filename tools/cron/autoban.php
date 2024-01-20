@@ -55,4 +55,3 @@ flush();
 //done
 //echo "<hr>Banned everyone with over $stars stars and over $coins user coins and over $demons demons and over $moons moons!<hr>done";
 ?>
-<hr>
