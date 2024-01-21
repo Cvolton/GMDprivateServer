@@ -113,6 +113,7 @@ $string["smallPass"] = "¡La contraseña es demasiado corta!";
 $string["passDontMatch"] = "¡Las contraseñas no coinciden!";
 $string["emailDontMatch"] = "Los emails no coinciden";
 $string["registered"] = "¡Te has registrado exitosamente!";
+$string["bigNick"] = "Username is too long!";
 // change password
 $string["changePassTitle"] = "Cambiar contraseña";
 $string["changedPass"] = "¡Contraseña cambiada exitosamente! Inicia sesión nuevamente.";

@@ -114,6 +114,7 @@ $string["smallPass"] = "Le mot de passe est trop court!";
 $string["passDontMatch"] = "Les mots de passe ne correspondent pas!";
 $string["emailDontMatch"] = "Les emails ne correspondent pas!";
 $string["registered"] = "Vous avez créé un compte avec succès!";
+$string["bigNick"] = "Username is too long!";
 
 $string["changePassTitle"] = "Changer le mot de passe";
 $string["changedPass"] = "Mot de passe changé avec succès! Vous devez vous reconnecter.";
@@ -350,7 +351,6 @@ $string["create"] = "Créer";
 $string["mainSettings"] = "Réglages principaux";
 $string["takenClanName"] = "Le nom du clan est déjà prit!";
 
-// HOW DO I TRANSLATE THIS // sorry
 $string["suggestedName"] = '<button type="button" onclick="a(\'profile/%1$s\', true, true)" class="accbtn" name="accountID">%1$s</button><text class="dltext"> à suggéré <b>%4$s%3$s</b> pour</text><text class="levelname">%2$s</text>'; // %1$s - Mod username, %2$s - level name, %3$s - x stars, %4$s - Featured/Epic (%4$s%3$s - Featured, x stars)
 $string["reportedName"] = '%1$s<text class="dltext"> a été signalé</text><text class="levelname">%2$s</text>';
 

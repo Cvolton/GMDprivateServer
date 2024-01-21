@@ -113,6 +113,7 @@ $string["smallPass"] = "Пароль занадто короткий!";
 $string["passDontMatch"] = "Паролі не співпадають!";
 $string["emailDontMatch"] = "Пошти не співпадають!";
 $string["registered"] = "Ви успішно зареєстрували акаунт!";
+$string["bigNick"] = "Нікнейм занадто длинный!";
 
 $string["changePassTitle"] = "Зміна пароля";
 $string["changedPass"] = "Пароль успішно змінений! Вам потрібно заново ввійти в ваш акаунт.";

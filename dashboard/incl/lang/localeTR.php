@@ -113,6 +113,7 @@ $string["smallPass"] = "Şifre çok kısa!";
 $string["passDontMatch"] = "Şifreler eşleşmiyor!";
 $string["emailDontMatch"] = "E-Postalar eşleşmiyor";
 $string["registered"] = "Hesap başarıyla oluşturuldu!";
+$string["bigNick"] = "Username is too long!";
 
 $string["changePassTitle"] = "Şifre değiştir";
 $string["changedPass"] = "Şifre başarıyla değiştirildi! Hesabına yeniden giriş yapman gerekiyor.";

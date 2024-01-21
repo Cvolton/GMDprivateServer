@@ -196,7 +196,6 @@ class dashboardLib {
 						<a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 							<i class="fa-solid fa-upload" style="margin-right:5" aria-hidden="true"></i>'.$this->getLocalizedString("reuploadSection").'
 						</a>
-                            
 						<div class="dropdown-menu" id="cronview" aria-labelledby="navbarDropdownMenuLink">';
           					if(strpos($songEnabled, '1') !== false) echo '<a type="button" href="songs" onclick="a(\'songs\')" class="dropdown-item"><i class="fa-solid fa-file" style="position: absolute;font-size: 10px;margin: 5px 5px 5px -2px;" aria-hidden="false"></i><div class="icon"><i class="fa-solid fa-music" aria-hidden="false"></i></div>'.$this->getLocalizedString("songAdd").'</a>';
           					if(strpos($songEnabled, '2') !== false) echo '<a type="button" href="reupload/songAdd.php" onclick="a(\'reupload/songAdd.php\')"class="dropdown-item"><i class="fa-solid fa-link" style="position: absolute;font-size: 9px;margin: 5px 5px 5px -3px;" aria-hidden="false"></i><div class="icon"><i class="fa-solid fa-music" aria-hidden="false"></i></div>'.$this->getLocalizedString("songLink").'</a>';
@@ -382,22 +381,22 @@ class dashboardLib {
 										</div>
 									</form>
 						</div><script>
-$(document).on("keyup keypress change keydown",function(){
-   const p1 = document.getElementById("usernameField");
-   const p2 = document.getElementById("passwordField");
-   const btn = document.getElementById("submit");
-   if(!p1.value.trim().length || !p2.value.trim().length) {
-                btn.disabled = true;
-                btn.classList.add("btn-block");
-                btn.classList.remove("btn-primary");
-	} else {
-		        btn.removeAttribute("disabled");
-                btn.classList.remove("btn-block");
-                btn.classList.remove("btn-size");
-                btn.classList.add("btn-primary");
-	}
-});
-</script>';
+							$(document).on("keyup keypress change keydown", function() {
+								const usernameField1 = document.getElementById("usernameField");
+								const passwordField2 = document.getElementById("passwordField");
+								const loginBtn = document.getElementById("submit");
+								if(!usernameField1.value.trim().length || !passwordField2.value.trim().length) {
+									loginBtn.disabled = true;
+									loginBtn.classList.add("btn-block");
+									loginBtn.classList.remove("btn-primary");
+								} else {
+									loginBtn.removeAttribute("disabled");
+									loginBtn.classList.remove("btn-block");
+									loginBtn.classList.remove("btn-size");
+									loginBtn.classList.add("btn-primary");
+								}
+							});
+							</script>';
 		}	
 		echo '</ul>
 			</div>
@@ -433,7 +432,7 @@ $(document).on("keyup keypress change keydown",function(){
 			</div>
 			<div id="audioQueue" class="audioDiv queueDiv"></div>
 			<script>
-   				if(!window.localStorage.volume) window.localStorage.volume = 0.2;
+				if(!window.localStorage.volume) window.localStorage.volume = 0.2;
 				player = document.getElementById("audioPlayer");
 				player.showButton = document.getElementById("audioPlayerButton");
 				player.isPlaying = false;
@@ -751,7 +750,23 @@ $(document).on("keyup keypress change keydown",function(){
 				htmlpage = document.querySelector("#htmlpage");
 				navbar = document.querySelector("#navbarepta");
 				htmtitle = document.querySelectorAll("title")[0];
-				pg.onload = function (){
+				pg.onload = function () {
+					$(document).off("keyup keypress change keydown");
+					$(document).on("keyup keypress change keydown", function() {
+					   const usernameField1 = document.getElementById("usernameField");
+					   const passwordField2 = document.getElementById("passwordField");
+					   const loginBtn = document.getElementById("submit");
+					   if(!usernameField1.value.trim().length || !passwordField2.value.trim().length) {
+									loginBtn.disabled = true;
+									loginBtn.classList.add("btn-block");
+									loginBtn.classList.remove("btn-primary");
+						} else {
+									loginBtn.removeAttribute("disabled");
+									loginBtn.classList.remove("btn-block");
+									loginBtn.classList.remove("btn-size");
+									loginBtn.classList.add("btn-primary");
+						}
+					});
 					'.($enableCaptcha ? 'try {
 						if(typeof '.$captchaUsed.' == "object" && typeof '.$captchaUsed.'.getResponse() != "undefined" && document.getElementById("coolcaptcha") != null) '.$captchaUsed.'.reset();
 					} catch(e) {
@@ -798,6 +813,7 @@ $(document).on("keyup keypress change keydown",function(){
 							document.body.appendChild(base);
 							if(typeof document.querySelectorAll("base")[1] == "object") document.querySelectorAll("base")[0].remove();
 						}
+						'.($enableCaptcha ? '
 						try {
 							if(typeof captchascript != "undefined") {
 								var elems = document.querySelectorAll("div[aria-hidden=true]");
@@ -813,9 +829,7 @@ $(document).on("keyup keypress change keydown",function(){
 									if(typeof hcaptcha == "object") hcaptcha.render("coolcaptcha");
 								}
 							}
-						} catch(e) {
-							console.log(e);
-						}
+						} catch(e) {}' : '').'
 					} else {
 						document.getElementById("loadingloool").innerHTML = \'<i class="fa-solid fa-xmark" style="color:#ffb1ab;padding: 0px 8px;"></i>\';
 						setTimeout(function () {document.getElementById("loadingloool").style.opacity = "0";}, 1000);
@@ -862,7 +876,6 @@ $(document).on("keyup keypress change keydown",function(){
 			if(JSON.stringify(player.currentSong) == JSON.stringify(song)) player.play();
 			else if(!player.queue.find(find => find.ID == song.ID)) player.addToQueue(song);
 		} else player.addToQueue(song);
-		return;
 	}
 	function escapeHtml(text) {
 		var map = {

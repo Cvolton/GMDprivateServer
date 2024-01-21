@@ -948,7 +948,7 @@ table,
 }
 
 .content {
-    background-color: #36393e;
+    background-color: transparent;
     color: #a7a8aa;
     border-radius: 25px;
 }
