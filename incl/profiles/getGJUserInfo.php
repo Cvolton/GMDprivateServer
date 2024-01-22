@@ -36,12 +36,12 @@ $query->execute();
 $f = "SELECT count(*) FROM users WHERE stars > :stars AND isBanned = 0"; //I can do this, since I already know the stars amount beforehand
 $query = $db->prepare($f);
 $query->execute([':stars' => $user["stars"]]);
-if($query->rowCount() > 0){
+if($query->rowCount() > 0) {
 	$rank = $query->fetchColumn() + 1;
-}else{
+} else {
 	$rank = 0;
 }
-if ($user['isBanned'] != 0) $rank = 0;
+if($user['isBanned'] != 0) $rank = 0;
 //var_dump($leaderboard);
 	//accinfo
 		$query = "SELECT youtubeurl,twitter,twitch, frS, mS, cS FROM accounts WHERE accountID = :extID";
@@ -52,7 +52,7 @@ if ($user['isBanned'] != 0) $rank = 0;
 		$msgstate = $accinfo["mS"];
 		$commentstate = $accinfo["cS"];
 		$badge = $gs->getMaxValuePermission($extid, "modBadgeLevel");
-if($me==$extid){
+if($me == $extid) {
 	/* notifications */
 		//friendreqs
 			$query = "SELECT count(*) FROM friendreqs WHERE toAccountID = :me";
@@ -88,7 +88,7 @@ if($me==$extid){
 		$INCrequestinfo = $query->fetch();
 		if($INCrequests > 0){
 			$uploaddate = date("d/m/Y G.i", $INCrequestinfo["uploadDate"]);
-			$friendstate=3;
+			$friendstate = 3;
 		}
 	//check if OUTCOMING friend request
 		$query = "SELECT count(*) FROM friendreqs WHERE toAccountID = :extid AND accountID = :me";
@@ -96,7 +96,7 @@ if($me==$extid){
 		$query->execute([':extid' => $extid, ':me' => $me]);
 		$OUTrequests = $query->fetchColumn();
 		if($OUTrequests > 0){
-			$friendstate=4;
+			$friendstate = 4;
 		}
 	//check if friend ALREADY
 		$query = "SELECT count(*) FROM friendships WHERE (person1 = :me AND person2 = :extID) OR (person2 = :me AND person1 = :extID)";
@@ -104,7 +104,7 @@ if($me==$extid){
 		$query->execute([':me' => $me, ':extID' => $extid]);
 		$frs = $query->fetchColumn();
 		if($frs > 0){
-			$friendstate=1;
+			$friendstate = 1;
 		}
 	/* sending the data */
 	//$friendstate is :31:
@@ -113,5 +113,5 @@ if($me==$extid){
 		$appendix = ":32:".$INCrequestinfo["ID"].":35:".$INCrequestinfo["comment"].":37:".$uploaddate;
 	}
 }
-echo "1:".$user["userName"].":2:".$user["userID"].":13:".$user["coins"].":17:".$user["userCoins"].":10:".$user["color1"].":11:".$user["color2"].":51:".$user["color3"].":3:".$user["stars"].":46:".$user["diamonds"].":52:".$user["moons"].":4:".$user["demons"].":8:".$creatorpoints.":18:".$msgstate.":19:".$reqsstate.":50:".$commentstate.":20:".$accinfo["youtubeurl"].":21:".$user["accIcon"].":22:".$user["accShip"].":23:".$user["accBall"].":24:".$user["accBird"].":25:".$user["accDart"].":26:".$user["accRobot"].":28:".$user["accGlow"].":43:".$user["accSpider"].":48:".$user["accExplosion"].":53:".$user["accSwing"].":54:".$user["accJetpack"].":30:".$rank.":16:".$user["extID"].":31:".$friendstate.":44:".$accinfo["twitter"].":45:".$accinfo["twitch"].":49:".$badge.":55:".$user["dinfo"].$appendix.":29:1";
+echo "1:".$user["userName"].":2:".$user["userID"].":13:".$user["coins"].":17:".$user["userCoins"].":10:".$user["color1"].":11:".$user["color2"].":51:".$user["color3"].":3:".$user["stars"].":46:".$user["diamonds"].":52:".$user["moons"].":4:".$user["demons"].":8:".$creatorpoints.":18:".$msgstate.":19:".$reqsstate.":50:".$commentstate.":20:".$accinfo["youtubeurl"].":21:".$user["accIcon"].":22:".$user["accShip"].":23:".$user["accBall"].":24:".$user["accBird"].":25:".$user["accDart"].":26:".$user["accRobot"].":28:".$user["accGlow"].":43:".$user["accSpider"].":48:".$user["accExplosion"].":53:".$user["accSwing"].":54:".$user["accJetpack"].":30:".$rank.":16:".$user["extID"].":31:".$friendstate.":44:".$accinfo["twitter"].":45:".$accinfo["twitch"].":49:".$badge.":55:".$user["dinfo"].":56:".$user["sinfo"].":57:".$user["pinfo"].$appendix.":29:1";
 ?>

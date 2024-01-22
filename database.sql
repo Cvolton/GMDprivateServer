@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: localhost
--- Время создания: Янв 15 2024 г., 15:02
+-- Время создания: Янв 22 2024 г., 19:27
 -- Версия сервера: 5.7.27-30
 -- Версия PHP: 7.1.33
 
@@ -599,6 +599,8 @@ CREATE TABLE `users` (
   `accSwing` int(11) NOT NULL DEFAULT '0',
   `accJetpack` int(11) NOT NULL DEFAULT '0',
   `dinfo` varchar(100) COLLATE utf8_unicode_ci DEFAULT '',
+  `sinfo` varchar(100) COLLATE utf8_unicode_ci DEFAULT '',
+  `pinfo` varchar(100) COLLATE utf8_unicode_ci DEFAULT '',
   `creatorPoints` double NOT NULL DEFAULT '0',
   `IP` varchar(69) COLLATE utf8_unicode_ci NOT NULL DEFAULT '127.0.0.1',
   `lastPlayed` int(11) NOT NULL DEFAULT '0',

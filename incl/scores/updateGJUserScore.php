@@ -42,12 +42,25 @@ $moons = !empty($_POST["moons"]) ? ExploitPatch::remove($_POST["moons"]) : 0;
 $color3 = !empty($_POST["color3"]) ? ExploitPatch::remove($_POST["color3"]) : 0;
 $accSwing = !empty($_POST["accSwing"]) ? ExploitPatch::remove($_POST["accSwing"]) : 0;
 $accJetpack = !empty($_POST["accJetpack"]) ? ExploitPatch::remove($_POST["accJetpack"]) : 0;
-$dinfo = !empty(ExploitPatch::numbercolon($_POST["dinfo"])) ? ExploitPatch::numbercolon($_POST["dinfo"]) : '';
-$dinfow = !empty(ExploitPatch::number($_POST["dinfow"])) ? ExploitPatch::number($_POST["dinfow"]) : 0;
-$dinfog = !empty(ExploitPatch::number($_POST["dinfog"])) ? ExploitPatch::number($_POST["dinfog"]) : 0;
+$dinfo = !empty($_POST["dinfo"]) ? ExploitPatch::numbercolon($_POST["dinfo"]) : '';
+$dinfow = !empty($_POST["dinfow"]) ? ExploitPatch::number($_POST["dinfow"]) : 0;
+$dinfog = !empty($_POST["dinfog"]) ? ExploitPatch::number($_POST["dinfog"]) : 0;
+$sinfo = !empty($_POST["sinfo"]) ? ExploitPatch::numbercolon($_POST["sinfo"]) : '';
+$sinfod = !empty($_POST["sinfod"]) ? ExploitPatch::number($_POST["sinfod"]) : 0;
+$sinfog = !empty($_POST["sinfog"]) ? ExploitPatch::number($_POST["sinfog"]) : 0;
 
 if(empty($_POST["udid"]) AND empty($_POST["accountID"]))
 	exit("-1");
+
+$id = $gs->getIDFromPost();
+$userID = $gs->getUserID($id, $userName);
+$uploadDate = time();
+$hostname = $gs->getIP();
+
+$query = $db->prepare("SELECT stars,coins,demons,userCoins,diamonds,moons FROM users WHERE userID=:userID LIMIT 1"); //getting differences
+$query->execute([':userID' => $userID]);
+$old = $query->fetch();
+
 if(!empty($dinfo)) {
 	$demonsCount = $db->prepare("SELECT IFNULL(easyNormal, 0) as easyNormal,
 	IFNULL(mediumNormal, 0) as mediumNormal,
@@ -78,18 +91,13 @@ if(!empty($dinfo)) {
 	$demonsCountDiff = min($demons - $allDemons, 3);
 	$dinfo = ($demonsCount["easyNormal"]+$demonsCountDiff).','.$demonsCount["mediumNormal"].','.$demonsCount["hardNormal"].','.$demonsCount["insaneNormal"].','.$demonsCount["extremeNormal"].','.$demonsCount["easyPlatformer"].','.$demonsCount["mediumPlatformer"].','.$demonsCount["hardPlatformer"].','.$demonsCount["insanePlatformer"].','.$demonsCount["extremePlatformer"].','.$dinfow.','.$dinfog;
 }
-$id = $gs->getIDFromPost();
-$userID = $gs->getUserID($id, $userName);
-$uploadDate = time();
-$hostname = $gs->getIP();
-
-$query = $db->prepare("SELECT stars,coins,demons,userCoins,diamonds,moons FROM users WHERE userID=:userID LIMIT 1"); //getting differences
-$query->execute([':userID' => $userID]);
-$old = $query->fetch();
-
-$query = $db->prepare("UPDATE users SET gameVersion=:gameVersion, userName=:userName, coins=:coins,  secret=:secret, stars=:stars, demons=:demons, icon=:icon, color1=:color1, color2=:color2, iconType=:iconType, userCoins=:userCoins, special=:special, accIcon=:accIcon, accShip=:accShip, accBall=:accBall, accBird=:accBird, accDart=:accDart, accRobot=:accRobot, accGlow=:accGlow, IP=:hostname, lastPlayed=:uploadDate, accSpider=:accSpider, accExplosion=:accExplosion, diamonds=:diamonds, moons=:moons, color3=:color3, accSwing=:accSwing, accJetpack=:accJetpack, dinfo=:dinfo WHERE userID=:userID");
-$query->execute([':gameVersion' => $gameVersion, ':userName' => $userName, ':coins' => $coins, ':secret' => $secret, ':stars' => $stars, ':demons' => $demons, ':icon' => $icon, ':color1' => $color1, ':color2' => $color2, ':iconType' => $iconType, ':userCoins' => $userCoins, ':special' => $special, ':accIcon' => $accIcon, ':accShip' => $accShip, ':accBall' => $accBall, ':accBird' => $accBird, ':accDart' => $accDart, ':accRobot' => $accRobot, ':accGlow' => $accGlow, ':hostname' => $hostname, ':uploadDate' => $uploadDate, ':userID' => $userID, ':accSpider'=>$accSpider, ':accExplosion'=>$accExplosion, ':diamonds'=>$diamonds, ':moons' => $moons, ':color3' => $color3, ':accSwing' => $accSwing, ':accJetpack' => $accJetpack, ':dinfo' => $dinfo]);
-
+if(!empty($sinfo)) {
+	$sinfo = explode(",", $sinfo);
+	$starsCount = $sinfo[0].",".$sinfo[1].",".$sinfo[2].",".$sinfo[3].",".$sinfo[4].",".$sinfo[5].",".$sinfod.",".$sinfog;
+	$platformerCount = $sinfo[6].",".$sinfo[7].",".$sinfo[8].",".$sinfo[9].",".$sinfo[10].",".$sinfo[11].",0"; // Last is for Map levels, unused until 2.21
+}
+$query = $db->prepare("UPDATE users SET gameVersion=:gameVersion, userName=:userName, coins=:coins,  secret=:secret, stars=:stars, demons=:demons, icon=:icon, color1=:color1, color2=:color2, iconType=:iconType, userCoins=:userCoins, special=:special, accIcon=:accIcon, accShip=:accShip, accBall=:accBall, accBird=:accBird, accDart=:accDart, accRobot=:accRobot, accGlow=:accGlow, IP=:hostname, lastPlayed=:uploadDate, accSpider=:accSpider, accExplosion=:accExplosion, diamonds=:diamonds, moons=:moons, color3=:color3, accSwing=:accSwing, accJetpack=:accJetpack, dinfo=:dinfo, sinfo=:sinfo, pinfo=:pinfo WHERE userID=:userID");
+$query->execute([':gameVersion' => $gameVersion, ':userName' => $userName, ':coins' => $coins, ':secret' => $secret, ':stars' => $stars, ':demons' => $demons, ':icon' => $icon, ':color1' => $color1, ':color2' => $color2, ':iconType' => $iconType, ':userCoins' => $userCoins, ':special' => $special, ':accIcon' => $accIcon, ':accShip' => $accShip, ':accBall' => $accBall, ':accBird' => $accBird, ':accDart' => $accDart, ':accRobot' => $accRobot, ':accGlow' => $accGlow, ':hostname' => $hostname, ':uploadDate' => $uploadDate, ':userID' => $userID, ':accSpider'=>$accSpider, ':accExplosion'=>$accExplosion, ':diamonds'=>$diamonds, ':moons' => $moons, ':color3' => $color3, ':accSwing' => $accSwing, ':accJetpack' => $accJetpack, ':dinfo' => $dinfo, ':sinfo' => $starsCount, ':pinfo' => $platformerCount]);
 $starsdiff = $stars - $old["stars"];
 $coindiff = $coins - $old["coins"];
 $demondiff = $demons - $old["demons"];
@@ -99,6 +107,5 @@ $moondiff = $moons - $old["moons"];
 $query2 = $db->prepare("INSERT INTO actions (type, value, timestamp, account, value2, value3, value4, value5, value6) 
 									 VALUES ('9',:stars,:timestamp,:account,:coinsd, :demon, :usrco, :diamond, :moons)"); //creating the action
 $query2->execute([':timestamp' => time(), ':stars' => $starsdiff, ':account' => $userID, ':coinsd' => $coindiff, ':demon' => $demondiff, ':usrco' => $ucdiff, ':diamond' => $diadiff, ':moons' => $moondiff]);
-
 echo $userID;
 ?>
