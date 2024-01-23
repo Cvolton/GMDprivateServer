@@ -29,7 +29,7 @@ if(!$mailEnabled) {
 		</form>
 	</div>'));
 }
-if(!empty($_POST['code']) AND !empty($_POST['password']) AND !empty($_POST['repeatpassword'])) {
+if(!empty(ExploitPatch::charclean($_POST['code'])) AND !empty($_POST['password']) AND !empty($_POST['repeatpassword'])) {
 	if(!Captcha::validateCaptcha()) {
 		exit($dl->printSong('<div class="form">
 			<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
@@ -86,7 +86,7 @@ if(!empty($_GET['code'])) {
 	$check = $db->prepare("SELECT accountID FROM accounts WHERE passCode = :code");
 	$check->execute([':code' => $code]);
 	$check = $check->fetch();
-	if(empty($check)) {
+	if(empty($check) || empty($code)) {
 		exit($dl->printSong('<div class="form">
 			<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 			<form class="form__inner" method="post" action=".">
