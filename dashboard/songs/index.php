@@ -158,9 +158,9 @@ if($_FILES && $_FILES['filename']['error'] == UPLOAD_ERR_OK) {
 		  <progress id="progress" style="display: none"></progress>
         </div>
         <div class="field"><input type="text" name="author" placeholder="'.$dl->getLocalizedString("songAddAuthorFieldPlaceholder").'"></div>
-        <div class="field"><input type="text" name="name" placeholder="'.$dl->getLocalizedString("songAddNameFieldPlaceholder").'"></div>', 'reupload');
-Captcha::displayCaptcha();
-echo '<button type="button" onclick="a(\'songs\', true, false, \'POST\');" style="margin-top:5px;margin-bottom:5px" type="submit" id="submit" class="btn-song btn-block" disabled>'.$dl->getLocalizedString("reuploadBTN").'</button></form>
+        <div class="field"><input type="text" name="name" placeholder="'.$dl->getLocalizedString("songAddNameFieldPlaceholder").'"></div>
+		'.Captcha::displayCaptcha(true).'
+		<button type="button" onclick="a(\'songs\', true, false, \'POST\');" style="margin-top:5px;margin-bottom:5px" type="submit" id="submit" class="btn-song btn-block" disabled>'.$dl->getLocalizedString("reuploadBTN").'</button></form>
 		<script>
 			dad = document.getElementById("dad");
 			document.getElementsByTagName("body")[0].ondragover = function(e) {
@@ -218,7 +218,7 @@ echo '<button type="button" onclick="a(\'songs\', true, false, \'POST\');" style
 				}
 				return false;
 			}
-		</script>';
+		</script>', 'reupload');
 }
 } else {
 	$dl->printSong('<div class="form">

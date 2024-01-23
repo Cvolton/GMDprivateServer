@@ -114,6 +114,7 @@ $string["passDontMatch"] = "¡Las contraseñas no coinciden!";
 $string["emailDontMatch"] = "Los emails no coinciden";
 $string["registered"] = "¡Te has registrado exitosamente!";
 $string["bigNick"] = "Username is too long!";
+$string["mailExists"] = "There is a registered account using this email!";
 // change password
 $string["changePassTitle"] = "Cambiar contraseña";
 $string["changedPass"] = "¡Contraseña cambiada exitosamente! Inicia sesión nuevamente.";
@@ -356,6 +357,13 @@ $string["reportedName"] = '%1$s<text class="dltext"> ha reportado</text><text cl
 $string['listTable'] = "Listas";
 $string['listTableMod'] = "Listas ocultas";
 $string['listTableYour'] = "Tus listas ocultas";
+// Forgot password tool
+$string['forgotPasswordChangeTitle'] = "Change password";
+$string["successfullyChangedPass"] = "Password was successfully changed!";
+$string['forgotPasswordTitle'] = "Forgot password?";
+$string['maybeSentAMessage'] = "We'll send you a message if this account exists.";
+$string['forgotPasswordDesc'] = "Here you can request change password link if you forgot it!";
+$string['forgotPasswordButton'] = "Request link";
 // REUPLOAD
 $string["reuploadBTN"] = "Subir";
 $string["errorGeneric"] = "¡Ha ocurrido un error!";

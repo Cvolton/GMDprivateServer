@@ -1982,3 +1982,22 @@ body:has(.audio) {
 	border-radius: 30px;
 	min-width: 35vw;
 }
+
+.forgotPassword {
+	width: 100%;
+	text-align: right;
+	background: none;
+	border: none;
+	padding: 0px;
+	margin: 5px 0px;
+	cursor: pointer;
+	color: #c0c0c0;
+	font-weight: 700;
+	transition: 0.2s;
+	outline: none;
+	font-size: 15px;
+}
+
+.forgotPassword:hover {
+	text-decoration: underline;
+}

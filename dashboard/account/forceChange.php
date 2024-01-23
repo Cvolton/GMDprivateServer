@@ -6,17 +6,11 @@ include "../".$dbPath."incl/lib/connection.php";
 include_once "../".$dbPath."config/security.php";
 require "../".$dbPath."incl/lib/generatePass.php";
 require_once "../".$dbPath."incl/lib/exploitPatch.php";
-include_once "../".$dbPath."incl/lib/defuse-crypto.phar";
 require_once "../".$dbPath."incl/lib/mainLib.php";
 $gs = new mainLib();
 $dl = new dashboardLib();
-use Defuse\Crypto\KeyProtectedByPassword;
-use Defuse\Crypto\Crypto;
-use Defuse\Crypto\Key;
-$ep = new exploitPatch();
 $dl->printFooter('../');
 $acc = $_SESSION["accountID"];
-if(!isset($_POST["type"])) $_POST["type"] = "";
 if(!$gs->checkPermission($acc, 'dashboardForceChangePassNick')) {
 	$dl->printSong('<div class="form">
     <h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
@@ -47,7 +41,7 @@ if(!empty($_POST["userID"]) AND !empty($_POST[$type])) {
 		die();
 	}
   if(!empty($_POST["Nick"])) {
-    $newnick = ExploitPatch::remove($_POST["Nick"]);
+    $newnick = ExploitPatch::charclean($_POST["Nick"]);
     if(!is_numeric($_POST["userID"])) $accID = $gs->getAccountIDFromName($_POST["userID"]); 
     else $accID = ExploitPatch::number($_POST["userID"]);
     $salt = '';
@@ -92,11 +86,10 @@ if(!empty($_POST["userID"]) AND !empty($_POST[$type])) {
     }
   	$salt = '';
 	$passhash = password_hash($newpass, PASSWORD_DEFAULT);
+	$gjp2 = GeneratePass::GJP2hash($newpass);
     $auth = $gs->randomString(8);
-    $query = $db->prepare("UPDATE accounts SET auth = :auth WHERE accountID = :id");
-    $query->execute([':auth' => $auth, ':id' => $accID]);
-	$query = $db->prepare("UPDATE accounts SET password=:password, salt=:salt WHERE userName=:userName");	
-	$query->execute([':password' => $passhash, ':userName' => $userName, ':salt' => $salt]);
+	$query = $db->prepare("UPDATE accounts SET password=:password, gjp2 = :gjp, salt=:salt, auth=:auth WHERE userName=:userName");	
+	$query->execute([':password' => $passhash, ':userName' => $userName, ':salt' => $salt, ':gjp' => $gjp2, ':auth' => $auth]);
     $accountID = $gs->getAccountIDFromName($userName);
     $query = $db->prepare("INSERT INTO modactions  (type, value, value2, timestamp, account) VALUES ('26',:userID, :type, :timestamp,:account)");
 	$query->execute([':userID' => $accountID, ':timestamp' => time(), ':type' => $type, ':account' => $acc]);
@@ -109,20 +102,6 @@ if(!empty($_POST["userID"]) AND !empty($_POST[$type])) {
 		</form>
 		</div>', 'mod');
 	}
-	if(file_exists("../".$dbPath."data/accounts/keys/$accountID")){
-		$protected_key_encoded = file_get_contents("../".$dbPath."data/accounts/keys/$accountID");
-		if($protected_key_encoded != ""){
-			$protected_key = KeyProtectedByPassword::loadFromAsciiSafeString($protected_key_encoded);
-			$user_key = $protected_key->unlockKey($oldpass);
-			try {
-				$saveData = Crypto::decrypt($saveData, $user_key);
-			} catch (Defuse\Crypto\Exception\WrongKeyOrModifiedCiphertextException $ex) {
-				exit("Unable to update save data encryption");	
-			}
-			file_put_contents("../".$dbPath."data/accounts/$accountID",$saveData);
-			file_put_contents("../".$dbPath."data/accounts/keys/$accountID","");
-		}
-	} 
 } else {
 	$dl->printSong('<div class="form">
     <h1>'.$dl->getLocalizedString("force".$type).'</h1>
@@ -135,9 +114,7 @@ if(!empty($_POST["userID"]) AND !empty($_POST[$type])) {
 		'.$inputtype.'
         <div class="field"><input type="text" name="userID" id="p1" placeholder="'.$dl->getLocalizedString("banUserID").'"></div>
         <div class="field"><input type="'.$type.'" name="'.$type.'" id="p2" placeholder="'.$dl->getLocalizedString("new".$type).'"></div>
-		', 'mod');
-		Captcha::displayCaptcha();
-        echo '
+		'.Captcha::displayCaptcha(true).'
         <button type="button" onclick="a(\'account/forceChange.php\', true, true, \'POST\')" class="btn-primary btn-block" id="submit" name="type" value="'.$_POST["type"].'" disabled>'.$dl->getLocalizedString("change").'</button>
     </form><script>
 $(document).on("keyup keypress change keydown",function(){
@@ -156,6 +133,6 @@ $(document).on("keyup keypress change keydown",function(){
 	}
 });
 </script>
-</div>';
+</div>', 'mod');
 }
 ?>

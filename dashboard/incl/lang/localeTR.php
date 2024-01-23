@@ -114,6 +114,7 @@ $string["passDontMatch"] = "Şifreler eşleşmiyor!";
 $string["emailDontMatch"] = "E-Postalar eşleşmiyor";
 $string["registered"] = "Hesap başarıyla oluşturuldu!";
 $string["bigNick"] = "Username is too long!";
+$string["mailExists"] = "There is a registered account using this email!";
 
 $string["changePassTitle"] = "Şifre değiştir";
 $string["changedPass"] = "Şifre başarıyla değiştirildi! Hesabına yeniden giriş yapman gerekiyor.";
@@ -356,6 +357,13 @@ $string["reportedName"] = '%1$s <text class="levelname">%2$s</text><text class="
 $string['listTable'] = "Listeler";
 $string['listTableMod'] = "Liste dışı listeler";
 $string['listTableYour'] = "Liste dışı listelerin";
+
+$string['forgotPasswordChangeTitle'] = "Change password";
+$string["successfullyChangedPass"] = "Password was successfully changed!";
+$string['forgotPasswordTitle'] = "Forgot password?";
+$string['maybeSentAMessage'] = "We'll send you a message if this account exists.";
+$string['forgotPasswordDesc'] = "Here you can request change password link if you forgot it!";
+$string['forgotPasswordButton'] = "Request link";
 
 /*
 	REUPLOAD

@@ -89,8 +89,7 @@ class dashboardLib {
       	if($twitter != '') echo '<a href="'.$twitter.'"target="_blank"><img class="socials" style="width: 20px" src="'.$sub.'incl/socials/twitter.png"></a>';
       	if($vk != '') echo '<a href="'.$vk.'"target="_blank"><img class="socials" style="width: 20px" src="'.$sub.'incl/socials/vk.png"></a>';
       	if($twitch != '') echo '<a href="'.$twitch.'"target="_blank"><img class="socials" style="width: 20px" src="'.$sub.'incl/socials/twitch.png"></a>';
-        echo '</div></div></div></body>
-		</html>';
+        echo '</div></div></div>';
 	}
 	public function printLoginBox($content){
 		$this->printBox("<h1 id='center'>".$this->getLocalizedString("loginBox")."</h1>".$content);
@@ -372,12 +371,14 @@ class dashboardLib {
 										<div class="form-group">
 											<input type="text" class="form-control login-input" id="usernameField" name="userName" placeholder="'.$this->getLocalizedString("username").'">
 										</div>
-										<div class="form-group">
+										<div'.($mailEnabled ? '' : ' class="form-group"').'>
 											<input type="password" class="form-control login-input" id="passwordField" name="password" placeholder="'.$this->getLocalizedString("password").'">
 										</div>
+										'.($mailEnabled ? '<button type="button" onclick="a(\'login/forgotPassword.php\')" class="forgotPassword">'.$this->getLocalizedString("forgotPasswordTitle").'</button>' : '').'
 										<div style="display: flex;flex-wrap: wrap;justify-content: center"><button type="submit" class="btn-primary btn-block" id="submit" disabled>'.$this->getLocalizedString("login").'</button>
-										</form><form action="login/register.php" style="width: 80%;margin-top: 10px;margin-bottom: -5px">
-										<button type="button" onclick="a(\'login/register.php\')" class="btn btn-primary">'.$this->getLocalizedString("register").'</button>
+										</form>
+										<form action="login/register.php" style="width: 80%;margin-top: 10px;margin-bottom: -5px">
+											<button type="button" onclick="a(\'login/register.php\')" class="btn btn-primary">'.$this->getLocalizedString("register").'</button>
 										</div>
 									</form>
 						</div><script>
@@ -385,7 +386,7 @@ class dashboardLib {
 								const usernameField1 = document.getElementById("usernameField");
 								const passwordField2 = document.getElementById("passwordField");
 								const loginBtn = document.getElementById("submit");
-								if(!usernameField1.value.trim().length || !passwordField2.value.trim().length) {
+								if((usernameField1 !== null && passwordField2 !== null) && (!usernameField1.value.trim().length || !passwordField2.value.trim().length)) {
 									loginBtn.disabled = true;
 									loginBtn.classList.add("btn-block");
 									loginBtn.classList.remove("btn-primary");
@@ -756,7 +757,7 @@ class dashboardLib {
 					   const usernameField1 = document.getElementById("usernameField");
 					   const passwordField2 = document.getElementById("passwordField");
 					   const loginBtn = document.getElementById("submit");
-					   if(!usernameField1.value.trim().length || !passwordField2.value.trim().length) {
+					   if((usernameField1 !== null && passwordField2 !== null) && (!usernameField1.value.trim().length || !passwordField2.value.trim().length)) {
 									loginBtn.disabled = true;
 									loginBtn.classList.add("btn-block");
 									loginBtn.classList.remove("btn-primary");

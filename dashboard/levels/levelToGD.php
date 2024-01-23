@@ -229,9 +229,7 @@ if(!empty($_POST["usertarg"]) AND !empty($_POST["passtarg"]) AND !empty($_POST["
             	<input type="text" name="server" value="http://www.boomlings.com/database/" id="p4" placeholder="'.$dl->getLocalizedString("server").'" style="width: 86%;">
 			<input class="checkbox" type="checkbox" name="debug" value="1" placeholder="Debug" style="width: 8%;">
 			</div>
-		</details>', 'reupload');
-		Captcha::displayCaptcha();
-        echo '
+		</details>'.Captcha::displayCaptcha(true).'
         <button type="button" onclick="a(\'levels/levelToGD.php\', true, true, \'POST\')" class="btn-song btn-block" id="submit" disabled>'.$dl->getLocalizedString("reuploadBTN").'</button>
     </form>
 </div><script>
@@ -252,7 +250,7 @@ $(document).on("keyup keypress change keydown",function(){
                 btn.classList.add("btn-song");
 	}
 });
-</script>';
+</script>', 'reupload');
 }
 } else {
 		$dl->printSong('<div class="form">

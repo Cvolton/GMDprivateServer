@@ -6,15 +6,10 @@ include "../".$dbPath."incl/lib/connection.php";
 include_once "../".$dbPath."config/security.php";
 require "../".$dbPath."incl/lib/generatePass.php";
 require_once "../".$dbPath."incl/lib/exploitPatch.php";
-include_once "../".$dbPath."incl/lib/defuse-crypto.phar";
 require_once "../".$dbPath."incl/lib/mainLib.php";
 $gs = new mainLib();
 $dl = new dashboardLib();
-use Defuse\Crypto\KeyProtectedByPassword;
-use Defuse\Crypto\Crypto;
-use Defuse\Crypto\Key;
 $ep = new exploitPatch();
-error_reporting(E_ERROR | E_PARSE);
 $dl->title($dl->getLocalizedString("changeNickTitle"));
 $dl->printFooter('../');
 if(isset($_SESSION["accountID"]) AND $_SESSION["accountID"] != 0){
@@ -31,8 +26,8 @@ if($_POST["oldnickname"] != "" AND $_POST["newnickname"] != "" AND $_POST["passw
 	}
 	$userName = $gs->getAccountName($_SESSION["accountID"]);
 	$accID = $_SESSION["accountID"];
-	$oldnick = ExploitPatch::remove($_POST["oldnickname"]);
-	$newnick = ExploitPatch::remove($_POST["newnickname"]);
+	$oldnick = ExploitPatch::charclean($_POST["oldnickname"]);
+	$newnick = ExploitPatch::charclean($_POST["newnickname"]);
 	if($oldnick != $userName){
 		$dl->printSong('<div class="form">
 		<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
@@ -55,7 +50,7 @@ if($_POST["oldnickname"] != "" AND $_POST["newnickname"] != "" AND $_POST["passw
 	$pass = $_POST["password"];
 	$pass = GeneratePass::isValidUsrname($userName, $pass);
 	$salt = "";
-if ($pass == 1) {
+if($pass == 1) {
 	$query = $db->prepare("SELECT count(*) FROM accounts WHERE userName=:userName");
 	$query->execute([':userName' => $newnick]);
 	$count = $query->fetchColumn();
@@ -69,13 +64,11 @@ if ($pass == 1) {
 				</div>', 'account');
 				die();
 	}
-	$query = $db->prepare("UPDATE accounts SET userName=:userName, salt=:salt WHERE accountID=:accountid");	
-	$query->execute([':userName' => $newnick, ':salt' => $salt, ':accountid' => $accID]);
+	$auth = $gs->randomString(8);
+	$query = $db->prepare("UPDATE accounts SET userName=:userName, salt=:salt, auth=:auth WHERE accountID=:accountid");	
+	$query->execute([':userName' => $newnick, ':salt' => $salt, ':accountid' => $accID, ':auth' => $auth]);
 	$query = $db->prepare("UPDATE users SET userName=:userName WHERE extID=:accountid");
 	$query->execute([':userName' => $newnick,':accountid' => $accID]);
-    $auth = $gs->randomString(8);
-    $query = $db->prepare("UPDATE accounts SET auth = :auth WHERE accountID = :id");
-    $query->execute([':auth' => $auth, ':id' => $accID]);
 	$_SESSION["accountID"] = 0;
 	setcookie('auth', 'no', 2147483647, '/');
 	$dl->printSong('<div class="form">
@@ -93,8 +86,7 @@ if ($pass == 1) {
         <button type="button" onclick="a(\'account/changeUsername.php\', true, true, \'GET\')" class="btn-primary">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 		</form>
 		</div>', 'account');
-} 
-
+}
 } else {
 	$dl->printSong('<div class="form">
 		<h1>'.$dl->getLocalizedString("changeNickTitle").'</h1>
@@ -103,28 +95,27 @@ if ($pass == 1) {
         <div class="field"><input type="text" name="oldnickname" id="p1" placeholder="'.$dl->getLocalizedString("oldNick").'"></div>
         <div class="field"><input type="text" name="newnickname" id="p2" placeholder="'.$dl->getLocalizedString("newNick").'"></div>
 		<div class="field"><input type="password" name="password" id="p3" placeholder="'.$dl->getLocalizedString("password").'"></div>
-		', 'account');
-		Captcha::displayCaptcha();
-        echo '<button type="button" onclick="a(\'account/changeUsername.php\', true, true, \'POST\')" style="margin-top:5px" type="submit" id="submit" class="btn-song btn-block" disabled>'.$dl->getLocalizedString("changeUsername").'</button>
+		'.Captcha::displayCaptcha(true).'
+		<button type="button" onclick="a(\'account/changeUsername.php\', true, true, \'POST\')" style="margin-top:5px" type="submit" id="submit" class="btn-song btn-block" disabled>'.$dl->getLocalizedString("changeUsername").'</button>
 		</form>
 		</div><script>
-$(document).on("keyup keypress change keydown",function(){
-   const p1 = document.getElementById("p1");
-   const p2 = document.getElementById("p2");
-   const p3 = document.getElementById("p3");
-   const btn = document.getElementById("submit");
-   if(!p1.value.trim().length || !p2.value.trim().length || !p3.value.trim().length) {
-                btn.disabled = true;
-                btn.classList.add("btn-block");
-                btn.classList.remove("btn-song");
-	} else {
-		        btn.removeAttribute("disabled");
-                btn.classList.remove("btn-block");
-                btn.classList.remove("btn-size");
-                btn.classList.add("btn-song");
-	}
-});
-        </script>';
+		$(document).on("keyup keypress change keydown",function(){
+		   const p1 = document.getElementById("p1");
+		   const p2 = document.getElementById("p2");
+		   const p3 = document.getElementById("p3");
+		   const btn = document.getElementById("submit");
+		   if(!p1.value.trim().length || !p2.value.trim().length || !p3.value.trim().length) {
+						btn.disabled = true;
+						btn.classList.add("btn-block");
+						btn.classList.remove("btn-song");
+			} else {
+						btn.removeAttribute("disabled");
+						btn.classList.remove("btn-block");
+						btn.classList.remove("btn-size");
+						btn.classList.add("btn-song");
+			}
+		});
+    </script>', 'account');
 }} else {
 	$dl->printSong('<div class="form">
 		<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>

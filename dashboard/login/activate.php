@@ -1,6 +1,5 @@
 <?php
 session_start();
-error_reporting(E_ALL);
 include "../incl/dashboardLib.php";
 require "../".$dbPath."incl/lib/Captcha.php";
 include "../".$dbPath."incl/lib/connection.php";
@@ -15,11 +14,11 @@ if(!$preactivateAccounts) {
 if(!isset($_SESSION["accountID"]) OR $_SESSION["accountID"] == 0){
 if($mailEnabled) {
 	if(isset($_GET["mail"])) {
-	$mail = ExploitPatch::remove(explode('/', $_GET["mail"])[count(explode('/', $_GET["mail"]))-1]);
-  	$check = $db->prepare("SELECT accountID FROM accounts WHERE mail = :mail");
-  	$check->execute([':mail' => $mail]);
-    $check = $check->fetch();
-  	if(empty($check)) {
+		$mail = ExploitPatch::remove(explode('/', $_GET["mail"])[count(explode('/', $_GET["mail"]))-1]);
+		$check = $db->prepare("SELECT accountID FROM accounts WHERE mail = :mail");
+		$check->execute([':mail' => $mail]);
+		$check = $check->fetch();
+		if(empty($check)) {
 			$dl->printSong('<div class="form">
 				<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 				<form class="form__inner" method="post" action=".">
@@ -38,8 +37,8 @@ if($mailEnabled) {
 			</form></div>');
       		die();
 		}
-}
-die($dl->printSong('<div class="form">
+	}
+	die($dl->printSong('<div class="form">
 		<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 		<form class="form__inner" method="post" action=".">
 		<p>'.$dl->getLocalizedString("activateDisabled").'</p>
@@ -58,8 +57,8 @@ if(!empty($_POST["userName"]) && !empty($_POST["password"])){
 		</div>');
 	die();
 	}
-	$userName = ExploitPatch::remove($_POST["userName"]);
-	$password = ExploitPatch::remove($_POST["password"]);
+	$userName = ExploitPatch::charclean($_POST["userName"]);
+	$password = $_POST["password"];
 	$pass = GeneratePass::isValidUsrname($userName, $password);
 	if ($pass == -2){
 		$query = $db->prepare("UPDATE accounts SET isActive = 1 WHERE userName LIKE :userName");

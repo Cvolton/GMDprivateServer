@@ -6,49 +6,47 @@ include "../".$dbPath."config/security.php";
 include "../".$dbPath."config/mail.php";
 $dl = new dashboardLib();
 require "../".$dbPath."incl/lib/generatePass.php";
+require "../".$dbPath."incl/lib/exploitPatch.php";
 require_once "../".$dbPath."incl/lib/mainLib.php";
 $gs = new mainLib();
-if(isset($_SESSION["accountID"]) AND $_SESSION["accountID"] != 0) header('Location: ../');
+if(isset($_SESSION["accountID"]) AND $_SESSION["accountID"] != 0) {
+	header('Location: ../');
+	exit();
+}
 if(isset($_POST["userName"]) AND isset($_POST["password"])) {
-	$userName = $_POST["userName"];
+	$userName = ExploitPatch::charclean($_POST["userName"]);
 	$password = $_POST["password"];
 	$valid = GeneratePass::isValidUsrname($userName, $password);
-	if($valid != 1){
+	if($valid != 1) {
+		$dl->title($dl->getLocalizedString("loginBox"));
+        $dl->printFooter('../');
       	if($valid == -2) {
-            $dl->title($dl->getLocalizedString("loginBox"));
-            $dl->printFooter('../');
             if($mailEnabled) $dl->printSong('<div class="form">
             <h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
-            <form class="field" action="" method="post">
+            <form class="form__inner" action="" method="post">
             <p>'.$dl->getLocalizedString("didntActivatedEmail").'</p><br>
-            <button type="submit" class="btn btn-primary">'.$dl->getLocalizedString("tryAgainBTN").'</button>
+            <button type="button" onclick="a(\'login/login.php\', true, false, \'GET\')" class="btn btn-primary">'.$dl->getLocalizedString("tryAgainBTN").'</button>
             </form>
             </div>');
 			else $dl->printSong('<div class="form">
             <h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
-            <form class="field" action="" method="post">
-            <p><a href="login/activate.php">'.$dl->getLocalizedString("activateDesc").'</p></a><br>
-            <button type="submit" class="btn btn-primary">'.$dl->getLocalizedString("tryAgainBTN").'</button>
+            <form class="form__inner" action="" method="post">
+            <p><a href="login/activate.php">'.$dl->getLocalizedString("activateDesc").'</a></p><br>
+            <button type="button" onclick="a(\'login/login.php\', true, false, \'GET\')" class="btn btn-primary">'.$dl->getLocalizedString("tryAgainBTN").'</button>
             </form>
             </div>');
 			die();
         }
-		$dl->title($dl->getLocalizedString("loginBox"));
-		$dl->printFooter('../');
 		$dl->printSong('<div class="form">
 		<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
-		<form class="field" action="" method="post">
+		<form class="form__inner" action="" method="post">
 		<p>'.$dl->getLocalizedString("wrongNickOrPass").'</p>
-		<button type="submit" class="btn btn-primary">'.$dl->getLocalizedString("tryAgainBTN").'</button>
+		<button type="button" onclick="a(\'login/login.php\', true, false, \'GET\')" class="btn btn-primary">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 		</form>
 		</div>');
 		exit();
 	}
 	$accountID = $gs->getAccountIDFromName($userName);
-	if($accountID == 0){
-		$dl->printLoginBoxError($dl->getLocalizedString("invalidid"));
-		exit();
-	}
   	$_SESSION["accountID"] = $accountID;
   	$query = $db->prepare("SELECT auth FROM accounts WHERE accountID = :id");
   	$query->execute([':id' => $accountID]);
@@ -59,7 +57,9 @@ if(isset($_POST["userName"]) AND isset($_POST["password"])) {
           $query->execute([':auth' => $auth, ':id' => $accountID]);
 		  setcookie('auth', $auth, 2147483647, '/');
     } else setcookie('auth', $auth["auth"], 2147483647, '/');
-	header('Location: ../');
+	if(!empty($_POST["ref"])) header('Location: '.$_POST["ref"]);
+	elseif(!empty($_SERVER["HTTP_REFERER"])) header('Location: '.$_SERVER["HTTP_REFERER"]);
+	else header('Location: ../');
 } else {
 	$loginbox = '<form class="field" action="" method="post">
 							<div class="form-group">

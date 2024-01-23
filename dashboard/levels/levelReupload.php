@@ -203,12 +203,9 @@ if(!empty($_POST["levelid"])){
 		<details class="details">
 			<summary style="width: 100%;">'.$dl->getLocalizedString("advanced").'</summary>
 			<div class="field" style="display: inline-flex;width:100%;justify-content: space-between;">
-            	<input type="text" name="server" id="p2" value="http://www.boomlings.com/database/downloadGJLevel22.php" placeholder="'.$dl->getLocalizedString("server").'" style="width: 86%;">
-			<input class="checkbox" type="checkbox" name="debug" value="1" placeholder="Debug" style="width: 8%;">
+            	<input type="text" name="server" id="p2" value="http://www.boomlings.com/database/downloadGJLevel22.php" placeholder="'.$dl->getLocalizedString("server").'" style="width: 100%;">
 			</div>
-		</details>', 'reupload');
-		Captcha::displayCaptcha();
-        echo '
+		</details>'.Captcha::displayCaptcha(true).'
         <button type="button" onclick="a(\'levels/levelReupload.php\', true, true, \'POST\')" class="btn-song btn-block" id="submit" disabled>'.$dl->getLocalizedString("reuploadBTN").'</button>
     </form>
 </div>
@@ -228,7 +225,7 @@ $(document).on("keyup keypress change keydown",function(){
                 btn.classList.add("btn-song");
 	}
 });
-</script>';
+</script>', 'reupload');
 }
 } else {
 	$dl->printSong('<div class="form">

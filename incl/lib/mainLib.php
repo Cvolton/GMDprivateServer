@@ -903,7 +903,7 @@ class mainLib {
 		$query->execute([':id' => $listID]);
 		return $query->fetchColumn();
 	}
-	public function mail($mail = '', $user = '') {
+	public function mail($mail = '', $user = '', $isForgotPass = false) {
 		if(empty($mail) OR empty($user)) return;
 		include __DIR__."/../../config/mail.php";
 		if($mailEnabled) {
@@ -913,9 +913,6 @@ class mainLib {
 			include __DIR__."/../../config/mail/SMTP.php";
 			include __DIR__."/../../config/mail/Exception.php";
 			$m = new PHPMailer\PHPMailer\PHPMailer();
-			$string = $this->randomString(4);
-			$query = $db->prepare("UPDATE accounts SET mail = :mail WHERE userName = :user");
-			$query->execute([':mail' => $string, ':user' => $user]);
 			$m->CharSet = 'utf-8';
 			$m->isSMTP();
 			$m->SMTPAuth = true;
@@ -927,11 +924,22 @@ class mainLib {
 			$m->setFrom($yourmail, $gdps);
 			$m->addAddress($mail, $user);
 			$m->isHTML(true);
-			$m->Subject = 'Confirm link';
-			$m->Body = '<h1 align=center>Hello, <b>'.$user.'</b>!</h1><br>
-			<h2 align=center>It seems, that you wanna register new account in <b>'.$gdps.'</b></h2><br>
-			<h2 align=center>Here is your link!</h2><br>
-			<h1 align=center>http://'.$_SERVER["HTTP_HOST"].'/database/dashboard/login/activate.php?mail='.$string.'</h1>';
+			if(!$isForgotPass) {
+				$string = $this->randomString(4);
+				$query = $db->prepare("UPDATE accounts SET mail = :mail WHERE userName = :user");
+				$query->execute([':mail' => $string, ':user' => $user]);
+				$m->Subject = 'Confirm link';
+				$m->Body = '<h1 align=center>Hello, <b>'.$user.'</b>!</h1><br>
+				<h2 align=center>It seems, that you wanna register new account in <b>'.$gdps.'</b></h2><br>
+				<h2 align=center>Here is your link!</h2><br>
+				<h1 align=center>'.dirname('https://'.$_SERVER["HTTP_HOST"].$_SERVER['REQUEST_URI']).'/activate.php?mail='.$string.'</h1>';
+			} else {
+				$m->Subject = 'Forgot password?';
+				$m->Body = '<h1 align=center>Hello, <b>'.$user.'</b>!</h1><br>
+				<h2 align=center>It seems, that you forgot your password in <b>'.$gdps.'</b>...</h2><br>
+				<h2 align=center>Here is your link!</h2><br>
+				<h1 align=center>https://'.$_SERVER["HTTP_HOST"].$_SERVER['REQUEST_URI'].'?code='.$isForgotPass.'</h1>';
+			}
 			return $m->send();
 		}
 	}

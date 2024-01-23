@@ -12,7 +12,6 @@ $ep = new exploitPatch();
 $dl->printFooter('../');
 $dl->title($dl->getLocalizedString("shareCPTitle"));
 if($gs->checkPermission($_SESSION["accountID"], "commandSharecpAll")){
-
 if(!empty($_POST["username"]) AND !empty($_POST["level"])) {
 		if(!Captcha::validateCaptcha()) {
 			$dl->printSong('<div class="form">
@@ -92,12 +91,10 @@ if(!empty($_POST["username"]) AND !empty($_POST["level"])) {
     <p>' . $dl->getLocalizedString("shareCPDesc") . '</p>
 	<div class="field" style="grid-gap: 5px"><input name="username" type="number" placeholder="'.$dl->getLocalizedString('accountID').'"></input>
 	<input name="level" type="number" placeholder="'.$dl->getLocalizedString('levelID').'"></input></div>
-	', 'mod');
-		Captcha::displayCaptcha();
-        echo '
+	'.Captcha::displayCaptcha(true).'
         <button type="button" onclick="a(\'levels/shareCP.php\', true, false, \'POST\')" class="btn-primary">' . $dl->getLocalizedString("shareCP") . '</button>
     </form>
-    </div>';
+    </div>', 'mod');
 }
 } else
 	$dl->printSong('<div class="form">

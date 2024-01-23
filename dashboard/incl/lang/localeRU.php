@@ -114,6 +114,7 @@ $string["passDontMatch"] = "Пароли не совпадают!";
 $string["emailDontMatch"] = "Почты не совпадают!";
 $string["registered"] = "Вы успешно зарегистрировали аккаунт!";
 $string["bigNick"] = "Никнейм слишком длинный!";
+$string["mailExists"] = "На этой почте уже зарегистрирован аккаунт!";
 
 $string["changePassTitle"] = "Смена пароля";
 $string["changedPass"] = "Пароль успешно сменён! Вам нужно заново войти в ваш аккаунт.";
@@ -356,6 +357,13 @@ $string["reportedName"] = '%1$s<text class="dltext"> зарепортили</tex
 $string['listTable'] = "Списки уровней";
 $string['listTableMod'] = "Скрытые списки уровней";
 $string['listTableYour'] = "Ваши cкрытые списки уровней";
+
+$string['forgotPasswordChangeTitle'] = "Изменить пароль";
+$string["successfullyChangedPass"] = "Пароль успешно сменён!";
+$string['forgotPasswordTitle'] = "Забыли пароль?";
+$string['maybeSentAMessage'] = "Мы отправим вам сообщение на почту, если данный аккаунт существует.";
+$string['forgotPasswordDesc'] = "Здесь вы можете запросить ссылку на изменение пароля, если его забыли!";
+$string['forgotPasswordButton'] = "Запросить ссылку";
 
 /*
 	REUPLOAD

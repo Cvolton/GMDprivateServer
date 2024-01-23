@@ -131,9 +131,7 @@ if(!empty($_POST["packName"])) {
 		<input id="p2" name="level_1" type="number" placeholder="'.$dl->getLocalizedString("levelid").'">
 		<input id="p3" style="margin:0px 3px" name="level_2" type="number" placeholder="'.$dl->getLocalizedString("levelid").'">
 		<input id="p4" name="level_3" type="number" placeholder="'.$dl->getLocalizedString("levelid").'">
-    </div>', 'mod');
-		Captcha::displayCaptcha();
-        echo '<button type="button" onclick="a(\'levels/packCreate.php\', true, false, \'POST\')" class="btn-primary btn-block" id="submit" disabled>' . $dl->getLocalizedString("packCreate") . '</button>
+    </div>'.Captcha::displayCaptcha(true).'<button type="button" onclick="a(\'levels/packCreate.php\', true, false, \'POST\')" class="btn-primary btn-block" id="submit" disabled>' . $dl->getLocalizedString("packCreate") . '</button>
     </form>
     </div></div>
     <script>
@@ -239,7 +237,7 @@ $(document).on("keyup keypress change keydown",function(){
                 btn.classList.remove("btn-size");
                 btn.classList.add("btn-song");
 	}
-})</script>';
+})</script>', 'mod');
 }
 } else
 	$dl->printSong('<div class="form">

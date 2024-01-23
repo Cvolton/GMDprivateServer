@@ -155,9 +155,7 @@ if(!empty($_POST["user"])) {
 		'.$options.'
 	</select>
 	</div>
-	', 'mod');
-		Captcha::displayCaptcha();
-        echo '
+	'.Captcha::displayCaptcha(true).'
         <button type="button" onclick="a(\'account/addMod.php\', true, true, \'POST\')" id="submit" class="btn-primary btn-block" disabled>' . $dl->getLocalizedString("addMod") . '</button>
     </form>
     </div></div><script>
@@ -234,7 +232,7 @@ $(document).on("keyup keypress change keydown",function(){
                 btn.classList.add("btn-primary");
 	}
 });
-</script>';
+</script>', 'mod');
 }
 } else
 	$dl->printSong('<div class="form">

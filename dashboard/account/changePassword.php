@@ -13,8 +13,6 @@ $dl = new dashboardLib();
 use Defuse\Crypto\KeyProtectedByPassword;
 use Defuse\Crypto\Crypto;
 use Defuse\Crypto\Key;
-$ep = new exploitPatch();
-error_reporting(E_ERROR | E_PARSE);
 $dl->title($dl->getLocalizedString("changePassTitle"));
 $dl->printFooter('../');
 if(isset($_SESSION["accountID"]) AND $_SESSION["accountID"] != 0){
@@ -44,13 +42,12 @@ if($_POST["oldpassword"] != "" AND $_POST["newpassword"] != "" AND $_POST["newpa
 	}
 	$pass = GeneratePass::isValidUsrname($userName, $oldpass);
 	$salt = "";
-if ($pass == 1) {
+if($pass == 1) {
 	$passhash = password_hash($newpass, PASSWORD_DEFAULT);
-	$query = $db->prepare("UPDATE accounts SET password=:password, salt=:salt WHERE userName=:userName");	
-	$query->execute([':password' => $passhash, ':userName' => $userName, ':salt' => $salt]);
-    $auth = $gs->randomString(8);
-    $query = $db->prepare("UPDATE accounts SET auth = :auth WHERE accountID = :id");
-    $query->execute([':auth' => $auth, ':id' => $_SESSION["accountID"]]);
+	$gjp2 = GeneratePass::GJP2hash($newpass);
+	$auth = $gs->randomString(8);
+	$query = $db->prepare("UPDATE accounts SET password=:password, gjp2 = :gjp, salt=:salt, auth=:auth WHERE userName=:userName");	
+	$query->execute([':password' => $passhash, ':userName' => $userName, ':salt' => $salt, ':gjp' => $gjp2, ':auth' => $auth]);
 	$_SESSION["accountID"] = 0;
 	setcookie('auth', 'no', 2147483647, '/');
 	$dl->printSong('<div class="form">
@@ -98,9 +95,7 @@ if ($pass == 1) {
         <div class="field"><input type="password" name="newpassword" id="p2" placeholder="'.$dl->getLocalizedString("newPassword").'"></div>
         <text class="samepass" id="sp">'.$dl->getLocalizedString("passDontMatch").'</text>
 		<div class="field"><input type="password" name="newpassconfirm" id="p3" placeholder="'.$dl->getLocalizedString("confirmNew").'"></div>
-		', 'account');
-		Captcha::displayCaptcha();
-        echo '
+		'.Captcha::displayCaptcha(true).'
         <button type="button" onclick="a(\'account/changePassword.php\', true, true, \'POST\')" style="margin-top:5px" type="submit" id="submit" class="btn-song btn-block" disabled>'.$dl->getLocalizedString("changePassword").'</button>
     </form>
 </div><script>
@@ -128,7 +123,7 @@ $(document).on("keyup keypress change keydown",function(){
                 btn.classList.add("btn-song");
 	}
 });
-</script>';
+</script>', 'account');
 }} else {
 	$dl->printSong('<div class="form">
     <h1>'.$dl->getLocalizedString("errorGeneric").'</h1>

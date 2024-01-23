@@ -114,6 +114,7 @@ $string["passDontMatch"] = "Passwords don't match!";
 $string["emailDontMatch"] = "Emails don't match";
 $string["registered"] = "You successfully registered an account!";
 $string["bigNick"] = "Username is too long!";
+$string["mailExists"] = "There is a registered account using this email!";
 
 $string["changePassTitle"] = "Change password";
 $string["changedPass"] = "Password successfully changed! You need to login to you account again.";
@@ -356,6 +357,13 @@ $string["reportedName"] = '%1$s<text class="dltext"> was reported</text><text cl
 $string['listTable'] = "Lists";
 $string['listTableMod'] = "Unlisted lists";
 $string['listTableYour'] = "Your unlisted lists";
+
+$string['forgotPasswordChangeTitle'] = "Change password";
+$string["successfullyChangedPass"] = "Password was successfully changed!";
+$string['forgotPasswordTitle'] = "Forgot password?";
+$string['maybeSentAMessage'] = "We'll send you a message if this account exists.";
+$string['forgotPasswordDesc'] = "Here you can request change password link if you forgot it!";
+$string['forgotPasswordButton'] = "Request link";
 
 /*
 	REUPLOAD
