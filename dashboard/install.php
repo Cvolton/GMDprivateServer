@@ -20,7 +20,8 @@ if(!$installed) {
 	  ALTER TABLE users ADD COLUMN IF NOT EXISTS joinedAt INT NOT NULL DEFAULT '0' AFTER clan;
    	  ALTER TABLE users ADD COLUMN IF NOT EXISTS dlPoints INT NOT NULL DEFAULT '0' AFTER joinedAt;
 	  ALTER TABLE gauntlets ADD COLUMN IF NOT EXISTS timestamp INT NOT NULL DEFAULT '0' AFTER level5;
-	  ALTER TABLE mappacks ADD COLUMN IF NOT EXISTS timestamp INT NOT NULL DEFAULT '0' AFTER colors2");
+	  ALTER TABLE mappacks ADD COLUMN IF NOT EXISTS timestamp INT NOT NULL DEFAULT '0' AFTER colors2;
+	  ALTER TABLE accounts ADD COLUMN IF NOT EXISTS passCode varchar(12) NULL DEFAULT '' AFTER mail;");
 	} else {
 		$check = $db->query("SHOW COLUMNS FROM `roles` LIKE 'dashboardLevelPackCreate'");
       		$exist = $check->fetchAll();
@@ -64,8 +65,11 @@ if(!$installed) {
 		$check = $db->query("SHOW COLUMNS FROM `mappacks` LIKE 'timestamp'");
       		$exist = $check->fetchAll();
       		if(empty($exist)) $db->query("ALTER TABLE mappacks ADD timestamp INT NOT NULL DEFAULT '0' AFTER colors2");
+		$check = $db->query("SHOW COLUMNS FROM `accounts` LIKE 'passCode'");
+      		$exist = $check->fetchAll();
+      		if(empty($exist)) $db->query("ALTER TABLE accounts ADD passCode varchar(12) NULL DEFAULT '' AFTER mail");
 	}
-	$db->query("ALTER TABLE `levels` CHANGE `settingsString` `settingsString` VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '';");
+	$db->query("ALTER TABLE `levels` CHANGE `settingsString` `settingsString` VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT ''");
 	$check = $db->query("SHOW TABLES LIKE 'replies'");
       		$exist = $check->fetchAll();
       		if(empty($exist)) $db->query("CREATE TABLE `replies` (
