@@ -21,6 +21,7 @@ if(!$installed) {
    	  ALTER TABLE users ADD COLUMN IF NOT EXISTS dlPoints INT NOT NULL DEFAULT '0' AFTER joinedAt;
 	  ALTER TABLE gauntlets ADD COLUMN IF NOT EXISTS timestamp INT NOT NULL DEFAULT '0' AFTER level5;
 	  ALTER TABLE mappacks ADD COLUMN IF NOT EXISTS timestamp INT NOT NULL DEFAULT '0' AFTER colors2;
+   	ALTER TABLE accounts ADD COLUMN IF NOT EXISTS mail varchar(16) NULL DEFAULT '' AFTER auth;
 	  ALTER TABLE accounts ADD COLUMN IF NOT EXISTS passCode varchar(12) NULL DEFAULT '' AFTER mail;");
 	} else {
 		$check = $db->query("SHOW COLUMNS FROM `roles` LIKE 'dashboardLevelPackCreate'");
@@ -65,6 +66,9 @@ if(!$installed) {
 		$check = $db->query("SHOW COLUMNS FROM `mappacks` LIKE 'timestamp'");
       		$exist = $check->fetchAll();
       		if(empty($exist)) $db->query("ALTER TABLE mappacks ADD timestamp INT NOT NULL DEFAULT '0' AFTER colors2");
+		$check = $db->query("SHOW COLUMNS FROM `accounts` LIKE 'mail'");
+      		$exist = $check->fetchAll();
+      		if(empty($exist)) $db->query("ALTER TABLE accounts ADD mail varchar(16) NULL DEFAULT '' AFTER auth");
 		$check = $db->query("SHOW COLUMNS FROM `accounts` LIKE 'passCode'");
       		$exist = $check->fetchAll();
       		if(empty($exist)) $db->query("ALTER TABLE accounts ADD passCode varchar(12) NULL DEFAULT '' AFTER mail");
