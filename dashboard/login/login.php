@@ -67,7 +67,7 @@ if(isset($_POST["userName"]) AND isset($_POST["password"])) {
 							</div>
 							<div class="form-group">
 								<input type="password" class="form-control" id="p2" name="password" placeholder="'.$dl->getLocalizedString("enterPassword").'">
-							</div>';
+							</div>'.($mailEnabled ? '<button style="margin-top: -10px" type="button" onclick="a(\'login/forgotPassword.php\')" class="forgotPassword">'.$dl->getLocalizedString("forgotPasswordTitle").'</button>' : '');
 	if(isset($_SERVER["HTTP_REFERER"])){
 		$loginbox .= '<input type="hidden" name="ref" value="'.$_SERVER["HTTP_REFERER"].'">';
 	}
