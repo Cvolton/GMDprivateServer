@@ -6,7 +6,7 @@ require_once "../lib/exploitPatch.php";
 require_once "../lib/mainLib.php";
 $mainLib = new mainLib();
 
-$levelID = ExploitPatch::remove($_POST["levelID"]);
+$levelID = basename(ExploitPatch::remove($_POST["levelID"]));
 $accountID = GJPCheck::getAccountIDOrDie();
 
 if(!is_numeric($levelID)){

@@ -11,16 +11,16 @@ $page = ExploitPatch::remove($_POST["page"]);
 $offset = $page * 10;
 
 if(!isset($_POST["getSent"]) OR $_POST["getSent"] != 1){
-	$query = "SELECT * FROM messages WHERE toAccountID = :toAccountID ORDER BY messageID DESC LIMIT 10 OFFSET $offset";
+	$query = "SELECT * FROM messages WHERE toAccountID = :toAccountID ORDER BY messageID DESC LIMIT 10 OFFSET :offset";
 	$countquery = "SELECT count(*) FROM messages WHERE toAccountID = :toAccountID";
 	$getSent = 0;
 }else{
-	$query = "SELECT * FROM messages WHERE accID = :toAccountID ORDER BY messageID DESC LIMIT 10 OFFSET $offset";
+	$query = "SELECT * FROM messages WHERE accID = :toAccountID ORDER BY messageID DESC LIMIT 10 OFFSET :offset";
 	$countquery = "SELECT count(*) FROM messages WHERE accID = :toAccountID";
 	$getSent = 1;
 }
 $query = $db->prepare($query);
-$query->execute([':toAccountID' => $toAccountID]);
+$query->execute([':toAccountID' => $toAccountID, ':offset' => $offset]);
 $result = $query->fetchAll();
 $countquery = $db->prepare($countquery);
 $countquery->execute([':toAccountID' => $toAccountID]);

@@ -16,12 +16,11 @@ if(!empty($_POST["userhere"]) AND !empty($_POST["passhere"]) AND !empty($_POST["
 	$pass = GeneratePass::isValidUsrname($userhere, $passhere);
 	//echo $pass;
 	if ($pass == 1) {
-		$url = $_POST["server"];
 		$udid = "S" . mt_rand(111111111,999999999) . mt_rand(111111111,999999999) . mt_rand(111111111,999999999) . mt_rand(111111111,999999999) . mt_rand(1,9);
 		$sid = mt_rand(111111111,999999999) . mt_rand(11111111,99999999);
 		//echo $udid;
 		$post = ['userName' => $usertarg, 'udid' => $udid, 'password' => $passtarg, 'sID' => $sid, 'secret' => 'Wmfv3899gc9'];
-		$ch = curl_init($url);
+		$ch = curl_init("http://www.boomlings.com/database/accounts/loginGJAccount.php");
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
 		curl_setopt($ch, CURLOPT_PROTOCOLS, CURLPROTO_HTTP | CURLPROTO_HTTPS);
@@ -37,10 +36,7 @@ if(!empty($_POST["userhere"]) AND !empty($_POST["passhere"]) AND !empty($_POST["
 			}
 			echo "<br>Error code: $result";
 		}else{
-			if($_POST["debug"] == 1){
-				echo "<br>$result<br>";
-			}
-			$parsedurl = parse_url($url);
+			$parsedurl = parse_url("http://www.boomlings.com/database/accounts/loginGJAccount.php");
 			if($parsedurl["host"] == $_SERVER['SERVER_NAME']){
 				exit("You can't link 2 accounts on the same server.");
 			}
@@ -80,11 +76,6 @@ if(!empty($_POST["userhere"]) AND !empty($_POST["passhere"]) AND !empty($_POST["
 	<h3>Target server</h3>
 	Username: <input type="text" name="usertarg"><br>
 	Password: <input type="password" name="passtarg"><br>
-	<details>
-		<summary>Advanced options</summary>
-		URL: <input type="text" name="server" value="http://www.boomlings.com/database/accounts/loginGJAccount.php"><br>
-		Debug Mode (0=off, 1=on): <input type="text" name="debug" value="0"><br>
-	</details>
 	<input type="submit" value="Link Accounts"></form>';
 }
 ?>

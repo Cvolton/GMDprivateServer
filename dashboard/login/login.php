@@ -25,9 +25,11 @@ if(isset($_POST["userName"]) AND isset($_POST["password"])){
 	}
 	$_SESSION["accountID"] = $accountID;
 	if(isset($_POST["ref"])){
-		header('Location: ' . $_POST["ref"]);
+		$ref = htmlspecialchars($_POST["ref"], ENT_QUOTES, 'UTF-8');
+		header('Location: ' . $ref);
 	}elseif(isset($_SERVER["HTTP_REFERER"])){
-		header('Location: ' . $_SERVER["HTTP_REFERER"]);
+		$referer = htmlspecialchars($_SERVER["HTTP_REFERER"], ENT_QUOTES, 'UTF-8');
+		header('Location: ' . $referer);
 	}
 	$dl->printLoginBox("<p>You are now logged in. <a href='..'>Please click here to continue.</a></p>");
 }else{
@@ -41,7 +43,8 @@ if(isset($_POST["userName"]) AND isset($_POST["password"])){
 								<input type="password" class="form-control" id="passwordField" name="password" placeholder="Password">
 							</div>';
 	if(isset($_SERVER["HTTP_REFERER"])){
-		$loginbox .= '<input type="hidden" name="ref" value="'.$_SERVER["HTTP_REFERER"].'">';
+		$referer = htmlspecialchars($_SERVER["HTTP_REFERER"], ENT_QUOTES, 'UTF-8');
+		$loginbox .= '<input type="hidden" name="ref" value="'.$referer.'">';
 	}
 	$loginbox .= '<button type="submit" class="btn btn-primary">Log In</button>
 						</form>';

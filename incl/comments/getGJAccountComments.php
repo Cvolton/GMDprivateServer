@@ -10,9 +10,9 @@ $accountid = ExploitPatch::remove($_POST["accountID"]);
 $page = ExploitPatch::remove($_POST["page"]);
 $commentpage = $page*10;
 $userID = $gs->getUserID($accountid);
-$query = "SELECT comment, userID, likes, isSpam, commentID, timestamp FROM acccomments WHERE userID = :userID ORDER BY timeStamp DESC LIMIT 10 OFFSET $commentpage";
+$query = "SELECT comment, userID, likes, isSpam, commentID, timestamp FROM acccomments WHERE userID = :userID ORDER BY timeStamp DESC LIMIT 10 OFFSET :commentpage";
 $query = $db->prepare($query);
-$query->execute([':userID' => $userID]);
+$query->execute([':userID' => $userID, ':commentpage' => $commentpage]);
 $result = $query->fetchAll();
 if($query->rowCount() == 0){
 	exit("#0:0:0");

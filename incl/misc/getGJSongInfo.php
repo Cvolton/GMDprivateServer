@@ -75,7 +75,7 @@ if($query3->rowCount() == 0) {
 			$result = "1~|~".$songid."~|~2~|~".$songname."~|~3~|~1234~|~4~|~".$songauthor."~|~5~|~6.69~|~6~|~~|~10~|~".$songurl."~|~7~|~~|~8~|~1";
 		}
 	}
-	echo $result;
+	echo htmlspecialchars($resultm, ENT_QUOTES, 'UTF-8');
 	$reup = SongReup::reup($result);
 }else{
 	$result4 = $query3->fetch();

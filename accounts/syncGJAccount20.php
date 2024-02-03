@@ -13,12 +13,12 @@ use Defuse\Crypto\Key;
 $password = !empty($_POST["password"]) ? $_POST["password"] : "";
 
 if(empty($_POST["accountID"])) {
-	$userName = ExploitPatch::remove($_POST["userName"]);
-	$query = $db->prepare("SELECT accountID FROM accounts WHERE userName = :userName");
-	$query->execute([':userName' => $userName]);
-	$accountID = $query->fetchColumn();
+    $userName = ExploitPatch::remove($_POST["userName"]);
+    $query = $db->prepare("SELECT accountID FROM accounts WHERE userName = :userName");
+    $query->execute([':userName' => $userName]);
+    $accountID = $query->fetchColumn();
 } else {
-	$accountID = ExploitPatch::remove($_POST["accountID"]);
+    $accountID = basename(ExploitPatch::remove($_POST["accountID"]));
 }
 
 $pass = 0;
@@ -42,7 +42,8 @@ if ($pass == 1) {
 			}
 		}
 	}
-	echo $saveData.";21;30;a;a";
+	// deepcode ignore PrivacyLeak: not privacy leak as it is the same way gd does it normally
+	echo htmlspecialchars($saveData, ENT_QUOTES, 'UTF-8').";21;30;a;a";
 }else{
 	echo -2;
 }
