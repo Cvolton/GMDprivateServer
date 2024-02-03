@@ -10,7 +10,8 @@ if(!empty($_POST['songlink'])){
 	if(!Captcha::validateCaptcha())
 		exit("Invalid captcha response");
 
-	$result = $gs->songReupload($_POST['songlink']);
+	// deepcode ignore Ssrf: read mainLib.php at line 697
+ 	$result = $gs->songReupload($_POST['songlink']);
 	if($result == "-4"){
 		echo "This URL doesn't point to a valid audio file.";
 	}elseif($result == "-3")

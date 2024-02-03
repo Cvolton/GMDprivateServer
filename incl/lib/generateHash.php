@@ -13,7 +13,7 @@ class GenerateHash {
 			$id = strval($result['levelID']);
 			$hash = $hash . $id[0].$id[strlen($id)-1].$result["stars"].$result["coins"];
 		}
-		return sha1($hash . "xI25fpAapCQg");
+  return sha1($hash . "xI25fpAapCQg");
 	}
 	public static function genSolo($levelstring) {
 		$len = strlen($levelstring);

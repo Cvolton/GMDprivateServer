@@ -61,8 +61,9 @@ if ($pass == 1) {
 	}*/
 	//$query = $db->prepare("UPDATE `accounts` SET `saveData` = :saveData WHERE userName = :userName");
 	//$query->execute([':saveData' => $saveData, ':userName' => $userName]);
-	file_put_contents("../data/accounts/$accountID",$saveData);
-	file_put_contents("../data/accounts/keys/$accountID","");
+	$safeAccountID = basename($accountID);
+	file_put_contents("../data/accounts/$safeAccountID", $saveData);
+	file_put_contents("../data/accounts/keys/$safeAccountID", "");
 	$query = $db->prepare("SELECT extID FROM users WHERE userName = :userName LIMIT 1");
 	$query->execute([':userName' => $userName]);
 	$result = $query->fetchAll();

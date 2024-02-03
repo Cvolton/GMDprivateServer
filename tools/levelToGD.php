@@ -18,8 +18,7 @@ if(!empty($_POST["userhere"]) AND !empty($_POST["passhere"]) AND !empty($_POST["
 	$passhere = ExploitPatch::remove($_POST["passhere"]);
 	$usertarg = ExploitPatch::remove($_POST["usertarg"]);
 	$passtarg = ExploitPatch::remove($_POST["passtarg"]);
-	$levelID = ExploitPatch::remove($_POST["levelID"]);
-	$server = trim($_POST["server"]);
+	$levelID = basename(ExploitPatch::remove($_POST["levelID"]));
 	$pass = GeneratePass::isValidUsrname($userhere, $passhere);
 	if ($pass != 1) { //verifying if valid local usr
 		exit("Wrong local username/password combination");
@@ -40,7 +39,7 @@ if(!empty($_POST["userhere"]) AND !empty($_POST["passhere"]) AND !empty($_POST["
 	$sid = mt_rand(111111111,999999999) . mt_rand(11111111,99999999);
 	//echo $udid;
 	$post = ['userName' => $usertarg, 'udid' => $udid, 'password' => $passtarg, 'sID' => $sid, 'secret' => 'Wmfv3899gc9'];
-	$ch = curl_init($server . "/accounts/loginGJAccount.php");
+	$ch = curl_init("http://www.boomlings.com/database/accounts/loginGJAccount.php");
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 	curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
 	curl_setopt($ch, CURLOPT_PROTOCOLS, CURLPROTO_HTTP | CURLPROTO_HTTPS);
@@ -93,10 +92,7 @@ if(!empty($_POST["userhere"]) AND !empty($_POST["passhere"]) AND !empty($_POST["
 	'levelString' => $levelString,
 	'levelInfo' => $levelInfo["levelInfo"],
 	'secret' => "Wmfd2893gb7"];
-	if($_POST["debug"] == 1){
-		var_dump($post);
-	}
-	$ch = curl_init($server . "/uploadGJLevel21.php");
+	$ch = curl_init("http://www.boomlings.com/database/uploadGJLevel21.php");
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 	curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
 	curl_setopt($ch, CURLOPT_PROTOCOLS, CURLPROTO_HTTP | CURLPROTO_HTTPS);
@@ -112,7 +108,7 @@ if(!empty($_POST["userhere"]) AND !empty($_POST["passhere"]) AND !empty($_POST["
 		}
 		exit("<br>Error code: $result");
 	}
-	echo "Level reuploaded - $result";
+	echo "Level reuploaded - " . htmlspecialchars($result, ENT_QUOTES, 'UTF-8');
 }else{
 	echo '<form action="levelToGD.php" method="post">Your password for the target server is NOT saved, it\'s used for one-time verification purposes only.
 	<h3>This server</h3>Username: <input type="text" name="userhere"><br>
@@ -120,11 +116,6 @@ if(!empty($_POST["userhere"]) AND !empty($_POST["passhere"]) AND !empty($_POST["
 	Level ID: <input type="text" name="levelID"><br>
 	<h3>Target server</h3>Username: <input type="text" name="usertarg"><br>
 	Password: <input type="password" name="passtarg"><br>
-	<details>
-		<summary>Advanced options</summary>
-		URL: <input type="text" name="server" value="http://www.boomlings.com/database/"><br>
-		Debug Mode (0=off, 1=on): <input type="text" name="debug" value="0"><br>
-	</details>
 	<input type="submit" value="Reupload"></form>';
 }
 ?>

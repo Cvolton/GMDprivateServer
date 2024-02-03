@@ -218,11 +218,15 @@ class dashboardLib{
 		if(!isset($_COOKIE["lang"]) OR !ctype_alpha($_COOKIE["lang"])){
 			$lang = "EN";
 		}else{
-			$lang = $_COOKIE["lang"];
+			$lang = basename($_COOKIE["lang"]);
+		}
+		if(!in_array($lang, ["CS","DE","EE","EN","EO","ES","GR","HR","IT","PT","RU","TH","TR"])){
+			$lang = "EN";
 		}
 		$locale = __DIR__ . "/lang/locale".$lang.".php";
 		if(file_exists($locale)){
-			include $locale;
+			// deepcode ignore FileInclusion: already verified that the language exists & is safe
+   			include $locale;
 		}else{
 			include __DIR__ . "/lang/localeEN.php";
 		}
@@ -241,8 +245,9 @@ class dashboardLib{
 	public function generateBottomRow($pagecount, $actualpage){
 		$pageminus = $actualpage - 1;
 		$pageplus = $actualpage + 1;
+		$requestUri = htmlspecialchars(strtok($_SERVER["REQUEST_URI"],'?'), ENT_QUOTES, 'UTF-8');
 		$bottomrow = '<div>'.sprintf($this->getLocalizedString("pageInfo"),$actualpage,$pagecount).'</div><div class="btn-group" style="margin-left:auto; margin-right:0;">';
-		$bottomrow .= '<a id="first" href="'.strtok($_SERVER["REQUEST_URI"],'?').'?page=1" class="btn btn-outline-secondary"><i class="fa fa-backward" aria-hidden="true"></i> '.$this->getLocalizedString("first").'</a><a id="prev" href="'.strtok($_SERVER["REQUEST_URI"],'?').'?page='. $pageminus .'" class="btn btn-outline-secondary"><i class="fa fa-chevron-left" aria-hidden="true"></i> '.$this->getLocalizedString("previous").'</a>';
+		$bottomrow .= '<a id="first" href="'.$requestUri.'?page=1" class="btn btn-outline-secondary"><i class="fa fa-backward" aria-hidden="true"></i> '.$this->getLocalizedString("first").'</a><a id="prev" href="'.$requestUri.'?page='. $pageminus .'" class="btn btn-outline-secondary"><i class="fa fa-chevron-left" aria-hidden="true"></i> '.$this->getLocalizedString("previous").'</a>';
 		//updated to ".."
 		$bottomrow .= '<a class="btn btn-outline-secondary" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">..</a>
 			<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink" style="padding:17px;">
@@ -251,14 +256,14 @@ class dashboardLib{
 						<input type="text" class="form-control" name="page" placeholder="#">';
 		foreach($_GET as $key => $param){
 			if($key != "page"){
-				$bottomrow .= '<input type="hidden" name="'.$key.'" value="'.$param.'">';
+				$bottomrow .= '<input type="hidden" name="'.htmlspecialchars($key, ENT_QUOTES, 'UTF-8').'" value="'.htmlspecialchars($param, ENT_QUOTES, 'UTF-8').'">';
 			}
 		}
 		$bottomrow .= '</div>
 					<button type="submit" class="btn btn-primary btn-block">'.$this->getLocalizedString("go").'</button>
 				</form>
 			</div>';
-		$bottomrow .= '<a href="'.strtok($_SERVER["REQUEST_URI"],'?').'?page='.$pageplus.'" id="next" class="btn btn-outline-secondary">'.$this->getLocalizedString("next").' <i class="fa fa-chevron-right" aria-hidden="true"></i></a><a id="last" href="'.strtok($_SERVER["REQUEST_URI"],'?').'?page='. $pagecount .'" class="btn btn-outline-secondary">'.$this->getLocalizedString("last").' <i class="fa fa-forward" aria-hidden="true"></i></a>';
+		$bottomrow .= '<a href="'.$requestUri.'?page='.$pageplus.'" id="next" class="btn btn-outline-secondary">'.$this->getLocalizedString("next").' <i class="fa fa-chevron-right" aria-hidden="true"></i></a><a id="last" href="'.$requestUri.'?page='. $pagecount .'" class="btn btn-outline-secondary">'.$this->getLocalizedString("last").' <i class="fa fa-forward" aria-hidden="true"></i></a>';
 		$bottomrow .= "</div><script>
 			function disableElement(element){
 				if(element){

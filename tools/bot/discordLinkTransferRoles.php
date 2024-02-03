@@ -7,8 +7,8 @@ if(!$discordEnabled){
 if($_GET["secret"] != $secret){
 	exit("-1");
 }
-$discordID = $_GET["discordID"];
-$roles = $_GET["roles"];
+$discordID = htmlspecialchars($_GET["discordID"], ENT_QUOTES, 'UTF-8');
+$roles = htmlspecialchars($_GET["roles"], ENT_QUOTES, 'UTF-8');
 $rolesarray = explode(",", $roles);
 $query = $db->prepare("SELECT accountID FROM accounts WHERE discordID = :discordID");
 $query->execute([':discordID' => $discordID]);

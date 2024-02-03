@@ -21,9 +21,8 @@ $gs = new mainLib();
 if(!empty($_POST["levelid"])){
 	$levelID = $_POST["levelid"];
 	$levelID = preg_replace("/[^0-9]/", '', $levelID);
-	$url = $_POST["server"];
 	$post = ['gameVersion' => '21', 'binaryVersion' => '33', 'gdw' => '0', 'levelID' => $levelID, 'secret' => 'Wmfd2893gb7', 'inc' => '1', 'extras' => '0'];
-	$ch = curl_init($url);
+	$ch = curl_init("http://www.boomlings.com/database/downloadGJLevel22.php");
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 	curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
 	curl_setopt($ch, CURLOPT_PROTOCOLS, CURLPROTO_HTTP | CURLPROTO_HTTPS);
@@ -52,10 +51,6 @@ if(!empty($_POST["levelid"])){
 			$x++;
 		}
 		//echo $result;
-		if($_POST["debug"] == 1){
-			echo "<br>".$result . "<br>";
-			var_dump($levelarray);
-		}
 		if($levelarray["a4"] == ""){
 			echo "An error has occured.<br>Error code: ".htmlspecialchars($result,ENT_QUOTES);
 		}
@@ -132,11 +127,6 @@ if(!empty($_POST["levelid"])){
 }else{
 	echo '<h4><a href="linkAcc.php">LINKING YOUR ACCOUNT USING linkAcc.php RECOMMENDED</a></h4>
 		<form action="levelReupload.php" method="post">ID: <input type="text" name="levelid"><br>
-		<details>
-		    <summary>Advanced options</summary>
-		    URL: <input type="text" name="server" value="http://www.boomlings.com/database/downloadGJLevel22.php"><br>
-			Debug Mode (0=off, 1=on): <input type="text" name="debug" value="0"><br>
-		</details>
 		<input type="submit" value="Reupload"></form>';
 }
 ?>

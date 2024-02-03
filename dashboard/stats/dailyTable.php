@@ -37,13 +37,13 @@ foreach($result as &$daily){
 		$level["coins"] = -1;
 	}
 	$dailytable .= '<tr>
-					<th scope="row">'.$x.'</th>
-					<td>'.$daily["levelID"].'</th>
-					<td>'.$level["levelName"].'</td>
-					<td>'.$gs->getUserName($level["userID"]).'</td>
-					<td>'.$level["starStars"].'</td>
-					<td>'.$level["coins"].'</td>
-					<td>'.$dl->convertToDate($daily["timestamp"]).'</td>
+					<th scope="row">'.htmlspecialchars($x).'</th>
+					<td>'.htmlspecialchars($daily["levelID"]).'</th>
+					<td>'.htmlspecialchars($level["levelName"]).'</td>
+					<td>'.htmlspecialchars($gs->getUserName($level["userID"])).'</td>
+					<td>'.htmlspecialchars($level["starStars"]).'</td>
+					<td>'.htmlspecialchars($level["coins"]).'</td>
+					<td>'.htmlspecialchars($dl->convertToDate($daily["timestamp"])).'</td>
 				</tr>';
 	$x--;
 	echo "</td></tr>";

@@ -13,6 +13,6 @@ if ($gs->getMaxValuePermission($accountID,"actionRequestMod") >= 1) { // checks 
 	if ($permState >= 2){ // if the mod badge level is higher than 2, it will still show elder mod message
 		exit("2");
 	}
-	echo $permState; 
+	echo htmlspecialchars($permState, ENT_QUOTES, 'UTF-8');
 }
 ?>

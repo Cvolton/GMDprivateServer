@@ -235,25 +235,22 @@ switch($type){
 //ACTUAL QUERY EXECUTION
 $querybase = "FROM levels LEFT JOIN songs ON levels.songID = songs.ID LEFT JOIN users ON levels.userID = users.userID $morejoins";
 if(!empty($params)){
-	$querybase .= " WHERE (" . implode(" ) AND ( ", $params) . ")";
+	$querybase .= " WHERE (" . implode(" ) AND ( ", array_fill(0, count($params), "?")) . ")";
 }
 $query = "SELECT levels.*, songs.ID, songs.name, songs.authorID, songs.authorName, songs.size, songs.isDisabled, songs.download, users.userName, users.extID $querybase $morejoins ";
 if($order){
 	if($ordergauntlet){
-		$query .= "ORDER BY $order ASC";
+		$query .= "ORDER BY ? ASC";
 	}else{
-		$query .= "ORDER BY $order DESC";
+		$query .= "ORDER BY ? DESC";
 	}
 }
-$query .= " LIMIT 10 OFFSET $offset";
-//echo $query;
+$query .= " LIMIT 10 OFFSET ?";
 $countquery = "SELECT count(*) $querybase";
-//echo $query;
 $query = $db->prepare($query);
-$query->execute();
-//echo $countquery;
+$query->execute(array_merge($params, [$order, $offset]));
 $countquery = $db->prepare($countquery);
-$countquery->execute();
+$countquery->execute($params);
 $totallvlcount = $countquery->fetchColumn();
 $result = $query->fetchAll();
 $levelcount = $query->rowCount();

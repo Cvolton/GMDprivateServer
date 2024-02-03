@@ -55,6 +55,7 @@ if(!is_numeric($levelID)){
 		default:
 			$daily = 0;
 	}
+	$levelID = basename($levelID);
 	//downloading the level
 	if($daily == 1)
 		$query=$db->prepare("SELECT levels.*, users.userName, users.extID FROM levels LEFT JOIN users ON levels.userID = users.userID WHERE levelID = :levelID");
