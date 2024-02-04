@@ -42,16 +42,13 @@ $levelstuff = $query->fetch();
 $stars = $levelstuff['stars']; $coins = $levelstuff['coins']; $demons = $levelstuff['demons']; $moons = $levelstuff['moons']; 
 $query = $db->prepare("UPDATE users SET isBanned = '1' WHERE stars > :stars OR demons > :demons OR userCoins > :coins OR moons > :moons OR stars < 0 OR demons < 0 OR coins < 0 OR userCoins < 0 OR diamonds < 0 OR moons < 0");
 $query->execute([':stars' => $stars, ':demons' => $demons, ':coins' => $coins, ':moons' => $moons]);
-//banips
 $query = $db->prepare("SELECT IP FROM bannedips");
 $query->execute();
 $result = $query->fetchAll();
-foreach($result as &$ip){
+foreach($result as &$ip) {
 	$query = $db->prepare("UPDATE users SET isBanned = '1' WHERE IP LIKE CONCAT(:ip, '%')");
 	$query->execute([':ip' => $ip["IP"]]);
 }
 ob_flush();
 flush();
-//done
-//echo "<hr>Banned everyone with over $stars stars and over $coins user coins and over $demons demons and over $moons moons!<hr>done";
 ?>

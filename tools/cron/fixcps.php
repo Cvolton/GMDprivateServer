@@ -1,5 +1,4 @@
 <?php
-error_reporting(0);
 chdir(dirname(__FILE__));
 ob_flush();
 flush();
@@ -86,7 +85,7 @@ foreach($result as $gauntlet){
 		//getting users
 		if($result["userID"] != ""){
 			$cplog .= $result["userID"] . " - +1\r\n";
-			$people[$result["userID"]] += 1;
+			$people[$result["userID"]] = ($people[$result["userID"]] ?? 0) + 1;
 		}
 	}
 }
@@ -104,7 +103,7 @@ foreach($result as $daily){
 	$result = $query->fetch();
 	//getting users
 	if($result["userID"] != ""){
-		$people[$result["userID"]] += 1;
+		$people[$result["userID"]] = ($people[$result["userID"]] ?? 0) + 1;
 		$cplog .= $result["userID"] . " - +1\r\n";
 	}
 }

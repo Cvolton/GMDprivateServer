@@ -1,5 +1,4 @@
 <?php
-error_reporting(0);
 include '../../incl/lib/connection.php';
 $dl = $db->prepare("SELECT accountID, levelID FROM dlsubmits WHERE approve = 1 ORDER BY accountID ASC");
 $dl->execute();

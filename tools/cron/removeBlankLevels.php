@@ -1,5 +1,4 @@
 <?php
-error_reporting(0);
 include "../../incl/lib/connection.php";
 $query = $db->prepare("DELETE FROM users WHERE extID = ''");
 $query->execute();

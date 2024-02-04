@@ -1,5 +1,4 @@
 <?php
-error_reporting(0);
 chdir(dirname(__FILE__));
 if(file_exists("../logs/fixfrndlog.txt")){
 	$cptime = file_get_contents("../logs/fixfrndlog.txt");
