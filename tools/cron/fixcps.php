@@ -36,7 +36,7 @@ $query = $db->prepare("UPDATE users
 	    ) AS featuredTable ON usersTable.userID = featuredTable.userID
 	    LEFT JOIN
 	    (
-	        SELECT count(*)+(starEpic-1) as epic, userID FROM levels WHERE starEpic != 0 AND isCPShared = 0 GROUP BY(userID) 
+	        SELECT SUM(starEpic) as epic, userID FROM levels WHERE starEpic != 0 AND isCPShared = 0 GROUP BY(userID) 
 	    ) AS epicTable ON usersTable.userID = epicTable.userID
 	) calculated
 	ON users.userID = calculated.userID
