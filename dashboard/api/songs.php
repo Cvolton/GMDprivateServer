@@ -52,7 +52,7 @@ if(!empty($search)) {
 			}
 			$count = count($data);
 			if($count > 0) {
-				if($count == 1) exit(json_encode(["dashboard" => true, "success" => true, "numeric" => true, "song" => $data[0]]));
+				if($count == 1) exit(json_encode(["dashboard" => true, "success" => true, "numeric" => true, "song" => $data[0], 'songs' => $data[0]]));
 				else exit(json_encode(["dashboard" => true, "success" => true, "songs" => $data, "count" => $count, "numeric" => false]));
 			} else exit(json_encode(["dashboard" => true, "success" => false, "error" => 2]));
 		}
@@ -62,7 +62,8 @@ if(!empty($search)) {
 		$song = $songs->fetch();
 		if($song) {
 			$song["download"] = str_replace("http://", 'https://', str_replace("gcsdb/dashboard/", '', $song["download"]));
-			exit(json_encode(["dashboard" => true, "success" => true, "numeric" => true, "song" => ["ID" => $song["ID"], "author" => $song["authorName"], "name" => $song["name"], "download" => $song["download"], "reuploadID" => $song["reuploadID"], "reuploadTime" => $song["reuploadTime"]]]));
+			$oneSong = ["ID" => $song["ID"], "author" => $song["authorName"], "name" => $song["name"], "download" => $song["download"], "reuploadID" => $song["reuploadID"], "reuploadTime" => $song["reuploadTime"]];
+			exit(json_encode(["dashboard" => true, "success" => true, "numeric" => true, "song" => $oneSong, 'songs' => $oneSong]));
 		}
 		else exit(json_encode(["dashboard" => true, "success" => false, "error" => 1]));
 	}
