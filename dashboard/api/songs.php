@@ -3,11 +3,11 @@ header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: GET, POST');
 header("Access-Control-Allow-Headers: X-Requested-With");
 require "../incl/dashboardLib.php";
-error_reporting(E_ALL);
 include "../".$dbPath."incl/lib/connection.php";
 require_once "../".$dbPath."incl/lib/exploitPatch.php";
-$json = json_decode(file_get_contents('php://input'), true);
-$search = trim(ExploitPatch::remove(urldecode($json["search"])));
+if(!isset($_GET)) $json = json_decode(file_get_contents('php://input'), true);
+else $json = $_GET;
+$search = trim(ExploitPatch::rucharclean(urldecode($json["search"])));
 if(!empty($search)) {
 	if(!is_numeric($search)) {
 		if(isset($json["mysongs"])) {
@@ -16,7 +16,8 @@ if(!empty($search)) {
 			$discord->execute([':id' => $ds]);
 			$acc = $discord->fetch();
 			if($acc["accountID"]) {
-				$songs = $db->prepare("SELECT * FROM songs WHERE reuploadID = :id AND isDisabled = 0 ORDER BY reuploadTime DESC");
+				if($search == 'MySongs') $songs = $db->prepare("SELECT * FROM songs WHERE reuploadID = :id AND isDisabled = 0 ORDER BY reuploadTime DESC");
+				else $songs = $db->prepare("SELECT * FROM favsongs INNER JOIN songs on favsongs.songID = songs.ID WHERE favsongs.accountID = :id ORDER BY favsongs.ID DESC");
 				$songs->execute([':id' => $acc["accountID"]]);
 				$songs = $songs->fetchAll();
 				if($songs) {
@@ -26,11 +27,11 @@ if(!empty($search)) {
 					}
 					$count = count($data);
 					if($count > 0) {
-						if($count == 1) exit(json_encode(["success" => true, "numeric" => true, $data[0]]));
-						else exit(json_encode(["success" => true, "songs" => $data, "count" => $count, "numeric" => false]));
+						if($count == 1) exit(json_encode(["dashboard" => true, "success" => true, "numeric" => true, $data[0]]));
+						else exit(json_encode(["dashboard" => true, "success" => true, "songs" => $data, "count" => $count, "numeric" => false]));
 					}
-				} else exit(json_encode(["success" => false, "error" => 4]));
-			} else exit(json_encode(["success" => false, "error" => 3]));
+				} else exit(json_encode(["dashboard" => true, "success" => false, "error" => 4]));
+			} else exit(json_encode(["dashboard" => true, "success" => false, "error" => 3]));
 		} else {
 			$explode = explode(" - ", str_replace(" — ", " - ", $search), 2);
 			if(!$explode[1]) {
@@ -51,9 +52,9 @@ if(!empty($search)) {
 			}
 			$count = count($data);
 			if($count > 0) {
-				if($count == 1) exit(json_encode(["success" => true, "numeric" => true, "song" => $data[0]]));
-				else exit(json_encode(["success" => true, "songs" => $data, "count" => $count, "numeric" => false]));
-			} else exit(json_encode(["success" => false, "error" => 2]));
+				if($count == 1) exit(json_encode(["dashboard" => true, "success" => true, "numeric" => true, "song" => $data[0]]));
+				else exit(json_encode(["dashboard" => true, "success" => true, "songs" => $data, "count" => $count, "numeric" => false]));
+			} else exit(json_encode(["dashboard" => true, "success" => false, "error" => 2]));
 		}
 	} else {
 		$songs = $db->prepare("SELECT * FROM songs WHERE ID = :id AND reuploadID > 0 AND isDisabled = 0");
@@ -61,10 +62,10 @@ if(!empty($search)) {
 		$song = $songs->fetch();
 		if($song) {
 			$song["download"] = str_replace("http://", 'https://', str_replace("gcsdb/dashboard/", '', $song["download"]));
-			exit(json_encode(["success" => true, "numeric" => true, "song" => ["ID" => $song["ID"], "author" => $song["authorName"], "name" => $song["name"], "download" => $song["download"], "reuploadID" => $song["reuploadID"], "reuploadTime" => $song["reuploadTime"]]]));
+			exit(json_encode(["dashboard" => true, "success" => true, "numeric" => true, "song" => ["ID" => $song["ID"], "author" => $song["authorName"], "name" => $song["name"], "download" => $song["download"], "reuploadID" => $song["reuploadID"], "reuploadTime" => $song["reuploadTime"]]]));
 		}
-		else exit(json_encode(["success" => false, "error" => 1]));
+		else exit(json_encode(["dashboard" => true, "success" => false, "error" => 1]));
 	}
 }
-echo json_encode(["success" => false, 'error' => 0]);
+echo json_encode(["dashboard" => true, "success" => false, 'error' => 0]);
 ?>
