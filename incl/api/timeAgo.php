@@ -1,6 +1,6 @@
 <?php
 // yep, this is now implemented
-//credits: https://githubcom/MrRare2
+//credits: https://github.com/MrRare2
 function timeAgo($timestamp) {
     $dateTime = new DateTime();
     $dateTime->setTimestamp($timestamp);
