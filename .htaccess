@@ -1,0 +1,28 @@
+# API functionality
+# because were just using PhP, this will work if your using Apache, for Nginx its nginx.conf
+RewriteEngine On
+
+RewriteRule ^api/level/?$ incl/api/null.php [L,QSA]
+
+RewriteRule ^api/level/-[0-9]+/?$ incl/api/null.php [L,QSA]
+
+RewriteRule ^api/level/([0-9]+)$ incl/api/level.php?levelID=$1 [L,QSA]
+
+RewriteRule ^api/profile/?$ incl/api/null.php [L,QSA]
+
+RewriteRule ^api/profile/-[0-9]+/?$ incl/api/null.php [L,QSA]
+
+RewriteRule ^api/profile/([A-Za-z0-9]+)$ incl/api/profile.php?accID=$1 [L,QSA]
+
+RewriteRule ^api/comments/?$ incl/api/null.php [L,QSA]
+
+RewriteRule ^api/comments/-[0-9]+/?$ incl/api/null.php [L,QSA]
+
+RewriteRule ^api/comments/([0-9]+)$ incl/api/comments.php?levelID=$1 [L,QSA]
+
+RewriteRule ^api/lists/?$ incl/api/null.php [L,QSA]
+
+RewriteRule ^api/lists/-[0-9]+/?$ incl/api/null.php [L,QSA]
+
+RewriteRule ^api/lists/([0-9]+)$ incl/api/lists.php?listID=$1 [L,QSA]
+
