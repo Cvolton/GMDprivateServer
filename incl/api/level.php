@@ -2,6 +2,104 @@
 //error_reporting(E_ALL);
 //ini_set('display_errors', 1);
 
+function audioTrack($tr){
+    $out = array();
+    $songNames= array(
+    0 => "Stereo Madness",
+    1 => "Back on Track",
+    2 => "Polargeist",
+    3 => "Dry Out",
+    4 => "Base After Base",
+    5 => "Can't Let Go",
+    6 => "Jumper",
+    7 => "Time Machine",
+    8 => "Cycles",
+    9 => "xStep",
+    10 => "Clutterfunk",
+    11 => "Theory of Everything",
+    12 => "Electroman Adventures",
+    13 => "Clubstep",
+    14 => "Electrodynamix",
+    15 => "Hexagon Force",
+    16 => "Blast Processing",
+    17 => "Theory of Everything 2",
+    18 => "Geometrical Dominator",
+    19 => "Deadlocked",
+    20 => "Fingerdash",
+    21 => "Dash",
+    22 => "Explorers",
+    23 => "The Seven Seas",
+    24 => "Viking Arena",
+    25 => "Airborne Robots",
+    26 => "Secret",
+    27 => "Payload",
+    28 => "Beast Mode",
+    29 => "Machina",
+    30 => "Years",
+    31 => "Frontliners",
+    32 => "Space Pirates",
+    33 => "Strikers",
+    34 => "Embers",
+    35 => "Round 1",
+    36 => "Monster Dance Off",
+    37 => "Press Start",
+    38 => "Nock Em",
+    39 => "Power Trip",
+    );
+    
+    $songArtists= array(
+    0 => "ForeverBound",
+    1 => "DJVI",
+    2 => "Step",
+    3 => "DJVI",
+    4 => "DJVI",
+    5 => "DJVI",
+    6 => "Waterflame",
+    7 => "Waterflame",
+    8 => "DJVI",
+    9 => "DJVI",
+    10 => "Waterflame",
+    11 => "DJ-Nate",
+    12 => "Waterflame",
+    13 => "DJ-Nate",
+    14 => "DJ-Nate",
+    15 => "Waterflame",
+    16 => "Waterflame",
+    17 => "DJ-Nate",
+    18 => "Waterflame",
+    19 => "F-777",
+    20 => "MDK",
+    21 => "MDK",
+    22 => "Hinkik",
+    23 => "F-777",
+    24 => "F-777",
+    25 => "F-777",
+    26 => "RobTop",
+    27 => "Dex Arson",
+    28 => "Dex Arson",
+    29 => "Dex Arson",
+    30 => "Dex Arson",
+    31 => "Dex Arson",
+    32 => "Waterflame",
+    33 => "Waterflame",
+    34 => "Dex Arson",
+    35 => "Dex Arson",
+    36 => "F-777",
+    37 => "MDK",
+    38 => "Bossfight",
+    39 => "Boom Kitty",
+    );
+
+    $out['songName'] = $songNames[$tr];
+    $out['songArtist'] = $songArtists[$tr];
+    $out['songSize'] = 0;
+    $out["songLink"] = "Level ".$tr;
+
+    return $out;
+}
+
+
+
 //make this better for demon and auto
 function getDifficultyRating($n) {
     switch ($n) {
@@ -120,14 +218,6 @@ function songInfoParser($Sstr) {
     return $Sdict;
 }
 
-function chkSong($number) {
-    return ($number >= 1 && $number <= 22) ? $number : 0;
-}
-
-function chkSongOp($number) {
-    return ($number >= 1 && $number <= 22) ? 0 : $number;
-}
-
 // Extract levelID from the query parameter or URL segment
 $levelID = isset($_GET['levelID']) ? $_GET['levelID'] : '';
 
@@ -168,13 +258,7 @@ if(!is_numeric($levelID)){
 			if(! ($result["extID"] == $accountID || $gs->isFriends($accountID, $result["extID"])) ) exit("-1");
 		}
 
-		//adding the download
-		$query6 = $db->prepare("SELECT count(*) FROM actions_downloads WHERE levelID=:levelID AND ip=INET6_ATON(:ip)");
-		$query6->execute([':levelID' => $levelID, ':ip' => $ip]);
-		if($inc && $query6->fetchColumn() < 2){
-			$query2=$db->prepare("UPDATE levels SET downloads = downloads + 1 WHERE levelID = :levelID");
-			$query2->execute([':levelID' => $levelID]);
-		}
+		
 		//getting the days since uploaded... or outputting the date in Y-M-D format at least for now...
 		$uploadDate = date("d-m-Y G-i", $result["uploadDate"]);
 		$updateDate = date("d-m-Y G-i", $result["updateDate"]);
@@ -247,16 +331,16 @@ if(!is_numeric($levelID)){
 		
 		$resp['epic'] = torf($result['starEpic']);
 		$resp['epicValue'] = $result['starEpic'];
-		$resp['legendary'] = torf($result['starLegendary']);
-		$resp['mythic'] = torf($reult['starMythic']);
+		$resp['legendary'] = $result['starEpic'] === 2;
+		$resp['mythic'] = $result['starEpic'] === 3;
 		$resp['gameVersion'] = $result['gameVersion'];
 		$resp['editorTime'] = $result['wt'];
 		$resp['totalEditorTime'] = $result['wt2'];
 		$resp['version'] = $result['levelVersion'];
 		$resp['copiedID'] = (string) $result['original'];
 		$resp['twoPlayer'] = torf($result['twoPlayer']);
-		$resp['officialSong'] = chkSong($result['songID']); // TODO: make this actually work
-		$resp['customSong'] = chkSongOp ($result['songID']);
+		$resp['officialSong'] = $result['audioTrack'];
+		$resp['customSong'] = $result['songID'];
 		$resp['coins'] = $result['coins'];
 		if ($result['starStars']) {
 		    $resp['verifiedCoins'] = true;
@@ -270,11 +354,20 @@ if(!is_numeric($levelID)){
 		$resp['cp'] = 0; // I dont what this means tho, hut GDBrowser has this.
 		$resp['partialDiff'] = null; //TOOD: implement this
 		$resp['difficultyFace'] = null; //TODO: implement this
-		$resp['songName'] = $SparsedResult[2];
-		$resp['songAuthor'] = $SparsedResult[4];
-		$resp['songSize'] = "$SparsedResult[5]MB";
-		$resp['songID'] = $result['songID'];
-		$resp['songLink'] = urldecode($SparsedResult[10]); 
+		if ($result['audioTrack'] !== 0 && $result['songID'] === 0 ){
+		    $parsedResult1 = audioTrack($result['audioTrack']);
+		    $resp['songName'] = $parsedResult1['songName'];
+	    	$resp['songAuthor'] = $parsedResult1['songArtist'];
+	    	$resp['songSize'] = $parsedResult1['songSize']."MB";
+    		$resp['songID'] = $result['audioTrack'];
+	    	$resp['songLink'] = $parsedResult1['songLink'];
+		} else {
+	    	$resp['songName'] = $SparsedResult[2];
+	    	$resp['songAuthor'] = $SparsedResult[4];
+	    	$resp['songSize'] = "$SparsedResult[5]MB";
+    		$resp['songID'] = $result['songID'];
+	    	$resp['songLink'] = urldecode($SparsedResult[10]);
+		}
 		header('Content-Type: application/json');
 		echo str_replace('    ', '  ', json_encode($resp, JSON_PRETTY_PRINT));
 		
