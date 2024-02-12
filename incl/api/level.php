@@ -93,7 +93,7 @@ function audioTrack($tr){
     $out['songName'] = $songNames[$tr];
     $out['songArtist'] = $songArtists[$tr];
     $out['songSize'] = 0;
-    $out["songLink"] = "Level ".$tr;
+    $out["songLink"] = "Level ".$tr+1;
 
     return $out;
 }
@@ -354,20 +354,22 @@ if(!is_numeric($levelID)){
 		$resp['cp'] = 0; // I dont what this means tho, hut GDBrowser has this.
 		$resp['partialDiff'] = null; //TOOD: implement this
 		$resp['difficultyFace'] = null; //TODO: implement this
-		if ($result['audioTrack'] !== 0 && $result['songID'] === 0 ){
-		    $parsedResult1 = audioTrack($result['audioTrack']);
-		    $resp['songName'] = $parsedResult1['songName'];
-	    	$resp['songAuthor'] = $parsedResult1['songArtist'];
-	    	$resp['songSize'] = $parsedResult1['songSize']."MB";
-    		$resp['songID'] = $result['audioTrack'];
-	    	$resp['songLink'] = $parsedResult1['songLink'];
-		} else {
-	    	$resp['songName'] = $SparsedResult[2];
-	    	$resp['songAuthor'] = $SparsedResult[4];
-	    	$resp['songSize'] = "$SparsedResult[5]MB";
-    		$resp['songID'] = $result['songID'];
-	    	$resp['songLink'] = urldecode($SparsedResult[10]);
-		}
+	    if ($result['audioTrack'] >= 0 && $result['audioTrack'] <= 39) {
+        if ($result['songID'] === 0) {
+        $parsedResult = audioTrack($result['audioTrack']);
+        $resp['songName'] = $parsedResult['songName'];
+        $resp['songAuthor'] = $parsedResult['songArtist'];
+        $resp['songSize'] = $parsedResult['songSize']."MB";
+        $resp['songID'] =  $parsedResult['songLink'];
+        } else {
+        $resp['songName'] = $SparsedResult[2];
+        $resp['songAuthor'] = $SparsedResult[4];
+        $resp['songSize'] = "$SparsedResult[5]MB";
+        $resp['songID'] = $result['songID'];
+        $resp['songLink'] = str_replace('\\', '', urldecode($SparsedResult[10]));
+       }
+}
+		
 		header('Content-Type: application/json');
 		echo str_replace('    ', '  ', json_encode($resp, JSON_PRETTY_PRINT));
 		
