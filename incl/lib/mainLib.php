@@ -533,7 +533,7 @@ class mainLib {
 	} 
 	public function getLevelStats($lid) {
 		include __DIR__ . "/connection.php";
-		$info = $db->prepare("SELECT downloads, likes, dislikes, requestedStars FROM levels WHERE levelID = :id");
+		$info = $db->prepare("SELECT downloads, likes, requestedStars FROM levels WHERE levelID = :id");
 		$info->execute([':id' => $lid]);
 		$info = $info->fetch();
 		$likes = $info["likes"]; // - $info['dislikes']
