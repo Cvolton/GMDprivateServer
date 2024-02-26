@@ -516,7 +516,7 @@ class dashboardLib {
 						player.number += previous ? -1 : 1;
 						player.currentSong = player.queue[player.number];
 						player.progress.val(0).change();
-						player.song.src = player.currentSong.src;
+						player.song.src = decodeURIComponent(player.currentSong.src);
 						player.name.innerHTML = player.currentSong.name;
 						player.author.innerHTML = player.currentSong.author;
 						player.song.ID = player.currentSong.ID;
