@@ -382,7 +382,7 @@ class mainLib {
 		return "{$userdata['userID']}:{$userdata["userName"]}:{$extID}";
 	}
 	public function getSongString($song){
-		include_once __DIR__ . "/connection.php";
+		include __DIR__ . "/connection.php";
 		include_once __DIR__ . "/exploitPatch.php";
 		/*$query3=$db->prepare("SELECT ID,name,authorID,authorName,size,isDisabled,download FROM songs WHERE ID = :songid LIMIT 1");
 		$query3->execute([':songid' => $songID]);*/
