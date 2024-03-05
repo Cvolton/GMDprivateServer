@@ -136,6 +136,23 @@ if(!$installed) {
 			 `timestamp` int(11) NOT NULL DEFAULT '0',
 			 PRIMARY KEY (`ID`)
 			) ENGINE=InnoDB DEFAULT CHARSET=utf8");
+	$check = $db->query("SHOW TABLES LIKE 'sfxs'");
+      		$exist = $check->fetchAll();
+      		if(empty($exist)) $db->query("CREATE TABLE `sfxs` (
+			 `ID` int(11) NOT NULL AUTO_INCREMENT,
+			 `name` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+			 `authorName` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+			 `download` varchar(255) COLLATE utf8_unicode_ci DEFAULT '',
+			 `milliseconds` int(11) NOT NULL DEFAULT '0',
+			 `size` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+			 `isDisabled` int(11) NOT NULL DEFAULT '0',
+			 `levelsCount` int(11) NOT NULL DEFAULT '0',
+			 `reuploadID` int(11) NOT NULL DEFAULT '0',
+			 `reuploadTime` int(11) NOT NULL DEFAULT '0',
+			 PRIMARY KEY (`ID`),
+			 KEY `name` (`name`),
+			 KEY `authorName` (`authorName`)
+			) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci");
 	$lines = file($dbPath.'config/dashboard.php');
 	$first_line = $lines[2];
 	$lines = array_slice($lines, 1 + 2);

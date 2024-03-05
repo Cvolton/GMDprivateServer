@@ -365,6 +365,17 @@ $string['maybeSentAMessage'] = "We'll send you a message if this account exists.
 $string['forgotPasswordDesc'] = "Here you can request change password link if you forgot it!";
 $string['forgotPasswordButton'] = "Request link";
 
+$string['sfxAdd'] = "Add SFX";
+$string["sfxAddError-5"] = "SFX's size is higher than $songSize megabytes!";
+$string["sfxAddError-6"] = "Something went wrong while uploading SFX!";
+$string["sfxAddError-7"] = "You can only upload audio!";
+$string['sfxAdded'] = 'SFX added';
+$string['yourNewSFX'] = "Take a look at your new SFX!";
+$string["sfxAddAnotherBTN"] = "One more SFX?";
+$string["sfxAddDesc"] = "Here you can add your SFX!";
+$string["chooseSFX"] = "Choose SFX";
+$string["sfxAddNameFieldPlaceholder"] = "Name";
+
 /*
 	REUPLOAD
 */
@@ -381,7 +392,7 @@ $string["songAddNameFieldPlaceholder"] = "Name";
 $string["songAddAuthorFieldPlaceholder"] = "Author";
 $string["songAddButton"] = "Choose song";
 $string["songAddAnotherBTN"] = "Another Song?";
-$string["songAdded"] = "Song added!";
+$string["songAdded"] = "Song added";
 $string["deletedSong"] = "You successfully deleted song";
 $string["renamedSong"] = "You successfully renamed song to";
 $string["songID"] = "Song ID: ";
@@ -397,7 +408,7 @@ $string["songAddError-2"] = "Invalid URL";
 $string["songAddError-3"] = "This song has been reuploaded already with ID:";
 $string["songAddError-4"] = "This song isn't reuploadable";
 $string["songAddError-5"] = "Song size is higher than $songSize megabytes";
-$string["songAddError-6"] = "Something went wrong while uploading a song! :с";
+$string["songAddError-6"] = "Something went wrong while uploading a song!";
 $string["songAddError-7"] = "You can only upload audio!";
 
 $string[400] = "Bad request!";

@@ -30,6 +30,7 @@ class dashboardLib {
 						  <link href="incl/fontawesome/css/fontawesome.css" rel="stylesheet">
 						  <link href="incl/fontawesome/css/brands.css" rel="stylesheet">
 						  <link href="incl/fontawesome/css/solid.css" rel="stylesheet">
+						  <link href="incl/fontawesome/css/regular.css" rel="stylesheet">
                           <link async rel="stylesheet" href="incl/cvolton.css?'.$css.'">
 						  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
                           <title>'.$gdps.'</title>';
@@ -104,6 +105,7 @@ class dashboardLib {
 		global $lrEnabled;
       	global $msgEnabled;
       	global $songEnabled;
+      	global $sfxEnabled;
       	global $clansEnabled;
       	global $pc;
       	global $mac;
@@ -117,7 +119,7 @@ class dashboardLib {
       	global $dbPath;
 		include_once __DIR__."/../".$dbPath."incl/lib/Captcha.php";
 		include_once __DIR__."/../".$dbPath."config/security.php";
-		include __DIR__."/../".$dbPath."config/mail.php";
+		include_once __DIR__."/../".$dbPath."config/mail.php";
 		require_once __DIR__."/../".$dbPath."incl/lib/mainLib.php";
       	include __DIR__."/../".$dbPath."incl/lib/connection.php";
       	if($enableCaptcha) {
@@ -198,6 +200,7 @@ class dashboardLib {
 						<div class="dropdown-menu" id="cronview" aria-labelledby="navbarDropdownMenuLink">';
           					if(strpos($songEnabled, '1') !== false) echo '<a type="button" href="songs" onclick="a(\'songs\')" class="dropdown-item"><i class="fa-solid fa-file" style="position: absolute;font-size: 10px;margin: 5px 5px 5px -2px;" aria-hidden="false"></i><div class="icon"><i class="fa-solid fa-music" aria-hidden="false"></i></div>'.$this->getLocalizedString("songAdd").'</a>';
           					if(strpos($songEnabled, '2') !== false) echo '<a type="button" href="reupload/songAdd.php" onclick="a(\'reupload/songAdd.php\')"class="dropdown-item"><i class="fa-solid fa-link" style="position: absolute;font-size: 9px;margin: 5px 5px 5px -3px;" aria-hidden="false"></i><div class="icon"><i class="fa-solid fa-music" aria-hidden="false"></i></div>'.$this->getLocalizedString("songLink").'</a>';
+          					if(strpos($sfxEnabled, '1') !== false) echo '<a type="button" href="sfxs" onclick="a(\'sfxs\')" class="dropdown-item"><div class="icon"><i class="fa-solid fa-drum" aria-hidden="false"></i></div>'.$this->getLocalizedString("sfxAdd").'</a>';
 								if($lrEnabled == 1) echo '<a type="button" href="levels/levelReupload.php" onclick="a(\'levels/levelReupload.php\')"class="dropdown-item"><i class="fa-solid fa-arrow-down" style="position: absolute;font-size: 10px;margin: 5px 5px 5px -5px;" aria-hidden="false"></i><div class="icon"><i class="fa-solid fa-cloud" aria-hidden="false"></i></div>'.$this->getLocalizedString("levelReupload").'</a>
                                 <a type="button" href="levels/levelToGD.php" onclick="a(\'levels/levelToGD.php\')"class="dropdown-item"><i class="fa-solid fa-arrow-up" style="position: absolute;font-size: 10px;margin: 5px 5px 5px -5px;" aria-hidden="false"></i><div class="icon"><i class="fa-solid fa-cloud" aria-hidden="false"></i></div>'.$this->getLocalizedString("levelToGD").'</a>';
           				echo '<button type="button" class="dropdown-item" id="crbtn" onclick="cron(), event.stopPropagation();"><div class="icon"><i id="iconcron" class="fa-solid fa-bars-progress"></i></div>'.$this->getLocalizedString('tryCron').'</button>
@@ -371,7 +374,7 @@ class dashboardLib {
 										<div class="form-group">
 											<input type="text" class="form-control login-input" id="usernameField" name="userName" placeholder="'.$this->getLocalizedString("username").'">
 										</div>
-										<div'.($mailEnabled ? '' : ' class="form-group"').'>
+										<div'.(!$mailEnabled ? ' class="form-group"' : '').'>
 											<input type="password" class="form-control login-input" id="passwordField" name="password" placeholder="'.$this->getLocalizedString("password").'">
 										</div>
 										'.($mailEnabled ? '<button type="button" onclick="a(\'login/forgotPassword.php\')" class="forgotPassword">'.$this->getLocalizedString("forgotPasswordTitle").'</button>' : '').'
@@ -386,6 +389,7 @@ class dashboardLib {
 								const usernameField1 = document.getElementById("usernameField");
 								const passwordField2 = document.getElementById("passwordField");
 								const loginBtn = document.getElementById("submit");
+								if(loginBtn == null) return;
 								if((usernameField1 !== null && passwordField2 !== null) && (!usernameField1.value.trim().length || !passwordField2.value.trim().length)) {
 									loginBtn.disabled = true;
 									loginBtn.classList.add("btn-block");
@@ -757,6 +761,7 @@ class dashboardLib {
 					   const usernameField1 = document.getElementById("usernameField");
 					   const passwordField2 = document.getElementById("passwordField");
 					   const loginBtn = document.getElementById("submit");
+					   if(loginBtn == null) return;
 					   if((usernameField1 !== null && passwordField2 !== null) && (!usernameField1.value.trim().length || !passwordField2.value.trim().length)) {
 									loginBtn.disabled = true;
 									loginBtn.classList.add("btn-block");
@@ -939,6 +944,14 @@ class dashboardLib {
 			elseif(date("Y", $timestamp) == date("Y", time())) return date("d.m", $timestamp);
 			else return date("d.m.Y", $timestamp);
 		} else return date("d.m.Y G:i:s", $timestamp);
+	}
+	public function getAudioDuration($file) {
+		global $dbPath;
+		require_once(__DIR__.'/../'.$dbPath.'/config/getid3/getid3.php');
+		$getID3 = new getID3;
+		$info = $getID3->analyze($file);
+		$result = (isset($info['playtime_seconds']) ? (int)($info['playtime_seconds'] * 1000) : false);
+		return $result;
 	}
 	public function generateBottomRow($pagecount, $actualpage){
 		$pageminus = $actualpage - 1;

@@ -364,6 +364,17 @@ $string['forgotPasswordTitle'] = "Forgot password?";
 $string['maybeSentAMessage'] = "We'll send you a message if this account exists.";
 $string['forgotPasswordDesc'] = "Here you can request change password link if you forgot it!";
 $string['forgotPasswordButton'] = "Request link";
+// SFX
+$string['sfxAdd'] = "Add SFX";
+$string["sfxAddError-5"] = "SFX's size is higher than $songSize megabytes!";
+$string["sfxAddError-6"] = "Something went wrong while uploading SFX!";
+$string["sfxAddError-7"] = "You can only upload audio!";
+$string['sfxAdded'] = 'SFX added';
+$string['yourNewSFX'] = "Take a look at your new SFX!";
+$string["sfxAddAnotherBTN"] = "One more SFX?";
+$string["sfxAddDesc"] = "Here you can add your SFX!";
+$string["chooseSFX"] = "Choose SFX";
+$string["sfxAddNameFieldPlaceholder"] = "Name";
 // REUPLOAD
 $string["reuploadBTN"] = "Subir";
 $string["errorGeneric"] = "¡Ha ocurrido un error!";

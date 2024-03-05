@@ -23,6 +23,7 @@ class mainLib {
 			"Geometrical Dominator by Waterflame",
 			"Deadlocked by F-777",
 			"Fingerbang by MDK",
+			"Dash by MDK",
 			"The Seven Seas by F-777",
 			"Viking Arena by F-777",
 			"Airborne Robots by F-777",
@@ -378,11 +379,11 @@ class mainLib {
 		$query->execute([':id' => $extID]);
 		$userName = $query->fetch();*/
 		$extID = is_numeric($userdata['extID']) ? $userdata['extID'] : 0;
-		return "${userdata['userID']}:${userdata["userName"]}:${extID}";
+		return "{$userdata['userID']}:{$userdata["userName"]}:{$extID}";
 	}
 	public function getSongString($song){
 		include __DIR__ . "/connection.php";
-		include_once __DIR__ . "/exploitPatch.php";
+		include __DIR__ . "/exploitPatch.php";
 		/*$query3=$db->prepare("SELECT ID,name,authorID,authorName,size,isDisabled,download FROM songs WHERE ID = :songid LIMIT 1");
 		$query3->execute([':songid' => $songID]);*/
 		if($song['ID'] == 0 || empty($song['ID'])){
@@ -410,8 +411,20 @@ class mainLib {
 	        else return array("ID" => $sinfo["ID"], "name" => $sinfo["name"], "authorName" => $sinfo["authorName"], "size" => $sinfo["size"], "download" => $sinfo["download"], "reuploadTime" => $sinfo["reuploadTime"], "reuploadID" => $sinfo["reuploadID"]);
 	    }
 	}
+	public function getSFXInfo($id, $column = "*") {
+	    if(!is_numeric($id)) return;
+	    include __DIR__ . "/connection.php";
+	    $sinfo = $db->prepare("SELECT $column FROM sfxs WHERE ID = :id");
+	    $sinfo->execute([':id' => $id]);
+	    $sinfo = $sinfo->fetch();
+	    if(empty($sinfo)) return false;
+	    else {
+	        if($column != "*")  return $sinfo[$column];
+	        else return array("ID" => $sinfo["ID"], "name" => $sinfo["name"], "authorName" => $sinfo["authorName"], "size" => $sinfo["size"], "download" => $sinfo["download"], "reuploadTime" => $sinfo["reuploadTime"], "reuploadID" => $sinfo["reuploadID"]);
+	    }
+	}
 	public function getClanInfo($clan, $column = "*") {
-		global $dashCheck;
+	    global $dashCheck;
 	    if(!is_numeric($clan) || $dashCheck === 'no') return false;
 	    include __DIR__ . "/connection.php";
 	    $claninfo = $db->prepare("SELECT $column FROM clans WHERE ID = :id");
@@ -536,7 +549,7 @@ class mainLib {
 		$info = $db->prepare("SELECT downloads, likes, requestedStars FROM levels WHERE levelID = :id");
 		$info->execute([':id' => $lid]);
 		$info = $info->fetch();
-		$likes = $info["likes"]; // - $info['dislikes']
+		$likes = $info["likes"]; // - $info["dislikes"];
 		if(!empty($info)) return array('dl' => $info["downloads"], 'likes' => $likes, 'req' => $info["requestedStars"]);
 	}
 	public function getLevelAuthor($lid) {
@@ -553,7 +566,7 @@ class mainLib {
 		$desc = $desc->fetch();
 		if($desc["starStars"] == 0) return false; 
 		else return true;
-	} 
+	}
 	public function randomString($length = 6) {
 		$randomString = openssl_random_pseudo_bytes($length);
 		if($randomString == false){
@@ -805,22 +818,20 @@ class mainLib {
 		$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('2', :value, :levelID, :timestamp, :id)");
 		$query->execute([':value' => $state, ':timestamp' => time(), ':id' => $accountID, ':levelID' => $levelID]);
 	}
-	public function verifyCoinsLevel($accountID, $levelID, $coins){
+	public function verifyCoinsLevel($accountID, $levelID, $coins) {
 		if(!is_numeric($accountID)) return false;
-
 		include __DIR__ . "/connection.php";
 		$query = "UPDATE levels SET starCoins=:coins WHERE levelID=:levelID";
 		$query = $db->prepare($query);	
 		$query->execute([':coins' => $coins, ':levelID'=>$levelID]);
-		
 		$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('3', :value, :levelID, :timestamp, :id)");
 		$query->execute([':value' => $coins, ':timestamp' => time(), ':id' => $accountID, ':levelID' => $levelID]);
 	}
-	public function songReupload($url, $author, $name, $accountID){
+	public function songReupload($url, $author, $name, $accountID) {
 		require __DIR__ . "/../../incl/lib/connection.php";
 		require_once __DIR__ . "/../../incl/lib/exploitPatch.php";
 		$song = str_replace("www.dropbox.com","dl.dropboxusercontent.com",$url);
-		if (filter_var($song, FILTER_VALIDATE_URL) == TRUE && substr($song, 0, 4) == "http") {
+		if(filter_var($song, FILTER_VALIDATE_URL) == TRUE && substr($song, 0, 4) == "http") {
 			$song = str_replace(["?dl=0","?dl=1"],"",$song);
 			$song = trim($song);
 			$query = $db->prepare("SELECT ID FROM songs WHERE download = :download");
@@ -829,19 +840,24 @@ class mainLib {
 			if(!empty($count)){
 				return "-3".$count["ID"];
 			}
+			$freeID = false;
+			while(!$freeID) {
+				$db_fid = rand(99, 9999999);
+				$checkID = $db->prepare('SELECT count(*) FROM songs WHERE ID = :id'); // If randomized ID picks existing song ID
+				$checkID->execute([':id' => $db_fid]);
+				if($checkID->fetchColumn() == 0) $freeID = true;
+			}
 			if(empty($name)) $name = ExploitPatch::remove(urldecode(str_replace([".mp3",".webm",".mp4",".wav"], "", basename($song))));
 			if(empty($author)) $author = "Reupload";
 			$info = $this->getFileInfo($song);
-			$size = $info['size'];
-			if(substr($info['type'], 0, 6) != "audio/")
-				return "-4";
-			$size = round($size / 1024 / 1024, 2);
+			$size = round($info['size'] / 1024 / 1024, 2);
+			if(substr($info['type'], 0, 6) != "audio/" || $size == 0 || $size == '-0') return "-4";
 			$hash = "";
-			$query = $db->prepare("INSERT INTO songs (name, authorID, authorName, size, download, hash, reuploadTime, reuploadID)
-			VALUES (:name, '9', :author, :size, :download, :hash, :time, :ID)");
-			$query->execute([':name' => $name, ':download' => $song, ':author' => $author, ':size' => $size, ':hash' => $hash, ':time' => time(), ':ID' => $accountID]);
-			return $db->lastInsertId();
-		}else{
+			$query = $db->prepare("INSERT INTO songs (ID, name, authorID, authorName, size, download, hash, reuploadTime, reuploadID)
+			VALUES (:songID, :name, '9', :author, :size, :download, :hash, :time, :accountID)");
+			$query->execute([':songID' => $db_fid, ':name' => $name, ':download' => $song, ':author' => $author, ':size' => $size, ':hash' => $hash, ':time' => time(), ':accountID' => $accountID]);
+			return $db_fid;
+		} else {
 			return "-2";
 		}
 	}
@@ -901,7 +917,142 @@ class mainLib {
 		$query->execute([':id' => $listID]);
 		return $query->fetchColumn();
 	}
-	public function mail($mail = '', $user = '', $isForgotPass = false) {
+	public function updateLibraries($token, $expires, $mainServerTime) {
+		$servers = ['s1' => 'https://geometrydashfiles.b-cdn.net', 's2' => 'https://libs.noxicloud.es'];
+		$updatedLib = false;
+		foreach($servers AS $key => &$server) {
+			if(file_exists(__DIR__.'/../../sfx/'.$key.'.txt')) $oldVersion = explode(', ', file_get_contents(__DIR__.'/../../sfx/'.$key.'.txt'));
+			else $oldVersion = [0, 0];
+			if($oldVersion[1] + 600 > time()) continue; // Download SFX library only once per 10 minutes
+			$curl = curl_init($server.'/sfx/sfxlibrary_version.txt?token='.$token.'&expires='.$expires);
+			curl_setopt_array($curl, [
+				CURLOPT_PROTOCOLS => CURLPROTO_HTTP | CURLPROTO_HTTPS,
+				CURLOPT_RETURNTRANSFER => 1
+			]);
+			$newVersion = (int)curl_exec($curl);
+			curl_close($curl);
+			$jsonVersion = $newVersion.', '.time();
+			file_put_contents(__DIR__.'/../../sfx/'.$key.'.txt', $jsonVersion);
+			if($newVersion > $oldVersion[0]) {
+				$download = curl_init($server.'/sfx/sfxlibrary.dat?token='.$token.'&expires='.$expires);
+				curl_setopt_array($download, [
+					CURLOPT_PROTOCOLS => CURLPROTO_HTTP | CURLPROTO_HTTPS,
+					CURLOPT_RETURNTRANSFER => 1
+				]);
+				$dat = curl_exec($download);
+				file_put_contents(__DIR__.'/../../sfx/'.$key.'.dat', $dat);
+				curl_close($download);
+				$updatedLib = true;
+			}
+		}
+		// Now this server's version check
+		if(file_exists(__DIR__.'/../../sfx/gdps.txt')) $oldVersion = file_get_contents(__DIR__.'/../../sfx/gdps.txt');
+		else {
+			$oldVersion = 0;
+			file_put_contents(__DIR__.'/../../sfx/gdps.txt', $mainServerTime);
+		}
+		if($oldVersion < $mainServerTime || $updatedLib) $this->generateDATFile($mainServerTime);
+	}
+	public function generateDATFile($mainServerTime) {
+		include __DIR__ . "/connection.php";
+		include __DIR__ . "/../../config/dashboard.php";
+		$servers = ['s1' => 1, 's2' => 2];
+		$library = [];
+		$library['folders'][2] = [
+			'name' => 'Geometry Dash',
+			'type' => 1,
+			'parent' => 1
+		];
+		$library['folders'][3] = [
+			'name' => 'NoxiCloud',
+			'type' => 1,
+			'parent' => 1
+		];
+		$library['folders'][4] = [
+			'name' => $gdps,
+			'type' => 1,
+			'parent' => 1
+		];
+		foreach($servers AS $key => $server) {
+			if(!file_exists(__DIR__.'/../../sfx/'.$key.'.dat')) continue;
+			$res = null;
+			$bits = null;
+			$res = file_get_contents(__DIR__.'/../../sfx/'.$key.'.dat');
+			$res = mb_convert_encoding($res, 'UTF-8', 'UTF-8');
+			$res = base64_decode(strtr($res, '-_.', '+/='));
+			$res = zlib_decode($res);
+			//file_put_contents(__DIR__.'/../../sfx/'.$key.'_decrypted.dat', $res);
+			$res = explode('|', $res);
+			for($i = 0; $i < count($res); $i++) { // Library decoding was made by MigMatos
+				$res[$i] = explode(';', $res[$i]);
+				//array_pop($res[$i]);
+				if($i === 0) {
+					$library['version'] = $mainServerTime;
+					$version = explode(',', $res[0][0]);
+					$version[1] = $mainServerTime;
+					$version = implode(',', $version);
+				}
+				for($j = 1; $j <= count($res[$i]); $j++) {
+					$bits = explode(',', $res[$i][$j]);
+					switch($i) {
+						case 0: // File/Folder
+						$bits[0] = $server . 0 . $bits[0];
+						$bits[3] = $server . 0 . $bits[3];
+							if($bits[2]) {
+								$library['folders'][$bits[0]] = [
+									'name' => $bits[1],
+									'type' => (int)$bits[2],
+									'parent' => (string)($bits[3] == $server. '01' ? (1 + $server) : $bits[3])
+								];
+							} else {
+								$library['files'][$bits[0]] = [
+									'name' => $bits[1],
+									'type' => (int)$bits[2],
+									'parent' => (string)($bits[3] == $server. '01' ? (1 + $server) : $bits[3]),
+									'bytes' => (int)$bits[4],
+									'milliseconds' => (int)$bits[5],
+								];
+							}
+							break;
+						case 1: // Credit
+							$library['credits'][] = [
+								'name' => $bits[0],
+								'website' => $bits[1],
+							];
+							break;
+					}
+				}
+			}
+		}
+		$sfxs = $db->prepare("SELECT ID, name, authorName, download, milliseconds, size, reuploadID, reuploadTime, IFNULL(userName, 'Undefined') AS reuploadUsername FROM sfxs JOIN 
+		(SELECT userName FROM accounts JOIN sfxs ON accounts.accountID = sfxs.reuploadID) reuploadUsername");
+		$sfxs->execute();
+		$sfxs = $sfxs->fetchAll();
+		foreach($sfxs AS &$customSFX) {
+			$library['files'][30 .$customSFX['ID']] = [
+				'name' => $customSFX['name'].' by '.$customSFX['authorName'],
+				'type' => 0,
+				'parent' => 4, // Will change later
+				'bytes' => $customSFX['size'],
+				'milliseconds' => $customSFX['milliseconds']
+			];
+		}
+		foreach($library['folders'] AS $id => &$folder) {
+			array_unshift($folder, $id);
+			$folder[] = 0; $folder[] = 0;
+			$filesEncrypted[] = implode(',', $folder);
+		}
+		foreach($library['files'] AS $id => &$file) {
+			array_unshift($file, $id);
+			$filesEncrypted[] = implode(',', $file);
+		}
+		foreach($library['credits'] AS &$credit) $creditsEncrypted[] = implode(',', $credit);
+		$encrypted = $version.";".implode(';', $filesEncrypted)."|" .implode(';', $creditsEncrypted).';';
+		$encrypted = zlib_encode($encrypted, ZLIB_ENCODING_DEFLATE);
+		$encrypted = strtr(base64_encode($encrypted), '+/=', '-_=');
+		file_put_contents(__DIR__.'/../../sfx/gdps.dat', $encrypted);
+	}
+  	public function mail($mail = '', $user = '', $isForgotPass = false) {
 		if(empty($mail) OR empty($user)) return;
 		include __DIR__."/../../config/mail.php";
 		if($mailEnabled) {

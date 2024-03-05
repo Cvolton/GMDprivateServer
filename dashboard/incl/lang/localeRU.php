@@ -365,6 +365,17 @@ $string['maybeSentAMessage'] = "Мы отправим вам сообщение 
 $string['forgotPasswordDesc'] = "Здесь вы можете запросить ссылку на изменение пароля, если его забыли!";
 $string['forgotPasswordButton'] = "Запросить ссылку";
 
+$string['sfxAdd'] = "Добавить звуковой эффект";
+$string["sfxAddError-5"] = "Звуковой эффект весит больше $songSize мегабайт!";
+$string["sfxAddError-6"] = "Что-то случилось при загрузке звукового эффекта!";
+$string["sfxAddError-7"] = "Загружать можно только аудиофайлы!";
+$string['sfxAdded'] = 'Звуковой эффект загружен';
+$string['yourNewSFX'] = "Взгляните на ваш новоиспечённый звуковой эффект!";
+$string["sfxAddAnotherBTN"] = "Ещё один эффектик?";
+$string["sfxAddDesc"] = "Здесь вы можете добавить звуковой эффект на сервер!";
+$string["chooseSFX"] = "Выберите звуковой эффект";
+$string["sfxAddNameFieldPlaceholder"] = "Название звукового эффекта";
+
 /*
 	REUPLOAD
 */
@@ -381,7 +392,7 @@ $string["songAddNameFieldPlaceholder"] = "Название песни";
 $string["songAddAuthorFieldPlaceholder"] = "Автор песни";
 $string["songAddButton"] = "Выбрать песню";
 $string["songAddAnotherBTN"] = "Ещё одну песню?";
-$string["songAdded"] = "Песня загружена!";
+$string["songAdded"] = "Песня загружена";
 $string["songID"] = "ID вашей песни: ";
 $string["songIDw"] = "ID песни";
 $string["songAuthor"] = "Автор";
