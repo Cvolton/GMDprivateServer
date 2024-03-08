@@ -5,9 +5,12 @@ require_once "../lib/exploitPatch.php";
 require_once "../lib/GJPCheck.php";
 $reqstring = "";
 $getSent = !empty($_POST["getSent"]) ? ExploitPatch::remove($_POST["getSent"]) : 0;
-if(empty($_POST["accountID"]) OR (!isset($_POST["page"]) OR !is_numeric($_POST["page"])) OR empty($_POST["gjp"])){
+
+$bcgjp = ($_POST["gameVersion"] > 21) ? $_POST["gjp2"] : $_POST["gjp"]; // Backwards Compatible GJP
+if(empty($_POST["accountID"]) OR (!isset($_POST["page"]) OR !is_numeric($_POST["page"])) OR empty($bcgjp)){
 	exit("-1");
 }
+
 $accountID = GJPCheck::getAccountIDOrDie();
 $page = ExploitPatch::number($_POST["page"]);
 $offset = $page*10;

@@ -13,7 +13,7 @@ class Commands {
 	}
 	public static function doCommands($accountID, $comment, $levelID) {
 		if(!is_numeric($accountID)) return false;
-
+		if($levelID < 0) return self::doListCommands($accountID, $comment, $levelID);
 		include dirname(__FILE__)."/../lib/connection.php";
 		require_once "../lib/exploitPatch.php";
 		require_once "../lib/mainLib.php";
@@ -236,6 +236,115 @@ class Commands {
 			return true;
 		}
 		return false;
+	}
+	public static function doListCommands($accountID, $command, $listID) {
+		if(substr($command,0,1) != '!') return false;
+		$listID = $listID * -1;
+		include dirname(__FILE__)."/../lib/connection.php";
+		require_once "../lib/exploitPatch.php";
+		require_once "../lib/mainLib.php";
+		$gs = new mainLib();
+		$carray = explode(' ', $command);
+		switch($carray[0]) {
+			case '!r':
+			case '!rate':
+				$getList = $db->prepare('SELECT * FROM lists WHERE listID = :listID');
+				$getList->execute([':listID' => $listID]);
+				$getList = $getList->fetch();
+				$reward = ExploitPatch::number($carray[1]);
+				$diff = ExploitPatch::charclean($carray[2]);
+				$featured = is_numeric($carray[3]) ? ExploitPatch::number($carray[3]) : ExploitPatch::number($carray[4]);
+				$count = is_numeric($carray[3]) ? ExploitPatch::number($carray[4]) : ExploitPatch::number($carray[5]);
+				if(empty($count)) {
+					$levelsCount = $getList['listlevels'];
+					$count = count(explode(',', $levelsCount));
+				}
+				if(!is_numeric($diff)) {
+					$diff = strtolower($diff);
+					if(isset($carray[3]) AND strtolower($carray[3]) == "demon") {
+						$diffList = ['easy' => 1, 'medium' => 2, 'hard' => 3, 'insane' => 4, 'extreme' => 5];
+						$diff = 5+$diffList[$diff];
+					} else {
+						$diffList = ['na' => -1, 'auto' => 0, 'easy' => 1, 'normal' => 2, 'hard' => 3, 'harder' => 4, 'demon' => 5];
+						$diff = $diffList[$diff];
+					}
+				}
+				if(!isset($diff)) $diff = $getList['starDifficulty'];
+				if($gs->checkPermission($accountID, "commandRate")) {
+					$query = $db->prepare("UPDATE lists SET starStars = :reward, starDifficulty = :diff, starFeatured = :feat, countForReward = :count WHERE listID = :listID");
+					$query->execute([':listID' => $listID, ':reward' => $reward, ':diff' => $diff, ':feat' => $featured, ':count' => $count]);
+					$query = $db->prepare("INSERT INTO modactions (type, value, value2, value3, timestamp, account) VALUES ('30', :value, :value2, :listID, :timestamp, :id)");
+					$query->execute([':value' => $reward, ':value2' => $diff, ':timestamp' => time(), ':id' => $accountID, ':listID' => $listID]);
+				} elseif($gs->checkPermission($accountID, "actionSuggestRating")) {
+					$query = $db->prepare("INSERT INTO suggest (suggestBy, suggestLevelId, suggestDifficulty, suggestStars, suggestFeatured, timestamp) VALUES (:accID, :listID, :diff, :reward, :feat, :time)");
+					$query->execute([':listID' => $listID*-1, ':reward' => $reward, ':diff' => $diff, ':accID' => $accountID, ':feat' => $featured, ':time' => time()]);
+					$query = $db->prepare("INSERT INTO modactions (type, value, value2, value3, timestamp, account) VALUES ('31', :value, :value2, :listID, :timestamp, :id)");
+					$query->execute([':value' => $reward, ':value2' => $diff, ':timestamp' => time(), ':id' => $accountID, ':listID' => $listID]);
+				} else return false;
+				break;
+			case '!f':
+			case '!feature':
+				if(!$gs->checkPermission($accountID, "commandFeature")) return false;
+				if(!isset($carray[1])) $carray[1] = 1;
+				$query = $db->prepare("UPDATE lists SET starFeatured = :feat WHERE listID=:listID");
+				$query->execute([':listID' => $listID, ':feat' => $carray[1]]);
+				$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('32', :value, :listID, :timestamp, :id)");
+				$query->execute([':value' => $carray[1], ':timestamp' => time(), ':id' => $accountID, ':listID' => $listID]);
+				break;
+			case '!un':
+			case '!unlist':
+				$accCheck = $gs->getListOwner($listID);
+				if(!$gs->checkPermission($accountID, "commandUnlistAll") AND $accountID != $accCheck) return false;
+				if(!isset($carray[1])) $carray[1] = 1;
+				$query = $db->prepare("UPDATE lists SET unlisted = :unlisted WHERE listID=:listID");
+				$query->execute([':listID' => $listID, ':unlisted' => $carray[1]]);
+				$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('33', :value, :listID, :timestamp, :id)");
+				$query->execute([':value' => $carray[1], ':timestamp' => time(), ':id' => $accountID, ':listID' => $listID]);
+				break;
+			case '!d':
+			case '!delete':
+				if(!$gs->checkPermission($accountID, "commandDelete")) return false;
+				$query = $db->prepare("DELETE FROM lists WHERE listID = :listID");
+				$query->execute([':listID' => $listID]);
+				$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('34', 0, :listID, :timestamp, :id)");
+				$query->execute([':timestamp' => time(), ':id' => $accountID, ':listID' => $listID]);
+				break;
+			case '!acc':
+			case '!setacc':
+				if(!$gs->checkPermission($accountID, "commandSetacc")) return false;
+				if(is_numeric($carray[1])) $acc = ExploitPatch::number($carray[1]);
+				else $acc = $gs->getAccountIDFromName(ExploitPatch::charclean($carray[1]));
+				if(empty($acc)) return false;
+				$query = $db->prepare("UPDATE lists SET accountID = :accID WHERE listID=:listID");
+				$query->execute([':listID' => $listID, ':accID' => $acc]);
+				$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('35', :value, :listID, :timestamp, :id)");
+				$query->execute([':value' => $acc, ':timestamp' => time(), ':id' => $accountID, ':listID' => $listID]);
+				break;
+			case '!re':
+			case '!rename':
+				$accCheck = $gs->getListOwner($listID);
+				if(!$gs->checkPermission($accountID, "commandRenameAll") AND $accountID != $accCheck) return false;
+				$carray[0] = '';
+				$oldName = $gs->getListName($listID);
+				$name = trim(ExploitPatch::charclean(implode(' ', $carray)));
+				$query = $db->prepare("UPDATE lists SET listName = :name WHERE listID = :listID");
+				$query->execute([':listID' => $listID, ':name' => $name]);
+				$query = $db->prepare("INSERT INTO modactions (type, value, value2, value3, timestamp, account) VALUES ('36', :value, :value2, :listID, :timestamp, :id)");
+				$query->execute([':value' => $name, ':value2' => $oldName, ':timestamp' => time(), ':id' => $accountID, ':listID' => $listID]);
+				break;
+			case '!desc':
+			case '!description':
+				$accCheck = $gs->getListOwner($listID);
+				if(!$gs->checkPermission($accountID, "commandDescriptionAll") AND $accountID != $accCheck) return false;
+				$carray[0] = '';
+				$name = base64_encode(trim(ExploitPatch::charclean(implode(' ', $carray))));
+				$query = $db->prepare("UPDATE lists SET listDesc = :name WHERE listID = :listID");
+				$query->execute([':listID' => $listID, ':name' => $name]);
+				$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('37', :value, :listID, :timestamp, :id)");
+				$query->execute([':value' => $name, ':timestamp' => time(), ':id' => $accountID, ':listID' => $listID]);
+				break;
+		}
+		return true;
 	}
 	public static function doProfileCommands($accountID, $command){
 		include dirname(__FILE__)."/../lib/connection.php";

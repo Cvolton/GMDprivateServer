@@ -134,6 +134,9 @@ class mainLib {
 			case 4:
 				return "XL";
 				break;
+			case 5:
+				return "Platformer";
+				break;
 			default:
 				return "Unknown";
 				break;
@@ -205,7 +208,7 @@ class mainLib {
 		return array($starDifficulty, $starDemon, $starAuto);
 	}
 	public function getGauntletName($id){
-		$gauntlets = ["Unknown", "Fire", "Ice", "Poison", "Shadow", "Lava", "Bonus", "Chaos", "Demon", "Time", "Crystal", "Magic", "Spike", "Monster", "Doom", "Death"];
+		$gauntlets = ["Unknown", "Fire", "Ice", "Poison", "Shadow", "Lava", "Bonus", "Chaos", "Demon", "Time", "Crystal", "Magic", "Spike", "Monster", "Doom", "Death", 'Forest', 'Rune', 'Force', 'Spooky', 'Dragon', 'Water', 'Haunted', 'Acid', 'Witch', 'Power', 'Potion', 'Snake', 'Toxic', 'Halloween', 'Treasure', 'Ghost', 'Spider', 'Gem', 'Inferno', 'Portal', 'Strange', 'Fantasy', 'Christmas', 'Surprise', 'Mystery', 'Cursed', 'Cyborg', 'Castle', 'Grave', 'Temple', 'World', 'Galaxy', 'Universe', 'Discord', 'Split'];
 		if($id < 0 || $id >= count($gauntlets))
 			return $gauntlets[0];
 		return $gauntlets[$id];
@@ -658,15 +661,36 @@ class mainLib {
 		
 		
 	}
-	public function featureLevel($accountID, $levelID, $feature){
+	public function featureLevel($accountID, $levelID, $state) {
 		if(!is_numeric($accountID)) return false;
-
+		switch($state) {
+	            case 0:
+	                $feature = 0;
+	                $epic = 0;
+	                break;
+	            case 1:
+	                $feature = 1;
+	                $epic = 0;
+	                break;
+	            case 2: // Stole from TheJulfor
+	                $feature = 1;
+	                $epic = 1;
+	                break;
+	            case 3:
+	                $feature = 1;
+	                $epic = 2;
+	                break;
+	            case 4:
+	                $feature = 1;
+	                $epic = 3;
+	                break;
+	        }
 		include __DIR__ . "/connection.php";
-		$query = "UPDATE levels SET starFeatured=:feature, rateDate=:now WHERE levelID=:levelID";
+		$query = "UPDATE levels SET starFeatured=:feature, starEpic=:epic, rateDate=:now WHERE levelID=:levelID";
 		$query = $db->prepare($query);	
-		$query->execute([':feature' => $feature, ':levelID'=>$levelID, ':now' => time()]);
+		$query->execute([':feature' => $feature, ':epic' => $epic, ':levelID' => $levelID, ':now' => time()]);
 		$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('2', :value, :levelID, :timestamp, :id)");
-		$query->execute([':value' => $feature, ':timestamp' => time(), ':id' => $accountID, ':levelID' => $levelID]);
+		$query->execute([':value' => $state, ':timestamp' => time(), ':id' => $accountID, ':levelID' => $levelID]);
 	}
 	public function verifyCoinsLevel($accountID, $levelID, $coins){
 		if(!is_numeric($accountID)) return false;
@@ -730,5 +754,31 @@ class mainLib {
 		$query = "INSERT INTO suggest (suggestBy, suggestLevelID, suggestDifficulty, suggestStars, suggestFeatured, suggestAuto, suggestDemon, timestamp) VALUES (:account, :level, :diff, :stars, :feat, :auto, :demon, :timestamp)";
 		$query = $db->prepare($query);
 		$query->execute([':account' => $accountID, ':level' => $levelID, ':diff' => $difficulty, ':stars' => $stars, ':feat' => $feat, ':auto' => $auto, ':demon' => $demon, ':timestamp' => time()]);
+	}
+	public function getListOwner($listID) {
+		if(!is_numeric($listID)) return false;
+		include __DIR__ . "/connection.php";
+		$query = $db->prepare('SELECT accountID FROM lists WHERE listID = :id');
+		$query->execute([':id' => $listID]);
+		return $query->fetchColumn();
+	}
+	public function getListLevels($listID) {
+		if(!is_numeric($listID)) return false;
+		include __DIR__ . "/connection.php";
+		$query = $db->prepare('SELECT listlevels FROM lists WHERE listID = :id');
+		$query->execute([':id' => $listID]);
+		return $query->fetchColumn();
+	}
+	public function getListDiffName($diff) {
+		if($diff == -1) return 'N/A';
+		$diffs = ['Auto', 'Easy', 'Normal', 'Hard', 'Harder', 'Extreme', 'Easy Demon', 'Medium Demon', 'Hard Demon', 'Insane Demon', 'Extreme Demon'];
+		return $diffs[$diff];
+	}
+	public function getListName($listID) {
+		if(!is_numeric($listID)) return false;
+		include __DIR__ . "/connection.php";
+		$query = $db->prepare('SELECT listName FROM lists WHERE listID = :id');
+		$query->execute([':id' => $listID]);
+		return $query->fetchColumn();
 	}
 }
