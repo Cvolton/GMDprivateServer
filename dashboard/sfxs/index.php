@@ -9,7 +9,7 @@ require_once "../".$dbPath."incl/lib/exploitPatch.php";
 $dl = new dashboardLib();
 $dl->title($dl->getLocalizedString("sfxAdd"));
 $dl->printFooter('../');
-if(strpos($songEnabled, '1') === false) {
+if(strpos($sfxEnabled, '1') === false) {
 	$dl->printSong('<div class="form">
 		<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 		<form class="form__inner" method="post" action="">
@@ -34,33 +34,25 @@ if($_FILES && $_FILES['filename']['error'] == UPLOAD_ERR_OK) {
 	$file_type = explode(';', $info->buffer(file_get_contents($_FILES['filename']['tmp_name'])))[0];
 	$allowed = array("audio/mpeg", "audio/ogg", "audio/mp3");
 	$db_fid = 1;
-	echo '1';
 	if(!in_array($file_type, $allowed)) $db_fid = -7;
 	else {
 		if($_FILES['filename']['size'] == 0) $db_fid = -6;
 		else {
 			if($_FILES['filename']['size'] >= $SFXsize * 1024 * 1024) $db_fid = -5;
 			else {
-				echo '2';
 				$time = time();
 				$length = 10;
 				$types = array('.mp3', '.ogg', '.mpeg');
 				$name = !empty(mb_substr(ExploitPatch::rucharclean($_POST['name']), 0, 40)) ? mb_substr(ExploitPatch::rucharclean($_POST['name']), 0, 40) : 'Unnamed SFX';
 				$author = $gs->getAccountName($_SESSION['accountID']);
 				$size = $_FILES['filename']['size'];
-				echo '3';
 				$query = $db->prepare("INSERT INTO sfxs (name, authorName, size, download,  reuploadTime, reuploadID) VALUES (:name, :author, :size, :download, :reuploadTime, :reuploadID)");
-				echo '4';
 				$query->execute([':name' => $name, ':download' => '', ':author' => $author, ':size' => $size, ':reuploadTime' => $time, ':reuploadID' => $_SESSION['accountID']]);
-				echo '5';
 				$db_fid = $db->lastInsertId();
-				echo '6';
 				$song = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]".$db_fid.".ogg";
 				move_uploaded_file($_FILES['filename']['tmp_name'], "$db_fid.ogg");
-				echo '7';
-				$duration = $dl->getAudioDuration("$db_fid.ogg");
-				echo '8';
-				$duration = empty($duration) ? 0 : $duration;
+				$duration = $gs->getAudioDuration(realpath("$db_fid.ogg"));
+				$duration = empty($duration) ? 0 : $duration * 1000;
 				$query = $db->prepare('UPDATE sfxs SET download = :dl, milliseconds = :ms WHERE ID = :id');
 				$query->execute([':dl' => $song, ':ms' => $duration, ':id' => $db_fid]);
 				$fontsize = 27;
@@ -80,7 +72,6 @@ if($_FILES && $_FILES['filename']['error'] == UPLOAD_ERR_OK) {
 						<div class="form-control" style="display: flex;width: 97.5%;height: max-content;align-items: center;">'.$stats.'</div>
 						<div style="display: flex;justify-content: space-between;margin-top: 10px;"><h3 id="comments" class="songidyeah" style="margin: 0px;width: max-content;">SFX ID: <b>'.$songIDlol.'</b></h3><h3 id="comments" class="songidyeah" style="justify-content: flex-end;grid-gap: 0.5vh;margin: 0px;width: max-content;">'.$dl->getLocalizedString("date").': <b>'.$time.'</b></h3></div>
 					</div></div>';
-				//$gs->sendSFXMessage($_SESSION['user_id'], $_SESSION['user']['username'], $name, $song, $size, $db_fid);
 			}
 		}			
 	}

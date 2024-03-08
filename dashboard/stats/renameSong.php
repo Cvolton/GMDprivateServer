@@ -11,6 +11,13 @@ if($gs->checkPermission($_SESSION["accountID"], "dashboardManageSongs")){
 	$author = mb_substr(ExploitPatch::rucharclean($_POST["author"]), 0, 23);
 	$name = mb_substr(ExploitPatch::rucharclean($_POST["name"]), 0, 30);
 	$sid = ExploitPatch::number($_POST["ID"]);
+	if(isset($_POST['sfx']) AND !empty($name) AND !empty($sid)) {
+		$query = $db->prepare("UPDATE sfxs SET name = :n WHERE ID = :id");
+		$query->execute([':n' => $name, ':id' => $sid]);
+		$query = $db->prepare("INSERT INTO modactions (type, value2, value3, timestamp, account) VALUES ('27', :n, :id, :timestamp, :account)");
+		$query->execute([':n' => $name, ':id' => $sid, ':timestamp' => time(), ':account' => $_SESSION["accountID"]]);
+		die(json_encode(['success' => true]));
+	}
 	if(!empty($author) AND !empty($name) AND !empty($sid)) {
 		$query = $db->prepare("UPDATE songs SET name = :n, authorName = :a WHERE ID = :id");
 		$query->execute([':n' => $name, ':a' => $author, ':id' => $sid]);

@@ -367,7 +367,7 @@ $string['forgotPasswordDesc'] = "Здесь вы можете запросить
 $string['forgotPasswordButton'] = "Запросить ссылку";
 
 $string['sfxAdd'] = "Добавить звуковой эффект";
-$string["sfxAddError-5"] = "Звуковой эффект весит больше $songSize мегабайт!";
+$string["sfxAddError-5"] = "Звуковой эффект весит больше $SFXsize мегабайт!";
 $string["sfxAddError-6"] = "Что-то случилось при загрузке звукового эффекта!";
 $string["sfxAddError-7"] = "Загружать можно только аудиофайлы!";
 $string['sfxAdded'] = 'Звуковой эффект загружен';
@@ -376,6 +376,9 @@ $string["sfxAddAnotherBTN"] = "Ещё один эффектик?";
 $string["sfxAddDesc"] = "Здесь вы можете добавить звуковой эффект на сервер!";
 $string["chooseSFX"] = "Выберите звуковой эффект";
 $string["sfxAddNameFieldPlaceholder"] = "Название звукового эффекта";
+$string['sfxs'] = 'Звуковые эффекты';
+$string['sfxID'] = 'ID звукового эффекта';
+$string['manageSFX'] = 'Управление звуковыми эффектами';
 
 /*
 	REUPLOAD

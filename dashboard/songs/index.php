@@ -40,8 +40,16 @@ if($_FILES && $_FILES['filename']['error'] == UPLOAD_ERR_OK) {
 				if($_FILES['filename']['size'] >= $maxsize) $db_fid = -5;
 				else {
 					$length = 10;
-					$db_fid = rand(2, 999999);
+					$freeID = false;
+					while(!$freeID) {
+						$db_fid = rand(99, 9999999);
+						$checkID = $db->prepare('SELECT count(*) FROM songs WHERE ID = :id'); // If randomized ID picks existing song ID
+						$checkID->execute([':id' => $db_fid]);
+						if($checkID->fetchColumn() == 0) $freeID = true;
+					}
 					move_uploaded_file($_FILES['filename']['tmp_name'], "$db_fid.mp3");
+					$duration = $gs->getAudioDuration(realpath("$db_fid.ogg"));
+					$duration = empty($duration) ? 0 : $duration;
 					$size = ($_FILES['filename']['size'] / 1048576);
 					$size = round($size, 2);
 					$hash = "";
@@ -59,13 +67,12 @@ if($_FILES && $_FILES['filename']['error'] == UPLOAD_ERR_OK) {
 					}
 					if(empty($name)) $name = "Unnamed";
 					if(empty($author)) $author = "Reupload";
-					$servername = $_SERVER['SERVER_NAME'];
 					$accountID = $_SESSION["accountID"];
 					$name = mb_substr($name, 0, 40);
 					$author = mb_substr($author, 0, 40);
 					$song = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]".$db_fid.".mp3";
-					$query = $db->prepare("INSERT INTO songs (ID, name, authorID, authorName, size, download, hash, reuploadTime, reuploadID) VALUES (:id, :name, '9', :author, :size, :download, :hash, :reuploadTime, :reuploadID)");
-					$query->execute([':id' => $db_fid, ':name' => $name, ':download' => $song, ':author' => $author, ':size' => $size, ':hash' => $hash, ':reuploadTime' => time(), ':reuploadID' => $accountID]);
+					$query = $db->prepare("INSERT INTO songs (ID, name, authorID, authorName, size, duration, download, hash, reuploadTime, reuploadID) VALUES (:id, :name, '9', :author, :size, :duration, :download, :hash, :reuploadTime, :reuploadID)");
+					$query->execute([':id' => $db_fid, ':name' => $name, ':download' => $song, ':author' => $author, ':size' => $size, ':duration' => $duration, ':hash' => $hash, ':reuploadTime' => time(), ':reuploadID' => $accountID]);
 					$fontsize = 27;
 					$songIDlol = '<button id="copy'.$db_fid.'" class="accbtn songidyeah" onclick="copysong('.$db_fid.')">'.$db_fid.'</button>';
 					$time = $dl->convertToDate(time(), true);
@@ -80,10 +87,11 @@ if($_FILES && $_FILES['filename']['error'] == UPLOAD_ERR_OK) {
 					$songs = '<div id="profile'.$db_fid.'" style="width: 100%;display: flex;flex-wrap: wrap;justify-content: center;">
 							<div class="profile"><div style="display: flex;width: 100%;justify-content: space-between;margin-bottom: 7px;align-items: center;"><div style="display: flex;width: 100%; justify-content: space-between;align-items: center;">
 								<h2 style="margin: 0px;font-size: '.$fontsize.'px;margin-left:5px;display: flex;align-items: center;" class="profilenick">'.$author.' — '.$name.$btn.'</h2>'.$favs.'
-							</div></div>
-							<div class="form-control" style="display: flex;width: 100%;height: max-content;align-items: center;">'.$stats.'</div>
-							<div style="display: flex;justify-content: space-between;margin-top: 10px;"><h3 id="comments" class="songidyeah" style="margin: 0px;width: max-content;">'.$dl->getLocalizedString("songIDw").': <b>'.$songIDlol.'</b></h3><h3 id="comments" class="songidyeah" style="justify-content: flex-end;grid-gap: 0.5vh;margin: 0px;width: max-content;">'.$dl->getLocalizedString("date").': <b>'.$time.'</b></h3></div>
-						</div></div>';
+							</div>
+						</div>
+						<div class="form-control" style="display: flex;width: 100%;height: max-content;align-items: center;">'.$stats.'</div>
+						<div style="display: flex;justify-content: space-between;margin-top: 10px;"><h3 id="comments" class="songidyeah" style="margin: 0px;width: max-content;">'.$dl->getLocalizedString("songIDw").': <b>'.$songIDlol.'</b></h3><h3 id="comments" class="songidyeah" style="justify-content: flex-end;grid-gap: 0.5vh;margin: 0px;width: max-content;">'.$dl->getLocalizedString("date").': <b>'.$time.'</b></h3></div>
+					</div></div>';
 				}
 			}			
 		}
