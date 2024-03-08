@@ -1,7 +1,7 @@
 <h1>Unused Accounts</h1>
 <table border="1"><tr><th>#</th><th>ID</th><th>Name</th><th>Registration date</th></tr>
 <?php
-set_time_limit(0);
+if(function_exists("set_time_limit")) set_time_limit(0);
 ob_flush();
 flush();
 //error_reporting(0);

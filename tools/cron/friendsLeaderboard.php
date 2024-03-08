@@ -13,7 +13,7 @@ if(file_exists("../logs/fixfrndlog.txt")){
 	}
 }
 file_put_contents("../logs/fixfrndlog.txt",time());
-set_time_limit(0);
+if(function_exists("set_time_limit")) set_time_limit(0);
 include "../../incl/lib/connection.php";
 echo "Calculating the amount of friends everyone has";
 $query = $db->prepare("UPDATE accounts
