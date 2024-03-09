@@ -27,6 +27,11 @@ $string["leaderboardTime"] = "Leaderboards Progress";
 
 $string["language"] = "Language";
 
+$string["download"] = "Download";
+$string["forWindows"] = "For Windows";
+$string["forAndroid"] = "For Android";
+$string["forMacos"] = "For MacOS";
+
 $string["loginHeader"] = "Welcome, %s";
 $string["logout"] = "Log Out";
 $string["login"] = "Log In";

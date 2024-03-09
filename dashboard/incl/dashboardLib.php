@@ -58,6 +58,7 @@ class dashboardLib{
 		$modActive = "";
 		$reuploadActive = "";
 		$statsActive = "";
+		$downloadActive = "";
 		switch($active){
 			case "home":
 				$homeActive = "active";
@@ -73,6 +74,9 @@ class dashboardLib{
 				break;
 			case "stats":
 				$statsActive = "active";
+				break;
+			case "download":
+				$downloadActive = "active";
 				break;
 		}
 		echo '<nav class="navbar navbar-expand-lg navbar-dark menubar">
@@ -164,6 +168,29 @@ class dashboardLib{
 							<a class="dropdown-item" href="lang/switchLang.php?lang=TR">Türkçe</a>
 							<a class="dropdown-item" href="lang/switchLang.php?lang=test">translTest</a>
 						</div>';
+		require_once __DIR__."/../config.php";
+		$localizedDownloadSelection = $this->getLocalizedString("download");
+		$localizedForWindows = $this->getLocalizedString("forWindows");
+		$localizedForAndroid = $this->getLocalizedString("forAndroid");
+		$localizedForMacos = $this->getLocalizedString("forMacos");
+		$downloadCode = "<li class=\"nav-item dropdown $downloadActive\">
+					<a class=\"nav-link dropdown-toggle\" href=\"#\" id=\"navbarDropdownMenuLink\" data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"false\">
+						<i class=\"fa fa-download\" aria-hidden=\"true\"></i> $localizedDownloadSelection
+					</a>
+					<div class=\"dropdown-menu\" aria-labelledby=\"navbarDropdownMenuLink\">";
+		if($winDownloadLink){
+			$downloadCode .= "<a class=\"dropdown-item\" href=$winDownloadLink> $localizedForWindows</a>";
+		}
+		if($andrDownloadLink){
+			$downloadCode .= "<a class=\"dropdown-item\" href=$andrDownloadLink> $localizedForAndroid</a>";
+		}
+		if($macosDownloadLink){
+			$downloadCode .= "<a class=\"dropdown-item\" href=$macosDownloadLink> $localizedForMacos</a>";
+		}
+		$downloadCode .= "</div></li>";
+		if($winDownloadLink || $andrDownloadLink || $macosDownloadLink){
+			echo $downloadCode;
+		}
 		if(isset($_SESSION["accountID"]) AND $_SESSION["accountID"] != 0){
 			$userName = $gs->getAccountName($_SESSION["accountID"]);
 			echo'<li class="nav-item dropdown">
