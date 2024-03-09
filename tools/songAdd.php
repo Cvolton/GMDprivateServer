@@ -11,10 +11,8 @@ if(!empty($_POST['songlink'])){
 		exit("Invalid captcha response");
 
 	$result = $gs->songReupload($_POST['songlink']);
-	if($result == "-4"){
+	if($result == "-4")
 		echo "This URL doesn't point to a valid audio file.";
-	}elseif($result == "-3")
-		echo "This song already exists in our database.";
 	elseif($result == "-2")
 		echo "The download link isn't a valid URL";
 	else
