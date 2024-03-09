@@ -36,11 +36,13 @@ switch($file) {
 		foreach($customLibrary AS $library) {
 			$servers[$library[0]] = $library[2];
 		}
-		$music = substr($file, strlen($explode[0]) + 1, strlen($file));
-		$musicID = explode('.', substr($file, strlen($explode[0]) + 1, strlen($file)))[0];
-		if($servers[$explode[0]] !== null) $url = $servers[$explode[0]].'/music/'.$music.'?token='.$_GET['token'].'&expires='.$_GET['expires'];
-		else $url = $gs->getSongInfo($musicID);
-		$curl = curl_init($url['download']);
+		$musicID = explode('.', $file)[0];
+		$url = $gs->getSongInfo($musicID, 'download');
+		if(!$url) {
+			$music = substr($file, strlen($explode[0]) + 1, strlen($file));
+			$url = $servers[$explode[0]].'/music/'.$music.'?token='.$_GET['token'].'&expires='.$_GET['expires'];
+		}
+		$curl = curl_init($url);
 		curl_setopt_array($curl, [
 			CURLOPT_PROTOCOLS => CURLPROTO_HTTP | CURLPROTO_HTTPS,
 			CURLOPT_RETURNTRANSFER => 1
