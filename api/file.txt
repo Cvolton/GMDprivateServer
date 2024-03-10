@@ -1,0 +1,9 @@
+This is the endpoints of the API
+
+to get the data, you need to send a GET requests to any of these endpoints and their parameters, all returns a beauty JSON object:
+/api/level/(levelID) - Tells about the level information
+/api/comments/(levelID) - Shows the comments of the level
+/api/lists/(listsID) - Tells about the info of a level lists
+/api/profile/(username or accountID) - Tells who the user is
+
+If the request fails, it would return absolutely nothing or "-1"
