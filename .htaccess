@@ -1,5 +1,6 @@
 # API functionality
 # because were just using PhP, this will work if your using Apache, for Nginx its nginx.conf
+<IfModule mod_rewrite.c>
 RewriteEngine On
 
 RewriteRule ^api/level/?$ incl/api/null.php [L,QSA]
@@ -26,3 +27,4 @@ RewriteRule ^api/lists/-[0-9]+/?$ incl/api/null.php [L,QSA]
 
 RewriteRule ^api/lists/([0-9]+)$ incl/api/lists.php?listID=$1 [L,QSA]
 
+</IfModule>
