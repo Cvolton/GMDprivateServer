@@ -973,14 +973,14 @@ class mainLib {
 			$serverIDs[$customLib[2]] = $customLib[0];
 			if($types[$type] == 'sfx') {
 				$library['folders'][($customLib[0] + 1)] = [
-					'name' => $customLib[1],
+					'name' => ExploitPatch::escapedat($customLib[1]),
 					'type' => 1,
 					'parent' => 1
 				];
 			} else {
 				$library['tags'][$customLib[0]] = [
 					'ID' => $customLib[0],
-					'name' => $customLib[1],
+					'name' => ExploitPatch::escapedat($customLib[1]),
 				];
 			}
 		}
@@ -993,7 +993,7 @@ class mainLib {
 			$res = base64_decode(strtr($res, '-_.', '+/='));
 			$res = zlib_decode($res);
 			$res = explode('|', $res);
-			if($types[$type] == 'sfx') {
+			if(!$type) {
 				for($i = 0; $i < count($res); $i++) { // SFX library decoding was made by MigMatos
 					$res[$i] = explode(';', $res[$i]);
 					//array_pop($res[$i]);
@@ -1007,65 +1007,35 @@ class mainLib {
 						$bits = explode(',', $res[$i][$j]);
 						switch($i) {
 							case 0: // File/Folder
+								if(empty(trim($bits[1]))) continue;
 								$bits[0] = $server . 0 . $bits[0];
 								$bits[3] = $server . 0 . $bits[3];
 								if($bits[2]) {
 									$library['folders'][$bits[0]] = [
-										'name' => $bits[1],
+										'name' => ExploitPatch::escapedat($bits[1]),
 										'type' => (int)$bits[2],
-										'parent' => (string)($bits[3] == $server. '01' ? (1 + $server) : $bits[3])
+										'parent' => (int)($bits[3] == $server. '01' ? (1 + $server) : $bits[3])
 									];
 								} else {
 									$library['files'][$bits[0]] = [
-										'name' => $bits[1],
+										'name' => ExploitPatch::escapedat($bits[1]),
 										'type' => (int)$bits[2],
-										'parent' => (string)($bits[3] == $server. '01' ? (1 + $server) : $bits[3]),
+										'parent' => (int)($bits[3] == $server. '01' ? (1 + $server) : $bits[3]),
 										'bytes' => (int)$bits[4],
 										'milliseconds' => (int)$bits[5],
 									];
 								}
 								break;
 							case 1: // Credit
+								if(empty(trim($bits[0])) || empty(trim($bits[1]))) continue;
 								$library['credits'][] = [
-									'name' => $bits[0],
-									'website' => $bits[1],
+									'name' => ExploitPatch::escapedat($bits[0]),
+									'website' => ExploitPatch::escapedat($bits[1]),
 								];
 								break;
 						}
 					}
 				}
-				$sfxs = $db->prepare("SELECT sfxs.*, accounts.userName FROM sfxs JOIN accounts ON accounts.accountID = sfxs.reuploadID");
-				$sfxs->execute();
-				$sfxs = $sfxs->fetchAll();
-				$folderID = [];
-				foreach($sfxs AS &$customSFX) {
-					if(!isset($folderID[$customSFX['reuploadID']])) {
-						$library['folders'][$serverIDs[null]. 0 .$customSFX['reuploadID']] = [
-							'name' => $customSFX['userName'].'\'s SFXs',
-							'type' => 1,
-							'parent' => ($serverIDs[null] + 1)
-						];
-						$folderIDs[$customSFX['reuploadID']] = true;
-					}
-					$library['files'][$serverIDs[null]. 0 .$customSFX['ID']] = [
-						'name' => $customSFX['name'],
-						'type' => 0,
-						'parent' => $serverIDs[null]. 0 .$customSFX['reuploadID'],
-						'bytes' => $customSFX['size'],
-						'milliseconds' => $customSFX['milliseconds']
-					];
-				}
-				foreach($library['folders'] AS $id => &$folder) {
-					array_unshift($folder, $id);
-					$folder[] = 0; $folder[] = 0;
-					$filesEncrypted[] = implode(',', $folder);
-				}
-				foreach($library['files'] AS $id => &$file) {
-					array_unshift($file, $id);
-					$filesEncrypted[] = implode(',', $file);
-				}
-				foreach($library['credits'] AS &$credit) $creditsEncrypted[] = implode(',', $credit);
-				$encrypted = $version.";".implode(';', $filesEncrypted)."|" .implode(';', $creditsEncrypted).';';
 			} else {
 				$version = $mainServerTime;
 				array_shift($res);
@@ -1081,9 +1051,9 @@ class mainLib {
 							case 0:
 								$library['authors'][$song[0]] = [
 									'authorID' => $song[0],
-									'name' => $song[1],
-									'link' => $song[2],
-									'yt' => $song[3]
+									'name' => ExploitPatch::escapedat($song[1]),
+									'link' => ExploitPatch::escapedat($song[2]),
+									'yt' => ExploitPatch::escapedat($song[3])
 								];
 								break;
 							case 1:
@@ -1099,7 +1069,7 @@ class mainLib {
 								$tags = '.'.implode('.', $newTags).'.';
 								$library['songs'][$song[0]] = [
 									'ID' => $song[0],
-									'name' => $song[1],
+									'name' => ExploitPatch::escapedat($song[1]),
 									'authorID' => $song[2],
 									'size' => $song[3],
 									'seconds' => $song[4],
@@ -1109,53 +1079,80 @@ class mainLib {
 							case 2:
 								$library['tags'][$song[0]] = [
 									'ID' => $song[0],
-									'name' => $song[1]
+									'name' => ExploitPatch::escapedat($song[1])
 								];
 								break;
 						}
 					}
 					$x++;
 				}
-				$songs = $db->prepare("SELECT songs.*, accounts.userName FROM songs JOIN accounts ON accounts.accountID = songs.reuploadID");
-				$songs->execute();
-				$songs = $songs->fetchAll();
-				$folderID = [];
-				$accIDs = [];
-				$c = 0;
-				foreach($songs AS &$customSongs) {
-					$c++;
-					$authorName = ExploitPatch::rutoen(trim($customSongs['authorName']));
-					if(!isset($folderID[$authorName])) {
-						$folderID[$authorName] = $c;
-						$library['authors'][$serverIDs[null]. 0 .$folderID[$authorName]] = [
-							'authorID' => ($serverIDs[null]. 0 .$folderID[$authorName]),
-							'name' => $authorName,
-							'link' => ' ',
-							'yt' => ' '
-						];
-					}
-					if(!isset($accIDs[$customSongs['reuploadID']])) {
-						$accIDs[$customSongs['reuploadID']] = true;
-						$library['tags'][$serverIDs[null]. 0 .$customSongs['reuploadID']] = [
-							'ID' => ($serverIDs[null]. 0 .$customSongs['reuploadID']),
-							'name' => $customSongs['userName'],
-						];
-					}
-					$customSongs['name'] = trim($customSongs['name']);
-					$library['songs'][$customSongs['ID']] = [
-						'ID' => ($customSongs['ID']),
-						'name' => !empty($customSongs['name']) ? ExploitPatch::rutoen($customSongs['name']) : 'Unnamed',
+			}
+		}
+		if(!$type) {
+			$sfxs = $db->prepare("SELECT sfxs.*, accounts.userName FROM sfxs JOIN accounts ON accounts.accountID = sfxs.reuploadID");
+			$sfxs->execute();
+			$sfxs = $sfxs->fetchAll();
+			$folderID = [];
+			foreach($sfxs AS &$customSFX) {
+				if(!isset($folderID[$customSFX['reuploadID']])) {
+					$library['folders'][$serverIDs[null]. 0 .$customSFX['reuploadID']] = [
+						'name' => ExploitPatch::escapedat($customSFX['userName']).'\'s SFXs',
+						'type' => 1,
+						'parent' => (int)($serverIDs[null] + 1)
+					];
+					$folderIDs[$customSFX['reuploadID']] = true;
+				}
+				$library['files'][$serverIDs[null]. 0 .$customSFX['ID']] = [
+					'name' => ExploitPatch::escapedat($customSFX['name']),
+					'type' => 0,
+					'parent' => (int)($serverIDs[null]. 0 .$customSFX['reuploadID']),
+					'bytes' => (int)$customSFX['size'],
+					'milliseconds' => (int)$customSFX['milliseconds']
+				];
+			}
+			foreach($library['folders'] AS $id => &$folder) $filesEncrypted[$id] = implode(',', [$id, $folder['name'], 1, $folder['parent'], 0, 0]);
+			foreach($library['files'] AS $id => &$file) $filesEncrypted[$id] = implode(',', [$id, $file['name'], 0, $file['parent'], $file['bytes'], $file['milliseconds']]);
+			foreach($library['credits'] AS &$credit) $creditsEncrypted[] = implode(',', [$credit['name'], $credit['website']]);
+			$encrypted = $version.";".implode(';', $filesEncrypted)."|" .implode(';', $creditsEncrypted).';';
+		} else {
+			$songs = $db->prepare("SELECT songs.*, accounts.userName FROM songs JOIN accounts ON accounts.accountID = songs.reuploadID");
+			$songs->execute();
+			$songs = $songs->fetchAll();
+			$folderID = $accIDs = [];
+			$c = 0;
+			foreach($songs AS &$customSongs) {
+				$c++;
+				$authorName = ExploitPatch::escapedat(ExploitPatch::rutoen(trim($customSongs['authorName'])));
+				if(!isset($folderID[$authorName])) {
+					$folderID[$authorName] = $c;
+					$library['authors'][$serverIDs[null]. 0 .$folderID[$authorName]] = [
 						'authorID' => ($serverIDs[null]. 0 .$folderID[$authorName]),
-						'size' => ($customSongs['size'] * 1024 * 1024),
-						'seconds' => $customSongs['duration'],
-						'tags' => '.'.$serverIDs[null].'.'.$serverIDs[null]. 0 .$customSongs['reuploadID'].'.'
+						'name' => $authorName,
+						'link' => ' ',
+						'yt' => ' '
 					];
 				}
-				foreach($library['authors'] AS &$authorList) $authorsEncrypted[] = implode(',', $authorList);
-				foreach($library['songs'] AS &$songsList) $songsEncrypted[] = implode(',', $songsList);
-				foreach($library['tags'] AS &$tagsList) $tagsEncrypted[] = implode(',', $tagsList);
-				$encrypted = $version."|".implode(';', $authorsEncrypted).";|" .implode(';', $songsEncrypted).";|" .implode(';', $tagsEncrypted).';';
+				if(!isset($accIDs[$customSongs['reuploadID']])) {
+					$accIDs[$customSongs['reuploadID']] = true;
+					$library['tags'][$serverIDs[null]. 0 .$customSongs['reuploadID']] = [
+						'ID' => ($serverIDs[null]. 0 .$customSongs['reuploadID']),
+						'name' => ExploitPatch::escapedat($customSongs['userName']),
+					];
+				}
+				$customSongs['name'] = trim($customSongs['name']);
+				$library['songs'][$customSongs['ID']] = [
+					'ID' => ($customSongs['ID']),
+					'name' => !empty($customSongs['name']) ? ExploitPatch::escapedat(ExploitPatch::rutoen($customSongs['name'])) : 'Unnamed',
+					'authorID' => ($serverIDs[null]. 0 .$folderID[$authorName]),
+					'size' => ($customSongs['size'] * 1024 * 1024),
+					'seconds' => $customSongs['duration'],
+					'tags' => '.'.$serverIDs[null].'.'.$serverIDs[null]. 0 .$customSongs['reuploadID'].'.'
+				];
 			}
+			foreach($library['authors'] AS &$authorList) $authorsEncrypted[] = implode(',', $authorList);
+			foreach($library['songs'] AS &$songsList) $songsEncrypted[] = implode(',', $songsList);
+			foreach($library['tags'] AS &$tagsList) $tagsEncrypted[] = implode(',', $tagsList);
+			$encrypted = $version."|".implode(';', $authorsEncrypted).";|" .implode(';', $songsEncrypted).";|" .implode(';', $tagsEncrypted).';';
 		}
 		$encrypted = zlib_encode($encrypted, ZLIB_ENCODING_DEFLATE);
 		$encrypted = strtr(base64_encode($encrypted), '+/=', '-_=');
