@@ -3,6 +3,7 @@ chdir(dirname(__FILE__));
 include "../lib/connection.php";
 require_once "../lib/songReup.php";
 require_once "../lib/exploitPatch.php";
+require "../../config/proxy.php";
 if(empty($_POST["songID"])){
 	exit("-1");
 }
@@ -47,6 +48,15 @@ if($query3->rowCount() == 0) {
 		);
 
 		$ch = curl_init($url);
+		if($proxytype == 1){
+			curl_setopt($ch, CURLOPT_PROXY, $host);
+		} elseif($proxytype == 2) {
+			curl_setopt($ch, CURLOPT_PROXY, $host);
+			curl_setopt($ch, CURLOPT_PROXYTYPE, CURLPROXY_SOCKS5);
+		}
+		if(!empty($auth)) { 
+		curl_setopt($ch, CURLOPT_PROXYUSERPWD, $auth); 
+		}
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
 		curl_setopt($ch, CURLOPT_PROTOCOLS, CURLPROTO_HTTP | CURLPROTO_HTTPS);
@@ -55,7 +65,17 @@ if($query3->rowCount() == 0) {
 		if(substr_count($result, "1~|~".$songid."~|~2") != 0){
 			$result = explode('#',$result)[2];
 		}else{
-			$ch = curl_init(); 
+			$ch = curl_init();
+			//why not?
+			if($proxytype == 1){
+				curl_setopt($ch, CURLOPT_PROXY, $host);
+			} elseif($proxytype == 2) {
+				curl_setopt($ch, CURLOPT_PROXY, $host);
+				curl_setopt($ch, CURLOPT_PROXYTYPE, CURLPROXY_SOCKS5);
+			}
+			if(!empty($auth)) { 
+			curl_setopt($ch, CURLOPT_PROXYUSERPWD, $auth); 
+			}
 			curl_setopt($ch, CURLOPT_URL, "https://www.newgrounds.com/audio/listen/".$songid); 
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); 
 			$songinfo = curl_exec($ch); 
