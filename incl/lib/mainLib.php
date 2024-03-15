@@ -612,6 +612,9 @@ class mainLib {
 		$query = $db->prepare("SELECT roleID FROM roleassign WHERE accountID = :accountID");
 		$query->execute([':accountID' => $accountID]);
 		$roleIDarray = $query->fetchAll();
+		if (empty($roleIDarray)) {
+			return false;
+		}
 		$roleIDlist = "";
 		foreach($roleIDarray as &$roleIDobject){
 			$roleIDlist .= $roleIDobject["roleID"] . ",";
