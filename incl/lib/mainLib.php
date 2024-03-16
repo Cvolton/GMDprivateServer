@@ -612,9 +612,7 @@ class mainLib {
 		$query = $db->prepare("SELECT roleID FROM roleassign WHERE accountID = :accountID");
 		$query->execute([':accountID' => $accountID]);
 		$roleIDarray = $query->fetchAll();
-		if (empty($roleIDarray)) {
-			return false;
-		}
+		if(empty($roleIDarray)) return false;
 		$roleIDlist = "";
 		foreach($roleIDarray as &$roleIDobject){
 			$roleIDlist .= $roleIDobject["roleID"] . ",";
@@ -924,7 +922,9 @@ class mainLib {
 		include __DIR__ . "/../../config/dashboard.php";
 		$servers = [];
 		$types = ['sfx', 'music'];
+		if(!isset($customLibrary)) $customLibrary = [[1, 'Geometry Dash', 'https://geometrydashfiles.b-cdn.net'], [3, $gdps, null]]; 
 		foreach($customLibrary AS $library) {
+			if(($types[$type] == 'sfx' AND $library[3] === 1) OR ($types[$type] == 'music' AND $library[3] === 0)) continue;
 			if($library[2] !== null) {
 				$servers['s'.$library[0]] = $library[2];
 			}
@@ -967,7 +967,8 @@ class mainLib {
 		include __DIR__ . "/connection.php";
 		include __DIR__ . "/exploitPatch.php";
 		include __DIR__ . "/../../config/dashboard.php";
-		$library = $servers = $serverIDs = [];
+		$library = $servers = $serverIDs = $serverTypes = [];
+		if(!isset($customLibrary)) $customLibrary = [[1, 'Geometry Dash', 'https://geometrydashfiles.b-cdn.net', 2], [3, $gdps, null, 2]]; 
 		$types = ['sfx', 'music'];
 		foreach($customLibrary AS $customLib) {
 			if($customLib[2] !== null) {
@@ -987,6 +988,8 @@ class mainLib {
 				];
 			}
 		}
+		if(file_exists(__DIR__.'/../../'.$types[$type].'/ids.json')) $idsConverter = json_decode(file_get_contents(__DIR__.'/../../'.$types[$type].'/ids.json'), true);
+		else $idsConverter = ['count' => ($type == 0 ? count($customLibrary) + 2 : 8000000), 'IDs' => [], 'originalIDs' => []];
 		foreach($servers AS $key => $server) {
 			if(!file_exists(__DIR__.'/../../'.$types[$type].'/'.$key.'.dat')) continue;
 			$res = null;
@@ -997,9 +1000,8 @@ class mainLib {
 			$res = zlib_decode($res);
 			$res = explode('|', $res);
 			if(!$type) {
-				for($i = 0; $i < count($res); $i++) { // SFX library decoding was made by MigMatos
+				for($i = 0; $i < count($res); $i++) { // SFX library decoding was made by MigMatos, check their ObeyGDBot! https://obeybd.web.app/
 					$res[$i] = explode(';', $res[$i]);
-					//array_pop($res[$i]);
 					if($i === 0) {
 						$library['version'] = $mainServerTime;
 						$version = explode(',', $res[0][0]);
@@ -1011,19 +1013,31 @@ class mainLib {
 						switch($i) {
 							case 0: // File/Folder
 								if(empty(trim($bits[1]))) continue;
-								$bits[0] = $server . 0 . $bits[0];
-								$bits[3] = $server . 0 . $bits[3];
+								if(!isset($idsConverter['originalIDs'][$server][$bits[0]])) {
+									$idsConverter['count']++;
+									$idsConverter['IDs'][$idsConverter['count']] = [$server, $bits[0]];
+									$idsConverter['originalIDs'][$server][$bits[0]] = $idsConverter['count'];
+									$bits[0] = $idsConverter['count'];
+								} else $bits[0] = $idsConverter['originalIDs'][$server][$bits[0]];
+								if($bits[3] != 1) {
+									if(!isset($idsConverter['originalIDs'][$server][$bits[3]])) {
+										$idsConverter['count']++;
+										$idsConverter['IDs'][$idsConverter['count']] = [$server, $bits[3]];
+										$idsConverter['originalIDs'][$server][$bits[3]] = $idsConverter['count'];
+										$bits[3] = $idsConverter['count'];
+									} else $bits[3] = $idsConverter['originalIDs'][$server][$bits[3]];
+								} else $bits[3] = $server + 1;
 								if($bits[2]) {
 									$library['folders'][$bits[0]] = [
 										'name' => ExploitPatch::escapedat($bits[1]),
 										'type' => (int)$bits[2],
-										'parent' => (int)($bits[3] == $server. '01' ? (1 + $server) : $bits[3])
+										'parent' => (int)$bits[3]
 									];
 								} else {
 									$library['files'][$bits[0]] = [
 										'name' => ExploitPatch::escapedat($bits[1]),
 										'type' => (int)$bits[2],
-										'parent' => (int)($bits[3] == $server. '01' ? (1 + $server) : $bits[3]),
+										'parent' => (int)$bits[3],
 										'bytes' => (int)$bits[4],
 										'milliseconds' => (int)$bits[5],
 									];
@@ -1031,7 +1045,7 @@ class mainLib {
 								break;
 							case 1: // Credit
 								if(empty(trim($bits[0])) || empty(trim($bits[1]))) continue;
-								$library['credits'][] = [
+								$library['credits'][ExploitPatch::escapedat($bits[0])] = [
 									'name' => ExploitPatch::escapedat($bits[0]),
 									'website' => ExploitPatch::escapedat($bits[1]),
 								];
@@ -1049,7 +1063,12 @@ class mainLib {
 					foreach($music AS &$songString) {
 						$song = explode(',', $songString);
 						if(empty($song[0])) continue;
-						$song[0] = $server . 0 . $song[0];
+						if(!isset($idsConverter['originalIDs'][$server][$song[0]])) {
+							$idsConverter['count']++;
+							$idsConverter['IDs'][$idsConverter['count']] = [$server, $song[0]];
+							$idsConverter['originalIDs'][$server][$song[0]] = $idsConverter['count'];
+							$song[0] = $idsConverter['count'];
+						} else $song[0] = $idsConverter['originalIDs'][$server][$song[0]];
 						switch($x) {
 							case 0:
 								$library['authors'][$song[0]] = [
@@ -1060,13 +1079,23 @@ class mainLib {
 								];
 								break;
 							case 1:
-								$song[2] = $server . 0 . $song[2];
-								$song[4] = $server . 0 . $song[4];
+								if(!isset($idsConverter['originalIDs'][$server][$song[2]])) {
+									$idsConverter['count']++;
+									$idsConverter['IDs'][$idsConverter['count']] = [$server, $song[2]];
+									$idsConverter['originalIDs'][$server][$song[2]] = $idsConverter['count'];
+									$song[2] = $idsConverter['count'];
+								} else $song[2] = $idsConverter['originalIDs'][$server][$song[2]];
 								$tags = explode('.', $song[5]);
 								$newTags = [];
 								foreach($tags AS &$tag) {
 									if(empty($tag)) continue;
-									$newTags[] = $server. 0 .$tag;
+									if(!isset($idsConverter['originalIDs'][$server][$tag])) {
+										$idsConverter['count']++;
+										$idsConverter['IDs'][$idsConverter['count']] = [$server, $tag];
+										$idsConverter['originalIDs'][$server][$tag] = $idsConverter['count'];
+										$tag = $idsConverter['count'];
+									} else $tag = $idsConverter['originalIDs'][$server][$tag];
+									$newTags[] = $tag;
 								}
 								$newTags[] = $server;
 								$tags = '.'.implode('.', $newTags).'.';
@@ -1096,25 +1125,34 @@ class mainLib {
 			$sfxs->execute();
 			$sfxs = $sfxs->fetchAll();
 			$folderID = [];
+			$server = $serverIDs[null];
 			foreach($sfxs AS &$customSFX) {
 				if(!isset($folderID[$customSFX['reuploadID']])) {
-					$library['folders'][$serverIDs[null]. 0 .$customSFX['reuploadID']] = [
+					$idsConverter['count']++;
+					$idsConverter['IDs'][$idsConverter['count']] = [$serverIDs[null], $customSFX['reuploadID']];
+					$idsConverter['originalIDs'][$server][$customSFX['reuploadID']] = $idsConverter['count'];
+					$newID = $idsConverter['count'];
+					$library['folders'][$newID] = [
 						'name' => ExploitPatch::escapedat($customSFX['userName']).'\'s SFXs',
 						'type' => 1,
-						'parent' => (int)($serverIDs[null] + 1)
+						'parent' => (int)($server + 1)
 					];
-					$folderIDs[$customSFX['reuploadID']] = true;
+					$folderID[$customSFX['reuploadID']] = true;
 				}
-				$library['files'][$serverIDs[null]. 0 .$customSFX['ID']] = [
+				$idsConverter['count']++;
+				$idsConverter['IDs'][$idsConverter['count']] = [$serverIDs[null], $customSFX['ID']];
+				$idsConverter['originalIDs'][$server][$customSFX['ID']] = $idsConverter['count'];
+				$customSFX['ID'] = $idsConverter['count'];
+				$library['files'][$customSFX['ID']] = [
 					'name' => ExploitPatch::escapedat($customSFX['name']),
 					'type' => 0,
-					'parent' => (int)($serverIDs[null]. 0 .$customSFX['reuploadID']),
+					'parent' => (int)$idsConverter['originalIDs'][$server][$customSFX['reuploadID']],
 					'bytes' => (int)$customSFX['size'],
-					'milliseconds' => (int)$customSFX['milliseconds']
+					'milliseconds' => (int)($customSFX['milliseconds'] / 10)
 				];
 			}
-			foreach($library['folders'] AS $id => &$folder) $filesEncrypted[$id] = implode(',', [$id, $folder['name'], 1, $folder['parent'], 0, 0]);
-			foreach($library['files'] AS $id => &$file) $filesEncrypted[$id] = implode(',', [$id, $file['name'], 0, $file['parent'], $file['bytes'], $file['milliseconds']]);
+			foreach($library['folders'] AS $id => &$folder) $filesEncrypted[] = implode(',', [$id, $folder['name'], 1, $folder['parent'], 0, 0]);
+			foreach($library['files'] AS $id => &$file) $filesEncrypted[] = implode(',', [$id, $file['name'], 0, $file['parent'], $file['bytes'], $file['milliseconds']]);
 			foreach($library['credits'] AS &$credit) $creditsEncrypted[] = implode(',', [$credit['name'], $credit['website']]);
 			$encrypted = $version.";".implode(';', $filesEncrypted)."|" .implode(';', $creditsEncrypted).';';
 		} else {
@@ -1157,6 +1195,7 @@ class mainLib {
 			foreach($library['tags'] AS &$tagsList) $tagsEncrypted[] = implode(',', $tagsList);
 			$encrypted = $version."|".implode(';', $authorsEncrypted).";|" .implode(';', $songsEncrypted).";|" .implode(';', $tagsEncrypted).';';
 		}
+		file_put_contents(__DIR__.'/../../'.$types[$type].'/ids.json', json_encode($idsConverter, JSON_PRETTY_PRINT));
 		$encrypted = zlib_encode($encrypted, ZLIB_ENCODING_DEFLATE);
 		$encrypted = strtr(base64_encode($encrypted), '+/=', '-_=');
 		file_put_contents(__DIR__.'/../../'.$types[$type].'/gdps.dat', $encrypted);

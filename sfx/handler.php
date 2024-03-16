@@ -2,15 +2,18 @@
 include_once "../incl/lib/connection.php";
 include_once "../incl/lib/mainLib.php";
 include "../config/dashboard.php";
-global $customLibrary;
 $gs = new mainLib();
 $file = trim(basename($_GET['request']));
 $type = explode('.', $file);
 $type = $type[count($type)-1];
-//var_dump($_GET);
 switch($file) {
 	case 'sfxlibrary.dat': 
-		if(!file_exists('gdps.dat')) $gs->updateLibraries($_GET['token'], $_GET['expires'], $time, 0);
+		if(!file_exists('gdps.dat')) {
+			$time = $db->prepare('SELECT reuploadTime FROM sfxs ORDER BY reuploadTime DESC LIMIT 1');
+			$time->execute();
+			$time = $time->fetchColumn();
+			$gs->updateLibraries($_GET['token'], $_GET['expires'], $time, 0);
+		}
 		echo file_get_contents('gdps.dat');
 		break;
 	case 'sfxlibrary_version.txt': 
@@ -28,15 +31,21 @@ switch($file) {
 		echo $times[0];
 		break;
 	default:
-		$explode = explode('0', $file);
 		$servers = [];
 		foreach($customLibrary AS $library) {
-			$servers['s'.$library[0]] = $library[2];
+			$servers[$library[0]] = $library[2];
 		}
-		$sfx = 's'.substr($file, strlen($explode[0]) + 1, strlen($file));
-		$sfxID = explode('.', substr($file, strlen($explode[0]) + 1, strlen($file)))[0];
-		if($servers[$explode[0]] !== null) $url = $servers[$explode[0]].'/sfx/'.$sfx.'?token='.$_GET['token'].'&expires='.$_GET['expires'];
-		else $url = $gs->getSFXInfo($sfxID, 'download');
+		$sfxID = explode('.', substr($file, 1, strlen($file)))[0];
+		if(!file_exists('ids.json')) {
+			$time = $db->prepare('SELECT reuploadTime FROM sfxs ORDER BY reuploadTime DESC LIMIT 1');
+			$time->execute();
+			$time = $time->fetchColumn();
+			$gs->updateLibraries($_GET['token'], $_GET['expires'], $time, 0);
+		}
+		$sfx = json_decode(file_get_contents('ids.json'), true)['IDs'][$sfxID];
+		if(empty($sfx)) exit();
+		if($servers[$sfx[0]] === null) $url = $gs->getSFXInfo($sfx[1], 'download');
+		else $url = $servers[$sfx[0]].'/sfx/s'.$sfx[1].'.ogg?token='.$_GET['token'].'&expires='.$_GET['expires'];
 		$curl = curl_init($url);
 		curl_setopt_array($curl, [
 			CURLOPT_PROTOCOLS => CURLPROTO_HTTP | CURLPROTO_HTTPS,

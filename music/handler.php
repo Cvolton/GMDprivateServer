@@ -31,17 +31,25 @@ switch($file) {
 		echo $times[0];
 		break;
 	default:
-		$explode = explode('0', $file);
+		if(!isset($_GET['token'])) {
+			$_GET['token'] = $gs->randomString(11);
+			$_GET['expires'] = time() + 3600;
+		}
 		$servers = [];
 		foreach($customLibrary AS $library) {
 			$servers[$library[0]] = $library[2];
 		}
-		$musicID = explode('.', $file)[0];
-		$url = $gs->getSongInfo($musicID, 'download');
-		if(!$url) {
-			$music = substr($file, strlen($explode[0]) + 1, strlen($file));
-			$url = $servers[$explode[0]].'/music/'.$music.'?token='.$_GET['token'].'&expires='.$_GET['expires'];
+		if(!file_exists('ids.json')) {
+			$time = $db->prepare('SELECT reuploadTime FROM songs WHERE reuploadTime > 0 ORDER BY reuploadTime DESC LIMIT 1');
+			$time->execute();
+			$time = $time->fetchColumn();
+			$gs->updateLibraries($_GET['token'], $_GET['expires'], $time, 1);
 		}
+		$musicID = explode('.', $file)[0];
+		$music = json_decode(file_get_contents('ids.json'), true)['IDs'][$musicID];
+		if(empty($music)) $url = $gs->getSongInfo($musicID, 'download');
+		elseif($servers[$music[0]] === null) $url = $gs->getSongInfo($music[1], 'download');
+		else $url = $servers[$music[0]].'/music/'.$music[1].'.ogg?token='.$_GET['token'].'&expires='.$_GET['expires'];
 		$curl = curl_init($url);
 		curl_setopt_array($curl, [
 			CURLOPT_PROTOCOLS => CURLPROTO_HTTP | CURLPROTO_HTTPS,
