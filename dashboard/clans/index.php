@@ -24,6 +24,7 @@ $style = $closed = $create = "";
 foreach($clans as &$clan) {
 	$closed = '';
 	$name = htmlspecialchars(base64_decode($clan["clan"]));
+	$tag = htmlspecialchars(base64_decode($clan["tag"]));
 	$desc = htmlspecialchars(base64_decode($clan["desc"]));
 	if(empty($desc)) $desc = $dl->getLocalizedString("noClanDesc");
 	$members = $db->prepare("SELECT count(clan) FROM users WHERE clan = :id");
@@ -34,7 +35,7 @@ foreach($clans as &$clan) {
     if($members > 9 AND $members < 20) $dm = 2;
 	if($clan["isClosed"] == 1) $closed = ' <i style="font-size:15px;color:#36393e" class="fa-solid fa-lock"></i>';
 	$options .= '<div class="profile clanscard"><div style="margin-right: 10px;width: 100%">
-		<div class="clansname"><h1>'.sprintf($dl->getLocalizedString('demonlistLevel'), '<span style="color:#'.$clan["color"].';grid-gap: 3px;display: inline-flex;">'.$name.$closed.'</span>', $clan["clanOwner"], $gs->getAccountName($clan["clanOwner"])).'</h1>
+		<div class="clansname"><h1>'.sprintf($dl->getLocalizedString('demonlistLevel'), '<span style="color:#'.$clan["color"].';grid-gap: 3px;display: inline-flex;"> ['.$tag.'] '.$name.$closed.'</span>', $clan["clanOwner"], $gs->getAccountName($clan["clanOwner"])).'</h1>
 		<div class="clansmembercount"><h3 style="margin: 0;font-size: 20px;">'.sprintf($dl->getLocalizedString("members".$dm), $members).'</h3><button style="width:max-content;padding:15px;height:max-content" type="button" onclick="a(\'clan/'.$name.'\', true, true)" class="btn-rendel"><i class="fa-solid fa-magnifying-glass"></i></button></div></div>
 		<p class="clansdesc">'.$desc.'</p></div>
 	</div>';

@@ -436,7 +436,7 @@ class mainLib {
 	            if($column != "clan" AND $column != "desc") return $claninfo[$column];
 	            else return base64_decode($claninfo[$column]);
 	        }
-	        else return array("ID" => $claninfo["ID"], "clan" => base64_decode($claninfo["clan"]), "desc" => base64_decode($claninfo["desc"]), "clanOwner" => $claninfo["clanOwner"], "color" => $claninfo["color"], "isClosed" => $claninfo["isClosed"], "creationDate" => $claninfo["creationDate"]);
+	        else return array("ID" => $claninfo["ID"], "clan" => base64_decode($claninfo["clan"]), "tag" => base64_decode($claninfo["tag"]), "desc" => base64_decode($claninfo["desc"]), "clanOwner" => $claninfo["clanOwner"], "color" => $claninfo["color"], "isClosed" => $claninfo["isClosed"], "creationDate" => $claninfo["creationDate"]);
 	    }
 	}
 	public function getClanID($clan) {

@@ -200,6 +200,10 @@ if(!empty($clan)) {
                                     <input class="form-control" name="clanname" value="'.$clan["clan"].'" placeholder="'.$clan["clan"].'" type="text"></input>
                                   </div>
                                   <div>
+                                    <h2 style="text-align:left;margin:0;margin-bottom: 3px;">'.$dl->getLocalizedString("clanTag").'</h2>
+                                    <input class="form-control" name="clantag" value="'.$clan["tag"].'" placeholder="'.$dl->getLocalizedString("clanTag").'" type="text"></input>
+                                  </div>
+                                  <div>
                                     <h2 style="text-align:left;margin:0;margin-bottom: 3px;">'.$dl->getLocalizedString("clanDesc").'</h2>
                                     <input class="form-control" name="clandesc" value="'.$clan["desc"].'" placeholder="'.$dl->getLocalizedString("clanDesc").'" type="text"></input>
                                   </div>
@@ -255,12 +259,13 @@ if(!empty($clan)) {
 		</script>', 'profile'));
         } else {
             $name = base64_encode(strip_tags(ExploitPatch::rucharclean(str_replace(' ', '', $_POST["clanname"]), 20)));
+			$tag = base64_encode(strip_tags(ExploitPatch::charclean(str_replace(' ', '', strtoupper($_POST["clantag"])), 5)));
             $desc = base64_encode(strip_tags(ExploitPatch::rucharclean($_POST["clandesc"], 255)));
             $color = ExploitPatch::charclean(mb_substr($_POST["clancolor"], 1), 6);
 			$isClosed = ExploitPatch::number($_POST["isclosed"], 1);
-            if(!empty($name) AND !empty($color) AND is_numeric($isClosed)) {
-				$check = $db->prepare('SELECT count(*) FROM clans WHERE clan LIKE :c AND ID != :id');
-				$check->execute([':c' => $name, ':id' => $clan['ID']]);
+            if(!empty($name) AND !empty($color) AND !empty($tag) AND strlen($_POST['clantag']) > 2 AND strlen($_POST['clantag']) < 6 AND is_numeric($isClosed)) {
+				$check = $db->prepare('SELECT count(*) FROM clans WHERE clan LIKE :c AND tag LIKE :t AND ID != :id');
+				$check->execute([':c' => $name, ':id' => $clan['ID'], ':t' => $tag]);
 				$check = $check->fetchColumn();
 				if($check > 0) exit($dl->printSong('<div class="form">
 					<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
@@ -269,9 +274,10 @@ if(!empty($clan)) {
 							<button type="button" onclick="a(\'clan/'.$clan['clan'].'/settings\', true, true, \'GET\')" class="btn-primary">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 					</form>
 				</div>', 'browse'));
-                $update = $db->prepare("UPDATE clans SET `clan` = :n, `desc` = :d, `color` = :c, `isClosed` = :ic WHERE `ID` = :id");
-                $update->execute([':id' => $clan["ID"], ':n' => $name, ':d' => $desc, ':c' => $color, ':ic' => $isClosed]);
+                $update = $db->prepare("UPDATE clans SET `clan` = :n, `desc` = :d, `color` = :c, `isClosed` = :ic, `tag` = :t  WHERE `ID` = :id");
+                $update->execute([':id' => $clan["ID"], ':n' => $name, ':d' => $desc, ':c' => $color, ':ic' => $isClosed, ':t' => $tag]);
                 $clan["clan"] = htmlspecialchars(base64_decode($name));
+				$clan["tag"] = htmlspecialchars(base64_decode($tag));
                 $clan["desc"] = htmlspecialchars(base64_decode($desc));
                 $clan["color"] = $color;
 				$clan["isClosed"] = $isClosed;
@@ -313,7 +319,7 @@ if(!empty($clan)) {
 		}
 	}
     if($clan["isClosed"] == 1) $closed = ' <i style="font-size:15px;color:#36393e" class="fa-solid fa-lock"></i>';
-    $clanname = "<h1 class='clanname' style='color:#".$clan["color"].";'>".htmlspecialchars($clan["clan"]).$closed."</h1>";
+    $clanname = "<h1 class='clanname' style='color:#".$clan["color"].";'> [".htmlspecialchars($clan["tag"]).'] '.htmlspecialchars($clan["clan"]).$closed."</h1>";
     $mbrs = $db->prepare("SELECT * FROM users WHERE clan = :cid");
     $mbrs->execute([':cid' => $clan["ID"]]);
     $mbrs = $mbrs->fetchAll();

@@ -317,6 +317,7 @@ $string["clanOwner"] = "Klan sahibi";
 $string["noClanDesc"] = "<i>Açıklama yok</i>";
 $string["noClan"] = "Bu klan mevcut değil!";
 $string["clanName"] = "Klan ismi";
+$string["clanTag"] = "Clan tag (3-5 characters)";
 $string["clanDesc"] = "Klan açıklaması";
 $string["clanColor"] = "Klan rengi";
 $string["dangerZone"] = "Tehlikeli bölge";
@@ -350,6 +351,7 @@ $string["createClanDesc"] = "Burada klan oluşturabilirsin!";
 $string["create"] = "Oluştur";
 $string["mainSettings"] = "Ana ayarlar";
 $string["takenClanName"] = "Bu klan ismi zaten alınmış!";
+$string["takenClanTag"] = "This clan tag was already taken!";
 
 $string["suggestedName"] = '<button type="button" onclick="a(\'profile/%1$s\', true, true)" class="accbtn" name="accountID">%1$s</button><text class="dltext"> adlı oyuncu </text><text class="levelname">%2$s</text><text class="dltext"> adlı bölümü <b>%4$s%3$s</b> için önerdi.</text>'; // %1$s - Mod username, %2$s - level name, %3$s - x stars, %4$s - Featured/Epic (%4$s%3$s - Featured, x stars)
 $string["reportedName"] = '%1$s <text class="levelname">%2$s</text><text class="dltext"> adlı bölümü raporladı</text>';

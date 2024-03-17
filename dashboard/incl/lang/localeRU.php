@@ -317,6 +317,7 @@ $string["clanOwner"] = "Создатель клана";
 $string["noClanDesc"] = "<i>У клана нет описания</i>";
 $string["noClan"] = "Такого клана не существует!";
 $string["clanName"] = "Название клана";
+$string["clanTag"] = "Тег клана (3-5 символов)";
 $string["clanDesc"] = "Описание клана";
 $string["clanColor"] = "Цвет клана";
 $string["dangerZone"] = "Опасная зона";
@@ -350,6 +351,7 @@ $string["createClanDesc"] = "Здесь вы можете создать кла�
 $string["create"] = "Создать";
 $string["mainSettings"] = "Основные настройки";
 $string["takenClanName"] = "Данное название клана уже занято!";
+$string["takenClanTag"] = "Данный тег клана уже занят!";
 
 $string["suggestedName"] = '<button type="button" onclick="a(\'profile/%1$s\', true, true)" class="accbtn" name="accountID">%1$s</button><text class="dltext"> предложил оценить </text><text class="levelname">%2$s</text><text class="dltext"> на <b>%4$s%3$s</b></text>';
 $string["reportedName"] = '%1$s<text class="dltext"> зарепортили</text><text class="levelname">%2$s</text>';
