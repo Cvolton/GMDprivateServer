@@ -26,9 +26,10 @@ if($isPlayerInClan) die($dl->printSong('<div class="form">
 </div>', 'browse'));
 if(isset($_POST["name"]) AND isset($_POST["desc"]) AND isset($_POST["color"])) {
         $name = base64_encode(strip_tags(ExploitPatch::rucharclean(str_replace(' ', '', $_POST["name"]), 20)));
+		$tag = base64_encode(strip_tags(ExploitPatch::charclean(str_replace(' ', '', strtoupper($_POST["tag"])), 5)));
         $desc = base64_encode(strip_tags(ExploitPatch::rucharclean($_POST["desc"], 255)));
         $color = ExploitPatch::charclean(mb_substr($_POST["color"], 1), 6);
-		if(!empty($name) AND !empty($color)) {
+		if(!empty($name) AND !empty($color) AND !empty($tag) AND strlen($_POST['tag']) > 2 AND strlen($_POST['tag']) < 6) {
 			$check = $db->prepare('SELECT count(*) FROM clans WHERE clan LIKE :c');
 			$check->execute([':c' => $name]);
 			$check = $check->fetchColumn();
@@ -39,8 +40,19 @@ if(isset($_POST["name"]) AND isset($_POST["desc"]) AND isset($_POST["color"])) {
 						<button type="button" onclick="a(\'clans/create.php\', true, false, \'GET\')" class="btn-primary">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 				</form>
 			</div>', 'browse'));
-			$clan = $db->prepare("INSERT INTO clans (`clan`, `desc`, `clanOwner`, `color`, `creationDate`) VALUES (:c, :d, :co, :col, :cr)");
-			$clan->execute([':c' => $name, ':d' => $desc, ':co' => $_SESSION["accountID"], ':col' => $color, ':cr' => time()]);
+			
+			$check = $db->prepare('SELECT count(*) FROM clans WHERE tag LIKE :t');
+			$check->execute([':t' => $tag]);
+			$check = $check->fetchColumn();
+			if($check > 0) exit($dl->printSong('<div class="form">
+				<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
+				<form class="form__inner" method="post" action=".">
+					<p>'.$dl->getLocalizedString("takenClanTag").'</p>
+						<button type="button" onclick="a(\'clans/create.php\', true, false, \'GET\')" class="btn-primary">'.$dl->getLocalizedString("tryAgainBTN").'</button>
+				</form>
+			</div>', 'browse'));
+			$clan = $db->prepare("INSERT INTO clans (`clan`, `desc`, `clanOwner`, `color`, `creationDate`, `tag`) VALUES (:c, :d, :co, :col, :cr, :t)");
+			$clan->execute([':c' => $name, ':d' => $desc, ':co' => $_SESSION["accountID"], ':col' => $color, ':cr' => time(), ':t' => $tag]);
 			$owner = $db->prepare("UPDATE users SET clan = :c, joinedAt = :j WHERE extID = :i");
 			$owner->execute([':c' => $db->lastInsertId(), ':j' => time(), ':i' => $_SESSION["accountID"]]);
 			$dl->printSong('<div class="form">
@@ -56,6 +68,7 @@ if(isset($_POST["name"]) AND isset($_POST["desc"]) AND isset($_POST["color"])) {
    <form class="form__inner" method="post" action="">
   <p>'.$dl->getLocalizedString("createClanDesc").'</p>
 	<div class="field"><input type="text" name="name" id="p1" placeholder="'.$dl->getLocalizedString("clanName").'"></div>
+	<div class="field"><input type="text" name="tag" placeholder="'.$dl->getLocalizedString("clanTag").'"></div>
 	<div class="field"><input type="text" name="desc" placeholder="'.$dl->getLocalizedString("clanDesc").'"></div>
 	<div class="field color123"><input type="color" id="color" name="color" placeholder="'.$dl->getLocalizedString("clanColor").'"></div>
   <button type="button" id="submit" onclick="a(\'clans/create.php\', true, false, \'POST\')" class="btn-primary btn-block" disabled>'.$dl->getLocalizedString("create").'</button>

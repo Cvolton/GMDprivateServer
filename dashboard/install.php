@@ -127,6 +127,15 @@ if(!$installed) {
 		$check = $db->query("SHOW COLUMNS FROM `songs` LIKE 'duration'");
       		$exist = $check->fetchAll();
       		if(empty($exist)) $db->query("ALTER TABLE songs ADD duration INT NOT NULL DEFAULT '0' AFTER size");
+		$check = $db->query("SHOW COLUMNS FROM `accounts` LIKE 'passCode'");
+      		$exist = $check->fetchAll();
+      		if(empty($exist)) $db->query("ALTER TABLE accounts ADD passCode varchar(255) NOT NULL DEFAULT '' AFTER auth");
+		$check = $db->query("SHOW COLUMNS FROM `clans` LIKE 'tag'");
+      		$exist = $check->fetchAll();
+      		if(empty($exist)) $db->query("ALTER TABLE clans ADD tag varchar(15) NOT NULL DEFAULT '' AFTER clan");
+		$check = $db->query("SHOW COLUMNS FROM `accounts` LIKE 'timezone'");
+      		$exist = $check->fetchAll();
+      		if(empty($exist)) $db->query("ALTER TABLE accounts ADD timezone varchar(255) NOT NULL DEFAULT '' AFTER passCode");
 	$lines = file($dbPath.'config/dashboard.php');
 	$first_line = $lines[2];
 	$lines = array_slice($lines, 1 + 2);

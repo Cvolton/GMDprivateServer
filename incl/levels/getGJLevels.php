@@ -9,10 +9,9 @@ $gs = new mainLib();
 require "../lib/generateHash.php";
 
 //initializing variables
-$lvlstring = ""; $userstring = ""; $songsstring = ""; $lvlsmultistring = []; $epicParams = []; $str = ""; $order = "uploadDate";
+$lvlstring = $userstring = $songsstring = $sug = $sugg = $str = $morejoins = ""; $lvlsmultistring = []; $epicParams = []; $order = "uploadDate";
 $orderenabled = true; $ordergauntlet = false; $isIDSearch = false;
 $params = array("unlisted = 0");
-$morejoins = "";
 
 if(!empty($_POST["gameVersion"])){
 	$gameVersion = ExploitPatch::number($_POST["gameVersion"]);
@@ -197,7 +196,7 @@ switch($type){
 		$order = "rateDate DESC,uploadDate";
 		break;
 	case 7: //MAGIC
-		$params[] = "objects > 9999"; // L
+        $params[] = "objects > 9999"; // L
 		break;
 	case 10: //MAP PACKS
 	case 19: //unknown but same as map packs (on real GD type 10 has star rated filter and 19 doesn't)
@@ -239,9 +238,9 @@ switch($type){
 		break;
 	case 27: // SENT LEVELS
 		$sug = ", suggest.suggestLevelId, suggest.timestamp";
-        	$sugg = "LEFT JOIN suggest ON levels.levelID = suggest.suggestLevelId";
+        $sugg = "LEFT JOIN suggest ON levels.levelID = suggest.suggestLevelId";
 		$params[] = "suggestLevelId > 0";
-    		$order = 'suggest.timestamp';
+    	$order = 'suggest.timestamp';
 		break;
 }
 //ACTUAL QUERY EXECUTION
@@ -249,7 +248,7 @@ $querybase = "FROM levels LEFT JOIN songs ON levels.songID = songs.ID LEFT JOIN 
 if(!empty($params)){
 	$querybase .= " WHERE (" . implode(" ) AND ( ", $params) . ")";
 }
-$query = "SELECT levels.*, songs.ID, songs.name, songs.authorID, songs.authorName, songs.size, songs.isDisabled, songs.download, users.userName, users.extID$sug $querybase";
+$query = "SELECT levels.*, songs.ID, songs.name, songs.authorID, songs.authorName, songs.size, songs.isDisabled, songs.download, users.userName, users.extID, users.clan$sug $querybase";
 if($order){
 	if($ordergauntlet){
 		$query .= "ORDER BY $order ASC";
@@ -258,19 +257,16 @@ if($order){
 	}
 }
 $query .= " LIMIT 10 OFFSET $offset";
-//echo $query;
 $countquery = "SELECT count(*) $querybase";
-//echo $query;
 $query = $db->prepare($query);
 $query->execute();
-//echo $countquery;
 $countquery = $db->prepare($countquery);
 $countquery->execute();
 $totallvlcount = $countquery->fetchColumn();
 $result = $query->fetchAll();
 $levelcount = $query->rowCount();
 foreach($result as &$level1) {
-	if($level1["levelID"]!=""){
+	if($level1["levelID"]!="") {
 		if($isIDSearch AND $level1['unlisted'] > 1) {
 			if(!isset($accountID)) $accountID = GJPCheck::getAccountIDOrDie();
 			if(!$gs->isFriends($accountID, $level1['extID']) && $accountID != $level1['extID']) break;
@@ -279,7 +275,8 @@ foreach($result as &$level1) {
 		if(!empty($gauntlet)){
 			$lvlstring .= "44:$gauntlet:";
 		}
-		$lvlstring .= "1:".$level1["levelID"].":2:".$level1["levelName"].":5:".$level1["levelVersion"].":6:".$level1["userID"].":8:10:9:".$level1["starDifficulty"].":10:".$level1["downloads"].":12:".$level1["audioTrack"].":13:".$level1["gameVersion"].":14:".$level1["likes"].":17:".$level1["starDemon"].":43:".$level1["starDemonDiff"].":25:".$level1["starAuto"].":18:".$level1["starStars"].":19:".$level1["starFeatured"].":42:".$level1["starEpic"].":45:".$level1["objects"].":3:".$level1["levelDesc"].":15:".$level1["levelLength"].":30:".$level1["original"].":31:".$level1['twoPlayer'].":37:".$level1["coins"].":38:".$level1["starCoins"].":39:".$level1["requestedStars"].":46:1:47:2:40:".$level1["isLDM"].":35:".$level1["songID"]."|";
+		$likes = $level1["likes"]; // - $level1["dislikes"];
+		$lvlstring .= "1:".$level1["levelID"].":2:".$level1["levelName"].":5:".$level1["levelVersion"].":6:".$level1["userID"].":8:10:9:".$level1["starDifficulty"].":10:".$level1["downloads"].":12:".$level1["audioTrack"].":13:".$level1["gameVersion"].":14:".$likes.":17:".$level1["starDemon"].":43:".$level1["starDemonDiff"].":25:".$level1["starAuto"].":18:".$level1["starStars"].":19:".$level1["starFeatured"].":42:".$level1["starEpic"].":45:".$level1["objects"].":3:".$level1["levelDesc"].":15:".$level1["levelLength"].":30:".$level1["original"].":31:".$level1['twoPlayer'].":37:".$level1["coins"].":38:".$level1["starCoins"].":39:".$level1["requestedStars"].":46:1:47:2:40:".$level1["isLDM"].":35:".$level1["songID"]."|";
 		if($level1["songID"]!=0){
 			$song = $gs->getSongString($level1);
 			if($song){

@@ -25,7 +25,8 @@ if(!empty($_POST["user"])) {
 		</div>', 'mod');
 		die();
 	}
-	$mod = ExploitPatch::number($_POST["user"]);
+	$priority = $gs->getMaxValuePermission($_SESSION["accountID"], 'priority');
+	$mod = ExploitPatch::charclean($_POST["user"]);
 	$role = ExploitPatch::charclean($_POST["role"]);
 	if(!is_numeric($role)) {
 		$dl->printSong('<div class="form">
@@ -38,8 +39,8 @@ if(!empty($_POST["user"])) {
 		die();
 	}
 	if(!is_numeric($mod)) $mod = $gs->getAccountIDFromName($mod); 
-	$query = $db->prepare("SELECT accountID FROM accounts WHERE accountID=".$mod."");
-	$query->execute();
+	$query = $db->prepare("SELECT accountID FROM accounts WHERE accountID = :id");
+	$query->execute([':id' => $mod]);
 	$res = $query->fetchAll();
 	if(count($res) == 0) {
 		$dl->printSong('<div class="form">
@@ -51,7 +52,10 @@ if(!empty($_POST["user"])) {
 		</div>', 'mod');
 		die();
 	}
-	if($role < $gs->getMaxValuePermission($_SESSION["accountID"], 'roleID')) die($dl->printSong('<div class="form">
+	$query = $db->prepare("SELECT priority FROM roles WHERE roleID = :id");
+	$query->execute([':id' => $role]);
+	$res = $query->fetchColumn();
+	if($res >= $priority) die($dl->printSong('<div class="form">
 			<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 			<form class="form__inner" method="post" action="">
 			<p>'.$dl->getLocalizedString("modAboveYourRole").'</p>
@@ -68,7 +72,7 @@ if(!empty($_POST["user"])) {
 		</div>', 'mod');
 		die();
 	}
-	$query = $db->prepare("SELECT accountID FROM roleassign WHERE accountID=:mod");
+	$query = $db->prepare("SELECT accountID FROM roleassign WHERE accountID = :mod");
 	$query->execute([':mod' => $mod]);
 	$res = $query->fetchAll();
 	if(count($res) != 0) {
@@ -109,9 +113,10 @@ if(!empty($_POST["user"])) {
 		</div>', 'mod');
 	}
 } else {
+	$priority = $gs->getMaxValuePermission($_SESSION["accountID"], 'priority');
 	$rls = $cls = '';
-	$query = $db->prepare("SELECT roleName, roleID, commentColor FROM roles WHERE roleID >= :id");
-	$query->execute([':id' => $gs->getMaxValuePermission($_SESSION["accountID"], 'roleID')]);
+	$query = $db->prepare("SELECT roleName, roleID, commentColor FROM roles WHERE priority < :id ORDER BY priority DESC");
+	$query->execute([':id' => $priority]);
 	$query = $query->fetchAll();
 	foreach($query as &$role) {
 		$options .= '<option value="'.$role["roleID"].'">'.$role["roleName"].'</option>';
@@ -121,8 +126,8 @@ if(!empty($_POST["user"])) {
 	$rls = substr($rls, 0, -2);
 	$cls = substr($cls, 0, -2);
 	$options .= '<option value="-1">'.$dl->getLocalizedString('demotePlayer').'</option>';
-	$mods = $db->prepare("SELECT * FROM roleassign WHERE roleID >= :id GROUP BY accountID DESC");
-  	$mods->execute([':id' => $gs->getMaxValuePermission($_SESSION["accountID"], 'roleID')]);
+	$mods = $db->prepare("SELECT * FROM roleassign JOIN roles ON roles.roleID = roleassign.roleID GROUP BY roleassign.accountID DESC ORDER BY roles.priority DESC");
+  	$mods->execute();
   	$mods = $mods->fetchAll();
   	foreach($mods as &$mod) {
 		$name = $db->prepare("SELECT roleName FROM roles WHERE roleID = :id");
@@ -133,9 +138,10 @@ if(!empty($_POST["user"])) {
 		$time->execute([':id' => $mod["accountID"]]);
 		$time = $time->fetch();
 		if(empty($time["timestamp"])) $time["timestamp"] = 0;
-		$allMods .= '<button type="submit" id="wholeButton'.$mod["assignID"].'" onclick="mod('.$mod["assignID"].')" class="btn-primary itembtn">
+		$moderator = $gs->getAccountName($time['account']); 
+		$allMods .= '<button type="submit" id="wholeButton'.$mod["assignID"].'" onclick="mod('.$mod["assignID"].')" class="btn-primary itembtn" '.($mod['priority'] >= $priority ? 'disabled' : '').'>
 			<h2 class="subjectnotyou" id="name'.$mod["assignID"].'" style="color:rgb('.$gs->getAccountCommentColor($mod["accountID"]).');font-weight:700">'.$gs->getAccountName($mod["accountID"]).' <i style="opacity: 0; margin-right: 10px; color: white; font-size: 13px;transition:0.2s" id="spin'.$mod["assignID"].'" class="fa-solid fa-spinner fa-spin"></i></h2>
-			<h2 class="messagenotyou" style="font-size: 15px;color: #c0c0c0;" id="stats'.$mod["assignID"].'"><i class="fa-solid fa-circle-dot" id="circle'.$mod["assignID"].'" style="color:rgb('.$gs->getAccountCommentColor($mod["accountID"]).')"></i> <span id="roleName'.$mod["assignID"].'">'.$modName.'</span> | <i class="fa-regular fa-clock"></i> '.$dl->convertToDate($time["timestamp"], true).'</h2>
+			<h2 class="messagenotyou" style="font-size: 15px;color: #c0c0c0;" id="stats'.$mod["assignID"].'"><i class="fa-solid fa-circle-dot" id="circle'.$mod["assignID"].'" style="color:rgb('.$gs->getAccountCommentColor($mod["accountID"]).')"></i> <span id="roleName'.$mod["assignID"].'">'.$modName.'</span> | <i class="fa-regular fa-clock"></i> '.$dl->convertToDate($time["timestamp"], true).' | <i class="fa-solid fa-user"></i> '.(!empty($moderator) ? $moderator : 'Unknown').'</h2>
 		</button>';
 	}
 	$dl->printSong('<div class="form-control itemsbox">

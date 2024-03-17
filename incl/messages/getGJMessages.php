@@ -1,6 +1,5 @@
 <?php
 chdir(dirname(__FILE__));
-//error_reporting(0);
 include "../lib/connection.php";
 require_once "../lib/GJPCheck.php";
 require_once "../lib/exploitPatch.php";
@@ -30,7 +29,7 @@ if($msgcount == 0){
 }
 foreach ($result as &$message1) {
 	if($message1["messageID"]!=""){
-		$uploadDate = date("d/m/Y G.i", $message1["timestamp"]);
+		$uploadDate = $gs->makeTime($message1["timestamp"]);
 		if($getSent == 1){
 			$accountID = $message1["toAccountID"];
 		}else{
@@ -39,6 +38,8 @@ foreach ($result as &$message1) {
 		$query=$db->prepare("SELECT * FROM users WHERE extID = :accountID");
 		$query->execute([':accountID' => $accountID]);
 		$result12 = $query->fetchAll()[0];
+		if($result12["clan"]) $result12["userName"] = '['.$gs->getClanInfo($isPlayerInClan, 'tag').'] '.$result12["userName"];
+		$message1['subject'] = base64_encode(ExploitPatch::rutoen(base64_decode($message1["subject"])));
 		$msgstring .= "6:".$result12["userName"].":3:".$result12["userID"].":2:".$result12["extID"].":1:".$message1["messageID"].":4:".$message1["subject"].":8:".$message1["isNew"].":9:".$getSent.":7:".$uploadDate."|";
 	}
 }

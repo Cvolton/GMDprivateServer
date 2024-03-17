@@ -2001,3 +2001,14 @@ body:has(.audio) {
 .forgotPassword:hover {
 	text-decoration: underline;
 }
+
+.itembtn:disabled {
+	padding: 10px;
+    border-radius: 20px;
+    height: max-content;
+    margin: 0px;
+    margin-right: 10px;
+    width: 100%;
+    border: none;
+	background: #231717
+}
