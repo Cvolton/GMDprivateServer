@@ -233,56 +233,39 @@ class mainLib {
 	public function getGauntletCount() {
 		return count($this->getGauntletName(0, true))-1;
 	}
-	function makeTime($delta)
-	{
-		if ($delta < 31536000)
-		{
-			if ($delta < 2628000)
-			{
-				if ($delta < 604800)
-				{
-					if ($delta < 86400)
-					{
-						if ($delta < 3600)
-						{
-							if ($delta < 60)
-							{
-								return $delta." second".($delta == 1 ? "" : "s");
-							}
-							else
-							{
-                        					$rounded = floor($delta / 60);
-								return $rounded." minute".($rounded == 1 ? "" : "s");
-							}
-						}
-						else
-						{
-							$rounded = floor($delta / 3600);
-							return $rounded." hour".($rounded == 1 ? "" : "s");
-						}
-					}
-					else
-					{
-						$rounded = floor($delta / 86400);
-						return $rounded." day".($rounded == 1 ? "" : "s");
-					}
-				}
-				else
-				{
-					$rounded = floor($delta / 604800);
-					return $rounded." week".($rounded == 1 ? "" : "s");
-				}
-			}
-			else
-			{
-				$rounded = floor($delta / 2628000); 
-				return $rounded." month".($rounded == 1 ? "" : "s");
-			}
-		}
-		else
-		{
-			$rounded = floor($delta / 31536000);
-			return $rounded." year".($rounded == 1 ? "" : "s");
+	function makeTime($timestamp, $removeAgo = true) {
+		$timeDifference = time() - $timestamp;
+		$minute = 60;
+		$hour = 3600;
+		$day = 86400;
+		$week = 604800;
+		$month = 2592000;
+		$year = 31536000;
+
+		$ago = $removeAgo ? '' : ' ago';
+
+		if ($timeDifference <= 1) {
+			return '1 second' . $ago;
+		} elseif ($timeDifference < $minute) {
+			return $timeDifference . ' second' . ($timeDifference > 1 ? 's' : '') . $ago;
+		} elseif ($timeDifference < $hour) {
+			$minutes = round($timeDifference / $minute);
+			return $minutes . ' minute' . ($minutes > 1 ? 's' : '') . $ago;
+		} elseif ($timeDifference < $day) {
+			$hours = round($timeDifference / $hour);
+			return $hours . ' hour' . ($hours > 1 ? 's' : '') . $ago;
+		} elseif ($timeDifference < $week) {
+			$days = round($timeDifference / $day);
+			return $days . ' day' . ($days > 1 ? 's' : '') . $ago;
+		} elseif ($timeDifference < $month) {
+			$weeks = round($timeDifference / $week);
+			return $weeks . ' week' . ($weeks > 1 ? 's' : '') . $ago;
+		} elseif ($timeDifference < $year) {
+			$months = round($timeDifference / $month);
+			return $months . ' month' . ($months > 1 ? 's' : '') . $ago;
+		} else {
+			$years = round($timeDifference / $year);
+			return $years . ' year' . ($years > 1 ? 's' : '') . $ago;
 		}
 	}
 	public function getIDFromPost(){
