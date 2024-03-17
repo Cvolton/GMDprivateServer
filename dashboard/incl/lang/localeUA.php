@@ -42,6 +42,7 @@ $string["settings"] = "Налаштування";
 $string["allowMessagesFrom"] = "Дозволяти повідомлення від...";
 $string["allowFriendReqsFrom"] = "Дозволяти заявки в друзі від...";
 $string["showCommentHistory"] = "Показувати історію коментарів...";
+$string["timezoneChoose"] = "Выберите часовой пояс";
 $string["yourYouTube"] = "Ваш канал на YouTube";
 $string["yourVK"] = "Ваша сторінка в ВКонтакте";
 $string["yourTwitter"] = "Ваша сторінка в Twitter";

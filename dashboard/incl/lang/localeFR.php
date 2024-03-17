@@ -43,6 +43,7 @@ $string["settings"] = "Réglages";
 $string["allowMessagesFrom"] = "Autoriser les messages de...";
 $string["allowFriendReqsFrom"] = "Autoriser les demandes d'amis de...";
 $string["showCommentHistory"] = "Voir l'historique de commentaires...";
+$string["timezoneChoose"] = "Choose timezone";
 $string["yourYouTube"] = "Votre chaîne YouTube";
 $string["yourVK"] = "Votre page VK";
 $string["yourTwitter"] = "Votre compte Twitter";
