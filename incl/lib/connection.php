@@ -17,8 +17,13 @@ try {
 	  	$banip = $banip->fetch();
 	  	if($banip != 0) exit(-1);
 	}
-	if(isset($_POST['accountID']) || isset($_SESSION['accountID'])) {
-		$accountID = $_POST['accountID'] ?? $_SESSION['accountID'];
+	if(!isset($_SESSION['accountID'])) {
+		$getExtID = $db->prepare('SELECT extID FROM users WHERE isRegistered = 1 AND IP = :ip LIMIT 1');
+		$getExtID->execute([':ip' => $ip]);
+		$getExtID = $getExtID->fetchColumn();
+	}
+	if(!empty($getExtID) || isset($_SESSION['accountID'])) {
+		$accountID = $getExtID ?? $_SESSION['accountID'];
 		$timezone = $db->prepare('SELECT timezone FROM accounts WHERE accountID = :id');
 		$timezone->execute([':id' => $accountID]);
 		$timezone = $timezone->fetchColumn();
