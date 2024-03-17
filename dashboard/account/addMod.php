@@ -115,7 +115,7 @@ if(!empty($_POST["user"])) {
 } else {
 	$priority = $gs->getMaxValuePermission($_SESSION["accountID"], 'priority');
 	$rls = $cls = '';
-	$query = $db->prepare("SELECT roleName, roleID, commentColor FROM roles WHERE priority >= :id");
+	$query = $db->prepare("SELECT roleName, roleID, commentColor FROM roles WHERE priority < :id ORDER BY priority DESC");
 	$query->execute([':id' => $priority]);
 	$query = $query->fetchAll();
 	foreach($query as &$role) {
