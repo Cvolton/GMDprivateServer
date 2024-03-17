@@ -181,7 +181,7 @@ if(!empty($clan)) {
 			}
 			if($clan["isClosed"] == 1) {
 				$clIcon = '<i id="closeicon" class="fa-solid fa-toggle-on"></i>';
-				$pending = '<form style="margin:0" method="post" name="pending"><div><h2 style="text-align:right;margin:0;margin-bottom: 3px">'.$dl->getLocalizedString("pendingRequests").'</h2>
+				$pending = '<div><h2 style="text-align:right;margin:0;margin-bottom: 3px">'.$dl->getLocalizedString("pendingRequests").'</h2>
                                         <input type="hidden" name="pending" value="1">
                                         <button style="height: max-content; '.($gs->isPendingRequests($clan['ID']) ? 'border: solid 2px #e35151' : '').'" class="btn-rendel" type="button" onclick="a(\'clan/'.$clan['clan'].'/settings\', true, true, \'POST\', false, \'pending\')">'.$dl->getLocalizedString("pendingRequests").'</button>
                                     </form></div>';
@@ -217,7 +217,7 @@ if(!empty($clan)) {
 								<input type="hidden" name="ichangedsmth" value="1"></input>
 								<input type="hidden" name="settings" value="1"></input>
 							  </div><form style="margin:0" reason="Idk why, but it broked and deletes from page, so dont remove it"></form>
-                                <div style="display: grid;grid-gap: 5px;margin:0">
+                                <div style="display: grid;grid-gap: 5px;margin:0"><form style="margin:0" method="post" name="pending">
 									'.$pending.'
                                     <div>
 									<h2 style="text-align:right;margin:0;margin-bottom: 3px;">'.$dl->getLocalizedString("giveClan").'</h2>
@@ -259,8 +259,8 @@ if(!empty($clan)) {
             $color = ExploitPatch::charclean(mb_substr($_POST["clancolor"], 1), 6);
 			$isClosed = ExploitPatch::number($_POST["isclosed"], 1);
             if(!empty($name) AND !empty($color) AND is_numeric($isClosed)) {
-				$check = $db->prepare('SELECT count(*) FROM clans WHERE clan LIKE :c');
-				$check->execute([':c' => $name]);
+				$check = $db->prepare('SELECT count(*) FROM clans WHERE clan LIKE :c AND ID != :id');
+				$check->execute([':c' => $name, ':id' => $clan['ID']]);
 				$check = $check->fetchColumn();
 				if($check > 0) exit($dl->printSong('<div class="form">
 					<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
@@ -344,7 +344,6 @@ if(!empty($clan)) {
     if(empty($members)) $members .= '<div style="width: 100%;display: flex;flex-wrap: wrap;justify-content: center;">
 			    <h1 style="margin: 10;margin-top: 20px;">'.$dl->getLocalizedString("noMembers").'</h1>
 			</div>';
-	$clan['desc'] = htmlspecialchars($clan['desc']);
 	if(empty($clan["desc"])) $clan["desc"] = $dl->getLocalizedString("noClanDesc");
     if($clan["clanOwner"] == $_SESSION["accountID"]) $settings = '<form method="post" style="margin:0px" name="settingsform"><input type="hidden" name="settings" value="1"><button style="margin-top: 5px;margin-bottom:5px;position: relative" type="button" onclick="a(\'clan/'.$clan["clan"].'/settings\', true, true, \'POST\', false, \'settingsform\')" title="'.$dl->getLocalizedString("settings").'" class="msgupd" name="settings" value="1">'.($gs->isPendingRequests($clan['ID']) ? '<i style=" position: absolute;top: 18%; left: 18%;font-size: 40%; border: solid 3px #212529;border-radius: 500px;color: #e35151;" class="fa-solid fa-circle" aria-hidden="true"></i>' : '').'<i class="fa-solid fa-gear" aria-hidden="true"></i></button></form>';
     elseif($isPlayerInClan == $clan["ID"]) $membermenu = '<form name="leave" style="margin:0"><input name="leave" type="hidden" value="1"></input></form><button type="button" onclick="a(\'clan/'.$clan["clan"].'\', true, true, \'POST\', false, \'leave\')" class="dropdown-item"><div class="icon"><i class="fa-solid fa-arrow-right-from-bracket"></i></div>'.$dl->getLocalizedString("leaveFromClan").'</button>';
@@ -372,7 +371,7 @@ if(!empty($clan)) {
     	<style>.menu-arrow::after {display:none}</style>
         	'.$back.'<div style="display: flex;flex-direction: column;align-items: center">'.$clanname.'</div>'.$settings.$menu.'
         </div>
-        <p class="clandesc">'.$clan["desc"].'</p>
+        <p class="clandesc">'.htmlspecialchars($clan["desc"]).'</p>
         <div>
             <h3 class="clanownertext">'.$dl->getLocalizedString("clanOwner").'</h3>
             <div class="form-control clan-owner-form">'.$owner.'</div>
