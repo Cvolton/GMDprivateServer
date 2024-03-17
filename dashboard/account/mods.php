@@ -8,11 +8,16 @@ $id = ExploitPatch::number($_GET["id"]);
 $gs = new mainLib();
 if(!empty($id)) {
 	if(!empty($_GET["role"]) AND !empty($_GET["acc"]) AND $gs->checkPermission($_SESSION["accountID"], 'dashboardAddMod')) {
+		$priority = $gs->getMaxValuePermission($_SESSION["accountID"], 'priority');
 		$role = $_GET['role'] != '-1' ? ExploitPatch::number($_GET["role"]) : '-1';
+		$check = $db->prepare('SELECT priority FROM roles WHERE roleID = :role');
+		$check->execute([':role' => $role]);
+		$check = $check->fetchColumn();
 		$mod = ExploitPatch::number($_GET["acc"]);
 		$mod2 = $gs->getAccountName($mod);
+		if($_SESSION['accountID'] == $mod) die('-1');
 		if($role != "-1") {
-			if($role < $gs->getMaxValuePermission($_SESSION["accountID"], 'roleID')) die("-1");
+			if($check >= $priority) die("-1");
 			$change = $db->prepare("UPDATE roleassign SET roleID = :r WHERE assignID = :i");
 			$change = $change->execute([':r' => $role, ':i' => $id]);
 		} else {
