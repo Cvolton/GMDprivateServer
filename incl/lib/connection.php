@@ -17,9 +17,10 @@ try {
 	  	$banip = $banip->fetch();
 	  	if($banip != 0) exit(-1);
 	}
-	if(isset($_POST['accountID'])) {
+	if(isset($_POST['accountID']) || isset($_SESSION['accountID'])) {
+		$accountID = $_POST['accountID'] ?? $_SESSION['accountID'];
 		$timezone = $db->prepare('SELECT timezone FROM accounts WHERE accountID = :id');
-		$timezone->execute([':id' => $_POST['accountID']]);
+		$timezone->execute([':id' => $accountID]);
 		$timezone = $timezone->fetchColumn();
 		if(!empty($timezone)) date_default_timezone_set($timezone);
 		else {
@@ -27,7 +28,7 @@ try {
 			$ipData = json_decode($json, true);
 			if($ipData['timezone']) {
 				$update = $db->prepare('UPDATE accounts SET timezone = :tz WHERE accountID = :id');
-				$update->execute([':tz' => $ipData['timezone'], ':id' => $_POST['accountID']]);
+				$update->execute([':tz' => $ipData['timezone'], ':id' => $accountID]);
 				date_default_timezone_set($ipData['timezone']);
 			}
 		}

@@ -1,6 +1,5 @@
 <?php
 session_start();
-error_reporting(E_ALL);
 include "../incl/dashboardLib.php";
 $dl = new dashboardLib();
 global $clansEnabled;
