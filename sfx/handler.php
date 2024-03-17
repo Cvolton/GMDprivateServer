@@ -2,6 +2,7 @@
 include_once "../incl/lib/connection.php";
 include_once "../incl/lib/mainLib.php";
 include "../config/dashboard.php";
+require "../config/proxy.php";
 global $customLibrary;
 $gs = new mainLib();
 $file = trim(basename($_GET['request']));
@@ -38,6 +39,12 @@ switch($file) {
 		if($servers[$explode[0]] !== null) $url = $servers[$explode[0]].'/sfx/'.$sfx.'?token='.$_GET['token'].'&expires='.$_GET['expires'];
 		else $url = $gs->getSFXInfo($sfxID, 'download');
 		$curl = curl_init($url);
+		if($proxytype == 1) curl_setopt($ch, CURLOPT_PROXY, $host);
+		elseif($proxytype == 2) {
+			curl_setopt($ch, CURLOPT_PROXY, $host);
+			curl_setopt($ch, CURLOPT_PROXYTYPE, CURLPROXY_SOCKS5);
+		}
+		if(!empty($auth)) curl_setopt($ch, CURLOPT_PROXYUSERPWD, $auth); 
 		curl_setopt_array($curl, [
 			CURLOPT_PROTOCOLS => CURLPROTO_HTTP | CURLPROTO_HTTPS,
 			CURLOPT_RETURNTRANSFER => 1
