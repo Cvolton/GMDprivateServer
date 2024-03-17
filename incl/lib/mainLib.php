@@ -233,56 +233,29 @@ class mainLib {
 	public function getGauntletCount() {
 		return count($this->getGauntletName(0, true))-1;
 	}
-	function makeTime($delta)
-	{
-		if ($delta < 31536000)
-		{
-			if ($delta < 2628000)
-			{
-				if ($delta < 604800)
-				{
-					if ($delta < 86400)
-					{
-						if ($delta < 3600)
-						{
-							if ($delta < 60)
-							{
-								return $delta." second".($delta == 1 ? "" : "s");
-							}
-							else
-							{
-                        					$rounded = floor($delta / 60);
-								return $rounded." minute".($rounded == 1 ? "" : "s");
-							}
-						}
-						else
-						{
-							$rounded = floor($delta / 3600);
-							return $rounded." hour".($rounded == 1 ? "" : "s");
-						}
-					}
-					else
-					{
-						$rounded = floor($delta / 86400);
-						return $rounded." day".($rounded == 1 ? "" : "s");
-					}
+	public function makeTime($time) {
+		include __DIR__ . "/../../config/dashboard.php";
+		if(!isset($timeType)) $timeType = 0;
+		switch($timeType) {
+			case 1:
+				if(date("d.m.Y", $time) == date("d.m.Y", time())) return date("G:i", $time);
+				elseif(date("Y", $time) == date("Y", time())) return date("d.m", $time);
+				else return date("d.m.Y", $time);
+				break;
+			case 2:
+				// taken from https://stackoverflow.com/a/36297417
+				$time = time() - $time;
+				$time = ($time < 1) ? 1 : $time;
+				$tokens = array (31536000 => 'year', 2592000 => 'month', 604800 => 'week', 86400 => 'day', 3600 => 'hour', 60 => 'minute', 1 => 'second');
+				foreach($tokens as $unit => $text) {
+					if($time < $unit) continue;
+					$numberOfUnits = floor($time / $unit);
+					return $numberOfUnits . ' ' . $text . (($numberOfUnits > 1) ? 's' : '');
 				}
-				else
-				{
-					$rounded = floor($delta / 604800);
-					return $rounded." week".($rounded == 1 ? "" : "s");
-				}
-			}
-			else
-			{
-				$rounded = floor($delta / 2628000); 
-				return $rounded." month".($rounded == 1 ? "" : "s");
-			}
-		}
-		else
-		{
-			$rounded = floor($delta / 31536000);
-			return $rounded." year".($rounded == 1 ? "" : "s");
+				break;
+			default:
+				return date("d/m/Y G.i", $time);
+				break;
 		}
 	}
 	public function getIDFromPost(){
@@ -378,6 +351,9 @@ class mainLib {
 		$query = $db->prepare("SELECT userName FROM accounts WHERE accountID = :id");
 		$query->execute([':id' => $extID]);
 		$userName = $query->fetch();*/
+		if($this->isPlayerInClan($userdata['extID'])){
+			$userdata['userName'] = '['.$this->getClanInfo($this->isPlayerInClan($userdata['extID']), 'tag').'] '.$userdata['userName'];
+		}
 		$extID = is_numeric($userdata['extID']) ? $userdata['extID'] : 0;
 		return "{$userdata['userID']}:{$userdata["userName"]}:{$extID}";
 	}
@@ -433,10 +409,10 @@ class mainLib {
 	    if(empty($claninfo)) return false;
 	    else {
 	        if($column != "*") {
-	            if($column != "clan" AND $column != "desc") return $claninfo[$column];
+	            if($column != "clan" AND $column != "desc" AND $column != "tag") return $claninfo[$column];
 	            else return base64_decode($claninfo[$column]);
 	        }
-	        else return array("ID" => $claninfo["ID"], "clan" => base64_decode($claninfo["clan"]), "desc" => base64_decode($claninfo["desc"]), "clanOwner" => $claninfo["clanOwner"], "color" => $claninfo["color"], "isClosed" => $claninfo["isClosed"], "creationDate" => $claninfo["creationDate"]);
+	        else return array("ID" => $claninfo["ID"], "clan" => base64_decode($claninfo["clan"]), "tag" => base64_decode($claninfo["tag"]), "desc" => base64_decode($claninfo["desc"]), "clanOwner" => $claninfo["clanOwner"], "color" => $claninfo["color"], "isClosed" => $claninfo["isClosed"], "creationDate" => $claninfo["creationDate"]);
 	    }
 	}
 	public function getClanID($clan) {

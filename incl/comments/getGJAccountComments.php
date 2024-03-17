@@ -22,8 +22,7 @@ $countquery->execute([':userID' => $userID]);
 $commentcount = $countquery->fetchColumn();
 foreach($result as &$comment1) {
 	if($comment1["commentID"]!=""){
-      	if(time() - 86400 > $comment1["timestamp"] OR date('d', $comment1["timestamp"]) < date('d', time())) $uploadDate = date("d.m.Y", $comment1["timestamp"]);
-		else $uploadDate = date("G:i", $comment1["timestamp"]);
+      	$uploadDate = $gs->makeTime($comment1["timestamp"]);
 		$reply = $db->prepare("SELECT count(*) FROM replies WHERE commentID = :id");
 		$reply->execute([':id' => $comment1["commentID"]]);
 		$reply = $reply->fetchColumn();

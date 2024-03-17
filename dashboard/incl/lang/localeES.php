@@ -317,6 +317,7 @@ $string["clanOwner"] = "Dueño del clan";
 $string["noClanDesc"] = "<i>Sin descripción</i>";
 $string["noClan"] = "¡Este clan no existe!";
 $string["clanName"] = "Nombre del clan";
+$string["clanTag"] = "Clan tag (3-5 characters)";
 $string["clanDesc"] = "Descripción del clan";
 $string["clanColor"] = "Color del clan";
 $string["dangerZone"] = "Zona de peligro";
@@ -350,6 +351,7 @@ $string["createClanDesc"] = "¡Aquí puedes crear un clan!";
 $string["create"] = "Crear";
 $string["mainSettings"] = "Ajustes principales";
 $string["takenClanName"] = "¡El nombre de clan ya está en uso!";
+$string["takenClanTag"] = "This clan tag was already taken!";
 // idk
 $string["suggestedName"] = '<button type="button" onclick="a(\'profile/%1$s\', true, true)" class="accbtn" name="accountID">%1$s</button><text class="dltext"> ha sugerido <b>%4$s%3$s</b> para</text><text class="levelname">%2$s</text>'; // %1$s - Mod username, %2$s - level name, %3$s - x stars, %4$s - Featured/Epic (%4$s%3$s - Featured, x stars)
 $string["reportedName"] = '%1$s<text class="dltext"> ha reportado</text><text class="levelname">%2$s</text>';

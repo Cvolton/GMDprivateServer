@@ -141,6 +141,11 @@ $levelcount = $query->rowCount();
 foreach($result as &$list) {
 	if(!$list['uploadDateUnix']) $list['uploadDateUnix'] = 0;
 	if(!$list['updateDateUnix']) $list['updateDateUnix'] = 0;
+	
+	if($gs->isPlayerInClan($list['accountID'])){
+		$list['userName'] = '['.$gs->getClanInfo($gs->isPlayerInClan($list['accountID']), 'tag').'] '.$list['userName'];
+	}
+	
 	$lvlstring .= "1:{$list['listID']}:2:{$list['listName']}:3:{$list['listDesc']}:5:{$list['listVersion']}:49:{$list['accountID']}:50:{$list['userName']}:10:{$list['downloads']}:7:{$list['starDifficulty']}:14:{$list['likes']}:19:{$list['starFeatured']}:51:{$list['listlevels']}:55:{$list['starStars']}:56:{$list['countForReward']}:28:{$list['uploadDateUnix']}:29:{$list['updateDateUnix']}"."|";
 	$userstring .= $gs->getUserString($list)."|";
 }
