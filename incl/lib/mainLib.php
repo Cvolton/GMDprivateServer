@@ -233,39 +233,29 @@ class mainLib {
 	public function getGauntletCount() {
 		return count($this->getGauntletName(0, true))-1;
 	}
-	function makeTime($timestamp, $removeAgo = true) {
-		$timeDifference = time() - $timestamp;
-		$minute = 60;
-		$hour = 3600;
-		$day = 86400;
-		$week = 604800;
-		$month = 2592000;
-		$year = 31536000;
-
-		$ago = $removeAgo ? '' : ' ago';
-
-		if ($timeDifference <= 1) {
-			return '1 second' . $ago;
-		} elseif ($timeDifference < $minute) {
-			return $timeDifference . ' second' . ($timeDifference > 1 ? 's' : '') . $ago;
-		} elseif ($timeDifference < $hour) {
-			$minutes = round($timeDifference / $minute);
-			return $minutes . ' minute' . ($minutes > 1 ? 's' : '') . $ago;
-		} elseif ($timeDifference < $day) {
-			$hours = round($timeDifference / $hour);
-			return $hours . ' hour' . ($hours > 1 ? 's' : '') . $ago;
-		} elseif ($timeDifference < $week) {
-			$days = round($timeDifference / $day);
-			return $days . ' day' . ($days > 1 ? 's' : '') . $ago;
-		} elseif ($timeDifference < $month) {
-			$weeks = round($timeDifference / $week);
-			return $weeks . ' week' . ($weeks > 1 ? 's' : '') . $ago;
-		} elseif ($timeDifference < $year) {
-			$months = round($timeDifference / $month);
-			return $months . ' month' . ($months > 1 ? 's' : '') . $ago;
-		} else {
-			$years = round($timeDifference / $year);
-			return $years . ' year' . ($years > 1 ? 's' : '') . $ago;
+	public function makeTime($time) {
+		include __DIR__ . "/../../config/dashboard.php";
+		if(!isset($timeType)) $timeType = 0;
+		switch($timeType) {
+			case 1:
+				if(date("d.m.Y", $time) == date("d.m.Y", time())) return date("G:i", $time);
+				elseif(date("Y", $time) == date("Y", time())) return date("d.m", $time);
+				else return date("d.m.Y", $time);
+				break;
+			case 2:
+				// taken from https://stackoverflow.com/a/36297417
+				$time = time() - $time;
+				$time = ($time < 1) ? 1 : $time;
+				$tokens = array (31536000 => 'year', 2592000 => 'month', 604800 => 'week', 86400 => 'day', 3600 => 'hour', 60 => 'minute', 1 => 'second');
+				foreach($tokens as $unit => $text) {
+					if($time < $unit) continue;
+					$numberOfUnits = floor($time / $unit);
+					return $numberOfUnits . ' ' . $text . (($numberOfUnits > 1) ? 's' : '');
+				}
+				break;
+			default:
+				return date("d/m/Y G.i", $time);
+				break;
 		}
 	}
 	public function getIDFromPost(){
