@@ -23,15 +23,16 @@ $commentcount = $countquery->fetchColumn();
 foreach($result as &$comment1) {
 	if($comment1["commentID"]!=""){
       	$uploadDate = $gs->makeTime($comment1["timestamp"]);
+		$likes = $comment1["likes"]; // - $comment1["dislikes"];
 		$reply = $db->prepare("SELECT count(*) FROM replies WHERE commentID = :id");
 		$reply->execute([':id' => $comment1["commentID"]]);
 		$reply = $reply->fetchColumn();
 		if($reply > 0) {
 			$rep = $reply > 1 ? 'replies)' : 'reply)';
-			$comment1["comment"] = base64_decode($comment1["comment"]);
-			$comment1["comment"] = base64_encode($comment1["comment"].' ('.$reply.' '.$rep);
+			$comment1["comment"] = base64_encode(base64_decode($comment1["comment"]).' ('.$reply.' '.$rep);
 		}
-		$commentstring .= "2~".$comment1["comment"]."~3~".$comment1["userID"]."~4~".$comment1["likes"]."~5~0~7~".$comment1["isSpam"]."~9~".$uploadDate."~6~".$comment1["commentID"]."|";
+		$comment1['comment'] = base64_encode(trim(ExploitPatch::rutoen(base64_decode($comment1['comment']))));
+		$commentstring .= "2~".$comment1["comment"]."~3~".$comment1["userID"]."~4~".$likes."~5~0~7~".$comment1["isSpam"]."~9~".$uploadDate."~6~".$comment1["commentID"]."|";
 	}
 }
 $commentstring = substr($commentstring, 0, -1);

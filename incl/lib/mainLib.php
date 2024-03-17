@@ -344,16 +344,7 @@ class mainLib {
 		}
 	}
 	public function getUserString($userdata) {
-		/*include __DIR__ . "/connection.php";
-		$query = $db->prepare("SELECT extID FROM users WHERE userID = :id");
-		$query->execute([':id' => $userID]);
-		$userdata = $query->fetch();
-		$query = $db->prepare("SELECT userName FROM accounts WHERE accountID = :id");
-		$query->execute([':id' => $extID]);
-		$userName = $query->fetch();*/
-		if($this->isPlayerInClan($userdata['extID'])){
-			$userdata['userName'] = '['.$this->getClanInfo($this->isPlayerInClan($userdata['extID']), 'tag').'] '.$userdata['userName'];
-		}
+		if($userdata['clan']) $userdata['userName'] = '['.$this->getClanInfo($userdata['clan'], 'tag').'] '.$userdata['userName'];
 		$extID = is_numeric($userdata['extID']) ? $userdata['extID'] : 0;
 		return "{$userdata['userID']}:{$userdata["userName"]}:{$extID}";
 	}

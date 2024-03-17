@@ -1,6 +1,5 @@
 <?php
 chdir(dirname(__FILE__));
-//error_reporting(0);
 include "../lib/connection.php";
 require_once "../lib/GJPCheck.php";
 require_once "../lib/exploitPatch.php";
@@ -39,9 +38,8 @@ foreach ($result as &$message1) {
 		$query=$db->prepare("SELECT * FROM users WHERE extID = :accountID");
 		$query->execute([':accountID' => $accountID]);
 		$result12 = $query->fetchAll()[0];
-		if($gs->isPlayerInClan($result12["extID"])){
-			$result12["userName"] = '['.$gs->getClanInfo($gs->isPlayerInClan($result12["extID"]), 'tag').'] '.$result12["userName"];
-		}
+		if($result12["clan"]) $result12["userName"] = '['.$gs->getClanInfo($isPlayerInClan, 'tag').'] '.$result12["userName"];
+		$message1['subject'] = base64_encode(ExploitPatch::rutoen(base64_decode($message1["subject"])));
 		$msgstring .= "6:".$result12["userName"].":3:".$result12["userID"].":2:".$result12["extID"].":1:".$message1["messageID"].":4:".$message1["subject"].":8:".$message1["isNew"].":9:".$getSent.":7:".$uploadDate."|";
 	}
 }

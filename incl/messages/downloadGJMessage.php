@@ -3,6 +3,7 @@ chdir(dirname(__FILE__));
 include "../lib/connection.php";
 require_once "../lib/GJPCheck.php";
 require_once "../lib/exploitPatch.php";
+require_once "../lib/XORCipher.php";
 
 $accountID = GJPCheck::getAccountIDOrDie();
 $messageID = ExploitPatch::remove($_POST["messageID"]);
@@ -22,12 +23,12 @@ if(empty($_POST["isSender"])){
 	$isSender = 1;
 	$accountID = $result["toAccountID"];
 }
-$query=$db->prepare("SELECT userName,userID,extID FROM users WHERE extID = :accountID");
+$query=$db->prepare("SELECT userName, userID, extID, clan FROM users WHERE extID = :accountID");
 $query->execute([':accountID' => $accountID]);
 $result12 = $query->fetch();
 $uploadDate = $gs->makeTime($result["timestamp"]);
-if($gs->isPlayerInClan($result12["extID"])){
-	$result12["userName"] = '['.$gs->getClanInfo($gs->isPlayerInClan($result12["extID"]), 'tag').'] '.$result12["userName"];
-}
+if($result12["clan"]) $result12["userName"] = '['.$gs->getClanInfo($isPlayerInClan, 'tag').'] '.$result12["userName"];
+$result["subject"] = base64_encode(ExploitPatch::rutoen(base64_decode($result["subject"])));
+$result["body"] = base64_encode(XORCipher::cipher(ExploitPatch::rutoen(XORCipher::cipher(base64_decode($result["body"]), 14251)), 14251));
 echo "6:".$result12["userName"].":3:".$result12["userID"].":2:".$result12["extID"].":1:".$result["messageID"].":4:".$result["subject"].":8:".$result["isNew"].":9:".$isSender.":5:".$result["body"].":7:".$uploadDate."";
 ?>
