@@ -59,7 +59,7 @@ $visiblecount = $query->rowCount();
 
 foreach($result as &$comment1) {
 	if($comment1["commentID"]!=""){
-		$uploadDate = date("d/m/Y G.i", $comment1["timestamp"]);
+		$uploadDate = $gs->makeTime($comment1["timestamp"]);
 		$commentText = ($gameVersion < 20) ? base64_decode($comment1["comment"]) : $comment1["comment"];
 		if($displayLevelID) $commentstring .= "1~".$comment1["levelID"]."~";
 		$commentstring .= "2~".$commentText."~3~".$comment1["userID"]."~4~".$comment1["likes"]."~5~0~7~".$comment1["isSpam"]."~9~".$uploadDate."~6~".$comment1["commentID"]."~10~".$comment1["percent"];
@@ -68,6 +68,10 @@ foreach($result as &$comment1) {
 			if($binaryVersion > 31){
 				$badge = $gs->getMaxValuePermission($extID, "modBadgeLevel");
 				$colorString = $badge > 0 ? "~12~".$gs->getAccountCommentColor($extID) : "";
+				
+				if($gs->isPlayerInClan($extID)){
+					$comment1['userName'] = '['.$gs->getClanInfo($gs->isPlayerInClan($extID), 'tag').'] '.$comment1['userName'];
+				}
 
 				$commentstring .= "~11~${badge}${colorString}:1~".$comment1["userName"]."~7~1~9~".$comment1["icon"]."~10~".$comment1["color1"]."~11~".$comment1["color2"]."~14~".$comment1["iconType"]."~15~".$comment1["special"]."~16~".$extID;
 			}elseif(!in_array($comment1["userID"], $users)){

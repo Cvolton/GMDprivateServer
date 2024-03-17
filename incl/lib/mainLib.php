@@ -378,6 +378,9 @@ class mainLib {
 		$query = $db->prepare("SELECT userName FROM accounts WHERE accountID = :id");
 		$query->execute([':id' => $extID]);
 		$userName = $query->fetch();*/
+		if($this->isPlayerInClan($userdata['extID'])){
+			$userdata['userName'] = '['.$this->getClanInfo($this->isPlayerInClan($userdata['extID']), 'tag').'] '.$userdata['userName'];
+		}
 		$extID = is_numeric($userdata['extID']) ? $userdata['extID'] : 0;
 		return "{$userdata['userID']}:{$userdata["userName"]}:{$extID}";
 	}
@@ -433,7 +436,7 @@ class mainLib {
 	    if(empty($claninfo)) return false;
 	    else {
 	        if($column != "*") {
-	            if($column != "clan" AND $column != "desc") return $claninfo[$column];
+	            if($column != "clan" AND $column != "desc" AND $column != "tag") return $claninfo[$column];
 	            else return base64_decode($claninfo[$column]);
 	        }
 	        else return array("ID" => $claninfo["ID"], "clan" => base64_decode($claninfo["clan"]), "tag" => base64_decode($claninfo["tag"]), "desc" => base64_decode($claninfo["desc"]), "clanOwner" => $claninfo["clanOwner"], "color" => $claninfo["color"], "isClosed" => $claninfo["isClosed"], "creationDate" => $claninfo["creationDate"]);

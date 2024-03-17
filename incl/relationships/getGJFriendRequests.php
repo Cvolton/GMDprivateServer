@@ -49,6 +49,9 @@ foreach($result as &$request) {
 	}else{
 		$extid = 0;
 	}
+	if($gs->isPlayerInClan($user["extID"])){
+		$user["userName"] = '['.$gs->getClanInfo($gs->isPlayerInClan($user["extID"]), 'tag').'] '.$user["userName"];
+	}
 	$reqstring .= "1:".$user["userName"].":2:".$user["userID"].":9:".$user["icon"].":10:".$user["color1"].":11:".$user["color2"].":14:".$user["iconType"].":15:".$user["special"].":16:".$extid.":32:".$request["ID"].":35:".$request["comment"].":41:".$request["isNew"].":37:".$uploadTime."|";
 
 }
