@@ -42,6 +42,7 @@ $string["settings"] = "Ayarlar";
 $string["allowMessagesFrom"] = "Şuradan mesajlara izin ver...";
 $string["allowFriendReqsFrom"] = "Şuradan arkadaşlık isteklerine izin ver...";
 $string["showCommentHistory"] = "Yorum geçmişini göster...";
+$string["timezoneChoose"] = "Choose timezone";
 $string["yourYouTube"] = "YouTube kanalın";
 $string["yourVK"] = "VK sayfan";
 $string["yourTwitter"] = "Twitter sayfan";

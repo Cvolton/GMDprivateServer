@@ -3,6 +3,51 @@ session_start();
 include "../incl/dashboardLib.php";
 include "../".$dbPath."incl/lib/exploitPatch.php";
 include_once "../".$dbPath."incl/lib/mainLib.php";
+
+function generate_timezone_list()
+{
+    static $regions = array(
+        DateTimeZone::AFRICA,
+        DateTimeZone::AMERICA,
+        DateTimeZone::ANTARCTICA,
+        DateTimeZone::ASIA,
+        DateTimeZone::ATLANTIC,
+        DateTimeZone::AUSTRALIA,
+        DateTimeZone::EUROPE,
+        DateTimeZone::INDIAN,
+        DateTimeZone::PACIFIC,
+    );
+
+    $timezones = array();
+    foreach( $regions as $region )
+    {
+        $timezones = array_merge( $timezones, DateTimeZone::listIdentifiers( $region ) );
+    }
+
+    $timezone_offsets = array();
+    foreach( $timezones as $timezone )
+    {
+        $tz = new DateTimeZone($timezone);
+        $timezone_offsets[$timezone] = $tz->getOffset(new DateTime);
+    }
+
+    // sort timezone by offset
+    asort($timezone_offsets);
+
+    $timezone_list = array();
+    foreach( $timezone_offsets as $timezone => $offset )
+    {
+        $offset_prefix = $offset < 0 ? '-' : '+';
+        $offset_formatted = gmdate( 'H:i', abs($offset) );
+
+        $pretty_offset = "UTC${offset_prefix}${offset_formatted}";
+
+        $timezone_list .= '<option value="'.$timezone.'">('.$pretty_offset.') '.$timezone.'</option>';
+    }
+
+    return $timezone_list;
+}
+
 $gs = new mainLib();
 include "../".$dbPath."incl/lib/connection.php";
 $dl = new dashboardLib();
@@ -92,7 +137,7 @@ if(!empty($_POST["msg"])) {
 if(isset($_POST["settings"]) AND $_POST["settings"] == 1 AND $accid == $_SESSION["accountID"]) {
     if(!isset($_POST["ichangedsmth"]) OR $_POST["ichangedsmth"] != 1) {
         echo '<base href="../../">';
-        $query = $db->prepare("SELECT mS, frS, cS, youtubeurl, twitter, twitch FROM accounts WHERE accountID=:id");
+        $query = $db->prepare("SELECT mS, frS, cS, youtubeurl, twitter, twitch, timezone FROM accounts WHERE accountID=:id");
         $query->execute([':id' => $accid]);
         $query = $query->fetch();
     	exit($dl->printSong('<div class="form" style="width: 60vw;max-height: 80vh;position:relative">
@@ -124,10 +169,17 @@ if(isset($_POST["settings"]) AND $_POST["settings"] == 1 AND $accid == $_SESSION
                                  <option value="2">'.$dl->getLocalizedString("none").'</option>
                                 </select>
                             </div>
+							<div>
+                            <h2 style="text-align:left;margin:0;margin-bottom: 3px">'.$dl->getLocalizedString("timezoneChoose").'</h2>
+                                <select class="field field-options" style="margin: 0px" name="timezone">
+                                  '.generate_timezone_list().'
+                                </select>
+                            </div>
                             <script>
                                 document.getElementsByName("messages")[0].value = '.$query["mS"].';
                                 document.getElementsByName("friendreqs")[0].value = '.$query["frS"].';
                                 document.getElementsByName("comments")[0].value = '.$query["cS"].';
+								document.getElementsByName("timezone")[0].value = "'.$query["timezone"].'";
                             </script>
                          </div>
                          <div class="messenger" style="grid-gap: 10px;display: grid;">
@@ -145,6 +197,7 @@ if(isset($_POST["settings"]) AND $_POST["settings"] == 1 AND $accid == $_SESSION
                             </div>
                     </div>
                     <input type="hidden" name="ichangedsmth" value="1"></input>
+					<input type="hidden" name="settings" value="1"></input>
                     </form>
                 <button style="margin-bottom:10px" class="btn-song" type="button" onclick="a(\'profile/'.$accname.'/settings\', true, true, \'POST\')">'.$dl->getLocalizedString("saveSettings").'</button>
             </div>
@@ -153,8 +206,8 @@ if(isset($_POST["settings"]) AND $_POST["settings"] == 1 AND $accid == $_SESSION
         if(ExploitPatch::number($_POST["messages"]) > 2 OR ExploitPatch::number($_POST["messages"]) < 0 OR empty(ExploitPatch::number($_POST["messages"]))) $_POST["messages"] = 0;
         if(ExploitPatch::number($_POST["friendreqs"]) > 1 OR ExploitPatch::number($_POST["friendreqs"]) < 0 OR empty(ExploitPatch::number($_POST["friendreqs"]))) $_POST["friendreqs"] = 0;
         if(ExploitPatch::number($_POST["comments"]) > 2 OR ExploitPatch::number($_POST["comments"]) < 0 OR empty(ExploitPatch::number($_POST["comments"]))) $_POST["comments"] = 0;
-        $query = $db->prepare("UPDATE accounts SET mS = :ms, frS = :frs, cS = :cs, youtubeurl = :yt, twitter = :twt, twitch = :ttv WHERE accountID=:id");
-        $query->execute([':id' => $accid, ':ms' => ExploitPatch::number($_POST["messages"]), ':frs' => ExploitPatch::number($_POST["friendreqs"]), ':cs' => ExploitPatch::number($_POST["comments"]), ':yt' => ExploitPatch::remove($_POST["youtube"]), ':twt' => ExploitPatch::remove($_POST["twitter"]), ':ttv' => ExploitPatch::remove($_POST["twitch"])]);
+        $query = $db->prepare("UPDATE accounts SET mS = :ms, frS = :frs, cS = :cs, youtubeurl = :yt, twitter = :twt, twitch = :ttv, timezone = :tz WHERE accountID=:id");
+        $query->execute([':id' => $accid, ':ms' => ExploitPatch::number($_POST["messages"]), ':frs' => ExploitPatch::number($_POST["friendreqs"]), ':cs' => ExploitPatch::number($_POST["comments"]), ':yt' => ExploitPatch::remove($_POST["youtube"]), ':twt' => ExploitPatch::remove($_POST["twitter"]), ':ttv' => ExploitPatch::remove($_POST["twitch"]), ':tz' => ExploitPatch::rucharclean($_POST["timezone"])]);
     }
 }
 $query = $db->prepare("SELECT * FROM users WHERE userID=:id");
