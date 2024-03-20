@@ -5,7 +5,7 @@ header("Access-Control-Allow-Headers: X-Requested-With");
 require "../incl/dashboardLib.php";
 include "../".$dbPath."incl/lib/connection.php";
 require_once "../".$dbPath."incl/lib/exploitPatch.php";
-if(!isset($_GET)) $json = json_decode(file_get_contents('php://input'), true);
+if(empty($_GET)) $json = json_decode(file_get_contents('php://input'), true);
 else $json = $_GET;
 $search = trim(ExploitPatch::rucharclean(urldecode($json["search"])));
 if(!empty($search)) {
