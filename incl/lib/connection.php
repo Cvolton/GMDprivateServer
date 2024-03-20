@@ -23,9 +23,9 @@ try {
 		$getExtID = $getExtID->fetchColumn();
 	}
 	if(!empty($getExtID) || isset($_SESSION['accountID'])) {
-		$accountID = $getExtID ?? $_SESSION['accountID'];
+		$accountIDcheck = $getExtID ?? $_SESSION['accountID'];
 		$timezone = $db->prepare('SELECT timezone FROM accounts WHERE accountID = :id');
-		$timezone->execute([':id' => $accountID]);
+		$timezone->execute([':id' => $accountIDcheck]);
 		$timezone = $timezone->fetchColumn();
 		if(!empty($timezone)) date_default_timezone_set($timezone);
 		else {
@@ -33,7 +33,7 @@ try {
 			$ipData = json_decode($json, true);
 			if($ipData['timezone']) {
 				$update = $db->prepare('UPDATE accounts SET timezone = :tz WHERE accountID = :id');
-				$update->execute([':tz' => $ipData['timezone'], ':id' => $accountID]);
+				$update->execute([':tz' => $ipData['timezone'], ':id' => $accountIDcheck]);
 				date_default_timezone_set($ipData['timezone']);
 			}
 		}
