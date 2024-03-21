@@ -1,6 +1,5 @@
 <?php
 chdir(dirname(__FILE__));
-//error_reporting(0);
 include "../lib/connection.php";
 require_once "../lib/exploitPatch.php";
 require_once "../lib/mainLib.php";
@@ -67,10 +66,10 @@ foreach($result as &$comment1) {
 		$commentstring .= "2~".$commentText."~3~".$comment1["userID"]."~4~".$likes."~5~0~7~".$comment1["isSpam"]."~9~".$uploadDate."~6~".$comment1["commentID"]."~10~".$comment1["percent"];
 		if ($comment1['userName']) { //TODO: get rid of queries caused by getMaxValuePermission and getAccountCommentColor
 			$extID = is_numeric($comment1["extID"]) ? $comment1["extID"] : 0;
+			$comment1['userName'] = $gs->makeClanUsername($comment1);
 			if($binaryVersion > 31){
 				$badge = $gs->getMaxValuePermission($extID, "modBadgeLevel");
 				$colorString = $badge > 0 ? "~12~".$gs->getAccountCommentColor($extID) : "";
-				if($comment1['clan']) $comment1['userName'] = '['.$gs->getClanInfo($comment1['clan'], 'tag').'] '.$comment1['userName'];
 				$commentstring .= "~11~${badge}${colorString}:1~".$comment1["userName"]."~7~1~9~".$comment1["icon"]."~10~".$comment1["color1"]."~11~".$comment1["color2"]."~14~".$comment1["iconType"]."~15~".$comment1["special"]."~16~".$comment1["extID"];
 			}elseif(!in_array($comment1["userID"], $users)){
 				$users[] = $comment1["userID"];

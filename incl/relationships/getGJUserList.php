@@ -36,11 +36,11 @@ else
 		$people .= $person . ",";
 	}
 	$people = substr($people, 0,-1);
-	$query = $db->prepare("SELECT userName, userID, icon, color1, color2, iconType, special, extID FROM users WHERE extID IN ($people) ORDER BY userName ASC");
+	$query = $db->prepare("SELECT userName, userID, icon, color1, color2, iconType, special, extID, clan FROM users WHERE extID IN ($people) ORDER BY userName ASC");
 	$query->execute();
 	$result = $query->fetchAll();
 	foreach($result as &$user){
-		if($user['clan']) $user["userName"] = '['.$gs->getClanInfo($gs->isPlayerInClan($user["extID"]), 'tag').'] '.$user["userName"];
+		$user["userName"] = $gs->makeClanUsername($user);
 		$peoplestring .= "1:".$user["userName"].":2:".$user["userID"].":9:".$user["icon"].":10:".$user["color1"].":11:".$user["color2"].":14:".$user["iconType"].":15:".$user["special"].":16:".$user["extID"].":18:0:41:".$new[$user["extID"]]."|";
 	}
 	$peoplestring = substr($peoplestring, 0, -1);

@@ -64,13 +64,12 @@ foreach ($result as &$score) {
 	$extID = $score["accountID"];
 	$query2 = $db->prepare("SELECT userName, clan, userID, icon, color1, color2, color3, iconType, special, extID, isBanned FROM users WHERE extID = :extID");
 	$query2->execute([':extID' => $extID]);
-	$user = $query2->fetchAll();
-	$user = $user[0];
+	$user = $query2->fetch();
 	if($user["isBanned"] != 0) continue;
 	$x++;
 	$time = $gs->makeTime($score["timestamp"]);
 	$scoreType = $score[$mode];
-	if($user["clan"]) $user["userName"] = '['.$gs->getClanInfo($user["clan"], 'tag').'] '.$user["userName"];
+	$user["userName"] = $gs->makeClanUsername($user);
 	$lvlstr .= "1:{$user['userName']}:2:{$user['userID']}:9:{$user['icon']}:10:{$user['color1']}:11:{$user['color2']}:14:{$user['iconType']}:15:{$user['color3']}:16:{$extID}:3:{$scoreType}:6:{$x}:42:{$time}|";
 }
 echo substr($lvlstr, 0, -1);

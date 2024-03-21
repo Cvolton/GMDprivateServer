@@ -344,7 +344,7 @@ class mainLib {
 		}
 	}
 	public function getUserString($userdata) {
-		if($userdata['clan']) $userdata['userName'] = '['.$this->getClanInfo($userdata['clan'], 'tag').'] '.$userdata['userName'];
+		$userdata['userName'] = $this->makeClanUsername($userdata);
 		$extID = is_numeric($userdata['extID']) ? $userdata['extID'] : 0;
 		return "{$userdata['userID']}:{$userdata["userName"]}:{$extID}";
 	}
@@ -884,6 +884,14 @@ class mainLib {
 		$query = $db->prepare('SELECT listName FROM lists WHERE listID = :id');
 		$query->execute([':id' => $listID]);
 		return $query->fetchColumn();
+	}
+	public function makeClanUsername($user) {
+		include __DIR__ . "/../../config/dashboard.php";
+		if($clansEnabled && $user['clan'] > 0) {
+			$clan = $this->getClanInfo($user['clan'], 'tag');
+			if(!empty($clan)) return '['.$clan.'] '.$user['userName'];
+		}
+		return $user['userName'];
 	}
 	public function updateLibraries($token, $expires, $mainServerTime, $type = 0) {
 		include __DIR__ . "/../../config/dashboard.php";

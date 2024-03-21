@@ -71,7 +71,7 @@ $query2->execute($query2args);
 $result = $query2->fetchAll();
 foreach ($result as &$score) {
 	$extID = $score["accountID"];
-	$query2 = $db->prepare("SELECT userName, userID, icon, color1, color2, color3, iconType, special, extID, isBanned FROM users WHERE extID = :extID");
+	$query2 = $db->prepare("SELECT userName, userID, icon, color1, color2, color3, iconType, special, extID, isBanned, clan FROM users WHERE extID = :extID");
 	$query2->execute([':extID' => $extID]);
 	$user = $query2->fetch();
 	$time = $gs->makeTime($score["uploadDate"]);
@@ -79,7 +79,7 @@ foreach ($result as &$score) {
 		if($score["percent"] == 100) $place = 1;
 		else if($score["percent"] > 75) $place = 2;
 		else $place = 3;
-		if($user["clan"]) $user["userName"] = '['.$gs->getClanInfo($user["clan"], 'tag').'] '.$user["userName"];
+		$user["userName"] = $gs->makeClanUsername($user);
 		echo "1:".$user["userName"].":2:".$user["userID"].":9:".$user["icon"].":10:".$user["color1"].":11:".$user["color2"].":51:".$user["color3"].":14:".$user["iconType"].":15:".$user["special"].":16:".$user["extID"].":3:".$score["percent"].":6:".$place.":13:".$score["coins"].":42:".$time."|";
 	}
 }
