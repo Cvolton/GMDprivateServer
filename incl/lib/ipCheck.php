@@ -80,18 +80,28 @@ class ipCheck {
 		return $_SERVER['REMOTE_ADDR'];
 	}
 	public function checkProxy() {
-		$fileExists = file_exists('../../config/proxies.txt');
-		$lastUpdate = $fileExists ? filemtime('../../config/proxies.txt') : 0;
+		$fileExists = file_exists(__DIR__ .'/../../config/proxies.txt');
+		$lastUpdate = $fileExists ? filemtime(__DIR__ .'/../../config/proxies.txt') : 0;
 		$checkTime = time() - 3600; 
 		if($checkTime > $lastUpdate) {
-			$proxies = file_get_contents('https://raw.githubusercontent.com/SevenworksDev/proxy-list/main/proxies/http.txt').'\n'.
-			file_get_contents('https://raw.githubusercontent.com/SevenworksDev/proxy-list/main/proxies/https.txt').'\n'.
-			file_get_contents('https://raw.githubusercontent.com/SevenworksDev/proxy-list/main/proxies/socks4.txt').'\n'.
-			file_get_contents('https://raw.githubusercontent.com/SevenworksDev/proxy-list/main/proxies/socks5.txt').'\n'.
-			file_get_contents('https://raw.githubusercontent.com/SevenworksDev/proxy-list/main/proxies/unknown.txt');
-			file_put_contents('../../config/proxies.txt', $proxies);
+			$proxies = [];
+			$proxies['http'] = file_get_contents('https://raw.githubusercontent.com/SevenworksDev/proxy-list/main/proxies/http.txt');
+			$proxies['https'] = file_get_contents('https://raw.githubusercontent.com/SevenworksDev/proxy-list/main/proxies/https.txt');
+			$proxies['socks4'] = file_get_contents('https://raw.githubusercontent.com/SevenworksDev/proxy-list/main/proxies/socks4.txt');
+			$proxies['socks5'] = file_get_contents('https://raw.githubusercontent.com/SevenworksDev/proxy-list/main/proxies/socks5.txt');
+			$proxies['unknown'] = file_get_contents('https://raw.githubusercontent.com/SevenworksDev/proxy-list/main/proxies/unknown.txt');
+			$proxies['all'] = '';
+			foreach($proxies AS $key => $proxy) {
+				$proxy = explode(PHP_EOL, $proxy);
+				foreach($proxy AS $ip) {
+					$proxies['all'] .= explode(':', $ip)[0].PHP_EOL;
+				}
+			}
+			file_put_contents(__DIR__ .'/../../config/proxies.txt', $proxies['all']);
 		}
-		if(in_array($this->getYourIP(), file('../../config/proxies.txt', FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES))) {
+		if(!isset($proxies)) $proxies = file(__DIR__ .'/../../config/proxies.txt', FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+		else $proxies = $proxies['all'];
+		if(in_array($this->getYourIP(), $proxies)) {
 			http_response_code(404);
 			exit;
 		}
