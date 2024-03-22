@@ -1,7 +1,7 @@
 <?php
 error_reporting(0);
 include dirname(__FILE__)."/../../config/connection.php";
-include_once dirname(__FILE__)."../../config/security.php";
+include_once dirname(__FILE__)."/../../config/security.php";
 require_once dirname(__FILE__)."/ipCheck.php";
 $ic = new ipCheck();
 @header('Content-Type: text/html; charset=utf-8');
