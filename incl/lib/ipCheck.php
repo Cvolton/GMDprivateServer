@@ -91,16 +91,14 @@ class ipCheck {
 			$proxies['socks5'] = file_get_contents('https://raw.githubusercontent.com/SevenworksDev/proxy-list/main/proxies/socks5.txt');
 			$proxies['unknown'] = file_get_contents('https://raw.githubusercontent.com/SevenworksDev/proxy-list/main/proxies/unknown.txt');
 			$proxies['all'] = '';
-			foreach($proxies AS $key => $proxy) {
-				$proxy = explode(PHP_EOL, $proxy);
-				foreach($proxy AS $ip) {
-					$proxies['all'] .= explode(':', $ip)[0].PHP_EOL;
-				}
+			foreach($proxies AS $key => $IPs) {
+				$proxy = preg_split('/\r\n|\r|\n/', $IPs);
+				foreach($proxy AS $ip) $proxies['all'] .= explode(':', $ip)[0].PHP_EOL;
 			}
 			file_put_contents(__DIR__ .'/../../config/proxies.txt', $proxies['all']);
 		}
 		if(!isset($proxies)) $proxies = file(__DIR__ .'/../../config/proxies.txt', FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
-		else $proxies = $proxies['all'];
+		else $proxies = explode(PHP_EOL, $proxies['all']);
 		if(in_array($this->getYourIP(), $proxies)) {
 			http_response_code(404);
 			exit;
