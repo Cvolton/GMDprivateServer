@@ -35,7 +35,8 @@ Image dominant color picker — https://github.com/swaydeng/imgcolr — (dashboa
 
 Media cover — https://github.com/aadsm/jsmediatags — (dashboard/lib/jsmediatags.js)
 
-Proxies list — https://github.com/SevenworksDev/proxy-list — (config/proxies.txt)
 Audio duration — https://github.com/JamesHeinrich/getID3 — (config/getid3)
+
+Proxies list — https://github.com/SevenworksDev/proxy-list — (config/proxies.txt)
 
 Most of the stuff in generateHash.php has been figured out by pavlukivan and Italian APK Downloader, so credits to them
