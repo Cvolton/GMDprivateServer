@@ -1,9 +1,10 @@
 <?php
-//TODO: joins
 chdir(dirname(__FILE__));
 include "../lib/connection.php";
 require_once "../lib/GJPCheck.php";
 require_once "../lib/exploitPatch.php";
+include_once "../lib/mainLib.php";
+$gs = new mainLib();
 if(!isset($_POST["type"]) OR !is_numeric($_POST["type"])){
 	exit("-1");
 }

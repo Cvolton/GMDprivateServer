@@ -2,6 +2,8 @@
 chdir(dirname(__FILE__));
 include "../lib/connection.php";
 require_once "../lib/exploitPatch.php";
+include_once "../lib/mainLib.php";
+$gs = new mainLib();
 $str = ExploitPatch::remove($_POST["str"]);
 $page = ExploitPatch::remove($_POST["page"]);
 $userstring = "";

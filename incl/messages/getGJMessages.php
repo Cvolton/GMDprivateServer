@@ -3,6 +3,8 @@ chdir(dirname(__FILE__));
 include "../lib/connection.php";
 require_once "../lib/GJPCheck.php";
 require_once "../lib/exploitPatch.php";
+include_once "../lib/mainLib.php";
+$gs = new mainLib();
 $msgstring = "";
 //code begins
 $toAccountID = GJPCheck::getAccountIDOrDie();

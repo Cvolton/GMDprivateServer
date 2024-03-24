@@ -4,6 +4,8 @@ include "../lib/connection.php";
 require_once "../lib/GJPCheck.php";
 require_once "../lib/exploitPatch.php";
 require_once "../lib/XORCipher.php";
+include_once "../lib/mainLib.php";
+$gs = new mainLib();
 
 $accountID = GJPCheck::getAccountIDOrDie();
 $messageID = ExploitPatch::remove($_POST["messageID"]);

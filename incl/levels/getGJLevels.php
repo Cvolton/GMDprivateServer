@@ -1,5 +1,4 @@
 <?php
-//header
 chdir(dirname(__FILE__));
 include "../lib/connection.php";
 require_once "../lib/GJPCheck.php";
