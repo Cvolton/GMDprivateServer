@@ -81,6 +81,7 @@ class ipCheck {
 	}
 	public function checkProxy() {
 		include_once __DIR__."/../../config/security.php";
+		global $blockFreeProxies;
 		if(!$blockFreeProxies) return;
 		$fileExists = file_exists(__DIR__ .'/../../config/proxies.txt');
 		$lastUpdate = $fileExists ? filemtime(__DIR__ .'/../../config/proxies.txt') : 0;
