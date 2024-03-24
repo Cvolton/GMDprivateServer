@@ -6,7 +6,7 @@ Supported version of Geometry Dash: 1.0 - 2.205
 
 (See [the backwards compatibility section of this article](https://github.com/Cvolton/GMDprivateServer/wiki/Deliberate-differences-from-real-GD) for more information)
 
-Required version of PHP: 5.5+ (tested up to 8.1.2)
+Required version of PHP: 5.5+ (tested up to 8.2)
 
 ### Branches
 - master - This is the main version of the server.
@@ -36,5 +36,7 @@ Image dominant color picker — https://github.com/swaydeng/imgcolr — (dashboa
 Media cover — https://github.com/aadsm/jsmediatags — (dashboard/lib/jsmediatags.js)
 
 Audio duration — https://github.com/JamesHeinrich/getID3 — (config/getid3)
+
+Proxies list — https://github.com/SevenworksDev/proxy-list — (config/proxies.txt)
 
 Most of the stuff in generateHash.php has been figured out by pavlukivan and Italian APK Downloader, so credits to them

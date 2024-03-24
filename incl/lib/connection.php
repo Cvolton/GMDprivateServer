@@ -5,9 +5,9 @@ include_once dirname(__FILE__)."/../../config/security.php";
 require_once dirname(__FILE__)."/ipCheck.php";
 $ic = new ipCheck();
 @header('Content-Type: text/html; charset=utf-8');
-if(!isset($port))
-	$port = 3306;
+if(!isset($port)) $port = 3306;
 try {
+	$ic->checkProxy();
     $db = new PDO("mysql:host=$servername;port=$port;dbname=$dbname", $username, $password, array(PDO::ATTR_PERSISTENT => true));
     $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 	$ip = $ic->getYourIP();

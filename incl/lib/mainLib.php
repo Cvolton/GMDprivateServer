@@ -987,7 +987,7 @@ class mainLib {
 						$bits = explode(',', $res[$i][$j]);
 						switch($i) {
 							case 0: // File/Folder
-								if(empty(trim($bits[1]))) continue;
+								if(empty(trim($bits[1]))) continue 2;
 								if(!isset($idsConverter['originalIDs'][$server][$bits[0]])) {
 									$idsConverter['count']++;
 									$idsConverter['IDs'][$idsConverter['count']] = [$server, $bits[0]];
@@ -1019,7 +1019,7 @@ class mainLib {
 								}
 								break;
 							case 1: // Credit
-								if(empty(trim($bits[0])) || empty(trim($bits[1]))) continue;
+								if(empty(trim($bits[0])) || empty(trim($bits[1]))) continue 2;
 								$library['credits'][ExploitPatch::escapedat($bits[0])] = [
 									'name' => ExploitPatch::escapedat($bits[0]),
 									'website' => ExploitPatch::escapedat($bits[1]),

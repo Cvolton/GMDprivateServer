@@ -1,5 +1,5 @@
 <?php
-class ipCheck{
+class ipCheck {
   public function ipv4inrange($ip, $range) {
        if (strpos($range, '/') !== false) {
             // $range is in IP/NETMASK format
@@ -47,7 +47,7 @@ class ipCheck{
             return false;
         }
  }
-public function cloudFlareIP($ip) {
+	public function cloudFlareIP($ip) {
     	$cf_ips = array(
 	        '173.245.48.0/20',
 			'103.21.244.0/22',
@@ -65,19 +65,47 @@ public function cloudFlareIP($ip) {
 			'172.64.0.0/13',
 			'131.0.72.0/22'
 	    );
-	    foreach ($cf_ips as $cf_ip) {
-	        if ($this->ipv4inrange($ip, $cf_ip)) {
+	    foreach($cf_ips as $cf_ip) {
+	        if($this->ipv4inrange($ip, $cf_ip)) {
 	            return true;
 	        }
 	    }
 	    return false;
 	}
-	public function getYourIP(){
+	public function getYourIP() {
 		if (isset($_SERVER['HTTP_CF_CONNECTING_IP']) && $this->cloudFlareIP($_SERVER['REMOTE_ADDR'])) //CLOUDFLARE REVERSE PROXY SUPPORT
   			return $_SERVER['HTTP_CF_CONNECTING_IP'];
 		if(isset($_SERVER['HTTP_X_FORWARDED_FOR']) && $this->ipv4inrange($_SERVER['REMOTE_ADDR'], '127.0.0.0/8')) //LOCALHOST REVERSE PROXY SUPPORT (7m.pl)
 			return $_SERVER['HTTP_X_FORWARDED_FOR'];
 		return $_SERVER['REMOTE_ADDR'];
+	}
+	public function checkProxy() {
+		include_once __DIR__."/../../config/security.php";
+		global $blockFreeProxies;
+		if(!$blockFreeProxies) return;
+		$fileExists = file_exists(__DIR__ .'/../../config/proxies.txt');
+		$lastUpdate = $fileExists ? filemtime(__DIR__ .'/../../config/proxies.txt') : 0;
+		$checkTime = time() - 3600; 
+		if($checkTime > $lastUpdate) {
+			$proxies = [];
+			$proxies['http'] = file_get_contents('https://raw.githubusercontent.com/SevenworksDev/proxy-list/main/proxies/http.txt');
+			$proxies['https'] = file_get_contents('https://raw.githubusercontent.com/SevenworksDev/proxy-list/main/proxies/https.txt');
+			$proxies['socks4'] = file_get_contents('https://raw.githubusercontent.com/SevenworksDev/proxy-list/main/proxies/socks4.txt');
+			$proxies['socks5'] = file_get_contents('https://raw.githubusercontent.com/SevenworksDev/proxy-list/main/proxies/socks5.txt');
+			$proxies['unknown'] = file_get_contents('https://raw.githubusercontent.com/SevenworksDev/proxy-list/main/proxies/unknown.txt');
+			$proxies['all'] = '';
+			foreach($proxies AS $key => $IPs) {
+				$proxy = preg_split('/\r\n|\r|\n/', $IPs);
+				foreach($proxy AS $ip) $proxies['all'] .= explode(':', $ip)[0].PHP_EOL;
+			}
+			file_put_contents(__DIR__ .'/../../config/proxies.txt', $proxies['all']);
+		}
+		if(!isset($proxies)) $proxies = file(__DIR__ .'/../../config/proxies.txt', FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+		else $proxies = explode(PHP_EOL, $proxies['all']);
+		if(in_array($this->getYourIP(), $proxies)) {
+			http_response_code(404);
+			exit;
+		}
 	}
 }
 ?>
