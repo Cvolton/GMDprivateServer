@@ -107,5 +107,28 @@ class ipCheck {
 			exit;
 		}
 	}
+	public function checkVPN() {
+		include_once __DIR__."/../../config/security.php";
+		global $blockCommonVPNs;
+		if(!$blockCommonVPNs) return;
+		$fileExists = file_exists(__DIR__ .'/../../config/vpns.txt');
+		$lastUpdate = $fileExists ? filemtime(__DIR__ .'/../../config/vpns.txt') : 0;
+		$checkTime = time() - 3600; 
+		if($checkTime > $lastUpdate) {
+			$vpns = [];
+			$vpns = file_get_contents('https://raw.githubusercontent.com/X4BNet/lists_vpn/main/output/vpn/ipv4.txt');
+			foreach($vpns AS $key => $IPs) {
+				$vpn = preg_split('/\r\n|\r|\n/', $IPs);
+				foreach($vpn AS $ip) $vpns['all'] .= explode('/', $ip)[0].PHP_EOL;
+			}
+			file_put_contents(__DIR__ .'/../../config/vpns.txt', $vpns);
+		}
+		if(!isset($vpns)) $vpns = file(__DIR__ .'/../../config/vpns.txt', FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+		else $vpns = explode(PHP_EOL, $vpns);
+		if(in_array($this->getYourIP(), $vpns)) {
+			http_response_code(404);
+			exit;
+		}
+	}
 }
 ?>
