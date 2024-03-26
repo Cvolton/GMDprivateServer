@@ -4,6 +4,8 @@ $unregisteredSubmissions = false; // false = green accounts can't upload levels,
 $preactivateAccounts = true; // false = accounts need to be activated at dashboard/login/activate.php; true = accounts can log in immediately
 $activeBanIP = false; // false = no check for banned IPs, true = active banip check (IP check every connection to GDPS)
 $blockFreeProxies = false; // true = check if person uses free proxy
+$blockFreeProxies = false; // true = check if person uses free proxy
+$blockCommonVPNs = false; // true = check if person uses a common VPN
 
 /*
 	Captcha settings
