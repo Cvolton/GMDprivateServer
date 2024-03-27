@@ -7,7 +7,7 @@ $ic = new ipCheck();
 @header('Content-Type: text/html; charset=utf-8');
 if(!isset($port)) $port = 3306;
 try {
-	$ic->checkProxy();
+	$ic->checkIP();
     $db = new PDO("mysql:host=$servername;port=$port;dbname=$dbname", $username, $password, array(PDO::ATTR_PERSISTENT => true));
     $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 	$ip = $ic->getYourIP();

@@ -80,55 +80,57 @@ class ipCheck {
 		return $_SERVER['REMOTE_ADDR'];
 	}
 	public function checkProxy() {
-		include_once __DIR__."/../../config/security.php";
-		global $blockFreeProxies;
+		include __DIR__."/../../config/security.php";
+		if(!isset($blockFreeProxies)) global $blockFreeProxies;
+		if(!isset($proxies)) global $proxies;
 		if(!$blockFreeProxies) return;
 		$fileExists = file_exists(__DIR__ .'/../../config/proxies.txt');
 		$lastUpdate = $fileExists ? filemtime(__DIR__ .'/../../config/proxies.txt') : 0;
-		$checkTime = time() - 3600; 
+		$checkTime = time() - 3600;
+		$allProxies = '';
 		if($checkTime > $lastUpdate) {
-			$proxies = [];
-			$proxies['http'] = file_get_contents('https://raw.githubusercontent.com/SevenworksDev/proxy-list/main/proxies/http.txt');
-			$proxies['https'] = file_get_contents('https://raw.githubusercontent.com/SevenworksDev/proxy-list/main/proxies/https.txt');
-			$proxies['socks4'] = file_get_contents('https://raw.githubusercontent.com/SevenworksDev/proxy-list/main/proxies/socks4.txt');
-			$proxies['socks5'] = file_get_contents('https://raw.githubusercontent.com/SevenworksDev/proxy-list/main/proxies/socks5.txt');
-			$proxies['unknown'] = file_get_contents('https://raw.githubusercontent.com/SevenworksDev/proxy-list/main/proxies/unknown.txt');
-			$proxies['all'] = '';
-			foreach($proxies AS $key => $IPs) {
+			foreach($proxies AS $link) {
+				$IPs = file_get_contents($link);
 				$proxy = preg_split('/\r\n|\r|\n/', $IPs);
-				foreach($proxy AS $ip) $proxies['all'] .= explode(':', $ip)[0].PHP_EOL;
+				foreach($proxy AS $ip) $allProxies .= explode(':', $ip)[0].PHP_EOL;
 			}
-			file_put_contents(__DIR__ .'/../../config/proxies.txt', $proxies['all']);
+			file_put_contents(__DIR__ .'/../../config/proxies.txt', $allProxies);
 		}
-		if(!isset($proxies)) $proxies = file(__DIR__ .'/../../config/proxies.txt', FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
-		else $proxies = explode(PHP_EOL, $proxies['all']);
-		if(in_array($this->getYourIP(), $proxies)) {
+		if(empty($allProxies)) $allProxies = file(__DIR__ .'/../../config/proxies.txt', FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+		else $allProxies = explode(PHP_EOL, $allProxies);
+		if(in_array($this->getYourIP(), $allProxies)) {
 			http_response_code(404);
 			exit;
 		}
 	}
 	public function checkVPN() {
-		include_once __DIR__."/../../config/security.php";
-		global $blockCommonVPNs;
+		include __DIR__."/../../config/security.php";
+		if(!isset($blockCommonVPNs)) global $blockCommonVPNs;
+		if(!isset($vpns)) global $vpns;
 		if(!$blockCommonVPNs) return;
 		$fileExists = file_exists(__DIR__ .'/../../config/vpns.txt');
 		$lastUpdate = $fileExists ? filemtime(__DIR__ .'/../../config/vpns.txt') : 0;
 		$checkTime = time() - 3600; 
+		$allVPNs = '';
 		if($checkTime > $lastUpdate) {
-			$vpns = [];
-			$vpns = file_get_contents('https://raw.githubusercontent.com/X4BNet/lists_vpn/main/output/vpn/ipv4.txt');
-			foreach($vpns AS $key => $IPs) {
-				$vpn = preg_split('/\r\n|\r|\n/', $IPs);
-				foreach($vpn AS $ip) $vpns['all'] .= explode('/', $ip)[0].PHP_EOL;
+			foreach($vpns AS $link) {
+				$IPs = file_get_contents($link);
+				$allVPNs .= $IPs.PHP_EOL;
 			}
-			file_put_contents(__DIR__ .'/../../config/vpns.txt', $vpns);
+			file_put_contents(__DIR__ .'/../../config/vpns.txt', $allVPNs);
 		}
-		if(!isset($vpns)) $vpns = file(__DIR__ .'/../../config/vpns.txt', FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
-		else $vpns = explode(PHP_EOL, $vpns);
-		if(in_array($this->getYourIP(), $vpns)) {
-			http_response_code(404);
-			exit;
+		if(empty($allVPNs)) $allVPNs = file(__DIR__ .'/../../config/vpns.txt', FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+		else $allVPNs = explode(PHP_EOL, $allVPNs);
+		foreach($allVPNs AS &$vpnCheck) {
+			if($this->ipv4inrange($this->getYourIP(), $vpnCheck)) {
+				http_response_code(404);
+				exit;
+			}
 		}
+	}
+	public function checkIP() {
+		$this->checkProxy();
+		$this->checkVPN();
 	}
 }
 ?>
