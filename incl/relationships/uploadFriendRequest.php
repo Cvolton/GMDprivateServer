@@ -1,6 +1,5 @@
 <?php
 chdir(dirname(__FILE__));
-//error_reporting(0);
 include "../lib/connection.php";
 require_once "../lib/GJPCheck.php";
 require_once "../lib/exploitPatch.php";

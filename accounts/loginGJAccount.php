@@ -7,7 +7,7 @@ $gs = new mainLib();
 //here im getting all the data
 $ip = $gs->getIP();
 $udid = ExploitPatch::remove($_POST["udid"]);
-$userName = ExploitPatch::remove($_POST["userName"]);
+$userName = ExploitPatch::charclean($_POST["userName"]);
 //registering
 $query = $db->prepare("SELECT accountID FROM accounts WHERE userName LIKE :userName");
 $query->execute([':userName' => $userName]);

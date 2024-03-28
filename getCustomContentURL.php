@@ -1,1 +1,3 @@
-https://geometrydashfiles.b-cdn.net
+<?php
+include "incl/misc/getAccountURL.php";
+?>

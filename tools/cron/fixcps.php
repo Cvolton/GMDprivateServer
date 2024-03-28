@@ -1,7 +1,5 @@
 <?php
-error_reporting(0);
 chdir(dirname(__FILE__));
-echo "Please wait...<br>";
 ob_flush();
 flush();
 if(file_exists("../logs/fixcpslog.txt")){
@@ -13,7 +11,7 @@ if(file_exists("../logs/fixcpslog.txt")){
 		$remainmins = floor($remaintime / 60);
 		$remainsecs = $remainmins * 60;
 		$remainsecs = $remaintime - $remainsecs;
-		exit("Please wait $remainmins minutes and $remainsecs seconds before running ". basename($_SERVER['SCRIPT_NAME'])." again");
+		exit("-1");
 	}
 }
 file_put_contents("../logs/fixcpslog.txt",time());
@@ -38,13 +36,12 @@ $query = $db->prepare("UPDATE users
 	    ) AS featuredTable ON usersTable.userID = featuredTable.userID
 	    LEFT JOIN
 	    (
-	        SELECT count(*)+(starEpic-1) as epic, userID FROM levels WHERE starEpic != 0 AND isCPShared = 0 GROUP BY(userID) 
+	        SELECT SUM(starEpic) as epic, userID FROM levels WHERE starEpic != 0 AND isCPShared = 0 GROUP BY(userID) 
 	    ) AS epicTable ON usersTable.userID = epicTable.userID
 	) calculated
 	ON users.userID = calculated.userID
 	SET users.creatorPoints = IFNULL(calculated.CP, 0)");
 $query->execute();
-echo "Calculated base CP<br>";
 /*
 	CP SHARING
 */
@@ -88,7 +85,7 @@ foreach($result as $gauntlet){
 		//getting users
 		if($result["userID"] != ""){
 			$cplog .= $result["userID"] . " - +1\r\n";
-			$people[$result["userID"]] += 1;
+			$people[$result["userID"]] = ($people[$result["userID"]] ?? 0) + 1;
 		}
 	}
 }
@@ -106,7 +103,7 @@ foreach($result as $daily){
 	$result = $query->fetch();
 	//getting users
 	if($result["userID"] != ""){
-		$people[$result["userID"]] += 1;
+		$people[$result["userID"]] = ($people[$result["userID"]] ?? 0) + 1;
 		$cplog .= $result["userID"] . " - +1\r\n";
 	}
 }
@@ -114,10 +111,8 @@ foreach($result as $daily){
 	DONE
 */
 foreach($people as $user => $cp){
-	echo "$user now has $cp creator points... <br>";
 	$query4 = $db->prepare("UPDATE users SET creatorPoints = (creatorpoints + :creatorpoints) WHERE userID=:userID");
 	$query4->execute([':userID' => $user, ':creatorpoints' => $cp]);
 }
-echo "<hr>done";
 file_put_contents("../logs/cplog.txt",$cplog);
 ?>

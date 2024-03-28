@@ -23,6 +23,7 @@ class mainLib {
 			"Geometrical Dominator by Waterflame",
 			"Deadlocked by F-777",
 			"Fingerbang by MDK",
+			"Dash by MDK",
 			"The Seven Seas by F-777",
 			"Viking Arena by F-777",
 			"Airborne Robots by F-777",
@@ -110,15 +111,30 @@ class mainLib {
 				$demon = 1;
 				break;
 			default:
-				$diffname = "N/A: " . $stars;
+				$diffname = "N/A";
 				$diff = 0;
 				$demon = 0;
 				break;
 		}
 		return array('diff' => $diff, 'auto' => $auto, 'demon' => $demon, 'name' => $diffname);
 	}
+	public function getLevelDiff($levelID) {
+		include __DIR__ . "/connection.php";
+		$diff = $db->prepare("SELECT starDifficulty FROM levels WHERE levelID = :id");
+		$diff->execute([':id' => $levelID]);
+		$diff = $diff->fetch();
+		$diff = $this->getDifficulty($diff["starDifficulty"], 0, 0);
+		return $diff;
+	}
+	public function getLevelStars($levelID) {
+		include __DIR__ . "/connection.php";
+		$diff = $db->prepare("SELECT starStars FROM levels WHERE levelID = :id");
+		$diff->execute([':id' => $levelID]);
+		$diff = $diff->fetch();
+		return $diff["starStars"];
+	}
 	public function getLength($length) {
-		switch($length){
+		switch($length) {
 			case 0:
 				return "Tiny";
 				break;
@@ -207,63 +223,39 @@ class mainLib {
 		}
 		return array($starDifficulty, $starDemon, $starAuto);
 	}
-	public function getGauntletName($id){
+	public function getGauntletName($id, $wholeArray = false){
 		$gauntlets = ["Unknown", "Fire", "Ice", "Poison", "Shadow", "Lava", "Bonus", "Chaos", "Demon", "Time", "Crystal", "Magic", "Spike", "Monster", "Doom", "Death", 'Forest', 'Rune', 'Force', 'Spooky', 'Dragon', 'Water', 'Haunted', 'Acid', 'Witch', 'Power', 'Potion', 'Snake', 'Toxic', 'Halloween', 'Treasure', 'Ghost', 'Spider', 'Gem', 'Inferno', 'Portal', 'Strange', 'Fantasy', 'Christmas', 'Surprise', 'Mystery', 'Cursed', 'Cyborg', 'Castle', 'Grave', 'Temple', 'World', 'Galaxy', 'Universe', 'Discord', 'Split'];
+		if($wholeArray) return $gauntlets;
 		if($id < 0 || $id >= count($gauntlets))
 			return $gauntlets[0];
 		return $gauntlets[$id];
 	}
-
-	function makeTime($delta)
-	{
-		if ($delta < 31536000)
-		{
-			if ($delta < 2628000)
-			{
-				if ($delta < 604800)
-				{
-					if ($delta < 86400)
-					{
-						if ($delta < 3600)
-						{
-							if ($delta < 60)
-							{
-								return $delta." second".($delta == 1 ? "" : "s");
-							}
-							else
-							{
-                        					$rounded = floor($delta / 60);
-								return $rounded." minute".($rounded == 1 ? "" : "s");
-							}
-						}
-						else
-						{
-							$rounded = floor($delta / 3600);
-							return $rounded." hour".($rounded == 1 ? "" : "s");
-						}
-					}
-					else
-					{
-						$rounded = floor($delta / 86400);
-						return $rounded." day".($rounded == 1 ? "" : "s");
-					}
+	public function getGauntletCount() {
+		return count($this->getGauntletName(0, true))-1;
+	}
+	public function makeTime($time) {
+		include __DIR__ . "/../../config/dashboard.php";
+		if(!isset($timeType)) $timeType = 0;
+		switch($timeType) {
+			case 1:
+				if(date("d.m.Y", $time) == date("d.m.Y", time())) return date("G:i", $time);
+				elseif(date("Y", $time) == date("Y", time())) return date("d.m", $time);
+				else return date("d.m.Y", $time);
+				break;
+			case 2:
+				// taken from https://stackoverflow.com/a/36297417
+				$time = time() - $time;
+				$time = ($time < 1) ? 1 : $time;
+				$tokens = array (31536000 => 'year', 2592000 => 'month', 604800 => 'week', 86400 => 'day', 3600 => 'hour', 60 => 'minute', 1 => 'second');
+				foreach($tokens as $unit => $text) {
+					if($time < $unit) continue;
+					$numberOfUnits = floor($time / $unit);
+					return $numberOfUnits . ' ' . $text . (($numberOfUnits > 1) ? 's' : '');
 				}
-				else
-				{
-					$rounded = floor($delta / 604800);
-					return $rounded." week".($rounded == 1 ? "" : "s");
-				}
-			}
-			else
-			{
-				$rounded = floor($delta / 2628000); 
-				return $rounded." month".($rounded == 1 ? "" : "s");
-			}
-		}
-		else
-		{
-			$rounded = floor($delta / 31536000);
-			return $rounded." year".($rounded == 1 ? "" : "s");
+				break;
+			default:
+				return date("d/m/Y G.i", $time);
+				break;
 		}
 	}
 	public function getIDFromPost(){
@@ -352,15 +344,13 @@ class mainLib {
 		}
 	}
 	public function getUserString($userdata) {
-		include __DIR__ . "/connection.php";
-		/*$query = $db->prepare("SELECT userName, extID FROM users WHERE userID = :id");
-		$query->execute([':id' => $userID]);
-		$userdata = $query->fetch();*/
+		$userdata['userName'] = $this->makeClanUsername($userdata);
 		$extID = is_numeric($userdata['extID']) ? $userdata['extID'] : 0;
-		return "${userdata['userID']}:${userdata['userName']}:${extID}";
+		return "{$userdata['userID']}:{$userdata["userName"]}:{$extID}";
 	}
 	public function getSongString($song){
 		include __DIR__ . "/connection.php";
+		include_once __DIR__ . "/exploitPatch.php";
 		/*$query3=$db->prepare("SELECT ID,name,authorID,authorName,size,isDisabled,download FROM songs WHERE ID = :songid LIMIT 1");
 		$query3->execute([':songid' => $songID]);*/
 		if($song['ID'] == 0 || empty($song['ID'])){
@@ -374,7 +364,74 @@ class mainLib {
 		if(strpos($dl, ':') !== false){
 			$dl = urlencode($dl);
 		}
-		return "1~|~".$song["ID"]."~|~2~|~".str_replace("#", "", $song["name"])."~|~3~|~".$song["authorID"]."~|~4~|~".$song["authorName"]."~|~5~|~".$song["size"]."~|~6~|~~|~10~|~".$dl."~|~7~|~~|~8~|~1";
+		return "1~|~".$song["ID"]."~|~2~|~".ExploitPatch::rutoen(str_replace("#", "", $song["name"]))."~|~3~|~".$song["authorID"]."~|~4~|~".ExploitPatch::rutoen($song["authorName"])."~|~5~|~".$song["size"]."~|~6~|~~|~10~|~".$dl."~|~7~|~~|~8~|~1";
+	}
+	public function getSongInfo($id, $column = "*") {
+	    if(!is_numeric($id)) return;
+	    include __DIR__ . "/connection.php";
+	    $sinfo = $db->prepare("SELECT $column FROM songs WHERE ID = :id");
+	    $sinfo->execute([':id' => $id]);
+	    $sinfo = $sinfo->fetch();
+	    if(empty($sinfo)) return false;
+	    else {
+	        if($column != "*")  return $sinfo[$column];
+	        else return array("ID" => $sinfo["ID"], "name" => $sinfo["name"], "authorName" => $sinfo["authorName"], "size" => $sinfo["size"], "duration" => $sinfo["duration"], "download" => $sinfo["download"], "reuploadTime" => $sinfo["reuploadTime"], "reuploadID" => $sinfo["reuploadID"]);
+	    }
+	}
+	public function getSFXInfo($id, $column = "*") {
+	    if(!is_numeric($id)) return;
+	    include __DIR__ . "/connection.php";
+	    $sinfo = $db->prepare("SELECT $column FROM sfxs WHERE ID = :id");
+	    $sinfo->execute([':id' => $id]);
+	    $sinfo = $sinfo->fetch();
+	    if(empty($sinfo)) return false;
+	    else {
+	        if($column != "*")  return $sinfo[$column];
+	        else return array("ID" => $sinfo["ID"], "name" => $sinfo["name"], "authorName" => $sinfo["authorName"], "size" => $sinfo["size"], "download" => $sinfo["download"], "reuploadTime" => $sinfo["reuploadTime"], "reuploadID" => $sinfo["reuploadID"]);
+	    }
+	}
+	public function getClanInfo($clan, $column = "*") {
+	    global $dashCheck;
+	    if(!is_numeric($clan) || $dashCheck === 'no') return false;
+	    include __DIR__ . "/connection.php";
+	    $claninfo = $db->prepare("SELECT $column FROM clans WHERE ID = :id");
+	    $claninfo->execute([':id' => $clan]);
+	    $claninfo = $claninfo->fetch();
+	    if(empty($claninfo)) return false;
+	    else {
+	        if($column != "*") {
+	            if($column != "clan" AND $column != "desc" AND $column != "tag") return $claninfo[$column];
+	            else return base64_decode($claninfo[$column]);
+	        }
+	        else return array("ID" => $claninfo["ID"], "clan" => base64_decode($claninfo["clan"]), "tag" => base64_decode($claninfo["tag"]), "desc" => base64_decode($claninfo["desc"]), "clanOwner" => $claninfo["clanOwner"], "color" => $claninfo["color"], "isClosed" => $claninfo["isClosed"], "creationDate" => $claninfo["creationDate"]);
+	    }
+	}
+	public function getClanID($clan) {
+		global $dashCheck;
+	    if($dashCheck === 'no') return false;
+	    include __DIR__ . "/connection.php";
+	    $claninfo = $db->prepare("SELECT ID FROM clans WHERE clan = :id");
+	    $claninfo->execute([':id' => base64_encode($clan)]);
+	    $claninfo = $claninfo->fetch();
+	    return $claninfo["ID"];
+	}
+	public function isPlayerInClan($id) {
+		global $dashCheck;
+	    if(!is_numeric($id) || $dashCheck === 'no') return false;
+	    include __DIR__ . "/connection.php";
+	    $claninfo = $db->prepare("SELECT clan FROM users WHERE extID = :id");
+	    $claninfo->execute([':id' => $id]);
+	    $claninfo = $claninfo->fetch();
+	    if(!empty($claninfo)) return $claninfo["clan"];
+	    else return false;
+	}
+	public function isPendingRequests($clan) {
+		global $dashCheck;
+	    if(!is_numeric($clan) || $dashCheck === 'no') return false;
+		include __DIR__ . "/connection.php";
+	    $claninfo = $db->prepare("SELECT count(*) FROM clanrequests WHERE clanID = :id");
+		$claninfo->execute([':id' => $clan]);
+		return $claninfo->fetchColumn();
 	}
 	public function sendDiscordPM($receiver, $message){
 		include __DIR__ . "/../../config/discord.php";
@@ -435,7 +492,47 @@ class mainLib {
 		curl_close($crl);
 		$userinfo = json_decode($response, true);
 		//var_dump($userinfo);
-		return $userinfo["username"] . "#" . $userinfo["discriminator"];
+		if($userinfo["discriminator"] != "0") $userinfo["discriminator"] = '#'.$userinfo["discriminator"];
+		else $userinfo["discriminator"] = '';
+		return $userinfo["username"].$userinfo["discriminator"];
+	}
+	public function getDesc($lid, $dashboard = false) {
+		include __DIR__ . "/connection.php";
+		$desc = $db->prepare("SELECT levelDesc FROM levels WHERE levelID = :id");
+		$desc->execute([':id' => $lid]);
+		$desc = $desc->fetch();
+		if(empty($desc["levelDesc"])) return !$dashboard ? '*This level doesn\'t have description*' : '<text style="font-style:italic">This level doesn\'t have description</text>';
+		else return base64_decode($desc["levelDesc"]);
+	}
+	public function getLevelName($lid) {
+		include __DIR__ . "/connection.php";
+		$desc = $db->prepare("SELECT levelName FROM levels WHERE levelID = :id");
+		$desc->execute([':id' => $lid]); 
+		$desc = $desc->fetch();
+		if(!empty($desc["levelName"])) return $desc["levelName"]; else return false;
+	} 
+	public function getLevelStats($lid) {
+		include __DIR__ . "/connection.php";
+		$info = $db->prepare("SELECT downloads, likes, requestedStars FROM levels WHERE levelID = :id");
+		$info->execute([':id' => $lid]);
+		$info = $info->fetch();
+		$likes = $info["likes"]; // - $info["dislikes"];
+		if(!empty($info)) return array('dl' => $info["downloads"], 'likes' => $likes, 'req' => $info["requestedStars"]);
+	}
+	public function getLevelAuthor($lid) {
+		include __DIR__ . "/connection.php";
+		$desc = $db->prepare("SELECT extID FROM levels WHERE levelID = :id");
+		$desc->execute([':id' => $lid]);
+		$desc = $desc->fetch();
+		return $desc["extID"];
+	}
+	public function isRated($lid) {
+		include __DIR__ . "/connection.php";
+		$desc = $db->prepare("SELECT starStars FROM levels WHERE levelID = :id");
+		$desc->execute([':id' => $lid]);
+		$desc = $desc->fetch();
+		if($desc["starStars"] == 0) return false; 
+		else return true;
 	}
 	public function randomString($length = 6) {
 		$randomString = openssl_random_pseudo_bytes($length);
@@ -482,6 +579,7 @@ class mainLib {
 		$query = $db->prepare("SELECT roleID FROM roleassign WHERE accountID = :accountID");
 		$query->execute([':accountID' => $accountID]);
 		$roleIDarray = $query->fetchAll();
+		if(empty($roleIDarray)) return false;
 		$roleIDlist = "";
 		foreach($roleIDarray as &$roleIDobject){
 			$roleIDlist .= $roleIDobject["roleID"] . ",";
@@ -649,42 +747,38 @@ class mainLib {
 	}
 	public function rateLevel($accountID, $levelID, $stars, $difficulty, $auto, $demon){
 		if(!is_numeric($accountID)) return false;
-
 		include __DIR__ . "/connection.php";
-		//lets assume the perms check is done properly before
+		$diffName = $this->getDiffFromStars($stars)["name"];
 		$query = "UPDATE levels SET starDemon=:demon, starAuto=:auto, starDifficulty=:diff, starStars=:stars, rateDate=:now WHERE levelID=:levelID";
 		$query = $db->prepare($query);	
 		$query->execute([':demon' => $demon, ':auto' => $auto, ':diff' => $difficulty, ':stars' => $stars, ':levelID'=>$levelID, ':now' => time()]);
-		
 		$query = $db->prepare("INSERT INTO modactions (type, value, value2, value3, timestamp, account) VALUES ('1', :value, :value2, :levelID, :timestamp, :id)");
-		$query->execute([':value' => $this->getDiffFromStars($stars)["name"], ':timestamp' => time(), ':id' => $accountID, ':value2' => $stars, ':levelID' => $levelID]);
-		
-		
+		$query->execute([':value' => $diffName, ':timestamp' => time(), ':id' => $accountID, ':value2' => $stars, ':levelID' => $levelID]);
 	}
 	public function featureLevel($accountID, $levelID, $state) {
 		if(!is_numeric($accountID)) return false;
 		switch($state) {
-	            case 0:
-	                $feature = 0;
-	                $epic = 0;
-	                break;
-	            case 1:
-	                $feature = 1;
-	                $epic = 0;
-	                break;
-	            case 2: // Stole from TheJulfor
-	                $feature = 1;
-	                $epic = 1;
-	                break;
-	            case 3:
-	                $feature = 1;
-	                $epic = 2;
-	                break;
-	            case 4:
-	                $feature = 1;
-	                $epic = 3;
-	                break;
-	        }
+            case 0:
+                $feature = 0;
+                $epic = 0;
+                break;
+            case 1:
+                $feature = 1;
+                $epic = 0;
+                break;
+            case 2: // Stole from TheJulfor
+                $feature = 1;
+                $epic = 1;
+                break;
+            case 3:
+                $feature = 1;
+                $epic = 2;
+                break;
+            case 4:
+                $feature = 1;
+                $epic = 3;
+                break;
+        }
 		include __DIR__ . "/connection.php";
 		$query = "UPDATE levels SET starFeatured=:feature, starEpic=:epic, rateDate=:now WHERE levelID=:levelID";
 		$query = $db->prepare($query);	
@@ -692,43 +786,46 @@ class mainLib {
 		$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('2', :value, :levelID, :timestamp, :id)");
 		$query->execute([':value' => $state, ':timestamp' => time(), ':id' => $accountID, ':levelID' => $levelID]);
 	}
-	public function verifyCoinsLevel($accountID, $levelID, $coins){
+	public function verifyCoinsLevel($accountID, $levelID, $coins) {
 		if(!is_numeric($accountID)) return false;
-
 		include __DIR__ . "/connection.php";
 		$query = "UPDATE levels SET starCoins=:coins WHERE levelID=:levelID";
 		$query = $db->prepare($query);	
 		$query->execute([':coins' => $coins, ':levelID'=>$levelID]);
-		
 		$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('3', :value, :levelID, :timestamp, :id)");
 		$query->execute([':value' => $coins, ':timestamp' => time(), ':id' => $accountID, ':levelID' => $levelID]);
 	}
-	public function songReupload($url){
+	public function songReupload($url, $author, $name, $accountID) {
 		require __DIR__ . "/../../incl/lib/connection.php";
 		require_once __DIR__ . "/../../incl/lib/exploitPatch.php";
 		$song = str_replace("www.dropbox.com","dl.dropboxusercontent.com",$url);
-		if (filter_var($song, FILTER_VALIDATE_URL) == TRUE && substr($song, 0, 4) == "http") {
+		if(filter_var($song, FILTER_VALIDATE_URL) == TRUE && substr($song, 0, 4) == "http") {
 			$song = str_replace(["?dl=0","?dl=1"],"",$song);
 			$song = trim($song);
-			$query = $db->prepare("SELECT count(*) FROM songs WHERE download = :download");
+			$query = $db->prepare("SELECT ID FROM songs WHERE download = :download");
 			$query->execute([':download' => $song]);	
-			$count = $query->fetchColumn();
-			if($count != 0){
-				return "-3";
+			$count = $query->fetch();
+			if(!empty($count)){
+				return "-3".$count["ID"];
 			}
-			$name = ExploitPatch::remove(urldecode(str_replace([".mp3",".webm",".mp4",".wav"], "", basename($song))));
-			$author = "Reupload";
+			$freeID = false;
+			while(!$freeID) {
+				$db_fid = rand(99, 9999999);
+				$checkID = $db->prepare('SELECT count(*) FROM songs WHERE ID = :id'); // If randomized ID picks existing song ID
+				$checkID->execute([':id' => $db_fid]);
+				if($checkID->fetchColumn() == 0) $freeID = true;
+			}
+			if(empty($name)) $name = ExploitPatch::remove(urldecode(str_replace([".mp3",".webm",".mp4",".wav"], "", basename($song))));
+			if(empty($author)) $author = "Reupload";
 			$info = $this->getFileInfo($song);
-			$size = $info['size'];
-			if(substr($info['type'], 0, 6) != "audio/")
-				return "-4";
-			$size = round($size / 1024 / 1024, 2);
+			$size = round($info['size'] / 1024 / 1024, 2);
+			if(substr($info['type'], 0, 6) != "audio/" || $size == 0 || $size == '-0') return "-4";
 			$hash = "";
-			$query = $db->prepare("INSERT INTO songs (name, authorID, authorName, size, download, hash)
-			VALUES (:name, '9', :author, :size, :download, :hash)");
-			$query->execute([':name' => $name, ':download' => $song, ':author' => $author, ':size' => $size, ':hash' => $hash]);
-			return $db->lastInsertId();
-		}else{
+			$query = $db->prepare("INSERT INTO songs (ID, name, authorID, authorName, size, download, hash, reuploadTime, reuploadID)
+			VALUES (:songID, :name, '9', :author, :size, :download, :hash, :time, :accountID)");
+			$query->execute([':songID' => $db_fid, ':name' => $name, ':download' => $song, ':author' => $author, ':size' => $size, ':hash' => $hash, ':time' => time(), ':accountID' => $accountID]);
+			return $db_fid;
+		} else {
 			return "-2";
 		}
 	}
@@ -749,11 +846,18 @@ class mainLib {
 	}
 	public function suggestLevel($accountID, $levelID, $difficulty, $stars, $feat, $auto, $demon){
 		if(!is_numeric($accountID)) return false;
-		
 		include __DIR__ . "/connection.php";
 		$query = "INSERT INTO suggest (suggestBy, suggestLevelID, suggestDifficulty, suggestStars, suggestFeatured, suggestAuto, suggestDemon, timestamp) VALUES (:account, :level, :diff, :stars, :feat, :auto, :demon, :timestamp)";
 		$query = $db->prepare($query);
 		$query->execute([':account' => $accountID, ':level' => $levelID, ':diff' => $difficulty, ':stars' => $stars, ':feat' => $feat, ':auto' => $auto, ':demon' => $demon, ':timestamp' => time()]);
+	}
+ 	public function isUnlisted($levelID) {
+        include __DIR__."/connection.php";
+        $query = $db->prepare("SELECT count(*) FROM levels WHERE unlisted = 1, levelID = :id");
+        $query->execute([':id' => $levelID]);
+        $query = $query->fetch();
+        if(!empty($query)) return true; 
+        else return false;
 	}
 	public function getListOwner($listID) {
 		if(!is_numeric($listID)) return false;
@@ -780,5 +884,342 @@ class mainLib {
 		$query = $db->prepare('SELECT listName FROM lists WHERE listID = :id');
 		$query->execute([':id' => $listID]);
 		return $query->fetchColumn();
+	}
+	public function makeClanUsername($user) {
+		include __DIR__ . "/../../config/dashboard.php";
+		if($clansEnabled && $user['clan'] > 0) {
+			$clan = $this->getClanInfo($user['clan'], 'tag');
+			if(!empty($clan)) return '['.$clan.'] '.$user['userName'];
+		}
+		return $user['userName'];
+	}
+	public function updateLibraries($token, $expires, $mainServerTime, $type = 0) {
+		include __DIR__ . "/../../config/dashboard.php";
+		$servers = [];
+		$types = ['sfx', 'music'];
+		if(!isset($customLibrary)) $customLibrary = [[1, 'Geometry Dash', 'https://geometrydashfiles.b-cdn.net'], [3, $gdps, null]]; 
+		foreach($customLibrary AS $library) {
+			if(($types[$type] == 'sfx' AND $library[3] === 1) OR ($types[$type] == 'music' AND $library[3] === 0)) continue;
+			if($library[2] !== null) {
+				$servers['s'.$library[0]] = $library[2];
+			}
+		}
+		$updatedLib = false;
+		foreach($servers AS $key => &$server) {
+			if(file_exists(__DIR__.'/../../'.$types[$type].'/'.$key.'.txt')) $oldVersion = explode(', ', file_get_contents(__DIR__.'/../../'.$types[$type].'/'.$key.'.txt'));
+			else $oldVersion = [0, 0];
+			if($oldVersion[1] + 600 > time()) continue; // Download library only once per 10 minutes
+			$curl = curl_init($server.'/'.$types[$type].'/'.$types[$type].'library_version.txt?token='.$token.'&expires='.$expires);
+			curl_setopt_array($curl, [
+				CURLOPT_PROTOCOLS => CURLPROTO_HTTP | CURLPROTO_HTTPS,
+				CURLOPT_RETURNTRANSFER => 1
+			]);
+			$newVersion = (int)curl_exec($curl);
+			curl_close($curl);
+			$jsonVersion = $newVersion.', '.time();
+			file_put_contents(__DIR__.'/../../'.$types[$type].'/'.$key.'.txt', $jsonVersion);
+			if($newVersion > $oldVersion[0]) {
+				$download = curl_init($server.'/'.$types[$type].'/'.$types[$type].'library.dat?token='.$token.'&expires='.$expires);
+				curl_setopt_array($download, [
+					CURLOPT_PROTOCOLS => CURLPROTO_HTTP | CURLPROTO_HTTPS,
+					CURLOPT_RETURNTRANSFER => 1
+				]);
+				$dat = curl_exec($download);
+				file_put_contents(__DIR__.'/../../'.$types[$type].'/'.$key.'.dat', $dat);
+				curl_close($download);
+				$updatedLib = true;
+			}
+		}
+		// Now this server's version check
+		if(file_exists(__DIR__.'/../../'.$types[$type].'/gdps.txt')) $oldVersion = file_get_contents(__DIR__.'/../../'.$types[$type].'/gdps.txt');
+		else {
+			$oldVersion = 0;
+			file_put_contents(__DIR__.'/../../'.$types[$type].'/gdps.txt', $mainServerTime);
+		}
+		if($oldVersion < $mainServerTime || $updatedLib) $this->generateDATFile($mainServerTime, $type);
+	}
+	public function generateDATFile($mainServerTime, $type = 0) {
+		include __DIR__ . "/connection.php";
+		include __DIR__ . "/exploitPatch.php";
+		include __DIR__ . "/../../config/dashboard.php";
+		$library = $servers = $serverIDs = $serverTypes = [];
+		if(!isset($customLibrary)) $customLibrary = [[1, 'Geometry Dash', 'https://geometrydashfiles.b-cdn.net', 2], [3, $gdps, null, 2]]; 
+		$types = ['sfx', 'music'];
+		foreach($customLibrary AS $customLib) {
+			if($customLib[2] !== null) {
+				$servers['s'.$customLib[0]] = $customLib[0];
+			}
+			$serverIDs[$customLib[2]] = $customLib[0];
+			if($types[$type] == 'sfx') {
+				$library['folders'][($customLib[0] + 1)] = [
+					'name' => ExploitPatch::escapedat($customLib[1]),
+					'type' => 1,
+					'parent' => 1
+				];
+			} else {
+				$library['tags'][$customLib[0]] = [
+					'ID' => $customLib[0],
+					'name' => ExploitPatch::escapedat($customLib[1]),
+				];
+			}
+		}
+		if(file_exists(__DIR__.'/../../'.$types[$type].'/ids.json')) $idsConverter = json_decode(file_get_contents(__DIR__.'/../../'.$types[$type].'/ids.json'), true);
+		else $idsConverter = ['count' => ($type == 0 ? count($customLibrary) + 2 : 8000000), 'IDs' => [], 'originalIDs' => []];
+		foreach($servers AS $key => $server) {
+			if(!file_exists(__DIR__.'/../../'.$types[$type].'/'.$key.'.dat')) continue;
+			$res = null;
+			$bits = null;
+			$res = file_get_contents(__DIR__.'/../../'.$types[$type].'/'.$key.'.dat');
+			$res = mb_convert_encoding($res, 'UTF-8', 'UTF-8');
+			$res = base64_decode(strtr($res, '-_.', '+/='));
+			$res = zlib_decode($res);
+			$res = explode('|', $res);
+			if(!$type) {
+				for($i = 0; $i < count($res); $i++) { // SFX library decoding was made by MigMatos, check their ObeyGDBot! https://obeybd.web.app/
+					$res[$i] = explode(';', $res[$i]);
+					if($i === 0) {
+						$library['version'] = $mainServerTime;
+						$version = explode(',', $res[0][0]);
+						$version[1] = $mainServerTime;
+						$version = implode(',', $version);
+					}
+					for($j = 1; $j <= count($res[$i]); $j++) {
+						$bits = explode(',', $res[$i][$j]);
+						switch($i) {
+							case 0: // File/Folder
+								if(empty(trim($bits[1]))) continue 2;
+								if(!isset($idsConverter['originalIDs'][$server][$bits[0]])) {
+									$idsConverter['count']++;
+									$idsConverter['IDs'][$idsConverter['count']] = [$server, $bits[0]];
+									$idsConverter['originalIDs'][$server][$bits[0]] = $idsConverter['count'];
+									$bits[0] = $idsConverter['count'];
+								} else $bits[0] = $idsConverter['originalIDs'][$server][$bits[0]];
+								if($bits[3] != 1) {
+									if(!isset($idsConverter['originalIDs'][$server][$bits[3]])) {
+										$idsConverter['count']++;
+										$idsConverter['IDs'][$idsConverter['count']] = [$server, $bits[3]];
+										$idsConverter['originalIDs'][$server][$bits[3]] = $idsConverter['count'];
+										$bits[3] = $idsConverter['count'];
+									} else $bits[3] = $idsConverter['originalIDs'][$server][$bits[3]];
+								} else $bits[3] = $server + 1;
+								if($bits[2]) {
+									$library['folders'][$bits[0]] = [
+										'name' => ExploitPatch::escapedat($bits[1]),
+										'type' => (int)$bits[2],
+										'parent' => (int)$bits[3]
+									];
+								} else {
+									$library['files'][$bits[0]] = [
+										'name' => ExploitPatch::escapedat($bits[1]),
+										'type' => (int)$bits[2],
+										'parent' => (int)$bits[3],
+										'bytes' => (int)$bits[4],
+										'milliseconds' => (int)$bits[5],
+									];
+								}
+								break;
+							case 1: // Credit
+								if(empty(trim($bits[0])) || empty(trim($bits[1]))) continue 2;
+								$library['credits'][ExploitPatch::escapedat($bits[0])] = [
+									'name' => ExploitPatch::escapedat($bits[0]),
+									'website' => ExploitPatch::escapedat($bits[1]),
+								];
+								break;
+						}
+					}
+				}
+			} else {
+				$version = $mainServerTime;
+				array_shift($res);
+				$x = 0;
+				foreach($res AS &$data) {
+					$data = rtrim($data, ';');
+					$music = explode(';', $data);
+					foreach($music AS &$songString) {
+						$song = explode(',', $songString);
+						if(empty($song[0])) continue;
+						if(!isset($idsConverter['originalIDs'][$server][$song[0]])) {
+							$idsConverter['count']++;
+							$idsConverter['IDs'][$idsConverter['count']] = [$server, $song[0]];
+							$idsConverter['originalIDs'][$server][$song[0]] = $idsConverter['count'];
+							$song[0] = $idsConverter['count'];
+						} else $song[0] = $idsConverter['originalIDs'][$server][$song[0]];
+						switch($x) {
+							case 0:
+								$library['authors'][$song[0]] = [
+									'authorID' => $song[0],
+									'name' => ExploitPatch::escapedat($song[1]),
+									'link' => ExploitPatch::escapedat($song[2]),
+									'yt' => ExploitPatch::escapedat($song[3])
+								];
+								break;
+							case 1:
+								if(!isset($idsConverter['originalIDs'][$server][$song[2]])) {
+									$idsConverter['count']++;
+									$idsConverter['IDs'][$idsConverter['count']] = [$server, $song[2]];
+									$idsConverter['originalIDs'][$server][$song[2]] = $idsConverter['count'];
+									$song[2] = $idsConverter['count'];
+								} else $song[2] = $idsConverter['originalIDs'][$server][$song[2]];
+								$tags = explode('.', $song[5]);
+								$newTags = [];
+								foreach($tags AS &$tag) {
+									if(empty($tag)) continue;
+									if(!isset($idsConverter['originalIDs'][$server][$tag])) {
+										$idsConverter['count']++;
+										$idsConverter['IDs'][$idsConverter['count']] = [$server, $tag];
+										$idsConverter['originalIDs'][$server][$tag] = $idsConverter['count'];
+										$tag = $idsConverter['count'];
+									} else $tag = $idsConverter['originalIDs'][$server][$tag];
+									$newTags[] = $tag;
+								}
+								$newTags[] = $server;
+								$tags = '.'.implode('.', $newTags).'.';
+								$library['songs'][$song[0]] = [
+									'ID' => $song[0],
+									'name' => ExploitPatch::escapedat($song[1]),
+									'authorID' => $song[2],
+									'size' => $song[3],
+									'seconds' => $song[4],
+									'tags' => $tags
+								];
+								break;
+							case 2:
+								$library['tags'][$song[0]] = [
+									'ID' => $song[0],
+									'name' => ExploitPatch::escapedat($song[1])
+								];
+								break;
+						}
+					}
+					$x++;
+				}
+			}
+		}
+		if(!$type) {
+			$sfxs = $db->prepare("SELECT sfxs.*, accounts.userName FROM sfxs JOIN accounts ON accounts.accountID = sfxs.reuploadID");
+			$sfxs->execute();
+			$sfxs = $sfxs->fetchAll();
+			$folderID = [];
+			$server = $serverIDs[null];
+			foreach($sfxs AS &$customSFX) {
+				if(!isset($folderID[$customSFX['reuploadID']])) {
+					$idsConverter['count']++;
+					$idsConverter['IDs'][$idsConverter['count']] = [$serverIDs[null], $customSFX['reuploadID']];
+					$idsConverter['originalIDs'][$server][$customSFX['reuploadID']] = $idsConverter['count'];
+					$newID = $idsConverter['count'];
+					$library['folders'][$newID] = [
+						'name' => ExploitPatch::escapedat($customSFX['userName']).'\'s SFXs',
+						'type' => 1,
+						'parent' => (int)($server + 1)
+					];
+					$folderID[$customSFX['reuploadID']] = true;
+				}
+				$idsConverter['count']++;
+				$idsConverter['IDs'][$idsConverter['count']] = [$serverIDs[null], $customSFX['ID']];
+				$idsConverter['originalIDs'][$server][$customSFX['ID']] = $idsConverter['count'];
+				$customSFX['ID'] = $idsConverter['count'];
+				$library['files'][$customSFX['ID']] = [
+					'name' => ExploitPatch::escapedat($customSFX['name']),
+					'type' => 0,
+					'parent' => (int)$idsConverter['originalIDs'][$server][$customSFX['reuploadID']],
+					'bytes' => (int)$customSFX['size'],
+					'milliseconds' => (int)($customSFX['milliseconds'] / 10)
+				];
+			}
+			foreach($library['folders'] AS $id => &$folder) $filesEncrypted[] = implode(',', [$id, $folder['name'], 1, $folder['parent'], 0, 0]);
+			foreach($library['files'] AS $id => &$file) $filesEncrypted[] = implode(',', [$id, $file['name'], 0, $file['parent'], $file['bytes'], $file['milliseconds']]);
+			foreach($library['credits'] AS &$credit) $creditsEncrypted[] = implode(',', [$credit['name'], $credit['website']]);
+			$encrypted = $version.";".implode(';', $filesEncrypted)."|" .implode(';', $creditsEncrypted).';';
+		} else {
+			$songs = $db->prepare("SELECT songs.*, accounts.userName FROM songs JOIN accounts ON accounts.accountID = songs.reuploadID");
+			$songs->execute();
+			$songs = $songs->fetchAll();
+			$folderID = $accIDs = [];
+			$c = 0;
+			foreach($songs AS &$customSongs) {
+				$c++;
+				$authorName = ExploitPatch::escapedat(ExploitPatch::rutoen(trim($customSongs['authorName'])));
+				if(!isset($folderID[$authorName])) {
+					$folderID[$authorName] = $c;
+					$library['authors'][$serverIDs[null]. 0 .$folderID[$authorName]] = [
+						'authorID' => ($serverIDs[null]. 0 .$folderID[$authorName]),
+						'name' => $authorName,
+						'link' => ' ',
+						'yt' => ' '
+					];
+				}
+				if(!isset($accIDs[$customSongs['reuploadID']])) {
+					$accIDs[$customSongs['reuploadID']] = true;
+					$library['tags'][$serverIDs[null]. 0 .$customSongs['reuploadID']] = [
+						'ID' => ($serverIDs[null]. 0 .$customSongs['reuploadID']),
+						'name' => ExploitPatch::escapedat($customSongs['userName']),
+					];
+				}
+				$customSongs['name'] = trim($customSongs['name']);
+				$library['songs'][$customSongs['ID']] = [
+					'ID' => ($customSongs['ID']),
+					'name' => !empty($customSongs['name']) ? ExploitPatch::escapedat(ExploitPatch::rutoen($customSongs['name'])) : 'Unnamed',
+					'authorID' => ($serverIDs[null]. 0 .$folderID[$authorName]),
+					'size' => ($customSongs['size'] * 1024 * 1024),
+					'seconds' => $customSongs['duration'],
+					'tags' => '.'.$serverIDs[null].'.'.$serverIDs[null]. 0 .$customSongs['reuploadID'].'.'
+				];
+			}
+			foreach($library['authors'] AS &$authorList) $authorsEncrypted[] = implode(',', $authorList);
+			foreach($library['songs'] AS &$songsList) $songsEncrypted[] = implode(',', $songsList);
+			foreach($library['tags'] AS &$tagsList) $tagsEncrypted[] = implode(',', $tagsList);
+			$encrypted = $version."|".implode(';', $authorsEncrypted).";|" .implode(';', $songsEncrypted).";|" .implode(';', $tagsEncrypted).';';
+		}
+		file_put_contents(__DIR__.'/../../'.$types[$type].'/ids.json', json_encode($idsConverter, JSON_PRETTY_PRINT));
+		$encrypted = zlib_encode($encrypted, ZLIB_ENCODING_DEFLATE);
+		$encrypted = strtr(base64_encode($encrypted), '+/=', '-_=');
+		file_put_contents(__DIR__.'/../../'.$types[$type].'/gdps.dat', $encrypted);
+	}
+	public function getAudioDuration($file) {
+		require_once(__DIR__.'/../../config/getid3/getid3.php');
+		$getID3 = new getID3;
+		$info = $getID3->analyze($file);
+		$result = (isset($info['playtime_seconds']) ? (int)($info['playtime_seconds']) : false);
+		return $result;
+	}
+	public function mail($mail = '', $user = '', $isForgotPass = false) {
+		if(empty($mail) OR empty($user)) return;
+		include __DIR__."/../../config/mail.php";
+		if($mailEnabled) {
+			include __DIR__."/connection.php";
+			include __DIR__."/../../config/dashboard.php";
+			include __DIR__."/../../config/mail/PHPMailer.php";
+			include __DIR__."/../../config/mail/SMTP.php";
+			include __DIR__."/../../config/mail/Exception.php";
+			$m = new PHPMailer\PHPMailer\PHPMailer();
+			$m->CharSet = 'utf-8';
+			$m->isSMTP();
+			$m->SMTPAuth = true;
+			$m->Host = $mailbox;
+			$m->Username = $mailuser;
+			$m->Password = $mailpass;
+			$m->Port = $mailport;
+			if($mailtype) $m->SMTPSecure = $mailtype;
+			$m->setFrom($yourmail, $gdps);
+			$m->addAddress($mail, $user);
+			$m->isHTML(true);
+			if(!$isForgotPass) {
+				$string = $this->randomString(4);
+				$query = $db->prepare("UPDATE accounts SET mail = :mail WHERE userName = :user");
+				$query->execute([':mail' => $string, ':user' => $user]);
+				$m->Subject = 'Confirm link';
+				$m->Body = '<h1 align=center>Hello, <b>'.$user.'</b>!</h1><br>
+				<h2 align=center>It seems, that you wanna register new account in <b>'.$gdps.'</b></h2><br>
+				<h2 align=center>Here is your link!</h2><br>
+				<h1 align=center>'.dirname('https://'.$_SERVER["HTTP_HOST"].$_SERVER['REQUEST_URI']).'/activate.php?mail='.$string.'</h1>';
+			} else {
+				$m->Subject = 'Forgot password?';
+				$m->Body = '<h1 align=center>Hello, <b>'.$user.'</b>!</h1><br>
+				<h2 align=center>It seems, that you forgot your password in <b>'.$gdps.'</b>...</h2><br>
+				<h2 align=center>Here is your link!</h2><br>
+				<h1 align=center>https://'.$_SERVER["HTTP_HOST"].$_SERVER['REQUEST_URI'].'?code='.$isForgotPass.'</h1>';
+			}
+			return $m->send();
+		}
 	}
 }
