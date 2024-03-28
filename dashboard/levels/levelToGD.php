@@ -228,7 +228,7 @@ if(!empty($_POST["usertarg"]) AND !empty($_POST["passtarg"]) AND !empty($_POST["
 		<details class="details">
 			<summary style="width: 100%;">'.$dl->getLocalizedString("advanced").'</summary>
 			<div class="field" style="display: inline-flex;width:100%;justify-content: space-between;">
-            	<input type="text" name="server" value="http://www.boomlings.com/database/" id="p4" placeholder="'.$dl->getLocalizedString("server").'" style="width: 86%;">
+            	<input type="text" name="server" value="https://www.boomlings.com/database/" id="p4" placeholder="'.$dl->getLocalizedString("server").'" style="width: 86%;">
 			<input class="checkbox" type="checkbox" name="debug" value="1" placeholder="Debug" style="width: 8%;">
 			</div>
 		</details>'.Captcha::displayCaptcha(true).'

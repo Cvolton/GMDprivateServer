@@ -1350,7 +1350,7 @@ class getID3
 
 				// SVG  - still image - Scalable Vector Graphics (SVG)
 				'svg'  => array(
-							'pattern'   => '(<!DOCTYPE svg PUBLIC |xmlns="http://www\\.w3\\.org/2000/svg")',
+							'pattern'   => '(<!DOCTYPE svg PUBLIC |xmlns="https://www\\.w3\\.org/2000/svg")',
 							'group'     => 'graphic',
 							'module'    => 'svg',
 							'mime_type' => 'image/svg+xml',
