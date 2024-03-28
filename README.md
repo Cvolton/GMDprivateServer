@@ -39,4 +39,6 @@ Audio duration — https://github.com/JamesHeinrich/getID3 — (config/getid3)
 
 Proxies list — https://github.com/SevenworksDev/proxy-list — (config/proxies.txt)
 
+Common VPNs list - https://github.com/X4BNet/lists_vpn (config/vpns.txt)
+
 Most of the stuff in generateHash.php has been figured out by pavlukivan and Italian APK Downloader, so credits to them
