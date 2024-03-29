@@ -576,7 +576,7 @@ class getID3
 			//$filename = preg_replace('#(?<!gs:)('.preg_quote(DIRECTORY_SEPARATOR).'{2,})#', DIRECTORY_SEPARATOR, $filename);
 
 			// open local file
-			//if (is_readable($filename) && is_file($filename) && ($this->fp = fopen($filename, 'rb'))) { // see https://www.getid3.org/phpBB3/viewtopic.php?t=1720
+			//if (is_readable($filename) && is_file($filename) && ($this->fp = fopen($filename, 'rb'))) { // see ://www.getid3.org/phpBB3/viewtopic.php?t=1720
 			if (($fp != null) && ((get_resource_type($fp) == 'file') || (get_resource_type($fp) == 'stream'))) {
 				$this->fp = $fp;
 			} elseif ((is_readable($filename) || file_exists($filename)) && is_file($filename) && ($this->fp = fopen($filename, 'rb'))) {
@@ -1350,7 +1350,7 @@ class getID3
 
 				// SVG  - still image - Scalable Vector Graphics (SVG)
 				'svg'  => array(
-							'pattern'   => '(<!DOCTYPE svg PUBLIC |xmlns="https://www\\.w3\\.org/2000/svg")',
+							'pattern'   => '(<!DOCTYPE svg PUBLIC |xmlns="http://www\\.w3\\.org/2000/svg")',
 							'group'     => 'graphic',
 							'module'    => 'svg',
 							'mime_type' => 'image/svg+xml',
