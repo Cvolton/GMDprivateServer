@@ -12,7 +12,7 @@ $query3=$db->prepare("SELECT ID,name,authorID,authorName,size,isDisabled,downloa
 $query3->execute([':songid' => $songid]);
 //todo: move this logic away from this file
 if($query3->rowCount() == 0) {
-	$url = 'http://www.boomlings.com/database/getGJSongInfo.php';
+	$url = 'https://www.boomlings.com/database/getGJSongInfo.php';
 	$data = array('songID' => $songid, 'secret' => 'Wmfd2893gb7');
 	$options = array(
 		'http' => array(
@@ -24,7 +24,7 @@ if($query3->rowCount() == 0) {
 	$context  = stream_context_create($options);
 	$result = file_get_contents($url, false, $context);
 	if ($result == "-2" OR $result == "-1" OR $result == "") {
-		$url = 'http://www.boomlings.com/database/getGJLevels21.php';
+		$url = 'https://www.boomlings.com/database/getGJLevels21.php';
 		$data = array(
 			'gameVersion' => '21',
 			'binaryVersion' => '33',
