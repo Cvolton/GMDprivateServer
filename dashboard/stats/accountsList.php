@@ -89,7 +89,7 @@ foreach($result as &$action){
     $stats = $st.$ms.$dm.$gc.$uc.$dn.$cp;
     if(empty($stats)) $stats = '<p style="font-size:25px;color:#212529">'.$dl->getLocalizedString("empty").'</p>';
 	$registerDate = date("d.m.Y", $action["registerDate"]);
-	if($action['userName'] == "Undefined") $action['userName'] = $gs->getUserName($action['userID']);
+	if($action['userName'] == "Undefined") $action['userName'] = $gs->getUserName($accUserID);
 	$members .= '<div style="width: 100%;display: flex;flex-wrap: wrap;justify-content: center;">
 			<div class="profile"><div style="display: flex;width: 100%;justify-content: space-between;margin-bottom: 7px;align-items: center;"><button style="display:contents;cursor:pointer" type="button" onclick="a(\'profile/'.$action["userName"].'\', true, true, \'GET\')"><div class="acclistdiv">
 				<h2 style="color:rgb('.$gs->getAccountCommentColor($action["accountID"]).');" class="profilenick acclistnick">'.$action["userName"].' '.$clan.'</h2><h2 class="accresultrole">'.$resultRole.'</h2>
