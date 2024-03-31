@@ -87,11 +87,8 @@ if($type == "top" OR $type == "creators" OR $type == "relative"){
 		$xi = $leaderboard["rank"] - 1;
 	}
 	foreach($result as &$user) {
-		$extid = 0;
-		if(is_numeric($user["extID"])){
-			$extid = $user["extID"];
-		}
 		$xi++;
+		$extid = is_numeric($user['extID']) ? $user['extID'] : 0;
 		if($date == "01-04"){
 			$lbstring .= "1:sakujes:2:".$user["userID"].":13:999:17:999:6:".$xi.":9:9:10:9:11:8:14:1:15:3:16:".$extid.":3:999:8:99999:4:999:7:".$extid.":46:99999|";
 		}else{
