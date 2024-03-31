@@ -40,6 +40,7 @@ else
 	$query->execute();
 	$result = $query->fetchAll();
 	foreach($result as &$user){
+		$user['extID'] = is_numeric($user['extID']) ? $user['extID'] : 0;
 		$peoplestring .= "1:".$user["userName"].":2:".$user["userID"].":9:".$user["icon"].":10:".$user["color1"].":11:".$user["color2"].":14:".$user["iconType"].":15:".$user["special"].":16:".$user["extID"].":18:0:41:".$new[$user["extID"]]."|";
 	}
 	$peoplestring = substr($peoplestring, 0, -1);
