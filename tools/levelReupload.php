@@ -16,6 +16,7 @@ function chkarray($source, $default = 0){
 include "../incl/lib/connection.php";
 require "../incl/lib/XORCipher.php";
 require "../config/reuploadAcc.php";
+require_once "../incl/lib/LevelParser.php";
 require_once "../incl/lib/mainLib.php";
 $gs = new mainLib();
 if(!empty($_POST["levelid"])){
@@ -63,6 +64,11 @@ if(!empty($_POST["levelid"])){
 		//old levelString
 		$levelString = chkarray($levelarray["a4"]);
 		$gameVersion = chkarray($levelarray["a13"]);
+
+        if(!LevelParser::validate($levelString, $gameVersion)) {
+            exit("You're attempting to reupload a malformed level.");
+        }
+
 		if(substr($levelString,0,2) == 'eJ'){
 			$levelString = str_replace("_","/",$levelString);
 			$levelString = str_replace("-","+",$levelString);
