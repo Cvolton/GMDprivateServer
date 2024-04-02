@@ -12,7 +12,7 @@ include "../".$dbPath."config/security.php";
 $dl->title($dl->getLocalizedString("gauntletCreateTitle"));
 $dl->printFooter('../');
 $allGauntlets = '';
-if($gs->checkPermission($_SESSION["accountID"], "dashboardLevelPackCreate")) {
+if($gs->checkPermission($_SESSION["accountID"], "dashboardGauntletCreate")) {
 	if(isset($_POST['level_1'], $_POST['level_2'], $_POST['level_3'], $_POST['level_4'], $_POST['level_5'], $_POST['gauntlet_id'])) {
 			if(!Captcha::validateCaptcha()) {
 				$dl->printSong('<div class="form">
