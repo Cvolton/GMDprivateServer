@@ -68,11 +68,8 @@ foreach($result as &$action){
 	$btn = '<button type="button" name="btnsng" id="btn'.$sfxsid.'" title="'.$author.' — '.$name.'" style="display: contents;color: white;margin: 0;" download="'.$download.'" onclick="btnsong(\''.$sfxsid.'\');"><div class="icon" style="font-size:13px; height:25px;width:25px;background:#373A3F;margin-left: 5px;"><i id="icon'.$sfxsid.'" name="iconlol" class="fa-solid fa-play" aria-hidden="false"></i></div></button>';
 	if(mb_strlen($name) > 30) $fontsize = 17;
 	elseif(mb_strlen($name) > 20) $fontsize = 20;
-	$whoused = $action['levelsCount'];
-	if($whoused == 0) $whoused = '<span style="color:#333">0</span>';
-	$whoused = '<span style="color:#333">'.$whoused.'</span>';
 	$songSize = '<p class="profilepic"><i class="fa-solid fa-weight-hanging"></i> '.$size.' MB</p>';
-	$stats = $songSize.$whoused;
+	$stats = $songSize;
 	$songs .= '<div id="profile'.$sfxsid.'" style="width: 100%;display: flex;flex-wrap: wrap;justify-content: center;">
 			<div class="profile"><div style="display: flex;width: 100%;justify-content: space-between;margin-bottom: 7px;align-items: center;"><div style="display: flex;width: 100%; justify-content: space-between;align-items: center;">
 				<h2 style="margin: 0px;font-size: '.$fontsize.'px;margin-left:5px;display: flex;align-items: center;" class="profilenick">'.$name.$btn.'</h2>'.$delete.'

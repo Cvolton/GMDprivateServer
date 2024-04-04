@@ -3,6 +3,8 @@ chdir(dirname(__FILE__));
 include "../lib/connection.php";
 require_once "../lib/songReup.php";
 require_once "../lib/exploitPatch.php";
+require_once "../lib/mainLib.php";
+$gs = new mainLib();
 require "../../config/proxy.php";
 if(empty($_POST["songID"])){
 	exit("-1");
@@ -10,8 +12,9 @@ if(empty($_POST["songID"])){
 $songid = ExploitPatch::remove($_POST["songID"]);
 $query3=$db->prepare("SELECT ID,name,authorID,authorName,size,isDisabled,download FROM songs WHERE ID = :songid LIMIT 1");
 $query3->execute([':songid' => $songid]);
+$librarySong = $gs->getLibrarySongInfo($songid);
 //todo: move this logic away from this file
-if($query3->rowCount() == 0) {
+if($query3->rowCount() == 0 && !$librarySong) {
 	$url = 'https://www.boomlings.com/database/getGJSongInfo.php';
 	$data = array('songID' => $songid, 'secret' => 'Wmfd2893gb7');
 	$options = array(
@@ -88,8 +91,8 @@ if($query3->rowCount() == 0) {
 	}
 	echo $result;
 	$reup = SongReup::reup($result);
-}else{
-	$result4 = $query3->fetch();
+} else {
+	$result4 = !$librarySong ? $query3->fetch() : $librarySong;
 	if($result4["isDisabled"] == 1){
 		exit("-2");
 	}
@@ -97,6 +100,6 @@ if($query3->rowCount() == 0) {
 	if(strpos($dl, ':') !== false){
 		$dl = urlencode($dl);
 	}
-	echo "1~|~".$result4["ID"]."~|~2~|~".$result4["name"]."~|~3~|~".$result4["authorID"]."~|~4~|~".$result4["authorName"]."~|~5~|~".$result4["size"]."~|~6~|~~|~10~|~".$dl."~|~7~|~~|~8~|~0";
+	echo "1~|~".$result4["ID"]."~|~2~|~".ExploitPatch::rutoen($result4["name"])."~|~3~|~".$result4["authorID"]."~|~4~|~".ExploitPatch::rutoen($result4["authorName"])."~|~5~|~".$result4["size"]."~|~6~|~~|~10~|~".$dl."~|~7~|~~|~8~|~0";
 }
 ?>

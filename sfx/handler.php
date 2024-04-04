@@ -43,10 +43,8 @@ switch($file) {
 			$time = $time->fetchColumn();
 			$gs->updateLibraries($_GET['token'], $_GET['expires'], $time, 0);
 		}
-		$sfx = json_decode(file_get_contents('ids.json'), true)['IDs'][$sfxID];
-		if(empty($sfx)) exit();
-		if($servers[$sfx[0]] === null) $url = $gs->getSFXInfo($sfx[1], 'download');
-		else $url = $servers[$sfx[0]].'/sfx/s'.$sfx[1].'.ogg?token='.$_GET['token'].'&expires='.$_GET['expires'];
+		$song = $gs->getLibrarySongInfo($sfxID, 'sfx');
+		$url = $song['download'];
 		$curl = curl_init($url);
 		if($proxytype == 1) curl_setopt($ch, CURLOPT_PROXY, $host);
 		elseif($proxytype == 2) {
