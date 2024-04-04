@@ -821,7 +821,6 @@ class dashboardLib {
 							document.body.appendChild(base);
 							if(typeof document.querySelectorAll("base")[1] == "object") document.querySelectorAll("base")[0].remove();
 						}
-						'.($enableCaptcha ? '
 						try {
 							if(typeof captchascript != "undefined") {
 								var elems = document.querySelectorAll("div[aria-hidden=true]");
@@ -837,7 +836,7 @@ class dashboardLib {
 									if(typeof hcaptcha == "object") hcaptcha.render("coolcaptcha");
 								}
 							}
-						} catch(e) {}' : '').'
+						} catch(e) {}
 					} else {
 						document.getElementById("loadingloool").innerHTML = \'<i class="fa-solid fa-xmark" style="color:#ffb1ab;padding: 0px 8px;"></i>\';
 						setTimeout(function () {document.getElementById("loadingloool").style.opacity = "0";}, 1000);
