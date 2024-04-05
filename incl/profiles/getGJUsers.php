@@ -12,7 +12,7 @@ $query = "SELECT userName, userID, coins, userCoins, icon, color1, color2, color
 $query = $db->prepare($query);
 $query->execute([':str' => $str]);
 $result = $query->fetchAll();
-if(count($result) < 1){
+if(count($result) < 1) {
 	exit("-1");
 }
 $countquery = "SELECT count(*) FROM users WHERE userName LIKE CONCAT('%', :str, '%')";
