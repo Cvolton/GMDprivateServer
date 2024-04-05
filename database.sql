@@ -279,7 +279,7 @@ CREATE TABLE `levels` (
   `wt` int(11) NOT NULL DEFAULT '0',
   `wt2` int(11) NOT NULL DEFAULT '0',
   `ts` int(11) NOT NULL DEFAULT '0',
-  `settingsString` mediumtext COLLATE utf8_unicode_ci NOT NULL
+  `settingsString` mediumtext COLLATE utf8_unicode_ci NOT NULL DEFAULT ''
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
