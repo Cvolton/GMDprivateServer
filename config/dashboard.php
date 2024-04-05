@@ -7,10 +7,10 @@ $msgEnabled = 1; // 1 = Messenger enabled, 0 = disabled
 $clansEnabled = 1; // 1 = Clans enabled, 0 = disabled
 $songEnabled = 12; // 0 = Song reupload disabled, add 1 to enable song file reupload, add 2 to enable song link reupload
 $sfxEnabled = 12; // 0 = SFX reupload disabled, add 1 to enable SFX file reupload, add 2 to enable SFX link reupload (not implemented yet)
-$convertEnabled = 0; // 1 = Convert SFX to OGG enabled, 0 = disabled
-$songSize = 20; // Max song size in megabytes
+$convertEnabled = 1; // 1 = Convert SFX to OGG enabled, 0 = disabled
+$songSize = 8; // Max song size in megabytes
 $SFXsize = 4.5; // Max SFX size in megabytes
-$timeType = 0; // How time will show in-game, 0 - default Cvolton time, 1 - Dashboard-like time, 2 - RobTop-like time
+$timeType = 1; // How time will show in-game, 0 - default Cvolton time, 1 - Dashboard-like time, 2 - RobTop-like time
 // If you changed dashboard's place, change $dbPath in dashboard/incl/dashboardLib.php
  
 // External download links, disables when you have gdpsName.gdpsFileType in dashboard/download directory
@@ -51,6 +51,7 @@ $customLibrary[] = array(4, 'NoxiCloud', 'https://libs.noxicloud.es', 0);
 
 // SFX converter API links, make one using code from https://github.com/MegaSa1nt/GDPS-ConvertSFX
 // Template: $convertSFXAPI[] = "";
+
 $convertSFXAPI[] = "https://niko.gcs.icu";
 $convertSFXAPI[] = "https://lamb.gcs.icu"; // You're welcome
 $convertSFXAPI[] = "https://omori.gcs.icu";
