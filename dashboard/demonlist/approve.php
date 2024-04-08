@@ -9,7 +9,7 @@ $gs = new mainLib();
 $dl->printFooter('../');
 if(!empty($_SESSION["accountID"]) AND $_SESSION["accountID"] != 0 AND $gs->checkPermission($_SESSION["accountID"], 'demonlistApprove')) {
 	$str = ExploitPatch::charclean($_GET["str"]);
-	$type = ExploitPatch::charclean($_POST["type"]);
+	$type = ExploitPatch::rucharclean($_POST["type"]);
 	$sub = $db->prepare("SELECT * FROM dlsubmits WHERE auth = :str");
 	$sub->execute([':str' => $str]);
 	$sub = $sub->fetch();
