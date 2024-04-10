@@ -12,32 +12,50 @@ $levelID = ExploitPatch::number(urldecode($_GET['level']));
 if(empty($levelID)) exit(json_encode(['dashboard' => true, 'success' => false, 'error' => 1, 'message' => "Please supply a valid level ID."]));
 $query = $db->prepare("SELECT * FROM levels WHERE levelID = :lvid");
 $query->execute([':lvid' => $levelID]);
-$levelInfo = $query->fetch();
-if(!$levelInfo) exit(json_encode(['dashboard' => true, 'success' => false, 'error' => 2, 'message' => "This level wasn't found."]));
-$query = $db->prepare("SELECT * FROM levels WHERE levelID = :lvid");
-$query->execute([':lvid' => $levelID]);
-$result = $query->fetchAll();
-foreach($result as &$action){
-	$data[] = [
-		'name' => $action['levelName'],
-		'description' => base64_decode($action['levelDesc']),
-		'author' => $action['userName'],
-		'authorID' => $action['extID'],
-		'version' => $action['levelVersion'],
-		'gameVersion' => $action['gameVersion'],
-		'binaryVersion' => $action['binaryVersion'],
-		'songID' => ($action['audioTrack'] != 0) ? $action['audioTrack'] : $action['songID'],
-		'isTwoPlayer' => $action['twoPlayer'],
-		'objects' => $action['objects'],
-		'coins' => $action['coins'],
-		'requestedStars' => $action['requestedStars'],
-		'downloads' => $action['downloads'],
-		'likes' => $action['likes'],
-		'stars' => $action['starStars'],
-		'uploadDate' => $action['uploadDate'],
-		'updateDate' => $action['updateDate'],
-		'rateDate' => $action['rateDate'],
+$rate = $query->fetch();
+if(!$rate) exit(json_encode(['dashboard' => true, 'success' => false, 'error' => 2, 'message' => "This level wasn't found."]));
+$songInfo = $song = $songName = false;
+if($rate['songID'] != 0) {
+	$songInfo = $gs->getSongInfo($rate['songID']);
+	if($songInfo) {
+		$song = [
+			'ID' => $songInfo['ID'],
+			'author' => $songInfo['authorName'],
+			'name' => $songInfo['name'],
+			'size' => $songInfo['size'],
+			'download' => urldecode($songInfo['download']),
+			'reuploader' => false,
+			'newgrounds' => true,
+			'customSong' => true
+		];
+		if($songInfo['reuploadID'] != 0) {
+			$accountName = $gs->getAccountName($songInfo['reuploadID']);
+			$song['reuploader'] = [
+				'accountID' => $songInfo['reuploadID'],
+				'userID' => $gs->getUserID($songInfo['reuploadID'], $accountName),
+				'username' => $accountName
+			];
+			$song['newgrounds'] = false;
+		}
+	} else {
+		$songName = explode(' by ', $gs->getAudioTrack($rate['audioTrack']));
+		$song = [
+			'audioTrack' => $rate['audioTrack'],
+			'name' => $songName[0],
+			'author' => $songName[1],
+			'customSong' => false
+		];
+	}
+} else {
+	$songName = explode(' by ', $gs->getAudioTrack($rate['audioTrack']));
+	$song = [
+		'audioTrack' => $rate['audioTrack'],
+		'name' => $songName[0],
+		'author' => $songName[1],
+		'customSong' => false
 	];
 }
 exit(json_encode(['dashboard' => true, 'success' => true, 'level' => $data]));
+];
+exit(json_encode(['dashboard' => true, 'success' => true, 'level' => $level]));
 ?>
