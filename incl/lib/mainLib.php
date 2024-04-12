@@ -238,7 +238,7 @@ class mainLib {
 		if(!isset($timeType)) $timeType = 0;
 		switch($timeType) {
 			case 1:
-				if(date("d.m.Y", $time) == date("d.m.Y", time())) return date("G:i", $time);
+				if(date("d.m.Y", $time) == date("d.m.Y", time())) return date("G;i", $time);
 				elseif(date("Y", $time) == date("Y", time())) return date("d.m", $time);
 				else return date("d.m.Y", $time);
 				break;
