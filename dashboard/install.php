@@ -1,4 +1,4 @@
-<?php
+э<?php
 include "incl/dashboardLib.php";
 include $dbPath."incl/lib/connection.php";
 include $dbPath."config/dashboard.php";
@@ -136,6 +136,9 @@ if(!$installed) {
 		$check = $db->query("SHOW COLUMNS FROM `accounts` LIKE 'timezone'");
       		$exist = $check->fetchAll();
       		if(empty($exist)) $db->query("ALTER TABLE accounts ADD timezone varchar(255) NOT NULL DEFAULT '' AFTER passCode");
+  $check = $db->query("SHOW COLUMNS FROM `accounts` LIKE 'mail'");
+      		$exist = $check->fetchAll();
+      		if(empty($exist)) $db->query("ALTER TABLE accounts ADD mail varchar(255) NOT NULL DEFAULT '' AFTER auth");
 	$lines = file($dbPath.'config/dashboard.php');
 	$first_line = $lines[2];
 	$lines = array_slice($lines, 1 + 2);
