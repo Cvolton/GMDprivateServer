@@ -1,4 +1,4 @@
-э<?php
+<?php
 include "incl/dashboardLib.php";
 include $dbPath."incl/lib/connection.php";
 include $dbPath."config/dashboard.php";
