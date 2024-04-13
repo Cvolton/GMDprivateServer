@@ -55,7 +55,39 @@ if($rate['songID'] != 0) {
 		'customSong' => false
 	];
 }
-exit(json_encode(['dashboard' => true, 'success' => true, 'level' => $data]));
+$level = [
+	'ID' => $rate['levelID'],
+	'name' => $rate['levelName'],
+	'desc' => ExploitPatch::rucharclean(base64_decode($rate['levelDesc'])),
+	'stats' => [
+		'stars' => $rate['starStars'],
+		'featured' => ($rate['starFeatured'] == 0 ? false : true),
+		'isRated' => ($rate['starStars'] == 0 ? false : true),
+		'isCoinsRated' => ($rate['starCoins'] == 0 ? false : true),
+		'coins' => $rate['coins'],
+		'likes' => $rate['likes'] - ($rate['dislikes'] ?? 0),
+		'downloads' => $rate['downloads'],
+		'requestedStars' => $rate['requestedStars'],
+		'epic' => $rate['starEpic']
+	],
+	'diffuculty' => [
+		'number' => $rate['starDifficulty'],
+		'demonDiff' => $rate['starDemonDiff'],
+		'name' => $gs->getDifficulty($rate['starDifficulty'], $rate['starAuto'], $rate['starDemon']),
+		'isDemon' => ($rate['starDemon'] == 0 ? false : true),
+		'isAuto' => ($rate['starAuto'] == 0 ? false : true)
+	],
+	'author' => [
+		'username' => $rate['userName'],
+		'accountID' => $rate['extID'],
+		'userID' => $rate['userID']
+	],
+	'timestamps' => [
+		'uploadDate' => $rate['uploadDate'],
+		'updateDate' => $rate['updateDate'],
+		'rateDate' => $rate['rateDate']
+	],
+	'song' => $song
 ];
 exit(json_encode(['dashboard' => true, 'success' => true, 'level' => $level]));
 ?>
