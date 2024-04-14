@@ -915,9 +915,8 @@ class mainLib {
 			]);
 			$newVersion = (int)curl_exec($curl);
 			curl_close($curl);
-			$jsonVersion = $newVersion.', '.time();
-			file_put_contents(__DIR__.'/../../'.$types[$type].'/'.$key.'.txt', $jsonVersion);
 			if($newVersion > $oldVersion[0]) {
+				file_put_contents(__DIR__.'/../../'.$types[$type].'/'.$key.'.txt', $newVersion.', '.time());
 				$download = curl_init($server.'/'.$types[$type].'/'.$types[$type].'library.dat?token='.$token.'&expires='.$expires.'&dashboard=1');
 				curl_setopt_array($download, [
 					CURLOPT_PROTOCOLS => CURLPROTO_HTTP | CURLPROTO_HTTPS,
