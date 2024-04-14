@@ -5,17 +5,16 @@ include "../config/dashboard.php";
 require "../config/proxy.php";
 $gs = new mainLib();
 $file = trim(basename($_GET['request']));
-$type = explode('.', $file);
-$type = $type[count($type)-1];
 switch($file) {
-	case 'sfxlibrary.dat': 
-		if(!file_exists('gdps.dat')) {
+	case 'sfxlibrary.dat':
+		$datFile = isset($_GET['dashboard']) ? 'standalone.dat' : 'gdps.dat';
+		if(!file_exists($datFile)) {
 			$time = $db->prepare('SELECT reuploadTime FROM sfxs ORDER BY reuploadTime DESC LIMIT 1');
 			$time->execute();
 			$time = $time->fetchColumn();
 			$gs->updateLibraries($_GET['token'], $_GET['expires'], $time, 0);
 		}
-		echo file_get_contents('gdps.dat');
+		echo file_get_contents($datFile);
 		break;
 	case 'sfxlibrary_version.txt': 
 		$time = $db->prepare('SELECT reuploadTime FROM sfxs WHERE reuploadTime > 0 ORDER BY reuploadTime DESC LIMIT 1');
