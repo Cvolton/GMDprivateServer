@@ -87,10 +87,7 @@ if(!$installed) {
       		if(empty($exist)) $db->query("ALTER TABLE roles ADD dashboardLevelPackCreate INT NOT NULL DEFAULT '0' AFTER dashboardModTools");
 		$check = $db->query("SHOW COLUMNS FROM `roles` LIKE 'dashboardGauntletCreate'");
       		$exist = $check->fetchAll();
-      		if(empty($exist)) $db->query("ALTER TABLE roles ADD dashboardGauntletCreate INT NOT NULL DEFAULT '0' AFTER dashboardLevelPackCreate");
-		$check = $db->query("SHOW COLUMNS FROM `roles` LIKE 'toolPackcreate'");
-      		$exist = $check->fetchAll();
-      		if($exist) $db->query("ALTER TABLE `roles` DROP `toolPackcreate`");
+      		if(empty($exist)) $db->query("ALTER TABLE roles RENAME COLUMN toolPackcreate TO dashboardGauntletCreate");
 		$check = $db->query("SHOW COLUMNS FROM `roles` LIKE 'dashboardAddMod'");
       		$exist = $check->fetchAll();
       		if(empty($exist)) $db->query("ALTER TABLE roles ADD dashboardAddMod INT NOT NULL DEFAULT '0' AFTER dashboardLevelPackCreate");
