@@ -7,17 +7,21 @@ $gs = new mainLib();
 require_once "../incl/lib/exploitPatch.php";
 require_once "../incl/lib/generatePass.php";
 if(!isset($preactivateAccounts)) $preactivateAccounts = true;
-if(!isset($usernameFiltering)) global $usernameFiltering;
+if(!isset($filterUsernames)) global $filterUsernames;
 if(!empty($_POST["userName"]) AND !empty($_POST["password"]) AND !empty($_POST["email"])) {
 	$userName = ExploitPatch::charclean($_POST["userName"]);
 	$password = $_POST["password"];
     	$email = ExploitPatch::rucharclean($_POST["email"]);
-	if($usernameFiltering) {
-		if (!file_exists(__DIR__ .'/../config/bannedUsernames.txt')) file_put_contents(__DIR__ .'/../config/bannedUsernames.txt', 'RobTop');
-		$bannedUsernamesFile = file_get_contents(__DIR__ .'/../config/bannedUsernames.txt');
-		if (!empty($bannedUsernamesFile)) {
-			$bannedUsernames = array_map('strtolower', preg_split('/\r\n|\r|\n/', $bannedUsernamesFile, -1, PREG_SPLIT_NO_EMPTY));
-			if (in_array(strtolower($userName), $bannedUsernames)) exit("-4");
+	if($filterUsernames >= 1) {
+		$bannedUsernamesList = array_map('strtolower', $bannedUsernames);
+		switch ($filterUsernames) {
+			case 1:
+				if(in_array(strtolower($userName), $bannedUsernamesList)) exit("-4");
+				break;
+			case 2:
+				foreach($bannedUsernamesList as $bannedUsername) {
+					if (str_contains(strtolower($userName), $bannedUsername)) exit("-4");
+				}
 		}
 	}
 	if(strlen($userName) > 20) exit("-4");
