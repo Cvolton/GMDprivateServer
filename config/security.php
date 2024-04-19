@@ -2,8 +2,12 @@
 $sessionGrants = false; // false = GJP check is done every time; true = GJP check is done once per hour; significantly improves performance, slightly decreases security
 $unregisteredSubmissions = false; // false = green accounts can't upload levels, appear on the leaderboards etc; true = green accounts can do everything
 $preactivateAccounts = true; // false = accounts need to be activated at dashboard/login/activate.php; true = accounts can log in immediately
-$usernameFiltering = false; // false = allow every usernames, true = disallow usernames defined in bannedUsernames.txt
 $activeBanIP = true; // false = no check for banned IPs, true = active banip check (IP check every connection to GDPS)
+
+$filterUsernames = 0; // 0 = Disabled, 1 = Checks if the username is word, 2 = Checks if the username contains word
+$bannedUsernames = [ // Add words to ban if it is a username/if it is in a username
+	'RobTop'
+];
 
 /*
 	Captcha settings
