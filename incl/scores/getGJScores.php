@@ -83,7 +83,6 @@ if($type == "top" OR $type == "creators" OR $type == "relative"){
 		$query = $db->prepare($f);
 		$query->execute([':extid' => $extid]);
 		$leaderboard = $query->fetchAll();
-		//var_dump($leaderboard);
 		$leaderboard = $leaderboard[0];
 		$xi = $leaderboard["rank"] - 1;
 	}

@@ -95,6 +95,7 @@
 	.audioDiv.showButton i {font-size: 20px !important;}
 	.audioDiv .cover i {font-size: 40px !important;}
 	.queueDiv .cover, .queueDiv .image {width: 55px !important; height: 55px !important}
+	.audioDiv:not(.show):not(.showButton):not(.queueDiv), .audioDiv.showButton:not(.show) {animation-duration: 0s !important;}
 }
 
 * {
@@ -1720,8 +1721,6 @@ body:has(.audio) {
 	grid-gap: 10px;
 	min-width: 350px;
 	z-index: 2;
-	opacity: 0;
-	visibility: hidden;
 	transition: 0.2s;
 }
 
@@ -1946,23 +1945,24 @@ body:has(.audio) {
 }
 
 .audioDiv.showButton {
-	opacity: 0;
-	visibility: hidden;
 	width: max-content;
 	border-radius: 500px;
 	color: white;
 	min-width: 0px;
-    padding: 20px;
+   padding: 27px;
 	z-index: 3;
 }
 
 .audioDiv.showButton i {
-	font-size: 40px;
+	font-size: 48px;
 }
 
-.audioDiv.showButton:has(.indicator) {
+.audioDiv.showButton:not(.show) {
 	opacity: 1;
 	visibility: initial;
+	animation-name: button;
+   animation-duration: 1.5s;
+   animation-iteration-count: initial;
 }
 
 .audioDiv.showButton.show {
@@ -1970,9 +1970,12 @@ body:has(.audio) {
 	visibility: hidden;
 }
 
-.audioDiv.show {
-	opacity: 1;
-	visibility: initial;
+.audioDiv:not(.show):not(.showButton):not(.queueDiv) {
+	opacity: 0;
+	visibility: hidden;
+	animation-name: player;
+   animation-duration: 1.5s;
+   animation-iteration-count: initial;
 }
 
 .songUploadDiv {
@@ -2011,4 +2014,40 @@ body:has(.audio) {
     width: 100%;
     border: none;
 	background: #231717
+}
+
+@keyframes player {
+    0% {
+		opacity: 1;
+		visibility: initial;
+    }
+	70% {
+		opacity: 1;
+		visibility: initial;
+    }
+    100% {
+      opacity: 0;
+		visibility: hidden;
+    }
+}
+
+@keyframes button {
+    0% {
+		opacity: 0;
+		visibility: hidden;
+    }
+	70% {
+		opacity: 0;
+		visibility: hidden;
+    }
+    100% {
+      opacity: 1;
+		visibility: initial;
+    }
+}
+
+.audioDiv.showButton:not(:has(.indicator)) {
+	opacity: 0;
+	visibility: hidden;
+	animation-duration: 0s;
 }

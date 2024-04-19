@@ -1,8 +1,8 @@
 <?php
-$sessionGrants = true; // false = GJP check is done every time; true = GJP check is done once per hour; significantly improves performance, slightly decreases security
+$sessionGrants = false; // false = GJP check is done every time; true = GJP check is done once per hour; significantly improves performance, slightly decreases security
 $unregisteredSubmissions = false; // false = green accounts can't upload levels, appear on the leaderboards etc; true = green accounts can do everything
 $preactivateAccounts = true; // false = accounts need to be activated at dashboard/login/activate.php; true = accounts can log in immediately
-$activeBanIP = false; // false = no check for banned IPs, true = active banip check (IP check every connection to GDPS)
+$activeBanIP = true; // false = no check for banned IPs, true = active banip check (IP check every connection to GDPS)
 
 /*
 	Captcha settings
@@ -24,8 +24,8 @@ $CaptchaSecret = "";
 	Syntax: $proxies['NAME OF IPs'] = 'LINK';
 */
 
-$blockFreeProxies = false; // true = check if person uses free proxy
-$blockCommonVPNs = false; // true = check if person uses a common VPN
+$blockFreeProxies = true; // true = check if person uses free proxy
+$blockCommonVPNs = true; // true = check if person uses a common VPN
 // URLs for IPs of proxies
 $proxies['http'] = 'https://raw.githubusercontent.com/SevenworksDev/proxy-list/main/proxies/http.txt';
 $proxies['https'] = 'https://raw.githubusercontent.com/SevenworksDev/proxy-list/main/proxies/https.txt';

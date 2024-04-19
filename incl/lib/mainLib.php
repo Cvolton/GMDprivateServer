@@ -238,7 +238,7 @@ class mainLib {
 		if(!isset($timeType)) $timeType = 0;
 		switch($timeType) {
 			case 1:
-				if(date("d.m.Y", $time) == date("d.m.Y", time())) return date("G:i", $time);
+				if(date("d.m.Y", $time) == date("d.m.Y", time())) return date("G;i", $time);
 				elseif(date("Y", $time) == date("Y", time())) return date("d.m", $time);
 				else return date("d.m.Y", $time);
 				break;
@@ -351,15 +351,8 @@ class mainLib {
 	public function getSongString($song){
 		include __DIR__ . "/connection.php";
 		include_once __DIR__ . "/exploitPatch.php";
-		/*$query3=$db->prepare("SELECT ID,name,authorID,authorName,size,isDisabled,download FROM songs WHERE ID = :songid LIMIT 1");
-		$query3->execute([':songid' => $songID]);*/
-		if($song['ID'] == 0 || empty($song['ID'])){
-			return false;
-		}
-		//$song = $query3->fetch();
-		if($song["isDisabled"] == 1){
-			return false;
-		}
+		if(!isset($song['ID'])) $song = $this->getLibrarySongInfo($song['songID']);
+		if(!$song || $song['ID'] == 0 || empty($song['ID']) || $song["isDisabled"] == 1) return false;
 		$dl = $song["download"];
 		if(strpos($dl, ':') !== false){
 			$dl = urlencode($dl);
@@ -372,7 +365,14 @@ class mainLib {
 	    $sinfo = $db->prepare("SELECT $column FROM songs WHERE ID = :id");
 	    $sinfo->execute([':id' => $id]);
 	    $sinfo = $sinfo->fetch();
-	    if(empty($sinfo)) return false;
+	    if(empty($sinfo)) {
+			$sinfo = $this->getLibrarySongInfo($id, 'music');
+			if(!$sinfo) return false;
+			else {
+				if($column != "*")  return $sinfo[$column];
+				else return array("ID" => $sinfo["ID"], "name" => $sinfo["name"], "authorName" => $sinfo["authorName"], "size" => $sinfo["size"], "duration" => $sinfo["duration"], "download" => $sinfo["download"], "reuploadTime" => $sinfo["reuploadTime"], "reuploadID" => $sinfo["reuploadID"]);
+			}
+		}
 	    else {
 	        if($column != "*")  return $sinfo[$column];
 	        else return array("ID" => $sinfo["ID"], "name" => $sinfo["name"], "authorName" => $sinfo["authorName"], "size" => $sinfo["size"], "duration" => $sinfo["duration"], "download" => $sinfo["download"], "reuploadTime" => $sinfo["reuploadTime"], "reuploadID" => $sinfo["reuploadID"]);
@@ -719,7 +719,6 @@ class mainLib {
 	}
 	public function getAccountCommentColor($accountID){
 		if(!is_numeric($accountID)) return false;
-
 		include __DIR__ . "/connection.php";
 		$query = $db->prepare("SELECT roleID FROM roleassign WHERE accountID = :accountID");
 		$query->execute([':accountID' => $accountID]);
@@ -916,10 +915,9 @@ class mainLib {
 			]);
 			$newVersion = (int)curl_exec($curl);
 			curl_close($curl);
-			$jsonVersion = $newVersion.', '.time();
-			file_put_contents(__DIR__.'/../../'.$types[$type].'/'.$key.'.txt', $jsonVersion);
 			if($newVersion > $oldVersion[0]) {
-				$download = curl_init($server.'/'.$types[$type].'/'.$types[$type].'library.dat?token='.$token.'&expires='.$expires);
+				file_put_contents(__DIR__.'/../../'.$types[$type].'/'.$key.'.txt', $newVersion.', '.time());
+				$download = curl_init($server.'/'.$types[$type].'/'.$types[$type].'library.dat?token='.$token.'&expires='.$expires.'&dashboard=1');
 				curl_setopt_array($download, [
 					CURLOPT_PROTOCOLS => CURLPROTO_HTTP | CURLPROTO_HTTPS,
 					CURLOPT_RETURNTRANSFER => 1
@@ -990,14 +988,17 @@ class mainLib {
 								if(empty(trim($bits[1]))) continue 2;
 								if(!isset($idsConverter['originalIDs'][$server][$bits[0]])) {
 									$idsConverter['count']++;
-									$idsConverter['IDs'][$idsConverter['count']] = [$server, $bits[0]];
+									$idsConverter['IDs'][$idsConverter['count']] = ['server' => $server, 'ID' => $bits[0], 'name' => $bits[1], 'type' => $bits[2]];
 									$idsConverter['originalIDs'][$server][$bits[0]] = $idsConverter['count'];
 									$bits[0] = $idsConverter['count'];
-								} else $bits[0] = $idsConverter['originalIDs'][$server][$bits[0]];
+								} else {
+									$bits[0] = $idsConverter['originalIDs'][$server][$bits[0]];
+									if(!isset($idsConverter['IDs'][$bits[0]]['name'])) $idsConverter['IDs'][$bits[0]] = ['server' => $server, 'ID' => $bits[0], 'name' => $bits[1], 'type' => $bits[2]];
+								}
 								if($bits[3] != 1) {
 									if(!isset($idsConverter['originalIDs'][$server][$bits[3]])) {
 										$idsConverter['count']++;
-										$idsConverter['IDs'][$idsConverter['count']] = [$server, $bits[3]];
+										$idsConverter['IDs'][$idsConverter['count']] = ['server' => $server, 'ID' => $bits[3], 'name' => $bits[1], 'type' => 1];
 										$idsConverter['originalIDs'][$server][$bits[3]] = $idsConverter['count'];
 										$bits[3] = $idsConverter['count'];
 									} else $bits[3] = $idsConverter['originalIDs'][$server][$bits[3]];
@@ -1040,10 +1041,32 @@ class mainLib {
 						if(empty($song[0])) continue;
 						if(!isset($idsConverter['originalIDs'][$server][$song[0]])) {
 							$idsConverter['count']++;
-							$idsConverter['IDs'][$idsConverter['count']] = [$server, $song[0]];
+							$idsConverter['IDs'][$idsConverter['count']] = ['server' => $server, 'ID' => $song[0], 'name' => $song[1], 'type' => $x];
+							if($x == 1) {
+								$idsConverter['IDs'][$idsConverter['count']]['size'] = $song[3];
+								if(!isset($idsConverter['originalIDs'][$server][$song[2]])) {
+									$idsConverter['count']++;
+									$idsConverter['IDs'][$idsConverter['count']] = ['server' => $server, 'ID' => $song[2], 'type' => 0];
+									$idsConverter['originalIDs'][$server][$song[2]] = $idsConverter['count'];
+									$song[2] = $idsConverter['count'];
+								} else $song[2] = $idsConverter['originalIDs'][$server][$song[2]];
+								$idsConverter['IDs'][$idsConverter['count']]['authorID'] = $song[2];
+							}
 							$idsConverter['originalIDs'][$server][$song[0]] = $idsConverter['count'];
 							$song[0] = $idsConverter['count'];
-						} else $song[0] = $idsConverter['originalIDs'][$server][$song[0]];
+						} else {
+							$song[0] = $idsConverter['originalIDs'][$server][$song[0]];
+							if($x == 1) {
+								$idsConverter['IDs'][$idsConverter['count']]['size'] = $song[3];
+								if(!isset($idsConverter['originalIDs'][$server][$song[2]])) {
+									$idsConverter['count']++;
+									$idsConverter['IDs'][$idsConverter['count']] = ['server' => $server, 'ID' => $song[2], 'type' => 0];
+									$idsConverter['originalIDs'][$server][$song[2]] = $idsConverter['count'];
+									$song[2] = $idsConverter['count'];
+								} else $song[2] = $idsConverter['originalIDs'][$server][$song[2]];
+								$idsConverter['IDs'][$idsConverter['count']]['authorID'] = $song[2];
+							} elseif(!isset($idsConverter['IDs'][$song[0]]['name'])) $idsConverter['IDs'][$song[0]] = ['server' => $idsConverter['IDs'][$song[0]][0], 'ID' => $idsConverter['IDs'][$song[0]][1], 'name' => $song[1], 'type' => $x];
+						}
 						switch($x) {
 							case 0:
 								$library['authors'][$song[0]] = [
@@ -1054,19 +1077,13 @@ class mainLib {
 								];
 								break;
 							case 1:
-								if(!isset($idsConverter['originalIDs'][$server][$song[2]])) {
-									$idsConverter['count']++;
-									$idsConverter['IDs'][$idsConverter['count']] = [$server, $song[2]];
-									$idsConverter['originalIDs'][$server][$song[2]] = $idsConverter['count'];
-									$song[2] = $idsConverter['count'];
-								} else $song[2] = $idsConverter['originalIDs'][$server][$song[2]];
 								$tags = explode('.', $song[5]);
 								$newTags = [];
 								foreach($tags AS &$tag) {
 									if(empty($tag)) continue;
 									if(!isset($idsConverter['originalIDs'][$server][$tag])) {
 										$idsConverter['count']++;
-										$idsConverter['IDs'][$idsConverter['count']] = [$server, $tag];
+										$idsConverter['IDs'][$idsConverter['count']] = ['server' => $server, 'ID' => $tag, 'type' => 2];
 										$idsConverter['originalIDs'][$server][$tag] = $idsConverter['count'];
 										$tag = $idsConverter['count'];
 									} else $tag = $idsConverter['originalIDs'][$server][$tag];
@@ -1099,12 +1116,12 @@ class mainLib {
 			$sfxs = $db->prepare("SELECT sfxs.*, accounts.userName FROM sfxs JOIN accounts ON accounts.accountID = sfxs.reuploadID");
 			$sfxs->execute();
 			$sfxs = $sfxs->fetchAll();
-			$folderID = [];
+			$folderID = $gdpsLibrary = [];
 			$server = $serverIDs[null];
 			foreach($sfxs AS &$customSFX) {
 				if(!isset($folderID[$customSFX['reuploadID']])) {
 					$idsConverter['count']++;
-					$idsConverter['IDs'][$idsConverter['count']] = [$serverIDs[null], $customSFX['reuploadID']];
+					$idsConverter['IDs'][$idsConverter['count']] = ['server' => $server, 'ID' => $customSFX['ID'], 'name' => $customSFX['userName'].'\'s SFXs', 'type' => 1];
 					$idsConverter['originalIDs'][$server][$customSFX['reuploadID']] = $idsConverter['count'];
 					$newID = $idsConverter['count'];
 					$library['folders'][$newID] = [
@@ -1112,13 +1129,18 @@ class mainLib {
 						'type' => 1,
 						'parent' => (int)($server + 1)
 					];
+					$gdpsLibrary['folders'][$newID] = [
+						'name' => ExploitPatch::escapedat($customSFX['userName']).'\'s SFXs',
+						'type' => 1,
+						'parent' => 1
+					];
 					$folderID[$customSFX['reuploadID']] = true;
 				}
 				$idsConverter['count']++;
-				$idsConverter['IDs'][$idsConverter['count']] = [$serverIDs[null], $customSFX['ID']];
+				$idsConverter['IDs'][$idsConverter['count']] = ['server' => $server, 'ID' => $customSFX['ID'], 'name' => $customSFX['name'], 'type' => 0];
 				$idsConverter['originalIDs'][$server][$customSFX['ID']] = $idsConverter['count'];
 				$customSFX['ID'] = $idsConverter['count'];
-				$library['files'][$customSFX['ID']] = [
+				$library['files'][$customSFX['ID']] = $gdpsLibrary['files'][$customSFX['ID']] = [
 					'name' => ExploitPatch::escapedat($customSFX['name']),
 					'type' => 0,
 					'parent' => (int)$idsConverter['originalIDs'][$server][$customSFX['reuploadID']],
@@ -1130,18 +1152,23 @@ class mainLib {
 			foreach($library['files'] AS $id => &$file) $filesEncrypted[] = implode(',', [$id, $file['name'], 0, $file['parent'], $file['bytes'], $file['milliseconds']]);
 			foreach($library['credits'] AS &$credit) $creditsEncrypted[] = implode(',', [$credit['name'], $credit['website']]);
 			$encrypted = $version.";".implode(';', $filesEncrypted)."|" .implode(';', $creditsEncrypted).';';
+			$filesEncrypted = $creditsEncrypted = [];
+			foreach($gdpsLibrary['folders'] AS $id => &$folder) $filesEncrypted[] = implode(',', [$id, $folder['name'], 1, $folder['parent'], 0, 0]);
+			foreach($gdpsLibrary['files'] AS $id => &$file) $filesEncrypted[] = implode(',', [$id, $file['name'], 0, $file['parent'], $file['bytes'], $file['milliseconds']]);
+			$creditsEncrypted[] = implode(',', [$gdps, $_SERVER['SERVER_NAME']]);
+			$gdpsEncrypted = $version.";".implode(';', $filesEncrypted)."|" .implode(';', $creditsEncrypted).';';
 		} else {
 			$songs = $db->prepare("SELECT songs.*, accounts.userName FROM songs JOIN accounts ON accounts.accountID = songs.reuploadID");
 			$songs->execute();
 			$songs = $songs->fetchAll();
-			$folderID = $accIDs = [];
+			$folderID = $accIDs = $gdpsLibrary = [];
 			$c = 0;
 			foreach($songs AS &$customSongs) {
 				$c++;
 				$authorName = ExploitPatch::escapedat(ExploitPatch::rutoen(trim($customSongs['authorName'])));
 				if(!isset($folderID[$authorName])) {
 					$folderID[$authorName] = $c;
-					$library['authors'][$serverIDs[null]. 0 .$folderID[$authorName]] = [
+					$library['authors'][$serverIDs[null]. 0 .$folderID[$authorName]] = $gdpsLibrary['authors'][$serverIDs[null]. 0 .$folderID[$authorName]] = [
 						'authorID' => ($serverIDs[null]. 0 .$folderID[$authorName]),
 						'name' => $authorName,
 						'link' => ' ',
@@ -1150,13 +1177,13 @@ class mainLib {
 				}
 				if(!isset($accIDs[$customSongs['reuploadID']])) {
 					$accIDs[$customSongs['reuploadID']] = true;
-					$library['tags'][$serverIDs[null]. 0 .$customSongs['reuploadID']] = [
+					$library['tags'][$serverIDs[null]. 0 .$customSongs['reuploadID']] = $gdpsLibrary['tags'][$serverIDs[null]. 0 .$customSongs['reuploadID']] = [
 						'ID' => ($serverIDs[null]. 0 .$customSongs['reuploadID']),
 						'name' => ExploitPatch::escapedat($customSongs['userName']),
 					];
 				}
 				$customSongs['name'] = trim($customSongs['name']);
-				$library['songs'][$customSongs['ID']] = [
+				$library['songs'][$customSongs['ID']] = $gdpsLibrary['songs'][$customSongs['ID']] = [
 					'ID' => ($customSongs['ID']),
 					'name' => !empty($customSongs['name']) ? ExploitPatch::escapedat(ExploitPatch::rutoen($customSongs['name'])) : 'Unnamed',
 					'authorID' => ($serverIDs[null]. 0 .$folderID[$authorName]),
@@ -1169,11 +1196,19 @@ class mainLib {
 			foreach($library['songs'] AS &$songsList) $songsEncrypted[] = implode(',', $songsList);
 			foreach($library['tags'] AS &$tagsList) $tagsEncrypted[] = implode(',', $tagsList);
 			$encrypted = $version."|".implode(';', $authorsEncrypted).";|" .implode(';', $songsEncrypted).";|" .implode(';', $tagsEncrypted).';';
+			$authorsEncrypted = $songsEncrypted = $tagsEncrypted = [];
+			foreach($gdpsLibrary['authors'] AS &$authorList) $authorsEncrypted[] = implode(',', $authorList);
+			foreach($gdpsLibrary['songs'] AS &$songsList) $songsEncrypted[] = implode(',', $songsList);
+			foreach($gdpsLibrary['tags'] AS &$tagsList) $tagsEncrypted[] = implode(',', $tagsList);
+			$gdpsEncrypted = $version."|".implode(';', $authorsEncrypted).";|" .implode(';', $songsEncrypted).";|" .implode(';', $tagsEncrypted).';';
 		}
-		file_put_contents(__DIR__.'/../../'.$types[$type].'/ids.json', json_encode($idsConverter, JSON_PRETTY_PRINT));
+		file_put_contents(__DIR__.'/../../'.$types[$type].'/ids.json', json_encode($idsConverter, JSON_PRETTY_PRINT | JSON_INVALID_UTF8_IGNORE));
 		$encrypted = zlib_encode($encrypted, ZLIB_ENCODING_DEFLATE);
 		$encrypted = strtr(base64_encode($encrypted), '+/=', '-_=');
 		file_put_contents(__DIR__.'/../../'.$types[$type].'/gdps.dat', $encrypted);
+		$gdpsEncrypted = zlib_encode($gdpsEncrypted, ZLIB_ENCODING_DEFLATE);
+		$gdpsEncrypted = strtr(base64_encode($gdpsEncrypted), '+/=', '-_=');
+		file_put_contents(__DIR__.'/../../'.$types[$type].'/standalone.dat', $gdpsEncrypted);
 	}
 	public function getAudioDuration($file) {
 		require_once(__DIR__.'/../../config/getid3/getid3.php');
@@ -1182,7 +1217,57 @@ class mainLib {
 		$result = (isset($info['playtime_seconds']) ? (int)($info['playtime_seconds']) : false);
 		return $result;
 	}
-	public function mail($mail = '', $user = '', $isForgotPass = false) {
+	public function convertSFX($file, $server, $name, $token) {
+		include __DIR__."/../../config/dashboard.php";
+		if(!$convertEnabled) return false;
+		$link = $convertSFXAPI[rand(0, count($convertSFXAPI) - 1)];
+		$filePath = $file['tmp_name'];
+		$type = $file['type'];
+		$post = [
+			'name' => $name,
+			'token' => $token,
+			'server' => $server,
+			'file' => new CURLFile(realpath($filePath), $type, $filePath)
+		];
+		$curl = curl_init($link.'/convert');
+		curl_setopt_array($curl, [
+			CURLOPT_PROTOCOLS => CURLPROTO_HTTP | CURLPROTO_HTTPS,
+			CURLOPT_RETURNTRANSFER => 1,
+			CURLOPT_POST => true,
+			CURLOPT_POSTFIELDS => $post
+		]);
+		$response = json_decode(curl_exec($curl), true);
+		$result = isset($response['success']) ? $response['success'] : false;
+		return $result;
+	}
+	public function getLibrarySongInfo($id, $type = 'music') {
+		include __DIR__."/../../config/dashboard.php";
+		if(!file_exists(__DIR__.'/../../'.$type.'/ids.json')) return false;
+		$servers = $serverIDs = $serverNames = [];
+		foreach($customLibrary AS $customLib) {
+			$servers[$customLib[0]] = $customLib[2];
+			$serverNames[$customLib[0]] = $customLib[1];
+			$serverIDs[$customLib[2]] = $customLib[0];
+		}
+		$library = json_decode(file_get_contents(__DIR__.'/../../'.$type.'/ids.json'), true);
+		if(!isset($library['IDs'][$id])) return false;
+		if($type == 'music') {
+			$song = $library['IDs'][$id];
+			$author = $library['IDs'][$song['authorID']];
+			$token = $this->randomString(11);
+			$expires = time() + 3600;
+			$link = $servers[$song['server']].'/music/'.$song['ID'].'.ogg?token='.$token.'&expires='.$expires;
+			return ['server' => $song['server'], 'ID' => $id, 'name' => $song['name'], 'authorID' => $song['authorID'], 'authorName' => $author['name'], 'size' => round($song['size'] / 1024 / 1024, 2), 'download' => $link];
+		} else {
+			$SFX = $library['IDs'][$id];
+			$token = $this->randomString(11);
+			$expires = time() + 3600;
+			$type = $type == 'sfx' ? 'sfx/s' : 'music/';
+			$link = $servers[$SFX['server']] != null ? $servers[$SFX['server']].'/'.$type.$SFX['ID'].'.ogg?token='.$token.'&expires='.$expires : $this->getSFXInfo($SFX['ID'], 'download');
+			return ['server' => $SFX['server'], 'ID' => $id, 'name' => $song['name'], 'download' => $link];
+		}
+	}
+  	public function mail($mail = '', $user = '', $isForgotPass = false) {
 		if(empty($mail) OR empty($user)) return;
 		include __DIR__."/../../config/mail.php";
 		if($mailEnabled) {
