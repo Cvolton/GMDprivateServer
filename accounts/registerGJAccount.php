@@ -7,10 +7,18 @@ $gs = new mainLib();
 require_once "../incl/lib/exploitPatch.php";
 require_once "../incl/lib/generatePass.php";
 if(!isset($preactivateAccounts)) $preactivateAccounts = true;
+if(!isset($usernameFiltering)) global $usernameFiltering;
 if(!empty($_POST["userName"]) AND !empty($_POST["password"]) AND !empty($_POST["email"])) {
 	$userName = ExploitPatch::charclean($_POST["userName"]);
 	$password = $_POST["password"];
-    $email = ExploitPatch::rucharclean($_POST["email"]);
+    	$email = ExploitPatch::rucharclean($_POST["email"]);
+	if($usernameFiltering) {
+		if (!file_exists(__DIR__ .'/../config/bannedUsernames.txt')) file_put_contents(__DIR__ .'/../config/bannedUsernames.txt', 'RobTop');
+		if (!empty(file_get_contents(__DIR__ .'/../config/bannedUsernames.txt'))) {
+			$bannedUsernames = array_map('strtolower', preg_split('/\r\n|\r|\n/', file_get_contents(__DIR__ .'/../config/bannedUsernames.txt'), -1, PREG_SPLIT_NO_EMPTY));
+			if (in_array(strtolower($userName), $bannedUsernames)) exit("-4");
+		}
+	}
 	if(strlen($userName) > 20) exit("-4");
 	if(strlen($userName) < 3) exit("-9");
 	if(strlen($password) < 6) exit("-8");
