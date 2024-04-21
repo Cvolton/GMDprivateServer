@@ -23,7 +23,7 @@ include "../../incl/lib/connection.php";
 $query = $db->prepare("UPDATE users
 	LEFT JOIN
 	(
-	    SELECT usersTable.userID, (IFNULL(starredTable.starred, 0) + IFNULL(featuredTable.featured, 0) + (IFNULL(epicTable.epic,0)*2)) as CP FROM (
+	    SELECT usersTable.userID, (IFNULL(starredTable.starred, 0) + IFNULL(featuredTable.featured, 0) + (IFNULL(epicTable.epic,0))) as CP FROM (
             SELECT userID FROM users
         ) AS usersTable
         LEFT JOIN
