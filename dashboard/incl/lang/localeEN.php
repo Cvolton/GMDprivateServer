@@ -116,6 +116,7 @@ $string["emailDontMatch"] = "Emails don't match";
 $string["registered"] = "You successfully registered an account!";
 $string["bigNick"] = "Username is too long!";
 $string["mailExists"] = "There is a registered account using this email!";
+$string["badUsername"] = "Please choose another username.";
 
 $string["changePassTitle"] = "Change password";
 $string["changedPass"] = "Password successfully changed! You need to login to you account again.";
@@ -563,6 +564,7 @@ $string["modAction23"] = "Changed quest";
 $string["modAction24"] = "Reassigned a player";
 $string["modAction25"] = "Created a quest";
 $string["modAction26"] = "Changed player's username/password";
+$string["modAction27"] = "Changed SFX";
 $string["modAction30"] = "Rated list";
 $string["modAction31"] = "Sent list";
 $string["modAction32"] = "Un/featured list";

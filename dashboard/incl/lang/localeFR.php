@@ -117,6 +117,7 @@ $string["emailDontMatch"] = "Les emails ne correspondent pas!";
 $string["registered"] = "Vous avez créé un compte avec succès!";
 $string["bigNick"] = "Username is too long!";
 $string["mailExists"] = "There is a registered account using this email!";
+$string["badUsername"] = "Please choose another username.";
 
 $string["changePassTitle"] = "Changer le mot de passe";
 $string["changedPass"] = "Mot de passe changé avec succès! Vous devez vous reconnecter.";
@@ -564,6 +565,7 @@ $string["modAction23"] = "Quête modifiée";
 $string["modAction24"] = "Reassigned a player";
 $string["modAction25"] = "A créé une quête";
 $string["modAction26"] = "A changé le nom d'utilisateur/mot de passe du joueur";
+$string["modAction27"] = "Changed SFX";
 $string["modAction30"] = "La liste a été rate";
 $string["modAction31"] = "La liste a été sent (envoyé aux modérateurs)";
 $string["modAction32"] = "La list a été (ou a eu son) featured (supprimé)";
