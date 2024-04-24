@@ -2,34 +2,34 @@
 /*
 	Welcome to webhooks translation file!
 	You're currently at French (Français) language
-	Credits: *your username*
+	Credits: DimisAIO.be
 	
 	If you see array instead of simple string, that means you can add as many variations of translation as you want and they will be picked randomly
 */
-$webhookLang['rateSuccessTitle'] = ['New level was rated!', 'New rated level!', 'Someone rated a level!']; // This one is array
-$webhookLang['rateSuccessTitleDM'] = ['Your level was rated!', 'Someone rated your level!'];
-$webhookLang['rateSuccessDesc'] = '%1$s rated a level!'; // And this one is string
-$webhookLang['rateSuccessDescDM'] = '%1$s rated your level! %2$s';
-$webhookLang['rateFailTitle'] = ['Level was unrated!', 'Someone unrated a level!'];
-$webhookLang['rateFailTitleDM'] = ['Your level was unrated!', 'Someone unrated your level!'];
-$webhookLang['rateFailDesc'] = '%1$s unrated a level!';
-$webhookLang['rateFailDescDM'] = '%1$s unrated your level! %2$s';
+$webhookLang['rateSuccessTitle'] = ['Un noveau niveau à été rate!', 'Nouveau niveau rate!', 'Quelqu\'un a rate un niveau!']; // This one is array
+$webhookLang['rateSuccessTitleDM'] = ['Ton niveau a été rate!', 'Quelqu\'un a rate ton niveau!'];
+$webhookLang['rateSuccessDesc'] = '%1$s a rate un niveau!'; // And this one is string
+$webhookLang['rateSuccessDescDM'] = '%1$s a rate ton niveau! %2$s';
+$webhookLang['rateFailTitle'] = ['Ce niveau a été dé-rate!', 'Quelqu\'un a dé-rate un niveau!'];
+$webhookLang['rateFailTitleDM'] = ['Ton niveau a été dé-rate!', 'Quelqu\'un a dé-rate ton niveau!'];
+$webhookLang['rateFailDesc'] = '%1$s a dé-rate un niveau!';
+$webhookLang['rateFailDescDM'] = '%1$s a dé-rate ton niveau! %2$s';
 
-$webhookLang['levelTitle'] = 'Level';
-$webhookLang['levelDesc'] = '%1$s by %2$s'; // Name by Creator
-$webhookLang['levelIDTitle'] = 'Level ID';
-$webhookLang['difficultyTitle'] = 'Difficulty';
-$webhookLang['difficultyDesc0'] = '%1$s, %2$s star'; // Auto, 1 star
-$webhookLang['difficultyDesc1'] = '%1$s, %2$s stars'; // Easy, 2 stars
-$webhookLang['difficultyDesc2'] = '%1$s, %2$s stars'; // Hard, 5 stars
-$webhookLang['statsTitle'] = 'Stats';
-$webhookLang['requestedTitle'] = 'Creator requested';
-$webhookLang['requestedDesc0'] = '%1$s star'; // 1 star
-$webhookLang['requestedDesc1'] = '%1$s stars'; // 2 stars
-$webhookLang['requestedDesc2'] = '%1$s stars'; // 5 stars
-$webhookLang['descTitle'] = 'Description';
-$webhookLang['descDesc'] = '*No description*';
-$webhookLang['footer'] = '%1$s, thank you for playing!';
+$webhookLang['levelTitle'] = 'Niveau';
+$webhookLang['levelDesc'] = '%1$s par %2$s'; // Name by Creator
+$webhookLang['levelIDTitle'] = 'ID du niveau';
+$webhookLang['difficultyTitle'] = 'Difficulté';
+$webhookLang['difficultyDesc0'] = '%1$s, %2$s étoile'; // Auto, 1 star
+$webhookLang['difficultyDesc1'] = '%1$s, %2$s étoiles'; // Easy, 2 stars
+$webhookLang['difficultyDesc2'] = '%1$s, %2$s étoiles'; // Hard, 5 stars
+$webhookLang['statsTitle'] = 'Statistiques';
+$webhookLang['requestedTitle'] = 'Demandé par le créateur';
+$webhookLang['requestedDesc0'] = '%1$s étoile'; // 1 star
+$webhookLang['requestedDesc1'] = '%1$s étoiles'; // 2 stars
+$webhookLang['requestedDesc2'] = '%1$s étoiles'; // 5 stars
+$webhookLang['descTitle'] = 'Déscription';
+$webhookLang['descDesc'] = '*Aucune déscription*';
+$webhookLang['footer'] = '%1$s, merci d\'avoir joué!';
 
 // TO-DO: Demonlist
 ?>
