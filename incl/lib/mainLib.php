@@ -42,13 +42,31 @@ class mainLib {
 			return "Unknown by DJVI";
 		return $songs[$id];
 	}
-	public function getDifficulty($diff,$auto,$demon) {
-		if($auto != 0){
-			return "Auto";
-		}else if($demon != 0){
-			return "Demon";
-		}else{
-			switch($diff){
+	public function getDifficulty($diff, $auto, $demon, $demonDiff = 1) {
+		if($auto != 0) return "Auto";
+		if($demon != 0) {
+			switch($demonDiff) {
+				case 0:
+					return 'Hard Demon';
+					break;
+				case 3:
+					return 'Easy Demon';
+					break;
+				case 4:
+					return 'Medium Demon';
+					break;
+				case 5:
+					return 'Insane Demon';
+					break;
+				case 6:
+					return 'Extreme Demon';
+					break;
+				default:
+					return 'Demon';
+					break;
+			}
+		} else {
+			switch($diff) {
 				case 0:
 					return "N/A";
 					break;
@@ -258,24 +276,15 @@ class mainLib {
 				break;
 		}
 	}
-	public function getIDFromPost(){
+	public function getIDFromPost() {
 		include __DIR__ . "/../../config/security.php";
 		include_once __DIR__ . "/exploitPatch.php";
 		include_once __DIR__ . "/GJPCheck.php";
-
-		if(!empty($_POST["udid"]) AND $_POST['gameVersion'] < 20 AND $unregisteredSubmissions) 
-		{
+		if(!empty($_POST["udid"]) AND $_POST['gameVersion'] < 20 AND $unregisteredSubmissions) {
 			$id = ExploitPatch::remove($_POST["udid"]);
 			if(is_numeric($id)) exit("-1");
-		}
-		elseif(!empty($_POST["accountID"]) AND $_POST["accountID"]!="0")
-		{
-			$id = GJPCheck::getAccountIDOrDie();
-		}
-		else
-		{
-			exit("-1");
-		}
+		} elseif(!empty($_POST["accountID"]) AND $_POST["accountID"] !="0") $id = GJPCheck::getAccountIDOrDie();
+		else exit("-1");
 		return $id;
 	}
 	public function getUserID($extID, $userName = "Undefined") {
@@ -433,9 +442,9 @@ class mainLib {
 		$claninfo->execute([':id' => $clan]);
 		return $claninfo->fetchColumn();
 	}
-	public function sendDiscordPM($receiver, $message){
+    public function sendDiscordPM($receiver, $message, $json = false){
 		include __DIR__ . "/../../config/discord.php";
-		if(!$discordEnabled){
+		if(!$discordEnabled) {
 			return false;
 		}
 		//findind the channel id
@@ -466,7 +475,8 @@ class mainLib {
 		$headr = array();
 		$headr['User-Agent'] = 'GMDprivateServer (https://github.com/Cvolton/GMDprivateServer, 1.0)';
 		curl_setopt($crl, CURLOPT_CUSTOMREQUEST, "POST");                                                                     
-		curl_setopt($crl, CURLOPT_POSTFIELDS, $data_string);
+		if(!$json) curl_setopt($crl, CURLOPT_POSTFIELDS, $data_string);
+		else curl_setopt($crl, CURLOPT_POSTFIELDS, $message);
 		$headr[] = 'Content-type: application/json';
 		$headr[] = 'Authorization: Bot '.$bottoken;
 		curl_setopt($crl, CURLOPT_HTTPHEADER,$headr);
@@ -533,6 +543,14 @@ class mainLib {
 		$desc = $desc->fetch();
 		if($desc["starStars"] == 0) return false; 
 		else return true;
+	} 
+	public function hasDiscord($acc) {
+		include __DIR__ . "/connection.php";
+		$ds = $db->prepare("SELECT discordID, discordLinkReq FROM accounts WHERE accountID = :id");
+		$ds->execute([':id' => $acc]); 
+		$ds = $ds->fetch();
+		if($ds["discordID"] != 0 AND $ds["discordLinkReq"] == 0) return $ds["discordID"];
+		else return false;
 	}
 	public function randomString($length = 6) {
 		$randomString = openssl_random_pseudo_bytes($length);
@@ -744,7 +762,7 @@ class mainLib {
 			return $query->fetchColumn();
 		return "255,255,255";
 	}
-	public function rateLevel($accountID, $levelID, $stars, $difficulty, $auto, $demon){
+	public function rateLevel($accountID, $levelID, $stars, $difficulty, $auto, $demon) {
 		if(!is_numeric($accountID)) return false;
 		include __DIR__ . "/connection.php";
 		$diffName = $this->getDiffFromStars($stars)["name"];
@@ -753,6 +771,7 @@ class mainLib {
 		$query->execute([':demon' => $demon, ':auto' => $auto, ':diff' => $difficulty, ':stars' => $stars, ':levelID'=>$levelID, ':now' => time()]);
 		$query = $db->prepare("INSERT INTO modactions (type, value, value2, value3, timestamp, account) VALUES ('1', :value, :value2, :levelID, :timestamp, :id)");
 		$query->execute([':value' => $diffName, ':timestamp' => time(), ':id' => $accountID, ':value2' => $stars, ':levelID' => $levelID]);
+		$this->sendRateWebhook($accountID, $levelID);
 	}
 	public function featureLevel($accountID, $levelID, $state) {
 		if(!is_numeric($accountID)) return false;
@@ -1266,6 +1285,137 @@ class mainLib {
 			$link = $servers[$SFX['server']] != null ? $servers[$SFX['server']].'/'.$type.$SFX['ID'].'.ogg?token='.$token.'&expires='.$expires : $this->getSFXInfo($SFX['ID'], 'download');
 			return ['server' => $SFX['server'], 'ID' => $id, 'name' => $song['name'], 'download' => $link];
 		}
+	}
+	public function sendRateWebhook($modAccID, $levelID) {
+		include __DIR__."/connection.php";
+		include __DIR__."/../../config/dashboard.php";
+		include __DIR__."/../../config/discord.php";
+		if(!$webhooksEnabled OR !is_numeric($modAccID) OR !is_numeric($levelID)) return false;
+		include_once __DIR__."/../../config/webhooks/DiscordWebhook.php";
+		$webhookLangArray = $this->webhookStartLanguage($webhookLanguage);
+		$dw = new DiscordWebhook($rateWebhook);
+		$level = $db->prepare('SELECT * FROM levels WHERE levelID = :levelID');
+		$level->execute([':levelID' => $levelID]);
+		$level = $level->fetch();
+		if(!$level) return false;
+		$modUsername = $this->getAccountName($modAccID);
+		$modHasDiscord = $this->hasDiscord($modAccID);
+		$modFormattedUsername = $modHasDiscord ? "<@".$modHasDiscord.">" : "**".$modUsername."**";
+		$creatorAccID = $level['extID'];
+		$creatorUsername = $this->getAccountName($creatorAccID);
+		$creatorHasDiscord = $this->hasDiscord($creatorAccID);
+		$creatorFormattedUsername = $creatorHasDiscord ? "<@".$creatorHasDiscord.">" : "**".$creatorUsername."**";
+		$isRated = $level['starStars'] != 0;
+		$difficulty = $this->getDifficulty($level['starDifficulty'], $level['starAuto'], $level['starDemon'], $level['starDemonDiff']);
+		$starsIcon = 'stars';
+		$diffIcon = 'na';
+		switch(true) {
+			case ($level['starEpic'] > 0):
+				$starsArray = ['', 'epic', 'legendary', 'mythic'];
+				$starsIcon = $starsArray[$level['starEpic']];
+				break;
+			case ($level['starFeatured'] > 0):
+				$starsIcon = 'featured';
+				break;
+		}
+		$diffArray = ['n/a' => 'na', 'easy' => 'easy', 'normal' => 'normal', 'hard' => 'hard', 'harder' => 'harder', 'insane' => 'insane', 'demon' => 'demon-hard', 'easy demon' => 'demon-easy', 'medium demon' => 'demon-medium', 'hard demon' => 'demon-hard', 'insane demon' => 'demon-insane', 'extreme demon' => 'demon-extreme'];
+		$diffIcon = $diffArray[strtolower($difficulty)] ?? 'na';
+		if($level['starStars'] != 0) {
+			$setColor = $successColor;
+			$setTitle = $this->webhookLanguage('rateSuccessTitle', $webhookLangArray);
+			$dmTitle = $this->webhookLanguage('rateSuccessTitleDM', $webhookLangArray);
+			$setDescription = sprintf($this->webhookLanguage('rateSuccessDesc', $webhookLangArray), $modFormattedUsername);
+			$dmDescription = sprintf($this->webhookLanguage('rateSuccessDescDM', $webhookLangArray), $modFormattedUsername, $tadaEmoji);
+		} else {
+			$setColor = $failColor;
+			$setTitle = $this->webhookLanguage('rateFailTitle', $webhookLangArray);
+			$dmTitle = $this->webhookLanguage('rateFailTitleDM', $webhookLangArray);
+			$setDescription = sprintf($this->webhookLanguage('rateFailDesc', $webhookLangArray), $modFormattedUsername);
+			$dmDescription = sprintf($this->webhookLanguage('rateFailDescDM', $webhookLangArray), $modFormattedUsername, $sobEmoji);
+		}
+		$stats = $downloadEmoji.' '.$level['downloads'].' | '.($level['likes'] - $level['dislikes'] >= 0 ? $likeEmoji.' '.abs($level['likes'] - $level['dislikes']) : $dislikeEmoji.' '.abs($level['likes'] - $level['dislikes']));
+		$levelField = [$this->webhookLanguage('levelTitle', $webhookLangArray), sprintf($this->webhookLanguage('levelDesc', $webhookLangArray), '**'.$level['levelName'].'**', $creatorFormattedUsername), true];
+		$IDField = [$this->webhookLanguage('levelIDTitle', $webhookLangArray), $level['levelID'], true];
+		if($level['starStars'] == 1) $action = 0; elseif(($level['starStars'] < 5 AND $level['starStars'] != 0) AND !($level['starStars'] > 9 AND $level['starStars'] < 20)) $action = 1; else $action = 2;
+		$difficultyField = [$this->webhookLanguage('difficultyTitle', $webhookLangArray), sprintf($this->webhookLanguage('difficultyDesc'.$action, $webhookLangArray), $difficulty, $level['starStars']), true];
+		$statsField = [$this->webhookLanguage('statsTitle', $webhookLangArray), $stats, true];
+		if($level['requestedStars'] == 1) $action = 0; elseif(($level['requestedStars'] < 5 AND $level['requestedStars'] != 0) AND !($level['requestedStars'] > 9 AND $level['requestedStars'] < 20)) $action = 1; else $action = 2;
+		$requestedField = $level['requestedStars'] > 0 ? [$this->webhookLanguage('requestedTitle', $webhookLangArray), sprintf($this->webhookLanguage('requestedDesc'.$action, $webhookLangArray), $level['requestedStars']), true] : [];
+		$descriptionField = [$this->webhookLanguage('descTitle', $webhookLangArray), (!empty($level['levelDesc']) ? base64_decode($level['levelDesc']) : $this->webhookLanguage('descDesc', $webhookLangArray)), false];
+		$setThumbnail = 'https://gcs.icu/WTFIcons/difficulties/'.$starsIcon.'/'.$diffIcon.'.png';
+		$setFooter = sprintf($this->webhookLanguage('footer', $webhookLangArray), $gdps);
+		$dw->newMessage()
+		->setAuthor($gdps, $authorURL, $authorIconURL)
+		->setColor($setColor)
+		->setTitle($setTitle, $rateTitleURL)
+		->setDescription($setDescription)
+		->setThumbnail($setThumbnail)
+		->addFields($levelField, $IDField, $difficultyField, $statsField, $requestedField, $descriptionField)
+		->setFooter($setFooter, $footerIconURL)
+		->setTimestamp()
+		->send(); 
+		if($dmNotifications && $creatorHasDiscord) {
+			$embed = $this->generateEmbedArray(
+				[$gdps, $authorURL, $authorIconURL],
+				$setColor,
+				[$dmTitle, $rateTitleURL],
+				$dmDescription,
+				$setThumbnail,
+				[$levelField, $IDField, $difficultyField, $statsField, $requestedField, $descriptionField],
+				[$setFooter, $footerIconURL]
+			);
+			$json = json_encode([
+				"content" => "",
+				"tts" => false,
+				"embeds" => [$embed]
+			], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+			$this->sendDiscordPM($creatorHasDiscord, $json, true);
+		}
+	}
+	public function generateEmbedArray($author, $color, $title, $description, $thumbnail, $fieldsArray, $footer) {
+		if(!is_array($author) || !is_array($title) || !is_array($fieldsArray) || !is_array($footer)) return false;
+		$fields = [];
+		$author = [
+			"name" => $author[0],
+			"url" => $author[1],
+			"icon_url" => $author[2]
+		];
+		foreach($fieldsArray AS &$field) {
+			if(!empty($field)) $fields[] = [
+				"name" => $field[0],
+				"value" => $field[1],
+				"inline" => $field[2]
+			];
+		}
+		$footer = [
+			"text" => $footer[0],
+			"icon_url" => $footer[1]
+		];
+		return [
+			"type" => "rich",
+			"timestamp" => date("c", time()),
+			"title" => $title[0],
+			"url" => $title[1],
+			"color" => hexdec($color),
+			"description" => $description,
+			"thumbnail" => ["url" => $thumbnail],
+			"footer" => $footer,
+			"author" => $author,
+			"fields" => $fields
+		];
+	}
+	public function webhookStartLanguage($lang) {
+		$fileExists = file_exists(__DIR__."/../../config/webhooks/lang/".$lang.".php");
+		if(!$fileExists) return false;
+		include __DIR__."/../../config/webhooks/lang/".$lang.".php";
+		return $webhookLang;
+	}
+	public function webhookLanguage($langString, $webhookLangArray) {
+		if(isset($webhookLangArray[$langString])) {
+			if(is_array($webhookLangArray[$langString])) return $webhookLangArray[$langString][rand(0, count($webhookLangArray[$langString]) - 1)];
+			else return $webhookLangArray[$langString];
+		}
+		return false;
 	}
   	public function mail($mail = '', $user = '', $isForgotPass = false) {
 		if(empty($mail) OR empty($user)) return;

@@ -52,6 +52,7 @@ class Commands {
 				$query = $db->prepare("UPDATE levels SET starCoins=:starCoins WHERE levelID=:levelID");
 				$query->execute([':starCoins' => $starCoins, ':levelID' => $levelID]);
 			}
+			$gs->sendRateWebhook($accountID, $levelID);
 			return true;
 		}
 		if(substr($comment,0,8) == '!feature' AND $gs->checkPermission($accountID, "commandFeature")){
