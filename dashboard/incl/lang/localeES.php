@@ -116,6 +116,7 @@ $string["emailDontMatch"] = "Los emails no coinciden";
 $string["registered"] = "¡Te has registrado exitosamente!";
 $string["bigNick"] = "Username is too long!";
 $string["mailExists"] = "There is a registered account using this email!";
+$string["badUsername"] = "Please choose another username.";
 // change password
 $string["changePassTitle"] = "Cambiar contraseña";
 $string["changedPass"] = "¡Contraseña cambiada exitosamente! Inicia sesión nuevamente.";
@@ -556,6 +557,7 @@ $string["modAction23"] = "Misión cambiada";
 $string["modAction24"] = "Jugador reasignado";
 $string["modAction25"] = "Misión creada";
 $string["modAction26"] = "Apodo/contraseña de Jugador cambiada";
+$string["modAction27"] = "Changed SFX";
 $string["modAction30"] = "Lista rateada";
 $string["modAction31"] = "Lista enviada";
 $string["modAction32"] = "Featured de una Lista";

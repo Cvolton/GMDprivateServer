@@ -116,6 +116,7 @@ $string["emailDontMatch"] = "Почты не совпадают!";
 $string["registered"] = "Вы успешно зарегистрировали аккаунт!";
 $string["bigNick"] = "Никнейм слишком длинный!";
 $string["mailExists"] = "На этой почте уже зарегистрирован аккаунт!";
+$string["badUsername"] = "Пожалуйста, выберите другой никнейм.";
 
 $string["changePassTitle"] = "Смена пароля";
 $string["changedPass"] = "Пароль успешно сменён! Вам нужно заново войти в ваш аккаунт.";
@@ -563,6 +564,7 @@ $string["modAction23"] = "Изменил(а) квест";
 $string["modAction24"] = "Переназначил(а) игрока";
 $string["modAction25"] = "Создал(а) квест";
 $string["modAction26"] = "Сменил(а) никнейм/пароль игроку";
+$string["modAction27"] = "Изменил(а) звуковой эффект";
 $string["modAction30"] = "Оценил(а) список уровней";
 $string["modAction31"] = "Отправил(а) на оценку список уровней";
 $string["modAction32"] = "Снял(а)/добавил(а) Featured списку уровней";

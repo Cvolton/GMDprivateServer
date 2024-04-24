@@ -11,16 +11,16 @@ if(!isset($filterUsernames)) global $filterUsernames;
 if(!empty($_POST["userName"]) AND !empty($_POST["password"]) AND !empty($_POST["email"])) {
 	$userName = ExploitPatch::charclean($_POST["userName"]);
 	$password = $_POST["password"];
-    	$email = ExploitPatch::rucharclean($_POST["email"]);
+    $email = ExploitPatch::rucharclean($_POST["email"]);
 	if($filterUsernames >= 1) {
 		$bannedUsernamesList = array_map('strtolower', $bannedUsernames);
-		switch ($filterUsernames) {
+		switch($filterUsernames) {
 			case 1:
 				if(in_array(strtolower($userName), $bannedUsernamesList)) exit("-4");
 				break;
 			case 2:
 				foreach($bannedUsernamesList as $bannedUsername) {
-					if (str_contains(strtolower($userName), $bannedUsername)) exit("-4");
+					if(!empty($bannedUsername) && mb_strpos($bannedUsername, strtolower($username)) !== false) exit("-4");
 				}
 		}
 	}

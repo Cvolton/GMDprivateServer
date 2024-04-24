@@ -116,6 +116,7 @@ $string["emailDontMatch"] = "E-Postalar eşleşmiyor";
 $string["registered"] = "Hesap başarıyla oluşturuldu!";
 $string["bigNick"] = "Username is too long!";
 $string["mailExists"] = "There is a registered account using this email!";
+$string["badUsername"] = "Please choose another username.";
 
 $string["changePassTitle"] = "Şifre değiştir";
 $string["changedPass"] = "Şifre başarıyla değiştirildi! Hesabına yeniden giriş yapman gerekiyor.";
@@ -563,6 +564,7 @@ $string["modAction23"] = "(23)Quest değiştirdi";
 $string["modAction24"] = "(24)Oyuncuyu yeniden atadı";
 $string["modAction25"] = "(25)Quest oluşturdu";
 $string["modAction26"] = "(26)Kullanıcı adı/şifre değiştirdi";
+$string["modAction27"] = "Changed SFX";
 $string["modAction30"] = "(30)Derecelendirilen liste";
 $string["modAction31"] = "(31)Gönderilen liste";
 $string["modAction32"] = "(32)Liste onayladı/onaylamadı";
