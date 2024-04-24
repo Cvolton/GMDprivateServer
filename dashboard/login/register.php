@@ -45,7 +45,7 @@ if(!empty($_POST["username"]) AND !empty($_POST["email"]) AND !empty($_POST["rep
 				break;
 			case 2:
 				foreach($bannedUsernamesList as $bannedUsername) {
-					if(!empty($bannedUsername) && mb_strpos($bannedUsername, strtolower($username)) !== false) exit($dl->printSong('<div class="form">
+					if(!empty($bannedUsername) && mb_strpos(strtolower($username), $bannedUsername) !== false) exit($dl->printSong('<div class="form">
 					<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 					<form class="form__inner" method="post" action="">
 					<p>'.$dl->getLocalizedString("badUsername").'</p>

@@ -1417,6 +1417,15 @@ class mainLib {
 		}
 		return false;
 	}
+	public function changeDifficulty($accountID, $levelID, $difficulty, $auto, $demon) {
+		if(!is_numeric($accountID)) return false;
+		include __DIR__ . "/connection.php";
+		$query = "UPDATE levels SET starDemon=:demon, starAuto=:auto, starDifficulty=:diff, rateDate=:now WHERE levelID=:levelID";
+		$query = $db->prepare($query);	
+		$query->execute([':demon' => $demon, ':auto' => $auto, ':diff' => $difficulty, ':levelID'=>$levelID, ':now' => time()]);
+		$query = $db->prepare("INSERT INTO modactions (type, value, value2, value3, timestamp, account) VALUES ('1', :value, :value2, :levelID, :timestamp, :id)");
+		$query->execute([':value' => $diffName, ':timestamp' => time(), ':id' => $accountID, ':value2' => 0, ':levelID' => $levelID]);
+	}
   	public function mail($mail = '', $user = '', $isForgotPass = false) {
 		if(empty($mail) OR empty($user)) return;
 		include __DIR__."/../../config/mail.php";

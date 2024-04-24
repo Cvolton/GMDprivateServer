@@ -20,7 +20,7 @@ if(!empty($_POST["userName"]) AND !empty($_POST["password"]) AND !empty($_POST["
 				break;
 			case 2:
 				foreach($bannedUsernamesList as $bannedUsername) {
-					if(!empty($bannedUsername) && mb_strpos($bannedUsername, strtolower($username)) !== false) exit("-4");
+					if(!empty($bannedUsername) && mb_strpos(strtolower($username), $bannedUsername) !== false) exit("-4");
 				}
 		}
 	}
