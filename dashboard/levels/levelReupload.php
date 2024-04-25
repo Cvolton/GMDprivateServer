@@ -34,6 +34,16 @@ if(!empty($_POST["levelid"])){
 		</div>', 'reupload');
 		die();
 	}
+	$check = $db->prepare('SELECT isUploadBanned FROM users WHERE extID = :id');
+	$check->execute([':id' => $_SESSION['accountID']]);
+	$check = $check->fetchColumn();
+	if($check) exit($dl->printSong('<div class="form">
+	<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
+		<form class="form__inner" method="post" action="">
+		<p>'.$dl->getLocalizedString("levelUploadBanned").'</p>
+		<button type="button" onclick="a(\'\', true, false, \'GET\')" class="btn-song">'.$dl->getLocalizedString("dashboard").'</button>
+		</form>
+	</div>', 'reupload'));
 	if($_POST["debug"] == 1) $debug = 1;
 	else $debug = 0;
 	$levelID = $_POST["levelid"];
@@ -196,6 +206,16 @@ if(!empty($_POST["levelid"])){
 		}
 	}
 } else {
+	$check = $db->prepare('SELECT isUploadBanned FROM users WHERE extID = :id');
+	$check->execute([':id' => $_SESSION['accountID']]);
+	$check = $check->fetchColumn();
+	if($check) exit($dl->printSong('<div class="form">
+	<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
+		<form class="form__inner" method="post" action="">
+		<p>'.$dl->getLocalizedString("levelUploadBanned").'</p>
+		<button type="button" onclick="a(\'\', true, false, \'GET\')" class="btn-song">'.$dl->getLocalizedString("dashboard").'</button>
+		</form>
+	</div>', 'reupload'));
 	$dl->printSong('<div class="form">
     <h1>'.$dl->getLocalizedString("levelReupload").'</h1>
     <form class="form__inner" method="post" action="">

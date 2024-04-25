@@ -116,6 +116,7 @@ $string["emailDontMatch"] = "E-Postalar eşleşmiyor";
 $string["registered"] = "Hesap başarıyla oluşturuldu!";
 $string["bigNick"] = "Username is too long!";
 $string["mailExists"] = "There is a registered account using this email!";
+$string["badUsername"] = "Please choose another username.";
 
 $string["changePassTitle"] = "Şifre değiştir";
 $string["changedPass"] = "Şifre başarıyla değiştirildi! Hesabına yeniden giriş yapman gerekiyor.";
@@ -199,6 +200,7 @@ $string["levelAlreadyReuploaded"] = "Bölüm zaten aktarılmış!";
 $string["server"] = "Sunucu";
 $string["levelID"] = "Bölüm ID";
 $string["pageDisabled"] = "Bu sayfa devre dışı!";
+$string["levelUploadBanned"] = "You're banned from uploading levels!";
 
 $string["activateAccount"] = "Hesap aktifleştirme";
 $string["activateDesc"] = "Hesabını aktif et!";
@@ -488,6 +490,9 @@ $string["whoAdded"] = "Kim ekledi?";
 $string["banDesc"] = "Burada bir kullanıcıyı sıralamadan yasaklayabilirsin!";
 $string["playerTop"] = 'Top of players';
 $string["creatorTop"] = 'Top of creators';
+$string["levelUploading"] = 'Uploading levels';
+$string["successfullyBanned"] = 'Player <b>%1$s</b> with account ID <b>%2$s</b> was successfully banned!';
+$string["successfullyUnbanned"] = 'Player <b>%1$s</b> with account ID <b>%2$s</b> was successfully unbanned!';
 
 $string["admin"] = "Yönetici";
 $string["elder"] = "Büyük moderatör";
@@ -563,6 +568,7 @@ $string["modAction23"] = "(23)Quest değiştirdi";
 $string["modAction24"] = "(24)Oyuncuyu yeniden atadı";
 $string["modAction25"] = "(25)Quest oluşturdu";
 $string["modAction26"] = "(26)Kullanıcı adı/şifre değiştirdi";
+$string["modAction27"] = "Changed SFX";
 $string["modAction30"] = "(30)Derecelendirilen liste";
 $string["modAction31"] = "(31)Gönderilen liste";
 $string["modAction32"] = "(32)Liste onayladı/onaylamadı";

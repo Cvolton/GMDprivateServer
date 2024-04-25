@@ -116,6 +116,7 @@ $string["emailDontMatch"] = "Пошти не співпадають!";
 $string["registered"] = "Ви успішно зареєстрували акаунт!";
 $string["bigNick"] = "Нікнейм занадто длинный!";
 $string["mailExists"] = "На цій пошті вже зареєстровано аккаунт!";
+$string["badUsername"] = "Пожалуйста, выберите другой никнейм.";
 
 $string["changePassTitle"] = "Зміна пароля";
 $string["changedPass"] = "Пароль успішно змінений! Вам потрібно заново ввійти в ваш акаунт.";
@@ -200,6 +201,7 @@ $string["levelAlreadyReuploaded"] = "Рівень вже перенесений!
 $string["server"] = "Сервер";
 $string["levelID"] = "ID рівня";
 $string["pageDisabled"] = "Ця сторінка відключена!";
+$string["levelUploadBanned"] = "Вам запрещена загрузка уровней на сервер!";
 
 $string["activateAccount"] = "Активація акаунта";
 $string["activateDesc"] = "Активуйте свій акаунт!";
@@ -489,6 +491,9 @@ $string["whoAdded"] = "Хто додав?";
 $string["banDesc"] = "Тут ви можете заблокувати користувача з лідерборду!";
 $string["playerTop"] = 'Топ гравців';
 $string["creatorTop"] = 'Топ строітелів';
+$string["levelUploading"] = 'Загрузка уровней';
+$string["successfullyBanned"] = 'Игрок <b>%1$s</b> с ID аккаунта <b>%2$s</b> был успешно забанен!';
+$string["successfullyUnbanned"] = 'Игрок <b>%1$s</b> с ID аккаунта <b>%2$s</b> был успешно разбанен!';
 
 $string["admin"] = "Адміністратор";
 $string["elder"] = "Старший модератор";
@@ -564,6 +569,7 @@ $string["modAction23"] = "Змінив(ла) квест";
 $string["modAction24"] = "Переназначив(ла) ігрока";
 $string["modAction25"] = "Створив(ла) квест";
 $string["modAction26"] = "Змінив(ла) нікнейм/пароль користувачу";
+$string["modAction27"] = "Изменил(а) звуковой эффект";
 $string["modAction30"] = "Оцінив(ла) перелік уровней";
 $string["modAction31"] = "Відправив(ла) на оцінку переліку рівнів";
 $string["modAction32"] = "Зняв(ла)/додав(ла) Featured переліку рівнів";

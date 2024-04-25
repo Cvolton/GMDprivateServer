@@ -80,6 +80,10 @@ $id = $gs->getIDFromPost();
 $hostname = $gs->getIP();
 $userID = $mainLib->getUserID($id, $userName);
 $uploadDate = time();
+$checking = $db->prepare("SELECT isUploadBanned FROM users WHERE userID = :id");
+$checking->execute([':id' => $userID]);
+$checking = $checking->fetchColumn();
+if($checking > 0) exit("-1");
 $query = $db->prepare("SELECT count(*) FROM levels WHERE uploadDate > :time AND (userID = :userID OR hostname = :ip)");
 $query->execute([':time' => $uploadDate - 60, ':userID' => $userID, ':ip' => $hostname]);
 if($query->fetchColumn() > 0){

@@ -46,12 +46,12 @@ switch($file) {
 		if($song) $url = $song['download'];
 		else $url = $gs->getSongInfo($musicID, 'download');
 		$curl = curl_init($url);
-		if($proxytype == 1) curl_setopt($ch, CURLOPT_PROXY, $host);
+		if($proxytype == 1) curl_setopt($curl, CURLOPT_PROXY, $host);
 		elseif($proxytype == 2) {
-			curl_setopt($ch, CURLOPT_PROXY, $host);
-			curl_setopt($ch, CURLOPT_PROXYTYPE, CURLPROXY_SOCKS5);
+			curl_setopt($curl, CURLOPT_PROXY, $host);
+			curl_setopt($curl, CURLOPT_PROXYTYPE, CURLPROXY_SOCKS5);
 		}
-		if(!empty($auth)) curl_setopt($ch, CURLOPT_PROXYUSERPWD, $auth); 
+		if(!empty($auth)) curl_setopt($curl, CURLOPT_PROXYUSERPWD, $auth); 
 		curl_setopt_array($curl, [
 			CURLOPT_PROTOCOLS => CURLPROTO_HTTP | CURLPROTO_HTTPS,
 			CURLOPT_RETURNTRANSFER => 1

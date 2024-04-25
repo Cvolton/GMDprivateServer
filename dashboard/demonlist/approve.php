@@ -21,13 +21,13 @@ if(!empty($_SESSION["accountID"]) AND $_SESSION["accountID"] != 0 AND $gs->check
 				<button style="margin-top:5px" type="button" onclick="a(\'demonlist\', true, false, \'GET\')" class="btn-song">'.$dl->getLocalizedString('demonlist').'</button>
 			</form></div>', 'browse'));
 	}
-	if($sub["approve"] == 1) exit($dl->printSong('<div class="form">
+	if($sub["approve"] == '1') exit($dl->printSong('<div class="form">
 			<h1>'.sprintf($dl->getLocalizedString('demonlistRecord'), $gs->getAccountName($sub["accountID"])).'</h1>
 			<form class="form__inner" method="post" action="demonlist">
 				<p>'.$dl->getLocalizedString("alreadyApproved").'</p>
 				<button style="margin-top:5px;" type="button" onclick="a(\'demonlist\', true, false, \'GET\')" class="btn-song">'.$dl->getLocalizedString('demonlist').'</button>
 			</form></div>', 'browse'));
-	elseif($sub["approve"] == -1) exit($dl->printSong('<div class="form">
+	elseif($sub["approve"] == '-1') exit($dl->printSong('<div class="form">
 			<h1>'.sprintf($dl->getLocalizedString('demonlistRecord'), $gs->getAccountName($sub["accountID"])).'</h1>
 			<form class="form__inner" method="post" action="demonlist">
 				<p>'.$dl->getLocalizedString("alreadyDenied").'</p>
@@ -37,6 +37,7 @@ if(!empty($_SESSION["accountID"]) AND $_SESSION["accountID"] != 0 AND $gs->check
 		if($type == '1') {
 			$ok = $db->prepare("UPDATE dlsubmits SET approve = 1 WHERE auth = :str");
 			$ok->execute([':str' => $str]);
+			$gs->sendDemonlistResultWebhook($_SESSION['accountID'], $sub['ID']);
 			exit($dl->printSong('<div class="form">
 			<h1>'.sprintf($dl->getLocalizedString('demonlistRecord'), $gs->getAccountName($sub["accountID"])).'</h1>
 			<form class="form__inner" method="post" action="demonlist">
@@ -46,6 +47,7 @@ if(!empty($_SESSION["accountID"]) AND $_SESSION["accountID"] != 0 AND $gs->check
 		} else {
 			$ok = $db->prepare("UPDATE dlsubmits SET approve = -1 WHERE auth = :str");
 			$ok->execute([':str' => $str]);
+			$gs->sendDemonlistResultWebhook($_SESSION['accountID'], $sub['ID']);
 			exit($dl->printSong('<div class="form">
 			<h1>'.sprintf($dl->getLocalizedString('demonlistRecord'), $gs->getAccountName($sub["accountID"])).'</h1>
 			<form class="form__inner" method="post" action="demonlist">

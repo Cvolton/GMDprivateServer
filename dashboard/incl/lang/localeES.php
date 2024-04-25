@@ -116,6 +116,7 @@ $string["emailDontMatch"] = "Los emails no coinciden";
 $string["registered"] = "¡Te has registrado exitosamente!";
 $string["bigNick"] = "Username is too long!";
 $string["mailExists"] = "There is a registered account using this email!";
+$string["badUsername"] = "Please choose another username.";
 // change password
 $string["changePassTitle"] = "Cambiar contraseña";
 $string["changedPass"] = "¡Contraseña cambiada exitosamente! Inicia sesión nuevamente.";
@@ -199,6 +200,7 @@ $string["levelAlreadyReuploaded"] = "¡El nivel ya fue resubido!";
 $string["server"] = "Servidor";
 $string["levelID"] = "ID del nivel";
 $string["pageDisabled"] = "¡Esta sección está deshabilitada!";
+$string["levelUploadBanned"] = "You're banned from uploading levels!";
 // acc activation
 $string["activateAccount"] = "Activación de cuenta";
 $string["activateDesc"] = "¡Activa tu cuenta!";
@@ -481,6 +483,9 @@ $string["whoAdded"] = "¿Quién lo otorgó?";
 $string["banDesc"] = "¡Aquí puedes expulsar a un jugador de las calificaciones!";
 $string["playerTop"] = 'Top de Jugadores';
 $string["creatorTop"] = 'Top de Creadores';
+$string["levelUploading"] = 'Uploading levels';
+$string["successfullyBanned"] = 'Player <b>%1$s</b> with account ID <b>%2$s</b> was successfully banned!';
+$string["successfullyUnbanned"] = 'Player <b>%1$s</b> with account ID <b>%2$s</b> was successfully unbanned!';
 // mod badges
 $string["admin"] = "Administrador";
 $string["elder"] = "Elder moderador";
@@ -556,6 +561,7 @@ $string["modAction23"] = "Misión cambiada";
 $string["modAction24"] = "Jugador reasignado";
 $string["modAction25"] = "Misión creada";
 $string["modAction26"] = "Apodo/contraseña de Jugador cambiada";
+$string["modAction27"] = "Changed SFX";
 $string["modAction30"] = "Lista rateada";
 $string["modAction31"] = "Lista enviada";
 $string["modAction32"] = "Featured de una Lista";

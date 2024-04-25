@@ -52,10 +52,13 @@ if(!empty($_POST["user"])) {
 		</div>', 'mod');
 		die();
 	}
+	$admin = $db->prepare('SELECT isAdmin FROM accounts WHERE accountID = :accID');
+	$admin->execute([':accID' => $_SESSION['accountID']]);
+	$admin = $admin->fetchColumn();
 	$query = $db->prepare("SELECT priority FROM roles WHERE roleID = :id");
 	$query->execute([':id' => $role]);
 	$res = $query->fetchColumn();
-	if($res >= $priority) die($dl->printSong('<div class="form">
+	if($res >= $priority && !$admin) die($dl->printSong('<div class="form">
 			<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 			<form class="form__inner" method="post" action="">
 			<p>'.$dl->getLocalizedString("modAboveYourRole").'</p>
@@ -113,7 +116,10 @@ if(!empty($_POST["user"])) {
 		</div>', 'mod');
 	}
 } else {
-	$priority = $gs->getMaxValuePermission($_SESSION["accountID"], 'priority');
+	$admin = $db->prepare('SELECT isAdmin FROM accounts WHERE accountID = :accID');
+	$admin->execute([':accID' => $_SESSION['accountID']]);
+	$admin = $admin->fetchColumn();
+	$priority = $admin ? 99999999 : $gs->getMaxValuePermission($_SESSION["accountID"], 'priority');
 	$rls = $cls = '';
 	$query = $db->prepare("SELECT roleName, roleID, commentColor FROM roles WHERE priority < :id ORDER BY priority DESC");
 	$query->execute([':id' => $priority]);
@@ -126,7 +132,7 @@ if(!empty($_POST["user"])) {
 	$rls = substr($rls, 0, -2);
 	$cls = substr($cls, 0, -2);
 	$options .= '<option value="-1">'.$dl->getLocalizedString('demotePlayer').'</option>';
-	$mods = $db->prepare("SELECT * FROM roleassign JOIN roles ON roles.roleID = roleassign.roleID GROUP BY roleassign.accountID DESC ORDER BY roles.priority DESC");
+	$mods = $db->prepare("SELECT * FROM roleassign JOIN roles ON roles.roleID = roleassign.roleID GROUP BY roleassign.accountID ORDER BY roles.priority DESC");
   	$mods->execute();
   	$mods = $mods->fetchAll();
   	foreach($mods as &$mod) {
@@ -134,12 +140,12 @@ if(!empty($_POST["user"])) {
 		$name->execute([':id' => $mod["roleID"]]);
 		$name = $name->fetch();
 		$modName = $name["roleName"];
-		$time = $db->prepare("SELECT * FROM modactions WHERE type = 20 AND value2 = :id GROUP BY timestamp DESC LIMIT 1");
+		$time = $db->prepare("SELECT * FROM modactions WHERE type = 20 AND value2 = :id ORDER BY timestamp DESC LIMIT 1");
 		$time->execute([':id' => $mod["accountID"]]);
 		$time = $time->fetch();
 		if(empty($time["timestamp"])) $time["timestamp"] = 0;
 		$moderator = $gs->getAccountName($time['account']); 
-		$allMods .= '<button type="submit" id="wholeButton'.$mod["assignID"].'" onclick="mod('.$mod["assignID"].')" class="btn-primary itembtn" '.($mod['priority'] >= $priority ? 'disabled' : '').'>
+		$allMods .= '<button type="submit" id="wholeButton'.$mod["assignID"].'" onclick="mod('.$mod["assignID"].')" class="btn-primary itembtn" '.($mod['priority'] < $priority || $admin ? '' : 'disabled').'>
 			<h2 class="subjectnotyou" id="name'.$mod["assignID"].'" style="color:rgb('.$gs->getAccountCommentColor($mod["accountID"]).');font-weight:700">'.$gs->getAccountName($mod["accountID"]).' <i style="opacity: 0; margin-right: 10px; color: white; font-size: 13px;transition:0.2s" id="spin'.$mod["assignID"].'" class="fa-solid fa-spinner fa-spin"></i></h2>
 			<h2 class="messagenotyou" style="font-size: 15px;color: #c0c0c0;" id="stats'.$mod["assignID"].'"><i class="fa-solid fa-circle-dot" id="circle'.$mod["assignID"].'" style="color:rgb('.$gs->getAccountCommentColor($mod["accountID"]).')"></i> <span id="roleName'.$mod["assignID"].'">'.$modName.'</span> | <i class="fa-regular fa-clock"></i> '.$dl->convertToDate($time["timestamp"], true).' | <i class="fa-solid fa-user"></i> '.(!empty($moderator) ? $moderator : 'Unknown').'</h2>
 		</button>';

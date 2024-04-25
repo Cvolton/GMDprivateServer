@@ -116,6 +116,7 @@ $string["emailDontMatch"] = "Почты не совпадают!";
 $string["registered"] = "Вы успешно зарегистрировали аккаунт!";
 $string["bigNick"] = "Никнейм слишком длинный!";
 $string["mailExists"] = "На этой почте уже зарегистрирован аккаунт!";
+$string["badUsername"] = "Пожалуйста, выберите другой никнейм.";
 
 $string["changePassTitle"] = "Смена пароля";
 $string["changedPass"] = "Пароль успешно сменён! Вам нужно заново войти в ваш аккаунт.";
@@ -199,6 +200,7 @@ $string["levelAlreadyReuploaded"] = "Уровень уже перенесён!";
 $string["server"] = "Сервер";
 $string["levelID"] = "ID уровня";
 $string["pageDisabled"] = "Эта страница отключена!";
+$string["levelUploadBanned"] = "Вам запрещена загрузка уровней на сервер!";
 
 $string["activateAccount"] = "Активация аккаунта";
 $string["activateDesc"] = "Активируйте свой аккаунт!";
@@ -485,9 +487,12 @@ $string["stats"] = "Статистика";
 $string["suggestFeatured"] = "Featured?";
 $string["whoAdded"] = "Кто добавил?";
 //modActionsList
-$string["banDesc"] = "Здесь вы можете забанить игрока из лидерборда!";
+$string["banDesc"] = "Здесь вы можете забанить (или разбанить) игрока из лидерборда!";
 $string["playerTop"] = 'Топ игроков';
 $string["creatorTop"] = 'Топ строителей';
+$string["levelUploading"] = 'Загрузка уровней';
+$string["successfullyBanned"] = 'Игрок <b>%1$s</b> с ID аккаунта <b>%2$s</b> был успешно забанен!';
+$string["successfullyUnbanned"] = 'Игрок <b>%1$s</b> с ID аккаунта <b>%2$s</b> был успешно разбанен!';
 
 $string["admin"] = "Администратор";
 $string["elder"] = "Старший модератор";
@@ -563,6 +568,7 @@ $string["modAction23"] = "Изменил(а) квест";
 $string["modAction24"] = "Переназначил(а) игрока";
 $string["modAction25"] = "Создал(а) квест";
 $string["modAction26"] = "Сменил(а) никнейм/пароль игроку";
+$string["modAction27"] = "Изменил(а) звуковой эффект";
 $string["modAction30"] = "Оценил(а) список уровней";
 $string["modAction31"] = "Отправил(а) на оценку список уровней";
 $string["modAction32"] = "Снял(а)/добавил(а) Featured списку уровней";

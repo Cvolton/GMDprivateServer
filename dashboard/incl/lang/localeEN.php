@@ -116,6 +116,7 @@ $string["emailDontMatch"] = "Emails don't match";
 $string["registered"] = "You successfully registered an account!";
 $string["bigNick"] = "Username is too long!";
 $string["mailExists"] = "There is a registered account using this email!";
+$string["badUsername"] = "Please choose another username.";
 
 $string["changePassTitle"] = "Change password";
 $string["changedPass"] = "Password successfully changed! You need to login to you account again.";
@@ -199,6 +200,7 @@ $string["levelAlreadyReuploaded"] = "Level already reuploaded!";
 $string["server"] = "Server";
 $string["levelID"] = "Level ID";
 $string["pageDisabled"] = "This page is disabled!";
+$string["levelUploadBanned"] = "You're banned from uploading levels!";
 
 $string["activateAccount"] = "Account activation";
 $string["activateDesc"] = "Activate your account!";
@@ -485,9 +487,12 @@ $string["stats"] = "Stats";
 $string["suggestFeatured"] = "Featured?";
 $string["whoAdded"] = "Who added?";
 //modActionsList
-$string["banDesc"] = "Here you can ban a player from leaderboard!";
+$string["banDesc"] = "Here you can ban (or unban) a player from leaderboard!";
 $string["playerTop"] = 'Top of players';
 $string["creatorTop"] = 'Top of creators';
+$string["levelUploading"] = 'Uploading levels';
+$string["successfullyBanned"] = 'Player <b>%1$s</b> with account ID <b>%2$s</b> was successfully banned!';
+$string["successfullyUnbanned"] = 'Player <b>%1$s</b> with account ID <b>%2$s</b> was successfully unbanned!';
 
 $string["admin"] = "Administrator";
 $string["elder"] = "Elder moderator";
@@ -563,6 +568,7 @@ $string["modAction23"] = "Changed quest";
 $string["modAction24"] = "Reassigned a player";
 $string["modAction25"] = "Created a quest";
 $string["modAction26"] = "Changed player's username/password";
+$string["modAction27"] = "Changed SFX";
 $string["modAction30"] = "Rated list";
 $string["modAction31"] = "Sent list";
 $string["modAction32"] = "Un/featured list";
