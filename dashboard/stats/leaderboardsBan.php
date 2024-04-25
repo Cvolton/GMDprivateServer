@@ -53,6 +53,10 @@ if(!empty($_POST["extID"])) {
 				$type = 'isCreatorBanned';
 				$typeN = 2;
 				break;
+			case 'commentBan':
+				$type = 'isCommentBanned';
+				$typeN = 4;
+				break;
 			default:
 				$type = 'isUploadBanned';
 				$typeN = 3;
@@ -113,6 +117,7 @@ $dl->printSong('<div class="form">
 		<select style="width:75%" name="type">
 			<option value="playerTop">'.$dl->getLocalizedString('playerTop').'</option>
 			<option value="creatorTop">'.$dl->getLocalizedString('creatorTop').'</option>
+			<option value="commentBan">'.$dl->getLocalizedString('commentBan').'</option>
 			<option value="levelUploading">'.$dl->getLocalizedString('levelUploading').'</option>
 		</select></div>
         <div class="field"><input type="text" name="banReason" placeholder="'.$dl->getLocalizedString("banReason").'"></div>
