@@ -85,9 +85,6 @@ if(!$installed) {
 		$check = $db->query("SHOW COLUMNS FROM `roles` LIKE 'dashboardLevelPackCreate'");
       		$exist = $check->fetchAll();
       		if(empty($exist)) $db->query("ALTER TABLE roles ADD dashboardLevelPackCreate INT NOT NULL DEFAULT '0' AFTER dashboardModTools");
-		$check = $db->query("SHOW COLUMNS FROM `roles` LIKE 'dashboardGauntletCreate'");
-      		$exist = $check->fetchAll();
-      		if(empty($exist)) $db->query("ALTER TABLE roles RENAME COLUMN toolPackcreate TO dashboardGauntletCreate");
 		$check = $db->query("SHOW COLUMNS FROM `roles` LIKE 'dashboardAddMod'");
       		$exist = $check->fetchAll();
       		if(empty($exist)) $db->query("ALTER TABLE roles ADD dashboardAddMod INT NOT NULL DEFAULT '0' AFTER dashboardLevelPackCreate");
@@ -139,9 +136,12 @@ if(!$installed) {
 		$check = $db->query("SHOW COLUMNS FROM `accounts` LIKE 'timezone'");
       		$exist = $check->fetchAll();
       		if(empty($exist)) $db->query("ALTER TABLE accounts ADD timezone varchar(255) NOT NULL DEFAULT '' AFTER passCode");
-  $check = $db->query("SHOW COLUMNS FROM `accounts` LIKE 'mail'");
+		$check = $db->query("SHOW COLUMNS FROM `accounts` LIKE 'mail'");
       		$exist = $check->fetchAll();
       		if(empty($exist)) $db->query("ALTER TABLE accounts ADD mail varchar(255) NOT NULL DEFAULT '' AFTER auth");
+		$check = $db->query("SHOW COLUMNS FROM `roles` LIKE 'dashboardGauntletCreate'");
+      		$exist = $check->fetchAll();
+      		if(empty($exist)) $db->query("ALTER TABLE `roles` CHANGE `toolPackcreate` `dashboardGauntletCreate` INT(11) NOT NULL DEFAULT '0'");
 	$lines = file($dbPath.'config/dashboard.php');
 	$first_line = $lines[2];
 	$lines = array_slice($lines, 1 + 2);
