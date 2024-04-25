@@ -13,6 +13,14 @@ $comment = ExploitPatch::remove($_POST['comment']);
 $comment = ($gameVersion < 20) ? base64_encode($comment) : $comment;
 $levelID = ($_POST['levelID'] < 0 ? '-' : '').ExploitPatch::number($_POST["levelID"]);
 $percent = !empty($_POST["percent"]) ? ExploitPatch::remove($_POST["percent"]) : 0;
+$accountID = !empty($_POST['accountID']) ? ExploitPatch::number($_POST['accountID']) : "";
+
+$checkCommentBan = $db->prepare("SELECT * FROM users WHERE extID = :accountID AND isCommentBanned = 1");
+$checkCommentBan->execute([':accountID' => $accountID]);
+
+if ($checkCommentBan->rowCount() > 0) {
+    die("-10");
+}
 
 $id = $mainLib->getIDFromPost();
 $register = is_numeric($id);
