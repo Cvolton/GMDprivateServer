@@ -2,18 +2,18 @@
 /*
 	Welcome to webhooks translation file!
 	You're currently at French (Français) language
-	Credits: DimisAIO.be
+	Credits: DimisAIO.be, M336
 	
 	If you see array instead of simple string, that means you can add as many variations of translation as you want and they will be picked randomly
 */
-$webhookLang['rateSuccessTitle'] = ['Un noveau niveau à été rate!', 'Nouveau niveau rate!', 'Quelqu\'un a rate un niveau!']; // This one is array
-$webhookLang['rateSuccessTitleDM'] = ['Ton niveau a été rate!', 'Quelqu\'un a rate ton niveau!'];
-$webhookLang['rateSuccessDesc'] = '%1$s a rate un niveau!'; // And this one is string
-$webhookLang['rateSuccessDescDM'] = '%1$s a rate ton niveau! %2$s';
-$webhookLang['rateFailTitle'] = ['Ce niveau a été dé-rate!', 'Quelqu\'un a dé-rate un niveau!'];
-$webhookLang['rateFailTitleDM'] = ['Ton niveau a été dé-rate!', 'Quelqu\'un a dé-rate ton niveau!'];
-$webhookLang['rateFailDesc'] = '%1$s a dé-rate un niveau!';
-$webhookLang['rateFailDescDM'] = '%1$s a dé-rate ton niveau! %2$s';
+$webhookLang['rateSuccessTitle'] = ['Un nouveau niveau vient d\'être rated !', 'Nouveau niveau rated !', 'Quelqu\'un vient de rate un niveau !']; // This one is array
+$webhookLang['rateSuccessTitleDM'] = ['Ton niveau vient d\'être rated !', 'Quelqu\'un vient de rate ton niveau !'];
+$webhookLang['rateSuccessDesc'] = '%1$s a rate un niveau !'; // And this one is string
+$webhookLang['rateSuccessDescDM'] = '%1$s vient de rate votre niveau ! %2$s';
+$webhookLang['rateFailTitle'] = ['Un niveau vient tout juste d\'être un-rated...', 'Quelqu\'un a un-rate un niveau...'];
+$webhookLang['rateFailTitleDM'] = ['Ton niveau a été un-rated...', 'Quelqu\'un vient d\'un-rate votre niveau...'];
+$webhookLang['rateFailDesc'] = '%1$s a un-rate un niveau...';
+$webhookLang['rateFailDescDM'] = '%1$s vient d\'un-rate votre niveau... %2$s';
 
 $webhookLang['levelTitle'] = 'Niveau';
 $webhookLang['levelDesc'] = '%1$s par %2$s'; // Name by Creator
@@ -23,64 +23,64 @@ $webhookLang['difficultyDesc0'] = '%1$s, %2$s étoile'; // Auto, 1 star
 $webhookLang['difficultyDesc1'] = '%1$s, %2$s étoiles'; // Easy, 2 stars
 $webhookLang['difficultyDesc2'] = '%1$s, %2$s étoiles'; // Hard, 5 stars
 $webhookLang['statsTitle'] = 'Statistiques';
-$webhookLang['requestedTitle'] = 'Demandé par le créateur';
+$webhookLang['requestedTitle'] = 'Difficulté demandé par le créateur';
 $webhookLang['requestedDesc0'] = '%1$s étoile'; // 1 star
 $webhookLang['requestedDesc1'] = '%1$s étoiles'; // 2 stars
 $webhookLang['requestedDesc2'] = '%1$s étoiles'; // 5 stars
-$webhookLang['descTitle'] = 'Déscription';
-$webhookLang['descDesc'] = '*Aucune déscription*';
-$webhookLang['footer'] = '%1$s, merci d\'avoir joué!';
+$webhookLang['descTitle'] = 'Description';
+$webhookLang['descDesc'] = '*Aucune description*';
+$webhookLang['footer'] = 'Merci d\'avoir joué sur %1$s !';
 
-$webhookLang['suggestTitle'] = ['Check this level!', 'Level was suggested!', 'Someone suggested a level!'];
-$webhookLang['suggestDesc'] = '%1$s suggested a level to rate!';
-$webhookLang['footerSuggest'] = '%1$s, thank you for moderating!';
+$webhookLang['suggestTitle'] = ['Jetez un oeil à ce niveau !', 'Un niveau vient d\'être suggéré !', 'Quelqu\'un a suggéré un niveau !'];
+$webhookLang['suggestDesc'] = '%1$s a suggéré un niveau !';
+$webhookLang['footerSuggest'] = 'Merci d\'avoir modéré sur %1$s !';
 
-$webhookLang['demonlistTitle'] = ['New record!', 'Someone posted new record!'];
-$webhookLang['demonlistDesc'] = '%1$s posted their %2$s completion! Link to approve: ||%3$s||';
-$webhookLang['recordAuthorTitle'] = 'Record author';
-$webhookLang['recordAttemptsTitle'] = 'Attempts';
-$webhookLang['recordAttemptsDesc0'] = '%1$s attempt'; // 1 attempt
-$webhookLang['recordAttemptsDesc1'] = '%1$s attempts'; // 2 attempts
-$webhookLang['recordAttemptsDesc2'] = '%1$s attempts'; // 5 attempts
-$webhookLang['recordProofTitle'] = 'Proof';
-$webhookLang['demonlistApproveTitle'] = ['Record was approved!', 'Someone approved a record!'];
-$webhookLang['demonlistApproveTitleDM'] = ['Your record was approved!', 'Someone approved your record!'];
-$webhookLang['demonlistApproveDesc'] = '%1$s approved %2$s\'s record of level %3$s!';
-$webhookLang['demonlistApproveDescDM'] = '%1$s approved your record of level %2$s!';
-$webhookLang['demonlistDenyTitle'] = ['Record was denied!', 'Someone denied a record!'];
-$webhookLang['demonlistDenyTitleDM'] = ['Your record was denied!', 'Someone denied your record!'];
-$webhookLang['demonlistDenyDesc'] = '%1$s denied %2$s\'s record of level %3$s!';
-$webhookLang['demonlistDenyDescDM'] = '%1$s denied your record of level %2$s!';
+$webhookLang['demonlistTitle'] = ['Nouveau record !', 'Quelqu\'un a posté un nouveau record !'];
+$webhookLang['demonlistDesc'] = '%1$s a posté son record sur %2$s ! Lien pour approuver : ||%3$s||';
+$webhookLang['recordAuthorTitle'] = 'Détenteur du record';
+$webhookLang['recordAttemptsTitle'] = 'Essais';
+$webhookLang['recordAttemptsDesc0'] = '%1$s essai'; // 1 attempt
+$webhookLang['recordAttemptsDesc1'] = '%1$s essais'; // 2 attempts
+$webhookLang['recordAttemptsDesc2'] = '%1$s essais'; // 5 attempts
+$webhookLang['recordProofTitle'] = 'Preuve';
+$webhookLang['demonlistApproveTitle'] = ['Votre record vient d\'être approuvé !', 'Quelq\'un vient d\'approuvé votre record !'];
+$webhookLang['demonlistApproveTitleDM'] = ['Votre record a été apporuvé !', 'Quelqu\'un a approuvé votre record !'];
+$webhookLang['demonlistApproveDesc'] = '%1$s a approuvé le record de %2$s sur le niveau %3$s !';
+$webhookLang['demonlistApproveDescDM'] = '%1$s a approuvé votre record sur le niveau %2$s !';
+$webhookLang['demonlistDenyTitle'] = ['Votre record vient d\'être rejeté...', 'Quelq\'un vient de rejeter votre record...'];
+$webhookLang['demonlistDenyTitleDM'] = ['Votre record a été rejeté...', 'Quelqu\'un a rejeté votre record...'];
+$webhookLang['demonlistDenyDesc'] = '%1$s a rejeté le record de %2$s sur le niveau %3$s!';
+$webhookLang['demonlistDenyDescDM'] = '%1$s a rejeté votre record sur le niveau %2$s...';
 
-$webhookLang['accountLinkTitle'] = ['Account linking!', 'Someone wants to link account!'];
-$webhookLang['accountLinkDesc'] = 'It seems like %1$s wants to link their in-game account to your Discord account. Post **!discord accept *code*** in your in-game profile to do it. If that\'s not you - **ignore** this message!';
-$webhookLang['accountCodeFirst'] = 'First number';
-$webhookLang['accountCodeSecond'] = 'Second number';
-$webhookLang['accountCodeThird'] = 'Third number';
-$webhookLang['accountCodeFourth'] = 'Fourth number';
-$webhookLang['accountUnlinkTitle'] = ['Account unlinking!', 'You unlinked your account!'];
-$webhookLang['accountUnlinkDesc'] = 'You successfully unlinked %1$s from your Discord account!';
-$webhookLang['accountAcceptTitle'] = ['Account linking!', 'You linked your account!'];
-$webhookLang['accountAcceptDesc'] = 'You successfully linked %1$s to your Discord account!';
+$webhookLang['accountLinkTitle'] = ['Liaison de comptes !', 'Quelqu\'un veut relier son compte au vôtre !'];
+$webhookLang['accountLinkDesc'] = 'On dirait que %1$s veut relier son compte en jeu à votre compte Discord. Utilisez la commande **!discord accept *code*** dans votre profil en jeu pour accepter cette liaison de comptes. Si ce n\'est pas vous, **ignorez** ce message !';
+$webhookLang['accountCodeFirst'] = 'Premier chiffre';
+$webhookLang['accountCodeSecond'] = 'Deuxième chiffre';
+$webhookLang['accountCodeThird'] = 'Troisième chiffre';
+$webhookLang['accountCodeFourth'] = 'Quatrième chiffre';
+$webhookLang['accountUnlinkTitle'] = ['Déliaison de comptes!', 'Vous venez d\'enlever le lien entre vos deux comptes !'];
+$webhookLang['accountUnlinkDesc'] = 'Vous venez de retirer le lien entre %1$s et votre compte Discord avec succès !';
+$webhookLang['accountAcceptTitle'] = ['Liason de comptes !', 'Vous venez de lier votre compte !'];
+$webhookLang['accountAcceptDesc'] = 'Vous venez de relier %1$s à votre compte Discord avec succès !';
 
-$webhookLang['playerBanTitle'] = ['Player was banned!', 'Someone banned someone!', 'Ban!'];
-$webhookLang['playerBanTitleDM'] = ['You were banned!', 'Someone banned you!', 'Ban!'];
-$webhookLang['playerUnbanTitle'] = ['Player was unbanned!', 'Someone unbanned someone!', 'Unban!'];
-$webhookLang['playerUnbanTitleDM'] = ['You were unbanned!', 'Someone unbanned you!', 'Unban!'];
-$webhookLang['playerBanTopDesc'] = '%1$s banned %2$s from players top!';
-$webhookLang['playerBanTopDescDM'] = '%1$s banned you from players top.';
-$webhookLang['playerUnbanTopDesc'] = '%1$s unbanned %2$s from players top!';
-$webhookLang['playerUnbanTopDescDM'] = '%1$s unbanned you from players top!';
-$webhookLang['playerBanCreatorDesc'] = '%1$s banned %2$s from creators top!';
-$webhookLang['playerBanCreatorDescDM'] = '%1$s banned you from creators top.';
-$webhookLang['playerUnbanCreatorDesc'] = '%1$s unbanned %2$s from creators top!';
-$webhookLang['playerUnbanCreatorDescDM'] = '%1$s unbanned you from creators top!';
-$webhookLang['playerBanUploadDesc'] = '%1$s banned %2$s from uploading levels!';
-$webhookLang['playerBanUploadDescDM'] = '%1$s banned uploading levels to you.';
-$webhookLang['playerUnbanUploadDesc'] = '%1$s unbanned %2$s from uploading levels!';
-$webhookLang['playerUnbanUploadDescDM'] = '%1$s unbanned uploading levels to you!';
-$webhookLang['playerModTitle'] = 'Moderator';
-$webhookLang['playerReasonTitle'] = 'Reason';
-$webhookLang['playerBanReason'] = '*No reason*';
+$webhookLang['playerBanTitle'] = ['Un joueur vient d\'être banni !', 'Un modérateur a banni un joueur !', 'Ban !'];
+$webhookLang['playerBanTitleDM'] = ['Vous avez été banni !', 'Un modérateur vous a banni !', 'Banni !'];
+$webhookLang['playerUnbanTitle'] = ['Un joueur vient d\'être unban !', 'Un modérateur a unban quelqu\'un!', 'Unban !'];
+$webhookLang['playerUnbanTitleDM'] = ['Vous avez été unbanned !', 'Un modérateur vous a unban !', 'Unbanned !'];
+$webhookLang['playerBanTopDesc'] = '%1$s a banni %2$s du classement des meilleurs joueurs !';
+$webhookLang['playerBanTopDescDM'] = '%1$s vous a banni du classement des meilleurs joueurs.';
+$webhookLang['playerUnbanTopDesc'] = '%1$s a unban %2$s du classement des meilleurs joueurs !';
+$webhookLang['playerUnbanTopDescDM'] = '%1$s vous a unban du classement des meilleurs joueurs !';
+$webhookLang['playerBanCreatorDesc'] = '%1$s a banni %2$s du classement des meilleurs créateurs !';
+$webhookLang['playerBanCreatorDescDM'] = '%1$s vous a banni du classement des meilleurs créateurs.';
+$webhookLang['playerUnbanCreatorDesc'] = '%1$s a unban %2$s du classement des meilleurs créateurs !';
+$webhookLang['playerUnbanCreatorDescDM'] = '%1$s vous a unban du classement des meilleurs créateurs !';
+$webhookLang['playerBanUploadDesc'] = '%1$s a interdit à %2$s d\'uploader d\'autres niveaux!';
+$webhookLang['playerBanUploadDescDM'] = '%1$s vous a interdit d\'uploader plus de niveaux.';
+$webhookLang['playerUnbanUploadDesc'] = '%1$s a levé l\'interdiction de %2$s d\'uploader d\'autres niveaux !';
+$webhookLang['playerUnbanUploadDescDM'] = '%1$s a levé votre interdiction d\'uploader plus de niveaux !';
+$webhookLang['playerModTitle'] = 'Modérateur';
+$webhookLang['playerReasonTitle'] = 'Raison';
+$webhookLang['playerBanReason'] = '*Aucune raison*';
 $webhookLang['footerBan'] = '%1$s.';
 ?>
