@@ -9,11 +9,18 @@ require_once "../lib/commands.php";
 $mainLib = new mainLib();
 $userName = ExploitPatch::remove($_POST["userName"]);
 $comment = ExploitPatch::remove($_POST["comment"]);
-$accountID = GJPCheck::getAccountIDOrDie();
+$accountID = ExploitPatch::number(GJPCheck::getAccountIDOrDie());
 $userID = $mainLib->getUserID($accountID, $userName);
 $uploadDate = time();
+
 //usercheck
-if($accountID != "" AND $comment != ""){
+if($accountID != "" AND $comment != "") {
+	$checkCommentBan = $db->prepare("SELECT * FROM users WHERE extID = :accountID AND isCommentBanned = 1");
+	$checkCommentBan->execute([':accountID' => $accountID]);
+	if ($checkCommentBan->rowCount() > 0) {
+		die("-10");
+	}
+
 	$decodecomment = base64_decode($comment);
 	if(Commands::doProfileCommands($accountID, $decodecomment)){
 		exit("-1");
