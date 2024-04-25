@@ -31,7 +31,7 @@ if(!empty($_POST["sr"]) AND is_numeric($_POST["sr"])) {
 		$ytlink = str_replace('youtu.be/', '', $ytlink);
 		$submit = $db->prepare("INSERT INTO dlsubmits (accountID, levelID, atts, ytlink, auth) VALUES (:acc, :lid, :atts, :yt, :str)");
 		$submit->execute([':acc' => $_SESSION["accountID"], ':lid' => ExploitPatch::remove($_POST["sr"]), ':atts' => ExploitPatch::remove($_POST["atts"]), ':yt' => ExploitPatch::remove($ytlink), ':str' => $string]);
-		$gs->dlSubmit($_SESSION["accountID"], ExploitPatch::remove($_POST["sr"]), ExploitPatch::remove($_POST["atts"]), ExploitPatch::remove($ytlink), $string);
+		$gs->sendDemonlistRecordWebhook($_SESSION['accountID'], $db->lastInsertId());
 		$dl->printSong('<div class="form">
 		<h1>'.sprintf($dl->getLocalizedString('submitRecordForLevel'), $gs->getLevelName($_POST["sr"])).'</h1>
 		<form class="form__inner" method="post" action="">

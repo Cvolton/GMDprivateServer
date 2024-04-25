@@ -486,9 +486,12 @@ $string["stats"] = "Статистика";
 $string["suggestFeatured"] = "Featured?";
 $string["whoAdded"] = "Кто добавил?";
 //modActionsList
-$string["banDesc"] = "Здесь вы можете забанить игрока из лидерборда!";
+$string["banDesc"] = "Здесь вы можете забанить (или разбанить) игрока из лидерборда!";
 $string["playerTop"] = 'Топ игроков';
 $string["creatorTop"] = 'Топ строителей';
+$string["levelUploading"] = 'Загрузка уровней';
+$string["successfullyBanned"] = 'Игрок <b>%1$s</b> с ID аккаунта <b>%2$s</b> был успешно забанен!';
+$string["successfullyUnbanned"] = 'Игрок <b>%1$s</b> с ID аккаунта <b>%2$s</b> был успешно разбанен!';
 
 $string["admin"] = "Администратор";
 $string["elder"] = "Старший модератор";

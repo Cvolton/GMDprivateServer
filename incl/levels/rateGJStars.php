@@ -11,7 +11,7 @@ $stars = ExploitPatch::remove($_POST["stars"]);
 $levelID = ExploitPatch::remove($_POST["levelID"]);
 $accountID = GJPCheck::getAccountIDOrDie();
 $permState = $gs->checkPermission($accountID, "actionRateStars");
-if($permState){
+if($permState) {
 	$difficulty = $gs->getDiffFromStars($stars);
 	$gs->changeDifficulty($accountID, $levelID, $difficulty["diff"], $difficulty["auto"], $difficulty["demon"]);
 }

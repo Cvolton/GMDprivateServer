@@ -348,36 +348,120 @@ class Commands {
 		return true;
 	}
 	public static function doProfileCommands($accountID, $command){
-		include dirname(__FILE__)."/../lib/connection.php";
-		require_once "../lib/exploitPatch.php";
-		require_once "../lib/mainLib.php";
-				$gs = new mainLib();
-		if(substr($command, 0, 8) == '!discord'){
-			if(substr($command, 9, 6) == "accept"){
-				$query = $db->prepare("UPDATE accounts SET discordID = discordLinkReq, discordLinkReq = '0' WHERE accountID = :accountID AND discordLinkReq <> 0");
-				$query->execute([':accountID' => $accountID]);
-				$query = $db->prepare("SELECT discordID, userName FROM accounts WHERE accountID = :accountID");
-				$query->execute([':accountID' => $accountID]);
-				$account = $query->fetch();
-				$gs->sendDiscordPM($account["discordID"], "Your link request to " . $account["userName"] . " has been accepted!");
-				return true;
+		include __DIR__."/connection.php";
+		require_once __DIR__."/exploitPatch.php";
+		require_once __DIR__."/mainLib.php";
+		include __DIR__."/../../config/dashboard.php";
+		include __DIR__."/../../config/discord.php";
+		$gs = new mainLib();
+		$carray = explode(' ', $command);
+		$acc = $gs->getAccountName($accountID);
+		$timestamp = date("c", strtotime("now"));
+		if(substr($command, 0, 8) == '!discord') {
+			$webhookLangArray = $gs->webhookStartLanguage($webhookLanguage);
+			if(substr($command, 9, 6) == "accept") {
+				$query = $db->prepare("SELECT accountID, discordID FROM accounts WHERE discordLinkReq = :id");
+				$query->execute([':id' => ExploitPatch::number($carray[2])]);
+				$check = $query->fetch();
+				if($check["accountID"] != $accountID) return false;
+				else {
+					$query = $db->prepare("UPDATE accounts SET discordLinkReq = '0' WHERE accountID = :accountID");
+					$query->execute([':accountID' => $accountID]);
+					$setColor = $successColor;
+					$setTitle = $gs->webhookLanguage('accountAcceptTitle', $webhookLangArray);
+					$setDescription = sprintf($gs->webhookLanguage('accountAcceptDesc', $webhookLangArray), '**'.$acc.'**');
+					$setThumbnail = $acceptThumbnailURL;
+					$setFooter = sprintf($gs->webhookLanguage('footer', $webhookLangArray), $gdps);
+					$embed = $gs->generateEmbedArray(
+						[$gdps, $authorURL, $authorIconURL],
+						$setColor,
+						[$setTitle, $linkTitleURL],
+						$setDescription,
+						$setThumbnail,
+						[],
+						[$setFooter, $footerIconURL]
+					);
+					$json = json_encode([
+						"content" => "",
+						"tts" => false,
+						"embeds" => [$embed]
+					], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+					$gs->sendDiscordPM($check["discordID"], $json, true);
+					$gs->linkMember($check["discordID"], $acc);
+					return true;
+			    }
 			}
-			if(substr($command, 9, 4) == "deny"){
-				$query = $db->prepare("SELECT discordLinkReq, userName FROM accounts WHERE accountID = :accountID");
-				$query->execute([':accountID' => $accountID]);
-				$account = $query->fetch();
-				$gs->sendDiscordPM($account["discordLinkReq"], "Your link request to " . $account["userName"] . " has been denied!");
-				$query = $db->prepare("UPDATE accounts SET discordLinkReq = '0' WHERE accountID = :accountID");
-				$query->execute([':accountID' => $accountID]);
-				return true;
+			if(substr($command, 9, 6) == "unlink") {
+				$query = $db->prepare("SELECT discordID, discordLinkReq FROM accounts WHERE accountID = :id");
+				$query->execute([':id' => $accountID]);
+				$check = $query->fetch();
+				if($check["discordID"] == 0 || $check['discordLinkReq'] != 0) return false;
+				else {
+					$query = $db->prepare("UPDATE accounts SET discordID = '0' WHERE accountID = :accountID");
+					$query->execute([':accountID' => $accountID]);
+					$setColor = $failColor;
+					$setTitle = $gs->webhookLanguage('accountUnlinkTitle', $webhookLangArray);
+					$setDescription = sprintf($gs->webhookLanguage('accountUnlinkDesc', $webhookLangArray), '**'.$acc.'**');
+					$setThumbnail = $unlinkThumbnailURL;
+					$setFooter = sprintf($gs->webhookLanguage('footer', $webhookLangArray), $gdps);
+					$embed = $gs->generateEmbedArray(
+						[$gdps, $authorURL, $authorIconURL],
+						$setColor,
+						[$setTitle, $linkTitleURL],
+						$setDescription,
+						$setThumbnail,
+						[],
+						[$setFooter, $footerIconURL]
+					);
+					$json = json_encode([
+						"content" => "",
+						"tts" => false,
+						"embeds" => [$embed]
+					], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+					$gs->sendDiscordPM($check["discordID"], $json, true);
+					$gs->unlinkMember($check["discordID"]);
+					return true;
+			    }
 			}
-			if(substr($command, 9, 6) == "unlink"){
-				$query = $db->prepare("SELECT discordID, userName FROM accounts WHERE accountID = :accountID");
-				$query->execute([':accountID' => $accountID]);
-				$account = $query->fetch();
-				$gs->sendDiscordPM($account["discordID"], "Your Discord account has been unlinked from " . $account["userName"] . "!");
-				$query = $db->prepare("UPDATE accounts SET discordID = '0' WHERE accountID = :accountID");
-				$query->execute([':accountID' => $accountID]);
+			if(substr($command, 9, 4) == "link") {
+				$query = $db->prepare("SELECT discordID, discordLinkReq FROM accounts WHERE accountID = :id");
+				$query->execute([':id' => $accountID]);
+				$check = $query->fetch();
+				if($check["discordID"] != 0 && $check['discordLinkReq'] == 0) return false;
+				$query = $db->prepare("SELECT count(*) FROM accounts WHERE discordID = :id AND discordLinkReq = 0");
+				$query->execute([':id' => $carray[2]]);
+				$check = $query->fetchColumn();
+				if($check > 0) return false;
+				$code = rand(1000, 9999);
+				$emojis = [":zero:", ":one:", ":two:", ":three:", ":four:", ":five:", ":six:", ":seven:", ":eight:", ":nine:"];
+				$acode = str_split($code);
+				$acode = [$emojis[$acode[0]], $emojis[$acode[1]], $emojis[$acode[2]], $emojis[$acode[3]]];
+				$setColor = $pendingColor;
+				$setTitle = $gs->webhookLanguage('accountLinkTitle', $webhookLangArray);
+				$setDescription = sprintf($gs->webhookLanguage('accountLinkDesc', $webhookLangArray), '**'.$acc.'**');
+				$setThumbnail = $linkThumbnailURL;
+				$codeFirst = [$gs->webhookLanguage('accountCodeFirst', $webhookLangArray), $acode[0], true];
+				$codeSecond = [$gs->webhookLanguage('accountCodeSecond', $webhookLangArray), $acode[1], true];
+				$codeThird = [$gs->webhookLanguage('accountCodeThird', $webhookLangArray), $acode[2], true];
+				$codeFourth = [$gs->webhookLanguage('accountCodeFourth', $webhookLangArray), $acode[3], true];
+				$setFooter = sprintf($gs->webhookLanguage('footer', $webhookLangArray), $gdps);
+				$embed = $gs->generateEmbedArray(
+					[$gdps, $authorURL, $authorIconURL],
+					$setColor,
+					[$setTitle, $linkTitleURL],
+					$setDescription,
+					$setThumbnail,
+					[$codeFirst, $codeSecond, $codeThird, $codeFourth],
+					[$setFooter, $footerIconURL]
+				);
+				$json = json_encode([
+					"content" => "",
+					"tts" => false,
+					"embeds" => [$embed]
+				], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+				$query = $db->prepare("UPDATE accounts SET discordLinkReq = :id, discordID = :did WHERE accountID = :accountID");
+				$query->execute([':accountID' => $accountID, ':id' => $code, ':did' => ExploitPatch::number($carray[2])]);
+				$gs->sendDiscordPM($carray[2], $json, true);
 				return true;
 			}
 		}

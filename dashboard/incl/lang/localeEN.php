@@ -486,9 +486,12 @@ $string["stats"] = "Stats";
 $string["suggestFeatured"] = "Featured?";
 $string["whoAdded"] = "Who added?";
 //modActionsList
-$string["banDesc"] = "Here you can ban a player from leaderboard!";
+$string["banDesc"] = "Here you can ban (or unban) a player from leaderboard!";
 $string["playerTop"] = 'Top of players';
 $string["creatorTop"] = 'Top of creators';
+$string["levelUploading"] = 'Uploading levels';
+$string["successfullyBanned"] = 'Player <b>%1$s</b> with account ID <b>%2$s</b> was successfully banned!';
+$string["successfullyUnbanned"] = 'Player <b>%1$s</b> with account ID <b>%2$s</b> was successfully unbanned!';
 
 $string["admin"] = "Administrator";
 $string["elder"] = "Elder moderator";

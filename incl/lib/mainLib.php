@@ -862,12 +862,12 @@ class mainLib {
 		curl_close($ch);
 		return ['size' => $size, 'type' => $mime];
 	}
-	public function suggestLevel($accountID, $levelID, $difficulty, $stars, $feat, $auto, $demon){
+	public function suggestLevel($accountID, $levelID, $difficulty, $stars, $feat, $auto, $demon) {
 		if(!is_numeric($accountID)) return false;
 		include __DIR__ . "/connection.php";
-		$query = "INSERT INTO suggest (suggestBy, suggestLevelID, suggestDifficulty, suggestStars, suggestFeatured, suggestAuto, suggestDemon, timestamp) VALUES (:account, :level, :diff, :stars, :feat, :auto, :demon, :timestamp)";
-		$query = $db->prepare($query);
+		$query = $db->prepare("INSERT INTO suggest (suggestBy, suggestLevelID, suggestDifficulty, suggestStars, suggestFeatured, suggestAuto, suggestDemon, timestamp) VALUES (:account, :level, :diff, :stars, :feat, :auto, :demon, :timestamp)");
 		$query->execute([':account' => $accountID, ':level' => $levelID, ':diff' => $difficulty, ':stars' => $stars, ':feat' => $feat, ':auto' => $auto, ':demon' => $demon, ':timestamp' => time()]);
+		$this->sendSuggestWebhook($accountID, $levelID, $difficulty, $stars, $feat, $auto, $demon);
 	}
  	public function isUnlisted($levelID) {
         include __DIR__."/connection.php";
@@ -1290,7 +1290,7 @@ class mainLib {
 		include __DIR__."/connection.php";
 		include __DIR__."/../../config/dashboard.php";
 		include __DIR__."/../../config/discord.php";
-		if(!$webhooksEnabled OR !is_numeric($modAccID) OR !is_numeric($levelID)) return false;
+		if(!$webhooksEnabled OR !is_numeric($modAccID) OR !is_numeric($levelID) OR !in_array("rate", $webhooksToEnable)) return false;
 		include_once __DIR__."/../../config/webhooks/DiscordWebhook.php";
 		$webhookLangArray = $this->webhookStartLanguage($webhookLanguage);
 		$dw = new DiscordWebhook($rateWebhook);
@@ -1318,7 +1318,7 @@ class mainLib {
 				$starsIcon = 'featured';
 				break;
 		}
-		$diffArray = ['n/a' => 'na', 'easy' => 'easy', 'normal' => 'normal', 'hard' => 'hard', 'harder' => 'harder', 'insane' => 'insane', 'demon' => 'demon-hard', 'easy demon' => 'demon-easy', 'medium demon' => 'demon-medium', 'hard demon' => 'demon-hard', 'insane demon' => 'demon-insane', 'extreme demon' => 'demon-extreme'];
+		$diffArray = ['n/a' => 'na', 'auto' => 'auto', 'easy' => 'easy', 'normal' => 'normal', 'hard' => 'hard', 'harder' => 'harder', 'insane' => 'insane', 'demon' => 'demon-hard', 'easy demon' => 'demon-easy', 'medium demon' => 'demon-medium', 'hard demon' => 'demon-hard', 'insane demon' => 'demon-insane', 'extreme demon' => 'demon-extreme'];
 		$diffIcon = $diffArray[strtolower($difficulty)] ?? 'na';
 		if($level['starStars'] != 0) {
 			$setColor = $successColor;
@@ -1425,6 +1425,281 @@ class mainLib {
 		$query->execute([':demon' => $demon, ':auto' => $auto, ':diff' => $difficulty, ':levelID'=>$levelID, ':now' => time()]);
 		$query = $db->prepare("INSERT INTO modactions (type, value, value2, value3, timestamp, account) VALUES ('1', :value, :value2, :levelID, :timestamp, :id)");
 		$query->execute([':value' => $diffName, ':timestamp' => time(), ':id' => $accountID, ':value2' => 0, ':levelID' => $levelID]);
+	}
+	public function sendSuggestWebhook($modAccID, $levelID, $difficulty, $stars, $featured, $auto, $demon) {
+		include __DIR__."/connection.php";
+		include __DIR__."/../../config/dashboard.php";
+		include __DIR__."/../../config/discord.php";
+		if(!$webhooksEnabled OR !is_numeric($modAccID) OR !is_numeric($levelID) OR !in_array("suggest", $webhooksToEnable)) return false;
+		include_once __DIR__."/../../config/webhooks/DiscordWebhook.php";
+		$webhookLangArray = $this->webhookStartLanguage($webhookLanguage);
+		$dw = new DiscordWebhook($suggestWebhook);
+		$level = $db->prepare('SELECT * FROM levels WHERE levelID = :levelID');
+		$level->execute([':levelID' => $levelID]);
+		$level = $level->fetch();
+		if(!$level) return false;
+		$modUsername = $this->getAccountName($modAccID);
+		$modHasDiscord = $this->hasDiscord($modAccID);
+		$modFormattedUsername = $modHasDiscord ? "<@".$modHasDiscord.">" : "**".$modUsername."**";
+		$creatorAccID = $level['extID'];
+		$creatorUsername = $this->getAccountName($creatorAccID);
+		$creatorHasDiscord = $this->hasDiscord($creatorAccID);
+		$creatorFormattedUsername = $creatorHasDiscord ? "<@".$creatorHasDiscord.">" : "**".$creatorUsername."**";
+		$difficulty = $this->getDifficulty($difficulty, $auto, $demon);
+		$starsArray = ['stars', 'featured', 'epic', 'legendary', 'mythic'];
+		$starsIcon = $starsArray[$featured] ?? 'stars';
+		$diffArray = ['n/a' => 'na', 'auto' => 'auto', 'easy' => 'easy', 'normal' => 'normal', 'hard' => 'hard', 'harder' => 'harder', 'insane' => 'insane', 'demon' => 'demon-hard', 'easy demon' => 'demon-easy', 'medium demon' => 'demon-medium', 'hard demon' => 'demon-hard', 'insane demon' => 'demon-insane', 'extreme demon' => 'demon-extreme'];
+		$diffIcon = $diffArray[strtolower($difficulty)] ?? 'na';
+		$setColor = $successColor;
+		$setTitle = $this->webhookLanguage('suggestTitle', $webhookLangArray);
+		$setDescription = sprintf($this->webhookLanguage('suggestDesc', $webhookLangArray), $modFormattedUsername);
+		$stats = $downloadEmoji.' '.$level['downloads'].' | '.($level['likes'] - $level['dislikes'] >= 0 ? $likeEmoji.' '.abs($level['likes'] - $level['dislikes']) : $dislikeEmoji.' '.abs($level['likes'] - $level['dislikes']));
+		$levelField = [$this->webhookLanguage('levelTitle', $webhookLangArray), sprintf($this->webhookLanguage('levelDesc', $webhookLangArray), '**'.$level['levelName'].'**', $creatorFormattedUsername), true];
+		$IDField = [$this->webhookLanguage('levelIDTitle', $webhookLangArray), $level['levelID'], true];
+		if($stars == 1) $action = 0; elseif(($stars < 5 AND $stars != 0) AND !($stars > 9 AND $stars < 20)) $action = 1; else $action = 2;
+		$difficultyField = [$this->webhookLanguage('difficultyTitle', $webhookLangArray), sprintf($this->webhookLanguage('difficultyDesc'.$action, $webhookLangArray), $difficulty, $stars), true];
+		$statsField = [$this->webhookLanguage('statsTitle', $webhookLangArray), $stats, true];
+		if($level['requestedStars'] == 1) $action = 0; elseif(($level['requestedStars'] < 5 AND $level['requestedStars'] != 0) AND !($level['requestedStars'] > 9 AND $level['requestedStars'] < 20)) $action = 1; else $action = 2;
+		$requestedField = $level['requestedStars'] > 0 ? [$this->webhookLanguage('requestedTitle', $webhookLangArray), sprintf($this->webhookLanguage('requestedDesc'.$action, $webhookLangArray), $level['requestedStars']), true] : [];
+		$descriptionField = [$this->webhookLanguage('descTitle', $webhookLangArray), (!empty($level['levelDesc']) ? base64_decode($level['levelDesc']) : $this->webhookLanguage('descDesc', $webhookLangArray)), false];
+		$setThumbnail = 'https://gcs.icu/WTFIcons/difficulties/'.$starsIcon.'/'.$diffIcon.'.png';
+		$setFooter = sprintf($this->webhookLanguage('footerSuggest', $webhookLangArray), $gdps);
+		$dw->newMessage()
+		->setAuthor($gdps, $authorURL, $authorIconURL)
+		->setColor($setColor)
+		->setTitle($setTitle, $rateTitleURL)
+		->setDescription($setDescription)
+		->setThumbnail($setThumbnail)
+		->addFields($levelField, $IDField, $difficultyField, $statsField, $requestedField, $descriptionField)
+		->setFooter($setFooter, $footerIconURL)
+		->setTimestamp()
+		->send();
+	}
+	public function sendDemonlistRecordWebhook($recordAccID, $recordID) {
+		include __DIR__."/connection.php";
+		include __DIR__."/../../config/dashboard.php";
+		include __DIR__."/../../config/discord.php";
+		if(!$webhooksEnabled OR !is_numeric($recordAccID) OR !is_numeric($recordID) OR !in_array("demonlist", $webhooksToEnable)) return false;
+		include_once __DIR__."/../../config/webhooks/DiscordWebhook.php";
+		$webhookLangArray = $this->webhookStartLanguage($webhookLanguage);
+		$dw = new DiscordWebhook($dlApproveWebhook);
+		$record = $db->prepare('SELECT * FROM dlsubmits WHERE ID = :ID');
+		$record->execute([':ID' => $recordID]);
+		$record = $record->fetch();
+		if(!$record) return false;
+		$level = $db->prepare('SELECT * FROM levels WHERE levelID = :ID');
+		$level->execute([':ID' => $record['levelID']]);
+		$level = $level->fetch();
+		if(!$level) return false;
+		$recordUsername = $this->getAccountName($recordAccID);
+		$recordHasDiscord = $this->hasDiscord($recordAccID);
+		$recordFormattedUsername = $recordHasDiscord ? "<@".$recordHasDiscord.">" : "**".$recordUsername."**";
+		$creatorAccID = $level['extID'];
+		$creatorUsername = $this->getAccountName($creatorAccID);
+		$creatorHasDiscord = $this->hasDiscord($creatorAccID);
+		$creatorFormattedUsername = $creatorHasDiscord ? "<@".$creatorHasDiscord.">" : "**".$creatorUsername."**";
+		$setColor = $pendingColor;
+		$setTitle = $this->webhookLanguage('demonlistTitle', $webhookLangArray);
+		$setDescription = sprintf($this->webhookLanguage('demonlistDesc', $webhookLangArray), $recordFormattedUsername, '**'.$level['levelName'].'**', $demonlistLink.'/approve.php?str='.$record['auth']);
+		$recordField = [$this->webhookLanguage('levelTitle', $webhookLangArray), sprintf($this->webhookLanguage('levelDesc', $webhookLangArray), '**'.$level['levelName'].'**', $creatorFormattedUsername), true];
+		$authorField = [$this->webhookLanguage('recordAuthorTitle', $webhookLangArray), $recordFormattedUsername, true];
+		if($record['atts'] == 1) $action = 0; elseif(($record['atts'] < 5 AND $record['atts'] != 0) AND !($record['atts'] > 9 AND $record['atts'] < 20)) $action = 1; else $action = 2;
+		$attemptsField = [$this->webhookLanguage('recordAttemptsTitle', $webhookLangArray), sprintf($this->webhookLanguage('recordAttemptsDesc'.$action, $webhookLangArray), $record['atts']), true];
+		$proofField = [$this->webhookLanguage('recordProofTitle', $webhookLangArray), "https://youtu.be/".$record['ytlink'], true];
+		$setThumbnail = $demonlistThumbnailURL;
+		$setFooter = sprintf($this->webhookLanguage('footer', $webhookLangArray), $gdps);
+		$dw->newMessage()
+		->setAuthor($gdps, $authorURL, $authorIconURL)
+		->setColor($setColor)
+		->setTitle($setTitle, $rateTitleURL)
+		->setDescription($setDescription)
+		->setThumbnail($setThumbnail)
+		->addFields($recordField, $authorField, $attemptsField, $proofField)
+		->setFooter($setFooter, $footerIconURL)
+		->setTimestamp()
+		->send();
+	}
+	public function sendDemonlistResultWebhook($modAccID, $recordID) {
+		include __DIR__."/connection.php";
+		include __DIR__."/../../config/dashboard.php";
+		include __DIR__."/../../config/discord.php";
+		if(!$webhooksEnabled OR !is_numeric($modAccID) OR !is_numeric($recordID) OR !in_array("demonlist", $webhooksToEnable)) return false;
+		include_once __DIR__."/../../config/webhooks/DiscordWebhook.php";
+		$webhookLangArray = $this->webhookStartLanguage($webhookLanguage);
+		$dw = new DiscordWebhook($dlWebhook);
+		$record = $db->prepare('SELECT * FROM dlsubmits WHERE ID = :ID');
+		$record->execute([':ID' => $recordID]);
+		$record = $record->fetch();
+		if(!$record) return false;
+		$level = $db->prepare('SELECT * FROM levels WHERE levelID = :ID');
+		$level->execute([':ID' => $record['levelID']]);
+		$level = $level->fetch();
+		if(!$level) return false;
+		$modUsername = $this->getAccountName($modAccID);
+		$modHasDiscord = $this->hasDiscord($modAccID);
+		$modFormattedUsername = $modHasDiscord ? "<@".$modHasDiscord.">" : "**".$modUsername."**";
+		$recordAccID = $record['accountID'];
+		$recordUsername = $this->getAccountName($recordAccID);
+		$recordHasDiscord = $this->hasDiscord($recordAccID);
+		$recordFormattedUsername = $recordHasDiscord ? "<@".$recordHasDiscord.">" : "**".$recordUsername."**";
+		$creatorAccID = $level['extID'];
+		$creatorUsername = $this->getAccountName($creatorAccID);
+		$creatorHasDiscord = $this->hasDiscord($creatorAccID);
+		$creatorFormattedUsername = $creatorHasDiscord ? "<@".$creatorHasDiscord.">" : "**".$creatorUsername."**";
+		if($record['approve'] == '1') {
+			$setColor = $successColor;
+			$setTitle = $this->webhookLanguage('demonlistApproveTitle', $webhookLangArray);
+			$dmTitle = $this->webhookLanguage('demonlistApproveTitleDM', $webhookLangArray);
+			$setDescription = sprintf($this->webhookLanguage('demonlistApproveDesc', $webhookLangArray), $modFormattedUsername, $recordFormattedUsername, '**'.$level['levelName'].'**');
+			$dmDescription = sprintf($this->webhookLanguage('demonlistApproveDescDM', $webhookLangArray), $modFormattedUsername, '**'.$level['levelName'].'**');
+		} else {
+			$setColor = $failColor;
+			$setTitle = $this->webhookLanguage('demonlistDenyTitle', $webhookLangArray);
+			$dmTitle = $this->webhookLanguage('demonlistDenyTitleDM', $webhookLangArray);
+			$setDescription = sprintf($this->webhookLanguage('demonlistDenyDesc', $webhookLangArray), $modFormattedUsername, $recordFormattedUsername, '**'.$level['levelName'].'**');
+			$dmDescription = sprintf($this->webhookLanguage('demonlistDenyDescDM', $webhookLangArray), $modFormattedUsername, '**'.$level['levelName'].'**');
+		}
+		$recordField = [$this->webhookLanguage('levelTitle', $webhookLangArray), sprintf($this->webhookLanguage('levelDesc', $webhookLangArray), '**'.$level['levelName'].'**', $creatorFormattedUsername), true];
+		$authorField = [$this->webhookLanguage('recordAuthorTitle', $webhookLangArray), $recordFormattedUsername, true];
+		if($record['atts'] == 1) $action = 0; elseif(($record['atts'] < 5 AND $record['atts'] != 0) AND !($record['atts'] > 9 AND $record['atts'] < 20)) $action = 1; else $action = 2;
+		$attemptsField = [$this->webhookLanguage('recordAttemptsTitle', $webhookLangArray), sprintf($this->webhookLanguage('recordAttemptsDesc'.$action, $webhookLangArray), $record['atts']), true];
+		$proofField = [$this->webhookLanguage('recordProofTitle', $webhookLangArray), "https://youtu.be/".$record['ytlink'], true];
+		$setThumbnail = $demonlistThumbnailURL;
+		$setFooter = sprintf($this->webhookLanguage('footer', $webhookLangArray), $gdps);
+		$dw->newMessage()
+		->setAuthor($gdps, $authorURL, $authorIconURL)
+		->setColor($setColor)
+		->setTitle($setTitle, $demonlistTitleURL)
+		->setDescription($setDescription)
+		->setThumbnail($setThumbnail)
+		->addFields($recordField, $authorField, $attemptsField, $proofField)
+		->setFooter($setFooter, $footerIconURL)
+		->setTimestamp()
+		->send();
+		if($dmNotifications && $recordHasDiscord) {
+			$embed = $this->generateEmbedArray(
+				[$gdps, $authorURL, $authorIconURL],
+				$setColor,
+				[$dmTitle, $demonlistTitleURL],
+				$dmDescription,
+				$setThumbnail,
+				[$recordField, $authorField, $attemptsField, $proofField],
+				[$setFooter, $footerIconURL]
+			);
+			$json = json_encode([
+				"content" => "",
+				"tts" => false,
+				"embeds" => [$embed]
+			], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+			$this->sendDiscordPM($recordHasDiscord, $json, true);
+		}
+	}
+	public function sendBanWebhook($modAccID, $playerAccID, $type) {
+		include __DIR__."/connection.php";
+		include __DIR__."/../../config/dashboard.php";
+		include __DIR__."/../../config/discord.php";
+		if(!$webhooksEnabled OR !is_numeric($modAccID) OR !is_numeric($playerAccID) OR !in_array("ban", $webhooksToEnable)) return false;
+		include_once __DIR__."/../../config/webhooks/DiscordWebhook.php";
+		$webhookLangArray = $this->webhookStartLanguage($webhookLanguage);
+		$dw = new DiscordWebhook($banWebhook);
+		$user = $db->prepare('SELECT * FROM users WHERE extID = :ID');
+		$user->execute([':ID' => $playerAccID]);
+		$user = $user->fetch();
+		if(!$user) return false;
+		$modUsername = $this->getAccountName($modAccID);
+		$modHasDiscord = $this->hasDiscord($modAccID);
+		$modFormattedUsername = $modHasDiscord ? "<@".$modHasDiscord.">" : "**".$modUsername."**";
+		$playerUsername = $this->getAccountName($playerAccID);
+		$playerHasDiscord = $this->hasDiscord($playerAccID);
+		$playerFormattedUsername = $playerHasDiscord ? "<@".$playerHasDiscord.">" : "**".$playerUsername."**";
+		switch($type) {
+			case 'isBanned':
+				if($user['isBanned']) {
+					$setColor = $failColor;
+					$setTitle = $this->webhookLanguage('playerBanTitle', $webhookLangArray);
+					$dmTitle = $this->webhookLanguage('playerBanTitleDM', $webhookLangArray);
+					$setDescription = sprintf($this->webhookLanguage('playerBanTopDesc', $webhookLangArray), $modFormattedUsername, $playerFormattedUsername);
+					$dmDescription = sprintf($this->webhookLanguage('playerBanTopDescDM', $webhookLangArray), $modFormattedUsername);
+					$setThumbnail = $banThumbnailURL;
+					$setFooter = sprintf($this->webhookLanguage('footerBan', $webhookLangArray), $gdps);
+				} else {
+					$setColor = $successColor;
+					$setTitle = $this->webhookLanguage('playerUnbanTitle', $webhookLangArray);
+					$dmTitle = $this->webhookLanguage('playerUnbanTitleDM', $webhookLangArray);
+					$setDescription = sprintf($this->webhookLanguage('playerUnbanTopDesc', $webhookLangArray), $modFormattedUsername, $playerFormattedUsername);
+					$dmDescription = sprintf($this->webhookLanguage('playerUnbanTopDescDM', $webhookLangArray), $modFormattedUsername);
+					$setThumbnail = $unbanThumbnailURL;
+					$setFooter = sprintf($this->webhookLanguage('footer', $webhookLangArray), $gdps);
+				}
+				break;
+			case 'isCreatorBanned':
+				if($user['isCreatorBanned']) {
+					$setColor = $failColor;
+					$setTitle = $this->webhookLanguage('playerBanTitle', $webhookLangArray);
+					$dmTitle = $this->webhookLanguage('playerBanTitleDM', $webhookLangArray);
+					$setDescription = sprintf($this->webhookLanguage('playerBanCreatorDesc', $webhookLangArray), $modFormattedUsername, $playerFormattedUsername);
+					$dmDescription = sprintf($this->webhookLanguage('playerBanCreatorDescDM', $webhookLangArray), $modFormattedUsername);
+					$setThumbnail = $banThumbnailURL;
+					$setFooter = sprintf($this->webhookLanguage('footerBan', $webhookLangArray), $gdps);
+				} else {
+					$setColor = $successColor;
+					$setTitle = $this->webhookLanguage('playerUnbanTitle', $webhookLangArray);
+					$dmTitle = $this->webhookLanguage('playerUnbanTitleDM', $webhookLangArray);
+					$setDescription = sprintf($this->webhookLanguage('playerUnbanCreatorDesc', $webhookLangArray), $modFormattedUsername, $playerFormattedUsername);
+					$dmDescription = sprintf($this->webhookLanguage('playerUnbanCreatorDescDM', $webhookLangArray), $modFormattedUsername);
+					$setThumbnail = $unbanThumbnailURL;
+					$setFooter = sprintf($this->webhookLanguage('footer', $webhookLangArray), $gdps);
+				}
+				break;
+			case 'isUploadBanned':
+				if($user['isUploadBanned']) {
+					$setColor = $failColor;
+					$setTitle = $this->webhookLanguage('playerBanTitle', $webhookLangArray);
+					$dmTitle = $this->webhookLanguage('playerBanTitleDM', $webhookLangArray);
+					$setDescription = sprintf($this->webhookLanguage('playerBanUploadDesc', $webhookLangArray), $modFormattedUsername, $playerFormattedUsername);
+					$dmDescription = sprintf($this->webhookLanguage('playerBanUploadDescDM', $webhookLangArray), $modFormattedUsername);
+					$setThumbnail = $banThumbnailURL;
+					$setFooter = sprintf($this->webhookLanguage('footerBan', $webhookLangArray), $gdps);
+				} else {
+					$setColor = $successColor;
+					$setTitle = $this->webhookLanguage('playerUnbanTitle', $webhookLangArray);
+					$dmTitle = $this->webhookLanguage('playerUnbanTitleDM', $webhookLangArray);
+					$setDescription = sprintf($this->webhookLanguage('playerUnbanUploadDesc', $webhookLangArray), $modFormattedUsername, $playerFormattedUsername);
+					$dmDescription = sprintf($this->webhookLanguage('playerUnbanUploadDescDM', $webhookLangArray), $modFormattedUsername);
+					$setThumbnail = $unbanThumbnailURL;
+					$setFooter = sprintf($this->webhookLanguage('footer', $webhookLangArray), $gdps);
+				}
+				break;
+		}
+		$modField = [$this->webhookLanguage('playerModTitle', $webhookLangArray), $modFormattedUsername, true];
+		$reasonField = [$this->webhookLanguage('playerReasonTitle', $webhookLangArray), $user['banReason'] != 'none' ? $user['banReason'] : $this->webhookLanguage('playerBanReason', $webhookLangArray), true];
+		$dw->newMessage()
+		->setAuthor($gdps, $authorURL, $authorIconURL)
+		->setColor($setColor)
+		->setTitle($setTitle, $demonlistTitleURL)
+		->setDescription($setDescription)
+		->setThumbnail($setThumbnail)
+		->addFields($modField, $reasonField)
+		->setFooter($setFooter, $footerIconURL)
+		->setTimestamp()
+		->send();
+		if($dmNotifications && $playerHasDiscord) {
+			$embed = $this->generateEmbedArray(
+				[$gdps, $authorURL, $authorIconURL],
+				$setColor,
+				[$dmTitle, $demonlistTitleURL],
+				$dmDescription,
+				$setThumbnail,
+				[$modField, $reasonField],
+				[$setFooter, $footerIconURL]
+			);
+			$json = json_encode([
+				"content" => "",
+				"tts" => false,
+				"embeds" => [$embed]
+			], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+			$this->sendDiscordPM($playerHasDiscord, $json, true);
+		}
 	}
   	public function mail($mail = '', $user = '', $isForgotPass = false) {
 		if(empty($mail) OR empty($user)) return;

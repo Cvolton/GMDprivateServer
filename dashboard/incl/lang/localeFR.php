@@ -117,7 +117,7 @@ $string["emailDontMatch"] = "Les emails ne correspondent pas!";
 $string["registered"] = "Vous avez créé un compte avec succès!";
 $string["bigNick"] = "Username is too long!";
 $string["mailExists"] = "There is a registered account using this email!";
-$string["badUsername"] = "Please choose another username.";
+$string["badUsername"] = "Veuillez utiliser un autre nom d'utilisateur.";
 
 $string["changePassTitle"] = "Changer le mot de passe";
 $string["changedPass"] = "Mot de passe changé avec succès! Vous devez vous reconnecter.";
@@ -490,6 +490,9 @@ $string["whoAdded"] = "Qui l'a ajouté?";
 $string["banDesc"] = "Ici vous pouvez bannir un joueur du classement!";
 $string["playerTop"] = 'Top of players';
 $string["creatorTop"] = 'Top of creators';
+$string["levelUploading"] = 'Uploading levels';
+$string["successfullyBanned"] = 'Player <b>%1$s</b> with account ID <b>%2$s</b> was successfully banned!';
+$string["successfullyUnbanned"] = 'Player <b>%1$s</b> with account ID <b>%2$s</b> was successfully unbanned!';
 
 $string["admin"] = "Administrateur";
 $string["elder"] = "Ancien Modérateur";

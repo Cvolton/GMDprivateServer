@@ -482,6 +482,9 @@ $string["whoAdded"] = "¿Quién lo otorgó?";
 $string["banDesc"] = "¡Aquí puedes expulsar a un jugador de las calificaciones!";
 $string["playerTop"] = 'Top de Jugadores';
 $string["creatorTop"] = 'Top de Creadores';
+$string["levelUploading"] = 'Uploading levels';
+$string["successfullyBanned"] = 'Player <b>%1$s</b> with account ID <b>%2$s</b> was successfully banned!';
+$string["successfullyUnbanned"] = 'Player <b>%1$s</b> with account ID <b>%2$s</b> was successfully unbanned!';
 // mod badges
 $string["admin"] = "Administrador";
 $string["elder"] = "Elder moderador";

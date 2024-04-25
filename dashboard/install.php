@@ -136,9 +136,12 @@ if(!$installed) {
 		$check = $db->query("SHOW COLUMNS FROM `accounts` LIKE 'timezone'");
       		$exist = $check->fetchAll();
       		if(empty($exist)) $db->query("ALTER TABLE accounts ADD timezone varchar(255) NOT NULL DEFAULT '' AFTER passCode");
-  $check = $db->query("SHOW COLUMNS FROM `accounts` LIKE 'mail'");
+		$check = $db->query("SHOW COLUMNS FROM `accounts` LIKE 'mail'");
       		$exist = $check->fetchAll();
       		if(empty($exist)) $db->query("ALTER TABLE accounts ADD mail varchar(255) NOT NULL DEFAULT '' AFTER auth");
+		$check = $db->query("SHOW COLUMNS FROM `users` LIKE 'isUploadBanned'");
+      		$exist = $check->fetchAll();
+      		if(empty($exist)) $db->query("ALTER TABLE users ADD isUploadBanned INT NOT NULL DEFAULT '0' AFTER isCreatorBanned");
 	$lines = file($dbPath.'config/dashboard.php');
 	$first_line = $lines[2];
 	$lines = array_slice($lines, 1 + 2);

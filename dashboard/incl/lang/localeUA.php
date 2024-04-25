@@ -490,6 +490,9 @@ $string["whoAdded"] = "Хто додав?";
 $string["banDesc"] = "Тут ви можете заблокувати користувача з лідерборду!";
 $string["playerTop"] = 'Топ гравців';
 $string["creatorTop"] = 'Топ строітелів';
+$string["levelUploading"] = 'Загрузка уровней';
+$string["successfullyBanned"] = 'Игрок <b>%1$s</b> с ID аккаунта <b>%2$s</b> был успешно забанен!';
+$string["successfullyUnbanned"] = 'Игрок <b>%1$s</b> с ID аккаунта <b>%2$s</b> был успешно разбанен!';
 
 $string["admin"] = "Адміністратор";
 $string["elder"] = "Старший модератор";
