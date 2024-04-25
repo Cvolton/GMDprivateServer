@@ -200,6 +200,7 @@ $string["levelAlreadyReuploaded"] = "Bölüm zaten aktarılmış!";
 $string["server"] = "Sunucu";
 $string["levelID"] = "Bölüm ID";
 $string["pageDisabled"] = "Bu sayfa devre dışı!";
+$string["levelUploadBanned"] = "You're banned from uploading levels!";
 
 $string["activateAccount"] = "Hesap aktifleştirme";
 $string["activateDesc"] = "Hesabını aktif et!";

@@ -200,6 +200,7 @@ $string["levelAlreadyReuploaded"] = "Уровень уже перенесён!";
 $string["server"] = "Сервер";
 $string["levelID"] = "ID уровня";
 $string["pageDisabled"] = "Эта страница отключена!";
+$string["levelUploadBanned"] = "Вам запрещена загрузка уровней на сервер!";
 
 $string["activateAccount"] = "Активация аккаунта";
 $string["activateDesc"] = "Активируйте свой аккаунт!";

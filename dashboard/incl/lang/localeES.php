@@ -200,6 +200,7 @@ $string["levelAlreadyReuploaded"] = "¡El nivel ya fue resubido!";
 $string["server"] = "Servidor";
 $string["levelID"] = "ID del nivel";
 $string["pageDisabled"] = "¡Esta sección está deshabilitada!";
+$string["levelUploadBanned"] = "You're banned from uploading levels!";
 // acc activation
 $string["activateAccount"] = "Activación de cuenta";
 $string["activateDesc"] = "¡Activa tu cuenta!";
