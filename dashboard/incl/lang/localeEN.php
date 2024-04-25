@@ -490,6 +490,7 @@ $string["whoAdded"] = "Who added?";
 $string["banDesc"] = "Here you can ban (or unban) a player from leaderboard!";
 $string["playerTop"] = 'Top of players';
 $string["creatorTop"] = 'Top of creators';
+$string["commentBan"] = 'Comment ban';
 $string["levelUploading"] = 'Uploading levels';
 $string["successfullyBanned"] = 'Player <b>%1$s</b> with account ID <b>%2$s</b> was successfully banned!';
 $string["successfullyUnbanned"] = 'Player <b>%1$s</b> with account ID <b>%2$s</b> was successfully unbanned!';
