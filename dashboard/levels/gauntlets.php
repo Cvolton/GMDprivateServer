@@ -8,7 +8,7 @@ include '../'.$dbPath.'incl/lib/Captcha.php';
 $id = ExploitPatch::number($_GET["id"]);
 $gs = new mainLib();
 if(!empty($id)) {
-	if(!empty($_GET["l1"]) AND !empty($_GET["l2"]) AND !empty($_GET["l3"]) AND !empty($_GET["l4"]) AND !empty($_GET["l5"]) AND $gs->checkPermission($_SESSION["accountID"], 'dashboardLevelPackCreate')) {
+	if(!empty($_GET["l1"]) AND !empty($_GET["l2"]) AND !empty($_GET["l3"]) AND !empty($_GET["l4"]) AND !empty($_GET["l5"]) AND $gs->checkPermission($_SESSION["accountID"], 'dashboardGauntletCreate')) {
 		if(!Captcha::validateCaptcha()) {
 			exit(json_encode(['success' => false]));
 		}
