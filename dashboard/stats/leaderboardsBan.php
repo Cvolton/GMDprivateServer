@@ -53,13 +53,13 @@ if(!empty($_POST["extID"])) {
 				$type = 'isCreatorBanned';
 				$typeN = 2;
 				break;
+			case 'levelUploading':
+				$type = 'isUploadBanned';
+				$typeN = 3;
+				break;
 			case 'commentBan':
 				$type = 'isCommentBanned';
 				$typeN = 4;
-				break;
-			default:
-				$type = 'isUploadBanned';
-				$typeN = 3;
 				break;
 		}
 		$query = $db->prepare("SELECT $type FROM users WHERE extID=:id AND $type = 1");
@@ -117,13 +117,11 @@ $dl->printSong('<div class="form">
 		<select style="width:75%" name="type">
 			<option value="playerTop">'.$dl->getLocalizedString('playerTop').'</option>
 			<option value="creatorTop">'.$dl->getLocalizedString('creatorTop').'</option>
-			<option value="commentBan">'.$dl->getLocalizedString('commentBan').'</option>
 			<option value="levelUploading">'.$dl->getLocalizedString('levelUploading').'</option>
+			<option value="commentBan">'.$dl->getLocalizedString('commentBan').'</option>
 		</select></div>
         <div class="field"><input type="text" name="banReason" placeholder="'.$dl->getLocalizedString("banReason").'"></div>
-		', 'mod');
-		Captcha::displayCaptcha();
-        echo '
+		'.Captcha::displayCaptcha(true).'
         <button type="button" onclick="a(\'stats/leaderboardsBan.php\', true, true, \'POST\')" class="btn-primary btn-block" id="banSubmit" disabled>'.$dl->getLocalizedString("ban").'</button>
     </form>
 </div>
@@ -142,6 +140,6 @@ $(document).on("keyup keypress change keydown",function(){
                 btn.classList.add("btn-primary");
 	}
 });
-</script>';
+</script>', 'mod');
 }
 ?>

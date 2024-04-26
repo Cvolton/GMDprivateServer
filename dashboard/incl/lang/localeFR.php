@@ -491,10 +491,10 @@ $string["whoAdded"] = "Qui l'a ajouté?";
 $string["banDesc"] = "Ici vous pouvez bannir un joueur du classement!";
 $string["playerTop"] = 'Top of players';
 $string["creatorTop"] = 'Top of creators';
-$string["commentBan"] = 'Bannissement des commentaires';
 $string["levelUploading"] = 'Uploading levels';
 $string["successfullyBanned"] = 'Player <b>%1$s</b> with account ID <b>%2$s</b> was successfully banned!';
 $string["successfullyUnbanned"] = 'Player <b>%1$s</b> with account ID <b>%2$s</b> was successfully unbanned!';
+$string["commentBan"] = 'Commenting';
 
 $string["admin"] = "Administrateur";
 $string["elder"] = "Ancien Modérateur";

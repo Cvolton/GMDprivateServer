@@ -490,10 +490,10 @@ $string["whoAdded"] = "Кто добавил?";
 $string["banDesc"] = "Здесь вы можете забанить (или разбанить) игрока из лидерборда!";
 $string["playerTop"] = 'Топ игроков';
 $string["creatorTop"] = 'Топ строителей';
-$string["commentBan"] = 'Comment ban';
 $string["levelUploading"] = 'Загрузка уровней';
 $string["successfullyBanned"] = 'Игрок <b>%1$s</b> с ID аккаунта <b>%2$s</b> был успешно забанен!';
 $string["successfullyUnbanned"] = 'Игрок <b>%1$s</b> с ID аккаунта <b>%2$s</b> был успешно разбанен!';
+$string["commentBan"] = 'Комментирование';
 
 $string["admin"] = "Администратор";
 $string["elder"] = "Старший модератор";
