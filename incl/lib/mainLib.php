@@ -1670,6 +1670,25 @@ class mainLib {
 					$setFooter = sprintf($this->webhookLanguage('footer', $webhookLangArray), $gdps);
 				}
 				break;
+			case 'isCommentBanned':
+				if($user['isCommentBanned']) {
+					$setColor = $failColor;
+					$setTitle = $this->webhookLanguage('playerBanTitle', $webhookLangArray);
+					$dmTitle = $this->webhookLanguage('playerBanTitleDM', $webhookLangArray);
+					$setDescription = sprintf($this->webhookLanguage('playerBanCommentDesc', $webhookLangArray), $modFormattedUsername, $playerFormattedUsername);
+					$dmDescription = sprintf($this->webhookLanguage('playerBanCommentDescDM', $webhookLangArray), $modFormattedUsername);
+					$setThumbnail = $banThumbnailURL;
+					$setFooter = sprintf($this->webhookLanguage('footerBan', $webhookLangArray), $gdps);
+				} else {
+					$setColor = $successColor;
+					$setTitle = $this->webhookLanguage('playerUnbanTitle', $webhookLangArray);
+					$dmTitle = $this->webhookLanguage('playerUnbanTitleDM', $webhookLangArray);
+					$setDescription = sprintf($this->webhookLanguage('playerUnbanCommentDesc', $webhookLangArray), $modFormattedUsername, $playerFormattedUsername);
+					$dmDescription = sprintf($this->webhookLanguage('playerUnbanCommentDescDM', $webhookLangArray), $modFormattedUsername);
+					$setThumbnail = $unbanThumbnailURL;
+					$setFooter = sprintf($this->webhookLanguage('footer', $webhookLangArray), $gdps);
+				}
+				break;
 		}
 		$modField = [$this->webhookLanguage('playerModTitle', $webhookLangArray), $modFormattedUsername, true];
 		$reasonField = [$this->webhookLanguage('playerReasonTitle', $webhookLangArray), $user['banReason'] != 'none' ? $user['banReason'] : $this->webhookLanguage('playerBanReason', $webhookLangArray), true];

@@ -83,4 +83,8 @@ $webhookLang['playerModTitle'] = 'Модератор';
 $webhookLang['playerReasonTitle'] = 'Причина';
 $webhookLang['playerBanReason'] = '*Без причины*';
 $webhookLang['footerBan'] = '%1$s.';
+$webhookLang['playerBanCommentDesc'] = '%1$s заблокировал(а) %2$s возможность комментирования!';
+$webhookLang['playerBanCommentDescDM'] = '%1$s заблокировал(а) вам возможность комментирования.';
+$webhookLang['playerUnbanCommentDesc'] = '%1$s разблокировал(а) %2$s возможность комментирования!';
+$webhookLang['playerUnbanCommentDescDM'] = '%1$s разблокировал(а) вам возможность комментирования!';
 ?>

@@ -89,7 +89,10 @@ foreach($result as &$action){
 					$value4  = $dl->getLocalizedString('creatorTop');
 					break;
 				case 'isUploadBanned':
-					$value4  = "Загрузка уровней";
+					$value4  = $dl->getLocalizedString('levelUploading');
+					break;
+				case 'isCommentBanned':
+					$value4  = $dl->getLocalizedString('commentBan');
 					break;
 			}
 			if($value3 == 0) $value3 = $value4.', <span style="color:#a9ffa9">'.$dl->getLocalizedString("unban").'</span>';
