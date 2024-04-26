@@ -493,6 +493,7 @@ $string["creatorTop"] = 'Top of creators';
 $string["levelUploading"] = 'Uploading levels';
 $string["successfullyBanned"] = 'Player <b>%1$s</b> with account ID <b>%2$s</b> was successfully banned!';
 $string["successfullyUnbanned"] = 'Player <b>%1$s</b> with account ID <b>%2$s</b> was successfully unbanned!';
+$string["commentBan"] = 'Commenting';
 
 $string["admin"] = "Yönetici";
 $string["elder"] = "Büyük moderatör";

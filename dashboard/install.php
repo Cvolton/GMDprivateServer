@@ -142,6 +142,9 @@ if(!$installed) {
 		$check = $db->query("SHOW COLUMNS FROM `roles` LIKE 'dashboardGauntletCreate'");
       		$exist = $check->fetchAll();
       		if(empty($exist)) $db->query("ALTER TABLE `roles` CHANGE `toolPackcreate` `dashboardGauntletCreate` INT(11) NOT NULL DEFAULT '0'");
+		$check = $db->query("SHOW COLUMNS FROM `users` LIKE 'isCommentBanned'");
+			$exist = $check->fetchAll();
+			if(empty($exist)) $db->query("ALTER TABLE users ADD isCommentBanned INT NOT NULL DEFAULT '0' AFTER isBanned");
 		$check = $db->query("SHOW COLUMNS FROM `users` LIKE 'isUploadBanned'");
       		$exist = $check->fetchAll();
       		if(empty($exist)) $db->query("ALTER TABLE users ADD isUploadBanned INT NOT NULL DEFAULT '0' AFTER isCreatorBanned");

@@ -494,6 +494,7 @@ $string["creatorTop"] = 'Топ строітелів';
 $string["levelUploading"] = 'Загрузка уровней';
 $string["successfullyBanned"] = 'Игрок <b>%1$s</b> с ID аккаунта <b>%2$s</b> был успешно забанен!';
 $string["successfullyUnbanned"] = 'Игрок <b>%1$s</b> с ID аккаунта <b>%2$s</b> был успешно разбанен!';
+$string["commentBan"] = 'Комментирование';
 
 $string["admin"] = "Адміністратор";
 $string["elder"] = "Старший модератор";

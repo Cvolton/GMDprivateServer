@@ -2,7 +2,7 @@
 chdir(dirname(__FILE__));
 include "../lib/connection.php";
 require_once "../lib/mainLib.php";
-$mainLib = new mainLib();
+$gs = new mainLib();
 require_once "../lib/GJPCheck.php";
 require_once "../lib/exploitPatch.php";
 require_once "../lib/commands.php";
@@ -14,14 +14,16 @@ $comment = ($gameVersion < 20) ? base64_encode($comment) : $comment;
 $levelID = ($_POST['levelID'] < 0 ? '-' : '').ExploitPatch::number($_POST["levelID"]);
 $percent = !empty($_POST["percent"]) ? ExploitPatch::remove($_POST["percent"]) : 0;
 
-$id = $mainLib->getIDFromPost();
+$id = $gs->getIDFromPost();
 $register = is_numeric($id);
-$userID = $mainLib->getUserID($id, $userName);
+$userID = $gs->getUserID($id, $userName);
 $uploadDate = time();
 $decodecomment = base64_decode($comment);
-if(Commands::doCommands($id, $decodecomment, $levelID)){
-	exit($gameVersion > 20 ? "temp_0_Command executed successfully!" : "-1");
-}
+$command = Commands::doCommands($id, $decodecomment, $levelID);
+if($command) exit("temp_0_Command executed successfully!");
+$checkCommentBan = $db->prepare("SELECT * FROM users WHERE extID = :accountID AND isCommentBanned = 1");
+$checkCommentBan->execute([':accountID' => $id]);
+if($checkCommentBan->rowCount() > 0) die("-10");
 if($id != "" AND $comment != ""){
 	$query = $db->prepare("INSERT INTO comments (userName, comment, levelID, userID, timeStamp, percent) VALUES (:userName, :comment, :levelID, :userID, :uploadDate, :percent)");
 	$query->execute([':userName' => $userName, ':comment' => $comment, ':levelID' => $levelID, ':userID' => $userID, ':uploadDate' => $uploadDate, ':percent' => $percent]);
