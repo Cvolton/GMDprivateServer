@@ -364,26 +364,26 @@ $string['listTable'] = "Listes";
 $string['listTableMod'] = "Listes non répértoriées";
 $string['listTableYour'] = "Vos listes non répértoriées";
 
-$string['forgotPasswordChangeTitle'] = "Change password";
-$string["successfullyChangedPass"] = "Password was successfully changed!";
-$string['forgotPasswordTitle'] = "Forgot password?";
-$string['maybeSentAMessage'] = "We'll send you a message if this account exists.";
-$string['forgotPasswordDesc'] = "Here you can request change password link if you forgot it!";
-$string['forgotPasswordButton'] = "Request link";
+$string['forgotPasswordChangeTitle'] = "Changer de mot de passe";
+$string["successfullyChangedPass"] = "Votre mot de passe a été modifié avec succès !";
+$string['forgotPasswordTitle'] = "Mot de passe oublié ?";
+$string['maybeSentAMessage'] = "Nous vous enverrons un message si ce compte existe.";
+$string['forgotPasswordDesc'] = "Ici, vous pouvez demander à ce que l'on vous envoie un lien de changement de mot de passe si vous avez oublié le vôtre !";
+$string['forgotPasswordButton'] = "Envoyer le lien";
 
-$string['sfxAdd'] = "Add SFX";
-$string["sfxAddError-5"] = "SFX's size is higher than $SFXsize megabytes!";
-$string["sfxAddError-6"] = "Something went wrong while uploading SFX!";
-$string["sfxAddError-7"] = "You can only upload audio!";
-$string['sfxAdded'] = 'SFX added';
-$string['yourNewSFX'] = "Take a look at your new SFX!";
-$string["sfxAddAnotherBTN"] = "One more SFX?";
-$string["sfxAddDesc"] = "Here you can add your SFX!";
-$string["chooseSFX"] = "Choose SFX";
-$string["sfxAddNameFieldPlaceholder"] = "Name";
+$string['sfxAdd'] = "Ajouter un SFX";
+$string["sfxAddError-5"] = "La taille de votre SFX est supérieur à la taille maximale de $SFXsize mégaoctets !";
+$string["sfxAddError-6"] = "Quelque chose a mal tourné lors de l'upload du SFX !";
+$string["sfxAddError-7"] = "Vous ne pouvez uploader que des fichiers audio !";
+$string['sfxAdded'] = 'SFX ajouté';
+$string['yourNewSFX'] = "Jetez un coup d'œil à votre SFX !";
+$string["sfxAddAnotherBTN"] = "Un autre SFX ?";
+$string["sfxAddDesc"] = "Ici, vous pouvez ré-uploader des SFXs !";
+$string["chooseSFX"] = "Choisir un SFX";
+$string["sfxAddNameFieldPlaceholder"] = "Nom";
 $string['sfxs'] = 'SFXs';
-$string['sfxID'] = 'SFX ID';
-$string['manageSFX'] = 'Manage SFXs';
+$string['sfxID'] = 'ID du SFX';
+$string['manageSFX'] = 'Gérer les SFXs';
 
 /*
 	REUPLOAD
@@ -411,7 +411,7 @@ $string["size"] = "Taille";
 $string["delete"] = "Supprimer";
 $string["change"] = "Changer";
 $string["chooseFile"] = "Choisir une chanson";
-$string['yourNewSong'] = "Take a look at your new song!";
+$string['yourNewSong'] = "Jetez un coup d'œil à votre son !";
 ///errors
 $string["songAddError-2"] = "URL Invalide";
 $string["songAddError-3"] = "Cette chanson à été déjà reupload avec ID:";
@@ -489,12 +489,12 @@ $string["suggestFeatured"] = "En vedette?";
 $string["whoAdded"] = "Qui l'a ajouté?";
 //modActionsList
 $string["banDesc"] = "Ici vous pouvez bannir un joueur du classement!";
-$string["playerTop"] = 'Top of players';
-$string["creatorTop"] = 'Top of creators';
-$string["levelUploading"] = 'Uploading levels';
-$string["successfullyBanned"] = 'Player <b>%1$s</b> with account ID <b>%2$s</b> was successfully banned!';
-$string["successfullyUnbanned"] = 'Player <b>%1$s</b> with account ID <b>%2$s</b> was successfully unbanned!';
-$string["commentBan"] = 'Commenting';
+$string["playerTop"] = 'Meilleurs joueurs';
+$string["creatorTop"] = 'Meilleurs créateurs';
+$string["levelUploading"] = 'Uploader des niveaux';
+$string["successfullyBanned"] = '<b>%1$s</b>, avec l\'ID de compte <b>%2$s</b>, a été banni avec succès !';
+$string["successfullyUnbanned"] = '<b>%1$s</b>, avec l\'ID de compte <b>%2$s</b> a été débanni avec succès !';
+$string["commentBan"] = 'Commentaires';
 
 $string["admin"] = "Administrateur";
 $string["elder"] = "Ancien Modérateur";
