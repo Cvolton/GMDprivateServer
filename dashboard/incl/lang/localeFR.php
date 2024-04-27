@@ -1,5 +1,6 @@
 <?php
-// Translation by @GenericPlayR / masckmaster2007
+// Translation by @GenericPlayR / masckmaster2007 and @M336G / M336
+
 global $dbPath;
 include __DIR__."/../../".$dbPath."config/dashboard.php";
 
