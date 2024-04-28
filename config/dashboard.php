@@ -13,8 +13,6 @@ $SFXsize = 4.5; // Max SFX size in megabytes
 $timeType = 1; // How time will show in-game, 0 - default Cvolton time, 1 - Dashboard-like time, 2 - RobTop-like time
 // If you changed dashboard's place, change $dbPath in dashboard/incl/dashboardLib.php
 
-$sakujes = true; // false = don't rename everyone to sakujes in the leaderboard on april 1st, false = rename everyone to sakujes in the leaderboard on april 1st
- 
 // External download links, disables when you have gdpsName.gdpsFileType in dashboard/download directory
 
 $pc = '';
