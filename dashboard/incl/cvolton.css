@@ -2051,3 +2051,12 @@ body:has(.audio) {
 	visibility: hidden;
 	animation-duration: 0s;
 }
+
+@keyframes fadeInAnimation {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
