@@ -220,7 +220,7 @@ if($res["moons"] == 0) $ms = ''; else $ms = '<p class="profilepic">'.$res["moons
 if($res["diamonds"] == 0) $dm = ''; else $dm = ' <p class="profilepic">'.$res["diamonds"].' <i class="fa-solid fa-gem"></i></p>';
 if($res["coins"] == 0) $gc = ''; else $gc = '<p class="profilepic">'.$res["coins"].' <i class="fa-solid fa-coins" style="color:#ffffbb"></i></p>';
 if($res["userCoins"] == 0) $uc = ''; else $uc = '<p class="profilepic">'.$res["userCoins"].' <i class="fa-solid fa-coins"></i></p>';
-if($res["demons"] == 0) $dn = ''; else $dn = '<p class="profilepic">'.$res["demons"].' <i class="fa-solid fa-dragon"></i></p>';
+if($res["demons"] == 0) $dn = ''; else $dn = '<p class="profilepic">'.$res["demons"].' <i class="fa-solid fa-face-angry"></i></p>';
 if($res["isCreatorBanned"] == 1) {
 	$banhaha = 'style="text-decoration:line-through;color:#432529"';
 	$creatorban = 'style="text-decoration: line-through"';
@@ -283,12 +283,14 @@ if($gs->isPlayerInClan($accid)) {
 	if($claninfo["clanOwner"] == $accid) $own = '<i style="color:#ffff91" class="fa-solid fa-crown"></i>';
 	$clan = '<button type="button" onclick="a(\'clan/'.$claninfo["clan"].'\', true, true)" style="display:contents;cursor:pointer"><h2 class="music" style="grid-gap:5px;color:#'.$claninfo["color"].'">'.$claninfo["clan"].$own.'</h2></button>';
 }
+$kit = '<img src="https://gdicon.oat.zone/icon.png?type=cube&value='.$res['accIcon'].'&color1='.$res['color1'].'&color2='.$res['color2'].'" height="60px"><img src="https://gdicon.oat.zone/icon.png?type=ship&value='.$res['accShip'].'&color1='.$res['color1'].'&color2='.$res['color2'].'" height="45px"><img src="https://gdicon.oat.zone/icon.png?type=ball&value='.$res['accBall'].'&color1='.$res['color1'].'&color2='.$res['color2'].'" height="60px"><img src="https://gdicon.oat.zone/icon.png?type=ufo&value='.$res['accBird'].'&color1='.$res['color1'].'&color2='.$res['color2'].'" height="60px"><img src="https://gdicon.oat.zone/icon.png?type=wave&value='.$res['accDart'].'&color1='.$res['color1'].'&color2='.$res['color2'].'" height="40px"><img src="https://gdicon.oat.zone/icon.png?type=robot&value='.$res['accRobot'].'&color1='.$res['color1'].'&color2='.$res['color2'].'" height="60px"><img src="https://gdicon.oat.zone/icon.png?type=spider&value='.$res['accSpider'].'&color1='.$res['color1'].'&color2='.$res['color2'].'" height="60px"><img src="https://gdicon.oat.zone/icon.png?type=swing&value='.$res['accSwing'].'&color1='.$res['color1'].'&color2='.$res['color2'].'" height="60px"><img src="https://gdicon.oat.zone/icon.png?type=jetpack&value='.$res['accJetpack'].'&color1='.$res['color1'].'&color2='.$res['color2'].'" height="60px">';
 $dl->printSong('<div class="form profileform">
     	<div style="height: 100%;width: 100%;"><div style="display: flex;align-items: center;justify-content: center;">
         	'.$back.'
               <div class="profilewclanname">'.$maybeban.$clan.'</div>'.$msgtopl.$points.'
         </div>
         <div class="form-control" style="display: flex;width: 100%;height: max-content;align-items: center;">'.$all.'</div>
+		<div class="form-control" style="display: flex;width: 100%;height: max-content;justify-content: space-between;margin-top:10px;padding: 5px 5%;align-items:center">'.$kit.'</div>
         <div class="form-control dmbox" style="overflow-wrap: anywhere;display: flex;border-radius: 30px;margin-top: 20px;flex-wrap: wrap;padding-top: 0;max-height: 45vh;padding-bottom: 10px;min-width: 100%;height: max-content;margin-bottom: 17px;align-items: center;">
         	'.$comments.'
         </div>
