@@ -11,6 +11,9 @@
 	.packfc .profilepic {font-size: 15px !important;}
 	.itemsbox {width: 75% !important;}
 	.songUploadDiv {min-width: 55vw !important;}
+	.icon-cube, .icon-ball, .icon-ufo, .icon-robot, .icon-spider, .icon-swing, .icon-jetpack {height: 50px !important;}
+	.icon-ship {height: 37px !important;}
+	.icon-wave {height: 33px !important;}
 }
 
 @media (min-width: 1537px) {
@@ -96,6 +99,11 @@
 	.audioDiv .cover i {font-size: 40px !important;}
 	.queueDiv .cover, .queueDiv .image {width: 55px !important; height: 55px !important}
 	.audioDiv:not(.show):not(.showButton):not(.queueDiv), .audioDiv.showButton:not(.show) {animation-duration: 0s !important;}
+	.icon-cube, .icon-ball, .icon-ufo, .icon-robot, .icon-spider, .icon-swing, .icon-jetpack {height: 45px !important;}
+	.icon-ship {height: 30px !important;}
+	.icon-wave {height: 27px !important;}
+	.icon-kit-div {width: 20% !important;}
+	.icon-kit {flex-wrap: wrap !important;}
 }
 
 * {
@@ -1182,7 +1190,7 @@ label {
 .profileform {
 	width: 60vw;
 	max-height: max-content;
-	position:relative;
+	position: relative;
 }
 
 .dlemptycard {
@@ -2069,6 +2077,7 @@ body:has(.audio) {
 	margin-top:10px;
 	padding: 5px 5%;
 	align-items: center;
+	border-radius: 20px;
 }
 
 .profile-stats {
@@ -2104,4 +2113,22 @@ body:has(.audio) {
    display: flex;
    align-content: center;
    justify-content: center;
+}
+
+.icon-ship {
+	height: 45px;
+}
+
+.icon-wave {
+	height: 40px;
+}
+
+.icon-cube,
+.icon-ball,
+.icon-ufo,
+.icon-robot,
+.icon-spider,
+.icon-swing,
+.icon-jetpack {
+	height: 60px;
 }
