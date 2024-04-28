@@ -39,8 +39,10 @@ Audio duration — https://github.com/JamesHeinrich/getID3 — (config/getid3)
 
 Proxies list — https://github.com/SevenworksDev/proxy-list — (config/proxies.txt)
 
-Common VPNs list - https://github.com/X4BNet/lists_vpn (config/vpns.txt)
+Common VPNs list — https://github.com/X4BNet/lists_vpn — (config/vpns.txt)
 
-Discord Webhooks - https://github.com/renzbobz/DiscordWebhook-PHP (config/webhooks/DiscordWebhook.php)
+Discord Webhooks — https://github.com/renzbobz/DiscordWebhook-PHP — (config/webhooks/DiscordWebhook.php)
+
+GD icons — https://github.com/oatmealine/gd-icon-renderer-web — (dashboard/profile/index.php)
 
 Most of the stuff in generateHash.php has been figured out by pavlukivan and Italian APK Downloader, so credits to them

@@ -2051,3 +2051,57 @@ body:has(.audio) {
 	visibility: hidden;
 	animation-duration: 0s;
 }
+
+@keyframes fadeInAnimation {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+.icon-kit {
+	display: flex;
+	width: 100%;
+	height: max-content;
+	justify-content: space-between;
+	margin-top:10px;
+	padding: 5px 5%;
+	align-items: center;
+}
+
+.profile-stats {
+	display: flex;
+	width: 100%;
+	height: max-content;
+	align-items: center;
+}
+
+.profile-comments {
+	overflow-wrap: anywhere;
+	display: flex;
+	border-radius: 30px;
+	margin-top: 20px;
+	flex-wrap: wrap;
+	padding-top: 0;
+	max-height: 45vh;
+	padding-bottom: 10px;
+	min-width: 100%;
+	height: max-content;
+	margin-bottom: 17px;
+	align-items: center; 
+}
+
+.icon-kit-icon {
+	animation: fadeInAnimation ease 1s;
+	animation-iteration-count: 1;
+	animation-fill-mode: forwards;
+}
+
+.icon-kit-div {
+	width: 100%;
+   display: flex;
+   align-content: center;
+   justify-content: center;
+}
