@@ -1344,7 +1344,9 @@ class mainLib {
 		$descriptionField = [$this->webhookLanguage('descTitle', $webhookLangArray), (!empty($level['levelDesc']) ? base64_decode($level['levelDesc']) : $this->webhookLanguage('descDesc', $webhookLangArray)), false];
 		$setThumbnail = 'https://gcs.icu/WTFIcons/difficulties/'.$starsIcon.'/'.$diffIcon.'.png';
 		$setFooter = sprintf($this->webhookLanguage('footer', $webhookLangArray), $gdps);
+		if (!empty($rateNotificationRole)) $rateNotificationRole = '<@&'.$rateNotificationRole.'>';
 		$dw->newMessage()
+		->setContent($rateNotificationRole)
 		->setAuthor($gdps, $authorURL, $authorIconURL)
 		->setColor($setColor)
 		->setTitle($setTitle, $rateTitleURL)
@@ -1464,7 +1466,9 @@ class mainLib {
 		$descriptionField = [$this->webhookLanguage('descTitle', $webhookLangArray), (!empty($level['levelDesc']) ? base64_decode($level['levelDesc']) : $this->webhookLanguage('descDesc', $webhookLangArray)), false];
 		$setThumbnail = 'https://gcs.icu/WTFIcons/difficulties/'.$starsIcon.'/'.$diffIcon.'.png';
 		$setFooter = sprintf($this->webhookLanguage('footerSuggest', $webhookLangArray), $gdps);
+		if (!empty($suggestNotificationRole)) $suggestNotificationRole = '<@&'.$suggestNotificationRole.'>';
 		$dw->newMessage()
+		->setContent($suggestNotificationRole)
 		->setAuthor($gdps, $authorURL, $authorIconURL)
 		->setColor($setColor)
 		->setTitle($setTitle, $rateTitleURL)
@@ -1508,7 +1512,9 @@ class mainLib {
 		$proofField = [$this->webhookLanguage('recordProofTitle', $webhookLangArray), "https://youtu.be/".$record['ytlink'], true];
 		$setThumbnail = $demonlistThumbnailURL;
 		$setFooter = sprintf($this->webhookLanguage('footer', $webhookLangArray), $gdps);
+		if (!empty($dlsubmitNotificationRole)) $dlsubmitNotificationRole = '<@&'.$dlsubmitNotificationRole.'>';
 		$dw->newMessage()
+		->setContent($dlsubmitNotificationRole)
 		->setAuthor($gdps, $authorURL, $authorIconURL)
 		->setColor($setColor)
 		->setTitle($setTitle, $rateTitleURL)
@@ -1566,7 +1572,9 @@ class mainLib {
 		$proofField = [$this->webhookLanguage('recordProofTitle', $webhookLangArray), "https://youtu.be/".$record['ytlink'], true];
 		$setThumbnail = $demonlistThumbnailURL;
 		$setFooter = sprintf($this->webhookLanguage('footer', $webhookLangArray), $gdps);
+		if (!empty($dlresultNotificationRole)) $dlresultNotificationRole = '<@&'.$dlresultNotificationRole.'>';
 		$dw->newMessage()
+		->setContent($dlresultNotificationRole)
 		->setAuthor($gdps, $authorURL, $authorIconURL)
 		->setColor($setColor)
 		->setTitle($setTitle, $demonlistTitleURL)
@@ -1692,7 +1700,9 @@ class mainLib {
 		}
 		$modField = [$this->webhookLanguage('playerModTitle', $webhookLangArray), $modFormattedUsername, true];
 		$reasonField = [$this->webhookLanguage('playerReasonTitle', $webhookLangArray), $user['banReason'] != 'none' ? $user['banReason'] : $this->webhookLanguage('playerBanReason', $webhookLangArray), true];
+		if (!empty($banNotificationRole)) $banNotificationRole = '<@&'.$banNotificationRole.'>';
 		$dw->newMessage()
+		->setContent($banNotificationRole)
 		->setAuthor($gdps, $authorURL, $authorIconURL)
 		->setColor($setColor)
 		->setTitle($setTitle, $demonlistTitleURL)
