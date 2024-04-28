@@ -283,15 +283,33 @@ if($gs->isPlayerInClan($accid)) {
 	if($claninfo["clanOwner"] == $accid) $own = '<i style="color:#ffff91" class="fa-solid fa-crown"></i>';
 	$clan = '<button type="button" onclick="a(\'clan/'.$claninfo["clan"].'\', true, true)" style="display:contents;cursor:pointer"><h2 class="music" style="grid-gap:5px;color:#'.$claninfo["color"].'">'.$claninfo["clan"].$own.'</h2></button>';
 }
-$kit = '<img src="https://gdicon.oat.zone/icon.png?type=cube&value='.$res['accIcon'].'&color1='.$res['color1'].'&color2='.$res['color2'].'" height="60px" style="animation: fadeInAnimation ease 1s;animation-iteration-count: 1"><img src="https://gdicon.oat.zone/icon.png?type=ship&value='.$res['accShip'].'&color1='.$res['color1'].'&color2='.$res['color2'].'" height="45px" style="animation: fadeInAnimation ease 1s;animation-iteration-count: 1"><img src="https://gdicon.oat.zone/icon.png?type=ball&value='.$res['accBall'].'&color1='.$res['color1'].'&color2='.$res['color2'].'" height="60px" style="animation: fadeInAnimation ease 1s;animation-iteration-count: 1"><img src="https://gdicon.oat.zone/icon.png?type=ufo&value='.$res['accBird'].'&color1='.$res['color1'].'&color2='.$res['color2'].'" height="60px" style="animation: fadeInAnimation ease 1s;animation-iteration-count: 1"><img src="https://gdicon.oat.zone/icon.png?type=wave&value='.$res['accDart'].'&color1='.$res['color1'].'&color2='.$res['color2'].'" height="40px" style="animation: fadeInAnimation ease 1s;animation-iteration-count: 1"><img src="https://gdicon.oat.zone/icon.png?type=robot&value='.$res['accRobot'].'&color1='.$res['color1'].'&color2='.$res['color2'].'" height="60px" style="animation: fadeInAnimation ease 1s;animation-iteration-count: 1"><img src="https://gdicon.oat.zone/icon.png?type=spider&value='.$res['accSpider'].'&color1='.$res['color1'].'&color2='.$res['color2'].'" height="60px" style="animation: fadeInAnimation ease 1s;animation-iteration-count: 1"><img src="https://gdicon.oat.zone/icon.png?type=swing&value='.$res['accSwing'].'&color1='.$res['color1'].'&color2='.$res['color2'].'" height="60px" style="animation: fadeInAnimation ease 1s;animation-iteration-count: 1"><img src="https://gdicon.oat.zone/icon.png?type=jetpack&value='.$res['accJetpack'].'&color1='.$res['color1'].'&color2='.$res['color2'].'" height="60px" style="animation: fadeInAnimation ease 1s;animation-iteration-count: 1">';
+$kit = '<div class="icon-kit-div">
+	<img src="https://gdicon.oat.zone/icon.png?type=cube&value='.($res['accIcon'] ? $res['accIcon'] : 1).'&color1='.$res['color1'].'&color2='.$res['color2'].'" height="60px" class="icon-kit-icon" style="opacity: 0;">
+</div><div class="icon-kit-div">
+	<img src="https://gdicon.oat.zone/icon.png?type=ship&value='.($res['accShip'] ? $res['accShip'] : 1).'&color1='.$res['color1'].'&color2='.$res['color2'].'" height="45px" class="icon-kit-icon" style="opacity: 0; animation-delay: 100ms;">
+</div><div class="icon-kit-div">
+	<img src="https://gdicon.oat.zone/icon.png?type=ball&value='.($res['accBall'] ? $res['accBall'] : 1).'&color1='.$res['color1'].'&color2='.$res['color2'].'" height="60px" class="icon-kit-icon" style="opacity: 0; animation-delay: 150ms;">
+</div><div class="icon-kit-div">
+	<img src="https://gdicon.oat.zone/icon.png?type=ufo&value='.($res['accBird'] ? $res['accBird'] : 1).'&color1='.$res['color1'].'&color2='.$res['color2'].'" height="60px" class="icon-kit-icon" style="opacity: 0; animation-delay: 200ms;">
+</div><div class="icon-kit-div">
+	<img src="https://gdicon.oat.zone/icon.png?type=wave&value='.($res['accDart'] ? $res['accDart'] : 1).'&color1='.$res['color1'].'&color2='.$res['color2'].'" height="40px" class="icon-kit-icon" style="opacity: 0; animation-delay: 250ms;">
+</div><div class="icon-kit-div">
+	<img src="https://gdicon.oat.zone/icon.png?type=robot&value='.($res['accRobot'] ? $res['accRobot'] : 1).'&color1='.$res['color1'].'&color2='.$res['color2'].'" height="60px" class="icon-kit-icon" style="opacity: 0; animation-delay: 300ms;">
+</div><div class="icon-kit-div">
+	<img src="https://gdicon.oat.zone/icon.png?type=spider&value='.($res['accSpider'] ? $res['accSpider'] : 1).'&color1='.$res['color1'].'&color2='.$res['color2'].'" height="60px" class="icon-kit-icon" style="opacity: 0; animation-delay: 350ms;">
+</div><div class="icon-kit-div">
+	<img src="https://gdicon.oat.zone/icon.png?type=swing&value='.($res['accSwing'] ? $res['accSwing'] : 1).'&color1='.$res['color1'].'&color2='.$res['color2'].'" height="60px" class="icon-kit-icon" style="opacity: 0; animation-delay: 400ms;">
+</div><div class="icon-kit-div">
+	<img src="https://gdicon.oat.zone/icon.png?type=jetpack&value='.($res['accJetpack'] ? $res['accJetpack'] : 1).'&color1='.$res['color1'].'&color2='.$res['color2'].'" height="60px" class="icon-kit-icon" style="opacity: 0; animation-delay: 450ms;">
+</div>';
 $dl->printSong('<div class="form profileform">
     	<div style="height: 100%;width: 100%;"><div style="display: flex;align-items: center;justify-content: center;">
         	'.$back.'
               <div class="profilewclanname">'.$maybeban.$clan.'</div>'.$msgtopl.$points.'
         </div>
-        <div class="form-control" style="display: flex;width: 100%;height: max-content;align-items: center;">'.$all.'</div>
-		<div class="form-control" style="display: flex;width: 100%;height: max-content;justify-content: space-between;margin-top:10px;padding: 5px 5%;align-items:center;">'.$kit.'</div>
-        <div class="form-control dmbox" style="overflow-wrap: anywhere;display: flex;border-radius: 30px;margin-top: 20px;flex-wrap: wrap;padding-top: 0;max-height: 45vh;padding-bottom: 10px;min-width: 100%;height: max-content;margin-bottom: 17px;align-items: center;">
+        <div class="form-control profile-stats">'.$all.'</div>
+		<div class="form-control icon-kit">'.$kit.'</div>
+        <div class="form-control dmbox profile-comments">
         	'.$comments.'
         </div>
 		'.$send.'
