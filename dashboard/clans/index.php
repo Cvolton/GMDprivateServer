@@ -17,7 +17,7 @@ include "../".$dbPath."incl/lib/connection.php";
 $isPlayerInClan = $gs->isPlayerInClan($_SESSION["accountID"]);
 $dl->printFooter('../');
 $dl->title($dl->getLocalizedString("clans"));
-$clans = $db->prepare("SELECT * FROM clans ORDER BY creationDate DESC");
+$clans = $db->prepare("SELECT clans.*, COUNT(users.clan) AS members FROM clans LEFT JOIN users ON clans.id = users.clan GROUP BY clans.id ORDER BY members DESC;");
 $clans->execute();
 $clans = $clans->fetchAll();
 $style = $closed = $create = "";
