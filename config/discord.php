@@ -33,11 +33,11 @@ $bottoken = "";
 	Current available languages: EN — English (English), RU — Russian (Русский), TR — Turkish (Türkçe), UA — Ukrainian (Українська), FR — French (Français) and ES — Spanish (Español)
 	
 	Emojis:
-		$likeEmoji — Custom like emoji (👍)
-		$dislikeEmoji — Custom dislike emoji (👎)
-		$downloadEmoji — Custom download emoji (⤵️)
-		$tadaEmoji — Custom tada emoji (🎉)
-		$sobEmoji — Custom sob emoji (😭)
+		$likeEmoji — Custom like emoji ()
+		$dislikeEmoji — Custom dislike emoji ()
+		$downloadEmoji — Custom download emoji ()
+		$tadaEmoji — Custom tada emoji ()
+		$sobEmoji — Custom sob emoji ()
 	
 	Embed config:
 		$authorURL — URL to open when author text is clicked
@@ -82,10 +82,18 @@ $failColor = "FFBBBB";
 $pendingColor = "FFCCBB";
 $footerIconURL = "";
 $demonlistThumbnailURL = "";
-$demonlistLink = "https://example.com/dashboard/demonlist";
+$demonlistLink = "https://example.com/dashboard/demonlist"; // dont add another slash at the end!
 $linkThumbnailURL = "";
 $unlinkThumbnailURL = "";
 $acceptThumbnailURL = "";
 $banThumbnailURL = "";
 $unbanThumbnailURL = "";
+
+// Here you can set role IDs for webhooks which will be mentioned
+$rateNotificationRole = "";
+$suggestNotificationRole = "";
+$dlsubmitNotificationRole = ""; // new submits
+$dlrecordNotificationRole = ""; // approved/denied submits
+$banNotificationRole = "";
+?>
 ?>
