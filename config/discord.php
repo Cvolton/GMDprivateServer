@@ -33,11 +33,11 @@ $bottoken = "";
 	Current available languages: EN — English (English), RU — Russian (Русский), TR — Turkish (Türkçe), UA — Ukrainian (Українська), FR — French (Français) and ES — Spanish (Español)
 	
 	Emojis:
-		$likeEmoji — Custom like emoji ()
-		$dislikeEmoji — Custom dislike emoji ()
-		$downloadEmoji — Custom download emoji ()
-		$tadaEmoji — Custom tada emoji ()
-		$sobEmoji — Custom sob emoji ()
+		$likeEmoji — Custom like emoji (👍)
+		$dislikeEmoji — Custom dislike emoji (👎)
+		$downloadEmoji — Custom download emoji (⤵️)
+		$tadaEmoji — Custom tada emoji (🎉)
+		$sobEmoji — Custom sob emoji (😭)
 	
 	Embed config:
 		$authorURL — URL to open when author text is clicked
@@ -95,10 +95,10 @@ $unbanThumbnailURL = "";
  	And people: <@user_id>
   	And channels: <#channel_id>
 */
+
 $rateNotificationText = "";
 $suggestNotificationText = "";
 $dlsubmitNotificationText = ""; // new submits
 $dlrecordNotificationText = ""; // approved/denied submits
 $banNotificationText = "";
-?>
 ?>
