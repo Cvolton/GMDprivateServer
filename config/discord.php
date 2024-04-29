@@ -89,11 +89,16 @@ $acceptThumbnailURL = "";
 $banThumbnailURL = "";
 $unbanThumbnailURL = "";
 
-// Here you can set role IDs for webhooks which will be mentioned
-$rateNotificationRole = "";
-$suggestNotificationRole = "";
-$dlsubmitNotificationRole = ""; // new submits
-$dlrecordNotificationRole = ""; // approved/denied submits
-$banNotificationRole = "";
+/* 
+	This is the text which will be sent with notifications but outside of embed.
+	You can mention roles: <@&role_id>
+ 	And people: <@user_id>
+  	And channels: <#channel_id>
+*/
+$rateNotificationText = "";
+$suggestNotificationText = "";
+$dlsubmitNotificationText = ""; // new submits
+$dlrecordNotificationText = ""; // approved/denied submits
+$banNotificationText = "";
 ?>
 ?>
