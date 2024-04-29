@@ -29,11 +29,11 @@ $iosLauncher = "";
 
 // Footer socials settings, leave empty to disable
 
-$vk = ''; // Like https://vk.com/*your vk*
-$discord = ''; // Like https://discord.gg/*discord invite*
-$twitter = ''; // Like https://twitter.com/*your twitter username*
-$youtube = ''; // Like https://youtube.com/channel/*your channel id* or https://youtube.com/c/*your channel name*
-$twitch = ''; // Like https://twitch.tv/*your twitch*
+$vk = ''; // Link to your VK page
+$discord = ''; // Link to your Discord server
+$twitter = ''; // Link to your Twitter/X page
+$youtube = ''; // Link to your YouTube channel
+$twitch = ''; // Link to your Twitch channel
 
 // Third-party resourses, fill it if you use something (mods, textures, etc). Syntax of this thing is: array('AVATAR', 'USERNAME', 'SOCIAL OF THIS USER', 'What this person did (optionally)');
 
