@@ -1345,6 +1345,7 @@ class mainLib {
 		$setThumbnail = 'https://gcs.icu/WTFIcons/difficulties/'.$starsIcon.'/'.$diffIcon.'.png';
 		$setFooter = sprintf($this->webhookLanguage('footer', $webhookLangArray), $gdps);
 		$dw->newMessage()
+		->setContent($rateNotificationText)
 		->setAuthor($gdps, $authorURL, $authorIconURL)
 		->setColor($setColor)
 		->setTitle($setTitle, $rateTitleURL)
@@ -1465,6 +1466,7 @@ class mainLib {
 		$setThumbnail = 'https://gcs.icu/WTFIcons/difficulties/'.$starsIcon.'/'.$diffIcon.'.png';
 		$setFooter = sprintf($this->webhookLanguage('footerSuggest', $webhookLangArray), $gdps);
 		$dw->newMessage()
+		->setContent($suggestNotificationText)
 		->setAuthor($gdps, $authorURL, $authorIconURL)
 		->setColor($setColor)
 		->setTitle($setTitle, $rateTitleURL)
@@ -1509,6 +1511,7 @@ class mainLib {
 		$setThumbnail = $demonlistThumbnailURL;
 		$setFooter = sprintf($this->webhookLanguage('footer', $webhookLangArray), $gdps);
 		$dw->newMessage()
+		->setContent($dlsubmitNotificationText)
 		->setAuthor($gdps, $authorURL, $authorIconURL)
 		->setColor($setColor)
 		->setTitle($setTitle, $rateTitleURL)
@@ -1567,6 +1570,7 @@ class mainLib {
 		$setThumbnail = $demonlistThumbnailURL;
 		$setFooter = sprintf($this->webhookLanguage('footer', $webhookLangArray), $gdps);
 		$dw->newMessage()
+		->setContent($dlresultNotificationText)
 		->setAuthor($gdps, $authorURL, $authorIconURL)
 		->setColor($setColor)
 		->setTitle($setTitle, $demonlistTitleURL)
@@ -1693,6 +1697,7 @@ class mainLib {
 		$modField = [$this->webhookLanguage('playerModTitle', $webhookLangArray), $modFormattedUsername, true];
 		$reasonField = [$this->webhookLanguage('playerReasonTitle', $webhookLangArray), $user['banReason'] != 'none' ? $user['banReason'] : $this->webhookLanguage('playerBanReason', $webhookLangArray), true];
 		$dw->newMessage()
+		->setContent($banNotificationText)
 		->setAuthor($gdps, $authorURL, $authorIconURL)
 		->setColor($setColor)
 		->setTitle($setTitle, $demonlistTitleURL)

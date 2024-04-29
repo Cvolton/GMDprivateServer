@@ -82,10 +82,23 @@ $failColor = "FFBBBB";
 $pendingColor = "FFCCBB";
 $footerIconURL = "";
 $demonlistThumbnailURL = "";
-$demonlistLink = "https://example.com/dashboard/demonlist";
+$demonlistLink = "https://example.com/dashboard/demonlist"; // dont add another slash at the end!
 $linkThumbnailURL = "";
 $unlinkThumbnailURL = "";
 $acceptThumbnailURL = "";
 $banThumbnailURL = "";
 $unbanThumbnailURL = "";
+
+/* 
+	This is the text which will be sent with notifications but outside of embed.
+	You can mention roles: <@&role_id>
+ 	And people: <@user_id>
+  	And channels: <#channel_id>
+*/
+
+$rateNotificationText = "";
+$suggestNotificationText = "";
+$dlsubmitNotificationText = ""; // new submits
+$dlrecordNotificationText = ""; // approved/denied submits
+$banNotificationText = "";
 ?>
