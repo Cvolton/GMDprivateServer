@@ -371,7 +371,7 @@ $string['forgotPasswordDesc'] = "Здесь вы можете запросить
 $string['forgotPasswordButton'] = "Запросить ссылку";
 
 $string['sfxAdd'] = "Добавить звуковой эффект";
-$string["sfxAddError-5"] = "Звуковой эффект весит больше $SFXsize мегабайт!";
+$string["sfxAddError-5"] = "Звуковой эффект весит больше $sfxSize мегабайт!";
 $string["sfxAddError-6"] = "Что-то случилось при загрузке звукового эффекта!";
 $string["sfxAddError-7"] = "Загружать можно только аудиофайлы!";
 $string['sfxAdded'] = 'Звуковой эффект загружен';

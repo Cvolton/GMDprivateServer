@@ -16,7 +16,7 @@ if($convertEnabled && $_POST['token'] && $_FILES && $_FILES['file']['error'] == 
 	if(!$check) exit(json_encode(['success' => false, 'code' => 1, 'error' => 'Invalid token.']));
 	$info = new finfo(FILEINFO_MIME);
 	$file_type = explode(';', $info->buffer(file_get_contents($_FILES['file']['tmp_name'])))[0];
-	if($file_type != 'audio/ogg' || $_FILES['file']['size'] >= $SFXsize * 1024 * 1024 || $_FILES['file']['size'] == 0) exit(json_encode(['success' => false, 'code' => 2, 'error' => 'Invalid file.']));
+	if($file_type != 'audio/ogg' || $_FILES['file']['size'] >= $sfxSize * 1024 * 1024 || $_FILES['file']['size'] == 0) exit(json_encode(['success' => false, 'code' => 2, 'error' => 'Invalid file.']));
 	move_uploaded_file($_FILES['file']['tmp_name'], $check.'.ogg');
 	if(file_exists($check.'_temp.ogg')) unlink($check.'_temp.ogg');
 	$song = $server.$check.".ogg";
