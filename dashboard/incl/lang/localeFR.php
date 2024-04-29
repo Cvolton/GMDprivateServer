@@ -373,7 +373,7 @@ $string['forgotPasswordDesc'] = "Ici, vous pouvez demander à ce que l'on vous e
 $string['forgotPasswordButton'] = "Envoyer le lien";
 
 $string['sfxAdd'] = "Ajouter un SFX";
-$string["sfxAddError-5"] = "La taille de votre SFX est supérieur à la taille maximale de $SFXsize mégaoctets !";
+$string["sfxAddError-5"] = "La taille de votre SFX est supérieur à la taille maximale de $sfxSize mégaoctets !";
 $string["sfxAddError-6"] = "Quelque chose a mal tourné lors de l'upload du SFX !";
 $string["sfxAddError-7"] = "Vous ne pouvez uploader que des fichiers audio !";
 $string['sfxAdded'] = 'SFX ajouté';

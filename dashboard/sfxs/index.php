@@ -38,7 +38,7 @@ if($_FILES && $_FILES['filename']['error'] == UPLOAD_ERR_OK) {
 	else {
 		if($_FILES['filename']['size'] == 0) $db_fid = -6;
 		else {
-			if($_FILES['filename']['size'] >= $SFXsize * 1024 * 1024) $db_fid = -5;
+			if($_FILES['filename']['size'] >= $sfxSize * 1024 * 1024) $db_fid = -5;
 			else {
 				$time = time();
 				$length = 10;
@@ -148,7 +148,7 @@ if($_FILES && $_FILES['filename']['error'] == UPLOAD_ERR_OK) {
 				sn = document.getElementById("songnamelol");
 				const upload = document.getElementById("labelupload");
 				const btn = document.getElementById("submit");
-				if(file.size > '.$SFXsize * 1024 * 1024 .') {
+				if(file.size > '.$sfxSize * 1024 * 1024 .') {
 					sn.innerHTML = "'.$dl->getLocalizedString("sfxAddError-5").'";
 					upload.classList.add("btn-size");
 					btn.disabled = true;

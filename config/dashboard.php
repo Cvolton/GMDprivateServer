@@ -9,7 +9,7 @@ $songEnabled = 12; // 0 = Song reupload disabled, add 1 to enable song file reup
 $sfxEnabled = 12; // 0 = SFX reupload disabled, add 1 to enable SFX file reupload, add 2 to enable SFX link reupload (not implemented yet)
 $convertEnabled = 1; // 1 = Convert SFX to OGG enabled, 0 = disabled
 $songSize = 8; // Max song size in megabytes
-$SFXsize = 4.5; // Max SFX size in megabytes
+$sfxSize = 4.5; // Max SFX size in megabytes
 $timeType = 1; // How time will show in-game, 0 - default Cvolton time, 1 - Dashboard-like time, 2 - RobTop-like time
 // If you changed dashboard's place, change $dbPath in dashboard/incl/dashboardLib.php
 
@@ -29,9 +29,9 @@ $iosLauncher = "";
 
 // Footer socials settings, leave empty to disable
 
-$vk = ''; // Как https://vk.com/*твой вк*
+$vk = ''; // Like https://vk.com/*your vk*
 $discord = ''; // Like https://discord.gg/*discord invite*
-$twitter = ''; // I don't have twitter
+$twitter = ''; // Like https://twitter.com/*your twitter username*
 $youtube = ''; // Like https://youtube.com/channel/*your channel id* or https://youtube.com/c/*your channel name*
 $twitch = ''; // Like https://twitch.tv/*your twitch*
 

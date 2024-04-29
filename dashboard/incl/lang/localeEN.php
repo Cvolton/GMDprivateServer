@@ -371,7 +371,7 @@ $string['forgotPasswordDesc'] = "Here you can request change password link if yo
 $string['forgotPasswordButton'] = "Request link";
 
 $string['sfxAdd'] = "Add SFX";
-$string["sfxAddError-5"] = "SFX's size is higher than $SFXsize megabytes!";
+$string["sfxAddError-5"] = "SFX's size is higher than $sfxSize megabytes!";
 $string["sfxAddError-6"] = "Something went wrong while uploading SFX!";
 $string["sfxAddError-7"] = "You can only upload audio!";
 $string['sfxAdded'] = 'SFX added';
