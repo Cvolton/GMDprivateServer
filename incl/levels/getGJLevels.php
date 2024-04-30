@@ -188,7 +188,7 @@ switch($type){
 	case 17: //featured GDW //TODO: make this list of daily levels
 		if($gameVersion > 21) $params[] = "NOT starFeatured = 0 OR NOT starEpic = 0";
 		else $params[] = "NOT starFeatured = 0";
-		$order = "rateDate DESC,uploadDate";
+		$order = "starFeatured DESC,uploadDate";
 		break;
 	case 16: //HALL OF FAME
 		$params[] = "NOT starEpic = 0";
