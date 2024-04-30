@@ -354,13 +354,13 @@ if(!empty($clan)) {
 			<h3 class="comments clancreatetext">'.sprintf($dl->getLocalizedString("createdAt"), $dl->convertToDate($clan["creationDate"], true)).'</h3>
 		</div></div>';
     }
-	if($allstars == 0) $st = ''; else $allst = '<p class="profilepic">'.$allstars.' <i class="fa-solid fa-star"></i></p>';
-	if($allmoons == 0) $ms = ''; else $allms = '<p class="profilepic">'.$allmoons.' <i class="fa-solid fa-moon"></i></p>';
-    if($alldias == 0) $dm = ''; else $alldm = ' <p class="profilepic">'.$alldias.' <i class="fa-solid fa-gem"></i></p>';
-    if($allcoins == 0) $gc = ''; else $allgc = '<p class="profilepic">'.$allcoins.' <i class="fa-solid fa-coins" style="color:#ffffbb"></i></p>';
-    if($allucoins == 0) $uc = ''; else $alluc = '<p class="profilepic">'.$allucoins.' <i class="fa-solid fa-coins"></i></p>';
-    if($alldemons == 0) $dn = ''; else $alldn = '<p class="profilepic">'.$alldemons.' <i class="fa-solid fa-dragon"></i></p>';
-    if($allcp == 0) $cp = ''; else $allcp = '<p class="profilepic">'.$allcp.' <i class="fa-solid fa-screwdriver-wrench"></i></p>';
+	if($allstars == 0) $st = ''; else $allst = '<p class="profilepic">'.$allstars.' <i class="fa-solid fa-star" style="color:#ffff5b"></i></p>';
+	if($allmoons == 0) $ms = ''; else $allms = '<p class="profilepic">'.$allmoons.' <i class="fa-solid fa-moon" style="color:#244689"></i></p>';
+    	if($alldias == 0) $dm = ''; else $alldm = ' <p class="profilepic">'.$alldias.' <i class="fa-solid fa-gem" style="color:#537dd1"></i></p>';
+    	if($allcoins == 0) $gc = ''; else $allgc = '<p class="profilepic">'.$allcoins.' <i class="fa-solid fa-coins" style="color:#fae502"></i></p>';
+    	if($allucoins == 0) $uc = ''; else $alluc = '<p class="profilepic">'.$allucoins.' <i class="fa-solid fa-coins"></i></p>';
+    	if($alldemons == 0) $dn = ''; else $alldn = '<p class="profilepic">'.$alldemons.' <i class="fa-solid fa-dragon" style="color:#c81003"></i></p>';
+    	if($allcp == 0) $cp = ''; else $allcp = '<p class="profilepic">'.$allcp.' <i class="fa-solid fa-screwdriver-wrench" style="color:#7f7f7f"></i></p>';
 	$allstats = $allst.$allms.$alldm.$allgc.$alluc.$alldn.$allcp;
 	if(empty($allstats)) $allstats = '<p style="font-size:25px;color:#212529">'.$dl->getLocalizedString("empty").'</p>';
 	$total = '<div style="width: 100%;display: flex;flex-wrap: wrap;justify-content: center;margin-top:10px">
