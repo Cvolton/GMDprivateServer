@@ -140,9 +140,9 @@ if(isset($_POST["settings"]) AND $_POST["settings"] == 1 AND $accid == $_SESSION
         $query = $db->prepare("SELECT mS, frS, cS, youtubeurl, twitter, twitch, timezone FROM accounts WHERE accountID=:id");
         $query->execute([':id' => $accid]);
         $query = $query->fetch();
-		$query["youtubeurl"] = preg_replace("/(?!^@)[^a-zA-Z0-9_]/", "", $query["youtubeurl"]);
-		$query["twitter"] = preg_replace("/[^a-zA-Z0-9_]/", "", $query["twitter"]);
-		$query["twitch"] = preg_replace("/[^a-zA-Z0-9_]/", "", $query["twitch"]);
+	$query["youtubeurl"] = preg_replace("/(?!^@)[^a-zA-Z0-9_]/", "", $query["youtubeurl"]);
+	$query["twitter"] = preg_replace("/[^a-zA-Z0-9_]/", "", $query["twitter"]);
+	$query["twitch"] = preg_replace("/[^a-zA-Z0-9_]/", "", $query["twitch"]);
     	exit($dl->printSong('<div class="form" style="width: 60vw;max-height: 80vh;position:relative">
         	<div style="height: 100%;width: 100%;"><div style="display: flex;align-items: center;justify-content: center;flex-wrap:wrap">
             	<form method="post" style="margin:0px" action=""><button type="button" onclick="a(\'profile/'.$accname.'\', true, true, \'GET\')" class="goback" style="margin-top:0px"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i></button></form>
@@ -209,10 +209,10 @@ if(isset($_POST["settings"]) AND $_POST["settings"] == 1 AND $accid == $_SESSION
         if(ExploitPatch::number($_POST["messages"]) > 2 OR ExploitPatch::number($_POST["messages"]) < 0 OR empty(ExploitPatch::number($_POST["messages"]))) $_POST["messages"] = 0;
         if(ExploitPatch::number($_POST["friendreqs"]) > 1 OR ExploitPatch::number($_POST["friendreqs"]) < 0 OR empty(ExploitPatch::number($_POST["friendreqs"]))) $_POST["friendreqs"] = 0;
         if(ExploitPatch::number($_POST["comments"]) > 2 OR ExploitPatch::number($_POST["comments"]) < 0 OR empty(ExploitPatch::number($_POST["comments"]))) $_POST["comments"] = 0;
-		$_POST["youtube"] = preg_replace("/(?!^@)[^a-zA-Z0-9_]/", "", $_POST["youtube"]);
-		$_POST["twitter"] = preg_replace("/[^a-zA-Z0-9_]/", "", $_POST["twitter"]);
-		$_POST["twitch"] = preg_replace("/[^a-zA-Z0-9_]/", "", $_POST["twitch"]);
-		$query = $db->prepare("UPDATE accounts SET mS = :ms, frS = :frs, cS = :cs, youtubeurl = :yt, twitter = :twt, twitch = :ttv, timezone = :tz WHERE accountID=:id");
+	$_POST["youtube"] = preg_replace("/(?!^@)[^a-zA-Z0-9_]/", "", $_POST["youtube"]);
+	$_POST["twitter"] = preg_replace("/[^a-zA-Z0-9_]/", "", $_POST["twitter"]);
+	$_POST["twitch"] = preg_replace("/[^a-zA-Z0-9_]/", "", $_POST["twitch"]);
+	$query = $db->prepare("UPDATE accounts SET mS = :ms, frS = :frs, cS = :cs, youtubeurl = :yt, twitter = :twt, twitch = :ttv, timezone = :tz WHERE accountID=:id");
         $query->execute([':id' => $accid, ':ms' => ExploitPatch::number($_POST["messages"]), ':frs' => ExploitPatch::number($_POST["friendreqs"]), ':cs' => ExploitPatch::number($_POST["comments"]), ':yt' => ExploitPatch::remove($_POST["youtube"]), ':twt' => ExploitPatch::remove($_POST["twitter"]), ':ttv' => ExploitPatch::remove($_POST["twitch"]), ':tz' => ExploitPatch::rucharclean($_POST["timezone"])]);
     }
 }
