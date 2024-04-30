@@ -775,31 +775,24 @@ class mainLib {
 	}
 	public function featureLevel($accountID, $levelID, $state) {
 		if(!is_numeric($accountID)) return false;
-		switch($state) {
-            case 0:
-                $feature = 0;
-                $epic = 0;
-                break;
-            case 1:
-                $feature = 1;
-                $epic = 0;
-                break;
-            case 2: // Stole from TheJulfor
-                $feature = 1;
-                $epic = 1;
-                break;
-            case 3:
-                $feature = 1;
-                $epic = 2;
-                break;
-            case 4:
-                $feature = 1;
-                $epic = 3;
-                break;
-        }
 		include __DIR__ . "/connection.php";
-		$query = "UPDATE levels SET starFeatured=:feature, starEpic=:epic, rateDate=:now WHERE levelID=:levelID";
-		$query = $db->prepare($query);	
+		$query = $db->prepare("SELECT starFeatured FROM levels ORDER BY starFeatured DESC LIMIT 1");
+		$query->execute();
+		$featured = $query->fetch()[0];
+		$epic = 0;
+		switch($state) {
+			case 0:
+				$feature = 0;
+				break;
+			case 1:
+			case 2:
+			case 3:
+			case 4:
+				$feature = $featured + 1;
+				$epic = $state - 1;
+				break;
+		}
+		$query = $db->prepare("UPDATE levels SET starFeatured=:feature, starEpic=:epic, rateDate=:now WHERE levelID=:levelID");
 		$query->execute([':feature' => $feature, ':epic' => $epic, ':levelID' => $levelID, ':now' => time()]);
 		$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('2', :value, :levelID, :timestamp, :id)");
 		$query->execute([':value' => $state, ':timestamp' => time(), ':id' => $accountID, ':levelID' => $levelID]);
