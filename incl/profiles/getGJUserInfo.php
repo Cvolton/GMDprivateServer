@@ -48,6 +48,12 @@ if($user['isBanned'] != 0) $rank = 0;
 		$query = $db->prepare($query);
 		$query->execute([':extID' => $extid]);
 		$accinfo = $query->fetch();
+		$accinfo['youtubeurl'] = preg_replace("/(?!^@)[^a-zA-Z0-9_]/", "", $accinfo['youtubeurl']);
+		$accinfo['twitter'] = preg_replace("/[^a-zA-Z0-9_]/", "", $accinfo['twitter']);
+		$accinfo['twitch'] = preg_replace("/[^a-zA-Z0-9_]/", "", $accinfo['twitch']);
+		if(substr($accinfo['youtubeurl'], 0, 1) == "@"){
+			$accinfo['youtubeurl'] = "../".$accinfo['youtubeurl'];
+		}
 		$reqsstate = $accinfo["frS"];
 		$msgstate = $accinfo["mS"];
 		$commentstate = $accinfo["cS"];
