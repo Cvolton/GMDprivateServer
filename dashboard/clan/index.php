@@ -138,13 +138,13 @@ if(!empty($clan)) {
 					$mbrs->execute([':id' => $rqs["accountID"]]);
 					$mbr = $mbrs->fetch();
 					if($mbr["clan"] != 0) continue;
-					if($mbr["stars"] == 0) $st = ''; else $st = '<p class="profilepic">'.$mbr["stars"].' <i class="fa-solid fa-star"></i></p>';
-					if($mbr["moons"] == 0) $ms = ''; else $ms = '<p class="profilepic">'.$mbr["moons"].' <i class="fa-solid fa-moon"></i></p>';
-					if($mbr["diamonds"] == 0) $dm = ''; else $dm = ' <p class="profilepic">'.$mbr["diamonds"].' <i class="fa-solid fa-gem"></i></p>';
-					if($mbr["coins"] == 0) $gc = ''; else $gc = '<p class="profilepic">'.$mbr["coins"].' <i class="fa-solid fa-coins" style="color:#ffffbb"></i></p>';
-					if($mbr["userCoins"] == 0) $uc = ''; else $uc = '<p class="profilepic">'.$mbr["userCoins"].' <i class="fa-solid fa-coins"></i></p>';
-					if($mbr["demons"] == 0) $dn = ''; else $dn = '<p class="profilepic">'.$mbr["demons"].' <i class="fa-solid fa-dragon"></i></p>';
-					if($mbr["creatorPoints"] == 0) $cp = ''; else $cp = '<p class="profilepic">'.$mbr["creatorPoints"].' <i class="fa-solid fa-screwdriver-wrench"></i></p>';
+					if($mbr["stars"] == 0) $st = ''; else $st = '<p class="profilepic">'.$mbr["stars"].' <i class="fa-solid fa-star" style="color:#ffff5b"></i></p>';
+					if($mbr["moons"] == 0) $ms = ''; else $ms = '<p class="profilepic">'.$mbr["moons"].' <i class="fa-solid fa-moon" style="color:#244689"></i></p>';
+        				if($mbr["diamonds"] == 0) $dm = ''; else $dm = ' <p class="profilepic">'.$mbr["diamonds"].' <i class="fa-solid fa-gem" style="color:#537dd1"></i></p>';
+       					if($mbr["coins"] == 0) $gc = ''; else $gc = '<p class="profilepic">'.$mbr["coins"].' <i class="fa-solid fa-coins" style="color:#fae502"></i></p>';
+        				if($mbr["userCoins"] == 0) $uc = ''; else $uc = '<p class="profilepic">'.$mbr["userCoins"].' <i class="fa-solid fa-coins"></i></p>';
+        				if($mbr["demons"] == 0) $dn = ''; else $dn = '<p class="profilepic">'.$mbr["demons"].' <i class="fa-solid fa-dragon" style="color:#c81003"></i></p>';
+        				if($mbr["creatorPoints"] == 0) $cp = ''; else $cp = '<p class="profilepic">'.$mbr["creatorPoints"].' <i class="fa-solid fa-screwdriver-wrench" style="color:#7f7f7f"></i></p>';
 					$stats = $st.$dm.$gc.$uc.$dn.$cp;
 					if(empty($stats)) $stats = '<p style="font-size:25px;color:#212529">'.$dl->getLocalizedString("empty").'</p>';
 					$requests .= '<div style="width: 100%;display: flex;flex-wrap: wrap;justify-content: center;">
