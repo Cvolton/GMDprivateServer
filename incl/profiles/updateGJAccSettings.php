@@ -17,6 +17,10 @@ if(substr($youtubeurl, 0, 4) == "../@"){
     $youtubeurl = "@" . substr($youtubeurl, 4);
 }
 
+$youtubeurl = preg_replace("/(?!^@)[^a-zA-Z0-9_]/", "", $youtubeurl]);
+$twitter = preg_replace("/[^a-zA-Z0-9_]/", "", $twitter);
+$twitch = preg_replace("/[^a-zA-Z0-9_]/", "", $twitch);
+
 $query = $db->prepare("UPDATE accounts SET mS=:mS, frS=:frS, cS=:cS, youtubeurl=:youtubeurl, twitter=:twitter, twitch=:twitch WHERE accountID=:accountID");
 $query->execute([':mS' => $mS, ':frS' => $frS, ':cS' => $cS, ':youtubeurl' => $youtubeurl, ':accountID' => $accountID, ':twitch' => $twitch, ':twitter' => $twitter]);
 echo 1;
