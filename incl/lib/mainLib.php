@@ -776,9 +776,14 @@ class mainLib {
 	public function featureLevel($accountID, $levelID, $state) {
 		if(!is_numeric($accountID)) return false;
 		include __DIR__ . "/connection.php";
-		$query = $db->prepare("SELECT starFeatured FROM levels ORDER BY starFeatured DESC LIMIT 1");
-		$query->execute();
-		$featured = $query->fetch()[0];
+		$query = $db->prepare("SELECT starFeatured FROM levels WHERE levelID=:levelID ORDER BY starFeatured DESC LIMIT 1");
+		$query->execute([':levelID' => $levelID]);
+		if ($query->fetch()[0]) $featured = $query->fetch()[0];
+		else {
+			$query = $db->prepare("SELECT starFeatured FROM levels ORDER BY starFeatured DESC LIMIT 1");
+			$query->execute();
+			$featured = $query->fetch()[0] + 1;
+		}
 		$epic = 0;
 		switch($state) {
 			case 0:
@@ -788,7 +793,7 @@ class mainLib {
 			case 2:
 			case 3:
 			case 4:
-				$feature = $featured + 1;
+				$feature = $featured;
 				$epic = $state - 1;
 				break;
 		}
