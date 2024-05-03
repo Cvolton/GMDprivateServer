@@ -75,7 +75,7 @@ class Commands {
 			case '!unr':
 			case '!unrate':
 				if(!$gs->checkPermission($accountID, "commandRate")) return false;
-				$query = $db->prepare("UPDATE levels SET starStars = 0, starDemon = 0, rateDate = :timestamp, starFeatured = 0, starEpic = 0 WHERE levelID = :levelID");
+				$query = $db->prepare("UPDATE levels SET starStars = 0, starDemon = 0, rateDate = :timestamp, starFeatured = 0, starEpic = 0, starCoins = 0 WHERE levelID = :levelID");
 				$query->execute([':timestamp' => $uploadDate, ':levelID' => $levelID]);
 				$query = $db->prepare("INSERT INTO modactions (type, value, value2, value3, timestamp, account) VALUES ('1', :value, :value2, :levelID, :timestamp, :id)");
 				$query->execute([':value' => 0, ':timestamp' => $uploadDate, ':id' => $accountID, ':value2' => 0, ':levelID' => $levelID]);
