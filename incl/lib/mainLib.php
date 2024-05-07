@@ -778,16 +778,16 @@ class mainLib {
 		include __DIR__ . "/connection.php";
 		$query = $db->prepare("SELECT starFeatured FROM levels WHERE levelID=:levelID ORDER BY starFeatured DESC LIMIT 1");
 		$query->execute([':levelID' => $levelID]);
-		if ($query->fetch()[0]) $featured = $query->fetch()[0];
-		else {
+		$featured = $query->fetchColumn();
+		if (!$featured) {
 			$query = $db->prepare("SELECT starFeatured FROM levels ORDER BY starFeatured DESC LIMIT 1");
 			$query->execute();
-			$featured = $query->fetch()[0] + 1;
+			$featured = $query->fetchColumn() + 1;
 		}
-		$epic = 0;
 		switch($state) {
 			case 0:
 				$feature = 0;
+				$epic = 0;
 				break;
 			case 1:
 			case 2:

@@ -52,11 +52,11 @@ class Commands {
 						$query->execute([':value' => 1, ':timestamp' => $uploadDate, ':id' => $accountID, ':levelID' => $levelID]);	
 						$query = $db->prepare("SELECT starFeatured FROM levels WHERE levelID=:levelID ORDER BY starFeatured DESC LIMIT 1");
 						$query->execute([':levelID' => $levelID]);
-						if ($query->fetch()[0]) $featuredID = $query->fetch()[0];
-						else {
+						$featuredID = $query->fetchColumn();
+						if (!$featuredID) {
 							$query = $db->prepare("SELECT starFeatured FROM levels ORDER BY starFeatured DESC LIMIT 1");
 							$query->execute();
-							$featuredID = $query->fetch()[0] + 1;
+							$featuredID = $query->fetchColumn() + 1;
 						}
 						$query = $db->prepare("UPDATE levels SET starFeatured=:starFeatured WHERE levelID=:levelID");
 						$query->execute([':starFeatured' => $featuredID + 1, ':levelID' => $levelID]);
@@ -102,11 +102,11 @@ class Commands {
 						$column = 'starFeatured';
 						$query = $db->prepare("SELECT starFeatured FROM levels WHERE levelID=:levelID ORDER BY starFeatured DESC LIMIT 1");
 						$query->execute([':levelID' => $levelID]);
-						if ($query->fetch()[0]) $starFeatured = $query->fetch()[0];
-						else {
+						$starFeatured = $query->fetchColumn();
+						if (!$starFeatured) {
 							$query = $db->prepare("SELECT starFeatured FROM levels ORDER BY starFeatured DESC LIMIT 1");
 							$query->execute();
-							$starFeatured = $query->fetch()[0] + 1;
+							$starFeatured = $query->fetchColumn() + 1;
 						}
 						$returnText = 'You successfully '.($starFeatured == 0 ? 'un' : '').'featured '.$gs->getLevelName($levelID).'!';
 					}
@@ -122,11 +122,11 @@ class Commands {
 						$column = 'starFeatured';
 						$query = $db->prepare("SELECT starFeatured FROM levels WHERE levelID=:levelID ORDER BY starFeatured DESC LIMIT 1");
 						$query->execute([':levelID' => $levelID]);
-						if ($query->fetch()[0]) $starFeatured = $query->fetch()[0];
-						else {
+						$starFeatured = $query->fetchColumn();
+						if (!$starFeatured) {
 							$query = $db->prepare("SELECT starFeatured FROM levels ORDER BY starFeatured DESC LIMIT 1");
 							$query->execute();
-							$starFeatured = $query->fetch()[0] + 1;
+							$starFeatured = $query->fetchColumn() + 1;
 						}
 						$returnText = 'You successfully '.($starFeatured == 0 ? 'un' : '').'featured '.$gs->getLevelName($levelID).'!';
 					}
