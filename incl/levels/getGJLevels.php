@@ -192,7 +192,7 @@ switch($type){
 		break;
 	case 16: //HALL OF FAME
 		$params[] = "NOT starEpic = 0";
-		$order = "rateDate DESC,uploadDate";
+		$order = "starFeatured DESC,uploadDate";
 		break;
 	case 7: //MAGIC
         $params[] = "objects > 9999"; // L
