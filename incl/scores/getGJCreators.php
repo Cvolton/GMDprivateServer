@@ -7,7 +7,7 @@ include_once "../lib/mainLib.php";
 $gs = new mainLib();
 $accountID = ExploitPatch::remove($_POST["accountID"]);
 $type = ExploitPatch::remove($_POST["type"]);
-$query = "SELECT * FROM users WHERE isCreatorBanned = '0' ORDER BY creatorPoints DESC LIMIT 100";
+$query = "SELECT * FROM users WHERE isCreatorBanned = '0' AND creatorPoints > 0 ORDER BY creatorPoints DESC LIMIT 100";
 $query = $db->prepare($query);
 $query->execute();
 $result = $query->fetchAll();
