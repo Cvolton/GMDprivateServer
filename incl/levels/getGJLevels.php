@@ -185,14 +185,14 @@ switch($type){
 		$params[] = "levels.userID = '$str'";
 		break;
 	case 6: //featured
-	case 17: //featured GDW //TODO: make this list of daily levels
+	case 17: //featured GDW
 		if($gameVersion > 21) $params[] = "NOT starFeatured = 0 OR NOT starEpic = 0";
 		else $params[] = "NOT starFeatured = 0";
-		$order = "rateDate DESC,uploadDate";
+		$order = "starFeatured DESC, rateDate DESC, uploadDate";
 		break;
 	case 16: //HALL OF FAME
 		$params[] = "NOT starEpic = 0";
-		$order = "rateDate DESC,uploadDate";
+		$order = "starFeatured DESC, rateDate DESC, uploadDate";
 		break;
 	case 7: //MAGIC
         $params[] = "objects > 9999"; // L

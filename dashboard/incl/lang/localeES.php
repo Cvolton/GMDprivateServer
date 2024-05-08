@@ -30,7 +30,7 @@ $string["registerOptDesc"] = "Registrarte en %s";
 $string["downloadOptDesc"] = "Descargar %s";
 // cron
 $string["tryCron"] = "Ejecutar Cron";
-$string["cronSuccess"] = "'Exito!";
+$string["cronSuccess"] = "Exito!";
 $string["cronError"] = "Error!";
 // acc settings
 $string["profile"] = "Perfil";

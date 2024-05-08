@@ -7,15 +7,11 @@ global $lrEnabled;
 $dl->title($dl->getLocalizedString("levelReupload"));
 $dl->printFooter('../');
 if($lrEnabled == 1) {
-function chkarray($source, $default = 0){
-	if($source == ""){
-		$target = $default;
-	}else{
-		$target = $source;
-	}
+function chkarray($source, $default = 0) {
+	if($source == "") $target = $default;
+	else $target = $source;
 	return $target;
 }
-//error_reporting(0);
 include "../".$dbPath."incl/lib/connection.php";
 require "../".$dbPath."incl/lib/XORCipher.php";
 require "../".$dbPath."config/reuploadAcc.php";
@@ -166,12 +162,14 @@ if(!empty($_POST["levelid"])){
 			$starStars = 0;
 			$targetUserID = chkarray($levelarray["a6"]);
 			//linkacc
-			$userID = $gs->getUserID($_SESSION["accountID"]);
-			$extID = $_SESSION["accountID"];
+			if($automaticID) {
+				$reupUID = $gs->getUserID($_SESSION["accountID"]);
+				$reupAID = $_SESSION["accountID"];
+			}
 			//query
 			$query = $db->prepare("INSERT INTO levels (levelName, gameVersion, binaryVersion, userName, levelDesc, levelVersion, levelLength, audioTrack, auto, password, original, twoPlayer, songID, objects, coins, requestedStars, extraString, levelString, levelInfo, secret, uploadDate, updateDate, originalReup, userID, extID, unlisted, hostname, starStars, starCoins, starDifficulty, starDemon, starAuto, isLDM, songIDs, sfxIDs, ts)
 												VALUES (:name ,:gameVersion, '27', 'Reupload', :desc, :version, :length, :audiotrack, '0', :password, :originalReup, :twoPlayer, :songID, '0', :coins, :reqstar, :extraString, :levelString, '', '', '$uploadDate', '$uploadDate', :originalReup, :userID, :extID, '0', :hostname, :starStars, :starCoins, :starDifficulty, :starDemon, :starAuto, :isLDM, :songIDs, :sfxIDs, :ts)");
-			$query->execute([':password' => $password, ':starDemon' => $starDemon, ':starAuto' => $starAuto, ':gameVersion' => $gameVersion, ':name' => strip_tags($levelarray["a2"]), ':desc' => strip_tags($levelarray["a3"]), ':version' => $levelarray["a5"], ':length' => $levelarray["a15"], ':audiotrack' => $levelarray["a12"], ':twoPlayer' => $twoPlayer, ':songID' => $songID, ':coins' => $coins, ':reqstar' => $reqstar, ':extraString' => $extraString, ':levelString' => "", ':originalReup' => $levelarray["a1"], ':hostname' => $hostname, ':starStars' => 0, ':starCoins' => 0, ':starDifficulty' => $starDiff, ':userID' => $userID, ':extID' => $extID, ':isLDM' => $isLDM, ':songIDs' => $songIDs, ':sfxIDs' => $sfxIDs, ':ts' => $ts]);
+			$query->execute([':password' => $password, ':starDemon' => $starDemon, ':starAuto' => $starAuto, ':gameVersion' => $gameVersion, ':name' => strip_tags($levelarray["a2"]), ':desc' => strip_tags($levelarray["a3"]), ':version' => $levelarray["a5"], ':length' => $levelarray["a15"], ':audiotrack' => $levelarray["a12"], ':twoPlayer' => $twoPlayer, ':songID' => $songID, ':coins' => $coins, ':reqstar' => $reqstar, ':extraString' => $extraString, ':levelString' => "", ':originalReup' => $levelarray["a1"], ':hostname' => $hostname, ':starStars' => 0, ':starCoins' => 0, ':starDifficulty' => $starDiff, ':userID' => $reupUID, ':extID' => $reupAID, ':isLDM' => $isLDM, ':songIDs' => $songIDs, ':sfxIDs' => $sfxIDs, ':ts' => $ts]);
 			$levelID = $db->lastInsertId();
 			file_put_contents("../".$dbPath."data/levels/$levelID", $levelString);
 		if($debug == 1) {
