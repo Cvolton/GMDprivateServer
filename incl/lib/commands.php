@@ -50,8 +50,16 @@ class Commands {
 					} elseif($starFeatured == 1) {
 						$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('2', :value, :levelID, :timestamp, :id)");
 						$query->execute([':value' => 1, ':timestamp' => $uploadDate, ':id' => $accountID, ':levelID' => $levelID]);	
+						$query = $db->prepare("SELECT starFeatured FROM levels WHERE levelID=:levelID ORDER BY starFeatured DESC LIMIT 1");
+						$query->execute([':levelID' => $levelID]);
+						$featuredID = $query->fetchColumn();
+						if(!$featuredID) {
+							$query = $db->prepare("SELECT starFeatured FROM levels ORDER BY starFeatured DESC LIMIT 1");
+							$query->execute();
+							$featuredID = $query->fetchColumn() + 1;
+						}
 						$query = $db->prepare("UPDATE levels SET starFeatured=:starFeatured WHERE levelID=:levelID");
-						$query->execute([':starFeatured' => '1', ':levelID' => $levelID]);
+						$query->execute([':starFeatured' => $featuredID + 1, ':levelID' => $levelID]);
 					}
 				} else $starFeatured = 0;
 				if(!empty($starCoins)){
@@ -67,7 +75,7 @@ class Commands {
 			case '!unr':
 			case '!unrate':
 				if(!$gs->checkPermission($accountID, "commandRate")) return false;
-				$query = $db->prepare("UPDATE levels SET starStars = 0, starDemon = 0, rateDate = :timestamp, starFeatured = 0, starEpic = 0 WHERE levelID = :levelID");
+				$query = $db->prepare("UPDATE levels SET starStars = 0, starDemon = 0, rateDate = :timestamp, starFeatured = 0, starEpic = 0, starCoins = 0 WHERE levelID = :levelID");
 				$query->execute([':timestamp' => $uploadDate, ':levelID' => $levelID]);
 				$query = $db->prepare("INSERT INTO modactions (type, value, value2, value3, timestamp, account) VALUES ('1', :value, :value2, :levelID, :timestamp, :id)");
 				$query->execute([':value' => 0, ':timestamp' => $uploadDate, ':id' => $accountID, ':value2' => 0, ':levelID' => $levelID]);
@@ -92,7 +100,14 @@ class Commands {
 					} else {
 						if(!$gs->checkPermission($accountID, "commandFeature")) return false;
 						$column = 'starFeatured';
-						$starFeatured = $starArray[$commentarray[0]];
+						$query = $db->prepare("SELECT starFeatured FROM levels WHERE levelID=:levelID ORDER BY starFeatured DESC LIMIT 1");
+						$query->execute([':levelID' => $levelID]);
+						$starFeatured = $query->fetchColumn();
+						if(!$starFeatured) {
+							$query = $db->prepare("SELECT starFeatured FROM levels ORDER BY starFeatured DESC LIMIT 1");
+							$query->execute();
+							$starFeatured = $query->fetchColumn() + 1;
+						}
 						$returnText = 'You successfully '.($starFeatured == 0 ? 'un' : '').'featured '.$gs->getLevelName($levelID).'!';
 					}
 				} else {
@@ -105,7 +120,14 @@ class Commands {
 					} else {
 						if(!$gs->checkPermission($accountID, "commandFeature")) return false;
 						$column = 'starFeatured';
-						$starFeatured = ExploitPatch::number($commentarray[0]);
+						$query = $db->prepare("SELECT starFeatured FROM levels WHERE levelID=:levelID ORDER BY starFeatured DESC LIMIT 1");
+						$query->execute([':levelID' => $levelID]);
+						$starFeatured = $query->fetchColumn();
+						if(!$starFeatured) {
+							$query = $db->prepare("SELECT starFeatured FROM levels ORDER BY starFeatured DESC LIMIT 1");
+							$query->execute();
+							$starFeatured = $query->fetchColumn() + 1;
+						}
 						$returnText = 'You successfully '.($starFeatured == 0 ? 'un' : '').'featured '.$gs->getLevelName($levelID).'!';
 					}
 				}
