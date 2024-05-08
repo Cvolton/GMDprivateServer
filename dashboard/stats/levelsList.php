@@ -85,11 +85,11 @@ foreach($result as &$action){
 	$diff = $gs->getDifficulty($action["starDifficulty"], $action["auto"], $action["starDemonDiff"]);
 	if($modcheck) {
 		$stars = '<div class="dropdown-menu" style="padding:17px 17px 0px 17px; top:0%;">
-					  <form class="form__inner" method="post" action="levels/rateLevel.php">
+					  <form style="grid-gap: 10px;" class="form__inner" method="post" action="levels/rateLevel.php">
+						  <p>'.$dl->getLocalizedString('featureLevel').'</p>
 						  <div class="field"><input type="number" id="p1" name="rateStars" placeholder="'.($action['levelLength'] == 5 ? $dl->getLocalizedString("moons") : $dl->getLocalizedString("stars")).'" value="'.($action["starStars"] > 0 ? $action["starStars"] : "").'"></div>
-						  <p>Featured level<p>
-						  <select name="featured" onclick="event.stopPropagation();">
-						    <option value="0">None</option>
+						  <select style="margin: 0px;" name="featured" onclick="event.stopPropagation();">
+						    <option value="0">'.$dl->getLocalizedString('isAdminNo').'</option>
 							<option value="1" '.(($action["starFeatured"] > 0 && $action["starEpic"] == 0) ? 'selected' : '').'>Featured</option>
 							<option value="2" '.($action["starEpic"] == 1 ? 'selected' : '').'>Epic</option>
 							<option value="3" '.($action["starEpic"] == 2 ? 'selected' : '').'>Legendary</option>

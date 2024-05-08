@@ -29,12 +29,12 @@ $isPlayerInClan = $gs->isPlayerInClan($_SESSION["accountID"]);
 if(!$clanid OR !$clan) {
 	$dl->title($dl->getLocalizedString("clan"));
 	exit($dl->printSong('<div class="form">
-                	   <h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
-               	 	   <form class="form__inner" method="post" action="">
-              		  <p>'.$dl->getLocalizedString("noClan").'</p>
-              		  <button type="button" onclick="a(\'\', true, true, \'GET\')" class="btn-primary">'.$dl->getLocalizedString("dashboard").'</button>
-      				 </form>
-    			</div>', 'profile'));
+       <h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
+      <form class="form__inner" method="post" action="">
+      <p>'.$dl->getLocalizedString("noClan").'</p>
+      <button type="button" onclick="a(\'\', true, true, \'GET\')" class="btn-primary">'.$dl->getLocalizedString("dashboard").'</button>
+     </form>
+    </div>', 'profile'));
 }
 $dl->title($dl->getLocalizedString("clan").' '.$clan["clan"]);
 $back = $members = $settings = $menu = $pending = $membermenu = $requests = $closed = $kick = "";
@@ -137,16 +137,7 @@ if(!empty($clan)) {
 					$mbrs = $db->prepare("SELECT * FROM users WHERE extID = :id");
 					$mbrs->execute([':id' => $rqs["accountID"]]);
 					$mbr = $mbrs->fetch();
-					if($mbr["clan"] != 0) continue;
-					if($mbr["stars"] == 0) $st = ''; else $st = '<p class="profilepic">'.$mbr["stars"].' <i class="fa-solid fa-star"></i></p>';
-					if($mbr["moons"] == 0) $ms = ''; else $ms = '<p class="profilepic">'.$mbr["moons"].' <i class="fa-solid fa-moon"></i></p>';
-					if($mbr["diamonds"] == 0) $dm = ''; else $dm = ' <p class="profilepic">'.$mbr["diamonds"].' <i class="fa-solid fa-gem"></i></p>';
-					if($mbr["coins"] == 0) $gc = ''; else $gc = '<p class="profilepic">'.$mbr["coins"].' <i class="fa-solid fa-coins" style="color:#ffffbb"></i></p>';
-					if($mbr["userCoins"] == 0) $uc = ''; else $uc = '<p class="profilepic">'.$mbr["userCoins"].' <i class="fa-solid fa-coins"></i></p>';
-					if($mbr["demons"] == 0) $dn = ''; else $dn = '<p class="profilepic">'.$mbr["demons"].' <i class="fa-solid fa-dragon"></i></p>';
-					if($mbr["creatorPoints"] == 0) $cp = ''; else $cp = '<p class="profilepic">'.$mbr["creatorPoints"].' <i class="fa-solid fa-screwdriver-wrench"></i></p>';
-					$stats = $st.$dm.$gc.$uc.$dn.$cp;
-					if(empty($stats)) $stats = '<p style="font-size:25px;color:#212529">'.$dl->getLocalizedString("empty").'</p>';
+					$stats = $dl->createProfileStats($mbr['stars'], $mbr['moons'], $mbr['diamonds'], $mbr['coins'], $mbr['userCoins'], $mbr['demons'], $mbr['creatorPoints'], $mbr['isCreatorBanned']);
 					$requests .= '<div style="width: 100%;display: flex;flex-wrap: wrap;justify-content: center;">
 						<div class="profile"><div style="display:flex"><button style="display:contents;cursor:pointer" type="button" onclick="a(\'profile/'.$mbr["userName"].'\', true, true, \'GET\')"><h2 style="color:rgb('.$gs->getAccountCommentColor($mbr["extID"]).')" class="profilenick">'.$mbr["userName"].'</h2></button></div>
 						<div class="form-control" style="display: flex;width: 100%;height: max-content;align-items: center;">'.$stats.'</div>
@@ -326,13 +317,6 @@ if(!empty($clan)) {
     foreach($mbrs as &$mbr) {
 		if($clan["clanOwner"] == $_SESSION["accountID"]) $kick = '<form name="kick" style="margin:0px"><input type="hidden" name="kick" value="1"></input><input type="hidden" name="accountID" value="'.$mbr["extID"].'"></input></form>
 			<button type="button" onclick="a(\'clan/'.$clan["clan"].'\', true, true, \'POST\', false, \'kick\')" style="width: max-content;height: max-content;color: #ffbbbb;padding: 7px 10px;" title="'.$dl->getLocalizedString("kickMember").'" class="btn-rendel"><i class="fa-solid fa-xmark"></i></button>';
-        if($mbr["stars"] == 0) $st = ''; else $st = '<p class="profilepic">'.$mbr["stars"].' <i class="fa-solid fa-star"></i></p>';
-		if($mbr["moons"] == 0) $ms = ''; else $ms = '<p class="profilepic">'.$mbr["moons"].' <i class="fa-solid fa-moon"></i></p>';
-        if($mbr["diamonds"] == 0) $dm = ''; else $dm = ' <p class="profilepic">'.$mbr["diamonds"].' <i class="fa-solid fa-gem"></i></p>';
-        if($mbr["coins"] == 0) $gc = ''; else $gc = '<p class="profilepic">'.$mbr["coins"].' <i class="fa-solid fa-coins" style="color:#ffffbb"></i></p>';
-        if($mbr["userCoins"] == 0) $uc = ''; else $uc = '<p class="profilepic">'.$mbr["userCoins"].' <i class="fa-solid fa-coins"></i></p>';
-        if($mbr["demons"] == 0) $dn = ''; else $dn = '<p class="profilepic">'.$mbr["demons"].' <i class="fa-solid fa-dragon"></i></p>';
-        if($mbr["creatorPoints"] == 0) $cp = ''; else $cp = '<p class="profilepic">'.$mbr["creatorPoints"].' <i class="fa-solid fa-screwdriver-wrench"></i></p>';
 		$allstars += $mbr['stars'];
 		$allmoons += $mbr['moons'];
 		$alldias += $mbr['diamonds'];
@@ -340,8 +324,7 @@ if(!empty($clan)) {
 		$allucoins += $mbr['userCoins'];
 		$alldemons += $mbr['demons'];
 		$allcp += $mbr['creatorPoints'];
-        $stats = $st.$ms.$dm.$gc.$uc.$dn.$cp;
-        if(empty($stats)) $stats = '<p style="font-size:25px;color:#212529">'.$dl->getLocalizedString("empty").'</p>';
+        $stats = $dl->createProfileStats($mbr['stars'], $mbr['moons'], $mbr['diamonds'], $mbr['coins'], $mbr['userCoins'], $mbr['demons'], $mbr['creatorPoints'], $mbr['isCreatorBanned']);
 		$mbr["userName"] = $mbr["userName"] == 'Undefined' ? $gs->getAccountName($mbr['extID']) : $mbr['userName'];
         if($mbr["extID"] != $clan["clanOwner"]) $members .= '<div style="width: 100%;display: flex;flex-wrap: wrap;justify-content: center;">
 			<div class="profile"><div class="clanmemberndiv"><button style="display:contents;cursor:pointer" type="button" onclick="a(\'profile/'.$mbr["userName"].'\', true, true, \'GET\')"><h2 style="color:rgb('.$gs->getAccountCommentColor($mbr["extID"]).')" class="profilenick clanmembernick">'.$mbr["userName"].'</h2></button>'.$kick.'</div>
@@ -354,19 +337,10 @@ if(!empty($clan)) {
 			<h3 class="comments clancreatetext">'.sprintf($dl->getLocalizedString("createdAt"), $dl->convertToDate($clan["creationDate"], true)).'</h3>
 		</div></div>';
     }
-	if($allstars == 0) $st = ''; else $allst = '<p class="profilepic">'.$allstars.' <i class="fa-solid fa-star"></i></p>';
-	if($allmoons == 0) $ms = ''; else $allms = '<p class="profilepic">'.$allmoons.' <i class="fa-solid fa-moon"></i></p>';
-    if($alldias == 0) $dm = ''; else $alldm = ' <p class="profilepic">'.$alldias.' <i class="fa-solid fa-gem"></i></p>';
-    if($allcoins == 0) $gc = ''; else $allgc = '<p class="profilepic">'.$allcoins.' <i class="fa-solid fa-coins" style="color:#ffffbb"></i></p>';
-    if($allucoins == 0) $uc = ''; else $alluc = '<p class="profilepic">'.$allucoins.' <i class="fa-solid fa-coins"></i></p>';
-    if($alldemons == 0) $dn = ''; else $alldn = '<p class="profilepic">'.$alldemons.' <i class="fa-solid fa-dragon"></i></p>';
-    if($allcp == 0) $cp = ''; else $allcp = '<p class="profilepic">'.$allcp.' <i class="fa-solid fa-screwdriver-wrench"></i></p>';
-	$allstats = $allst.$allms.$alldm.$allgc.$alluc.$alldn.$allcp;
-	if(empty($allstats)) $allstats = '<p style="font-size:25px;color:#212529">'.$dl->getLocalizedString("empty").'</p>';
+	$allstats = $dl->createProfileStats($allstars, $allmoons, $alldias, $allcoins, $allucoins, $alldemons, $allcp, 0);
 	$total = '<div style="width: 100%;display: flex;flex-wrap: wrap;justify-content: center;margin-top:10px">
 		<div class="form-control" style="display: flex;width: 100%;height: max-content;align-items: center;">'.$allstats.'</div>
 		</div>';
-		
     if(empty($members)) $members .= '<div style="width: 100%;display: flex;flex-wrap: wrap;justify-content: center;">
 			    <h1 style="margin: 10;margin-top: 20px;">'.$dl->getLocalizedString("noMembers").'</h1>
 			</div>';

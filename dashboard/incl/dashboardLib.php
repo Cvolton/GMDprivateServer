@@ -945,6 +945,22 @@ class dashboardLib {
 			else return date("d.m.Y", $timestamp);
 		} else return date("d.m.Y G:i:s", $timestamp);
 	}
+	public function createProfileStats($stars = 0, $moons = 0, $diamonds = 0, $goldCoins = 0, $userCoins = 0, $demons = 0, $creatorPoints = 0, $isCreatorBanned, $returnText = true) {
+		if($stars == 0) $st = ''; else $st = '<p class="profilepic">'.$stars.' <i class="fa-solid fa-star" style="color:#ffff88"></i></p>';
+		if($moons == 0) $ms = ''; else $ms = '<p class="profilepic">'.$moons.' <i class="fa-solid fa-moon" style="color:#80abff"></i></p>';
+		if($diamonds == 0) $dm = ''; else $dm = ' <p class="profilepic">'.$diamonds.' <i class="fa-solid fa-gem" style="color:#a6fffb"></i></p>';
+		if($goldCoins == 0) $gc = ''; else $gc = '<p class="profilepic">'.$goldCoins.' <i class="fa-solid fa-coins" style="color:#fffd6b"></i></p>';
+		if($userCoins == 0) $uc = ''; else $uc = '<p class="profilepic">'.$userCoins.' <i class="fa-solid fa-coins"></i></p>';
+		if($demons == 0) $dn = ''; else $dn = '<p class="profilepic">'.$demons.' <i class="fa-solid fa-dragon" style="color:#ffbbbb"></i></p>';
+		if($isCreatorBanned == 1) {
+			$banhaha = 'style="text-decoration:line-through;color:#432529"';
+			$creatorban = 'style="text-decoration: line-through"';
+		} else $banhaha = $creatorban = '';
+		if($creatorPoints == 0) $cp = ''; else $cp = '<p class="profilepic" '.$banhaha.'>'.$creatorPoints.' <i class="fa-solid fa-screwdriver-wrench" '.$creatorban.'></i></p>';
+		$all = $st.$ms.$dm.$gc.$uc.$dn.$cp;
+		if(empty($all) && $returnText) $all = '<p style="font-size:25px;color:#212529">'.$this->getLocalizedString("empty").'</p>';
+		return $all;
+	}
 	public function generateBottomRow($pagecount, $actualpage){
 		$pageminus = $actualpage - 1;
 		$pageplus = $actualpage + 1;
