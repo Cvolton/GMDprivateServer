@@ -13,9 +13,9 @@ $levelID = ExploitPatch::remove($_POST["levelID"]);
 $accountID = GJPCheck::getAccountIDOrDie();
 $difficulty = $gs->getDiffFromStars($stars);
 if($gs->checkPermission($accountID, "actionRateStars")) {
-	$gs->rateLevel($accountID, $levelID, $stars, $difficulty["diff"], $difficulty["auto"], $difficulty["demon"], $feature);
 	$gs->featureLevel($accountID, $levelID, $feature);
 	$gs->verifyCoinsLevel($accountID, $levelID, 1);
+	$gs->rateLevel($accountID, $levelID, $stars, $difficulty["diff"], $difficulty["auto"], $difficulty["demon"], $feature);
 	echo 1;
 } elseif($gs->checkPermission($accountID, "actionSuggestRating")) {
 	$gs->suggestLevel($accountID, $levelID, $difficulty["diff"], $stars, $feature, $difficulty["auto"], $difficulty["demon"]);
