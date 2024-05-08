@@ -129,7 +129,7 @@ $string["oldPassword"] = "Ancien mot de passe";
 $string["newPassword"] = "Nouveau mot de passe";
 $string["confirmNew"] = "Confirmer le mot de passe";
 
-$string["forcePassword"] = "Changer le mot de passe d'un autre joueur'";
+$string["forcePassword"] = "Changer le mot de passe d'un autre joueur";
 $string["forcePasswordDesc"] = "Ici, vous pouvez changer le mot de passe d'un autre joueur !";
 $string["forceNick"] = "Changer le nom d'utilisateur d'un autre joueur";
 $string["forceNickDesc"] = "Ici, vous pouvez changer le nom d'utilisateur d'un autre joueur !";
