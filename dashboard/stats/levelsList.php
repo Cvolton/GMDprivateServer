@@ -90,7 +90,7 @@ foreach($result as &$action){
 						  <p>Featured level<p>
 						  <select name="featured" onclick="event.stopPropagation();">
 						    <option value="0">None</option>
-							<option value="1" '.(($action["starFeatured"] == 1 && $action["starEpic"] == 0) ? 'selected' : '').'>Featured</option>
+							<option value="1" '.(($action["starFeatured"] > 0 && $action["starEpic"] == 0) ? 'selected' : '').'>Featured</option>
 							<option value="2" '.($action["starEpic"] == 1 ? 'selected' : '').'>Epic</option>
 							<option value="3" '.($action["starEpic"] == 2 ? 'selected' : '').'>Legendary</option>
 							<option value="4" '.($action["starEpic"] == 3 ? 'selected' : '').'>Mythic</option>
