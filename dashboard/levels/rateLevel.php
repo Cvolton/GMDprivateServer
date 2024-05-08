@@ -3,19 +3,18 @@ session_start();
 require "../incl/dashboardLib.php";
 require "../".$dbPath."incl/lib/connection.php";
 $dl = new dashboardLib();
-error_reporting(E_ALL);
 require_once "../".$dbPath."incl/lib/mainLib.php";
 $gs = new mainLib();
 include "../".$dbPath."incl/lib/connection.php";
 require "../".$dbPath."incl/lib/exploitPatch.php";
-$stars = ExploitPatch::number($_POST["rateStars"]);
-if($stars > 10 OR $stars < 1) {
+$stars = ExploitPatch::number($_POST["rateStars"]) ?? 0;
+if($stars > 10 OR $stars < 0) {
  	header('Location: ../stats/levelsList.php');
 	die();
 }
 $lvlid = ExploitPatch::number($_POST["level"]);
 $featured = ExploitPatch::number($_POST["featured"]);
-if(empty($stars) OR empty($lvlid)) {
+if(!isset($stars) OR empty($lvlid)) {
  	header('Location: ../stats/levelsList.php');
 	die();
 }

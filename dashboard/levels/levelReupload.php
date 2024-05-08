@@ -7,15 +7,11 @@ global $lrEnabled;
 $dl->title($dl->getLocalizedString("levelReupload"));
 $dl->printFooter('../');
 if($lrEnabled == 1) {
-function chkarray($source, $default = 0){
-	if($source == ""){
-		$target = $default;
-	}else{
-		$target = $source;
-	}
+function chkarray($source, $default = 0) {
+	if($source == "") $target = $default;
+	else $target = $source;
 	return $target;
 }
-//error_reporting(0);
 include "../".$dbPath."incl/lib/connection.php";
 require "../".$dbPath."incl/lib/XORCipher.php";
 require "../".$dbPath."config/reuploadAcc.php";
@@ -166,7 +162,7 @@ if(!empty($_POST["levelid"])){
 			$starStars = 0;
 			$targetUserID = chkarray($levelarray["a6"]);
 			//linkacc
-			if ($automaticID) {
+			if($automaticID) {
 				$reupUID = $gs->getUserID($_SESSION["accountID"]);
 				$reupAID = $_SESSION["accountID"];
 			}
