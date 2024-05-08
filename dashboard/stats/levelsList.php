@@ -83,21 +83,22 @@ foreach($result as &$action){
 	$username =  '<form style="margin:0" method="post" action="./profile/"><button type="button" onclick="a(\'profile/'.$action["userName"].'\', true, true, \'POST\')" style="margin:0" class="accbtn" name="accountID">'.$action["userName"].'</button></form>';
 	$time = $dl->convertToDate($action["uploadDate"], true);
 	$diff = $gs->getDifficulty($action["starDifficulty"], $action["auto"], $action["starDemonDiff"]);
-	if($action["starStars"] == 0 AND $modcheck) {
-      	$stars = '<div class="dropdown-menu" style="padding:17px 17px 0px 17px; top:0%;">
-									 <form class="form__inner" method="post" action="levels/rateLevel.php">
-										<div class="field"><input type="number" id="p1" name="rateStars" placeholder="'.$dl->getLocalizedString("stars").'"></div>
-										<select name="featured" onclick="event.stopPropagation();">
-											<option value="0">'.$dl->getLocalizedString("isAdminNo").'</option>
-											<option value="1">Featured</option>
-											<option value="2">Epic</option>
-											<option value="3">Legendary</option>
-											<option value="4">Mythic</option>
-										</select>
-										<button type="submit" class="btn-song" id="submit" name="level" value="'.$levelid.'">'.$dl->getLocalizedString("rate").'</button>
-									</form>
-								</div>';
-	} elseif($action["starStars"] != 0) $stars = '';
+	if($modcheck) {
+		$stars = '<div class="dropdown-menu" style="padding:17px 17px 0px 17px; top:0%;">
+					  <form style="grid-gap: 10px;" class="form__inner" method="post" action="levels/rateLevel.php">
+						  <p>'.$dl->getLocalizedString('featureLevel').'</p>
+						  <div class="field"><input type="number" id="p1" name="rateStars" placeholder="'.($action['levelLength'] == 5 ? $dl->getLocalizedString("moons") : $dl->getLocalizedString("stars")).'" value="'.($action["starStars"] > 0 ? $action["starStars"] : "").'"></div>
+						  <select style="margin: 0px;" name="featured" onclick="event.stopPropagation();">
+						    <option value="0">'.$dl->getLocalizedString('isAdminNo').'</option>
+							<option value="1" '.(($action["starFeatured"] > 0 && $action["starEpic"] == 0) ? 'selected' : '').'>Featured</option>
+							<option value="2" '.($action["starEpic"] == 1 ? 'selected' : '').'>Epic</option>
+							<option value="3" '.($action["starEpic"] == 2 ? 'selected' : '').'>Legendary</option>
+							<option value="4" '.($action["starEpic"] == 3 ? 'selected' : '').'>Mythic</option>
+						  </select>
+						  <button type="submit" class="btn-song" id="submit" name="level" value="'.$levelid.'">'.$dl->getLocalizedString("rate").'</button>
+					  </form>
+				  </div>';
+	}
 	if($action['levelLength'] == 5) $starIcon = 'moon'; else $starIcon = 'star';
 	if(!empty($stars)) $st = '<a class="dropdown" href="#" data-toggle="dropdown"><p class="profilepic"><i class="fa-solid fa-'.$starIcon.'"></i> '.$diff.', '.$action["starStars"].'</p></a>'.$stars;
 	else $st = '<p class="profilepic"><i class="fa-solid fa-'.$starIcon.'"></i> '.$diff.', '.$action["starStars"].'</p>';

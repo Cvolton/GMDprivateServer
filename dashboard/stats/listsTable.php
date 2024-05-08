@@ -31,11 +31,11 @@ foreach($result as &$pack){
     $starspack = $pack["starStars"];
     if($pack["starStars"] == 0) $starspack = '<span style="color:grey">0</span>';
   	$coinspack = $pack["countForReward"];
-	$pst = '<p class="profilepic"><i class="fa-solid fa-gem"></i> '.$starspack.'</p>';
+	$pst = '<p class="profilepic"><i class="fa-solid fa-gem" style="color:#a6fffb"></i> '.$starspack.'</p>';
 	if($pack["countForReward"] != 0) $pcc =  '<p class="profilepic"><i class="fa-solid fa-circle-check"></i> '.$coinspack.'</p>'; else $pcc = '';
 	$pd = '<p class="profilepic"><i class="fa-solid fa-face-smile-beam"></i> '.$gs->getListDiffName($pack['starDifficulty']).'</p>';
-	$lk = '<p class="profilepic"><i class="fa-solid fa-thumbs-'.($pack['likes'] - $pack['dislikes'] > 0 ? 'up' : 'down').'"></i> '.abs($pack['likes'] - $pack['dislikes']).'</p>';
-	$dload = '<p class="profilepic"><i class="fa-solid fa-reply fa-rotate-270"></i> '.$pack['downloads'].'</p>';
+	$lk = '<p class="profilepic"><i class="fa-solid fa-thumbs-'.($pack['likes'] - $pack['dislikes'] >= 0 ? 'up' : 'down').'"></i> '.abs($pack['likes'] - $pack['dislikes']).'</p>';
+	$dload = '<p class="profilepic"><i class="fa-solid fa-reply fa-rotate-270" style="color: #afff9b;"></i> '.$pack['downloads'].'</p>';
 	$packall = $dload.$lk.$pst.$pd.$pcc;
 	foreach($lvlarray as &$lvl) {
 		$query = $db->prepare("SELECT * FROM levels WHERE levelID = :levelID");

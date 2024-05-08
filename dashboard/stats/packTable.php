@@ -31,7 +31,7 @@ foreach($result as &$pack){
     if($pack["stars"] == 0) $starspack = '<span style="color:grey">0</span>';
   	$coinspack = $pack["coins"];
     if($pack["coins"] == 0) $coinspack = '<span style="color:grey">0</span>';
-	$pst = '<p class="profilepic"><i class="fa-solid fa-star"></i> '.$starspack.'</p>';
+	$pst = '<p class="profilepic"><i class="fa-solid fa-star" style="color:#ffff88"></i> '.$starspack.'</p>';
 	$pcc =  '<p class="profilepic"><i class="fa-solid fa-coins"></i> '.$coinspack.'</p>';
 	$diffarray = ['Auto', 'Easy', 'Normal', 'Hard', 'Harder', 'Insane', 'Demon'];
 	$pd = '<p class="profilepic"><i class="fa-solid fa-face-smile-beam"></i> '.$diffarray[$pack['difficulty']].'</p>';

@@ -37,14 +37,14 @@ foreach($result as &$action){
 	if($strs == 1) $star = 0; elseif($strs < 5 AND $strs != 0 AND ($stars > 20 OR $stars < 10)) $star = 1; else $star = 2;
 	$coin = $db->prepare("SELECT SUM(coins) FROM levelscores WHERE accountID = :id AND uploadDate > :time");
 	$coin->execute([':id' => $userid, ':time' => $time]);
-	$coins = $coin->fetch();
-	if(empty($coins["SUM(coins)"])) $coins["SUM(coins)"] = 0;
-	$cns = $coins[strlen($coins["SUM(coins)"])-1];
+	$coins = $coin->fetchColumn();
+	if(empty($coins)) $coins = 0;
+	$cns = $coins[strlen($coins)-1];
   	if($cns == 1) $lvl = 0; elseif($cns < 5 AND $cns > 0 AND ($cns > 20 OR $cns < 10)) $lvl = 1; else $lvl = 2;
 	if(empty($action["userCoins"])) $action["userCoins"] = 0;
 	$st = '<p class="profilepic">'.$action["stars"].' <i class="fa-solid fa-star"></i></p>';
 	$uc = '<p class="profilepic">'.$action["userCoins"].' <i class="fa-solid fa-coins"></i></p>';
-	$stats = $st.$uc;
+	$stats = $dl->createProfileStats($action["stars"], 0, 0, 0, $action['userCoins'], 0, 0, 0);
 	switch($x) {
 		case 1:
 			$place = '<i class="fa-solid fa-trophy" style="color:#ffd700; margin-right: 5px;"> 1</i>';
