@@ -28,17 +28,10 @@ if($gs->checkPermission($_SESSION["accountID"], "actionRateStars")){
 			$epic = $featured - 1;
 			$featured = 0;
 			$query = $db->prepare("UPDATE levels SET starEpic = :epic WHERE levelID = :levelID");
-			$query->execute([':epic' => $epic, ':levelID' => $lvlid]);
+			$query->execute([':levelID' => $lvlid, ':epic' => $epic]);
 			$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('4', :value, :levelID, :timestamp, :id)");
 			$query->execute([':value' => $epic, ':timestamp' => time(), ':id' => $_SESSION["accountID"], ':levelID' => $lvlid]);
-		} elseif ($featured == 1) {
-			$query = $db->prepare("UPDATE levels SET starFeatured = 1 WHERE levelID = :levelID");
-			$query->execute([':levelID' => $lvlid]);
-			$gs->featureLevel($_SESSION["accountID"], $lvlid, $featured);
-		} else {
-			$query = $db->prepare("UPDATE levels SET starFeatured = 0 WHERE levelID = :levelID");
-			$query->execute([':levelID' => $lvlid]);
-		}
+		} elseif($featured == 1) $gs->featureLevel($_SESSION["accountID"], $lvlid, $featured);
   		$gs->verifyCoinsLevel($_SESSION["accountID"], $lvlid, 1);
   		$gs->rateLevel($_SESSION["accountID"], $lvlid, $stars, $difficulty, $auto, $demon);
   		header('Location: ../stats/levelsList.php');
