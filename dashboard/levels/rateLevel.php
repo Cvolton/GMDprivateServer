@@ -24,7 +24,6 @@ if($stars != 1) $auto = 0; else $auto = 1;
 $difficulty = $gs->getDiffFromStars($stars);
 $difficulty = $difficulty["diff"];
 if($gs->checkPermission($_SESSION["accountID"], "actionRateStars")){
-  		$gs->rateLevel($_SESSION["accountID"], $lvlid, $stars, $difficulty, $auto, $demon);
   		if ($featured > 1) {
 			$epic = $featured - 1;
 			$featured = 0;
@@ -36,8 +35,12 @@ if($gs->checkPermission($_SESSION["accountID"], "actionRateStars")){
 			$query = $db->prepare("UPDATE levels SET starFeatured = 1 WHERE levelID = :levelID");
 			$query->execute([':levelID' => $lvlid]);
 			$gs->featureLevel($_SESSION["accountID"], $lvlid, $featured);
+		} else {
+			$query = $db->prepare("UPDATE levels SET starFeatured = 0 WHERE levelID = :levelID");
+			$query->execute([':levelID' => $lvlid]);
 		}
   		$gs->verifyCoinsLevel($_SESSION["accountID"], $lvlid, 1);
+  		$gs->rateLevel($_SESSION["accountID"], $lvlid, $stars, $difficulty, $auto, $demon);
   		header('Location: ../stats/levelsList.php');
 } elseif($gs->checkPermission($_SESSION["accountID"], "actionSuggestRating")) {
         $gs->suggestLevel($_SESSION["accountID"], $lvlid, $difficulty, $stars, $featured, $auto, $demon);
