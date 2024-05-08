@@ -53,7 +53,7 @@ class Commands {
 						$query = $db->prepare("SELECT starFeatured FROM levels WHERE levelID=:levelID ORDER BY starFeatured DESC LIMIT 1");
 						$query->execute([':levelID' => $levelID]);
 						$featuredID = $query->fetchColumn();
-						if (!$featuredID) {
+						if(!$featuredID) {
 							$query = $db->prepare("SELECT starFeatured FROM levels ORDER BY starFeatured DESC LIMIT 1");
 							$query->execute();
 							$featuredID = $query->fetchColumn() + 1;
@@ -103,7 +103,7 @@ class Commands {
 						$query = $db->prepare("SELECT starFeatured FROM levels WHERE levelID=:levelID ORDER BY starFeatured DESC LIMIT 1");
 						$query->execute([':levelID' => $levelID]);
 						$starFeatured = $query->fetchColumn();
-						if (!$starFeatured) {
+						if(!$starFeatured) {
 							$query = $db->prepare("SELECT starFeatured FROM levels ORDER BY starFeatured DESC LIMIT 1");
 							$query->execute();
 							$starFeatured = $query->fetchColumn() + 1;
@@ -123,7 +123,7 @@ class Commands {
 						$query = $db->prepare("SELECT starFeatured FROM levels WHERE levelID=:levelID ORDER BY starFeatured DESC LIMIT 1");
 						$query->execute([':levelID' => $levelID]);
 						$starFeatured = $query->fetchColumn();
-						if (!$starFeatured) {
+						if(!$starFeatured) {
 							$query = $db->prepare("SELECT starFeatured FROM levels ORDER BY starFeatured DESC LIMIT 1");
 							$query->execute();
 							$starFeatured = $query->fetchColumn() + 1;
