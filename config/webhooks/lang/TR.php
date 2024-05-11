@@ -87,4 +87,17 @@ $webhookLang['playerBanCommentDesc'] = '%1$s banned %2$s\'s ability to comment!'
 $webhookLang['playerBanCommentDescDM'] = '%1$s banned ability to comment to you.';
 $webhookLang['playerUnbanCommentDesc'] = '%1$s unbanned %2$s\'s ability to comment!';
 $webhookLang['playerUnbanCommentDescDM'] = '%1$s unbanned ability to comment to you!';
+
+$webhookLang['dailyTitle'] = 'New daily level!';
+$webhookLang['dailyTitleDM'] = 'Your level is daily!';
+$webhookLang['dailyDesc'] = 'This level is daily now!';
+$webhookLang['dailyDescDM'] = 'Your level became daily! %1$s';
+$webhookLang['weeklyTitle'] = 'New weekly level!';
+$webhookLang['weeklyTitleDM'] = 'Your level is weekly!';
+$webhookLang['weeklyDesc'] = 'This level is weekly now!';
+$webhookLang['weeklyDescDM'] = 'Your level became weekly! %1$s';
+$webhookLang['eventTitle'] = 'New event level!';
+$webhookLang['eventTitleDM'] = 'Your level is event level!';
+$webhookLang['eventDesc'] = 'This level is event level now!';
+$webhookLang['eventDescDM'] = 'Your level was used in event! %1$s';
 ?>

@@ -1324,12 +1324,14 @@ class mainLib {
 			$dmTitle = $this->webhookLanguage('rateSuccessTitleDM', $webhookLangArray);
 			$setDescription = sprintf($this->webhookLanguage('rateSuccessDesc', $webhookLangArray), $modFormattedUsername);
 			$dmDescription = sprintf($this->webhookLanguage('rateSuccessDescDM', $webhookLangArray), $modFormattedUsername, $tadaEmoji);
+			$setNotificationText = $rateNotificationText;
 		} else {
 			$setColor = $failColor;
 			$setTitle = $this->webhookLanguage('rateFailTitle', $webhookLangArray);
 			$dmTitle = $this->webhookLanguage('rateFailTitleDM', $webhookLangArray);
 			$setDescription = sprintf($this->webhookLanguage('rateFailDesc', $webhookLangArray), $modFormattedUsername);
 			$dmDescription = sprintf($this->webhookLanguage('rateFailDescDM', $webhookLangArray), $modFormattedUsername, $sobEmoji);
+			$setNotificationText = $unrateNotificationText;
 		}
 		$stats = $downloadEmoji.' '.$level['downloads'].' | '.($level['likes'] - $level['dislikes'] >= 0 ? $likeEmoji.' '.abs($level['likes'] - $level['dislikes']) : $dislikeEmoji.' '.abs($level['likes'] - $level['dislikes']));
 		$levelField = [$this->webhookLanguage('levelTitle', $webhookLangArray), sprintf($this->webhookLanguage('levelDesc', $webhookLangArray), '**'.$level['levelName'].'**', $creatorFormattedUsername), true];
@@ -1343,7 +1345,7 @@ class mainLib {
 		$setThumbnail = 'https://gcs.icu/WTFIcons/difficulties/'.$starsIcon.'/'.$diffIcon.'.png';
 		$setFooter = sprintf($this->webhookLanguage('footer', $webhookLangArray), $gdps);
 		$dw->newMessage()
-		->setContent($rateNotificationText)
+		->setContent($setNotificationText)
 		->setAuthor($gdps, $authorURL, $authorIconURL)
 		->setColor($setColor)
 		->setTitle($setTitle, $rateTitleURL)
@@ -1721,6 +1723,106 @@ class mainLib {
 				"embeds" => [$embed]
 			], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
 			$this->sendDiscordPM($playerHasDiscord, $json, true);
+		}
+	}
+	public function sendDailyWebhook($levelID, $type) {
+		include __DIR__."/connection.php";
+		include __DIR__."/../../config/dashboard.php";
+		include __DIR__."/../../config/discord.php";
+		if(!$webhooksEnabled OR !is_numeric($levelID) OR !is_numeric($type) OR !in_array("daily", $webhooksToEnable)) return false;
+		include_once __DIR__."/../../config/webhooks/DiscordWebhook.php";
+		$webhookLangArray = $this->webhookStartLanguage($webhookLanguage);
+		$dw = new DiscordWebhook($dailyWebhook);
+		$level = $db->prepare('SELECT * FROM levels WHERE levelID = :levelID');
+		$level->execute([':levelID' => $levelID]);
+		$level = $level->fetch();
+		if(!$level) return false;
+		$daily = $db->prepare('SELECT * FROM dailyfeatures WHERE levelID = :levelID AND type = :type');
+		$daily->execute([':levelID' => $levelID, ':type' => $type]);
+		$daily = $daily->fetch();
+		if(!$daily) return false;
+		$creatorAccID = $level['extID'];
+		$creatorUsername = $this->getAccountName($creatorAccID);
+		$creatorHasDiscord = $this->hasDiscord($creatorAccID);
+		$creatorFormattedUsername = $creatorHasDiscord ? "<@".$creatorHasDiscord.">" : "**".$creatorUsername."**";
+		$difficulty = $this->getDifficulty($level['starDifficulty'], $level['starAuto'], $level['starDemon'], $level['starDemonDiff']);
+		$starsIcon = 'stars';
+		$diffIcon = 'na';
+		switch(true) {
+			case ($level['starEpic'] > 0):
+				$starsArray = ['', 'epic', 'legendary', 'mythic'];
+				$starsIcon = $starsArray[$level['starEpic']];
+				break;
+			case ($level['starFeatured'] > 0):
+				$starsIcon = 'featured';
+				break;
+		}
+		$diffArray = ['n/a' => 'na', 'auto' => 'auto', 'easy' => 'easy', 'normal' => 'normal', 'hard' => 'hard', 'harder' => 'harder', 'insane' => 'insane', 'demon' => 'demon-hard', 'easy demon' => 'demon-easy', 'medium demon' => 'demon-medium', 'hard demon' => 'demon-hard', 'insane demon' => 'demon-insane', 'extreme demon' => 'demon-extreme'];
+		$diffIcon = $diffArray[strtolower($difficulty)] ?? 'na';
+		switch($type) {
+			case 0:
+				$setColor = $dailyColor;
+				$setTitle = $this->webhookLanguage('dailyTitle', $webhookLangArray);
+				$dmTitle = $this->webhookLanguage('dailyTitleDM', $webhookLangArray);
+				$setDescription = $this->webhookLanguage('dailyDesc', $webhookLangArray);
+				$dmDescription = sprintf($this->webhookLanguage('dailyDescDM', $webhookLangArray), $tadaEmoji);
+				$setNotificationText = $dailyNotificationText;
+				break;
+			case 1:
+				$setColor = $weeklyColor;
+				$setTitle = $this->webhookLanguage('weeklyTitle', $webhookLangArray);
+				$dmTitle = $this->webhookLanguage('weeklyTitleDM', $webhookLangArray);
+				$setDescription = $this->webhookLanguage('weeklyDesc', $webhookLangArray);
+				$dmDescription = sprintf($this->webhookLanguage('weeklyDescDM', $webhookLangArray), $tadaEmoji);
+				$setNotificationText = $weeklyNotificationText;
+				break;
+			case 2:
+				$setColor = $eventColor;
+				$setTitle = $this->webhookLanguage('eventTitle', $webhookLangArray);
+				$dmTitle = $this->webhookLanguage('eventDM', $webhookLangArray);
+				$setDescription = $this->webhookLanguage('eventDesc', $webhookLangArray);
+				$dmDescription = sprintf($this->webhookLanguage('eventDescDM', $webhookLangArray), $tadaEmoji);
+				$setNotificationText = $eventNotificationText;
+				break;
+		}
+		$stats = $downloadEmoji.' '.$level['downloads'].' | '.($level['likes'] - $level['dislikes'] >= 0 ? $likeEmoji.' '.abs($level['likes'] - $level['dislikes']) : $dislikeEmoji.' '.abs($level['likes'] - $level['dislikes']));
+		$levelField = [$this->webhookLanguage('levelTitle', $webhookLangArray), sprintf($this->webhookLanguage('levelDesc', $webhookLangArray), '**'.$level['levelName'].'**', $creatorFormattedUsername), true];
+		$IDField = [$this->webhookLanguage('levelIDTitle', $webhookLangArray), $level['levelID'], true];
+		if($level['starStars'] == 1) $action = 0; elseif(($level['starStars'] < 5 AND $level['starStars'] != 0) AND !($level['starStars'] > 9 AND $level['starStars'] < 20)) $action = 1; else $action = 2;
+		$difficultyField = [$this->webhookLanguage('difficultyTitle', $webhookLangArray), sprintf($this->webhookLanguage('difficultyDesc'.$action, $webhookLangArray), $difficulty, $level['starStars']), true];
+		$statsField = [$this->webhookLanguage('statsTitle', $webhookLangArray), $stats, true];
+		if($level['requestedStars'] == 1) $action = 0; elseif(($level['requestedStars'] < 5 AND $level['requestedStars'] != 0) AND !($level['requestedStars'] > 9 AND $level['requestedStars'] < 20)) $action = 1; else $action = 2;
+		$requestedField = $level['requestedStars'] > 0 ? [$this->webhookLanguage('requestedTitle', $webhookLangArray), sprintf($this->webhookLanguage('requestedDesc'.$action, $webhookLangArray), $level['requestedStars']), true] : [];
+		$descriptionField = [$this->webhookLanguage('descTitle', $webhookLangArray), (!empty($level['levelDesc']) ? base64_decode($level['levelDesc']) : $this->webhookLanguage('descDesc', $webhookLangArray)), false];
+		$setThumbnail = 'https://gcs.icu/WTFIcons/difficulties/'.$starsIcon.'/'.$diffIcon.'.png';
+		$setFooter = sprintf($this->webhookLanguage('footer', $webhookLangArray), $gdps);
+		$dw->newMessage()
+		->setContent($setNotificationText)
+		->setAuthor($gdps, $authorURL, $authorIconURL)
+		->setColor($setColor)
+		->setTitle($setTitle, $rateTitleURL)
+		->setDescription($setDescription)
+		->setThumbnail($setThumbnail)
+		->addFields($levelField, $IDField, $difficultyField, $statsField, $requestedField, $descriptionField)
+		->setFooter($setFooter, $footerIconURL)
+		->setTimestamp()
+		->send(); 
+		if($dmNotifications && $creatorHasDiscord) {
+			$embed = $this->generateEmbedArray(
+				[$gdps, $authorURL, $authorIconURL],
+				$setColor,
+				[$dmTitle, $rateTitleURL],
+				$dmDescription,
+				$setThumbnail,
+				[$levelField, $IDField, $difficultyField, $statsField, $requestedField, $descriptionField],
+				[$setFooter, $footerIconURL]
+			);
+			$json = json_encode([
+				"content" => "",
+				"tts" => false,
+				"embeds" => [$embed]
+			], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+			$this->sendDiscordPM($creatorHasDiscord, $json, true);
 		}
 	}
   	public function mail($mail = '', $user = '', $isForgotPass = false) {

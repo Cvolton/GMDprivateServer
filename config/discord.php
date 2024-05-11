@@ -4,7 +4,7 @@
 	
 	$discordEnabled — true to enable Discord bot connection, false to disable
 	$secret — Your bot's secret code
-	$bottoken —Your bot's token
+	$bottoken — Your bot's token
 	
 	If you want DM notifications, this is required
 */
@@ -48,6 +48,9 @@ $bottoken = "";
 		$successColor — Color for succeeded actions (rate, demonlist record approve, unban)
 		$failColor — Color for failed actions (unrate, demonlist record deny, ban)
 		$pendingColor — Color for pending actions (demonlist record submit)
+		$dailyColor — Color for daily webhooks
+		$weeklyColor — Color for weekly webhooks
+		$eventColor — Color for event webhooks
 		$footerIconURL — Footer icon URL
 		$demonlistThumbnailURL — Image to show for demonlist record submit
 		$demonlistLink — link to dashboard's demonlist page
@@ -58,13 +61,14 @@ $bottoken = "";
 		$unbanThumbnailURL — Image to show for unbanning players
 */
 $webhooksEnabled = false;
-$webhooksToEnable = ["rate", "suggest", "demonlist", "ban"];
+$webhooksToEnable = ["rate", "suggest", "demonlist", "ban", "daily"];
 $rateWebhook = "";
 $suggestWebhook = "";
 $dlWebhook = "";
 $dlApproveWebhook = "";
 $banWebhook = "";
-$dmNotifications = true;
+$dailyWebhook = "";
+$dmNotifications = false;
 
 $webhookLanguage = 'EN';
 $likeEmoji = ":+1:";
@@ -80,6 +84,9 @@ $linkTitleURL = "";
 $successColor = "BBFFBB";
 $failColor = "FFBBBB";
 $pendingColor = "FFCCBB";
+$dailyColor = "FF9999";
+$weeklyColor = "CACACA";
+$eventColor = "EEB3E5";
 $footerIconURL = "";
 $demonlistThumbnailURL = "";
 $demonlistLink = "https://example.com/dashboard/demonlist"; // dont add another slash at the end!
@@ -94,11 +101,25 @@ $unbanThumbnailURL = "";
 	You can mention roles: <@&role_id>
  	And people: <@user_id>
   	And channels: <#channel_id>
+	
+	$rateNotificationText — Text to show when rating a level
+	$unrateNotificationText — Text to show when unrating a level
+	$suggestNotificationText — Text to show when suggesting a level
+	$dlsubmitNotificationText — Text to show when submitting new demonlist record
+	$dlrecordNotificationText — Text to show when approving/denying  demonlist records
+	$banNotificationText — Text to show when banning/unbanning people
+	$dailyNotificationText — Text to show when new daily level appears
+	$weeklyNotificationText — Text to show when new weekly level appears
+	$eventNotificationText — Text to show when new event level appears
 */
 
 $rateNotificationText = "";
+$unrateNotificationText = "";
 $suggestNotificationText = "";
-$dlsubmitNotificationText = ""; // new submits
-$dlrecordNotificationText = ""; // approved/denied submits
+$dlsubmitNotificationText = "";
+$dlrecordNotificationText = "";
 $banNotificationText = "";
+$dailyNotificationText = "";
+$weeklyNotificationText = "";
+$eventNotificationText = "";
 ?>
