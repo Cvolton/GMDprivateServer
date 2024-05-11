@@ -22,13 +22,20 @@ if($mode==0)
 else
 	$modeColumn = "likes";
 
-if(isset($_POST['levelID'])){
-	$filterColumn = 'levelID';
-	$filterToFilter = '';
-	$displayLevelID = false;
-	$filterID = ExploitPatch::remove($_POST["levelID"]);
-	$userListJoin = $userListWhere = $userListColumns = "";
-}
+	if(isset($_POST['levelID'])){
+		$filterColumn = 'levelID';
+		$filterToFilter = '';
+		$displayLevelID = false;
+		$filterID = ExploitPatch::remove($_POST["levelID"]);
+
+		$levelExists = $db->prepare("SELECT COUNT(*) FROM levels WHERE levelID = :levelID");
+		$levelExists->execute([':levelID' => $filterID]);
+		if ($levelExists->fetchColumn() == 0) {
+			$userListWhere = "AND 1=0"; //dont return comments from nonexistant levels
+		}
+	
+		$userListJoin = "";
+	}
 elseif(isset($_POST['userID'])){
 	$filterColumn = 'userID';
 	$filterToFilter = 'comments.';
