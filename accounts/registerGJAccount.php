@@ -26,6 +26,7 @@ if(!empty($_POST["userName"]) AND !empty($_POST["password"]) AND !empty($_POST["
 	}
 	if(strlen($userName) > 20) exit("-4");
 	if(strlen($userName) < 3) exit("-9");
+	if(str_contains($userName, " ")) exit("-4");
 	if(strlen($password) < 6) exit("-8");
 	if(!filter_var($email, FILTER_VALIDATE_EMAIL)) exit("-6");
 	if($mailEnabled) {
