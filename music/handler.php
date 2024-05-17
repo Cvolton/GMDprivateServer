@@ -1,4 +1,5 @@
 <?php
+require_once "../incl/lib/exploitPatch.php";
 include_once "../incl/lib/connection.php";
 include_once "../incl/lib/mainLib.php";
 include "../config/dashboard.php";
@@ -6,6 +7,26 @@ require "../config/proxy.php";
 $gs = new mainLib();
 $file = trim(basename($_GET['request']));
 switch($file) {
+	case 'infos':
+		$id = $_GET["id"] ? ExploitPatch::remove($_GET["id"]) : exit("Where ID?");
+		$query = "SELECT download, reuploadTime FROM songs WHERE ID = :id";
+		$query = $db->prepare($query);
+		$query->execute([':id' => $id]);
+		$result = $query->fetchAll();
+		if($query->rowCount() == 0) exit("<center><h1>No song found</h1></center>");
+		
+		$row = $result[0]; // Assuming you expect only one row
+		$reuploadTime = $row["reuploadTime"];
+		$download = $row["download"];
+		
+		if ($reuploadTime == "0") {
+		    // Newgrounds
+		    header("Location: https://www.newgrounds.com/audio/listen/$id");
+		} else {
+		    // Not newgrounds
+		    header("Location: $download");
+		}
+		exit();
 	case 'musiclibrary.dat': 
 		$datFile = isset($_GET['dashboard']) ? 'standalone.dat' : 'gdps.dat';
 		if(!file_exists($datFile)) {
