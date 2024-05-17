@@ -185,6 +185,7 @@ class Commands {
 				return 'You successfully made '.$gs->getLevelName($levelID).' weekly!';
 				break;
 			case '!d':
+			case '!delet':
 			case '!delete':
 				if(!$gs->checkPermission($accountID, "commandDelete")) return false;
 				$levelName = $gs->getLevelName($levelID);
