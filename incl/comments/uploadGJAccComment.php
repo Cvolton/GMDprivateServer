@@ -8,7 +8,7 @@ require_once "../lib/mainLib.php";
 require_once "../lib/commands.php";
 $mainLib = new mainLib();
 $userName = ExploitPatch::remove($_POST["userName"]);
-$comment = ExploitPatch::remove($_POST["comment"]);
+$comment = base64_encode(substr(base64_decode(ExploitPatch::remove($_POST["comment"])), 0, 140));
 $accountID = GJPCheck::getAccountIDOrDie();
 $userID = $mainLib->getUserID($accountID, $userName);
 $uploadDate = time();

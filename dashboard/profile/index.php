@@ -130,7 +130,7 @@ if(!empty($_POST["msg"])) {
 			</div>', 'profile');
      die();
     }
-	$msg = base64_encode(ExploitPatch::rucharclean($_POST["msg"]));
+	$msg = base64_encode(substr(ExploitPatch::rucharclean($_POST["msg"]), 0, 140));
 	$query = $db->prepare("INSERT INTO acccomments (userID, userName, comment, timestamp) VALUES (:id, :name, :msg, :time)");
   	$query->execute([':id' => $userID, ':name' => $accname, ':msg' => $msg, ':time' => time()]);
 }
@@ -240,7 +240,7 @@ foreach($msgs AS &$msg) {
 	if($_SESSION["accountID"] != 0) $input = '<div class="field" style="display:flex;margin-right:10px"><input id="inputReply'.$msg["commentID"].'" type="text" placeholder="'.$dl->getLocalizedString("replyToComment").'"><button onclick="sendReply('.$msg["commentID"].')" id="btninput'.$msg["commentID"].'" style="width: max-content;margin-left: 10px;padding: 8px;" class="btn-rendel"><i style="color:white" class="fa-regular fa-paper-plane" aria-hidden="true"></i></button></div>';
   	$comments .= '<div style="width: 100%;display: flex;flex-wrap: wrap;justify-content: center;">
 			<div class="profile"><div style="display:flex"><h2 class="profilenick">'.$accname.'</h2><p style="text-align:right">'.$likes.'</p></div>
-			<h3 class="profilemsg">'.htmlspecialchars($message).'</h3>
+			<h3 class="profilemsg">'.htmlspecialchars(substr($message, 0, 140)).'</h3>
 			<h3 id="comments"><div id="replyBtn'.$msg["commentID"].'">'.$replies.'</div><i style="display: none;margin-right: 10px;color: white;font-size: 13px;" id="spin'.$msg["commentID"].'" class="fa-solid fa-spinner fa-spin"></i>'.$input.''.$dl->convertToDate($time, true).'</h3></div>
 			<div style="width: 90%;" id="reply'.$msg["commentID"].'"></div>
 		</div>';
@@ -311,9 +311,10 @@ $dl->printSong('<div class="form profileform">
 <script>
 function reply(id) {
 	document.getElementById("spin" + id).style.display = "block";
-	replies = new XMLHttpRequest();
-    replies.open("GET", "profile/replies.php?id=" + id, true);
-	replies.onload = function () {
+    replies = new XMLHttpRequest();
+    replies.open("POST", "profile/replies.php", true);
+    replies.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    replies.onload = function () {
 		document.getElementById("spin" + id).style.display = "none";
 		str = replies.response;
 		if(!str.trim().length) document.getElementById("replyBtn" + id).innerHTML = "";
@@ -352,7 +353,7 @@ function reply(id) {
 		});
 		if(r < 1) document.getElementById("replyBtn" + id).innerHTML = "";
 	}
-	replies.send();
+    replies.send("id=" + id);
 }
 function showReplies(id) {
 	document.getElementById("reply" + id).style.display = "block";
@@ -369,9 +370,10 @@ function sendReply(id) {
 	if(input.value.trim().length) {
 		document.getElementById("btninput" + id).disabled = true;
 		document.getElementById("btninput" + id).classList.add("btn-block");
-		repsend = new XMLHttpRequest();
-		repsend.open("GET", "profile/replies.php?id=" + id + "&body=" + input.value, true);
-		repsend.onload = function () {
+        repsend = new XMLHttpRequest();
+        repsend.open("POST", "profile/replies.php", true);
+        repsend.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        repsend.onload = function () {
 			if(repsend.response == 1) {
 				document.getElementById("spin" + id).style.display = "none";
 				replyCount++;
@@ -383,14 +385,15 @@ function sendReply(id) {
 				reply(id);
 			}
 		}
-		repsend.send();
+        repsend.send("id=" + id + "&body=" + encodeURIComponent(input.value));
 	}
 }
 function deleteReply(rid, id) {
 	document.getElementById("spin" + id).style.display = "block";
-	del = new XMLHttpRequest();
-    del.open("GET", "profile/replies.php?id=" + rid + "&delete=1", true);
-	del.onload = function () {
+    del = new XMLHttpRequest();
+    del.open("POST", "profile/replies.php", true);
+    del.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    del.onload = function () {
 			if(del.response == 1) {
 			document.getElementById("spin" + id).style.display = "none";
 			replyCount--;
@@ -400,7 +403,7 @@ function deleteReply(rid, id) {
 			reply(id);
 		}
 	}
-	del.send();
+    del.send("id=" + rid + "&delete=1");
 }
 function b64DecodeUnicode(str) {
     return decodeURIComponent(atob(str).split(\'\').map(function(c) {

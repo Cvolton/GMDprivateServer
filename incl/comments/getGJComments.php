@@ -60,6 +60,7 @@ foreach($result as &$comment1) {
 	if($comment1["commentID"]!=""){
       	$uploadDate = $gs->makeTime($comment1["timestamp"]);
 		$commentText = ($gameVersion < 20) ? base64_decode($comment1["comment"]) : $comment1["comment"];
+		$commentText = base64_encode(substr(base64_decode($commentText), 0, 100));
 		if($displayLevelID) $commentstring .= "1~".$comment1["levelID"]."~";
 		$likes = $comment1["likes"]; // - $comment1["dislikes"];
 		if($likes < -2) $comment1["isSpam"] = 1;
