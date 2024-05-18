@@ -1342,7 +1342,7 @@ class mainLib {
 		if($level['requestedStars'] == 1) $action = 0; elseif(($level['requestedStars'] < 5 AND $level['requestedStars'] != 0) AND !($level['requestedStars'] > 9 AND $level['requestedStars'] < 20)) $action = 1; else $action = 2;
 		$requestedField = $level['requestedStars'] > 0 ? [$this->webhookLanguage('requestedTitle', $webhookLangArray), sprintf($this->webhookLanguage('requestedDesc'.$action, $webhookLangArray), $level['requestedStars']), true] : [];
 		$descriptionField = [$this->webhookLanguage('descTitle', $webhookLangArray), (!empty($level['levelDesc']) ? base64_decode($level['levelDesc']) : $this->webhookLanguage('descDesc', $webhookLangArray)), false];
-		$setThumbnail = 'https://gcs.icu/WTFIcons/difficulties/'.$starsIcon.'/'.$diffIcon.'.png';
+		$setThumbnail = $difficultiesURL.$starsIcon.'/'.$diffIcon.'.png';
 		$setFooter = sprintf($this->webhookLanguage('footer', $webhookLangArray), $gdps);
 		$dw->newMessage()
 		->setContent($setNotificationText)
@@ -1463,7 +1463,7 @@ class mainLib {
 		if($level['requestedStars'] == 1) $action = 0; elseif(($level['requestedStars'] < 5 AND $level['requestedStars'] != 0) AND !($level['requestedStars'] > 9 AND $level['requestedStars'] < 20)) $action = 1; else $action = 2;
 		$requestedField = $level['requestedStars'] > 0 ? [$this->webhookLanguage('requestedTitle', $webhookLangArray), sprintf($this->webhookLanguage('requestedDesc'.$action, $webhookLangArray), $level['requestedStars']), true] : [];
 		$descriptionField = [$this->webhookLanguage('descTitle', $webhookLangArray), (!empty($level['levelDesc']) ? base64_decode($level['levelDesc']) : $this->webhookLanguage('descDesc', $webhookLangArray)), false];
-		$setThumbnail = 'https://gcs.icu/WTFIcons/difficulties/'.$starsIcon.'/'.$diffIcon.'.png';
+		$setThumbnail = $difficultiesURL.$starsIcon.'/'.$diffIcon.'.png';
 		$setFooter = sprintf($this->webhookLanguage('footerSuggest', $webhookLangArray), $gdps);
 		$dw->newMessage()
 		->setContent($suggestNotificationText)
@@ -1794,7 +1794,7 @@ class mainLib {
 		if($level['requestedStars'] == 1) $action = 0; elseif(($level['requestedStars'] < 5 AND $level['requestedStars'] != 0) AND !($level['requestedStars'] > 9 AND $level['requestedStars'] < 20)) $action = 1; else $action = 2;
 		$requestedField = $level['requestedStars'] > 0 ? [$this->webhookLanguage('requestedTitle', $webhookLangArray), sprintf($this->webhookLanguage('requestedDesc'.$action, $webhookLangArray), $level['requestedStars']), true] : [];
 		$descriptionField = [$this->webhookLanguage('descTitle', $webhookLangArray), (!empty($level['levelDesc']) ? base64_decode($level['levelDesc']) : $this->webhookLanguage('descDesc', $webhookLangArray)), false];
-		$setThumbnail = 'https://gcs.icu/WTFIcons/difficulties/'.$starsIcon.'/'.$diffIcon.'.png';
+		$setThumbnail = $difficultiesURL.$starsIcon.'/'.$diffIcon.'.png';
 		$setFooter = sprintf($this->webhookLanguage('footer', $webhookLangArray), $gdps);
 		$dw->newMessage()
 		->setContent($setNotificationText)
