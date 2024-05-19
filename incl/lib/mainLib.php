@@ -1453,20 +1453,7 @@ class mainLib {
 		$starsIcon = $starsArray[$featured] ?? 'stars';
 		$diffArray = ['n/a' => 'na', 'auto' => 'auto', 'easy' => 'easy', 'normal' => 'normal', 'hard' => 'hard', 'harder' => 'harder', 'insane' => 'insane', 'demon' => 'demon-hard', 'easy demon' => 'demon-easy', 'medium demon' => 'demon-medium', 'hard demon' => 'demon-hard', 'insane demon' => 'demon-insane', 'extreme demon' => 'demon-extreme'];
 		$diffIcon = $diffArray[strtolower($difficulty)] ?? 'na';
-                $originalDiffColorArray = [
-                    'na' => 'a9a9a9',
-                    'auto' => 'f5c96b',
-                    'easy' => '00e0ff',
-                    'normal' => '00ff3a',
-                    'hard' => 'ffb438',
-                    'harder' => 'fc1f1f',
-                    'insane' => 'f91ffc',
-                    'demon-easy' => 'aa6bf5',
-                    'demon-medium' => 'ac2974',
-                    'demon-hard' => 'ff0000',
-                    'demon-insane' => 'b31548',
-                    'demon-extreme' => '8e0505',
-                ];
+                $originalDiffColorArray = ['na' => 'a9a9a9', 'auto' => 'f5c96b', 'easy' => '00e0ff', 'normal' => '00ff3a', 'hard' => 'ffb438', 'harder' => 'fc1f1f', 'insane' => 'f91ffc', 'demon-easy' => 'aa6bf5', 'demon-medium' => 'ac2974', 'demon-hard' => 'ff0000', 'demon-insane' => 'b31548', 'demon-extreme' => '8e0505'];
                 $originalDiffColor = $originalDiffColor && empty($successColor);
                 $setColor = $originalDiffColor ? $originalDiffColorArray[$diffIcon] : ($successColor ?: null);
 		$setTitle = $this->webhookLanguage('suggestTitle', $webhookLangArray);
