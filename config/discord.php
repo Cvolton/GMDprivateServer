@@ -81,8 +81,7 @@ $authorIconURL = "";
 $rateTitleURL = "";
 $demonlistTitleURL = "";
 $linkTitleURL = "";
-$originalDiffColor = false; // the $originalDiffColor value only works when you leave the $successColor value blank, and change from "false" to "true"
-$successColor = "BBFFBB"; // if you activate $originalDiffColor leave this value blank => $successColor = "";
+$successColor = "BBFFBB"; // optional, if you leave it blank you will enable automatic colors for the webhook based on the difficulty of the level
 $failColor = "FFBBBB";
 $pendingColor = "FFCCBB";
 $dailyColor = "FF9999";
