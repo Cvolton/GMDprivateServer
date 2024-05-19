@@ -3,6 +3,7 @@ chdir(dirname(__FILE__));
 include "../lib/connection.php";
 require_once "../lib/exploitPatch.php";
 require_once "../lib/mainLib.php";
+require_once "../../config/misc.php";
 $gs = new mainLib();
 
 $commentstring = "";
@@ -60,7 +61,7 @@ foreach($result as &$comment1) {
 	if($comment1["commentID"]!=""){
       	$uploadDate = $gs->makeTime($comment1["timestamp"]);
 		$commentText = ($gameVersion < 20) ? base64_decode($comment1["comment"]) : $comment1["comment"];
-		$commentText = base64_encode(substr(base64_decode($commentText), 0, 100));
+		$commentText = base64_encode(substr(base64_decode($commentText), 0, $maxCommentLength));
 		if($displayLevelID) $commentstring .= "1~".$comment1["levelID"]."~";
 		$likes = $comment1["likes"]; // - $comment1["dislikes"];
 		if($likes < -2) $comment1["isSpam"] = 1;
