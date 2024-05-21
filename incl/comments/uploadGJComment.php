@@ -21,6 +21,7 @@ $uploadDate = time();
 $decodecomment = base64_decode($comment);
 $command = Commands::doCommands($id, $decodecomment, $levelID);
 if($command) exit("temp_0_".$command);
+if ($percent < 0 || $percent > 100) exit("temp_0_Invalid percentage!");
 $checkCommentBan = $db->prepare("SELECT * FROM users WHERE extID = :accountID AND isCommentBanned = 1");
 $checkCommentBan->execute([':accountID' => $id]);
 if($checkCommentBan->rowCount() > 0) die("-10");
