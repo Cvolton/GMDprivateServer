@@ -28,11 +28,14 @@ if($_SESSION["accountID"] != 0) {
 		$reply = $reply->fetchAll();
 		foreach($reply as &$rep) {
 			if($x > 1) echo ' | ';
-			echo $rep["replyID"].', '.$id.', '.$gs->getAccountName($rep["accountID"]).', '.base64_encode(substr(base64_decode($rep["body"]), 0, $maxCommentLength)).', '.$dl->convertToDate($rep["timestamp"], true).', '.count($reply);
+			$body = $rep["body"];
+			if($enableCommentLengthLimiter) $body = base64_encode(substr(base64_decode($body), 0, $maxCommentLength));
+			echo $rep["replyID"].', '.$id.', '.$gs->getAccountName($rep["accountID"]).', '.$body.', '.$dl->convertToDate($rep["timestamp"], true).', '.count($reply);
 			$x++;
 		}
 	} else {
-		$body = base64_encode(substr(strip_tags(ExploitPatch::rucharclean($_POST["body"])), 0, $maxCommentLength));
+		$body = base64_encode(strip_tags(ExploitPatch::rucharclean($_POST["body"])));
+		if($enableCommentLengthLimiter && strlen(base64_decode($body)) > $maxCommentLength) exit("-1");
 		$reply = $db->prepare("INSERT INTO replies (commentID, accountID, body, timestamp) VALUES (:cid, :acc, :body, :time)");
 		$reply->execute([':cid' => $id, ':acc' => $_SESSION["accountID"], ':body' => $body, ':time' => time()]);
 		echo 1;
@@ -43,7 +46,9 @@ if($_SESSION["accountID"] != 0) {
 	$reply = $reply->fetchAll();
 	foreach($reply as &$rep) {
 		if($x > 1) echo ' | ';
-		echo $rep["replyID"].', '.$id.', '.$gs->getAccountName($rep["accountID"]).', '.base64_encode(substr(base64_decode($rep["body"]), 0, $maxCommentLength)).', '.$dl->convertToDate($rep["timestamp"], true).', '.count($reply);
+		$body = $rep["body"];
+		if($enableCommentLengthLimiter) $body = base64_encode(substr(base64_decode($body), 0, $maxCommentLength));
+		echo $rep["replyID"].', '.$id.', '.$gs->getAccountName($rep["accountID"]).', '.$body.', '.$dl->convertToDate($rep["timestamp"], true).', '.count($reply);
 		$x++;
 	}
 }

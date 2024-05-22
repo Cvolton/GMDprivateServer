@@ -10,7 +10,8 @@ require_once "../../config/misc.php";
 
 $userName = !empty($_POST['userName']) ? ExploitPatch::remove($_POST['userName']) : "";
 $gameVersion = !empty($_POST['gameVersion']) ? ExploitPatch::number($_POST['gameVersion']) : 0;
-$comment = base64_encode(substr(base64_decode(ExploitPatch::remove($_POST['comment'])), 0, $maxCommentLength));
+$comment = ExploitPatch::remove($_POST["comment"]);
+if($enableCommentLengthLimiter && strlen($comment) > $maxCommentLength) exit("temp_0_You cannot post comments above $maxCommentLength characters!");
 $comment = ($gameVersion < 20) ? base64_encode($comment) : $comment;
 $levelID = ($_POST['levelID'] < 0 ? '-' : '').ExploitPatch::number($_POST["levelID"]);
 $percent = !empty($_POST["percent"]) ? ExploitPatch::remove($_POST["percent"]) : 0;

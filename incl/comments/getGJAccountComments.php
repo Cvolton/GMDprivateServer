@@ -31,7 +31,8 @@ foreach($result as &$comment1) {
 			$rep = $reply > 1 ? 'replies)' : 'reply)';
 			$comment1["comment"] = base64_encode(base64_decode($comment1["comment"]).' ('.$reply.' '.$rep);
 		}
-		$comment1['comment'] = base64_encode(trim(substr(ExploitPatch::rutoen(base64_decode($comment1['comment'])), 0, $maxAccountCommentLength)));
+		$comment1['comment'] = base64_encode(trim(ExploitPatch::rutoen(base64_decode($comment1['comment']))));
+		if($enableCommentLengthLimiter) $comment1['comment'] = base64_encode(substr(base64_decode($comment1['comment']), 0, $maxAccountCommentLength));
 		$commentstring .= "2~".$comment1["comment"]."~3~".$comment1["userID"]."~4~".$likes."~5~0~7~".$comment1["isSpam"]."~9~".$uploadDate."~6~".$comment1["commentID"]."|";
 	}
 }

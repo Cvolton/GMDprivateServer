@@ -131,9 +131,13 @@ if(!empty($_POST["msg"])) {
 			</div>', 'profile');
      die();
     }
-	$msg = base64_encode(substr(ExploitPatch::rucharclean($_POST["msg"]), 0, $maxAccountCommentLength));
-	$query = $db->prepare("INSERT INTO acccomments (userID, userName, comment, timestamp) VALUES (:id, :name, :msg, :time)");
-  	$query->execute([':id' => $userID, ':name' => $accname, ':msg' => $msg, ':time' => time()]);
+	$msg = base64_encode(ExploitPatch::rucharclean($_POST["msg"]));
+	if($enableCommentLengthLimiter && strlen(base64_decode($msg)) > $maxAccountCommentLength) {
+		$msgTooLong = true;
+	}else{
+		$query = $db->prepare("INSERT INTO acccomments (userID, userName, comment, timestamp) VALUES (:id, :name, :msg, :time)");
+		$query->execute([':id' => $userID, ':name' => $accname, ':msg' => $msg, ':time' => time()]);
+	}
 }
 if(isset($_POST["settings"]) AND $_POST["settings"] == 1 AND $accid == $_SESSION["accountID"]) {
     if(!isset($_POST["ichangedsmth"]) OR $_POST["ichangedsmth"] != 1) {
@@ -233,6 +237,7 @@ foreach($msgs AS &$msg) {
 	$reply->execute([':id' => $msg["commentID"]]);
 	$reply = $reply->fetchColumn();	
   	$message = base64_decode($msg["comment"]);
+	if($enableCommentLengthLimiter) $message = substr($message, 0, $maxAccountCommentLength);
   	$time = $msg["timestamp"];
 	$likes = $msg["likes"];
 	if($likes >= 0) $likes = $likes.' <i class="fa-regular fa-thumbs-up"></i>'; else $likes = mb_substr($likes, 1).' <i class="fa-regular fa-thumbs-down"></i>';
@@ -241,7 +246,7 @@ foreach($msgs AS &$msg) {
 	if($_SESSION["accountID"] != 0) $input = '<div class="field" style="display:flex;margin-right:10px"><input id="inputReply'.$msg["commentID"].'" type="text" placeholder="'.$dl->getLocalizedString("replyToComment").'"><button onclick="sendReply('.$msg["commentID"].')" id="btninput'.$msg["commentID"].'" style="width: max-content;margin-left: 10px;padding: 8px;" class="btn-rendel"><i style="color:white" class="fa-regular fa-paper-plane" aria-hidden="true"></i></button></div>';
   	$comments .= '<div style="width: 100%;display: flex;flex-wrap: wrap;justify-content: center;">
 			<div class="profile"><div style="display:flex"><h2 class="profilenick">'.$accname.'</h2><p style="text-align:right">'.$likes.'</p></div>
-			<h3 class="profilemsg">'.htmlspecialchars(substr($message, 0, $maxAccountCommentLength)).'</h3>
+			<h3 class="profilemsg">'.htmlspecialchars($message).'</h3>
 			<h3 id="comments"><div id="replyBtn'.$msg["commentID"].'">'.$replies.'</div><i style="display: none;margin-right: 10px;color: white;font-size: 13px;" id="spin'.$msg["commentID"].'" class="fa-solid fa-spinner fa-spin"></i>'.$input.''.$dl->convertToDate($time, true).'</h3></div>
 			<div style="width: 90%;" id="reply'.$msg["commentID"].'"></div>
 		</div>';
@@ -310,6 +315,7 @@ $dl->printSong('<div class="form profileform">
 		'.$send.'
 </div></div>
 <script>
+'.(isset($msgTooLong)?'alert("You cannot post account comments above '.$maxAccountCommentLength.' characters!");':'').'
 function reply(id) {
 	document.getElementById("spin" + id).style.display = "block";
     replies = new XMLHttpRequest();
@@ -375,12 +381,15 @@ function sendReply(id) {
         repsend.open("POST", "profile/replies.php", true);
         repsend.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
         repsend.onload = function () {
+			document.getElementById("spin" + id).style.display = "none";
+			document.getElementById("btninput" + id).removeAttribute("disabled");
+			document.getElementById("btninput" + id).classList.remove("btn-block");
+			if(repsend.response == -1) {
+				alert("You cannot post comments above '.$maxAccountCommentLength.' characters!");
+			}
 			if(repsend.response == 1) {
-				document.getElementById("spin" + id).style.display = "none";
 				replyCount++;
 				input.value = "";
-				document.getElementById("btninput" + id).removeAttribute("disabled");
-				document.getElementById("btninput" + id).classList.remove("btn-block");
 				document.getElementById("reply" + id).innerHTML = "";
 				document.getElementById("replyBtn" + id).innerHTML = \'<button id="btnreply\' +  id+ \'" onclick="reply(\' +  id+ \')" class="btn-rendel" style="padding: 7 10;margin-right: 5px;min-width: max-content;width: max-content">'.$dl->getLocalizedString("replies").' (\' + replyCount + \')</button>\';
 				reply(id);
