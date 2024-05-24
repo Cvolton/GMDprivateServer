@@ -1303,23 +1303,25 @@ class mainLib {
 		$creatorUsername = $this->getAccountName($creatorAccID);
 		$creatorHasDiscord = $this->hasDiscord($creatorAccID);
 		$creatorFormattedUsername = $creatorHasDiscord ? "<@".$creatorHasDiscord.">" : "**".$creatorUsername."**";
-		$isRated = $level['starStars'] != 0;
-		$difficulty = $this->getDifficulty($level['starDifficulty'], $level['starAuto'], $level['starDemon'], $level['starDemonDiff']);
-		$starsIcon = 'stars';
-		$diffIcon = 'na';
-		switch(true) {
-			case ($level['starEpic'] > 0):
-				$starsArray = ['', 'epic', 'legendary', 'mythic'];
-				$starsIcon = $starsArray[$level['starEpic']];
-				break;
-			case ($level['starFeatured'] > 0):
-				$starsIcon = 'featured';
-				break;
-		}
-		$diffArray = ['n/a' => 'na', 'auto' => 'auto', 'easy' => 'easy', 'normal' => 'normal', 'hard' => 'hard', 'harder' => 'harder', 'insane' => 'insane', 'demon' => 'demon-hard', 'easy demon' => 'demon-easy', 'medium demon' => 'demon-medium', 'hard demon' => 'demon-hard', 'insane demon' => 'demon-insane', 'extreme demon' => 'demon-extreme'];
-		$diffIcon = $diffArray[strtolower($difficulty)] ?? 'na';
-		if($level['starStars'] != 0) {
-			$setColor = $successColor;
+                $isRated = $level['starStars'] != 0;
+                $difficulty = $this->getDifficulty($level['starDifficulty'], $level['starAuto'], $level['starDemon'], $level['starDemonDiff']);
+                $starsIcon = 'stars';
+                $diffIcon = 'na';
+                switch(true) {
+                    case ($level['starEpic'] > 0):
+                        $starsArray = ['', 'epic', 'legendary', 'mythic'];
+                        $starsIcon = $starsArray[$level['starEpic']];
+                        break;
+                    case ($level['starFeatured'] > 0):
+                        $starsIcon = 'featured';
+                        break;
+                }
+                $diffArray = ['n/a' => 'na', 'auto' => 'auto', 'easy' => 'easy', 'normal' => 'normal', 'hard' => 'hard', 'harder' => 'harder', 'insane' => 'insane', 'demon' => 'demon-hard', 'easy demon' => 'demon-easy', 'medium demon' => 'demon-medium', 'hard demon' => 'demon-hard', 'insane demon' => 'demon-insane', 'extreme demon' => 'demon-extreme'];
+                $diffIcon = $diffArray[strtolower($difficulty)] ?? 'na';
+                $originalDiffColorArray = ['na' => 'a9a9a9', 'auto' => 'f5c96b', 'easy' => '00e0ff', 'normal' => '00ff3a', 'hard' => 'ffb438', 'harder' => 'fc1f1f', 'insane' => 'f91ffc', 'demon-easy' => 'aa6bf5', 'demon-medium' => 'ac2974', 'demon-hard' => 'ff0000', 'demon-insane' => 'b31548', 'demon-extreme' => '8e0505'];
+                    $originalDiffColor = $originalDiffColor && empty($successColor);
+                    if($level['starStars'] != 0) {
+                        $setColor = empty($successColor) ? $originalDiffColorArray[$diffIcon] : $successColor;
 			$setTitle = $this->webhookLanguage('rateSuccessTitle', $webhookLangArray);
 			$dmTitle = $this->webhookLanguage('rateSuccessTitleDM', $webhookLangArray);
 			$setDescription = sprintf($this->webhookLanguage('rateSuccessDesc', $webhookLangArray), $modFormattedUsername);
@@ -1451,7 +1453,9 @@ class mainLib {
 		$starsIcon = $starsArray[$featured] ?? 'stars';
 		$diffArray = ['n/a' => 'na', 'auto' => 'auto', 'easy' => 'easy', 'normal' => 'normal', 'hard' => 'hard', 'harder' => 'harder', 'insane' => 'insane', 'demon' => 'demon-hard', 'easy demon' => 'demon-easy', 'medium demon' => 'demon-medium', 'hard demon' => 'demon-hard', 'insane demon' => 'demon-insane', 'extreme demon' => 'demon-extreme'];
 		$diffIcon = $diffArray[strtolower($difficulty)] ?? 'na';
-		$setColor = $successColor;
+                $originalDiffColorArray = ['na' => 'a9a9a9', 'auto' => 'f5c96b', 'easy' => '00e0ff', 'normal' => '00ff3a', 'hard' => 'ffb438', 'harder' => 'fc1f1f', 'insane' => 'f91ffc', 'demon-easy' => 'aa6bf5', 'demon-medium' => 'ac2974', 'demon-hard' => 'ff0000', 'demon-insane' => 'b31548', 'demon-extreme' => '8e0505'];
+                $originalDiffColor = $originalDiffColor && empty($successColor);
+                $setColor = empty($successColor) ? $originalDiffColorArray[$diffIcon] : $successColor;
 		$setTitle = $this->webhookLanguage('suggestTitle', $webhookLangArray);
 		$setDescription = sprintf($this->webhookLanguage('suggestDesc', $webhookLangArray), $modFormattedUsername);
 		$stats = $downloadEmoji.' '.$level['downloads'].' | '.($level['likes'] - $level['dislikes'] >= 0 ? $likeEmoji.' '.abs($level['likes'] - $level['dislikes']) : $dislikeEmoji.' '.abs($level['likes'] - $level['dislikes']));

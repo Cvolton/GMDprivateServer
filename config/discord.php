@@ -86,8 +86,7 @@ $authorIconURL = "";
 $rateTitleURL = "";
 $demonlistTitleURL = "";
 $linkTitleURL = "";
-
-$successColor = "BBFFBB";
+$successColor = "BBFFBB"; // optional, if you leave it blank you will enable automatic colors for the webhook based on the difficulty of the level
 $failColor = "FFBBBB";
 $pendingColor = "FFCCBB";
 $dailyColor = "FF9999";
