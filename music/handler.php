@@ -1,5 +1,4 @@
 <?php
-require_once "../incl/lib/exploitPatch.php";
 include_once "../incl/lib/connection.php";
 include_once "../incl/lib/mainLib.php";
 include "../config/dashboard.php";
