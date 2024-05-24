@@ -3,6 +3,7 @@ chdir(dirname(__FILE__));
 include "../lib/connection.php";
 require_once "../lib/exploitPatch.php";
 require_once "../lib/mainLib.php";
+require_once "../../config/misc.php";
 $gs = new mainLib();
 $commentstring = "";
 $accountid = ExploitPatch::remove($_POST["accountID"]);
@@ -31,6 +32,7 @@ foreach($result as &$comment1) {
 			$comment1["comment"] = base64_encode(base64_decode($comment1["comment"]).' ('.$reply.' '.$rep);
 		}
 		$comment1['comment'] = base64_encode(trim(ExploitPatch::rutoen(base64_decode($comment1['comment']))));
+		if($enableCommentLengthLimiter) $comment1['comment'] = base64_encode(substr(base64_decode($comment1['comment']), 0, $maxAccountCommentLength));
 		$commentstring .= "2~".$comment1["comment"]."~3~".$comment1["userID"]."~4~".$likes."~5~0~7~".$comment1["isSpam"]."~9~".$uploadDate."~6~".$comment1["commentID"]."|";
 	}
 }

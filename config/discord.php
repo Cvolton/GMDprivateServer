@@ -70,12 +70,17 @@ $banWebhook = "";
 $dailyWebhook = "";
 $dmNotifications = false;
 
-$webhookLanguage = 'EN';
+$webhookLanguage = 'EN'; // Country codes (caps lock), translations are available in the webhooks/langs folder
+
+// Set custom emojis for your webhooks here!
 $likeEmoji = ":+1:";
 $dislikeEmoji = ":-1:";
 $downloadEmoji = ":arrow_heading_down:";
 $tadaEmoji = ":tada:";
 $sobEmoji = ":sob:";
+
+$difficultiesURL = "https://gcs.icu/WTFIcons/difficulties/"; // URL from where difficulties should be retrieved for rate/send webhooks; DONT FORGET ABOUT THE SLASH AT THE END!
+
 $authorURL = "";
 $authorIconURL = "";
 $rateTitleURL = "";
@@ -87,6 +92,7 @@ $pendingColor = "FFCCBB";
 $dailyColor = "FF9999";
 $weeklyColor = "CACACA";
 $eventColor = "EEB3E5";
+
 $footerIconURL = "";
 $demonlistThumbnailURL = "";
 $demonlistLink = "https://example.com/dashboard/demonlist"; // dont add another slash at the end!

@@ -3,6 +3,7 @@ chdir(dirname(__FILE__));
 include "../lib/connection.php";
 require_once "../lib/exploitPatch.php";
 require_once "../lib/mainLib.php";
+require_once "../../config/misc.php";
 $gs = new mainLib();
 
 $commentstring = "";
@@ -22,13 +23,20 @@ if($mode==0)
 else
 	$modeColumn = "likes";
 
-if(isset($_POST['levelID'])){
-	$filterColumn = 'levelID';
-	$filterToFilter = '';
-	$displayLevelID = false;
-	$filterID = ExploitPatch::remove($_POST["levelID"]);
-	$userListJoin = $userListWhere = $userListColumns = "";
-}
+	if(isset($_POST['levelID'])){
+		$filterColumn = 'levelID';
+		$filterToFilter = '';
+		$displayLevelID = false;
+		$filterID = ExploitPatch::remove($_POST["levelID"]);
+
+		$levelExists = $db->prepare("SELECT COUNT(*) FROM levels WHERE levelID = :levelID");
+		$levelExists->execute([':levelID' => $filterID]);
+		if ($levelExists->fetchColumn() == 0) {
+			$userListWhere = "AND 1=0"; //dont return comments from nonexistant levels
+		}
+	
+		$userListJoin = "";
+	}
 elseif(isset($_POST['userID'])){
 	$filterColumn = 'userID';
 	$filterToFilter = 'comments.';
@@ -60,6 +68,7 @@ foreach($result as &$comment1) {
 	if($comment1["commentID"]!=""){
       	$uploadDate = $gs->makeTime($comment1["timestamp"]);
 		$commentText = ($gameVersion < 20) ? base64_decode($comment1["comment"]) : $comment1["comment"];
+		if($enableCommentLengthLimiter) $commentText = base64_encode(substr(base64_decode($commentText), 0, $maxCommentLength));
 		if($displayLevelID) $commentstring .= "1~".$comment1["levelID"]."~";
 		$likes = $comment1["likes"]; // - $comment1["dislikes"];
 		if($likes < -2) $comment1["isSpam"] = 1;
