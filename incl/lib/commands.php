@@ -190,6 +190,8 @@ class Commands {
 				if(!$gs->checkPermission($accountID, "commandDelete")) return false;
 				$levelName = $gs->getLevelName($levelID);
 				if(!$levelName) return false;
+				$query = $db->prepare("DELETE FROM comments WHERE levelID = :levelID");
+				$query->execute([':levelID' => $levelID]);
 				$query = $db->prepare("DELETE from levels WHERE levelID = :levelID LIMIT 1");
 				$query->execute([':levelID' => $levelID]);
 				$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('6', :value, :levelID, :timestamp, :id)");

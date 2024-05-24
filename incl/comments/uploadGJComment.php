@@ -16,6 +16,17 @@ $comment = ($gameVersion < 20) ? base64_encode($comment) : $comment;
 $levelID = ($_POST['levelID'] < 0 ? '-' : '').ExploitPatch::number($_POST["levelID"]);
 $percent = !empty($_POST["percent"]) ? ExploitPatch::remove($_POST["percent"]) : 0;
 
+if (strpos($levelID, '-') === 0) {
+    $checkLevelExist = $db->prepare("SELECT * FROM lists WHERE listID = :levelID");
+	$checkLevelExist->execute([':levelID' => ltrim($levelID, '-')]);
+} else {
+    $checkLevelExist = $db->prepare("SELECT * FROM levels WHERE levelID = :levelID");
+	$checkLevelExist->execute([':levelID' => $levelID]);
+}
+if ($checkLevelExist->rowCount() == 0) {
+	die("-1");
+}
+
 $id = $gs->getIDFromPost();
 $register = is_numeric($id);
 $userID = $gs->getUserID($id, $userName);
