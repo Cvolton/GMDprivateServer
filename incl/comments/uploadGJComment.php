@@ -6,10 +6,12 @@ $gs = new mainLib();
 require_once "../lib/GJPCheck.php";
 require_once "../lib/exploitPatch.php";
 require_once "../lib/commands.php";
+require_once "../../config/misc.php";
 
 $userName = !empty($_POST['userName']) ? ExploitPatch::remove($_POST['userName']) : "";
 $gameVersion = !empty($_POST['gameVersion']) ? ExploitPatch::number($_POST['gameVersion']) : 0;
-$comment = ExploitPatch::remove($_POST['comment']);
+$comment = ExploitPatch::remove($_POST["comment"]);
+if($enableCommentLengthLimiter && strlen($comment) > $maxCommentLength) exit("temp_0_You cannot post comments above $maxCommentLength characters!");
 $comment = ($gameVersion < 20) ? base64_encode($comment) : $comment;
 $levelID = ($_POST['levelID'] < 0 ? '-' : '').ExploitPatch::number($_POST["levelID"]);
 $percent = !empty($_POST["percent"]) ? ExploitPatch::remove($_POST["percent"]) : 0;

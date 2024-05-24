@@ -3,6 +3,7 @@ session_start();
 include "../incl/dashboardLib.php";
 include "../".$dbPath."incl/lib/exploitPatch.php";
 include_once "../".$dbPath."incl/lib/mainLib.php";
+require_once "../../config/misc.php";
 
 function generate_timezone_list()
 {
@@ -131,8 +132,12 @@ if(!empty($_POST["msg"])) {
      die();
     }
 	$msg = base64_encode(ExploitPatch::rucharclean($_POST["msg"]));
-	$query = $db->prepare("INSERT INTO acccomments (userID, userName, comment, timestamp) VALUES (:id, :name, :msg, :time)");
-  	$query->execute([':id' => $userID, ':name' => $accname, ':msg' => $msg, ':time' => time()]);
+	if($enableCommentLengthLimiter && strlen(base64_decode($msg)) > $maxAccountCommentLength) {
+		$msgTooLong = true;
+	}else{
+		$query = $db->prepare("INSERT INTO acccomments (userID, userName, comment, timestamp) VALUES (:id, :name, :msg, :time)");
+		$query->execute([':id' => $userID, ':name' => $accname, ':msg' => $msg, ':time' => time()]);
+	}
 }
 if(isset($_POST["settings"]) AND $_POST["settings"] == 1 AND $accid == $_SESSION["accountID"]) {
     if(!isset($_POST["ichangedsmth"]) OR $_POST["ichangedsmth"] != 1) {
@@ -232,6 +237,7 @@ foreach($msgs AS &$msg) {
 	$reply->execute([':id' => $msg["commentID"]]);
 	$reply = $reply->fetchColumn();	
   	$message = base64_decode($msg["comment"]);
+	if($enableCommentLengthLimiter) $message = substr($message, 0, $maxAccountCommentLength);
   	$time = $msg["timestamp"];
 	$likes = $msg["likes"];
 	if($likes >= 0) $likes = $likes.' <i class="fa-regular fa-thumbs-up"></i>'; else $likes = mb_substr($likes, 1).' <i class="fa-regular fa-thumbs-down"></i>';
@@ -309,11 +315,13 @@ $dl->printSong('<div class="form profileform">
 		'.$send.'
 </div></div>
 <script>
+'.(isset($msgTooLong)?'alert("You cannot post account comments above '.$maxAccountCommentLength.' characters!");':'').'
 function reply(id) {
 	document.getElementById("spin" + id).style.display = "block";
-	replies = new XMLHttpRequest();
-    replies.open("GET", "profile/replies.php?id=" + id, true);
-	replies.onload = function () {
+    replies = new XMLHttpRequest();
+    replies.open("POST", "profile/replies.php", true);
+    replies.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    replies.onload = function () {
 		document.getElementById("spin" + id).style.display = "none";
 		str = replies.response;
 		if(!str.trim().length) document.getElementById("replyBtn" + id).innerHTML = "";
@@ -352,7 +360,7 @@ function reply(id) {
 		});
 		if(r < 1) document.getElementById("replyBtn" + id).innerHTML = "";
 	}
-	replies.send();
+    replies.send("id=" + id);
 }
 function showReplies(id) {
 	document.getElementById("reply" + id).style.display = "block";
@@ -369,28 +377,33 @@ function sendReply(id) {
 	if(input.value.trim().length) {
 		document.getElementById("btninput" + id).disabled = true;
 		document.getElementById("btninput" + id).classList.add("btn-block");
-		repsend = new XMLHttpRequest();
-		repsend.open("GET", "profile/replies.php?id=" + id + "&body=" + input.value, true);
-		repsend.onload = function () {
+        repsend = new XMLHttpRequest();
+        repsend.open("POST", "profile/replies.php", true);
+        repsend.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        repsend.onload = function () {
+			document.getElementById("spin" + id).style.display = "none";
+			document.getElementById("btninput" + id).removeAttribute("disabled");
+			document.getElementById("btninput" + id).classList.remove("btn-block");
+			if(repsend.response == -1) {
+				alert("You cannot post comments above '.$maxAccountCommentLength.' characters!");
+			}
 			if(repsend.response == 1) {
-				document.getElementById("spin" + id).style.display = "none";
 				replyCount++;
 				input.value = "";
-				document.getElementById("btninput" + id).removeAttribute("disabled");
-				document.getElementById("btninput" + id).classList.remove("btn-block");
 				document.getElementById("reply" + id).innerHTML = "";
 				document.getElementById("replyBtn" + id).innerHTML = \'<button id="btnreply\' +  id+ \'" onclick="reply(\' +  id+ \')" class="btn-rendel" style="padding: 7 10;margin-right: 5px;min-width: max-content;width: max-content">'.$dl->getLocalizedString("replies").' (\' + replyCount + \')</button>\';
 				reply(id);
 			}
 		}
-		repsend.send();
+        repsend.send("id=" + id + "&body=" + encodeURIComponent(input.value));
 	}
 }
 function deleteReply(rid, id) {
 	document.getElementById("spin" + id).style.display = "block";
-	del = new XMLHttpRequest();
-    del.open("GET", "profile/replies.php?id=" + rid + "&delete=1", true);
-	del.onload = function () {
+    del = new XMLHttpRequest();
+    del.open("POST", "profile/replies.php", true);
+    del.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    del.onload = function () {
 			if(del.response == 1) {
 			document.getElementById("spin" + id).style.display = "none";
 			replyCount--;
@@ -400,7 +413,7 @@ function deleteReply(rid, id) {
 			reply(id);
 		}
 	}
-	del.send();
+    del.send("id=" + rid + "&delete=1");
 }
 function b64DecodeUnicode(str) {
     return decodeURIComponent(atob(str).split(\'\').map(function(c) {
