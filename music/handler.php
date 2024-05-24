@@ -43,22 +43,10 @@ switch($file) {
 		}
 		$musicID = explode('.', $file)[0];
 		$song = $gs->getLibrarySongInfo($musicID, true);
-		if($song) $url = $song['download'];
-		else $url = $gs->getSongInfo($musicID, 'download');
-		if(!$url) header("Location: https://www.newgrounds.com/audio/listen/$musicID");
-		$curl = curl_init($url);
-		if($proxytype == 1) curl_setopt($curl, CURLOPT_PROXY, $host);
-		elseif($proxytype == 2) {
-			curl_setopt($curl, CURLOPT_PROXY, $host);
-			curl_setopt($curl, CURLOPT_PROXYTYPE, CURLPROXY_SOCKS5);
-		}
-		if(!empty($auth)) curl_setopt($curl, CURLOPT_PROXYUSERPWD, $auth); 
-		curl_setopt_array($curl, [
-			CURLOPT_PROTOCOLS => CURLPROTO_HTTP | CURLPROTO_HTTPS,
-			CURLOPT_RETURNTRANSFER => 1
-		]);
-		echo curl_exec($curl);
-		curl_close($curl);
+		if($song) $url = urldecode($song['download']);
+		else $url = urldecode($gs->getSongInfo($musicID, 'download'));
+		if(empty($url)) header("Location: https://www.newgrounds.com/audio/listen/$musicID");
+		header("Location: $url");
 		break;
 }
 ?>

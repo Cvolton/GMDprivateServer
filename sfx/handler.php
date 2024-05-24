@@ -43,20 +43,8 @@ switch($file) {
 			$gs->updateLibraries($_GET['token'], $_GET['expires'], $time, 0);
 		}
 		$song = $gs->getLibrarySongInfo($sfxID, 'sfx');
-		$url = $song['download'];
-		$curl = curl_init($url);
-		if($proxytype == 1) curl_setopt($curl, CURLOPT_PROXY, $host);
-		elseif($proxytype == 2) {
-			curl_setopt($curl, CURLOPT_PROXY, $host);
-			curl_setopt($curl, CURLOPT_PROXYTYPE, CURLPROXY_SOCKS5);
-		}
-		if(!empty($auth)) curl_setopt($curl, CURLOPT_PROXYUSERPWD, $auth); 
-		curl_setopt_array($curl, [
-			CURLOPT_PROTOCOLS => CURLPROTO_HTTP | CURLPROTO_HTTPS,
-			CURLOPT_RETURNTRANSFER => 1
-		]);
-		echo curl_exec($curl);
-		curl_close($curl);
+		$url = urldecode($song['download']);
+		header("Location: $url");
 		break;
 }
 ?>

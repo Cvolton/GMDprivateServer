@@ -138,7 +138,7 @@ class Commands {
 						} else $returnText = 'You successfully unfeatured '.$gs->getLevelName($levelID).'!';
 					}
 				}
-				if($starArray[$commentarray[0]] == 0 || $commentarray[1] == 0) $column = 'starFeatured = 0, starEpic';
+				if($starArray[$commentarray[0]] == 0 && $commentarray[1] == 0) $column = 'starFeatured = 0, starEpic';
 				$query = $db->prepare("UPDATE levels SET $column = :starFeatured WHERE levelID = :levelID");
 				$query->execute([':levelID' => $levelID, ':starFeatured' => $starFeatured]);
 				$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('".($column == 'starEpic' ? 4 : 2)."', :value, :levelID, :timestamp, :id)");
