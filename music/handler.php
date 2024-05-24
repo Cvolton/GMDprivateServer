@@ -45,6 +45,7 @@ switch($file) {
 		$song = $gs->getLibrarySongInfo($musicID, true);
 		if($song) $url = $song['download'];
 		else $url = $gs->getSongInfo($musicID, 'download');
+		if(!$url) header("Location: https://www.newgrounds.com/audio/listen/$musicID");
 		$curl = curl_init($url);
 		if($proxytype == 1) curl_setopt($curl, CURLOPT_PROXY, $host);
 		elseif($proxytype == 2) {
