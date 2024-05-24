@@ -100,15 +100,17 @@ class Commands {
 					} else {
 						if(!$gs->checkPermission($accountID, "commandFeature")) return false;
 						$column = 'starFeatured';
-						$query = $db->prepare("SELECT starFeatured FROM levels WHERE levelID=:levelID ORDER BY starFeatured DESC LIMIT 1");
-						$query->execute([':levelID' => $levelID]);
-						$starFeatured = $query->fetchColumn();
-						if(!$starFeatured) {
-							$query = $db->prepare("SELECT starFeatured FROM levels ORDER BY starFeatured DESC LIMIT 1");
-							$query->execute();
-							$starFeatured = $query->fetchColumn() + 1;
-						}
-						$returnText = 'You successfully '.($starFeatured == 0 ? 'un' : '').'featured '.$gs->getLevelName($levelID).'!';
+						if($starArray[$commentarray[0]] != 0) {
+							$query = $db->prepare("SELECT starFeatured FROM levels WHERE levelID=:levelID ORDER BY starFeatured DESC LIMIT 1");
+							$query->execute([':levelID' => $levelID]);
+							$starFeatured = $query->fetchColumn();
+							if(!$starFeatured) {
+								$query = $db->prepare("SELECT starFeatured FROM levels ORDER BY starFeatured DESC LIMIT 1");
+								$query->execute();
+								$starFeatured = $query->fetchColumn() + 1;
+							}
+							$returnText = 'You successfully featured '.$gs->getLevelName($levelID).'!';
+						} else $returnText = 'You successfully unfeatured '.$gs->getLevelName($levelID).'!';
 					}
 				} else {
 					if($commentarray[0] > 1) {
@@ -120,22 +122,24 @@ class Commands {
 					} else {
 						if(!$gs->checkPermission($accountID, "commandFeature")) return false;
 						$column = 'starFeatured';
-						$query = $db->prepare("SELECT starFeatured FROM levels WHERE levelID=:levelID ORDER BY starFeatured DESC LIMIT 1");
-						$query->execute([':levelID' => $levelID]);
-						$starFeatured = $query->fetchColumn();
-						if(!$starFeatured) {
-							$query = $db->prepare("SELECT starFeatured FROM levels ORDER BY starFeatured DESC LIMIT 1");
-							$query->execute();
-							$starFeatured = $query->fetchColumn() + 1;
-						}
-						$returnText = 'You successfully '.($starFeatured == 0 ? 'un' : '').'featured '.$gs->getLevelName($levelID).'!';
+						if($starArray[$commentarray[0]] != 0) {
+							$query = $db->prepare("SELECT starFeatured FROM levels WHERE levelID=:levelID ORDER BY starFeatured DESC LIMIT 1");
+							$query->execute([':levelID' => $levelID]);
+							$starFeatured = $query->fetchColumn();
+							if(!$starFeatured) {
+								$query = $db->prepare("SELECT starFeatured FROM levels ORDER BY starFeatured DESC LIMIT 1");
+								$query->execute();
+								$starFeatured = $query->fetchColumn() + 1;
+							}
+							$returnText = 'You successfully featured '.$gs->getLevelName($levelID).'!';
+						} else $returnText = 'You successfully unfeatured '.$gs->getLevelName($levelID).'!';
 					}
 				}
-				if($starFeatured == 0) $column = 'starFeatured = 0, starEpic';
+				if($starArray[$commentarray[0]] == 0) $column = 'starFeatured = 0, starEpic';
 				$query = $db->prepare("UPDATE levels SET $column = :starFeatured WHERE levelID = :levelID");
 				$query->execute([':levelID' => $levelID, ':starFeatured' => $starFeatured]);
 				$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('".($column == 'starEpic' ? 4 : 2)."', :value, :levelID, :timestamp, :id)");
-				$query->execute([':value' => $starFeatured, ':timestamp' => $uploadDate, ':id' => $accountID, ':levelID' => $levelID]);
+				$query->execute([':value' => ($column == 'starEpic' ? $starArray[$commentarray[0]] - 1 : $starArray[$commentarray[0]]), ':timestamp' => $uploadDate, ':id' => $accountID, ':levelID' => $levelID]);
 				return $returnText;
 				break;
 			case '!vc':
