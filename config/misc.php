@@ -6,4 +6,6 @@ $sakujes = true; // true = rename everyone to sakujes in the leaderboard on apri
 $enableCommentLengthLimiter = true; // true = use the 2 settings below to limit the amount of characters a comment can have, false = don't use the 2 settings below and unrestrict comment lengths
 $maxCommentLength = 100; // default = 100, 100 characters is the default length for comments in game
 $maxAccountCommentLength = 140; // default = 140, 140 characters is the default length for account comments in game
+
+$showAllLevels = false; // true => Shows all levels like robtop, even if the client can't support it || false => Only shows levels supported by client
 ?>
