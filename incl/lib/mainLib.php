@@ -24,6 +24,7 @@ class mainLib {
 			"Deadlocked by F-777",
 			"Fingerbang by MDK",
 			"Dash by MDK",
+			"Explorers by Hinkik",
 			"The Seven Seas by F-777",
 			"Viking Arena by F-777",
 			"Airborne Robots by F-777",
