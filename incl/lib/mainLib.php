@@ -24,6 +24,7 @@ class mainLib {
 			"Deadlocked by F-777",
 			"Fingerbang by MDK",
 			"Dash by MDK",
+			"Explorers by Hinkik",
 			"The Seven Seas by F-777",
 			"Viking Arena by F-777",
 			"Airborne Robots by F-777",
@@ -37,7 +38,10 @@ class mainLib {
 			"Striker by Waterflame",
 			"Embers by Dex Arson",
 			"Round 1 by Dex Arson",
-			"Monster Dance Off by F-777"];
+			"Monster Dance Off by F-777",
+ 		        "Press Start by MDK",
+   		        "Nock Em by Bossfight",
+  		        "Power Trip by Boom Kitty"];
 		if($id < 0 || $id >= count($songs))
 			return "Unknown by DJVI";
 		return $songs[$id];
