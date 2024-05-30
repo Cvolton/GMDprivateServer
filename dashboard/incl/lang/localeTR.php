@@ -114,9 +114,9 @@ $string["smallPass"] = "Şifre çok kısa!";
 $string["passDontMatch"] = "Şifreler eşleşmiyor!";
 $string["emailDontMatch"] = "E-Postalar eşleşmiyor";
 $string["registered"] = "Hesap başarıyla oluşturuldu!";
-$string["bigNick"] = "Username is too long!";
-$string["mailExists"] = "There is a registered account using this email!";
-$string["badUsername"] = "Please choose another username.";
+$string["bigNick"] = "Kullanıcı adı çok uzun!";
+$string["mailExists"] = "Bu e-postayı kullanan bir hesap mevcut!";
+$string["badUsername"] = "Başka bir kullanıcı adı seçin.";
 
 $string["changePassTitle"] = "Şifre değiştir";
 $string["changedPass"] = "Şifre başarıyla değiştirildi! Hesabına yeniden giriş yapman gerekiyor.";
@@ -223,7 +223,7 @@ $string["reassign"] = "Yeniden ata";
 $string['demotePlayer'] = "Oyuncunun yetkisini düşür";
 $string['demotedPlayer'] = "<b>%s</b> adlı oyuncunun yetkisini başarıyla düşürdün!";
 $string['addedModNew'] = "<b>%s</b> adlı oyuncuya başarıyla moderatör yetkisi verdin!";
-$string['demoted'] = 'Demoted';
+$string['demoted'] = 'Yetkisi düşürüldü';
 
 $string["shareCPTitle"] = "Creator Point ekle";
 $string["shareCPDesc"] = "Burada kullanıcılara CP ekleyebilirsin!";
@@ -354,7 +354,7 @@ $string["createClanDesc"] = "Burada klan oluşturabilirsin!";
 $string["create"] = "Oluştur";
 $string["mainSettings"] = "Ana ayarlar";
 $string["takenClanName"] = "Bu klan ismi zaten alınmış!";
-$string["takenClanTag"] = "This clan tag was already taken!";
+$string["takenClanTag"] = "Bu klan etiketi zaten alınmış!";
 
 $string["suggestedName"] = '<button type="button" onclick="a(\'profile/%1$s\', true, true)" class="accbtn" name="accountID">%1$s</button><text class="dltext"> adlı oyuncu </text><text class="levelname">%2$s</text><text class="dltext"> adlı bölümü <b>%4$s%3$s</b> için önerdi.</text>'; // %1$s - Mod username, %2$s - level name, %3$s - x stars, %4$s - Featured/Epic (%4$s%3$s - Featured, x stars)
 $string["reportedName"] = '%1$s <text class="levelname">%2$s</text><text class="dltext"> adlı bölümü raporladı</text>';
@@ -363,26 +363,26 @@ $string['listTable'] = "Listeler";
 $string['listTableMod'] = "Liste dışı listeler";
 $string['listTableYour'] = "Liste dışı listelerin";
 
-$string['forgotPasswordChangeTitle'] = "Change password";
-$string["successfullyChangedPass"] = "Password was successfully changed!";
-$string['forgotPasswordTitle'] = "Forgot password?";
-$string['maybeSentAMessage'] = "We'll send you a message if this account exists.";
-$string['forgotPasswordDesc'] = "Here you can request change password link if you forgot it!";
-$string['forgotPasswordButton'] = "Request link";
+$string['forgotPasswordChangeTitle'] = "Şifreni değiştir";
+$string["successfullyChangedPass"] = "Şifre başarıyla değiştirildi!";
+$string['forgotPasswordTitle'] = "Şifreni mi unuttun?";
+$string['maybeSentAMessage'] = "Hesap mevcutsa size bir mesaj göndereceğiz.";
+$string['forgotPasswordDesc'] = "Buradan şifreni unuttuysan şifre sıfırlama linki alabilirsin!";
+$string['forgotPasswordButton'] = "Link iste";
 
-$string['sfxAdd'] = "Add SFX";
-$string["sfxAddError-5"] = "SFX's size is higher than $sfxSize megabytes!";
-$string["sfxAddError-6"] = "Something went wrong while uploading SFX!";
-$string["sfxAddError-7"] = "You can only upload audio!";
-$string['sfxAdded'] = 'SFX added';
-$string['yourNewSFX'] = "Take a look at your new SFX!";
-$string["sfxAddAnotherBTN"] = "One more SFX?";
-$string["sfxAddDesc"] = "Here you can add your SFX!";
-$string["chooseSFX"] = "Choose SFX";
-$string["sfxAddNameFieldPlaceholder"] = "Name";
-$string['sfxs'] = 'SFXs';
+$string['sfxAdd'] = "SFX ekle";
+$string["sfxAddError-5"] = "SFX boyutu $sfxSize megabayttan fazla!";
+$string["sfxAddError-6"] = "SFX eklerken bir sorun oluştu!";
+$string["sfxAddError-7"] = "Sadece ses ekleyebilirsin!";
+$string['sfxAdded'] = 'SFX eklendi';
+$string['yourNewSFX'] = "Yeni SFX'ine bir göz at!";
+$string["sfxAddAnotherBTN"] = "Daha fazla SFX ekle?";
+$string["sfxAddDesc"] = "Burada SFX ekleyebilirsin!";
+$string["chooseSFX"] = "SFX seç";
+$string["sfxAddNameFieldPlaceholder"] = "İsim";
+$string['sfxs'] = 'SFX';
 $string['sfxID'] = 'SFX ID';
-$string['manageSFX'] = 'Manage SFXs';
+$string['manageSFX'] = "SFX'leri yönet";
 
 /*
 	REUPLOAD
@@ -415,7 +415,7 @@ $string['yourNewSong'] = "Yeni şarkına bir göz at!";
 $string["songAddError-2"] = "Geçersiz URL (Şarkının bu linkte bulunduğundan emin olun.)";
 $string["songAddError-3"] = "Bu şarkı zaten transfer edilmiş. ID:";
 $string["songAddError-4"] = "Bu şarkı transfer edilemez";
-$string["songAddError-5"] = "Şarkı boyutu $songSize megabyte'dan daha büyük";
+$string["songAddError-5"] = "Şarkı boyutu $songSize megabayttan daha büyük";
 $string["songAddError-6"] = "Bir şeyler ters gitti! :с";
 $string["songAddError-7"] = "Sadece ses dosyası yükleyebilirsin!";
 
@@ -488,12 +488,12 @@ $string["suggestFeatured"] = "Tavsiye et?";
 $string["whoAdded"] = "Kim ekledi?";
 //modActionsList
 $string["banDesc"] = "Burada bir kullanıcıyı sıralamadan yasaklayabilirsin!";
-$string["playerTop"] = 'Top of players';
-$string["creatorTop"] = 'Top of creators';
-$string["levelUploading"] = 'Uploading levels';
-$string["successfullyBanned"] = 'Player <b>%1$s</b> with account ID <b>%2$s</b> was successfully banned!';
-$string["successfullyUnbanned"] = 'Player <b>%1$s</b> with account ID <b>%2$s</b> was successfully unbanned!';
-$string["commentBan"] = 'Commenting';
+$string["playerTop"] = 'En iyi oyuncular';
+$string["creatorTop"] = 'En iyi yaratıcılar';
+$string["levelUploading"] = 'Bölümler yükleniyor';
+$string["successfullyBanned"] = '<b>%1$s</b> adlı oyuncu <b>%2$s</b> ID ile başarıyla yasaklandı!';
+$string["successfullyUnbanned"] = '<b>%1$s</b> adlı oyuncu <b>%2$s</b> ID ile başarıyla yasaklanmadan kurtarıldı!';
+$string["commentBan"] = 'Yorum';
 
 $string["admin"] = "Yönetici";
 $string["elder"] = "Büyük moderatör";
@@ -518,8 +518,8 @@ $string["lvl2"] = "bölüm";
 $string["player0"] = "oyuncu";
 $string["player1"] = "oyuncu";
 $string["player2"] = "oyuncu";
-$string["unban"] = "Unban";
-$string["isBan"] = "Ban";
+$string["unban"] = "Yasak kaldırma";
+$string["isBan"] = "Yasaklama";
 
 $string["noCoins"] = "Coin yok";
 $string["noReason"] = "Sebep yok";
@@ -557,7 +557,7 @@ $string["modAction11"] = "(11)CP paylaşıldı";
 $string["modAction12"] = "(12)Bölüm açıldı/kapatıldı";
 $string["modAction13"] = "(13)Bölüm açıklaması değiştirildi";
 $string["modAction14"] = "(14)LDM açıldı/açılmadı";
-$string["modAction15"] = "(15)Kullanıcı banlandı/unbanlandı";
+$string["modAction15"] = "(15)Kullanıcı yasaklandı/yasaklamadan kurtarıldı";
 $string["modAction16"] = "(16)Şarkı ID değiştirme";
 $string["modAction17"] = "(17)Harita paketi oluşturdu";
 $string["modAction18"] = "(18)Gauntlet oluşturuldu";
@@ -569,7 +569,7 @@ $string["modAction23"] = "(23)Quest değiştirdi";
 $string["modAction24"] = "(24)Oyuncuyu yeniden atadı";
 $string["modAction25"] = "(25)Quest oluşturdu";
 $string["modAction26"] = "(26)Kullanıcı adı/şifre değiştirdi";
-$string["modAction27"] = "Changed SFX";
+$string["modAction27"] = "(27)SFX değiştirildi";
 $string["modAction30"] = "(30)Derecelendirilen liste";
 $string["modAction31"] = "(31)Gönderilen liste";
 $string["modAction32"] = "(32)Liste onayladı/onaylamadı";
