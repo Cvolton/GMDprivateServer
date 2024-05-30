@@ -2,7 +2,8 @@
 /*
 	Welcome to webhooks translation file!
 	You're currently at Turkish (Türkçe) language
-	Credits: *your username*
+	Credits: EMREOYUN
+ 	Will be completed soon
 	
 	If you see array instead of simple string, that means you can add as many variations of translation as you want and they will be picked randomly
 */
@@ -15,39 +16,39 @@ $webhookLang['rateFailTitleDM'] = ['Your level was unrated!', 'Someone unrated y
 $webhookLang['rateFailDesc'] = '%1$s unrated a level!';
 $webhookLang['rateFailDescDM'] = '%1$s unrated your level! %2$s';
 
-$webhookLang['levelTitle'] = 'Level';
-$webhookLang['levelDesc'] = '%1$s by %2$s'; // Name by Creator
-$webhookLang['levelIDTitle'] = 'Level ID';
-$webhookLang['difficultyTitle'] = 'Difficulty';
-$webhookLang['difficultyDesc0'] = '%1$s, %2$s star'; // Auto, 1 star
-$webhookLang['difficultyDesc1'] = '%1$s, %2$s stars'; // Easy, 2 stars
-$webhookLang['difficultyDesc2'] = '%1$s, %2$s stars'; // Hard, 5 stars
-$webhookLang['difficultyDescMoon0'] = '%1$s, %2$s moon'; // Auto, 1 moon (Platformer)
-$webhookLang['difficultyDescMoon1'] = '%1$s, %2$s moons'; // Easy, 2 moons (Platformer)
-$webhookLang['difficultyDescMoon2'] = '%1$s, %2$s moons'; // Hard, 5 moons (Platformer)
-$webhookLang['statsTitle'] = 'Stats';
+$webhookLang['levelTitle'] = 'Bölüm';
+$webhookLang['levelDesc'] = '%1$s, %2$s tarafından'; // Name by Creator
+$webhookLang['levelIDTitle'] = 'Bölüm ID';
+$webhookLang['difficultyTitle'] = 'Zorluk';
+$webhookLang['difficultyDesc0'] = '%1$s, %2$s yıldız'; // Auto, 1 star
+$webhookLang['difficultyDesc1'] = '%1$s, %2$s yıldız'; // Easy, 2 stars
+$webhookLang['difficultyDesc2'] = '%1$s, %2$s yıldız'; // Hard, 5 stars
+$webhookLang['difficultyDescMoon0'] = '%1$s, %2$s ay'; // Auto, 1 moon (Platformer)
+$webhookLang['difficultyDescMoon1'] = '%1$s, %2$s ay'; // Easy, 2 moons (Platformer)
+$webhookLang['difficultyDescMoon2'] = '%1$s, %2$s ay'; // Hard, 5 moons (Platformer)
+$webhookLang['statsTitle'] = 'İstatistikler';
 $webhookLang['requestedTitle'] = 'Creator requested';
-$webhookLang['requestedDesc0'] = '%1$s star'; // 1 star
-$webhookLang['requestedDesc1'] = '%1$s stars'; // 2 stars
-$webhookLang['requestedDesc2'] = '%1$s stars'; // 5 stars
-$webhookLang['requestedDescMoon0'] = '%1$s moon'; // 1 moon (Platformer)
-$webhookLang['requestedDescMoon1'] = '%1$s moons'; // 2 moons (Platformer)
-$webhookLang['requestedDescMoon2'] = '%1$s moons'; // 5 moons (Platformer)
-$webhookLang['descTitle'] = 'Description';
-$webhookLang['descDesc'] = '*No description*';
-$webhookLang['footer'] = '%1$s, thank you for playing!';
+$webhookLang['requestedDesc0'] = '%1$s yıldız'; // 1 star
+$webhookLang['requestedDesc1'] = '%1$s yıldız'; // 2 stars
+$webhookLang['requestedDesc2'] = '%1$s yıldız'; // 5 stars
+$webhookLang['requestedDescMoon0'] = '%1$s ay'; // 1 moon (Platformer)
+$webhookLang['requestedDescMoon1'] = '%1$s ay'; // 2 moons (Platformer)
+$webhookLang['requestedDescMoon2'] = '%1$s ay'; // 5 moons (Platformer)
+$webhookLang['descTitle'] = 'Açıklama';
+$webhookLang['descDesc'] = '*Açıklama yok*';
+$webhookLang['footer'] = '%1$s, oynadığın için teşekkürler!';
 
 $webhookLang['suggestTitle'] = ['Check this level!', 'Level was suggested!', 'Someone suggested a level!'];
 $webhookLang['suggestDesc'] = '%1$s suggested a level to rate!';
 $webhookLang['footerSuggest'] = '%1$s, thank you for moderating!';
 
-$webhookLang['demonlistTitle'] = ['New record!', 'Someone posted new record!'];
+$webhookLang['demonlistTitle'] = ['Yeni rekor!', 'Biri yeni bir rekor paylaştı!'];
 $webhookLang['demonlistDesc'] = '%1$s posted their %2$s completion! Link to approve: ||%3$s||';
 $webhookLang['recordAuthorTitle'] = 'Record author';
-$webhookLang['recordAttemptsTitle'] = 'Attempts';
-$webhookLang['recordAttemptsDesc0'] = '%1$s attempt'; // 1 attempt
-$webhookLang['recordAttemptsDesc1'] = '%1$s attempts'; // 2 attempts
-$webhookLang['recordAttemptsDesc2'] = '%1$s attempts'; // 5 attempts
+$webhookLang['recordAttemptsTitle'] = 'Deneme';
+$webhookLang['recordAttemptsDesc0'] = '%1$s deneme'; // 1 attempt
+$webhookLang['recordAttemptsDesc1'] = '%1$s deneme'; // 2 attempts
+$webhookLang['recordAttemptsDesc2'] = '%1$s deneme'; // 5 attempts
 $webhookLang['recordProofTitle'] = 'Proof';
 $webhookLang['demonlistApproveTitle'] = ['Record was approved!', 'Someone approved a record!'];
 $webhookLang['demonlistApproveTitleDM'] = ['Your record was approved!', 'Someone approved your record!'];
@@ -85,9 +86,9 @@ $webhookLang['playerBanUploadDesc'] = '%1$s banned %2$s from uploading levels!';
 $webhookLang['playerBanUploadDescDM'] = '%1$s banned uploading levels to you.';
 $webhookLang['playerUnbanUploadDesc'] = '%1$s unbanned %2$s from uploading levels!';
 $webhookLang['playerUnbanUploadDescDM'] = '%1$s unbanned uploading levels to you!';
-$webhookLang['playerModTitle'] = 'Moderator';
-$webhookLang['playerReasonTitle'] = 'Reason';
-$webhookLang['playerBanReason'] = '*No reason*';
+$webhookLang['playerModTitle'] = 'Moderatör';
+$webhookLang['playerReasonTitle'] = 'Sebep';
+$webhookLang['playerBanReason'] = '*Sebep yok*';
 $webhookLang['footerBan'] = '%1$s.';
 $webhookLang['playerBanCommentDesc'] = '%1$s banned %2$s\'s ability to comment!';
 $webhookLang['playerBanCommentDescDM'] = '%1$s banned ability to comment to you.';
