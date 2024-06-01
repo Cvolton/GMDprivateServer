@@ -70,7 +70,11 @@ foreach($result as &$comment1) {
 		$commentText = ($gameVersion < 20) ? base64_decode($comment1["comment"]) : $comment1["comment"];
 		if($enableCommentLengthLimiter) $commentText = base64_encode(substr(base64_decode($commentText), 0, $maxCommentLength));
 		if($displayLevelID) $commentstring .= "1~".$comment1["levelID"]."~";
-		$likes = $comment1["likes"]; // - $comment1["dislikes"];
+		if ($commentAutoLike && array_key_exists($comment1["commentID"], $specialCommentLikes)) {
+                    $likes = $comment1["likes"] * $specialCommentLikes[$comment1["commentID"]]; // Multiply by the specified value
+                } else {
+                    $likes = $comment1["likes"]; // Normal like value
+                }
 		if($likes < -2) $comment1["isSpam"] = 1;
 		$commentstring .= "2~".$commentText."~3~".$comment1["userID"]."~4~".$likes."~5~0~7~".$comment1["isSpam"]."~9~".$uploadDate."~6~".$comment1["commentID"]."~10~".$comment1["percent"];
 		if ($comment1['userName']) { //TODO: get rid of queries caused by getMaxValuePermission and getAccountCommentColor
