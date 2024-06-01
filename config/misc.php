@@ -36,4 +36,12 @@ $minBinaryVersion = 0;
 $maxBinaryVersion = 0;
 
 $showAllLevels = false; // true => Shows all levels like robtop, even if the client can't support it || false => Only shows levels supported by client
+
+// New configurations for comment auto-like feature
+$commentAutoLike = false; // true = auto-like is enabled, false = auto-like is disabled
+$specialCommentLikes = [
+    1 => 10, // commentID => multiplier
+    2 => 20, // another commentID => multiplier
+    // Add more comment IDs and their multipliers as needed
+];
 ?>
