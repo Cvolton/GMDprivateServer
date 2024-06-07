@@ -37,6 +37,12 @@ $maxBinaryVersion = 0;
 
 $showAllLevels = false; // true => Shows all levels like robtop, even if the client can't support it || false => Only shows levels supported by client
 
+$ratedLevelsUpdates = true; // true => allow updates on rated levels || false => dont allow rated levels to be updated, you can put exceptions as IDs in the parameter below
+$ratedLevelsUpdatesExceptions = [
+    1, // example
+    2 // example
+];
+
 // New configurations for comment auto-like feature
 $commentAutoLike = false; // true = auto-like is enabled, false = auto-like is disabled
 $specialCommentLikes = [
