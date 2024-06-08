@@ -1007,7 +1007,7 @@ class mainLib {
 						switch($i) {
 							case 0: // File/Folder
 								if(empty(trim($bits[1]))) continue 2;
-								if(!isset($idsConverter['originalIDs'][$server][$bits[0]])) {
+								if(!isset($idsConverter['originalIDs'][$server][$bits[0]]) && !isset($idsConverter['IDs'][$bits[0]])) {
 									$idsConverter['count']++;
 									$idsConverter['IDs'][$idsConverter['count']] = ['server' => $server, 'ID' => $bits[0], 'name' => $bits[1], 'type' => $bits[2]];
 									$idsConverter['originalIDs'][$server][$bits[0]] = $idsConverter['count'];
@@ -1017,7 +1017,7 @@ class mainLib {
 									if(!isset($idsConverter['IDs'][$bits[0]]['name'])) $idsConverter['IDs'][$bits[0]] = ['server' => $server, 'ID' => $bits[0], 'name' => $bits[1], 'type' => $bits[2]];
 								}
 								if($bits[3] != 1) {
-									if(!isset($idsConverter['originalIDs'][$server][$bits[3]])) {
+									if(!isset($idsConverter['originalIDs'][$server][$bits[3]]) && !isset($idsConverter['IDs'][$bits[3]])) {
 										$idsConverter['count']++;
 										$idsConverter['IDs'][$idsConverter['count']] = ['server' => $server, 'ID' => $bits[3], 'name' => $bits[1], 'type' => 1];
 										$idsConverter['originalIDs'][$server][$bits[3]] = $idsConverter['count'];
@@ -1060,12 +1060,13 @@ class mainLib {
 					foreach($music AS &$songString) {
 						$song = explode(',', $songString);
 						if(empty($song[0])) continue;
-						if(!isset($idsConverter['originalIDs'][$server][$song[0]])) {
+						if(!isset($idsConverter['originalIDs'][$server][$song[0]]) && !isset($idsConverter['IDs'][$song[0]])) {
 							$idsConverter['count']++;
+							$fuckText .= $song[1].' ('.$song[0].') was not found! New ID: '.$idsConverter['count'].PHP_EOL;
 							$idsConverter['IDs'][$idsConverter['count']] = ['server' => $server, 'ID' => $song[0], 'name' => $song[1], 'type' => $x];
 							if($x == 1) {
 								$idsConverter['IDs'][$idsConverter['count']]['size'] = $song[3];
-								if(!isset($idsConverter['originalIDs'][$server][$song[2]])) {
+								if(!isset($idsConverter['originalIDs'][$server][$song[2]]) && !isset($idsConverter['IDs'][$song[2]])) {
 									$idsConverter['count']++;
 									$idsConverter['IDs'][$idsConverter['count']] = ['server' => $server, 'ID' => $song[2], 'type' => 0];
 									$idsConverter['originalIDs'][$server][$song[2]] = $idsConverter['count'];
@@ -1076,10 +1077,11 @@ class mainLib {
 							$idsConverter['originalIDs'][$server][$song[0]] = $idsConverter['count'];
 							$song[0] = $idsConverter['count'];
 						} else {
+							$fuckText .= $song[1].' ('.$song[0].') was found! ID: '.$idsConverter['originalIDs'][$server][$song[0]].PHP_EOL;
 							$song[0] = $idsConverter['originalIDs'][$server][$song[0]];
 							if($x == 1) {
 								$idsConverter['IDs'][$idsConverter['count']]['size'] = $song[3];
-								if(!isset($idsConverter['originalIDs'][$server][$song[2]])) {
+								if(!isset($idsConverter['originalIDs'][$server][$song[2]]) && !isset($idsConverter['IDs'][$song[2]])) {
 									$idsConverter['count']++;
 									$idsConverter['IDs'][$idsConverter['count']] = ['server' => $server, 'ID' => $song[2], 'type' => 0];
 									$idsConverter['originalIDs'][$server][$song[2]] = $idsConverter['count'];
@@ -1102,7 +1104,7 @@ class mainLib {
 								$newTags = [];
 								foreach($tags AS &$tag) {
 									if(empty($tag)) continue;
-									if(!isset($idsConverter['originalIDs'][$server][$tag])) {
+									if(!isset($idsConverter['originalIDs'][$server][$tag]) && !isset($idsConverter['IDs'][$tag])) {
 										$idsConverter['count']++;
 										$idsConverter['IDs'][$idsConverter['count']] = ['server' => $server, 'ID' => $tag, 'type' => 2];
 										$idsConverter['originalIDs'][$server][$tag] = $idsConverter['count'];
