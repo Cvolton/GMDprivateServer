@@ -7,6 +7,7 @@ $gs = new mainLib();
 $file = trim(basename($_GET['request']));
 switch($file) {
 	case 'musiclibrary.dat': 
+	case 'musiclibrary_02.dat': 
 		$datFile = isset($_GET['dashboard']) ? 'standalone.dat' : 'gdps.dat';
 		if(!file_exists($datFile)) {
 			$time = $db->prepare('SELECT reuploadTime FROM songs WHERE reuploadTime > 0 ORDER BY reuploadTime DESC LIMIT 1');
@@ -17,6 +18,7 @@ switch($file) {
 		echo file_get_contents($datFile);
 		break;
 	case 'musiclibrary_version.txt': 
+	case 'musiclibrary_version_02.txt': 
 		$time = $db->prepare('SELECT reuploadTime FROM songs WHERE reuploadTime > 0 ORDER BY reuploadTime DESC LIMIT 1');
 		$time->execute();
 		$time = $time->fetchColumn();
