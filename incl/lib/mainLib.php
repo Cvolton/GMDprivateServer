@@ -984,6 +984,8 @@ class mainLib {
 		}
 		if(file_exists(__DIR__.'/../../'.$types[$type].'/ids.json')) $idsConverter = json_decode(file_get_contents(__DIR__.'/../../'.$types[$type].'/ids.json'), true);
 		else $idsConverter = ['count' => ($type == 0 ? count($customLibrary) + 2 : 8000000), 'IDs' => [], 'originalIDs' => []];
+		if(file_exists(__DIR__.'/../../config/skipSFXIDs.json')) $skipSFXIDs = json_decode(file_get_contents(__DIR__.'/../../config/skipSFXIDs.json'), true);
+		else $skipSFXIDs = [];
 		foreach($servers AS $key => $server) {
 			if(!file_exists(__DIR__.'/../../'.$types[$type].'/'.$key.'.dat')) continue;
 			$res = null;
@@ -1009,6 +1011,7 @@ class mainLib {
 								if(empty(trim($bits[1]))) continue 2;
 								if(!isset($idsConverter['originalIDs'][$server][$bits[0]]) && !isset($idsConverter['IDs'][$bits[0]])) {
 									$idsConverter['count']++;
+									while(in_array($idsConverter['count'], $skipSFXIDs)) $idsConverter['count']++;
 									$idsConverter['IDs'][$idsConverter['count']] = ['server' => $server, 'ID' => $bits[0], 'name' => $bits[1], 'type' => $bits[2]];
 									$idsConverter['originalIDs'][$server][$bits[0]] = $idsConverter['count'];
 									$bits[0] = $idsConverter['count'];
@@ -1019,6 +1022,7 @@ class mainLib {
 								if($bits[3] != 1) {
 									if(!isset($idsConverter['originalIDs'][$server][$bits[3]]) && !isset($idsConverter['IDs'][$bits[3]])) {
 										$idsConverter['count']++;
+										while(in_array($idsConverter['count'], $skipSFXIDs)) $idsConverter['count']++;
 										$idsConverter['IDs'][$idsConverter['count']] = ['server' => $server, 'ID' => $bits[3], 'name' => $bits[1], 'type' => 1];
 										$idsConverter['originalIDs'][$server][$bits[3]] = $idsConverter['count'];
 										$bits[3] = $idsConverter['count'];
