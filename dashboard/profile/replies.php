@@ -6,7 +6,7 @@ $dl = new dashboardLib();
 require_once "../".$dbPath."incl/lib/mainLib.php";
 $gs = new mainLib();
 require "../".$dbPath."incl/lib/exploitPatch.php";
-require_once "../../config/misc.php";
+require_once "../".$dbPath."config/misc.php";
 if(!isset($_POST["delete"])) $_POST["delete"] = "";
 if(!isset($_POST["body"])) $_POST["body"] = "";
 $id = ExploitPatch::number($_POST["id"]);

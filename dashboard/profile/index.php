@@ -3,7 +3,7 @@ session_start();
 include "../incl/dashboardLib.php";
 include "../".$dbPath."incl/lib/exploitPatch.php";
 include_once "../".$dbPath."incl/lib/mainLib.php";
-require_once "../../config/misc.php";
+require_once "../".$dbPath."config/misc.php";
 
 function generate_timezone_list()
 {
