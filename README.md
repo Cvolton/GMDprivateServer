@@ -2,11 +2,11 @@
 ## Geometry Dash Private Server
 Basically a Geometry Dash Server Emulator
 
-Supported version of Geometry Dash: 1.0 - 2.205
+Supported version of Geometry Dash: 1.0 - 2.206
 
 (See [the backwards compatibility section of this article](https://github.com/Cvolton/GMDprivateServer/wiki/Deliberate-differences-from-real-GD) for more information)
 
-Required version of PHP: 5.5+ (tested up to 8.2)
+Required version of PHP: 5.5+ (tested up to 8.3)
 
 ### Branches
 - master - This is the main version of the server.
