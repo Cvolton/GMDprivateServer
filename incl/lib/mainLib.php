@@ -907,7 +907,7 @@ class mainLib {
 	}
 	public function makeClanUsername($user) {
 		include __DIR__ . "/../../config/dashboard.php";
-		if($clansEnabled && $user['clan'] > 0) {
+		if($clansEnabled && $user['clan'] > 0 && !isset($_REQUEST['noClan'])) {
 			$clan = $this->getClanInfo($user['clan'], 'tag');
 			if(!empty($clan)) return '['.$clan.'] '.$user['userName'];
 		}

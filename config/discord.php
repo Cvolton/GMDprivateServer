@@ -39,21 +39,27 @@ $bottoken = "";
 		$tadaEmoji — Custom tada emoji (🎉)
 		$sobEmoji — Custom sob emoji (😭)
 	
+	$difficultiesURL — URL from where difficulties should be retrieved for rate/send webhooks; Don't forget about slash at the end!
+	
 	Embed config:
 		$authorURL — URL to open when author text is clicked
 		$authorIconURL — Author icon URL
 		$rateTitleURL — URL to open when rate/unrate title text is clicked
 		$demonlistTitleURL — URL to open when demonlist title text is clicked
 		$linkTitleURL — URL to open when account linking title text is clicked
+		
 		$successColor — Color for succeeded actions (rate, demonlist record approve, unban)
+		Optional, if you leave it blank you will enable automatic colors for the webhook based on the difficulty of the level
+		
 		$failColor — Color for failed actions (unrate, demonlist record deny, ban)
 		$pendingColor — Color for pending actions (demonlist record submit)
 		$dailyColor — Color for daily webhooks
 		$weeklyColor — Color for weekly webhooks
 		$eventColor — Color for event webhooks
+		
 		$footerIconURL — Footer icon URL
 		$demonlistThumbnailURL — Image to show for demonlist record submit
-		$demonlistLink — link to dashboard's demonlist page
+		$demonlistLink — link to dashboard's demonlist page (don't add another slash at the end!)
 		$linkThumbnailURL — Image to show for account linking
 		$unlinkThumbnailURL — Image to show for account unlinking
 		$acceptThumbnailURL — Image to show for accepting account linking
@@ -70,23 +76,22 @@ $banWebhook = "";
 $dailyWebhook = "";
 $dmNotifications = false;
 
-$webhookLanguage = 'EN'; // Country codes (caps lock), translations are available in the webhooks/langs folder
-
-// Set custom emojis for your webhooks here!
+$webhookLanguage = 'EN';
 $likeEmoji = ":+1:";
 $dislikeEmoji = ":-1:";
 $downloadEmoji = ":arrow_heading_down:";
 $tadaEmoji = ":tada:";
 $sobEmoji = ":sob:";
 
-$difficultiesURL = "https://gcs.icu/WTFIcons/difficulties/"; // URL from where difficulties should be retrieved for rate/send webhooks; DONT FORGET ABOUT THE SLASH AT THE END!
+$difficultiesURL = "https://gcs.icu/WTFIcons/difficulties/";
 
 $authorURL = "";
 $authorIconURL = "";
 $rateTitleURL = "";
 $demonlistTitleURL = "";
 $linkTitleURL = "";
-$successColor = "BBFFBB"; // optional, if you leave it blank you will enable automatic colors for the webhook based on the difficulty of the level
+
+$successColor = "BBFFBB";
 $failColor = "FFBBBB";
 $pendingColor = "FFCCBB";
 $dailyColor = "FF9999";
@@ -95,7 +100,7 @@ $eventColor = "EEB3E5";
 
 $footerIconURL = "";
 $demonlistThumbnailURL = "";
-$demonlistLink = "https://example.com/dashboard/demonlist"; // dont add another slash at the end!
+$demonlistLink = "https://example.com/dashboard/demonlist";
 $linkThumbnailURL = "";
 $unlinkThumbnailURL = "";
 $acceptThumbnailURL = "";
