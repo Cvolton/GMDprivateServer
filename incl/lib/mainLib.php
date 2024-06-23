@@ -926,10 +926,17 @@ class mainLib {
 		}
 		$updatedLib = false;
 		foreach($servers AS $key => &$server) {
+			if ($types[$type] == 'music') {
+			    $versionUrl = $server.'/'.$types[$type].'/'.$types[$type].'library_version_02.txt';
+			    $dataUrl = $server.'/'.$types[$type].'/'.$types[$type].'library_02.dat';
+			} else {
+			    $versionUrl = $server.'/'.$types[$type].'/'.$types[$type].'library_version.txt';
+			    $dataUrl = $server.'/'.$types[$type].'/'.$types[$type].'library.dat';
+			}
 			if(file_exists(__DIR__.'/../../'.$types[$type].'/'.$key.'.txt')) $oldVersion = explode(', ', file_get_contents(__DIR__.'/../../'.$types[$type].'/'.$key.'.txt'));
 			else $oldVersion = [0, 0];
 			if($oldVersion[1] + 600 > time()) continue; // Download library only once per 10 minutes
-			$curl = curl_init($server.'/'.$types[$type].'/'.$types[$type].'library_version_02.txt?token='.$token.'&expires='.$expires);
+			$curl = curl_init($versionUrl.'?token='.$token.'&expires='.$expires);
 			curl_setopt_array($curl, [
 				CURLOPT_PROTOCOLS => CURLPROTO_HTTP | CURLPROTO_HTTPS,
 				CURLOPT_RETURNTRANSFER => 1
@@ -938,7 +945,7 @@ class mainLib {
 			curl_close($curl);
 			if($newVersion > $oldVersion[0]) {
 				file_put_contents(__DIR__.'/../../'.$types[$type].'/'.$key.'.txt', $newVersion.', '.time());
-				$download = curl_init($server.'/'.$types[$type].'/'.$types[$type].'library_02.dat?token='.$token.'&expires='.$expires.'&dashboard=1');
+				$download = curl_init($dataUrl.'?token='.$token.'&expires='.$expires.'&dashboard=1');
 				curl_setopt_array($download, [
 					CURLOPT_PROTOCOLS => CURLPROTO_HTTP | CURLPROTO_HTTPS,
 					CURLOPT_RETURNTRANSFER => 1
