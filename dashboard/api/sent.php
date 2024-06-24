@@ -17,26 +17,30 @@ if(empty($levelID)) {
 }
 
 $query = $db->prepare("SELECT * FROM levels WHERE levelID = :levelID");
-$query->execute([":levelID"=> $levelID]);
+$query->execute([":levelID" => $levelID]);
 $query = $query->fetch();
 
-if (!$query) {
+if(!$query) {
     http_response_code(404);
     exit(json_encode(['dashboard' => true, 'success' => false, 'error' => 2, 'message' => "This level wasn't found."]));
 }
 
 $query = $db->prepare("SELECT * FROM suggest WHERE suggestLevelId = :levelID ORDER BY timestamp DESC LIMIT 1");
-$query->execute([":levelID"=> $levelID]);
+$query->execute([":levelID" => $levelID]);
 $sentinfo = $query->fetch();
 
+if(!$sentinfo) {
+    http_response_code(404);
+    exit(json_encode(['dashboard' => true, 'success' => false, 'error' => 3, 'message' => "This level wasn't sent."]));
+}
+
 $data = [
-    "sent" => $sentinfo ? true : false,
-    "mod" => $sentinfo ? $gs->getAccountName($sentinfo["suggestBy"]) : null,
-    "modid" => $sentinfo ? $sentinfo["suggestBy"] : null,
-    "stars" => $sentinfo ? $sentinfo["suggestStars"] : null,
-    "featured" => $sentinfo ? $sentinfo["suggestFeatured"] : null,
-    "timestamp" => $sentinfo ? $sentinfo["timestamp"] : null
+    "modUsername" => $gs->getAccountName($sentinfo["suggestBy"]),
+    "modID" => $sentinfo["suggestBy"],
+    "stars" => $sentinfo["suggestStars"],
+    "featured" => $sentinfo["suggestFeatured"],
+    "timestamp" => $sentinfo["timestamp"]
 ];
 
-exit(json_encode(['dashboard' => true, 'success' => true, 'result' => $data]));
+exit(json_encode(['dashboard' => true, 'success' => true, 'level' => $data]));
 ?>
