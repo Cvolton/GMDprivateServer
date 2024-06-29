@@ -15,10 +15,10 @@ if(empty($db)) {
 		$db = new PDO("mysql:host=$servername;port=$port;dbname=$dbname", $username, $password, array(PDO::ATTR_PERSISTENT => true));
 		$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		$ip = $ic->getYourIP();
-		if($minimumGameVersion != 0 && $_REQUEST['gameVersion'] < $minimumGameVersion && !isset($_SESSION)) exit("-1");
-		if($maximumGameVersion != 0 && $_REQUEST['gameVersion'] > $maximumGameVersion && !isset($_SESSION)) exit("-1");
-		if($minimumBinaryVersion != 0 && $_REQUEST['binaryVersion'] < $minimumBinaryVersion && !isset($_SESSION)) exit("-1");
-		if($maximumBinaryVersion != 0 && $_REQUEST['binaryVersion'] > $maximumBinaryVersion && !isset($_SESSION)) exit("-1");
+		if($minGameVersion != 0 && $_REQUEST['gameVersion'] < $minGameVersion && !isset($_SESSION)) exit("-1");
+		if($maxGameVersion != 0 && $_REQUEST['gameVersion'] > $maxGameVersion && !isset($_SESSION)) exit("-1");
+		if($minBinaryVersion != 0 && $_REQUEST['binaryVersion'] < $minBinaryVersion && !isset($_SESSION)) exit("-1");
+		if($maxBinaryVersion != 0 && $_REQUEST['binaryVersion'] > $maxBinaryVersion && !isset($_SESSION)) exit("-1");
 		if($activeBanIP) {
 			$banip = $db->prepare("SELECT IP FROM bannedips WHERE IP=:ip");
 			$banip->execute([':ip' => $ip]);
