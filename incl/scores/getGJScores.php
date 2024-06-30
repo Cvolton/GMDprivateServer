@@ -7,6 +7,7 @@ require_once "../lib/GJPCheck.php";
 require_once "../lib/mainLib.php";
 if(!isset($sakujes)) global $sakujes;
 if(!isset($leaderboardMinStars)) global $leaderboardMinStars;
+if($leaderboardMinStars == 0) $leaderboardMinStars = 1;
 $gs = new mainLib();
 $stars = 0;
 $count = 0;
@@ -26,7 +27,7 @@ if(!empty($_POST["accountID"])){
 $type = ExploitPatch::remove($_POST["type"]);
 if($type == "top" OR $type == "creators" OR $type == "relative"){
 	if($type == "top"){
-		$query = $db->prepare("SELECT * FROM users WHERE isBanned = '0' AND stars > :stars ORDER BY stars DESC LIMIT 100");
+		$query = $db->prepare("SELECT * FROM users WHERE isBanned = '0' AND stars >= :stars ORDER BY stars DESC LIMIT 100");
 		$query->execute([':stars' => $leaderboardMinStars]);
 	}
 	if($type == "creators"){
