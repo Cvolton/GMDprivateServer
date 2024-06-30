@@ -37,6 +37,8 @@ $maxBinaryVersion = 0;
 
 $showAllLevels = false; // true => Shows all levels like robtop, even if the client can't support it || false => Only shows levels supported by client
 
+$leaderboardMinStars = 0; // Minimum amount of stars for players to be displayed in the leaderboard, GD default is 500
+
 $ratedLevelsUpdates = true; // true => allow updates on rated levels || false => dont allow rated levels to be updated, you can put exceptions as IDs in the parameter below
 $ratedLevelsUpdatesExceptions = [
     1, // example
