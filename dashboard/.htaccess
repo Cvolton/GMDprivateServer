@@ -1,3 +1,9 @@
+ErrorDocument 400 /database/dashboard/errors/400/
+ErrorDocument 403 /database/dashboard/errors/403/
+ErrorDocument 404 /database/dashboard/errors/404/
+ErrorDocument 500 /database/dashboard/errors/500/
+ErrorDocument 502 /database/dashboard/errors/502/
+
 <IfModule mod_expires.c>
   ExpiresActive On
   ExpiresDefault "access plus 1 seconds"

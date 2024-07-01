@@ -1,9 +1,10 @@
 <?php
-//TODO: joins
 chdir(dirname(__FILE__));
 include "../lib/connection.php";
 require_once "../lib/GJPCheck.php";
 require_once "../lib/exploitPatch.php";
+include_once "../lib/mainLib.php";
+$gs = new mainLib();
 if(!isset($_POST["type"]) OR !is_numeric($_POST["type"])){
 	exit("-1");
 }
@@ -36,10 +37,11 @@ else
 		$people .= $person . ",";
 	}
 	$people = substr($people, 0,-1);
-	$query = $db->prepare("SELECT userName, userID, icon, color1, color2, iconType, special, extID FROM users WHERE extID IN ($people) ORDER BY userName ASC");
+	$query = $db->prepare("SELECT userName, userID, icon, color1, color2, iconType, special, extID, clan FROM users WHERE extID IN ($people) ORDER BY userName ASC");
 	$query->execute();
 	$result = $query->fetchAll();
-	foreach($result as &$user){
+	foreach($result as &$user) {
+		$user["userName"] = $gs->makeClanUsername($user);
 		$user['extID'] = is_numeric($user['extID']) ? $user['extID'] : 0;
 		$peoplestring .= "1:".$user["userName"].":2:".$user["userID"].":9:".$user["icon"].":10:".$user["color1"].":11:".$user["color2"].":14:".$user["iconType"].":15:".$user["special"].":16:".$user["extID"].":18:0:41:".$new[$user["extID"]]."|";
 	}

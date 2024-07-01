@@ -1,19 +1,20 @@
 <?php
 chdir(dirname(__FILE__));
-//error_reporting(0);
 include "../lib/connection.php";
+include "../../config/misc.php";
 require_once "../lib/exploitPatch.php";
 require_once "../lib/GJPCheck.php";
+require_once "../lib/mainLib.php";
+if(!isset($sakujes)) global $sakujes;
+if(!isset($leaderboardMinStars)) global $leaderboardMinStars;
+if($leaderboardMinStars == 0) $leaderboardMinStars = 1;
+$gs = new mainLib();
 $stars = 0;
 $count = 0;
 $xi = 0;
 $lbstring = "";
 $date = date("d-m");
-if(empty($_POST["gameVersion"])){
-	$sign = "< 20 AND gameVersion <> 0";
-}else{
-	$sign = "> 19";
-}
+
 if(!empty($_POST["accountID"])){
 	$accountID = GJPCheck::getAccountIDOrDie();
 }else{
@@ -26,8 +27,8 @@ if(!empty($_POST["accountID"])){
 $type = ExploitPatch::remove($_POST["type"]);
 if($type == "top" OR $type == "creators" OR $type == "relative"){
 	if($type == "top"){
-		$query = $db->prepare("SELECT * FROM users WHERE isBanned = '0' AND gameVersion $sign AND stars > 0 ORDER BY stars DESC LIMIT 100");
-		$query->execute();
+		$query = $db->prepare("SELECT * FROM users WHERE isBanned = '0' AND stars >= :stars ORDER BY stars DESC LIMIT 100");
+		$query->execute([':stars' => $leaderboardMinStars]);
 	}
 	if($type == "creators"){
 		$query = $db->prepare("SELECT * FROM users WHERE isCreatorBanned = '0' AND creatorPoints > 0 ORDER BY creatorPoints DESC LIMIT 100");
@@ -51,7 +52,6 @@ if($type == "top" OR $type == "creators" OR $type == "relative"){
 				SELECT	*	FROM users
 				WHERE stars <= :stars
 				AND isBanned = 0
-				AND gameVersion $sign
 				ORDER BY stars DESC
 				LIMIT $count
 			)
@@ -60,7 +60,6 @@ if($type == "top" OR $type == "creators" OR $type == "relative"){
 				SELECT * FROM users
 				WHERE stars >= :stars
 				AND isBanned = 0
-				AND gameVersion $sign
 				ORDER BY stars ASC
 				LIMIT $count
 			)
@@ -77,23 +76,20 @@ if($type == "top" OR $type == "creators" OR $type == "relative"){
 		$query->execute();
 		$f = "SELECT rank, stars FROM (
 							SELECT @rownum := @rownum + 1 AS rank, stars, extID, isBanned
-							FROM users WHERE isBanned = '0' AND gameVersion $sign ORDER BY stars DESC
+							FROM users WHERE isBanned = '0' ORDER BY stars DESC
 							) as result WHERE extID=:extid";
 		$query = $db->prepare($f);
 		$query->execute([':extid' => $extid]);
 		$leaderboard = $query->fetchAll();
-		//var_dump($leaderboard);
 		$leaderboard = $leaderboard[0];
 		$xi = $leaderboard["rank"] - 1;
 	}
 	foreach($result as &$user) {
 		$xi++;
+		$user["userName"] = $gs->makeClanUsername($user);
 		$extid = is_numeric($user['extID']) ? $user['extID'] : 0;
-		if($date == "01-04"){
-			$lbstring .= "1:sakujes:2:".$user["userID"].":13:999:17:999:6:".$xi.":9:9:10:9:11:8:14:1:15:3:16:".$extid.":3:999:8:99999:4:999:7:".$extid.":46:99999|";
-		}else{
-			$lbstring .= "1:".$user["userName"].":2:".$user["userID"].":13:".$user["coins"].":17:".$user["userCoins"].":6:".$xi.":9:".$user["icon"].":10:".$user["color1"].":11:".$user["color2"].":51:".$user["color3"].":14:".$user["iconType"].":15:".$user["special"].":16:".$extid.":3:".$user["stars"].":8:".round($user["creatorPoints"],0,PHP_ROUND_HALF_DOWN).":4:".$user["demons"].":7:".$extid.":46:".$user["diamonds"].":52:".$user["moons"]."|";
-		}
+		if($date == "01-04" && $sakujes) $lbstring .= "1:sakujes:2:".$user["userID"].":13:999:17:999:6:".$xi.":9:9:10:9:11:8:14:1:15:3:16:".$extid.":3:999:8:99999:4:999:7:".$extid.":46:99999|";
+		else $lbstring .= "1:".$user["userName"].":2:".$user["userID"].":13:".$user["coins"].":17:".$user["userCoins"].":6:".$xi.":9:".$user["icon"].":10:".$user["color1"].":11:".$user["color2"].":51:".$user["color3"].":14:".$user["iconType"].":15:".$user["special"].":16:".$extid.":3:".$user["stars"].":8:".round($user["creatorPoints"],0,PHP_ROUND_HALF_DOWN).":4:".$user["demons"].":7:".$extid.":46:".$user["diamonds"].":52:".$user["moons"]."|";
 	}
 }
 if($type == "friends"){
@@ -114,17 +110,11 @@ if($type == "friends"){
 	$query->execute([':accountID' => $accountID]);
 	$result = $query->fetchAll();
 	foreach($result as &$user){
-		if(is_numeric($user["extID"])){
-			$extid = $user["extID"];
-		}else{
-			$extid = 0;
-		}
 		$xi++;
-		if($date == "01-04"){
-			$lbstring .= "1:sakujes:2:".$user["userID"].":13:999:17:999:6:".$xi.":9:9:10:9:11:8:14:1:15:3:16:".$extid.":3:999:8:99999:4:999:7:".$extid.":46:99999|";
-		}else{
-			$lbstring .= "1:".$user["userName"].":2:".$user["userID"].":13:".$user["coins"].":17:".$user["userCoins"].":6:".$xi.":9:".$user["icon"].":10:".$user["color1"].":11:".$user["color2"].":14:".$user["iconType"].":15:".$user["special"].":16:".$extid.":3:".$user["stars"].":8:".round($user["creatorPoints"],0,PHP_ROUND_HALF_DOWN).":4:".$user["demons"].":7:".$extid.":46:".$user["diamonds"]."|";
-		}
+		$user["userName"] = $gs->makeClanUsername($user);
+		$extid = is_numeric($user['extID']) ? $user['extID'] : 0;
+		if($date == "01-04" && $sakujes) $lbstring .= "1:sakujes:2:".$user["userID"].":13:999:17:999:6:".$xi.":9:9:10:9:11:8:14:1:15:3:16:".$extid.":3:999:8:99999:4:999:7:".$extid.":46:99999|";
+		else $lbstring .= "1:".$user["userName"].":2:".$user["userID"].":13:".$user["coins"].":17:".$user["userCoins"].":6:".$xi.":9:".$user["icon"].":10:".$user["color1"].":11:".$user["color2"].":51:".$user["color3"].":14:".$user["iconType"].":15:".$user["special"].":16:".$extid.":3:".$user["stars"].":8:".round($user["creatorPoints"],0,PHP_ROUND_HALF_DOWN).":4:".$user["demons"].":7:".$extid.":46:".$user["diamonds"].":52:".$user["moons"]."|";
 	}
 }
 if($lbstring == ""){

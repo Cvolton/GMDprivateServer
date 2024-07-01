@@ -1,0 +1,9 @@
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_URI} !^/replies.php
+RewriteCond %{REQUEST_URI} !/settings
+RewriteRule ^ %{REQUEST_URI}/../../clan/?id=%{REQUEST_URI} [L]
+
+RewriteCond %{REQUEST_URI} /settings
+RewriteRule ^ %{REQUEST_URI}/../../../clan/?id=%{REQUEST_URI} [L]

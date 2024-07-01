@@ -1,5 +1,4 @@
 <?php
-//error_reporting(0);
 chdir(dirname(__FILE__));
 include "../lib/connection.php";
 require_once "../lib/GJPCheck.php";
@@ -13,16 +12,13 @@ $feature = ExploitPatch::remove($_POST["feature"]);
 $levelID = ExploitPatch::remove($_POST["levelID"]);
 $accountID = GJPCheck::getAccountIDOrDie();
 $difficulty = $gs->getDiffFromStars($stars);
-
-if($gs->checkPermission($accountID, "actionRateStars")){
-	$gs->rateLevel($accountID, $levelID, $stars, $difficulty["diff"], $difficulty["auto"], $difficulty["demon"]);
+if($gs->checkPermission($accountID, "actionRateStars")) {
 	$gs->featureLevel($accountID, $levelID, $feature);
 	$gs->verifyCoinsLevel($accountID, $levelID, 1);
+	$gs->rateLevel($accountID, $levelID, $stars, $difficulty["diff"], $difficulty["auto"], $difficulty["demon"], $feature);
 	echo 1;
-}else if($gs->checkPermission($accountID, "actionSuggestRating")){
+} elseif($gs->checkPermission($accountID, "actionSuggestRating")) {
 	$gs->suggestLevel($accountID, $levelID, $difficulty["diff"], $stars, $feature, $difficulty["auto"], $difficulty["demon"]);
 	echo 1;
-}else{
-	echo -2;
-}
+} else echo -2;
 ?>

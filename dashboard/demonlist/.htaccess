@@ -1,0 +1,8 @@
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_URI} /add
+RewriteRule ^ %{REQUEST_URI}/../../demonlist/?add=1 [L]
+
+RewriteCond %{REQUEST_URI} /change
+RewriteRule ^ %{REQUEST_URI}/../../demonlist/?change=1 [L]
