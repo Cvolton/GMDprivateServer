@@ -15,10 +15,12 @@ if(empty($db)) {
 		$db = new PDO("mysql:host=$servername;port=$port;dbname=$dbname", $username, $password, array(PDO::ATTR_PERSISTENT => true));
 		$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		$ip = $ic->getYourIP();
-		if($minGameVersion != 0 && $_REQUEST['gameVersion'] < $minGameVersion && !isset($_SESSION)) exit("-1");
-		if($maxGameVersion != 0 && $_REQUEST['gameVersion'] > $maxGameVersion && !isset($_SESSION)) exit("-1");
-		if($minBinaryVersion != 0 && $_REQUEST['binaryVersion'] < $minBinaryVersion && !isset($_SESSION)) exit("-1");
-		if($maxBinaryVersion != 0 && $_REQUEST['binaryVersion'] > $maxBinaryVersion && !isset($_SESSION)) exit("-1");
+		
+		if($minGameVersion != 0 && isset($_POST['gameVersion']) && $_POST['gameVersion'] != 0 && $_POST['gameVersion'] < $minGameVersion && !isset($_SESSION)) exit("-1");
+		if($maxGameVersion != 0 && isset($_POST['gameVersion']) && $_POST['gameVersion'] != 0 && $_POST['gameVersion'] > $maxGameVersion && !isset($_SESSION)) exit("-1");
+		if($minBinaryVersion != 0 && isset($_POST['binaryVersion']) && $_POST['binaryVersion'] != 0 && $_POST['binaryVersion'] < $minBinaryVersion && !isset($_SESSION)) exit("-1");
+		if($maxBinaryVersion != 0 && isset($_POST['binaryVersion']) && $_POST['binaryVersion'] != 0 && $_POST['binaryVersion'] > $maxBinaryVersion && !isset($_SESSION)) exit("-1");
+		
 		if($activeBanIP) {
 			$banip = $db->prepare("SELECT IP FROM bannedips WHERE IP=:ip");
 			$banip->execute([':ip' => $ip]);
