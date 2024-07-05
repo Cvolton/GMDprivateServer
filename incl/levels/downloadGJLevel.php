@@ -92,9 +92,9 @@ if(!is_numeric($levelID)){
 		}
 		$xorPass = $pass;
 		if($gameVersion > 19){
-			if($pass != 0) $xorPass = base64_encode(XORCipher::cipher($pass,26364));
+			if($pass != 0) $xorPass = ExploitPatch::url_base64_encode(XORCipher::cipher($pass,26364));
 		}else{
-			$desc = ExploitPatch::remove(base64_decode($desc));
+			$desc = ExploitPatch::remove(ExploitPatch::url_base64_decode($desc));
 		}
 		//submitting data
 		if(file_exists("../../data/levels/$levelID")){
@@ -104,9 +104,7 @@ if(!is_numeric($levelID)){
 		}
 		if($gameVersion > 18){
 			if(substr($levelstring,0,3) == 'kS1'){
-				$levelstring = base64_encode(gzcompress($levelstring));
-				$levelstring = str_replace("/","_",$levelstring);
-				$levelstring = str_replace("+","-",$levelstring);
+				$levelstring = ExploitPatch::url_base64_encode(gzcompress($levelstring));
 			}
 		}
 		$response = "1:".$result["levelID"].":2:".$result["levelName"].":3:".$desc.":4:".$levelstring.":5:".$result["levelVersion"].":6:".$result["userID"].":8:10:9:".$result["starDifficulty"].":10:".$result["downloads"].":11:1:12:".$result["audioTrack"].":13:".$result["gameVersion"].":14:".$result["likes"].":17:".$result["starDemon"].":43:".$result["starDemonDiff"].":25:".$result["starAuto"].":18:".$result["starStars"].":19:".$result["starFeatured"].":42:".$result["starEpic"].":45:".$result["objects"].":15:".$result["levelLength"].":30:".$result["original"].":31:".$result['twoPlayer'].":28:".$uploadDate. ":29:".$updateDate. ":35:".$result["songID"].":36:".$result["extraString"].":37:".$result["coins"].":38:".$result["starCoins"].":39:".$result["requestedStars"].":46:".$result["wt"].":47:".$result["wt2"].":48:".$result["settingsString"].":40:".$result["isLDM"].":27:$xorPass:52:".$result["songIDs"].":53:".$result["sfxIDs"].":57:".$result['ts'];

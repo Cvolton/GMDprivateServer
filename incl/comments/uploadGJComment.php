@@ -8,13 +8,14 @@ require_once "../lib/exploitPatch.php";
 require_once "../lib/commands.php";
 require_once "../../config/misc.php";
 
-$userName = !empty($_POST['userName']) ? ExploitPatch::remove($_POST['userName']) : "";
+$userName = !empty($_POST['userName']) ? ExploitPatch::charclean($_POST['userName']) : "";
 $gameVersion = !empty($_POST['gameVersion']) ? ExploitPatch::number($_POST['gameVersion']) : 0;
-$comment = ExploitPatch::remove($_POST["comment"]);
-if($enableCommentLengthLimiter && strlen($comment) > $maxCommentLength) exit("temp_0_You cannot post comments above $maxCommentLength characters!");
-$comment = ($gameVersion < 20) ? base64_encode($comment) : $comment;
+$comment = ExploitPatch::rucharclean($_POST["comment"]);
+$commentLength = ($gameVersion < 20) ? mb_strlen(ExploitPatch::url_base64_decode($comment)) : mb_strlen($comment);
+if($enableCommentLengthLimiter && $commentLength > $maxCommentLength) exit("temp_0_You cannot post comments above $maxCommentLength characters! (Your's ".$commentLength.")");
+$comment = ($gameVersion < 20) ? ExploitPatch::url_base64_encode($comment) : $comment;
 $levelID = ($_POST['levelID'] < 0 ? '-' : '').ExploitPatch::number($_POST["levelID"]);
-$percent = !empty($_POST["percent"]) ? ExploitPatch::remove($_POST["percent"]) : 0;
+$percent = !empty($_POST["percent"]) ? ExploitPatch::number($_POST["percent"]) : 0;
 
 if (strpos($levelID, '-') === 0) {
     $checkLevelExist = $db->prepare("SELECT * FROM lists WHERE listID = :levelID");
@@ -31,7 +32,7 @@ $id = $gs->getIDFromPost();
 $register = is_numeric($id);
 $userID = $gs->getUserID($id, $userName);
 $uploadDate = time();
-$decodecomment = base64_decode($comment);
+$decodecomment = ExploitPatch::url_base64_decode($comment);
 $command = Commands::doCommands($id, $decodecomment, $levelID);
 if($command) exit("temp_0_".$command);
 if ($percent < 0 || $percent > 100) exit("temp_0_Invalid percentage!");

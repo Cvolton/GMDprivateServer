@@ -62,7 +62,7 @@ if(isset($_SESSION["accountID"]) AND $_SESSION["accountID"] != 0){
     			</div>'));
 		}
 		if(!empty($_POST["subject"]) AND !empty($_POST["msg"])) {
-			$sendsub = base64_encode(strip_tags(ExploitPatch::rucharclean($_POST["subject"])));
+			$sendsub = ExploitPatch::url_base64_encode(strip_tags(ExploitPatch::rucharclean($_POST["subject"])));
           	$query = $db->prepare("SELECT timestamp FROM messages WHERE accID=:accid AND toAccountID=:toaccid ORDER BY timestamp DESC LIMIT 1");
           	$query->execute([':accid' => $accid, ':toaccid' => $notyou]);
           	$res = $query->fetch();
@@ -77,7 +77,7 @@ if(isset($_SESSION["accountID"]) AND $_SESSION["accountID"] != 0){
 					</div>', 'msg');
               die();
             }
-			$sendmsg = base64_encode($xor->cipher(strip_tags(ExploitPatch::rucharclean($_POST["msg"])), 14251));
+			$sendmsg = ExploitPatch::url_base64_encode($xor->cipher(strip_tags(ExploitPatch::rucharclean($_POST["msg"])), 14251));
 			$query = $db->prepare("INSERT INTO messages (userID, userName, body, subject, accID, toAccountID, timestamp, secret, isNew)
 			VALUES (:uid, :nick, :body, :subject, :accid, :notyou, :time, 'Wmfd2893gb7', '0')");
 			$query->execute([':uid' => $gs->getUserID($accid), ':nick' => $gs->getAccountName($accid), ':body' => $sendmsg, ':subject' => $sendsub, ':accid' => $accid, ':notyou' => $notyou, 'time' => time()]);
@@ -89,8 +89,8 @@ if(isset($_SESSION["accountID"]) AND $_SESSION["accountID"] != 0){
 		foreach($res as $i => $msg) {
 			if($msg["accID"] == $accid) $div = 'you';
             else $div = 'notyou';
-			$subject = base64_decode($msg["subject"]);
-			$body = $xor->plaintext(base64_decode($msg["body"]), 14251);
+			$subject = ExploitPatch::url_base64_decode($msg["subject"]);
+			$body = $xor->plaintext(ExploitPatch::url_base64_decode($msg["body"]), 14251);
 			$msgs .= '<div class="message '.$div.'"><div class="messenger'.$div.'"><h2 class="subject'.$div.'">'.htmlspecialchars($subject).'</h2>
 			<h3 class="message'.$div.'">'.htmlspecialchars($body).'</h3>
 			<h3 id="comments" style="justify-content:flex-end">'.$dl->convertToDate($msg["timestamp"], true).'</h3></div></div>';

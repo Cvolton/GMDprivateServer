@@ -5,6 +5,7 @@ $dl = new dashboardLib();
 require_once "../".$dbPath."incl/lib/mainLib.php";
 $gs = new mainLib();
 require "../".$dbPath."incl/lib/connection.php";
+require "../".$dbPath."incl/lib/exploitPatch.php";
 $dl->title($dl->getLocalizedString("dailyTable"));
 $dl->printFooter('../');
 if(isset($_GET["page"]) AND is_numeric($_GET["page"]) AND $_GET["page"] > 0){
@@ -46,7 +47,7 @@ foreach($result as &$daily){
 		$levelid = $level["levelID"];
 		$levelname = $level["levelName"];
 		$levelIDlol = '<button id="copy'.$level["levelID"].'" class="accbtn songidyeah" onclick="copysong('.$level["levelID"].')">'.$level["levelID"].'</button>';
-		$levelDesc = htmlspecialchars(base64_decode($level["levelDesc"]));
+		$levelDesc = htmlspecialchars(ExploitPatch::url_base64_decode($level["levelDesc"]));
 		if(empty($levelDesc)) $levelDesc = '<text style="color:gray">'.$dl->getLocalizedString("noDesc").'</text>';
 		$levelpass = $level["password"];
 		$likes = $level["likes"];

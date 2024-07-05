@@ -67,8 +67,8 @@ $visiblecount = $query->rowCount();
 foreach($result as &$comment1) {
 	if($comment1["commentID"]!=""){
       	$uploadDate = $gs->makeTime($comment1["timestamp"]);
-		$commentText = ($gameVersion < 20) ? base64_decode($comment1["comment"]) : $comment1["comment"];
-		if($enableCommentLengthLimiter) $commentText = base64_encode(substr(base64_decode($commentText), 0, $maxCommentLength));
+		$commentText = ($gameVersion < 20) ? ExploitPatch::url_base64_decode($comment1["comment"]) : $comment1["comment"];
+		if($enableCommentLengthLimiter) $commentText = ExploitPatch::url_base64_encode(substr(ExploitPatch::url_base64_decode($commentText), 0, $maxCommentLength));
 		if($displayLevelID) $commentstring .= "1~".$comment1["levelID"]."~";
 		if ($commentAutoLike && array_key_exists($comment1["commentID"], $specialCommentLikes)) {
                     $likes = $comment1["likes"] * $specialCommentLikes[$comment1["commentID"]]; // Multiply by the specified value

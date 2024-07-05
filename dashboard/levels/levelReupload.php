@@ -13,6 +13,7 @@ function chkarray($source, $default = 0) {
 	return $target;
 }
 include "../".$dbPath."incl/lib/connection.php";
+include "../".$dbPath."incl/lib/exploitPatch.php";
 require "../".$dbPath."incl/lib/XORCipher.php";
 require "../".$dbPath."config/reuploadAcc.php";
 require "../".$dbPath."config/proxy.php";
@@ -116,11 +117,9 @@ if(!empty($_POST["levelid"])){
 		//old levelString
 		$levelString = chkarray($levelarray["a4"]);
 		$gameVersion = chkarray($levelarray["a13"]);
-		if(substr($levelString,0,2) == 'eJ'){
-			$levelString = str_replace("_","/",$levelString);
-			$levelString = str_replace("-","+",$levelString);
-			$levelString = gzuncompress(base64_decode($levelString));
-			if($gameVersion > 18){
+		if(substr($levelString,0,2) == 'eJ') {
+			$levelString = gzuncompress(ExploitPatch::url_base64_decode($levelString));
+			if($gameVersion > 18) {
 				$gameVersion = 18;
 			}
 		}
@@ -153,7 +152,7 @@ if(!empty($_POST["levelid"])){
 			$sfxIDs = isset($levelarray["a53"]) ? $levelarray["a53"] : '';
 			$ts = chkarray($levelarray["a57"]);
 			if($password != "0"){
-				$password = XORCipher::cipher(base64_decode($password),26364);
+				$password = XORCipher::cipher(ExploitPatch::url_base64_decode($password),26364);
 			}
 			$starCoins = 0;
 			$starDiff = 0;

@@ -7,6 +7,7 @@ $gs = new mainLib();
 $dl->title($dl->getLocalizedString("listTable"));
 $dl->printFooter('../');
 include "../".$dbPath."incl/lib/connection.php";
+include "../".$dbPath."incl/lib/exploitPatch.php";
 $x = 1;
 $packtable = "";
 $query = $db->prepare("SELECT * FROM lists WHERE unlisted = 0 ORDER BY listID DESC");
@@ -26,7 +27,7 @@ $modcheck = $gs->checkPermission($_SESSION["accountID"], "dashboardModTools");
 foreach($result as &$pack){
 	$lvlarray = explode(",", $pack["listlevels"]);
 	$lvltable = "";
-	$listDesc = htmlspecialchars(base64_decode($pack['listDesc']));
+	$listDesc = htmlspecialchars(ExploitPatch::url_base64_decode($pack['listDesc']));
 	if(empty($listDesc)) $listDesc = '<text style="color:gray">'.$dl->getLocalizedString("noDesc").'</text>';
     $starspack = $pack["starStars"];
     if($pack["starStars"] == 0) $starspack = '<span style="color:grey">0</span>';
@@ -44,7 +45,7 @@ foreach($result as &$pack){
 		$levelid = $action["levelID"];
 		$levelname = $action["levelName"];
 		$levelIDlol = '<button id="copy'.$action["levelID"].'" class="accbtn songidyeah" onclick="copysong('.$action["levelID"].')">'.$action["levelID"].'</button>';
-		$levelDesc = htmlspecialchars(base64_decode($action["levelDesc"]));
+		$levelDesc = htmlspecialchars(ExploitPatch::url_base64_decode($action["levelDesc"]));
 		if(empty($levelDesc)) $levelDesc = '<text style="color:gray">'.$dl->getLocalizedString("noDesc").'</text>';
 		$levelpass = $action["password"];
 		$likes = $action["likes"] > 0 ? $action["likes"] : '<span style="color:gray">'.$action["likes"].'</span>';

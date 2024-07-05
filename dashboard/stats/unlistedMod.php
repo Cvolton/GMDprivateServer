@@ -65,7 +65,7 @@ foreach($result as &$action){
 	$levelid = $action["levelID"];
 	$levelname = $action["levelName"];
 	$levelIDlol = '<button id="copy'.$action["levelID"].'" class="accbtn songidyeah" onclick="copysong('.$action["levelID"].')">'.$action["levelID"].'</button>';
-	$levelDesc = htmlspecialchars(base64_decode($action["levelDesc"]));
+	$levelDesc = htmlspecialchars(ExploitPatch::url_base64_decode($action["levelDesc"]));
   	if(empty($levelDesc)) $levelDesc = '<text style="color:gray">'.$dl->getLocalizedString("noDesc").'</text>';
 	$levelpass = $action["password"];
 	$likes = $action["likes"];

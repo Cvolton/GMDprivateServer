@@ -8,15 +8,15 @@ require_once "../lib/mainLib.php";
 $gs = new mainLib();
 
 $accountID = GJPCheck::getAccountIDOrDie();
-$levelID = ExploitPatch::remove($_POST["levelID"]);
-$percent = ExploitPatch::remove($_POST["percent"]);
+$levelID = ExploitPatch::number($_POST["levelID"]);
+$percent = ExploitPatch::number($_POST["percent"]);
 $uploadDate = time();
 
 $attempts = !empty($_POST["s1"]) ? $_POST["s1"] - 8354 : 0;
 $clicks = !empty($_POST["s2"]) ? $_POST["s2"] - 3991 : 0;
 $time = !empty($_POST["s3"]) ? $_POST["s3"] - 4085 : 0;
 
-$progresses = !empty($_POST["s6"]) ? XORCipher::cipher(base64_decode(str_replace("_","/",str_replace("-","+",$_POST["s6"]))),41274) : 0;
+$progresses = !empty($_POST["s6"]) ? XORCipher::cipher(ExploitPatch::url_base64_decode($_POST["s6"]), 41274) : 0;
 $coins = !empty($_POST["s9"]) ? $_POST["s9"] - 5819 : 0;
 $dailyID = !empty($_POST["s10"]) ? $_POST["s10"] : 0;
 //UPDATING SCORE

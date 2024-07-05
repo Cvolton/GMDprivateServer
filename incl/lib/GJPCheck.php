@@ -6,6 +6,7 @@ include_once dirname(__FILE__)."/mainLib.php";
 class GJPCheck {
 	public static function check($gjp, $accountID) {
 		include dirname(__FILE__)."/connection.php";
+		include dirname(__FILE__)."/exploitPatch.php";
 		include dirname(__FILE__)."/../../config/security.php";
 		$ml = new mainLib();
 		if($sessionGrants){
@@ -18,7 +19,7 @@ class GJPCheck {
 		}
 		$gjpdecode = str_replace("_","/",$gjp);
 		$gjpdecode = str_replace("-","+",$gjpdecode);
-		$gjpdecode = base64_decode($gjpdecode);
+		$gjpdecode = ExploitPatch::url_base64_decode($gjpdecode);
 		$gjpdecode = XORCipher::cipher($gjpdecode,37526);
 		$validationResult = GeneratePass::isValid($accountID, $gjpdecode);
 		if($validationResult == 1 AND $sessionGrants){

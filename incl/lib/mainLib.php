@@ -512,11 +512,12 @@ class mainLib {
 	}
 	public function getDesc($lid, $dashboard = false) {
 		include __DIR__ . "/connection.php";
+		include __DIR__ . "/exploitPatch.php";
 		$desc = $db->prepare("SELECT levelDesc FROM levels WHERE levelID = :id");
 		$desc->execute([':id' => $lid]);
 		$desc = $desc->fetch();
 		if(empty($desc["levelDesc"])) return !$dashboard ? '*This level doesn\'t have description*' : '<text style="font-style:italic">This level doesn\'t have description</text>';
-		else return base64_decode($desc["levelDesc"]);
+		else return ExploitPatch::url_base64_decode($desc["levelDesc"]);
 	}
 	public function getLevelName($lid) {
 		include __DIR__ . "/connection.php";
@@ -999,7 +1000,7 @@ class mainLib {
 			$bits = null;
 			$res = file_get_contents(__DIR__.'/../../'.$types[$type].'/'.$key.'.dat');
 			$res = mb_convert_encoding($res, 'UTF-8', 'UTF-8');
-			$res = base64_decode(strtr($res, '-_.', '+/='));
+			$res = ExploitPatch::url_base64_decode($res);
 			$res = zlib_decode($res);
 			$res = explode('|', $res);
 			if(!$type) {
@@ -1238,10 +1239,10 @@ class mainLib {
 		}
 		file_put_contents(__DIR__.'/../../'.$types[$type].'/ids.json', json_encode($idsConverter, JSON_PRETTY_PRINT | JSON_INVALID_UTF8_IGNORE));
 		$encrypted = zlib_encode($encrypted, ZLIB_ENCODING_DEFLATE);
-		$encrypted = strtr(base64_encode($encrypted), '+/=', '-_=');
+		$encrypted = ExploitPatch::url_base64_encode($encrypted);
 		file_put_contents(__DIR__.'/../../'.$types[$type].'/gdps.dat', $encrypted);
 		$gdpsEncrypted = zlib_encode($gdpsEncrypted, ZLIB_ENCODING_DEFLATE);
-		$gdpsEncrypted = strtr(base64_encode($gdpsEncrypted), '+/=', '-_=');
+		$gdpsEncrypted = ExploitPatch::url_base64_encode($gdpsEncrypted);
 		file_put_contents(__DIR__.'/../../'.$types[$type].'/standalone.dat', $gdpsEncrypted);
 	}
 	public function getAudioDuration($file) {
@@ -1303,6 +1304,7 @@ class mainLib {
 	}
 	public function sendRateWebhook($modAccID, $levelID) {
 		include __DIR__."/connection.php";
+		include __DIR__."/exploitPatch.php";
 		include __DIR__."/../../config/dashboard.php";
 		include __DIR__."/../../config/discord.php";
 		if(!$webhooksEnabled OR !is_numeric($modAccID) OR !is_numeric($levelID) OR !in_array("rate", $webhooksToEnable)) return false;
@@ -1360,7 +1362,7 @@ class mainLib {
 		$statsField = [$this->webhookLanguage('statsTitle', $webhookLangArray), $stats, true];
 		if($level['requestedStars'] == 1) $action = 0; elseif(($level['requestedStars'] < 5 AND $level['requestedStars'] != 0) AND !($level['requestedStars'] > 9 AND $level['requestedStars'] < 20)) $action = 1; else $action = 2;
 		$requestedField = $level['requestedStars'] > 0 ? [$this->webhookLanguage('requestedTitle', $webhookLangArray), sprintf($this->webhookLanguage('requestedDesc' . ($level['levelLength'] == 5 ? 'Moon' : '') . $action, $webhookLangArray), $level['requestedStars']), true] : [];
-		$descriptionField = [$this->webhookLanguage('descTitle', $webhookLangArray), (!empty($level['levelDesc']) ? base64_decode($level['levelDesc']) : $this->webhookLanguage('descDesc', $webhookLangArray)), false];
+		$descriptionField = [$this->webhookLanguage('descTitle', $webhookLangArray), (!empty($level['levelDesc']) ? ExploitPatch::url_base64_decode($level['levelDesc']) : $this->webhookLanguage('descDesc', $webhookLangArray)), false];
 		$setThumbnail = $difficultiesURL.$starsIcon.'/'.$diffIcon.'.png';
 		$setFooter = sprintf($this->webhookLanguage('footer', $webhookLangArray), $gdps);
 		$dw->newMessage()
@@ -1448,6 +1450,7 @@ class mainLib {
 	}
 	public function sendSuggestWebhook($modAccID, $levelID, $difficulty, $stars, $featured, $auto, $demon) {
 		include __DIR__."/connection.php";
+		include __DIR__."/exploitPatch.php";
 		include __DIR__."/../../config/dashboard.php";
 		include __DIR__."/../../config/discord.php";
 		if(!$webhooksEnabled OR !is_numeric($modAccID) OR !is_numeric($levelID) OR !in_array("suggest", $webhooksToEnable)) return false;
@@ -1483,7 +1486,7 @@ class mainLib {
 		$statsField = [$this->webhookLanguage('statsTitle', $webhookLangArray), $stats, true];
 		if($level['requestedStars'] == 1) $action = 0; elseif(($level['requestedStars'] < 5 AND $level['requestedStars'] != 0) AND !($level['requestedStars'] > 9 AND $level['requestedStars'] < 20)) $action = 1; else $action = 2;
 		$requestedField = $level['requestedStars'] > 0 ? [$this->webhookLanguage('requestedTitle', $webhookLangArray), sprintf($this->webhookLanguage('requestedDesc' . ($level['levelLength'] == 5 ? 'Moon' : '') . $action, $webhookLangArray), $level['requestedStars']), true] : [];
-		$descriptionField = [$this->webhookLanguage('descTitle', $webhookLangArray), (!empty($level['levelDesc']) ? base64_decode($level['levelDesc']) : $this->webhookLanguage('descDesc', $webhookLangArray)), false];
+		$descriptionField = [$this->webhookLanguage('descTitle', $webhookLangArray), (!empty($level['levelDesc']) ? ExploitPatch::url_base64_decode($level['levelDesc']) : $this->webhookLanguage('descDesc', $webhookLangArray)), false];
 		$setThumbnail = $difficultiesURL.$starsIcon.'/'.$diffIcon.'.png';
 		$setFooter = sprintf($this->webhookLanguage('footerSuggest', $webhookLangArray), $gdps);
 		$dw->newMessage()
@@ -1748,6 +1751,7 @@ class mainLib {
 	}
 	public function sendDailyWebhook($levelID, $type) {
 		include __DIR__."/connection.php";
+		include __DIR__."/exploitPatch.php";
 		include __DIR__."/../../config/dashboard.php";
 		include __DIR__."/../../config/discord.php";
 		if(!$webhooksEnabled OR !is_numeric($levelID) OR !is_numeric($type) OR !in_array("daily", $webhooksToEnable)) return false;
@@ -1814,7 +1818,7 @@ class mainLib {
 		$statsField = [$this->webhookLanguage('statsTitle', $webhookLangArray), $stats, true];
 		if($level['requestedStars'] == 1) $action = 0; elseif(($level['requestedStars'] < 5 AND $level['requestedStars'] != 0) AND !($level['requestedStars'] > 9 AND $level['requestedStars'] < 20)) $action = 1; else $action = 2;
 		$requestedField = $level['requestedStars'] > 0 ? [$this->webhookLanguage('requestedTitle', $webhookLangArray), sprintf($this->webhookLanguage('requestedDesc' . ($level['levelLength'] == 5 ? 'Moon' : '') . $action, $webhookLangArray), $level['requestedStars']), true] : [];
-		$descriptionField = [$this->webhookLanguage('descTitle', $webhookLangArray), (!empty($level['levelDesc']) ? base64_decode($level['levelDesc']) : $this->webhookLanguage('descDesc', $webhookLangArray)), false];
+		$descriptionField = [$this->webhookLanguage('descTitle', $webhookLangArray), (!empty($level['levelDesc']) ? ExploitPatch::url_base64_decode($level['levelDesc']) : $this->webhookLanguage('descDesc', $webhookLangArray)), false];
 		$setThumbnail = $difficultiesURL.$starsIcon.'/'.$diffIcon.'.png';
 		$setFooter = sprintf($this->webhookLanguage('footer', $webhookLangArray), $gdps);
 		$dw->newMessage()

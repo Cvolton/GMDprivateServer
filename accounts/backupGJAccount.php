@@ -34,9 +34,7 @@ if(!empty($_POST["password"])) $pass = GeneratePass::isValid($accountID, $_POST[
 elseif(!empty($_POST["gjp2"])) $pass = GeneratePass::isGJP2Valid($accountID, $_POST["gjp2"]);
 if ($pass == 1) {
 	$saveDataArr = explode(";",$saveData); //splitting ccgamemanager and cclocallevels
-	$saveData = str_replace("-","+",$saveDataArr[0]); //decoding
-	$saveData = str_replace("_","/",$saveData);
-	$saveData = base64_decode($saveData);
+	$saveData = ExploitPatch::url_base64_decode($saveDataArr[0]);
 	$saveData = gzdecode($saveData);
 	$orbs = explode("</s><k>14</k><s>",$saveData)[1];
 	$orbs = explode("</s>",$orbs)[0];
@@ -48,9 +46,7 @@ if ($pass == 1) {
 		$saveData = str_replace("<k>GJA_002</k><s>".$password."</s>", "<k>GJA_002</k><s>password</s>", $saveData); //replacing pass
 		//file_put_contents($userName, $saveData);
 		$saveData = gzencode($saveData); //encoding back
-		$saveData = base64_encode($saveData);
-		$saveData = str_replace("+","-",$saveData);
-		$saveData = str_replace("/","_",$saveData);
+		$saveData = ExploitPatch::url_base64_encode($saveData);
 		$saveData = $saveData . ";" . $saveDataArr[1]; //merging ccgamemanager and cclocallevels
 	/*}else if($cloudSaveEncryption == 1){
 		$saveData = ExploitPatch::remove($_POST["saveData"]);

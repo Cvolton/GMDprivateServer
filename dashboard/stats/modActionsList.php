@@ -77,7 +77,7 @@ foreach($result as &$action){
 			$value2 = $gs->getLevelName($value3);
 			break;
 		case 13:
-			$value = base64_decode($value);
+			$value = ExploitPatch::url_base64_decode($value);
 			break;
 		case 15:
 			$value = $gs->getAccountName($value);
@@ -149,7 +149,7 @@ foreach($result as &$action){
 			$value2 = $gs->getAccountName($action['value']);
 			break;
 		case 37:
-			$value = base64_decode($action['value']);
+			$value = ExploitPatch::url_base64_decode($action['value']);
 			$value2 = $gs->getListName($action["value3"]);
 			break;
 	}

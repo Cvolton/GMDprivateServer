@@ -430,7 +430,7 @@ class Commands {
 				$accCheck = $gs->getListOwner($listID);
 				if(!$gs->checkPermission($accountID, "commandDescriptionAll") AND $accountID != $accCheck) return false;
 				$carray[0] = '';
-				$name = base64_encode(trim(ExploitPatch::charclean(implode(' ', $carray))));
+				$name = ExploitPatch::url_base64_encode(trim(ExploitPatch::charclean(implode(' ', $carray))));
 				$query = $db->prepare("UPDATE lists SET listDesc = :name WHERE listID = :listID");
 				$query->execute([':listID' => $listID, ':name' => $name]);
 				$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('37', :value, :listID, :timestamp, :id)");

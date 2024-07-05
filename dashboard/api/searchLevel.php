@@ -58,7 +58,7 @@ if($rate['songID'] != 0) {
 $level = [
 	'ID' => $rate['levelID'],
 	'name' => $rate['levelName'],
-	'desc' => ExploitPatch::rucharclean(base64_decode($rate['levelDesc'])),
+	'desc' => ExploitPatch::rucharclean(ExploitPatch::url_base64_decode($rate['levelDesc'])),
 	'stats' => [
 		'stars' => $rate['starStars'],
 		'featured' => ($rate['starFeatured'] == 0 ? false : true),

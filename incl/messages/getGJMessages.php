@@ -41,7 +41,7 @@ foreach ($result as &$message1) {
 		$query->execute([':accountID' => $accountID]);
 		$result12 = $query->fetchAll()[0];
 		$result12["userName"] = $gs->makeClanUsername($result12);
-		$message1['subject'] = base64_encode(ExploitPatch::rutoen(base64_decode($message1["subject"])));
+		$message1['subject'] = ExploitPatch::url_base64_encode(ExploitPatch::rutoen(ExploitPatch::url_base64_decode($message1["subject"])));
 		$msgstring .= "6:".$result12["userName"].":3:".$result12["userID"].":2:".$result12["extID"].":1:".$message1["messageID"].":4:".$message1["subject"].":8:".$message1["isNew"].":9:".$getSent.":7:".$uploadDate."|";
 	}
 }

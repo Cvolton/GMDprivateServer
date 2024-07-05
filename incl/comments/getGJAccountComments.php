@@ -6,8 +6,8 @@ require_once "../lib/mainLib.php";
 require_once "../../config/misc.php";
 $gs = new mainLib();
 $commentstring = "";
-$accountid = ExploitPatch::remove($_POST["accountID"]);
-$page = ExploitPatch::remove($_POST["page"]);
+$accountid = ExploitPatch::number($_POST["accountID"]);
+$page = ExploitPatch::number($_POST["page"]);
 $commentpage = $page*10;
 $userID = $gs->getUserID($accountid);
 $query = "SELECT comment, userID, likes, isSpam, commentID, timestamp FROM acccomments WHERE userID = :userID ORDER BY timeStamp DESC LIMIT 10 OFFSET $commentpage";
@@ -29,10 +29,10 @@ foreach($result as &$comment1) {
 		$reply = $reply->fetchColumn();
 		if($reply > 0) {
 			$rep = $reply > 1 ? 'replies)' : 'reply)';
-			$comment1["comment"] = base64_encode(base64_decode($comment1["comment"]).' ('.$reply.' '.$rep);
+			$comment1["comment"] = ExploitPatch::url_base64_encode(ExploitPatch::url_base64_decode($comment1["comment"]).' ('.$reply.' '.$rep);
 		}
-		$comment1['comment'] = base64_encode(trim(ExploitPatch::rutoen(base64_decode($comment1['comment']))));
-		if($enableCommentLengthLimiter) $comment1['comment'] = base64_encode(substr(base64_decode($comment1['comment']), 0, $maxAccountCommentLength));
+		$comment1['comment'] = ExploitPatch::url_base64_encode(trim(ExploitPatch::rutoen(ExploitPatch::url_base64_decode($comment1['comment']))));
+		if($enableCommentLengthLimiter) $comment1['comment'] = ExploitPatch::url_base64_encode(substr(ExploitPatch::url_base64_decode($comment1['comment']), 0, $maxAccountCommentLength));
 		$commentstring .= "2~".$comment1["comment"]."~3~".$comment1["userID"]."~4~".$likes."~5~0~7~".$comment1["isSpam"]."~9~".$uploadDate."~6~".$comment1["commentID"]."|";
 	}
 }

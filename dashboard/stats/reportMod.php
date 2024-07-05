@@ -2,10 +2,10 @@
 session_start();
 require "../incl/dashboardLib.php";
 require "../".$dbPath."incl/lib/connection.php";
+require "../".$dbPath."incl/lib/exploitPatch.php";
 $dl = new dashboardLib();
 require_once "../".$dbPath."incl/lib/mainLib.php";
 $gs = new mainLib();
-include "../".$dbPath."incl/lib/connection.php";
 $dl->title($dl->getLocalizedString("reportMod"));
 $dl->printFooter('../');
 $modcheck = $gs->checkPermission($_SESSION["accountID"], "dashboardModTools");
@@ -34,7 +34,7 @@ foreach($result as &$level){
 	$levelid = $level["levelID"];
 	$levelname = $level["levelName"];
 	$levelIDlol = '<button id="copy'.$level["levelID"].'" class="accbtn songidyeah" onclick="copysong('.$level["levelID"].')">'.$level["levelID"].'</button>';
-	$levelDesc = htmlspecialchars(base64_decode($level["levelDesc"]));
+	$levelDesc = htmlspecialchars(ExploitPatch::url_base64_decode($level["levelDesc"]));
 	if(empty($levelDesc)) $levelDesc = '<text style="color:gray">'.$dl->getLocalizedString("noDesc").'</text>';
 	$levelpass = $level["password"];
 	$likes = $level["likes"];
