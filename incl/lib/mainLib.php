@@ -1304,7 +1304,7 @@ class mainLib {
 	}
 	public function sendRateWebhook($modAccID, $levelID) {
 		include __DIR__."/connection.php";
-		include __DIR__."/exploitPatch.php";
+		if(!class_exists('ExploitPatch')) include __DIR__."/exploitPatch.php";
 		include __DIR__."/../../config/dashboard.php";
 		include __DIR__."/../../config/discord.php";
 		if(!$webhooksEnabled OR !is_numeric($modAccID) OR !is_numeric($levelID) OR !in_array("rate", $webhooksToEnable)) return false;
@@ -1450,7 +1450,7 @@ class mainLib {
 	}
 	public function sendSuggestWebhook($modAccID, $levelID, $difficulty, $stars, $featured, $auto, $demon) {
 		include __DIR__."/connection.php";
-		include __DIR__."/exploitPatch.php";
+		if(!class_exists('ExploitPatch')) include __DIR__."/exploitPatch.php";
 		include __DIR__."/../../config/dashboard.php";
 		include __DIR__."/../../config/discord.php";
 		if(!$webhooksEnabled OR !is_numeric($modAccID) OR !is_numeric($levelID) OR !in_array("suggest", $webhooksToEnable)) return false;
@@ -1751,7 +1751,7 @@ class mainLib {
 	}
 	public function sendDailyWebhook($levelID, $type) {
 		include __DIR__."/connection.php";
-		include __DIR__."/exploitPatch.php";
+		if(!class_exists('ExploitPatch')) include __DIR__."/exploitPatch.php";
 		include __DIR__."/../../config/dashboard.php";
 		include __DIR__."/../../config/discord.php";
 		if(!$webhooksEnabled OR !is_numeric($levelID) OR !is_numeric($type) OR !in_array("daily", $webhooksToEnable)) return false;
