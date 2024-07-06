@@ -109,32 +109,36 @@ if($accid != $_SESSION["accountID"] && is_numeric($accid)) {
     $block->execute([':p1' => $accid, ':p2' => $_SESSION["accountID"]]);
     $block = $block->fetch();
     if(!empty($block)) exit($dl->printSong('<div class="form">
-            	   <h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
-           	 	   <form class="form__inner" method="post" action="">
-          		  <p>'.$dl->getLocalizedString("youBlocked").'</p>
-          		  <button type="button" onclick="a(\'\', true, true, \'GET\')" class="btn-primary" name="accountID" value="'.$accid.'">'.$dl->getLocalizedString("dashboard").'</button>
-  				 </form>
-			</div>'));
+		<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
+        <form class="form__inner" method="post" action="">
+        <p>'.$dl->getLocalizedString("youBlocked").'</p>
+        <button type="button" onclick="a(\'\', true, true, \'GET\')" class="btn-primary" name="accountID" value="'.$accid.'">'.$dl->getLocalizedString("dashboard").'</button>
+  		</form>
+	</div>'));
 }
 if(!empty($_POST["msg"])) {
-  	  $query = $db->prepare("SELECT timestamp FROM acccomments WHERE userID=:accid ORDER BY timestamp DESC LIMIT 1");
-      $query->execute([':accid' => $userID]);
-      $res = $query->fetch();
-      $time = time() - 10;
-      if($res["timestamp"] > $time) {
-     		$dl->printSong('<div class="form">
-            	   <h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
-           	 	   <form class="form__inner" method="post" action="">
-          		  <p>'.$dl->getLocalizedString("tooFast").'</p>
-          		  <button type="button" onclick="a(\'profile/'.$accname.'\', true, true, \'GET\')" class="btn-primary" name="accountID" value="'.$accid.'">'.$dl->getLocalizedString("tryAgainBTN").'</button>
-  				 </form>
-			</div>', 'profile');
-     die();
-    }
-	$msg = base64_encode(ExploitPatch::rucharclean($_POST["msg"]));
-	if($enableCommentLengthLimiter && strlen(base64_decode($msg)) > $maxAccountCommentLength) {
-		$msgTooLong = true;
-	}else{
+	$checkBan = $gs->getPersonBan($accid, $userID, 3);
+	if($checkBan) exit($dl->printSong('<div class="form">
+		<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
+		<form class="form__inner" action="" method="post">
+		<p>'.sprintf($dl->getLocalizedString("youAreBanned"), htmlspecialchars(base64_decode($checkBan['reason'])), date("d.m.Y G:i", $checkBan['expires'])).'</p>
+		<button type="button" onclick="a(\'\', true, false, \'GET\')" class="btn btn-primary">'.$dl->getLocalizedString("dashboard").'</button>
+		</form>
+	</div>'));
+    $query = $db->prepare("SELECT timestamp FROM acccomments WHERE userID=:accid ORDER BY timestamp DESC LIMIT 1");
+    $query->execute([':accid' => $userID]);
+    $res = $query->fetch();
+    $time = time() - 10;
+    if($res["timestamp"] > $time) die($dl->printSong('<div class="form">
+	<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
+       	<form class="form__inner" method="post" action="">
+       	<p>'.$dl->getLocalizedString("tooFast").'</p>
+       	<button type="button" onclick="a(\'profile/'.$accname.'\', true, true, \'GET\')" class="btn-primary" name="accountID" value="'.$accid.'">'.$dl->getLocalizedString("tryAgainBTN").'</button>
+		</form>
+	</div>', 'profile'));
+	$msg = ExploitPatch::url_base64_encode(ExploitPatch::rucharclean($_POST["msg"]));
+	if($enableCommentLengthLimiter && strlen(ExploitPatch::url_base64_decode($msg)) > $maxAccountCommentLength) $msgTooLong = true;
+	else {
 		$query = $db->prepare("INSERT INTO acccomments (userID, userName, comment, timestamp) VALUES (:id, :name, :msg, :time)");
 		$query->execute([':id' => $userID, ':name' => $accname, ':msg' => $msg, ':time' => time()]);
 	}
@@ -217,16 +221,16 @@ if(isset($_POST["settings"]) AND $_POST["settings"] == 1 AND $accid == $_SESSION
 		$_POST["youtube"] = mb_ereg_replace("(?!^@)[^a-zA-Z0-9_]", "", $_POST["youtube"]);
 		$_POST["twitter"] = mb_ereg_replace("[^a-zA-Z0-9_]", "", $_POST["twitter"]);
 		$_POST["twitch"] = mb_ereg_replace("[^a-zA-Z0-9_]", "", $_POST["twitch"]);
-		$query = $db->prepare("UPDATE accounts SET mS = :ms, frS = :frs, cS = :cs, youtubeurl = :yt, twitter = :twt, twitch = :ttv, timezone = :tz WHERE accountID=:id");
+        $query = $db->prepare("UPDATE accounts SET mS = :ms, frS = :frs, cS = :cs, youtubeurl = :yt, twitter = :twt, twitch = :ttv, timezone = :tz WHERE accountID=:id");
         $query->execute([':id' => $accid, ':ms' => ExploitPatch::number($_POST["messages"]), ':frs' => ExploitPatch::number($_POST["friendreqs"]), ':cs' => ExploitPatch::number($_POST["comments"]), ':yt' => ExploitPatch::remove($_POST["youtube"]), ':twt' => ExploitPatch::remove($_POST["twitter"]), ':ttv' => ExploitPatch::remove($_POST["twitch"]), ':tz' => ExploitPatch::rucharclean($_POST["timezone"])]);
     }
 }
 $query = $db->prepare("SELECT * FROM users WHERE userID=:id");
 $query->execute([':id' => $userID]);
 $res = $query->fetch();
-if($res["banReason"] != 'none' OR $res["isBanned"] == 1) $maybeban = '<h1 class="profilename" style="text-decoration:line-through;color:#432529;">'.$accname.'</h1>'; else $maybeban = '<h1 class="profilename" style="color:rgb('.$gs->getAccountCommentColor($accid).');">'.$accname.'</h1>';
+$maybeban = '<h1 class="profilename" style="color:rgb('.$gs->getAccountCommentColor($accid).');">'.$accname.'</h1>';
 if(isset($_SERVER["HTTP_REFERER"])) $back = '<form method="post" action="'.$_SERVER["HTTP_REFERER"].'"><button type="button" onclick="a(\''.$_SERVER["HTTP_REFERER"].'\', true, true, \'GET\')" class="goback"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i></button></form>'; else $back = '';
-$all = $dl->createProfileStats($res['stars'], $res['moons'], $res['diamonds'], $res['coins'], $res['userCoins'], $res['demons'], $res['creatorPoints'], $res['isCreatorBanned']);
+$all = $dl->createProfileStats($res['stars'], $res['moons'], $res['diamonds'], $res['coins'], $res['userCoins'], $res['demons'], $res['creatorPoints'], 0);
 $msgs = $db->prepare("SELECT * FROM acccomments WHERE userID=:uid ORDER BY commentID DESC");
 $msgs->execute([':uid' => $userID]);
 $msgs = $msgs->fetchAll();
@@ -236,7 +240,7 @@ foreach($msgs AS &$msg) {
 	$reply = $db->prepare("SELECT count(*) FROM replies WHERE commentID = :id");
 	$reply->execute([':id' => $msg["commentID"]]);
 	$reply = $reply->fetchColumn();	
-  	$message = base64_decode($msg["comment"]);
+  	$message = ExploitPatch::url_base64_decode($msg["comment"]);
 	if($enableCommentLengthLimiter) $message = substr($message, 0, $maxAccountCommentLength);
   	$time = $msg["timestamp"];
 	$likes = $msg["likes"];

@@ -5,8 +5,6 @@ header('Access-Control-Allow-Methods: GET');
 header("Access-Control-Allow-Headers: X-Requested-With");
 require_once "../incl/dashboardLib.php";
 include "../".$dbPath."incl/lib/connection.php";
-
-
 // 2592000 seconds = 30d
 $query = $db->prepare("SELECT
     (SELECT COUNT(*) FROM users) AS users,
@@ -30,16 +28,18 @@ $query = $db->prepare("SELECT
     (SELECT COUNT(*) FROM replies) AS postReplies,
     (SELECT SUM(stars) FROM users) AS stars,
     (SELECT SUM(creatorPoints) FROM users) AS creatorPoints,
-    (SELECT COUNT(*) FROM users WHERE isBanned = 1 OR isCommentBanned = 1 OR isCreatorBanned = 1 OR isUploadBanned = 1) AS bannedPlayers,
-    (SELECT COUNT(*) FROM users WHERE isBanned = 1) AS leaderboardBanned,
-    (SELECT COUNT(*) FROM users WHERE isCommentBanned = 1) AS commentBanned,
-    (SELECT COUNT(*) FROM users WHERE isCreatorBanned = 1) AS creatorBanned,
-    (SELECT COUNT(*) FROM users WHERE isUploadBanned = 1) AS uploadBanned,
-    (SELECT COUNT(*) FROM bannedips) AS ipBanned
+	(SELECT COUNT(*) FROM bans) AS bannedPlayers,
+	(SELECT COUNT(personType) FROM bans WHERE personType = 0) AS accountIDBans,
+	(SELECT COUNT(personType) FROM bans WHERE personType = 1) AS userIDBans,
+	(SELECT COUNT(personType) FROM bans WHERE personType = 2) AS IPBans,
+	(SELECT COUNT(banType) FROM bans WHERE banType = 0) AS leaderboardBans,
+	(SELECT COUNT(banType) FROM bans WHERE banType = 1) AS creatorBans,
+	(SELECT COUNT(banType) FROM bans WHERE banType = 2) AS levelUploadBans,
+	(SELECT COUNT(banType) FROM bans WHERE banType = 3) AS commentBans,
+	(SELECT COUNT(banType) FROM bans WHERE banType = 4) AS accountBans
 ");
 $query->execute([':time' => time()]);
 $stats = $query->fetch(PDO::FETCH_ASSOC);
-
 $stats = [
     'users' => [
         'total' => (int)$stats['users'],
@@ -58,13 +58,11 @@ $stats = [
         'weeklies' => (int)$stats['weeklies'],
         'gauntlets' => (int)$stats['gauntlets'],
         'map_packs' => (int)$stats['mapPacks']
-    
     ],
     'downloads' => [
         'total' => (int)$stats['downloads'],
         'average' => (double)($stats['downloads'] / $stats['levels'])
     ],
-
     'objects' => [
         'total' => (int)$stats['objects'],
         'average' => (double)($stats['objects'] / $stats['levels'])
@@ -89,13 +87,19 @@ $stats = [
     ],
     'bans' => [
         'total' => (int)$stats['bannedPlayers'],
-        'leaderboard' => (int)$stats['leaderboardBanned'],
-        'comments' => (int)$stats['commentBanned'],
-        'creators' => (int)$stats['creatorBanned'],
-        'upload' => (int)$stats['uploadBanned'],
-        'ip' => (int)$stats['ipBanned']
+        'personTypes' => [
+			'accountIDBans' => (int)$stats['accountIDBans'],
+			'userIDBans' => (int)$stats['userIDBans'],
+			'IPBans' => (int)$stats['IPBans']
+		],
+		'banTypes' => [
+			'leaderboardBans' => (int)$stats['leaderboardBans'],
+			'creatorBans' => (int)$stats['creatorBans'],
+			'levelUploadBans' => (int)$stats['levelUploadBans'],
+			'commentBans' => (int)$stats['commentBans'],
+			'accountBans' => (int)$stats['accountBans']
+		]
     ]
 ];
-
 exit(json_encode(['dashboard' => true, 'success' => true, 'stats' => $stats]));
 ?>

@@ -29,7 +29,7 @@ class GeneratePass
 	}
 
 	public static function tooManyAttemptsFromIP() {
-		return self::attemptsFromIP() > 7;
+		return self::attemptsFromIP() > 20;
 	}
 
 	public static function logInvalidAttemptFromIP($accid) {
@@ -64,7 +64,7 @@ class GeneratePass
 
 		if(self::tooManyAttemptsFromIP()) return -1;
 
-		$userInfo = $db->prepare("SELECT gjp2, isActive FROM accounts WHERE accountID = :accid");
+		$userInfo = $db->prepare("SELECT userName, gjp2, isActive FROM accounts WHERE accountID = :accid");
 		$userInfo->execute([':accid' => $accid]);
 		if($userInfo->rowCount() == 0) return 0;
 
@@ -73,6 +73,8 @@ class GeneratePass
 
 		if(password_verify($gjp2, $userInfo['gjp2'])) {
 			self::assignModIPs($accid, $gs->getIP());
+			$checkBan = $gs->getPersonBan($accid, $gs->getUserID($accid, $userInfo['userName']), 4);
+			if($checkBan) return -1;
 			return $userInfo['isActive'] ? 1 : -2;
 		} else {
 			self::logInvalidAttemptFromIP($accid);
@@ -100,13 +102,15 @@ class GeneratePass
 
 		if(self::tooManyAttemptsFromIP()) return -1;
 
-		$query = $db->prepare("SELECT accountID, salt, password, isActive, gjp2 FROM accounts WHERE accountID = :accid");
+		$query = $db->prepare("SELECT userName, accountID, salt, password, isActive, gjp2 FROM accounts WHERE accountID = :accid");
 		$query->execute([':accid' => $accid]);
 		if($query->rowCount() == 0) return 0;
 		
 		$result = $query->fetch();
 		if(password_verify($pass, $result["password"])){
 			if(!$result["gjp2"]) self::assignGJP2($accid, $pass);
+			$checkBan = $gs->getPersonBan($accid, $gs->getUserID($accid, $result['userName']), 4);
+			if($checkBan) return -1;
 			self::assignModIPs($accid, $gs->getIP());
 			return $result['isActive'] ? 1 : -2;
 		} else {
@@ -114,8 +118,8 @@ class GeneratePass
 			self::logInvalidAttemptFromIP($accid);
 			return 0;
 		}
-
 	}
+
 	public static function isValidUsrname($userName, $pass){
 		include dirname(__FILE__)."/connection.php";
 		$query = $db->prepare("SELECT accountID FROM accounts WHERE userName LIKE :userName");
@@ -126,6 +130,22 @@ class GeneratePass
 		$result = $query->fetch();
 		$accID = $result["accountID"];
 		return self::isValid($accID, $pass);
+	}
+
+	public static function isValidToken($auth) {
+		include dirname(__FILE__)."/connection.php";
+		$gs = new mainLib();
+		if(self::tooManyAttemptsFromIP() || empty(trim($auth))) return '-3';
+		$query = $db->prepare("SELECT userName, accountID, isActive FROM accounts WHERE auth = :id");
+		$query->execute([':id' => $auth]);
+		$fetch = $query->fetch();
+		if(!$fetch) {
+			self::logInvalidAttemptFromIP(0);
+			return '-4';
+		} else {
+			if(!$fetch['isActive']) return '-2';
+			return ['accountID' => $fetch['accountID'], 'userID' => $gs->getUserID($fetch['accountID'], $fetch['userName']), 'userName' => $fetch['userName'], 'color' => $gs->getAccountCommentColor($fetch["accountID"])];
+		}
 	}
 }
 ?>

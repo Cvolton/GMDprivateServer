@@ -16,7 +16,25 @@ if(isset($_GET["page"]) AND is_numeric($_GET["page"]) AND $_GET["page"] > 0){
 	$actualpage = 1;
 }
 $time = time() - 86400;
-$query = $db->prepare("SELECT users.extID, SUM(actions.value) AS stars, users.userName FROM actions INNER JOIN users ON actions.account = users.userID WHERE type = '9' AND timestamp > :time AND users.isBanned = 0 AND actions.value > 0 GROUP BY (stars) DESC ORDER BY stars DESC LIMIT 10 OFFSET $page");
+$bans = $gs->getAllBansOfBanType(0);
+$extIDs = $userIDs = $bannedIPs = [];
+foreach($bans AS &$ban) {
+	switch($ban['personType']) {
+		case 0:
+			$extIDs[] = $ban['person'];
+			break;
+		case 1:
+			$userIDs[] = $ban['person'];
+			break;
+		case 2:
+			$bannedIPs[] = $gs->IPForBan($ban['person'], true);
+			break;
+	}
+}
+$extIDsString = "'".implode("','", $extIDs)."'";
+$userIDsString = "'".implode("','", $userIDs)."'";
+$bannedIPsString = implode("|", $bannedIPs);
+$query = $db->prepare("SELECT users.extID, SUM(actions.value) AS stars, users.userName FROM actions INNER JOIN users ON actions.account = users.userID WHERE type = '9' AND timestamp > :time AND (users.extID NOT IN (".$extIDsString.") AND users.userID NOT IN (".$userIDsString.") AND users.IP NOT REGEXP '".$bannedIPsString."') AND actions.value > 0 GROUP BY (stars) DESC ORDER BY stars DESC LIMIT 10 OFFSET $page");
 $query->execute([':time' => $time]);
 $result = $query->fetchAll();
 $x = $page + 1;

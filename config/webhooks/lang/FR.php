@@ -93,6 +93,15 @@ $webhookLang['playerBanCommentDesc'] = '%1$s a interdit à %2$s de faire des com
 $webhookLang['playerBanCommentDescDM'] = '%1$s vous a interdit de faire des commentaires';
 $webhookLang['playerUnbanCommentDesc'] = '%1$s a levé l\'interdiction de %2$s de faire des commentaires !';
 $webhookLang['playerUnbanCommentDescDM'] = '%1$s a levé votre interdiction de faire des commentaires !';
+$webhookLang['playerBanAccountDesc'] = '%1$s banned %2$s\'s account!';
+$webhookLang['playerBanAccountDescDM'] = '%1$s banned your account.';
+$webhookLang['playerUnbanAccountDesc'] = '%1$s unbanned %2$s\'s account!';
+$webhookLang['playerUnbanAccountDescDM'] = '%1$s unbanned your account!';
+$webhookLang['playerExpiresTitle'] = 'Expires';
+$webhookLang['playerTypeTitle'] = 'Person type';
+$webhookLang['playerTypeName0'] = 'Account ID';
+$webhookLang['playerTypeName1'] = 'User ID';
+$webhookLang['playerTypeName2'] = 'IP-address';
 
 $webhookLang['dailyTitle'] = 'Nouveau niveau journalier !';
 $webhookLang['dailyTitleDM'] = 'Votre niveau a été désigné comme niveau du jour !';

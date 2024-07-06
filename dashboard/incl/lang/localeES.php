@@ -383,6 +383,19 @@ $string["sfxAddNameFieldPlaceholder"] = "Nombre del efecto";
 $string['sfxs'] = 'Efectos de sonidos';
 $string['sfxID'] = 'ID del efecto';
 $string['manageSFX'] = 'Administrar efectos de sonido';
+
+$string['featureLevel'] = 'Feature level';
+
+$string['banList'] = 'Banned people list';
+$string['expires'] = 'Expires';
+$string['unbanPerson'] = 'Unban';
+$string['IP'] = 'IP-address';
+$string['noBanInPast'] = 'You can\'t ban until past!';
+$string['banSuccess'] = 'You successfully banned <b>%1$s</b> until <b>%3$s</b> in «<b>%2$s</b>»!';
+$string['person'] = 'Person';
+$string['youAreBanned'] = 'You were banned until <b>%2$s</b> for reason:<br><b>%1$s</b>';
+$string['banChange'] = 'Change';
+$string['system'] = 'System';
 // REUPLOAD
 $string["reuploadBTN"] = "Subir";
 $string["errorGeneric"] = "¡Ha ocurrido un error!";
@@ -480,7 +493,7 @@ $string["stats"] = "Estadísticas";
 $string["suggestFeatured"] = "¿Featured?";
 $string["whoAdded"] = "¿Quién lo otorgó?";
 //modActionsList
-$string["banDesc"] = "Banea (o desbanea) un usuario del top";
+$string["banDesc"] = "Here you can ban a player!";
 $string["playerTop"] = 'Top de jugadores';
 $string["creatorTop"] = 'Top de creadores';
 $string["levelUploading"] = 'Subir niveles';
@@ -563,6 +576,7 @@ $string["modAction24"] = "Usuario reasignado";
 $string["modAction25"] = "Misión creada";
 $string["modAction26"] = "Nombre/contraseña de usuario cambiada";
 $string["modAction27"] = "Efecto de sonido cambiado";
+$string["modAction28"] = "Banned person";
 $string["modAction30"] = "Lista rateada";
 $string["modAction31"] = "Lista enviada";
 $string["modAction32"] = "Lista featured";

@@ -93,6 +93,15 @@ $webhookLang['playerBanCommentDesc'] = '%1$s заблокировал(а) %2$s �
 $webhookLang['playerBanCommentDescDM'] = '%1$s заблокировал(а) вам возможность комментирования.';
 $webhookLang['playerUnbanCommentDesc'] = '%1$s разблокировал(а) %2$s возможность комментирования!';
 $webhookLang['playerUnbanCommentDescDM'] = '%1$s разблокировал(а) вам возможность комментирования!';
+$webhookLang['playerBanAccountDesc'] = '%1$s заблокировал(а) %2$s аккаунт!';
+$webhookLang['playerBanAccountDescDM'] = '%1$s заблокировал(а) вам аккаунт.';
+$webhookLang['playerUnbanAccountDesc'] = '%1$s разблокировал(а) %2$s аккаунт!';
+$webhookLang['playerUnbanAccountDescDM'] = '%1$s разблокировал(а) вам аккаунт!';
+$webhookLang['playerExpiresTitle'] = 'Истекает';
+$webhookLang['playerTypeTitle'] = 'Тип пользователя';
+$webhookLang['playerTypeName0'] = 'ID аккаунта';
+$webhookLang['playerTypeName1'] = 'ID игрока';
+$webhookLang['playerTypeName2'] = 'IP адрес';
 
 $webhookLang['dailyTitle'] = 'Новый ежедневный уровень!';
 $webhookLang['dailyTitleDM'] = 'Ваш уровень — ежедневный!';

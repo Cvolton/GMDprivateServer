@@ -50,7 +50,7 @@ foreach($result as &$action) {
 	}
 	$ac = '<p class="profilepic">'.$counts["actionCount"].' <i class="fa-solid fa-circle-play"></i></p>';
     $lr = '<p class="profilepic">'.$counts["levelsRated"].' <i class="fa-regular fa-star"></i></p>';
-	$stats = $dl->createProfileStats($action['stars'], $action['moons'], $action['diamonds'], $action['coins'], $action['userCoins'], $action['demons'], $action['creatorPoints'], $action['isCreatorBanned'], false).$ac.$lr;
+	$stats = $dl->createProfileStats($action['stars'], $action['moons'], $action['diamonds'], $action['coins'], $action['userCoins'], $action['demons'], $action['creatorPoints'], 0, false).$ac.$lr;
 	$registerDate = $dl->convertToDate($action["registerDate"], true);
 	$members .= '<div style="width: 100%;display: flex;flex-wrap: wrap;justify-content: center;">
 			<div class="profile"><div style="display: flex;width: 100%;justify-content: space-between;margin-bottom: 7px;align-items: center;"><button style="display:contents;cursor:pointer" type="button" onclick="a(\'profile/'.$action["userName"].'\', true, true, \'GET\')"><div class="acclistdiv">

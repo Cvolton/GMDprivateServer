@@ -13,14 +13,12 @@ $me = !empty($_POST["accountID"]) ? GJPCheck::getAccountIDOrDie() : 0;
 $query = "SELECT count(*) FROM blocks WHERE (person1 = :extid AND person2 = :me) OR (person2 = :extid AND person1 = :me)";
 $query = $db->prepare($query);
 $query->execute([':extid' => $extid, ':me' => $me]);
-if($query->fetchColumn() > 0)
-	exit("-1");
+if($query->fetchColumn() > 0) exit("-1");
 
 $query = "SELECT * FROM users WHERE extID = :extid";
 $query = $db->prepare($query);
 $query->execute([':extid' => $extid]);
-if($query->rowCount() == 0)
-	exit("-1");
+if($query->rowCount() == 0) exit("-1");
 
 $user = $query->fetch();
 //placeholders
@@ -33,15 +31,13 @@ $query->execute();
                   SELECT @rownum := @rownum + 1 AS rank, extID
                   FROM users WHERE isBanned = '0' AND gameVersion > 19 AND stars > 25 ORDER BY stars DESC
                   ) as result WHERE extID=:extid";*/
-$f = "SELECT count(*) FROM users WHERE stars > :stars AND isBanned = 0"; //I can do this, since I already know the stars amount beforehand
+$f = "SELECT count(*) FROM users WHERE stars > :stars"; //I can do this, since I already know the stars amount beforehand
 $query = $db->prepare($f);
 $query->execute([':stars' => $user["stars"]]);
-if($query->rowCount() > 0) {
-	$rank = $query->fetchColumn() + 1;
-} else {
-	$rank = 0;
-}
-if($user['isBanned'] != 0) $rank = 0;
+if($query->rowCount() > 0) $rank = $query->fetchColumn() + 1;
+else $rank = 0;
+$isBanned = $gs->getPersonBan($user['extID'], $user['userID'], 0, $user['IP']);
+if($isBanned) $rank = 0;
 //var_dump($leaderboard);
 	//accinfo
 		$query = "SELECT youtubeurl,twitter,twitch, frS, mS, cS FROM accounts WHERE accountID = :extID";

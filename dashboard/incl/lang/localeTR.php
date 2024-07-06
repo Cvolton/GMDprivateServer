@@ -384,6 +384,19 @@ $string['sfxs'] = 'SFX';
 $string['sfxID'] = 'SFX ID';
 $string['manageSFX'] = "SFX'leri yönet";
 
+$string['featureLevel'] = 'Feature level';
+
+$string['banList'] = 'Banned people list';
+$string['expires'] = 'Expires';
+$string['unbanPerson'] = 'Unban';
+$string['IP'] = 'IP-address';
+$string['noBanInPast'] = 'You can\'t ban until past!';
+$string['banSuccess'] = 'You successfully banned <b>%1$s</b> until <b>%3$s</b> in «<b>%2$s</b>»!';
+$string['person'] = 'Person';
+$string['youAreBanned'] = 'You were banned until <b>%2$s</b> for reason:<br><b>%1$s</b>';
+$string['banChange'] = 'Change';
+$string['system'] = 'System';
+
 /*
 	REUPLOAD
 */
@@ -487,7 +500,7 @@ $string["stats"] = "İstatistik";
 $string["suggestFeatured"] = "Tavsiye et?";
 $string["whoAdded"] = "Kim ekledi?";
 //modActionsList
-$string["banDesc"] = "Burada bir kullanıcıyı sıralamadan yasaklayabilirsin!";
+$string["banDesc"] = "Here you can ban a player!";
 $string["playerTop"] = 'En iyi oyuncular';
 $string["creatorTop"] = 'En iyi yaratıcılar';
 $string["levelUploading"] = 'Bölümler yükleniyor';
@@ -570,6 +583,7 @@ $string["modAction24"] = "(24)Oyuncuyu yeniden atadı";
 $string["modAction25"] = "(25)Quest oluşturdu";
 $string["modAction26"] = "(26)Kullanıcı adı/şifre değiştirdi";
 $string["modAction27"] = "(27)SFX değiştirildi";
+$string["modAction28"] = "Banned person";
 $string["modAction30"] = "(30)Derecelendirilen liste";
 $string["modAction31"] = "(31)Gönderilen liste";
 $string["modAction32"] = "(32)Liste onayladı/onaylamadı";

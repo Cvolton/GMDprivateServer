@@ -133,6 +133,26 @@ foreach($result as &$action){
 			if($value2 == 'Password') $value3 = $dl->getLocalizedString("password");
 			else $value3 = $dl->getLocalizedString("username");
 			break;
+		case 28:
+			switch($value3) {
+				case 0:
+					$username28 = $gs->getAccountName($action["value"]);
+					$value = '<button href="profile/'.$username28.'" class="accbtn" onclick="a(\'profile/'.$username28.'\', true, true)">'.$username28.'</button>';
+					break;
+				case 1:
+					$value = $gs->getUserName($value);
+					break;
+				case 2: 
+					$value = $dl->getLocalizedString('IP');
+					break;
+			}
+			$value2 = $action['value2'] = base64_decode($action['value2']);
+			$banTextArray = ['unban', 'isBan', 'banChange'];
+			$banColorArray = ['BBFFBB', 'FFBBBB', 'FFEEBB'];
+			if(empty($value2)) $value2 = "<i>".$dl->getLocalizedString('noReason')."</i>";
+			$value2 .= " <text>|</text> <span style='color: #".$banColorArray[$value6]."'>".$dl->getLocalizedString($banTextArray[$value6]).'</span>';
+			$value3 = date("d.m.Y G:i", $value5);
+			break;
 		case 30:
 		case 31:
 			$value = $gs->getListName($action["value3"]).', '.$action['value3'];
@@ -153,8 +173,8 @@ foreach($result as &$action){
 			$value2 = $gs->getListName($action["value3"]);
 			break;
 	}
-	if(mb_strlen($action["value"]) > 18) $value = "<details><summary>".$dl->getLocalizedString("spoiler")."</summary>$value</details>";
-  	if(mb_strlen($action["value2"]) > 18) $value2 = "<details><summary>".$dl->getLocalizedString("spoiler")."</summary>$value2</details>";
+	if(mb_strlen($action["value"]) > 18) $value = "<details><summary class='modactionsspoiler'>".$dl->getLocalizedString("spoiler")."</summary>$value</details>";
+  	if(mb_strlen($action["value2"]) > 18) $value2 = "<details><summary class='modactionsspoiler'>".$dl->getLocalizedString("spoiler")."</summary>$value2</details>";
 	$time = $dl->convertToDate($action["timestamp"], true);
 	$v1 = '<div class="mavdiv"><div class="profilepic"><i class="fa-solid fa-1" style="background: #29282c; padding: 5px 11.5px; border-radius: 500px;"></i> '.$value.'</div></div>';
 	$v2 = '<div class="mavdiv"><div class="profilepic"><i class="fa-solid fa-2" style="background: #29282c; padding: 5px 9.5px; border-radius: 500px;"></i> '.$value2.'</div></div>';
@@ -185,40 +205,42 @@ $pagel = '<div class="form new-form">
 	<div class="field" style="display:flex">
 		<select id="sel1" style="border-top-right-radius: 0;margin:0;border-bottom-right-radius: 0;" name="type" value="'.$_GET["type"].'" placeholder="'.$dl->getLocalizedString("search").'">
 		    <option value="0">'.$dl->getLocalizedString("everyActions").'</option>
-			<option value="1">'.$dl->getLocalizedString("modAction1").'</option>
-			<option value="2">'.$dl->getLocalizedString("modAction2").'</option>
-			<option value="3">'.$dl->getLocalizedString("modAction3").'</option>
-			<option value="4">'.$dl->getLocalizedString("modAction4").'</option>
-			<option value="5">'.$dl->getLocalizedString("modAction5").'</option>
-			<option value="6">'.$dl->getLocalizedString("modAction6").'</option>
-			<option value="7">'.$dl->getLocalizedString("modAction7").'</option>
-			<option value="8">'.$dl->getLocalizedString("modAction8").'</option>
-			<option value="9">'.$dl->getLocalizedString("modAction9").'</option>
-			<option value="10">'.$dl->getLocalizedString("modAction10").'</option>
-			<option value="11">'.$dl->getLocalizedString("modAction11").'</option>
-			<option value="12">'.$dl->getLocalizedString("modAction12").'</option>
-			<option value="13">'.$dl->getLocalizedString("modAction13").'</option>
-			<option value="14">'.$dl->getLocalizedString("modAction14").'</option>
-			<option value="15">'.$dl->getLocalizedString("modAction15").'</option>
-			<option value="16">'.$dl->getLocalizedString("modAction16").'</option>
-			<option value="17">'.$dl->getLocalizedString("modAction17").'</option>
-			<option value="18">'.$dl->getLocalizedString("modAction18").'</option>
-			<option value="19">'.$dl->getLocalizedString("modAction19").'</option>
-			<option value="20">'.$dl->getLocalizedString("modAction20").'</option>
-            <option value="21">'.$dl->getLocalizedString("modAction21").'</option>
-            <option value="22">'.$dl->getLocalizedString("modAction22").'</option>
-            <option value="23">'.$dl->getLocalizedString("modAction23").'</option>
-            <option value="24">'.$dl->getLocalizedString("modAction24").'</option>
-			<option value="25">'.$dl->getLocalizedString("modAction25").'</option>
-			<option value="26">'.$dl->getLocalizedString("modAction26").'</option>
-			<option value="30">'.$dl->getLocalizedString("modAction30").'</option>
-			<option value="31">'.$dl->getLocalizedString("modAction31").'</option>
-			<option value="32">'.$dl->getLocalizedString("modAction32").'</option>
-			<option value="33">'.$dl->getLocalizedString("modAction33").'</option>
-			<option value="34">'.$dl->getLocalizedString("modAction34").'</option>
-			<option value="35">'.$dl->getLocalizedString("modAction35").'</option>
-			<option value="36">'.$dl->getLocalizedString("modAction36").'</option>
-			<option value="37">'.$dl->getLocalizedString("modAction37").'</option>
+			<option value="1">'.$dl->getLocalizedString("modAction1").' (1)</option>
+			<option value="2">'.$dl->getLocalizedString("modAction2").' (2)</option>
+			<option value="3">'.$dl->getLocalizedString("modAction3").' (3)</option>
+			<option value="4">'.$dl->getLocalizedString("modAction4").' (4)</option>
+			<option value="5">'.$dl->getLocalizedString("modAction5").' (5)</option>
+			<option value="6">'.$dl->getLocalizedString("modAction6").' (6)</option>
+			<option value="7">'.$dl->getLocalizedString("modAction7").' (7)</option>
+			<option value="8">'.$dl->getLocalizedString("modAction8").' (8)</option>
+			<option value="9">'.$dl->getLocalizedString("modAction9").' (9)</option>
+			<option value="10">'.$dl->getLocalizedString("modAction10").' (10)</option>
+			<option value="11">'.$dl->getLocalizedString("modAction11").' (11)</option>
+			<option value="12">'.$dl->getLocalizedString("modAction12").' (12)</option>
+			<option value="13">'.$dl->getLocalizedString("modAction13").' (13)</option>
+			<option value="14">'.$dl->getLocalizedString("modAction14").' (14)</option>
+			<option value="15">'.$dl->getLocalizedString("modAction15").' (15)</option>
+			<option value="16">'.$dl->getLocalizedString("modAction16").' (16)</option>
+			<option value="17">'.$dl->getLocalizedString("modAction17").' (17)</option>
+			<option value="18">'.$dl->getLocalizedString("modAction18").' (18)</option>
+			<option value="19">'.$dl->getLocalizedString("modAction19").' (19)</option>
+			<option value="20">'.$dl->getLocalizedString("modAction20").' (20)</option>
+            <option value="21">'.$dl->getLocalizedString("modAction21").' (21)</option>
+            <option value="22">'.$dl->getLocalizedString("modAction22").' (22)</option>
+            <option value="23">'.$dl->getLocalizedString("modAction23").' (23)</option>
+            <option value="24">'.$dl->getLocalizedString("modAction24").' (24)</option>
+			<option value="25">'.$dl->getLocalizedString("modAction25").' (25)</option>
+			<option value="27">'.$dl->getLocalizedString("modAction26").' (26)</option>
+			<option value="28">'.$dl->getLocalizedString("modAction27").' (27)</option>
+			<option value="26">'.$dl->getLocalizedString("modAction28").' (28)</option>
+			<option value="30">'.$dl->getLocalizedString("modAction30").' (30)</option>
+			<option value="31">'.$dl->getLocalizedString("modAction31").' (31)</option>
+			<option value="32">'.$dl->getLocalizedString("modAction32").' (32)</option>
+			<option value="33">'.$dl->getLocalizedString("modAction33").' (33)</option>
+			<option value="34">'.$dl->getLocalizedString("modAction34").' (34)</option>
+			<option value="35">'.$dl->getLocalizedString("modAction35").' (35)</option>
+			<option value="36">'.$dl->getLocalizedString("modAction36").' (36)</option>
+			<option value="37">'.$dl->getLocalizedString("modAction37").' (37)</option>
 		</select>
 		<select id="sel2" style="border-radius: 0;margin:0;width:35%" name="who" value="'.$_GET["who"].'" placeholder="'.$dl->getLocalizedString("search").'">
 			<option value="0">'.$dl->getLocalizedString("everyMod").'</option>

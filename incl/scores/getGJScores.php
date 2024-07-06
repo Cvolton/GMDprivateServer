@@ -13,45 +13,92 @@ $stars = 0;
 $count = 0;
 $xi = 0;
 $lbstring = "";
-$date = date("d-m");
-
-if(!empty($_POST["accountID"])){
+if(!empty($_POST["accountID"])) {
 	$accountID = GJPCheck::getAccountIDOrDie();
-}else{
+} else {
 	$accountID = ExploitPatch::remove($_POST["udid"]);
-	if(is_numeric($accountID)){
-		exit("-1");
-	}
+	if(is_numeric($accountID)) exit("-1");
 }
 
 $type = ExploitPatch::remove($_POST["type"]);
 if($type == "top" OR $type == "creators" OR $type == "relative"){
-	if($type == "top"){
-		$query = $db->prepare("SELECT * FROM users WHERE isBanned = '0' AND stars >= :stars ORDER BY stars DESC LIMIT 100");
+	if($type == "top") {
+		$bans = $gs->getAllBansOfBanType(0);
+		$extIDs = $userIDs = $bannedIPs = [];
+		foreach($bans AS &$ban) {
+			switch($ban['personType']) {
+				case 0:
+					$extIDs[] = $ban['person'];
+					break;
+				case 1:
+					$userIDs[] = $ban['person'];
+					break;
+				case 2:
+					$bannedIPs[] = $gs->IPForBan($ban['person'], true);
+					break;
+			}
+		}
+		$extIDsString = "'".implode("','", $extIDs)."'";
+		$userIDsString = "'".implode("','", $userIDs)."'";
+		$bannedIPsString = implode("|", $bannedIPs);
+		$query = $db->prepare("SELECT * FROM users WHERE (extID NOT IN (".$extIDsString.") AND userID NOT IN (".$userIDsString.") AND IP NOT REGEXP '".$bannedIPsString."') AND stars > :stars ORDER BY stars DESC LIMIT 100");
 		$query->execute([':stars' => $leaderboardMinStars]);
 	}
-	if($type == "creators"){
-		$query = $db->prepare("SELECT * FROM users WHERE isCreatorBanned = '0' AND creatorPoints > 0 ORDER BY creatorPoints DESC LIMIT 100");
+	if($type == "creators") {
+		$bans = $gs->getAllBansOfBanType(1);
+		$extIDs = $userIDs = $bannedIPs = [];
+		foreach($bans AS &$ban) {
+			switch($ban['personType']) {
+				case 0:
+					$extIDs[] = $ban['person'];
+					break;
+				case 1:
+					$userIDs[] = $ban['person'];
+					break;
+				case 2:
+					$bannedIPs[] = $gs->IPForBan($ban['person'], true);
+					break;
+			}
+		}
+		$extIDsString = "'".implode("','", $extIDs)."'";
+		$userIDsString = "'".implode("','", $userIDs)."'";
+		$bannedIPsString = implode("|", $bannedIPs);
+		$query = $db->prepare("SELECT * FROM users WHERE (extID NOT IN (".$extIDsString.") AND userID NOT IN (".$userIDsString.") AND IP NOT REGEXP '".$bannedIPsString."') AND creatorPoints > 0 ORDER BY creatorPoints DESC LIMIT 100");
 		$query->execute();
 	}
-	if($type == "relative"){
+	if($type == "relative") {
+		$bans = $gs->getAllBansOfBanType(0);
+		$extIDs = $userIDs = $bannedIPs = [];
+		foreach($bans AS &$ban) {
+			switch($ban['personType']) {
+				case 0:
+					$extIDs[] = $ban['person'];
+					break;
+				case 1:
+					$userIDs[] = $ban['person'];
+					break;
+				case 2:
+					$bannedIPs[] = $gs->IPForBan($ban['person'], true);
+					break;
+			}
+		}
+		$extIDsString = "'".implode("','", $extIDs)."'";
+		$userIDsString = "'".implode("','", $userIDs)."'";
+		$bannedIPsString = implode("|", $bannedIPs);
 		$query = "SELECT * FROM users WHERE extID = :accountID";
 		$query = $db->prepare($query);
 		$query->execute([':accountID' => $accountID]);
 		$result = $query->fetchAll();
 		$user = $result[0];
 		$stars = $user["stars"];
-		if($_POST["count"]){
-			$count = ExploitPatch::remove($_POST["count"]);
-		}else{
-			$count = 50;
-		}
+		if($_POST["count"]) $count = ExploitPatch::remove($_POST["count"]);
+		else $count = 50;
 		$count = floor($count / 2);
 		$query = $db->prepare("SELECT	A.* FROM	(
 			(
 				SELECT	*	FROM users
 				WHERE stars <= :stars
-				AND isBanned = 0
+				AND (extID NOT IN (".$extIDsString.") AND userID NOT IN (".$userIDsString.") AND IP NOT REGEXP '".$bannedIPsString."')
 				ORDER BY stars DESC
 				LIMIT $count
 			)
@@ -59,7 +106,7 @@ if($type == "top" OR $type == "creators" OR $type == "relative"){
 			(
 				SELECT * FROM users
 				WHERE stars >= :stars
-				AND isBanned = 0
+				AND (extID NOT IN (".$extIDsString.") AND userID NOT IN (".$userIDsString.") AND IP NOT REGEXP '".$bannedIPsString."')
 				ORDER BY stars ASC
 				LIMIT $count
 			)
@@ -68,7 +115,7 @@ if($type == "top" OR $type == "creators" OR $type == "relative"){
 		$query->execute([':stars' => $stars]);
 	}
 	$result = $query->fetchAll();
-	if($type == "relative"){
+	if($type == "relative") {
 		$user = $result[0];
 		$extid = $user["extID"];
 		$e = "SET @rownum := 0;";
@@ -109,7 +156,7 @@ if($type == "friends"){
 	$query = $db->prepare($query);
 	$query->execute([':accountID' => $accountID]);
 	$result = $query->fetchAll();
-	foreach($result as &$user){
+	foreach($result as &$user) {
 		$xi++;
 		$user["userName"] = $gs->makeClanUsername($user);
 		$extid = is_numeric($user['extID']) ? $user['extID'] : 0;

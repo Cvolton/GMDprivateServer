@@ -37,6 +37,20 @@ if(isset($_POST["userName"]) AND isset($_POST["password"])) {
             </div>');
 			die();
         }
+		if($valid == -1) {
+			$accountID = $gs->getAccountIDFromName($userName);
+			$userID = $gs->getUserID($accountID, $userName);
+			$checkBan = $gs->getPersonBan($accountID, $userID, 4);
+			if($checkBan) {
+				exit($dl->printSong('<div class="form">
+					<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
+					<form class="form__inner" action="" method="post">
+						<p>'.sprintf($dl->getLocalizedString("youAreBanned"), htmlspecialchars(base64_decode($checkBan['reason'])), date("d.m.Y G:i", $checkBan['expires'])).'</p>
+						<button type="button" onclick="a(\'\', true, false, \'GET\')" class="btn btn-primary">'.$dl->getLocalizedString("dashboard").'</button>
+					</form>
+				</div>'));
+			}
+		}
 		$dl->printSong('<div class="form">
 		<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 		<form class="form__inner" action="" method="post">

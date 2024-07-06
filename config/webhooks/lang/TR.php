@@ -93,6 +93,15 @@ $webhookLang['playerBanCommentDesc'] = '%1$s %2$s adlı oyuncunun yorum yapma ye
 $webhookLang['playerBanCommentDescDM'] = '%1$s yorum yapma yeteneğinizi yasakladı.';
 $webhookLang['playerUnbanCommentDesc'] = '%1$s %2$s adlı oyunucunun yorum yapma yeteneğindeki yasağı kaldırdı!';
 $webhookLang['playerUnbanCommentDescDM'] = '%1$s yorum yapma yeteneğindeki yasağı kaldırdı!';
+$webhookLang['playerBanAccountDesc'] = '%1$s banned %2$s\'s account!';
+$webhookLang['playerBanAccountDescDM'] = '%1$s banned your account.';
+$webhookLang['playerUnbanAccountDesc'] = '%1$s unbanned %2$s\'s account!';
+$webhookLang['playerUnbanAccountDescDM'] = '%1$s unbanned your account!';
+$webhookLang['playerExpiresTitle'] = 'Expires';
+$webhookLang['playerTypeTitle'] = 'Person type';
+$webhookLang['playerTypeName0'] = 'Account ID';
+$webhookLang['playerTypeName1'] = 'User ID';
+$webhookLang['playerTypeName2'] = 'IP-address';
 
 $webhookLang['dailyTitle'] = 'Yeni günlük bölüm!';
 $webhookLang['dailyTitleDM'] = 'Bölümün günlük bölüm oldu!';

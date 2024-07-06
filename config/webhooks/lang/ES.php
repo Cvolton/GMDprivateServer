@@ -93,6 +93,15 @@ $webhookLang['playerBanCommentDesc'] = '%1$s ha baneado a %2$s de los comentario
 $webhookLang['playerBanCommentDescDM'] = '%1$s te ha baneado de los comentarios...';
 $webhookLang['playerUnbanCommentDesc'] = '%1$s ha desbaneado a %2$s de los comentarios';
 $webhookLang['playerUnbanCommentDescDM'] = '¡%1$s te ha desbaneado de los comentarios!';
+$webhookLang['playerBanAccountDesc'] = '%1$s banned %2$s\'s account!';
+$webhookLang['playerBanAccountDescDM'] = '%1$s banned your account.';
+$webhookLang['playerUnbanAccountDesc'] = '%1$s unbanned %2$s\'s account!';
+$webhookLang['playerUnbanAccountDescDM'] = '%1$s unbanned your account!';
+$webhookLang['playerExpiresTitle'] = 'Expires';
+$webhookLang['playerTypeTitle'] = 'Person type';
+$webhookLang['playerTypeName0'] = 'Account ID';
+$webhookLang['playerTypeName1'] = 'User ID';
+$webhookLang['playerTypeName2'] = 'IP-address';
 
 $webhookLang['dailyTitle'] = 'Nuevo Daily';
 $webhookLang['dailyTitleDM'] = '¡Tu nivel es Daily!';

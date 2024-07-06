@@ -62,6 +62,14 @@ if(isset($_SESSION["accountID"]) AND $_SESSION["accountID"] != 0){
     			</div>'));
 		}
 		if(!empty($_POST["subject"]) AND !empty($_POST["msg"])) {
+			$checkBan = $gs->getPersonBan($accid, $gs->getUserID($accid, $gs->getAccountName($accid)), 3);
+			if($checkBan) exit($dl->printSong('<div class="form">
+				<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
+				<form class="form__inner" action="" method="post">
+				<p>'.sprintf($dl->getLocalizedString("youAreBanned"), htmlspecialchars(base64_decode($checkBan['reason'])), date("d.m.Y G:i", $checkBan['expires'])).'</p>
+				<button type="button" onclick="a(\'\', true, false, \'GET\')" class="btn btn-primary">'.$dl->getLocalizedString("dashboard").'</button>
+				</form>
+			</div>'));
 			$sendsub = ExploitPatch::url_base64_encode(strip_tags(ExploitPatch::rucharclean($_POST["subject"])));
           	$query = $db->prepare("SELECT timestamp FROM messages WHERE accID=:accid AND toAccountID=:toaccid ORDER BY timestamp DESC LIMIT 1");
           	$query->execute([':accid' => $accid, ':toaccid' => $notyou]);

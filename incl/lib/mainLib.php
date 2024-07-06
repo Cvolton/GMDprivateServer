@@ -784,7 +784,7 @@ class mainLib {
 		$query = $db->prepare("SELECT starFeatured FROM levels WHERE levelID=:levelID ORDER BY starFeatured DESC LIMIT 1");
 		$query->execute([':levelID' => $levelID]);
 		$featured = $query->fetchColumn();
-		if (!$featured) {
+		if(!$featured) {
 			$query = $db->prepare("SELECT starFeatured FROM levels ORDER BY starFeatured DESC LIMIT 1");
 			$query->execute();
 			$featured = $query->fetchColumn() + 1;
@@ -802,7 +802,7 @@ class mainLib {
 				$epic = $state - 1;
 				break;
 		}
-		$query = $db->prepare("UPDATE levels SET starFeatured=:feature, starEpic=:epic, rateDate=:now WHERE levelID=:levelID");
+		$query = $db->prepare("UPDATE levels SET starFeatured = :feature, starEpic = :epic, rateDate = :now WHERE levelID = :levelID");
 		$query->execute([':feature' => $feature, ':epic' => $epic, ':levelID' => $levelID, ':now' => time()]);
 		$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('2', :value, :levelID, :timestamp, :id)");
 		$query->execute([':value' => $state, ':timestamp' => time(), ':id' => $accountID, ':levelID' => $levelID]);
@@ -1304,7 +1304,7 @@ class mainLib {
 	}
 	public function sendRateWebhook($modAccID, $levelID) {
 		include __DIR__."/connection.php";
-		if(!class_exists('ExploitPatch')) include __DIR__."/exploitPatch.php";
+		if(!class_exists('ExploitPatch')) include_once __DIR__."/exploitPatch.php";
 		include __DIR__."/../../config/dashboard.php";
 		include __DIR__."/../../config/discord.php";
 		if(!$webhooksEnabled OR !is_numeric($modAccID) OR !is_numeric($levelID) OR !in_array("rate", $webhooksToEnable)) return false;
@@ -1322,25 +1322,25 @@ class mainLib {
 		$creatorUsername = $this->getAccountName($creatorAccID);
 		$creatorHasDiscord = $this->hasDiscord($creatorAccID);
 		$creatorFormattedUsername = $creatorHasDiscord ? "<@".$creatorHasDiscord.">" : "**".$creatorUsername."**";
-                $isRated = $level['starStars'] != 0;
-                $difficulty = $this->getDifficulty($level['starDifficulty'], $level['starAuto'], $level['starDemon'], $level['starDemonDiff']);
-                $starsIcon = 'stars';
-                $diffIcon = 'na';
-                switch(true) {
-                    case ($level['starEpic'] > 0):
-                        $starsArray = ['', 'epic', 'legendary', 'mythic'];
-                        $starsIcon = $starsArray[$level['starEpic']];
-                        break;
-                    case ($level['starFeatured'] > 0):
-                        $starsIcon = 'featured';
-                        break;
-                }
-                $diffArray = ['n/a' => 'na', 'auto' => 'auto', 'easy' => 'easy', 'normal' => 'normal', 'hard' => 'hard', 'harder' => 'harder', 'insane' => 'insane', 'demon' => 'demon-hard', 'easy demon' => 'demon-easy', 'medium demon' => 'demon-medium', 'hard demon' => 'demon-hard', 'insane demon' => 'demon-insane', 'extreme demon' => 'demon-extreme'];
-                $diffIcon = $diffArray[strtolower($difficulty)] ?? 'na';
-                $originalDiffColorArray = ['na' => 'a9a9a9', 'auto' => 'f5c96b', 'easy' => '00e0ff', 'normal' => '00ff3a', 'hard' => 'ffb438', 'harder' => 'fc1f1f', 'insane' => 'f91ffc', 'demon-easy' => 'aa6bf5', 'demon-medium' => 'ac2974', 'demon-hard' => 'ff0000', 'demon-insane' => 'b31548', 'demon-extreme' => '8e0505'];
-                    $originalDiffColor = $originalDiffColor && empty($successColor);
-                    if($level['starStars'] != 0) {
-                        $setColor = empty($successColor) ? $originalDiffColorArray[$diffIcon] : $successColor;
+        $isRated = $level['starStars'] != 0;
+        $difficulty = $this->getDifficulty($level['starDifficulty'], $level['starAuto'], $level['starDemon'], $level['starDemonDiff']);
+        $starsIcon = 'stars';
+        $diffIcon = 'na';
+        switch(true) {
+            case ($level['starEpic'] > 0):
+                $starsArray = ['', 'epic', 'legendary', 'mythic'];
+                $starsIcon = $starsArray[$level['starEpic']];
+                break;
+            case ($level['starFeatured'] > 0):
+                $starsIcon = 'featured';
+                break;
+        }
+        $diffArray = ['n/a' => 'na', 'auto' => 'auto', 'easy' => 'easy', 'normal' => 'normal', 'hard' => 'hard', 'harder' => 'harder', 'insane' => 'insane', 'demon' => 'demon-hard', 'easy demon' => 'demon-easy', 'medium demon' => 'demon-medium', 'hard demon' => 'demon-hard', 'insane demon' => 'demon-insane', 'extreme demon' => 'demon-extreme'];
+        $diffIcon = $diffArray[strtolower($difficulty)] ?? 'na';
+        $originalDiffColorArray = ['na' => 'a9a9a9', 'auto' => 'f5c96b', 'easy' => '00e0ff', 'normal' => '00ff3a', 'hard' => 'ffb438', 'harder' => 'fc1f1f', 'insane' => 'f91ffc', 'demon-easy' => 'aa6bf5', 'demon-medium' => 'ac2974', 'demon-hard' => 'ff0000', 'demon-insane' => 'b31548', 'demon-extreme' => '8e0505'];
+        $originalDiffColor = $originalDiffColor && empty($successColor);
+        if($level['starStars'] != 0) {
+            $setColor = empty($successColor) ? $originalDiffColorArray[$diffIcon] : $successColor;
 			$setTitle = $this->webhookLanguage('rateSuccessTitle', $webhookLangArray);
 			$dmTitle = $this->webhookLanguage('rateSuccessTitleDM', $webhookLangArray);
 			$setDescription = sprintf($this->webhookLanguage('rateSuccessDesc', $webhookLangArray), $modFormattedUsername);
@@ -1473,16 +1473,16 @@ class mainLib {
 		$starsIcon = $starsArray[$featured] ?? 'stars';
 		$diffArray = ['n/a' => 'na', 'auto' => 'auto', 'easy' => 'easy', 'normal' => 'normal', 'hard' => 'hard', 'harder' => 'harder', 'insane' => 'insane', 'demon' => 'demon-hard', 'easy demon' => 'demon-easy', 'medium demon' => 'demon-medium', 'hard demon' => 'demon-hard', 'insane demon' => 'demon-insane', 'extreme demon' => 'demon-extreme'];
 		$diffIcon = $diffArray[strtolower($difficulty)] ?? 'na';
-                $originalDiffColorArray = ['na' => 'a9a9a9', 'auto' => 'f5c96b', 'easy' => '00e0ff', 'normal' => '00ff3a', 'hard' => 'ffb438', 'harder' => 'fc1f1f', 'insane' => 'f91ffc', 'demon-easy' => 'aa6bf5', 'demon-medium' => 'ac2974', 'demon-hard' => 'ff0000', 'demon-insane' => 'b31548', 'demon-extreme' => '8e0505'];
-                $originalDiffColor = $originalDiffColor && empty($successColor);
-                $setColor = empty($successColor) ? $originalDiffColorArray[$diffIcon] : $successColor;
+		$originalDiffColorArray = ['na' => 'a9a9a9', 'auto' => 'f5c96b', 'easy' => '00e0ff', 'normal' => '00ff3a', 'hard' => 'ffb438', 'harder' => 'fc1f1f', 'insane' => 'f91ffc', 'demon-easy' => 'aa6bf5', 'demon-medium' => 'ac2974', 'demon-hard' => 'ff0000', 'demon-insane' => 'b31548', 'demon-extreme' => '8e0505'];
+        $originalDiffColor = $originalDiffColor && empty($successColor);
+        $setColor = empty($successColor) ? $originalDiffColorArray[$diffIcon] : $successColor;
 		$setTitle = $this->webhookLanguage('suggestTitle', $webhookLangArray);
 		$setDescription = sprintf($this->webhookLanguage('suggestDesc', $webhookLangArray), $modFormattedUsername);
 		$stats = $downloadEmoji.' '.$level['downloads'].' | '.($level['likes'] - $level['dislikes'] >= 0 ? $likeEmoji.' '.abs($level['likes'] - $level['dislikes']) : $dislikeEmoji.' '.abs($level['likes'] - $level['dislikes']));
 		$levelField = [$this->webhookLanguage('levelTitle', $webhookLangArray), sprintf($this->webhookLanguage('levelDesc', $webhookLangArray), '**'.$level['levelName'].'**', $creatorFormattedUsername), true];
 		$IDField = [$this->webhookLanguage('levelIDTitle', $webhookLangArray), $level['levelID'], true];
 		if($stars == 1) $action = 0; elseif(($stars < 5 AND $stars != 0) AND !($stars > 9 AND $stars < 20)) $action = 1; else $action = 2;
-		$difficultyField = [$this->webhookLanguage('difficultyTitle', $webhookLangArray), sprintf($this->webhookLanguage('difficultyDesc' . ($level['levelLength'] == 5 ? 'Moon' : '') . $action, $webhookLangArray), $difficulty, $stars), true];
+		$difficultyField = [$this->webhookLanguage('difficultyTitle', $webhookLangArray), sprintf($this->webhookLanguage('difficultyDesc' . ($level['levelLength'] == 5 ? 'Moon' : '') . $action, $webhookLangArray), $difficulty, $level['starStars']), true];
 		$statsField = [$this->webhookLanguage('statsTitle', $webhookLangArray), $stats, true];
 		if($level['requestedStars'] == 1) $action = 0; elseif(($level['requestedStars'] < 5 AND $level['requestedStars'] != 0) AND !($level['requestedStars'] > 9 AND $level['requestedStars'] < 20)) $action = 1; else $action = 2;
 		$requestedField = $level['requestedStars'] > 0 ? [$this->webhookLanguage('requestedTitle', $webhookLangArray), sprintf($this->webhookLanguage('requestedDesc' . ($level['levelLength'] == 5 ? 'Moon' : '') . $action, $webhookLangArray), $level['requestedStars']), true] : [];
@@ -1622,27 +1622,40 @@ class mainLib {
 			$this->sendDiscordPM($recordHasDiscord, $json, true);
 		}
 	}
-	public function sendBanWebhook($modAccID, $playerAccID, $type) {
+	public function sendBanWebhook($banID) {
 		include __DIR__."/connection.php";
 		include __DIR__."/../../config/dashboard.php";
 		include __DIR__."/../../config/discord.php";
-		if(!$webhooksEnabled OR !is_numeric($modAccID) OR !is_numeric($playerAccID) OR !in_array("ban", $webhooksToEnable)) return false;
+		if(!$webhooksEnabled OR !is_numeric($banID) OR !in_array("ban", $webhooksToEnable)) return false;
 		include_once __DIR__."/../../config/webhooks/DiscordWebhook.php";
 		$webhookLangArray = $this->webhookStartLanguage($webhookLanguage);
 		$dw = new DiscordWebhook($banWebhook);
-		$user = $db->prepare('SELECT * FROM users WHERE extID = :ID');
-		$user->execute([':ID' => $playerAccID]);
-		$user = $user->fetch();
-		if(!$user) return false;
+		$ban = $this->getBanByID($banID);
+		$modAccID = $ban['modID'];
+		switch($ban['personType']) {
+			case 0:
+				$playerAccID = $ban['person'];
+				$user = $db->prepare('SELECT * FROM users WHERE extID = :ID');
+				$user->execute([':ID' => $playerAccID]);
+				$user = $user->fetch();
+				if(!$user) return false;
+				$playerUsername = $this->getAccountName($playerAccID);
+				$playerHasDiscord = $this->hasDiscord($playerAccID);
+				$playerFormattedUsername = $playerHasDiscord ? "<@".$playerHasDiscord.">" : "**".$playerUsername."**";
+				break;
+			case 1:
+				$playerFormattedUsername = "**".$this->getUserName($ban['person'])."**";
+				break;
+			case 2:
+				$playerFormattedUsername = "||**".$ban['person']."**||";
+				break;
+		}
 		$modUsername = $this->getAccountName($modAccID);
 		$modHasDiscord = $this->hasDiscord($modAccID);
 		$modFormattedUsername = $modHasDiscord ? "<@".$modHasDiscord.">" : "**".$modUsername."**";
-		$playerUsername = $this->getAccountName($playerAccID);
-		$playerHasDiscord = $this->hasDiscord($playerAccID);
-		$playerFormattedUsername = $playerHasDiscord ? "<@".$playerHasDiscord.">" : "**".$playerUsername."**";
-		switch($type) {
-			case 'isBanned':
-				if($user['isBanned']) {
+		switch($ban['banType']) {
+			case 0:
+				if($ban['isActive']) {
 					$setColor = $failColor;
 					$setTitle = $this->webhookLanguage('playerBanTitle', $webhookLangArray);
 					$dmTitle = $this->webhookLanguage('playerBanTitleDM', $webhookLangArray);
@@ -1660,8 +1673,8 @@ class mainLib {
 					$setFooter = sprintf($this->webhookLanguage('footer', $webhookLangArray), $gdps);
 				}
 				break;
-			case 'isCreatorBanned':
-				if($user['isCreatorBanned']) {
+			case 1:
+				if($ban['isActive']) {
 					$setColor = $failColor;
 					$setTitle = $this->webhookLanguage('playerBanTitle', $webhookLangArray);
 					$dmTitle = $this->webhookLanguage('playerBanTitleDM', $webhookLangArray);
@@ -1679,8 +1692,8 @@ class mainLib {
 					$setFooter = sprintf($this->webhookLanguage('footer', $webhookLangArray), $gdps);
 				}
 				break;
-			case 'isUploadBanned':
-				if($user['isUploadBanned']) {
+			case 2:
+				if($ban['isActive']) {
 					$setColor = $failColor;
 					$setTitle = $this->webhookLanguage('playerBanTitle', $webhookLangArray);
 					$dmTitle = $this->webhookLanguage('playerBanTitleDM', $webhookLangArray);
@@ -1698,8 +1711,8 @@ class mainLib {
 					$setFooter = sprintf($this->webhookLanguage('footer', $webhookLangArray), $gdps);
 				}
 				break;
-			case 'isCommentBanned':
-				if($user['isCommentBanned']) {
+			case 3:
+				if($ban['isActive']) {
 					$setColor = $failColor;
 					$setTitle = $this->webhookLanguage('playerBanTitle', $webhookLangArray);
 					$dmTitle = $this->webhookLanguage('playerBanTitleDM', $webhookLangArray);
@@ -1717,9 +1730,30 @@ class mainLib {
 					$setFooter = sprintf($this->webhookLanguage('footer', $webhookLangArray), $gdps);
 				}
 				break;
+			case 4:
+				if($ban['isActive']) {
+					$setColor = $failColor;
+					$setTitle = $this->webhookLanguage('playerBanTitle', $webhookLangArray);
+					$dmTitle = $this->webhookLanguage('playerBanTitleDM', $webhookLangArray);
+					$setDescription = sprintf($this->webhookLanguage('playerBanAccountDesc', $webhookLangArray), $modFormattedUsername, $playerFormattedUsername);
+					$dmDescription = sprintf($this->webhookLanguage('playerBanAccountDescDM', $webhookLangArray), $modFormattedUsername);
+					$setThumbnail = $banThumbnailURL;
+					$setFooter = sprintf($this->webhookLanguage('footerBan', $webhookLangArray), $gdps);
+				} else {
+					$setColor = $successColor;
+					$setTitle = $this->webhookLanguage('playerUnbanTitle', $webhookLangArray);
+					$dmTitle = $this->webhookLanguage('playerUnbanTitleDM', $webhookLangArray);
+					$setDescription = sprintf($this->webhookLanguage('playerUnbanAccountDesc', $webhookLangArray), $modFormattedUsername, $playerFormattedUsername);
+					$dmDescription = sprintf($this->webhookLanguage('playerUnbanAccountDescDM', $webhookLangArray), $modFormattedUsername);
+					$setThumbnail = $unbanThumbnailURL;
+					$setFooter = sprintf($this->webhookLanguage('footer', $webhookLangArray), $gdps);
+				}
+				break;
 		}
 		$modField = [$this->webhookLanguage('playerModTitle', $webhookLangArray), $modFormattedUsername, true];
-		$reasonField = [$this->webhookLanguage('playerReasonTitle', $webhookLangArray), $user['banReason'] != 'none' ? $user['banReason'] : $this->webhookLanguage('playerBanReason', $webhookLangArray), true];
+		$expiresField = $ban['isActive'] ? [$this->webhookLanguage('playerExpiresTitle', $webhookLangArray), '<t:'.$ban['expires'].':R>', true] : [];
+		$personTypeField = [$this->webhookLanguage('playerTypeTitle', $webhookLangArray), $this->webhookLanguage('playerTypeName'.$ban['personType'], $webhookLangArray), true];
+		$reasonField = [$this->webhookLanguage('playerReasonTitle', $webhookLangArray), !empty($ban['reason']) ? base64_decode($ban['reason']) : $this->webhookLanguage('playerBanReason', $webhookLangArray)];
 		$dw->newMessage()
 		->setContent($banNotificationText)
 		->setAuthor($gdps, $authorURL, $authorIconURL)
@@ -1727,7 +1761,7 @@ class mainLib {
 		->setTitle($setTitle, $demonlistTitleURL)
 		->setDescription($setDescription)
 		->setThumbnail($setThumbnail)
-		->addFields($modField, $reasonField)
+		->addFields($modField, $expiresField, $personTypeField, $reasonField)
 		->setFooter($setFooter, $footerIconURL)
 		->setTimestamp()
 		->send();
@@ -1738,7 +1772,7 @@ class mainLib {
 				[$dmTitle, $demonlistTitleURL],
 				$dmDescription,
 				$setThumbnail,
-				[$modField, $reasonField],
+				[$modField, $expiresField, $personTypeField, $reasonField],
 				[$setFooter, $footerIconURL]
 			);
 			$json = json_encode([
@@ -1849,6 +1883,115 @@ class mainLib {
 			], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
 			$this->sendDiscordPM($creatorHasDiscord, $json, true);
 		}
+	}
+	public function getAllBans($onlyActive = true) {
+		include __DIR__."/connection.php";
+		$bans = $db->prepare('SELECT * FROM bans'.($onlyActive ? ' AND isActive = 1' : '').' ORDER BY timestamp DESC');
+		$bans->execute();
+		return $bans->fetchAll();
+	}
+	public function getAllBansFromPerson($person, $personType, $onlyActive = true) {
+		include __DIR__."/connection.php";
+		$bans = $db->prepare('SELECT * FROM bans WHERE person = :person AND personType = :personType'.($onlyActive ? ' AND isActive = 1' : '').' ORDER BY timestamp DESC');
+		$bans->execute([':person' => $person, ':personType' => $personType]);
+		return $bans->fetchAll();
+	}
+	public function getAllBansOfPersonType($personType, $onlyActive = true) {
+		include __DIR__."/connection.php";
+		$bans = $db->prepare('SELECT * FROM bans WHERE personType = :personType'.($onlyActive ? ' AND isActive = 1' : '').' ORDER BY timestamp DESC');
+		$bans->execute([':personType' => $personType]);
+		return $bans->fetchAll();
+	}
+	public function getAllBansOfBanType($banType, $onlyActive = true) {
+		include __DIR__."/connection.php";
+		$bans = $db->prepare('SELECT * FROM bans WHERE banType = :banType'.($onlyActive ? ' AND isActive = 1' : '').' ORDER BY timestamp DESC');
+		$bans->execute([':banType' => $banType]);
+		return $bans->fetchAll();
+	}
+	public function banPerson($modID, $person, $reason, $banType, $personType, $expires) {
+		include __DIR__."/connection.php";
+		if($banType == 4) {
+			switch($personType) {
+				case 0:
+					$removeAuth = $db->prepare('UPDATE accounts SET auth = "none" WHERE accountID = :accountID');
+					$removeAuth->execute([':accountID' => $person]);
+					break;
+				case 2:
+					$banIP = $db->prepare("INSERT INTO bannedips (IP) VALUES (:IP)");
+					$banIP->execute([':IP' => $person]);
+					break;
+			}
+		}
+		if($personType == 2) $person = $this->IPForBan($person);
+		$check = $this->getBan($person, $personType, $banType);
+		if($check) {
+			if($check['expires'] < $expires) return true;
+			$this->unbanPerson($check['banID'], $modID);
+		}
+		$reason = base64_encode($reason);
+		$ban = $db->prepare('INSERT INTO bans (modID, person, reason, banType, personType, expires, timestamp) VALUES (:modID, :person, :reason, :banType, :personType, :expires, :timestamp)');
+		$ban->execute([':modID' => $modID, ':person' => $person, ':reason' => $reason, ':banType' => $banType, ':personType' => $personType, ':expires' => $expires, ':timestamp' => ($modID != 0 ? time() : 0)]);
+		$banID = $db->lastInsertId();
+		if($modID != 0) {
+			$query = $db->prepare("INSERT INTO modactions (type, value, value2, value3, value4, value5, value6, timestamp, account) VALUES ('28', :value, :value2, :value3, :value4, :value5, :value6, :timestamp, :account)");
+			$query->execute([':value' => $person, ':value2' => $reason, ':value3' => $personType, ':value4' => $banType, ':value5' => $expires, ':value6' => 1, ':timestamp' => time(), ':account' => $_SESSION['accountID']]);
+			$this->sendBanWebhook($banID);
+		}
+		return $banID;
+	}
+	public function getBan($person, $personType, $banType) {
+		include __DIR__."/connection.php";
+		$ban = $db->prepare('SELECT * FROM bans WHERE person = :person AND personType = :personType AND banType = :banType AND isActive = 1 ORDER BY timestamp DESC');
+		$ban->execute([':person' => $person, ':personType' => $personType, ':banType' => $banType]);
+		return $ban->fetch();
+	}
+	public function unbanPerson($banID, $modID) {
+		include __DIR__."/connection.php";
+		$ban = $this->getBanByID($banID);
+		if($ban) {
+			if($ban['personType'] == 2 && $ban['banType'] == 4) {
+				$banIP = $db->prepare("DELETE FROM bannedips WHERE IP = :IP");
+				$banIP->execute([':IP' => $ban['person']]);
+			}
+			$unban = $db->prepare('UPDATE bans SET isActive = 0 WHERE banID = :banID');
+			$unban->execute([':banID' => $banID]);
+			$query = $db->prepare("INSERT INTO modactions (type, value, value2, value3, value4, value5, value6, timestamp, account) VALUES ('28', :value, :value2, :value3, :value4, :value5, :value6, :timestamp, :account)");
+			$query->execute([':value' => $ban['person'], ':value2' => $ban['reason'], ':value3' => $ban['personType'], ':value4' => $ban['banType'], ':value5' => $ban['expires'], ':value6' => 0, ':timestamp' => time(), ':account' => $modID]);
+			$this->sendBanWebhook($banID);
+			return true;
+		}
+		return false;
+	}
+	public function getBanByID($banID) {
+		include __DIR__."/connection.php";
+		$ban = $db->prepare('SELECT * FROM bans WHERE banID = :banID');
+		$ban->execute([':banID' => $banID]);
+		return $ban->fetch();
+	}
+	public function getPersonBan($accountID, $userID, $banType, $IP = false) {
+		include __DIR__."/connection.php";
+		$IP = $IP ? $this->IPForBan($IP) : $this->IPForBan($this->getIP());
+		$ban = $db->prepare('SELECT * FROM bans WHERE ((person = :accountID AND personType = 0) OR (person = :userID AND personType = 1) OR (person = :IP AND personType = 2)) AND banType = :banType AND isActive = 1 ORDER BY expires DESC');
+		$ban->execute([':accountID' => $accountID, ':userID' => $userID, ':IP' => $IP, ':banType' => $banType]);
+		return $ban->fetch();
+	}
+	public function IPForBan($IP, $isSearch = false) {
+		$IP = explode('.', $IP);
+		return $IP[0].'.'.$IP[1].'.'.$IP[2].($isSearch ? '' : '.0');
+	}
+	public function changeBan($banID, $modID, $reason, $expires) {
+		include __DIR__."/connection.php";
+		$ban = $this->getBanByID($banID);
+		$reason = base64_encode($reason);
+		if($ban && $ban['isActive'] != 0) {
+			$unban = $db->prepare('UPDATE bans SET reason = :reason, expires = :expires WHERE banID = :banID');
+			$unban->execute([':banID' => $banID, ':reason' => $reason, ':expires' => $expires]);
+			$query = $db->prepare("INSERT INTO modactions (type, value, value2, value3, value4, value5, value6, timestamp, account) VALUES ('28', :value, :value2, :value3, :value4, :value5, :value6, :timestamp, :account)");
+			$query->execute([':value' => $ban['person'], ':value2' => $reason, ':value3' => $ban['personType'], ':value4' => $ban['banType'], ':value5' => $expires, ':value6' => 2, ':timestamp' => time(), ':account' => $modID]);
+			$this->sendBanWebhook($banID);
+			return true;
+		}
+		return false;
 	}
   	public function mail($mail = '', $user = '', $isForgotPass = false) {
 		if(empty($mail) OR empty($user)) return;

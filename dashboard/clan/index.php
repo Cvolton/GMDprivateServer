@@ -137,7 +137,7 @@ if(!empty($clan)) {
 					$mbrs = $db->prepare("SELECT * FROM users WHERE extID = :id");
 					$mbrs->execute([':id' => $rqs["accountID"]]);
 					$mbr = $mbrs->fetch();
-					$stats = $dl->createProfileStats($mbr['stars'], $mbr['moons'], $mbr['diamonds'], $mbr['coins'], $mbr['userCoins'], $mbr['demons'], $mbr['creatorPoints'], $mbr['isCreatorBanned']);
+					$stats = $dl->createProfileStats($mbr['stars'], $mbr['moons'], $mbr['diamonds'], $mbr['coins'], $mbr['userCoins'], $mbr['demons'], $mbr['creatorPoints'], 0);
 					$requests .= '<div style="width: 100%;display: flex;flex-wrap: wrap;justify-content: center;">
 						<div class="profile"><div style="display:flex"><button style="display:contents;cursor:pointer" type="button" onclick="a(\'profile/'.$mbr["userName"].'\', true, true, \'GET\')"><h2 style="color:rgb('.$gs->getAccountCommentColor($mbr["extID"]).')" class="profilenick">'.$mbr["userName"].'</h2></button></div>
 						<div class="form-control" style="display: flex;width: 100%;height: max-content;align-items: center;">'.$stats.'</div>
@@ -324,7 +324,7 @@ if(!empty($clan)) {
 		$allucoins += $mbr['userCoins'];
 		$alldemons += $mbr['demons'];
 		$allcp += $mbr['creatorPoints'];
-        $stats = $dl->createProfileStats($mbr['stars'], $mbr['moons'], $mbr['diamonds'], $mbr['coins'], $mbr['userCoins'], $mbr['demons'], $mbr['creatorPoints'], $mbr['isCreatorBanned']);
+        $stats = $dl->createProfileStats($mbr['stars'], $mbr['moons'], $mbr['diamonds'], $mbr['coins'], $mbr['userCoins'], $mbr['demons'], $mbr['creatorPoints'], 0);
 		$mbr["userName"] = $mbr["userName"] == 'Undefined' ? $gs->getAccountName($mbr['extID']) : $mbr['userName'];
         if($mbr["extID"] != $clan["clanOwner"]) $members .= '<div style="width: 100%;display: flex;flex-wrap: wrap;justify-content: center;">
 			<div class="profile"><div class="clanmemberndiv"><button style="display:contents;cursor:pointer" type="button" onclick="a(\'profile/'.$mbr["userName"].'\', true, true, \'GET\')"><h2 style="color:rgb('.$gs->getAccountCommentColor($mbr["extID"]).')" class="profilenick clanmembernick">'.$mbr["userName"].'</h2></button>'.$kick.'</div>

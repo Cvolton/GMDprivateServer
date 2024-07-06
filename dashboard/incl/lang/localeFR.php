@@ -386,6 +386,19 @@ $string['sfxs'] = 'SFXs';
 $string['sfxID'] = 'ID du SFX';
 $string['manageSFX'] = 'Gérer les SFXs';
 
+$string['featureLevel'] = 'Feature level';
+
+$string['banList'] = 'Banned people list';
+$string['expires'] = 'Expires';
+$string['unbanPerson'] = 'Unban';
+$string['IP'] = 'IP-address';
+$string['noBanInPast'] = 'You can\'t ban until past!';
+$string['banSuccess'] = 'You successfully banned <b>%1$s</b> until <b>%3$s</b> in «<b>%2$s</b>»!';
+$string['person'] = 'Person';
+$string['youAreBanned'] = 'You were banned until <b>%2$s</b> for reason:<br><b>%1$s</b>';
+$string['banChange'] = 'Change';
+$string['system'] = 'System';
+
 /*
 	REUPLOAD
 */
@@ -488,8 +501,9 @@ $string["rate"] = "Rated (étoilé)";
 $string["stats"] = "Statistiques";
 $string["suggestFeatured"] = "En vedette ?";
 $string["whoAdded"] = "Qui l'a ajouté ?";
+$string["moons"] = "Moons";
 //modActionsList
-$string["banDesc"] = "Ici, vous pouvez bannir un joueur du classement !";
+$string["banDesc"] = "Here you can ban a player!";
 $string["playerTop"] = 'Meilleurs joueurs';
 $string["creatorTop"] = 'Meilleurs créateurs';
 $string["levelUploading"] = 'Uploader des niveaux';
@@ -572,6 +586,7 @@ $string["modAction24"] = "Ré-assigné un joueur";
 $string["modAction25"] = "A créé une quête";
 $string["modAction26"] = "A changé le nom d'utilisateur/mot de passe du joueur";
 $string["modAction27"] = "A changé un SFX";
+$string["modAction28"] = "Banned person";
 $string["modAction30"] = "La liste a été rate";
 $string["modAction31"] = "La liste a été sent (envoyé aux modérateurs)";
 $string["modAction32"] = "La list a été (ou a eu son) featured (supprimé)";

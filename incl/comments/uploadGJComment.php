@@ -17,16 +17,14 @@ $comment = ($gameVersion < 20) ? ExploitPatch::url_base64_encode($comment) : $co
 $levelID = ($_POST['levelID'] < 0 ? '-' : '').ExploitPatch::number($_POST["levelID"]);
 $percent = !empty($_POST["percent"]) ? ExploitPatch::number($_POST["percent"]) : 0;
 
-if (strpos($levelID, '-') === 0) {
+if(strpos($levelID, '-') === 0) {
     $checkLevelExist = $db->prepare("SELECT * FROM lists WHERE listID = :levelID");
 	$checkLevelExist->execute([':levelID' => ltrim($levelID, '-')]);
 } else {
     $checkLevelExist = $db->prepare("SELECT * FROM levels WHERE levelID = :levelID");
 	$checkLevelExist->execute([':levelID' => $levelID]);
 }
-if ($checkLevelExist->rowCount() == 0) {
-	die("-1");
-}
+if($checkLevelExist->rowCount() == 0) die("-1");
 
 $id = $gs->getIDFromPost();
 $register = is_numeric($id);
@@ -34,12 +32,11 @@ $userID = $gs->getUserID($id, $userName);
 $uploadDate = time();
 $decodecomment = ExploitPatch::url_base64_decode($comment);
 $command = Commands::doCommands($id, $decodecomment, $levelID);
-if($command) exit("temp_0_".$command);
-if ($percent < 0 || $percent > 100) exit("temp_0_Invalid percentage!");
-$checkCommentBan = $db->prepare("SELECT * FROM users WHERE extID = :accountID AND isCommentBanned = 1");
-$checkCommentBan->execute([':accountID' => $id]);
-if($checkCommentBan->rowCount() > 0) die("-10");
-if($id != "" AND $comment != ""){
+if($command) ($_POST['gameVersion'] > 20 ? exit("temp_0_".$command) : exit('-1'));
+if($percent < 0 || $percent > 100) exit("temp_0_Invalid percentage!");
+$checkCommentBan = $gs->getPersonBan($id, $userID, 3);
+if($checkCommentBan) ($_POST['gameVersion'] > 20 ? exit("temp_".($checkCommentBan['expires'] - time())."_".ExploitPatch::rutoen(ExploitPatch::url_base64_decode($checkCommentBan['reason']))) : exit('-10'));
+if($id != "" AND $comment != "") {
 	$query = $db->prepare("INSERT INTO comments (userName, comment, levelID, userID, timeStamp, percent) VALUES (:userName, :comment, :levelID, :userID, :uploadDate, :percent)");
 	$query->execute([':userName' => $userName, ':comment' => $comment, ':levelID' => $levelID, ':userID' => $userID, ':uploadDate' => $uploadDate, ':percent' => $percent]);
 	echo 1;

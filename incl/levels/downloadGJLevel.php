@@ -10,7 +10,7 @@ require "../lib/GJPCheck.php";
 if(empty($_POST["gameVersion"])){
 	$gameVersion = 1;
 }else{
-	$gameVersion = ExploitPatch::remove($_POST["gameVersion"]);
+	$gameVersion = ExploitPatch::number($_POST["gameVersion"]);
 }
 if(empty($_POST["levelID"])){
 	exit("-1");
@@ -18,8 +18,8 @@ if(empty($_POST["levelID"])){
 $extras = !empty($_POST["extras"]) && $_POST["extras"];
 $inc = !empty($_POST["inc"]) && $_POST["inc"];
 $ip = $gs->getIP();
-$levelID = ExploitPatch::remove($_POST["levelID"]);
-$binaryVersion = !empty($_POST["binaryVersion"]) ? ExploitPatch::remove($_POST["levelID"]) : 0;
+$levelID = ExploitPatch::number($_POST["levelID"]);
+$binaryVersion = !empty($_POST["binaryVersion"]) ? ExploitPatch::number($_POST["binaryVersion"]) : 0;
 $feaID = 0;
 if(!is_numeric($levelID)){
 	echo -1;

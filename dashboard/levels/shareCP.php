@@ -23,10 +23,10 @@ if(!empty($_POST["username"]) AND !empty($_POST["level"])) {
 			</div>', 'mod');
 		die();
 		}
-	$username = ExploitPatch::number($_POST["username"]);
+	$userID = ExploitPatch::number($_POST["username"]);
 	$level = ExploitPatch::number($_POST["level"]);
-	$query = $db->prepare("SELECT * FROM cpshares WHERE levelID=:level AND userID=:user");
-	$query->execute([':level' => $level, ':user' => $username]);
+	$query = $db->prepare("SELECT * FROM cpshares WHERE levelID = :level AND userID = :user");
+	$query->execute([':level' => $level, ':user' => $userID]);
 	$res = $query->fetchAll();
 	if(count($res) != 0) {
 		$dl->printSong('<div class="form">
@@ -38,8 +38,8 @@ if(!empty($_POST["username"]) AND !empty($_POST["level"])) {
 			</div>', 'mod');
 		die();
 	}
-	$query = $db->prepare("SELECT * FROM levels WHERE levelID=:level AND userID=:user");
-	$query->execute([':level' => $level, ':user' => $username]);
+	$query = $db->prepare("SELECT * FROM levels WHERE levelID = :level AND userID = :user");
+	$query->execute([':level' => $level, ':user' => $userID]);
 	$res = $query->fetchAll();
 	if(count($res) != 0) {
 		$dl->printSong('<div class="form">
@@ -51,10 +51,11 @@ if(!empty($_POST["username"]) AND !empty($_POST["level"])) {
 			</div>', 'mod');
 		die();
 	}
-	$query = $db->prepare("SELECT isCreatorBanned FROM users WHERE extID=:user AND isCreatorBanned=1");
-	$query->execute([':user' => $username]);
-	$res = $query->fetchAll();
-	if(count($res) != 0) {
+	$query = $db->prepare("SELECT IP FROM users WHERE userID = :user");
+	$query->execute([':user' => $userID]);
+	$query = $query->fetchColumn();
+	$res = $gs->getPersonBan($gs->getExtID($userID), $userID, 1, $query);
+	if($res) {
 		$dl->printSong('<div class="form">
 			<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 			<form class="form__inner" method="post" action="">
@@ -66,10 +67,10 @@ if(!empty($_POST["username"]) AND !empty($_POST["level"])) {
 	}
 	$accountID = $_SESSION["accountID"];
 	$query = $db->prepare("INSERT INTO cpshares (levelID, userID) VALUES (:level, :user)");
-	$query->execute([':level' => $level, ':user' => $username]);
+	$query->execute([':level' => $level, ':user' => $userID]);
 	$query = $db->prepare("UPDATE levels SET isCPShared=1 WHERE levelID=:level");
 	$query->execute([':level' => $level]);
-	$username = $gs->getAccountName($username);
+	$username = $gs->getAccountName($userID);
 	$query = $db->prepare("INSERT INTO modactions  (type, value, timestamp, account, value3) VALUES ('11',:value,:timestamp,:account,:level)"); 
 	$query->execute([':value' => $username, ':timestamp' => time(), ':account' => $accountID, ':level' => $level]);
 	$query = $db->prepare("SELECT levelName FROM levels WHERE levelID=:level");

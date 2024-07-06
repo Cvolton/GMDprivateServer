@@ -62,10 +62,11 @@ $result = $query2->fetchAll();
 $x = 0;
 foreach ($result as &$score) {
 	$extID = $score["accountID"];
-	$query2 = $db->prepare("SELECT userName, clan, userID, icon, color1, color2, color3, iconType, special, extID, isBanned FROM users WHERE extID = :extID");
+	$query2 = $db->prepare("SELECT userName, clan, userID, icon, color1, color2, color3, iconType, special, extID, IP FROM users WHERE extID = :extID");
 	$query2->execute([':extID' => $extID]);
 	$user = $query2->fetch();
-	if($user["isBanned"] != 0) continue;
+	$isBanned = $gs->getPersonBan($user['extID'], $user['userID'], 0, $user['IP']);
+	if($isBanned) continue;
 	$x++;
 	$time = $gs->makeTime($score["timestamp"]);
 	$scoreType = $score[$mode];

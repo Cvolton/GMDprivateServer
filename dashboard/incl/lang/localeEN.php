@@ -384,6 +384,19 @@ $string['sfxs'] = 'SFXs';
 $string['sfxID'] = 'SFX ID';
 $string['manageSFX'] = 'Manage SFXs';
 
+$string['featureLevel'] = 'Feature level';
+
+$string['banList'] = 'Banned people list';
+$string['expires'] = 'Expires';
+$string['unbanPerson'] = 'Unban';
+$string['IP'] = 'IP-address';
+$string['noBanInPast'] = 'You can\'t ban until past!';
+$string['banSuccess'] = 'You successfully banned <b>%1$s</b> until <b>%3$s</b> in «<b>%2$s</b>»!';
+$string['person'] = 'Person';
+$string['youAreBanned'] = 'You were banned until <b>%2$s</b> for reason:<br><b>%1$s</b>';
+$string['banChange'] = 'Change';
+$string['system'] = 'System';
+
 /*
 	REUPLOAD
 */
@@ -486,8 +499,9 @@ $string["rate"] = "Rate";
 $string["stats"] = "Stats";
 $string["suggestFeatured"] = "Featured?";
 $string["whoAdded"] = "Who added?";
+$string["moons"] = "Moons";
 //modActionsList
-$string["banDesc"] = "Here you can ban (or unban) a player from leaderboard!";
+$string["banDesc"] = "Here you can ban a player!";
 $string["playerTop"] = 'Top of players';
 $string["creatorTop"] = 'Top of creators';
 $string["levelUploading"] = 'Uploading levels';
@@ -562,7 +576,7 @@ $string["modAction16"] = "Song ID change";
 $string["modAction17"] = "Created a Map Pack";
 $string["modAction18"] = "Created a Gauntlet";
 $string["modAction19"] = "Changed song";
-$string["modAction20"] = "Granted Moderator to player";
+$string["modAction20"] = "Granted a moderator to player";
 $string["modAction21"] = "Changed Map Pack";
 $string["modAction22"] = "Changed Gauntlet";
 $string["modAction23"] = "Changed quest";
@@ -570,6 +584,7 @@ $string["modAction24"] = "Reassigned a player";
 $string["modAction25"] = "Created a quest";
 $string["modAction26"] = "Changed player's username/password";
 $string["modAction27"] = "Changed SFX";
+$string["modAction28"] = "Banned person";
 $string["modAction30"] = "Rated list";
 $string["modAction31"] = "Sent list";
 $string["modAction32"] = "Un/featured list";

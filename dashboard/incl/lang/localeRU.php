@@ -384,6 +384,19 @@ $string['sfxs'] = 'Звуковые эффекты';
 $string['sfxID'] = 'ID звукового эффекта';
 $string['manageSFX'] = 'Управление звуковыми эффектами';
 
+$string['featureLevel'] = 'Оценить уровень';
+
+$string['banList'] = 'Список заблокированных';
+$string['expires'] = 'Истекает';
+$string['unbanPerson'] = 'Разблокировать';
+$string['IP'] = 'IP адрес';
+$string['noBanInPast'] = 'Вы не можете заблокировать игрока до прошлого!';
+$string['banSuccess'] = 'Вы успешно заблокировали <b>%1$s</b> до <b>%3$s</b> в категории «<b>%2$s</b>»!';
+$string['person'] = 'Пользователь';
+$string['youAreBanned'] = 'Вы были заблокированы до <b>%2$s</b> по причине:<br><b>%1$s</b>';
+$string['banChange'] = 'Изменение';
+$string['system'] = 'Система';
+
 /*
 	REUPLOAD
 */
@@ -486,8 +499,9 @@ $string["rate"] = "Оценка";
 $string["stats"] = "Статистика";
 $string["suggestFeatured"] = "Featured?";
 $string["whoAdded"] = "Кто добавил?";
+$string["moons"] = "Луны";
 //modActionsList
-$string["banDesc"] = "Здесь вы можете забанить (или разбанить) игрока из лидерборда!";
+$string["banDesc"] = "Здесь вы можете забанить игрока!";
 $string["playerTop"] = 'Топ игроков';
 $string["creatorTop"] = 'Топ строителей';
 $string["levelUploading"] = 'Загрузка уровней';
@@ -570,6 +584,7 @@ $string["modAction24"] = "Переназначил(а) игрока";
 $string["modAction25"] = "Создал(а) квест";
 $string["modAction26"] = "Сменил(а) никнейм/пароль игроку";
 $string["modAction27"] = "Изменил(а) звуковой эффект";
+$string["modAction28"] = "Забанил(а) пользователя";
 $string["modAction30"] = "Оценил(а) список уровней";
 $string["modAction31"] = "Отправил(а) на оценку список уровней";
 $string["modAction32"] = "Снял(а)/добавил(а) Featured списку уровней";

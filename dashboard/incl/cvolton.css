@@ -22,11 +22,11 @@
 	.btn-group {position:initial !important; background: #00000000 !important;}
 }
 
-@media (max-width: 992px) {
+@media (max-width: 1000px) {
 	.form h1 {font-size:28px !important;}
 	.form__inner p {font-size:17px !important;}
-    .profilenick {font-size: 15px !important;}
-    .mavdiv .accbtn, .profilepic {font-size: 15px !important;}
+    .profilenick {font-size: 20px !important;}
+    .mavdiv .accbtn, .profilepic, .profilepic .accbtn {font-size: 20px !important;}
     .songacc {font-size: 13px !important;}
     .songidyeah {font-size: 11px !important;}
 	.btn-group {right: 5px !important;}
@@ -38,7 +38,7 @@
 	.welcomeh3 {font-size:20px !important;}
 	.mpsmall {font-size:12px !important;}
 	.profileform{width:95vw !important;}
-	.profilemsg{font-size:14px !important;}
+	.profilemsg{font-size:17px !important;}
 	.mainlist{width:95% !important}
 	.msgbox, .dmbox{min-width:85vw !important}
 	.form, .demonlist{width:95vw !important}
@@ -104,6 +104,9 @@
 	.icon-wave {height: 27px !important;}
 	.icon-kit-div {width: 20% !important;}
 	.icon-kit {flex-wrap: wrap !important;}
+	.form-control {flex-wrap: wrap !important; border-radius: 25px !important; justify-content: center !important;}
+	.profilepic {width: max-content !important;}
+	.modactionsspoiler {font-size: 20px !important;}
 }
 
 * {
@@ -574,7 +577,7 @@ p{
 
 summary {
 	color: #d0d0d0;
-	font-size:15px;
+	font-size: 15px;
   	cursor: pointer;
 }
 
@@ -1713,7 +1716,8 @@ body:has(.audio) {
 	margin-top: 0px;
 }
 
-.mavdiv .accbtn {
+.mavdiv .accbtn,
+.profilepic .accbtn {
 	font-size: 25px;
 }
 
@@ -2131,4 +2135,46 @@ body:has(.audio) {
 .icon-swing,
 .icon-jetpack {
 	height: 60px;
+}
+
+.selectField {
+	display: flex;
+	grid-gap: 5px;
+}
+
+.selectField select {
+	width: 60%;
+	margin: 0px;
+}
+
+.bantitle {
+	display: flex;
+	width: 100%;
+	justify-content: space-between;
+	margin-bottom: 7px;
+	align-items: center;
+	grid-gap: 5px;
+	flex-direction: column;
+}
+
+.banusernamediv {
+	flex-direction: row;
+	justify-content: center;
+}
+
+.banusernamediv button .profilenick,
+.banusernamediv .profilenick {
+	width: max-content;
+}
+
+.banbuttons {
+	min-width: 250px;
+    display: flex;
+    flex-direction: column;
+    grid-gap: 10px;
+    align-items: center;
+}
+
+.modactionsspoiler {
+	font-size: 25px;
 }

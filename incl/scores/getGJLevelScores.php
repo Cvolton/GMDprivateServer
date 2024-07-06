@@ -37,10 +37,7 @@ if($query2->rowCount() == 0) {
 }
 
 $query->execute([':accountID' => $accountID, ':levelID' => $levelID, ':percent' => $percent, ':uploadDate' => $uploadDate, ':coins' => $coins, ':attempts' => $attempts, ':clicks' => $clicks, ':time' => $time, ':progresses' => $progresses, ':dailyID' => $dailyID]);
-if($percent > 100 || $percent < 0) {
-	$query = $db->prepare("UPDATE users SET isBanned=1 WHERE extID = :accountID");
-	$query->execute([':accountID' => $accountID]);
-}
+if($percent > 100 || $percent < 0) $gs->banPerson(0, $accountID, '', 0, 0, 2147483647);
 
 //GETTING SCORES
 $type = $_POST['type'] ?? 1;
@@ -64,18 +61,16 @@ switch($type) {
 		return -1;
 		break;
 }
-
-
-
 $query2->execute($query2args);
 $result = $query2->fetchAll();
-foreach ($result as &$score) {
+foreach($result as &$score) {
 	$extID = $score["accountID"];
-	$query2 = $db->prepare("SELECT userName, userID, icon, color1, color2, color3, iconType, special, extID, isBanned, clan FROM users WHERE extID = :extID");
+	$query2 = $db->prepare("SELECT userName, extID, userID, icon, color1, color2, color3, iconType, special, clan, IP FROM users WHERE extID = :extID");
 	$query2->execute([':extID' => $extID]);
 	$user = $query2->fetch();
 	$time = $gs->makeTime($score["uploadDate"]);
-	if($user["isBanned"] == 0){
+	$isBanned = $gs->getPersonBan($user['extID'], $user['userID'], 0, $user['IP']);
+	if(!$isBanned) {
 		if($score["percent"] == 100) $place = 1;
 		else if($score["percent"] > 75) $place = 2;
 		else $place = 3;

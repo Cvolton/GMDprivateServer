@@ -1,7 +1,9 @@
 <?php
 include "incl/dashboardLib.php";
 include $dbPath."incl/lib/connection.php";
+include $dbPath."incl/lib/mainLib.php";
 include $dbPath."config/dashboard.php";
+$gs = new mainLib();
 if(!$installed) {
 	$check = $db->query("SHOW TABLES LIKE 'replies'");
       	$exist = $check->fetchAll();
@@ -82,6 +84,20 @@ if(!$installed) {
 			 KEY `name` (`name`),
 			 KEY `authorName` (`authorName`)
 			) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci");
+		$check = $db->query("SHOW TABLES LIKE 'bans'");
+      		$exist = $check->fetchAll();
+      		if(empty($exist)) $db->query("CREATE TABLE `bans` (
+			 `banID` int(11) NOT NULL AUTO_INCREMENT,
+			 `modID` varchar(255) NOT NULL DEFAULT '',
+			 `person` varchar(50) NOT NULL DEFAULT '',
+			 `reason` varchar(2048) NOT NULL DEFAULT '',
+			 `banType` int(11) NOT NULL DEFAULT 0,
+			 `personType` int(11) NOT NULL DEFAULT 0,
+			 `expires` int(11) NOT NULL DEFAULT 0,
+			 `isActive` int(11) NOT NULL DEFAULT 1,
+			 `timestamp` int(11) NOT NULL DEFAULT 0,
+			 PRIMARY KEY (`banID`)
+			) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci");
 		$check = $db->query("SHOW COLUMNS FROM `roles` LIKE 'dashboardLevelPackCreate'");
       		$exist = $check->fetchAll();
       		if(empty($exist)) $db->query("ALTER TABLE roles ADD dashboardLevelPackCreate INT NOT NULL DEFAULT '0' AFTER dashboardModTools");
@@ -97,9 +113,6 @@ if(!$installed) {
 		$check = $db->query("SHOW COLUMNS FROM `songs` LIKE 'reuploadID'");
       		$exist = $check->fetchAll();
       		if(empty($exist)) $db->query("ALTER TABLE songs ADD reuploadID INT NOT NULL DEFAULT '0' AFTER reuploadTime");
-		$check = $db->query("SHOW COLUMNS FROM `users` LIKE 'banReason'");
-      		$exist = $check->fetchAll();
-      		if(empty($exist)) $db->query("ALTER TABLE users ADD banReason varchar(255) NOT NULL DEFAULT 'none' AFTER isCreatorBanned");
 		$check = $db->query("SHOW COLUMNS FROM `accounts` LIKE 'auth'");
       		$exist = $check->fetchAll();
       		if(empty($exist)) $db->query("ALTER TABLE accounts ADD auth varchar(16) NOT NULL DEFAULT 'none' AFTER isActive");
@@ -139,18 +152,41 @@ if(!$installed) {
 		$check = $db->query("SHOW COLUMNS FROM `accounts` LIKE 'mail'");
       		$exist = $check->fetchAll();
       		if(empty($exist)) $db->query("ALTER TABLE accounts ADD mail varchar(255) NOT NULL DEFAULT '' AFTER auth");
-		$check = $db->query("SHOW COLUMNS FROM `users` LIKE 'isUploadBanned'");
-      		$exist = $check->fetchAll();
-      		if(empty($exist)) $db->query("ALTER TABLE users ADD isUploadBanned INT NOT NULL DEFAULT '0' AFTER isCreatorBanned");
 		$check = $db->query("SHOW COLUMNS FROM `roles` LIKE 'dashboardGauntletCreate'");
       		$exist = $check->fetchAll();
       		if(empty($exist)) $db->query("ALTER TABLE `roles` CHANGE `toolPackcreate` `dashboardGauntletCreate` INT(11) NOT NULL DEFAULT '0'");
-		$check = $db->query("SHOW COLUMNS FROM `users` LIKE 'isCommentBanned'");
-			$exist = $check->fetchAll();
-			if(empty($exist)) $db->query("ALTER TABLE users ADD isCommentBanned INT NOT NULL DEFAULT '0' AFTER isBanned");
 		$check = $db->query("SHOW COLUMNS FROM `dailyfeatures` LIKE 'webhookSent'");
 			$exist = $check->fetchAll();
 			if(empty($exist)) $db->query("ALTER TABLE dailyfeatures ADD webhookSent INT NOT NULL DEFAULT '0' AFTER type");
+		$check = $db->query("SHOW COLUMNS FROM `users` LIKE 'isUploadBanned'");
+			$exist = $check->fetchAll();
+			if(!empty($exist)) {
+				$allBans = $db->prepare('SELECT userID, isBanned, isCreatorBanned, isUploadBanned, isCommentBanned, banReason FROM users WHERE isBanned > 0 OR isCreatorBanned > 0 OR isUploadBanned > 0 OR isCommentBanned > 0');
+				$allBans->execute();
+				$allBans = $allBans->fetchAll();
+				foreach($allBans AS &$ban) {
+					if($ban['banReason'] == 'none' || $ban['banReason'] == 'banned') $ban['banReason'] = ''; 
+					switch(true) {
+						case $ban['isBanned'] > 0:
+							$gs->banPerson(0, $ban['userID'], $ban['banReason'], 0, 1, 2147483647);
+							break;
+						case $ban['isCreatorBanned'] > 0:
+							$gs->banPerson(0, $ban['userID'], $ban['banReason'], 1, 1, 2147483647);
+							break;
+						case $ban['isUploadBanned'] > 0:
+							$gs->banPerson(0, $ban['userID'], $ban['banReason'], 2, 1, 2147483647);
+							break;
+						case $ban['isCommentBanned'] > 0:
+							$gs->banPerson(0, $ban['userID'], $ban['banReason'], 3, 1, 2147483647);
+							break;
+					}
+				}
+				$db->query('ALTER TABLE `users` DROP `isBanned`');
+				$db->query('ALTER TABLE `users` DROP `isCreatorBanned`');
+				$db->query('ALTER TABLE `users` DROP `isUploadBanned`');
+				$db->query('ALTER TABLE `users` DROP `isCommentBanned`');
+				$db->query('ALTER TABLE `users` DROP `banReason`');
+			}
 	$lines = file($dbPath.'config/dashboard.php');
 	$first_line = $lines[2];
 	$lines = array_slice($lines, 1 + 2);

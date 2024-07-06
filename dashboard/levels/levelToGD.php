@@ -16,15 +16,23 @@ $dl->title($dl->getLocalizedString("levelToGD"));
 $dl->printFooter('../');
 if($lrEnabled) {
 if(!isset($_SESSION["accountID"]) OR $_SESSION["accountID"] == 0) {
-		$dl->printSong('<div class="form">
-    	<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
+	$dl->printSong('<div class="form">
+		<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 		<form class="form__inner" method="post" action="./login/login.php">
-			<p>'.$dl->getLocalizedString("noLogin?").'</p>
-	        <button type="button" onclick="a(\'login/login.php\', true, false, \'GET\')" class="btn-song">'.$dl->getLocalizedString("LoginBtn").'</button>
-  	  	</form>
-		</div>', 'reupload');
-  		die();
+		<p>'.$dl->getLocalizedString("noLogin?").'</p>
+		<button type="button" onclick="a(\'login/login.php\', true, false, \'GET\')" class="btn-song">'.$dl->getLocalizedString("LoginBtn").'</button>
+		</form>
+	</div>', 'reupload');
+  	die();
 }
+$checkBan = $gs->getPersonBan($_SESSION['accountID'], $gs->getUserID($_SESSION['accountID'], $gs->getAccountName($_SESSION['accountID'])), 2);
+if($checkBan) exit($dl->printSong('<div class="form">
+<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
+	<form class="form__inner" method="post" action="">
+	<p>'.sprintf($dl->getLocalizedString("youAreBanned"), htmlspecialchars(base64_decode($checkBan['reason'])), date("d.m.Y G:i", $checkBan['expires'])).'</p>
+	<button type="button" onclick="a(\'\', true, false, \'GET\')" class="btn-song">'.$dl->getLocalizedString("dashboard").'</button>
+	</form>
+</div>', 'reupload'));
 if(!empty($_POST["usertarg"]) AND !empty($_POST["passtarg"]) AND !empty($_POST["levelID"])AND !empty($_POST["server"])) {
   	if(!Captcha::validateCaptcha()) {
 		$dl->printSong('<div class="form">
@@ -41,6 +49,13 @@ if(!empty($_POST["usertarg"]) AND !empty($_POST["passtarg"]) AND !empty($_POST["
 	$passtarg = ExploitPatch::remove($_POST["passtarg"]);
 	$levelID = ExploitPatch::remove($_POST["levelID"]);
 	$server = trim($_POST["server"]);
+	if(mb_substr($server, 0, 4) != 'http') exit($dl->printSong('<div class="form">
+		<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
+		<form class="form__inner" method="post" action="">
+		<p>'.$dl->getLocalizedString("invalidPost").'</p>
+		<button type="button" onclick="a(\'levels/levelReupload.php\', true, false, \'GET\')" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
+		</form>
+	</div>', 'reupload'));
 	$query = $db->prepare("SELECT * FROM levels WHERE levelID = :level");
 	$query->execute([':level' => $levelID]);
 	$levelInfo = $query->fetch();
