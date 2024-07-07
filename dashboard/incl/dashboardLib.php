@@ -307,7 +307,8 @@ class dashboardLib {
                             <a class="dropdown-item dontblock" href="lang/switchLang.php?lang=FR" title="Translated by masckmaster2007 and M336"><div class="icon flag"><img class="imgflag" src="incl/flags/fr.png?2"></div>Français</a>
                             <a class="dropdown-item dontblock" href="lang/switchLang.php?lang=ES" title="Translated by Nejik"><div class="icon flag"><img class="imgflag" src="incl/flags/es.png?2"></div>Español</a>
 						</div>';
-						if(!empty(glob("../download/".$gdps.".*")) OR !empty(glob("download/".$gdps.".*")) OR !empty($pc) OR !empty($mac) OR !empty($android) OR !empty($ios)) {
+						$glob = function_exists('glob') ? (!empty(glob("../download/".$gdps.".*")) OR !empty(glob("download/".$gdps.".*"))) : true;
+						if($glob OR !empty($pc) OR !empty($mac) OR !empty($android) OR !empty($ios)) {
 							echo '
 					<li class="nav-item dropdown"  id="thirdp">
 						<a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

@@ -1622,16 +1622,15 @@ class mainLib {
 			$this->sendDiscordPM($recordHasDiscord, $json, true);
 		}
 	}
-	public function sendBanWebhook($banID) {
+	public function sendBanWebhook($banID, $modAccID) {
 		include __DIR__."/connection.php";
 		include __DIR__."/../../config/dashboard.php";
 		include __DIR__."/../../config/discord.php";
-		if(!$webhooksEnabled OR !is_numeric($banID) OR !in_array("ban", $webhooksToEnable)) return false;
+		if(!$webhooksEnabled OR !is_numeric($banID) OR !is_numeric($modAccID) OR !in_array("ban", $webhooksToEnable)) return false;
 		include_once __DIR__."/../../config/webhooks/DiscordWebhook.php";
 		$webhookLangArray = $this->webhookStartLanguage($webhookLanguage);
 		$dw = new DiscordWebhook($banWebhook);
 		$ban = $this->getBanByID($banID);
-		$modAccID = $ban['modID'];
 		switch($ban['personType']) {
 			case 0:
 				$playerAccID = $ban['person'];
@@ -1935,7 +1934,7 @@ class mainLib {
 		if($modID != 0) {
 			$query = $db->prepare("INSERT INTO modactions (type, value, value2, value3, value4, value5, value6, timestamp, account) VALUES ('28', :value, :value2, :value3, :value4, :value5, :value6, :timestamp, :account)");
 			$query->execute([':value' => $person, ':value2' => $reason, ':value3' => $personType, ':value4' => $banType, ':value5' => $expires, ':value6' => 1, ':timestamp' => time(), ':account' => $_SESSION['accountID']]);
-			$this->sendBanWebhook($banID);
+			$this->sendBanWebhook($banID, $modID);
 		}
 		return $banID;
 	}
@@ -1955,9 +1954,11 @@ class mainLib {
 			}
 			$unban = $db->prepare('UPDATE bans SET isActive = 0 WHERE banID = :banID');
 			$unban->execute([':banID' => $banID]);
-			$query = $db->prepare("INSERT INTO modactions (type, value, value2, value3, value4, value5, value6, timestamp, account) VALUES ('28', :value, :value2, :value3, :value4, :value5, :value6, :timestamp, :account)");
-			$query->execute([':value' => $ban['person'], ':value2' => $ban['reason'], ':value3' => $ban['personType'], ':value4' => $ban['banType'], ':value5' => $ban['expires'], ':value6' => 0, ':timestamp' => time(), ':account' => $modID]);
-			$this->sendBanWebhook($banID);
+			if($modID != 0) {
+				$query = $db->prepare("INSERT INTO modactions (type, value, value2, value3, value4, value5, value6, timestamp, account) VALUES ('28', :value, :value2, :value3, :value4, :value5, :value6, :timestamp, :account)");
+				$query->execute([':value' => $ban['person'], ':value2' => $ban['reason'], ':value3' => $ban['personType'], ':value4' => $ban['banType'], ':value5' => $ban['expires'], ':value6' => 0, ':timestamp' => time(), ':account' => $modID]);
+				$this->sendBanWebhook($banID, $modID);
+			}
 			return true;
 		}
 		return false;
@@ -1988,7 +1989,7 @@ class mainLib {
 			$unban->execute([':banID' => $banID, ':reason' => $reason, ':expires' => $expires]);
 			$query = $db->prepare("INSERT INTO modactions (type, value, value2, value3, value4, value5, value6, timestamp, account) VALUES ('28', :value, :value2, :value3, :value4, :value5, :value6, :timestamp, :account)");
 			$query->execute([':value' => $ban['person'], ':value2' => $reason, ':value3' => $ban['personType'], ':value4' => $ban['banType'], ':value5' => $expires, ':value6' => 2, ':timestamp' => time(), ':account' => $modID]);
-			$this->sendBanWebhook($banID);
+			$this->sendBanWebhook($banID, $modID);
 			return true;
 		}
 		return false;
