@@ -45,7 +45,12 @@ foreach($bans AS &$ban) {
 $extIDsString = "'".implode("','", $extIDs)."'";
 $userIDsString = "'".implode("','", $userIDs)."'";
 $bannedIPsString = implode("|", $bannedIPs);
-$f = "SELECT count(*) FROM users WHERE (extID NOT IN (".$extIDsString.") AND userID NOT IN (".$userIDsString.") AND IP NOT REGEXP '".$bannedIPsString."') AND stars > :stars";
+$queryArray = [];
+if($extIDsString != '') $queryArray[] = "extID NOT IN (".$extIDsString.")";
+if($userIDsString != '') $queryArray[] = "userID NOT IN (".$userIDsString.")";
+if(!empty($bannedIPsString)) $queryArray[] = "IP NOT REGEXP '".$bannedIPsString."'";
+$queryText = !empty($queryArray) ? '('.implode(' AND ', $queryArray).') AND' : '';
+$f = "SELECT count(*) FROM users WHERE ".$queryText." stars > :stars";
 $query = $db->prepare($f);
 $query->execute([':stars' => $user["stars"]]);
 if($query->rowCount() > 0) $rank = $query->fetchColumn() + 1;

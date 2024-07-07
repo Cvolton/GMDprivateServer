@@ -41,7 +41,12 @@ if($type == "top" OR $type == "creators" OR $type == "relative"){
 		$extIDsString = "'".implode("','", $extIDs)."'";
 		$userIDsString = "'".implode("','", $userIDs)."'";
 		$bannedIPsString = implode("|", $bannedIPs);
-		$query = $db->prepare("SELECT * FROM users WHERE (extID NOT IN (".$extIDsString.") AND userID NOT IN (".$userIDsString.") AND IP NOT REGEXP '".$bannedIPsString."') AND stars > :stars ORDER BY stars DESC LIMIT 100");
+		$queryArray = [];
+		if($extIDsString != '') $queryArray[] = "extID NOT IN (".$extIDsString.")";
+		if($userIDsString != '') $queryArray[] = "userID NOT IN (".$userIDsString.")";
+		if(!empty($bannedIPsString)) $queryArray[] = "IP NOT REGEXP '".$bannedIPsString."'";
+		$queryText = !empty($queryArray) ? '('.implode(' AND ', $queryArray).') AND' : '';
+		$query = $db->prepare("SELECT * FROM users WHERE ".$queryText." stars > :stars ORDER BY stars DESC LIMIT 100");
 		$query->execute([':stars' => $leaderboardMinStars]);
 	}
 	if($type == "creators") {
@@ -63,7 +68,12 @@ if($type == "top" OR $type == "creators" OR $type == "relative"){
 		$extIDsString = "'".implode("','", $extIDs)."'";
 		$userIDsString = "'".implode("','", $userIDs)."'";
 		$bannedIPsString = implode("|", $bannedIPs);
-		$query = $db->prepare("SELECT * FROM users WHERE (extID NOT IN (".$extIDsString.") AND userID NOT IN (".$userIDsString.") AND IP NOT REGEXP '".$bannedIPsString."') AND creatorPoints > 0 ORDER BY creatorPoints DESC LIMIT 100");
+		$queryArray = [];
+		if($extIDsString != '') $queryArray[] = "extID NOT IN (".$extIDsString.")";
+		if($userIDsString != '') $queryArray[] = "userID NOT IN (".$userIDsString.")";
+		if(!empty($bannedIPsString)) $queryArray[] = "IP NOT REGEXP '".$bannedIPsString."'";
+		$queryText = !empty($queryArray) ? '('.implode(' AND ', $queryArray).') AND' : '';
+		$query = $db->prepare("SELECT * FROM users WHERE ".$queryText." creatorPoints > 0 ORDER BY creatorPoints DESC LIMIT 100");
 		$query->execute();
 	}
 	if($type == "relative") {
@@ -85,6 +95,11 @@ if($type == "top" OR $type == "creators" OR $type == "relative"){
 		$extIDsString = "'".implode("','", $extIDs)."'";
 		$userIDsString = "'".implode("','", $userIDs)."'";
 		$bannedIPsString = implode("|", $bannedIPs);
+		$queryArray = [];
+		if($extIDsString != '') $queryArray[] = "extID NOT IN (".$extIDsString.")";
+		if($userIDsString != '') $queryArray[] = "userID NOT IN (".$userIDsString.")";
+		if(!empty($bannedIPsString)) $queryArray[] = "IP NOT REGEXP '".$bannedIPsString."'";
+		$queryText = !empty($queryArray) ? 'AND ('.implode(' AND ', $queryArray).')' : '';
 		$query = "SELECT * FROM users WHERE extID = :accountID";
 		$query = $db->prepare($query);
 		$query->execute([':accountID' => $accountID]);
@@ -98,7 +113,7 @@ if($type == "top" OR $type == "creators" OR $type == "relative"){
 			(
 				SELECT	*	FROM users
 				WHERE stars <= :stars
-				AND (extID NOT IN (".$extIDsString.") AND userID NOT IN (".$userIDsString.") AND IP NOT REGEXP '".$bannedIPsString."')
+				".$queryText."
 				ORDER BY stars DESC
 				LIMIT $count
 			)
@@ -106,7 +121,7 @@ if($type == "top" OR $type == "creators" OR $type == "relative"){
 			(
 				SELECT * FROM users
 				WHERE stars >= :stars
-				AND (extID NOT IN (".$extIDsString.") AND userID NOT IN (".$userIDsString.") AND IP NOT REGEXP '".$bannedIPsString."')
+				".$queryText."
 				ORDER BY stars ASC
 				LIMIT $count
 			)
@@ -121,9 +136,10 @@ if($type == "top" OR $type == "creators" OR $type == "relative"){
 		$e = "SET @rownum := 0;";
 		$query = $db->prepare($e);
 		$query->execute();
+		$queryText = substr($queryText, 0, 4);
 		$f = "SELECT rank, stars FROM (
 							SELECT @rownum := @rownum + 1 AS rank, stars, extID, isBanned
-							FROM users WHERE isBanned = '0' ORDER BY stars DESC
+							FROM users WHERE ".$queryText." ORDER BY stars DESC
 							) as result WHERE extID=:extid";
 		$query = $db->prepare($f);
 		$query->execute([':extid' => $extid]);

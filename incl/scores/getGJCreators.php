@@ -25,7 +25,12 @@ foreach($bans AS &$ban) {
 $extIDsString = "'".implode("','", $extIDs)."'";
 $userIDsString = "'".implode("','", $userIDs)."'";
 $bannedIPsString = implode("|", $bannedIPs);
-$query = $db->prepare("SELECT * FROM users WHERE (extID NOT IN (".$extIDsString.") AND userID NOT IN (".$userIDsString.") AND IP NOT REGEXP '".$bannedIPsString."') AND creatorPoints > 0 ORDER BY creatorPoints DESC LIMIT 100");$query = $db->prepare($query);
+$queryArray = [];
+if($extIDsString != '') $queryArray[] = "extID NOT IN (".$extIDsString.")";
+if($userIDsString != '') $queryArray[] = "userID NOT IN (".$userIDsString.")";
+if(!empty($bannedIPsString)) $queryArray[] = "IP NOT REGEXP '".$bannedIPsString."'";
+$queryText = !empty($queryArray) ? '('.implode(' AND ', $queryArray).') AND' : '';
+$query = $db->prepare("SELECT * FROM users WHERE ".$queryText." creatorPoints > 0 ORDER BY creatorPoints DESC LIMIT 100");$query = $db->prepare($query);
 $query->execute();
 $result = $query->fetchAll();
 foreach($result as &$user) {
