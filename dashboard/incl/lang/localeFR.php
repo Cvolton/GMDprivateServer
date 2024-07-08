@@ -388,14 +388,14 @@ $string['manageSFX'] = 'Gérer les SFXs';
 
 $string['featureLevel'] = 'Feature un niveau';
 
-$string['banList'] = 'Liste de personnes bannis';
-$string['expires'] = 'Éxpire';
+$string['banList'] = 'Liste des personnes bannis';
+$string['expires'] = 'Expire';
 $string['unbanPerson'] = 'Déban';
 $string['IP'] = 'Adresse IP';
-$string['noBanInPast'] = 'Vous ne pouvez pas bannir avec une date antérieure à aujourd\'hui';
-$string['banSuccess'] = 'Vous avez banni <b>%1$s</b> avec succès jusqu\'au <b>%3$s</b> dans «<b>%2$s</b>»!';
+$string['noBanInPast'] = 'Vous ne pouvez pas bannir un joueur avec une date antérieure à celle aujourd\'hui';
+$string['banSuccess'] = 'Vous avez banni <b>%1$s</b> avec succès jusqu\'au <b>%3$s</b> dans la catégorie "<b>%2$s</b>" !';
 $string['person'] = 'Personne';
-$string['youAreBanned'] = 'Vous avez été banni jusqu\'au <b>%2$s</b> pour la raison:<br><b>%1$s</b>';
+$string['youAreBanned'] = 'Vous avez été banni jusqu\'au <b>%2$s</b> pour la raison : <br><b>%1$s</b>';
 $string['banChange'] = 'Changer';
 $string['system'] = 'Système';
 
