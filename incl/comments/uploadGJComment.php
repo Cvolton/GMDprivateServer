@@ -11,7 +11,7 @@ require_once "../../config/misc.php";
 $userName = !empty($_POST['userName']) ? ExploitPatch::charclean($_POST['userName']) : "";
 $gameVersion = !empty($_POST['gameVersion']) ? ExploitPatch::number($_POST['gameVersion']) : 0;
 $comment = ExploitPatch::rucharclean($_POST["comment"]);
-$commentLength = ($gameVersion < 20) ? mb_strlen(ExploitPatch::url_base64_decode($comment)) : mb_strlen($comment);
+$commentLength = ($gameVersion >= 20) ? mb_strlen(ExploitPatch::url_base64_decode($comment)) : mb_strlen($comment);
 if($enableCommentLengthLimiter && $commentLength > $maxCommentLength) exit("temp_0_You cannot post comments above $maxCommentLength characters! (Your's ".$commentLength.")");
 $comment = ($gameVersion < 20) ? ExploitPatch::url_base64_encode($comment) : $comment;
 $levelID = ($_POST['levelID'] < 0 ? '-' : '').ExploitPatch::number($_POST["levelID"]);

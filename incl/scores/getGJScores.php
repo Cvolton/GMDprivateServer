@@ -136,10 +136,10 @@ if($type == "top" OR $type == "creators" OR $type == "relative"){
 		$e = "SET @rownum := 0;";
 		$query = $db->prepare($e);
 		$query->execute();
-		$queryText = substr($queryText, 0, 4);
+		$queryText = trim($queryText) != 'AND' ? 'WHERE '.substr($queryText, 4) : '';
 		$f = "SELECT rank, stars FROM (
-							SELECT @rownum := @rownum + 1 AS rank, stars, extID, isBanned
-							FROM users WHERE ".$queryText." ORDER BY stars DESC
+							SELECT @rownum := @rownum + 1 AS rank, stars, extID
+							FROM users ".$queryText." ORDER BY stars DESC
 							) as result WHERE extID=:extid";
 		$query = $db->prepare($f);
 		$query->execute([':extid' => $extid]);
