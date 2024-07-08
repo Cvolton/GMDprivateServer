@@ -386,18 +386,18 @@ $string['sfxs'] = 'SFXs';
 $string['sfxID'] = 'ID du SFX';
 $string['manageSFX'] = 'Gérer les SFXs';
 
-$string['featureLevel'] = 'Feature level';
+$string['featureLevel'] = 'Feature un niveau';
 
-$string['banList'] = 'Banned people list';
-$string['expires'] = 'Expires';
-$string['unbanPerson'] = 'Unban';
-$string['IP'] = 'IP-address';
-$string['noBanInPast'] = 'You can\'t ban until past!';
-$string['banSuccess'] = 'You successfully banned <b>%1$s</b> until <b>%3$s</b> in «<b>%2$s</b>»!';
-$string['person'] = 'Person';
-$string['youAreBanned'] = 'You were banned until <b>%2$s</b> for reason:<br><b>%1$s</b>';
-$string['banChange'] = 'Change';
-$string['system'] = 'System';
+$string['banList'] = 'Liste de personnes bannis';
+$string['expires'] = 'Éxpire';
+$string['unbanPerson'] = 'Déban';
+$string['IP'] = 'Adresse IP';
+$string['noBanInPast'] = 'Vous ne pouvez pas bannir avec une date antérieure à aujourd\'hui';
+$string['banSuccess'] = 'Vous avez banni <b>%1$s</b> avec succès jusqu\'au <b>%3$s</b> dans «<b>%2$s</b>»!';
+$string['person'] = 'Personne';
+$string['youAreBanned'] = 'Vous avez été banni jusqu\'au <b>%2$s</b> pour la raison:<br><b>%1$s</b>';
+$string['banChange'] = 'Changer';
+$string['system'] = 'Système';
 
 /*
 	REUPLOAD
@@ -503,7 +503,7 @@ $string["suggestFeatured"] = "En vedette ?";
 $string["whoAdded"] = "Qui l'a ajouté ?";
 $string["moons"] = "Moons";
 //modActionsList
-$string["banDesc"] = "Here you can ban a player!";
+$string["banDesc"] = "Ici, tu peux bannir un joueur!";
 $string["playerTop"] = 'Meilleurs joueurs';
 $string["creatorTop"] = 'Meilleurs créateurs';
 $string["levelUploading"] = 'Uploader des niveaux';
