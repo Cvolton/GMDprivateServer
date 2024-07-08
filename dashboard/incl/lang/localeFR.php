@@ -503,7 +503,7 @@ $string["suggestFeatured"] = "En vedette ?";
 $string["whoAdded"] = "Qui l'a ajouté ?";
 $string["moons"] = "Moons";
 //modActionsList
-$string["banDesc"] = "Ici, tu peux bannir un joueur!";
+$string["banDesc"] = "Ici, tu peux bannir un joueur !";
 $string["playerTop"] = 'Meilleurs joueurs';
 $string["creatorTop"] = 'Meilleurs créateurs';
 $string["levelUploading"] = 'Uploader des niveaux';
