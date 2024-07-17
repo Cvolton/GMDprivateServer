@@ -29,8 +29,15 @@ $bottoken = "";
 		
 	$dmNotifications — true to enable rates and demonlist notifications to player DMs (if he connected his Discord account with in-game account), false to disable
 	
-	$webhookLanguage — Language webhook will use
-	Current available languages: EN — English (English), RU — Russian (Русский), TR — Turkish (Türkçe), UA — Ukrainian (Українська), FR — French (Français) and ES — Spanish (Español)
+	$webhookLanguage — Language of webhooks
+	Current available languages:
+		EN — English (English)
+		RU — Russian (Русский)
+		TR — Turkish (Türkçe)
+		UA — Ukrainian (Українська)
+		FR — French (Français)
+		ES — Spanish (Español)
+		PT — Portuguese (Português)
 	
 	Emojis:
 		$likeEmoji — Custom like emoji (👍)
