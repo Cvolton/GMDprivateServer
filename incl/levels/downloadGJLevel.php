@@ -18,7 +18,7 @@ if(empty($_POST["levelID"])){
 $extras = !empty($_POST["extras"]) && $_POST["extras"];
 $inc = !empty($_POST["inc"]) && $_POST["inc"];
 $ip = $gs->getIP();
-$levelID = ExploitPatch::number($_POST["levelID"]);
+$levelID = ExploitPatch::numbercolon($_POST["levelID"]);
 $binaryVersion = !empty($_POST["binaryVersion"]) ? ExploitPatch::number($_POST["binaryVersion"]) : 0;
 $feaID = 0;
 if(!is_numeric($levelID)){
