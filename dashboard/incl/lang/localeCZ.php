@@ -10,7 +10,7 @@ $string["levels3Months"] = "Úrovně nahrané za poslední 3 měsíce";
 $string["footer"] = $gdps.", ".date('Y', time());
 $string["tipsAfterInstalling"] = "Vítejte v Dashboard! Dáváme vám pár poinstalačních rad:<br>
 1. Vypadá to, že se nová oprávnění objevila v SQL v 'roles' tabulce! Měli byste se podívat...<br>
-2. Jestil dáte soubor 'icon.png' do 'dashboard' složky, měla by se ikona vašeho GDPS objevit vlevo nahoře!<br>
+2. Jestli dáte soubor 'icon.png' do 'dashboard' složky, měla by se ikona vašeho GDPS objevit vlevo nahoře!<br>
 3. Měli byste konfigurovat config/dashboard.php!";
 $string["wwygdt"] = "Co byste chtěli dnes udělat?";
 $string["game"] = "Hra";
