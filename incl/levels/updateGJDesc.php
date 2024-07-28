@@ -7,7 +7,7 @@ require_once "../lib/exploitPatch.php";
 require_once "../lib/mainLib.php";
 $mainLib = new mainLib();
 $levelDesc = ExploitPatch::remove($_POST["levelDesc"]);
-$levelID = ExploitPatch::number($_POST["levelID"]);
+$levelID = ExploitPatch::numbercolon($_POST["levelID"]);
 if (isset($_POST['udid']) && !empty($_POST['udid'])) {
 	$id = ExploitPatch::remove($_POST["udid"]);
 	if (is_numeric($id)) {

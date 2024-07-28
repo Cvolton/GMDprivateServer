@@ -14,7 +14,7 @@ $comment = ExploitPatch::rucharclean($_POST["comment"]);
 $commentLength = ($gameVersion >= 20) ? mb_strlen(ExploitPatch::url_base64_decode($comment)) : mb_strlen($comment);
 if($enableCommentLengthLimiter && $commentLength > $maxCommentLength) exit("temp_0_You cannot post comments above $maxCommentLength characters! (Your's ".$commentLength.")");
 $comment = ($gameVersion < 20) ? ExploitPatch::url_base64_encode($comment) : $comment;
-$levelID = ($_POST['levelID'] < 0 ? '-' : '').ExploitPatch::number($_POST["levelID"]);
+$levelID = ExploitPatch::numbercolon($_POST["levelID"]);
 $percent = !empty($_POST["percent"]) ? ExploitPatch::number($_POST["percent"]) : 0;
 
 if(strpos($levelID, '-') === 0) {

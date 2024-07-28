@@ -499,6 +499,7 @@ $string["rate"] = "Derecelendir";
 $string["stats"] = "İstatistik";
 $string["suggestFeatured"] = "Tavsiye et?";
 $string["whoAdded"] = "Kim ekledi?";
+$string["moons"] = "Moons";
 //modActionsList
 $string["banDesc"] = "Here you can ban a player!";
 $string["playerTop"] = 'En iyi oyuncular';
