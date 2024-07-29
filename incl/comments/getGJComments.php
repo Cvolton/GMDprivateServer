@@ -75,6 +75,7 @@ foreach($result as &$comment1) {
 			$comment1['userName'] = $gs->makeClanUsername($comment1);
 			if($binaryVersion > 31){
 				$badge = $gs->getMaxValuePermission($extID, "modBadgeLevel");
+				$badge = $badge > 2 ? '' : $badge;
 				$colorString = $badge > 0 ? "~12~".$gs->getAccountCommentColor($extID) : "";
 				$commentstring .= "~11~${badge}${colorString}:1~".$comment1["userName"]."~7~1~9~".$comment1["icon"]."~10~".$comment1["color1"]."~11~".$comment1["color2"]."~14~".$comment1["iconType"]."~15~".$comment1["special"]."~16~".$comment1["extID"];
 			}elseif(!in_array($comment1["userID"], $users)){
