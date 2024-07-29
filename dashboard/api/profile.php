@@ -175,15 +175,19 @@ foreach($postComments AS &$postComment) {
 	];
 }
 exit(json_encode([
-	'accountID' => (int)$profile['extID'],
-	'userID' => (int)$profile['userID'],
-	'userName' => $profile['userName'],
-	'clan' => $clan,
-	'dlPoints' => (int)$profile['dlPoints'],
-	'stats' => $stats,
-	'icons' => $icons,
-	'lastPlayed' => (int)$profile['lastPlayed'],
-	'bans' => $bans,
-	'posts' => $posts
+	'dashboard' => true,
+	'success' => true,
+	'profile' => [
+		'accountID' => (int)$profile['extID'],
+		'userID' => (int)$profile['userID'],
+		'userName' => $profile['userName'],
+		'clan' => $clan,
+		'dlPoints' => (int)$profile['dlPoints'],
+		'stats' => $stats,
+		'icons' => $icons,
+		'lastPlayed' => (int)$profile['lastPlayed'],
+		'bans' => $bans,
+		'posts' => $posts
+	]
 ]));
 ?>
