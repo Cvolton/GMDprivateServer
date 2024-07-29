@@ -8,6 +8,21 @@ $maxCommentLength = 100; // default = 100, 100 characters is the default length 
 $maxAccountCommentLength = 140; // default = 140, 140 characters is the default length for account comments in game
 
 /*
+	Daily/Weekly logic
+	
+	This setting refers to the situation where you did not set the new daily/weekly level.
+	
+	Usually, daily levels can be played for 1 day and weekly levels can be played for 1 week.
+	After that these levels should 'expire' and no one can play them again (in daily/weekly tab)
+	
+	True - When the daily/weekly level expires, still show it for players, until the new level is set. (default)
+	False - When the daily/weekly level expires, show no level and a timer, until the new level is set.
+	
+	Note: if you select "true" and daily level is not updated, it still can be beaten only once, then the player will see only a timer.
+*/
+$oldDailyWeekly = true;
+
+/*
     Minimum and Maximum Game versions
 
     Set both to 0 to disable
