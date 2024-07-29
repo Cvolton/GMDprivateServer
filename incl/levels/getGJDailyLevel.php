@@ -13,6 +13,13 @@ if($query->rowCount() == 0) exit("-1");
 $dailyID = $daily['feaID'];
 if($type == 1) $dailyID += 100001;
 $timeleft = $midnight - $current;
+
+if(!$oldDailyWeekly){
+	$expire = $daily['timestamp'] + ($type == 0 ? 86400 : 604800);
+	
+	if($expire < $current) exit('0|'.$timeleft);
+}
+
 if(!$daily['webhookSent']) {
 	$gs->sendDailyWebhook($daily['levelID'], $daily['type']);
 	$sent = $db->prepare('UPDATE dailyfeatures SET webhookSent = 1 WHERE feaID = :feaID');
