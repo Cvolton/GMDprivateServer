@@ -2,6 +2,7 @@
 chdir(dirname(__FILE__));
 include "../lib/connection.php";
 include "../lib/mainLib.php";
+include "../../config/misc.php";
 $gs = new mainLib();
 $type = !empty($_POST["type"]) ? $_POST["type"] : (!empty($_POST["weekly"]) ? $_POST["weekly"] : 0);
 $midnight = ($type == 1) ? strtotime("next monday") : strtotime("tomorrow 00:00:00");
@@ -14,9 +15,8 @@ $dailyID = $daily['feaID'];
 if($type == 1) $dailyID += 100001;
 $timeleft = $midnight - $current;
 
-if(!$oldDailyWeekly){
+if(!$oldDailyWeekly) {
 	$expire = $daily['timestamp'] + ($type == 0 ? 86400 : 604800);
-	
 	if($expire < $current) exit('0|'.$timeleft);
 }
 
