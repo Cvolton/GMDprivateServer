@@ -143,8 +143,8 @@ class ipCheck {
 	    foreach ($cf_ipv6s as $cf_ip) {
 	        if (ipInRange::ipv6_in_range($ip, $cf_ip)) {
 	            return true;
-			}
 		}
+	    }
 	    return false;
 	}
 	public function getYourIP() {
