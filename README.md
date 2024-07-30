@@ -45,4 +45,6 @@ Discord Webhooks — https://github.com/renzbobz/DiscordWebhook-PHP — (config/
 
 GD icons — https://github.com/oatmealine/gd-icon-renderer-web — (dashboard/profile/index.php)
 
+Cloudflare IPs List — https://www.cloudflare.com/ips — (incl/lib/mainLib.php & incl/lib/ipCheck.php)
+
 Most of the stuff in generateHash.php has been figured out by pavlukivan and Italian APK Downloader, so credits to them
