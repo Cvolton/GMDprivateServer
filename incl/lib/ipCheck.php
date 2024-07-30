@@ -1,7 +1,7 @@
 <?php
 class ipCheck {
-  public function ipv4inrange($ip, $range) {
-       if (strpos($range, '/') !== false) {
+	public function ipv4inrange($ip, $range) {
+       	if (strpos($range, '/') !== false) {
             // $range is in IP/NETMASK format
             list($range, $netmask) = explode('/', $range, 2);
             if (strpos($netmask, '.') !== false) {
@@ -46,10 +46,71 @@ class ipCheck {
             }
             return false;
         }
- }
-	public function cloudFlareIP($ip) {
-    	$cf_ips = array(
-	        '173.245.48.0/20',
+	}
+    public static function ip2long6($ip) {
+        if (substr_count($ip, '::')) {
+            $ip = str_replace('::', str_repeat(':0000', 8 - substr_count($ip, ':')) . ':', $ip);
+        }
+
+        $ip = explode(':', $ip);
+        $r_ip = '';
+        foreach ($ip as $v) {
+            $r_ip .= str_pad(base_convert($v, 16, 2), 16, 0, STR_PAD_LEFT);
+        }
+
+        return base_convert($r_ip, 2, 10);
+    }
+    public static function ipv6_in_range($ip, $range_ip) {
+        $pieces = explode ("/", $range_ip, 2);
+        $left_piece = $pieces[0];
+        $right_piece = $pieces[1];
+
+        // Extract out the main IP pieces
+        $ip_pieces = explode("::", $left_piece, 2);
+        $main_ip_piece = $ip_pieces[0];
+        $last_ip_piece = $ip_pieces[1];
+
+        // Pad out the shorthand entries.
+        $main_ip_pieces = explode(":", $main_ip_piece);
+        foreach($main_ip_pieces as $key=>$val) {
+            $main_ip_pieces[$key] = str_pad($main_ip_pieces[$key], 4, "0", STR_PAD_LEFT);
+        }
+
+        // Create the first and last pieces that will denote the IPV6 range.
+        $first = $main_ip_pieces;
+        $last = $main_ip_pieces;
+
+        // Check to see if the last IP block (part after ::) is set
+        $last_piece = "";
+        $size = count($main_ip_pieces);
+        if (trim($last_ip_piece) != "") {
+            $last_piece = str_pad($last_ip_piece, 4, "0", STR_PAD_LEFT);
+
+            // Build the full form of the IPV6 address considering the last IP block set
+            for ($i = $size; $i < 7; $i++) {
+                $first[$i] = "0000";
+                $last[$i] = "ffff";
+            }
+            $main_ip_pieces[7] = $last_piece;
+        }
+        else {
+            // Build the full form of the IPV6 address
+            for ($i = $size; $i < 8; $i++) {
+                $first[$i] = "0000";
+                $last[$i] = "ffff";
+            }
+        }
+
+        // Rebuild the final long form IPV6 address
+        $first = ip2long6(implode(":", $first));
+        $last = ip2long6(implode(":", $last));
+        $in_range = ($ip >= $first && $ip <= $last);
+
+        return $in_range;
+    }
+	public function isCloudFlareIP($ip) {
+    	$cf_ipv4s = array(
+			'173.245.48.0/20',
 			'103.21.244.0/22',
 			'103.22.200.0/22',
 			'103.31.4.0/22',
@@ -65,11 +126,25 @@ class ipCheck {
 			'172.64.0.0/13',
 			'131.0.72.0/22'
 	    );
-	    foreach($cf_ips as $cf_ip) {
-	        if($this->ipv4inrange($ip, $cf_ip)) {
+    	$cf_ipv6s = array(
+			'2400:cb00::/32',
+			'2606:4700::/32',
+			'2803:f800::/32',
+			'2405:b500::/32',
+			'2405:8100::/32',
+			'2a06:98c0::/29',
+			'2c0f:f248::/32'
+	    );
+	    foreach ($cf_ipv4s as $cf_ip) {
+	        if (ipInRange::ipv4_in_range($ip, $cf_ip)) {
 	            return true;
 	        }
 	    }
+	    foreach ($cf_ipv6s as $cf_ip) {
+	        if (ipInRange::ipv6_in_range($ip, $cf_ip)) {
+	            return true;
+			}
+		}
 	    return false;
 	}
 	public function getYourIP() {
