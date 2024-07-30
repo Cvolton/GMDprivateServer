@@ -47,7 +47,6 @@ $thirdParty[] = array('https://avatars.githubusercontent.com/u/52624723', 'Foxod
 $customLibrary[] = array(1, 'Geometry Dash', 'https://geometrydashfiles.b-cdn.net', 2); 
 $customLibrary[] = array(2, 'GDPSFH', 'https://sfx.fhgdps.com', 0); 
 $customLibrary[] = array(3, $gdps, null, 2); // Your GDPS's library, don't remove it
-$customLibrary[] = array(4, 'NoxiCloud', 'https://libs.ncservers.xyz', 0);
 
 // SFX converter API links, make one using code from https://github.com/MegaSa1nt/GDPS-ConvertSFX
 // Template: $convertSFXAPI[] = "";
