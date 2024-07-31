@@ -19,12 +19,9 @@ $levelName = ExploitPatch::charclean($_POST["levelName"]);
 $levelDesc = ExploitPatch::remove($_POST["levelDesc"]);
 if($gameVersion < 20){
 	$rawDesc = $levelDesc;
-	$levelDesc = str_replace('+', '-', base64_encode($rawDesc));
-	$levelDesc = str_replace('/', '_', $levelDesc);
+	$levelDesc = ExploitPatch::url_base64_encode($rawDesc);
 } else {
-	$rawDesc = str_replace('-', '+', $levelDesc);
-	$rawDesc = str_replace('_', '/', $rawDesc);
-	$rawDesc = base64_decode($rawDesc);
+	$rawDesc = ExploitPatch::url_base64_decode($levelDesc);
 }
 if (strpos($rawDesc, '<c') !== false) {
 	$tags = substr_count($rawDesc, '<c');
@@ -33,8 +30,7 @@ if (strpos($rawDesc, '<c') !== false) {
 		for ($i = 0; $i < $tags; $i++) {
 			$rawDesc .= '</c>';
 		}
-		$levelDesc = str_replace('+', '-', base64_encode($rawDesc));
-		$levelDesc = str_replace('/', '_', $levelDesc);
+		$levelDesc = ExploitPatch::url_base64_encode($rawDesc);
 	}
 }
 $levelVersion = ExploitPatch::remove($_POST["levelVersion"]);
