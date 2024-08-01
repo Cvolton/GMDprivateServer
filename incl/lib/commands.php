@@ -273,7 +273,7 @@ class Commands {
 			case '!desc':
 			case '!description':
 				if(self::ownCommand("description", $accountID, $targetExtID)) {
-					$desc = base64_encode(ExploitPatch::rucharclean(str_replace($commentarray[0]." ", "", $comment)));
+					$desc = ExploitPatch::url_base64_encode(ExploitPatch::rucharclean(str_replace($commentarray[0]." ", "", $comment)));
 					$query = $db->prepare("UPDATE levels SET levelDesc = :desc WHERE levelID = :levelID");
 					$query->execute([':levelID' => $levelID, ':desc' => $desc]);
 					$query = $db->prepare("INSERT INTO modactions (type, value, timestamp, account, value3) VALUES ('13', :value, :timestamp, :id, :levelID)");
