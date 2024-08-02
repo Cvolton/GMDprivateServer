@@ -381,10 +381,10 @@ function sendReply(id) {
 	if(input.value.trim().length) {
 		document.getElementById("btninput" + id).disabled = true;
 		document.getElementById("btninput" + id).classList.add("btn-block");
-        repsend = new XMLHttpRequest();
-        repsend.open("POST", "profile/replies.php", true);
-        repsend.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        repsend.onload = function () {
+		repsend = new XMLHttpRequest();
+		repsend.open("POST", "profile/replies.php", true);
+		repsend.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+		repsend.onload = function () {
 			document.getElementById("spin" + id).style.display = "none";
 			document.getElementById("btninput" + id).removeAttribute("disabled");
 			document.getElementById("btninput" + id).classList.remove("btn-block");
@@ -399,15 +399,15 @@ function sendReply(id) {
 				reply(id);
 			}
 		}
-        repsend.send("id=" + id + "&body=" + encodeURIComponent(input.value));
+		repsend.send("id=" + id + "&body=" + input.value);
 	}
 }
 function deleteReply(rid, id) {
 	document.getElementById("spin" + id).style.display = "block";
-    del = new XMLHttpRequest();
+	del = new XMLHttpRequest();
     del.open("POST", "profile/replies.php", true);
-    del.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    del.onload = function () {
+	del.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+	del.onload = function () {
 			if(del.response == 1) {
 			document.getElementById("spin" + id).style.display = "none";
 			replyCount--;
@@ -417,7 +417,7 @@ function deleteReply(rid, id) {
 			reply(id);
 		}
 	}
-    del.send("id=" + rid + "&delete=1");
+	del.send("id=" + rid + "&delete=1");
 }
 function b64DecodeUnicode(str) {
     return decodeURIComponent(atob(str).split(\'\').map(function(c) {
