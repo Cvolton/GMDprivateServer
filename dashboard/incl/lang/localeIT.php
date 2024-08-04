@@ -358,8 +358,8 @@ $string["mainSettings"] = "Impostazioni principali";
 $string["takenClanName"] = "Il nome di questo clan è già stato preso!";
 $string["takenClanTag"] = "Questo tag clan è già stato preso!";
 
-$string["suggestedName"] = '<button type="button" onclick="a(\'profile/%1$s\', true, true)" class="accbtn" name="accountID">%1$s</button><text class="dltext"> suggerito <b>%4$s%3$s</b> per</text><text class="levelname">%2$s</text>'; // %1$s - Mod username, %2$s - level name, %3$s - x stars, %4$s - Featured/Epic (%4$s%3$s - Featured, x stars)
-$string["reportedName"] = '%1$s<text class="dltext"> è stato riportato</text><text class="levelname">%2$s</text>';
+$string["suggestedName"] = '<button type="button" onclick="a(\'profile/%1$s\', true, true)" class="accbtn" name="accountID">%1$s</button><text class="dltext"> suggerisce <b>%4$s%3$s</b> per</text><text class="levelname">%2$s</text>'; // %1$s - Mod username, %2$s - level name, %3$s - x stars, %4$s - Featured/Epic (%4$s%3$s - Featured, x stars)
+$string["reportedName"] = '%1$s<text class="dltext"> è stato segnalato</text><text class="levelname">%2$s</text>';
 
 $string['listTable'] = "Liste";
 $string['listTableMod'] = "Liste non elencate";
