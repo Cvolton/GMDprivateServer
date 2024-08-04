@@ -403,7 +403,7 @@ $string['system'] = 'Sistema';
 	REUPLOAD
 */
 
-$string["reuploadBTN"] = "Ricarica";
+$string["reuploadBTN"] = "Carica";
 $string["errorGeneric"] = "È apparso l'errore!";
 $string["smthWentWrong"] = "Qualcosa è andato storto!";
 $string["tryAgainBTN"] = "Riprova";
@@ -601,7 +601,7 @@ $string["Kish!"] = "Vai via!";
 $string["noPermission"] = "Non hai il permesso!";
 $string["noLogin?"] = "Non hai effettuato l'accesso al tuo account!";
 $string["LoginBtn"] = "Accedi all'account";
-$string["dashboard"] = "Ritorna nel pannello";
+$string["dashboard"] = "Ritorna al pannello";
 $string["userID"] = 'ID utente';
 //errors
 $string["errorNoAccWithPerm"] = "Errore: non è stato trovato alcun account con l'autorizzazione '%s'";
