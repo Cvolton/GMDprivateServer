@@ -41,8 +41,7 @@ if(!empty($_POST["levelid"])) {
 	}
 	if($_POST["debug"] == 1) $debug = 1;
 	else $debug = 0;
-	$levelID = $_POST["levelid"];
-	$levelID = preg_replace("/[^0-9]/", '', $levelID);
+	$levelID = ExploitPatch::number($_POST["levelid"]);
 	$url = $_POST["server"];
 	if(mb_substr($url, 0, 4) != 'http') exit($dl->printSong('<div class="form">
 		<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
@@ -54,15 +53,12 @@ if(!empty($_POST["levelid"])) {
 	$post = ['gameVersion' => '22', 'binaryVersion' => '37', 'gdw' => '0', 'levelID' => $levelID, 'secret' => 'Wmfd2893gb7', 'inc' => '0', 'extras' => '0'];
 	$ch = curl_init($url);
 	// "StackOverflow is a lifesaver" - masckmaster 2023
-	if($proxytype == 1){
-		curl_setopt($ch, CURLOPT_PROXY, $host);
-	} elseif($proxytype == 2) {
+	if($proxytype == 1) curl_setopt($ch, CURLOPT_PROXY, $host);
+	elseif($proxytype == 2) {
 		curl_setopt($ch, CURLOPT_PROXY, $host);
 		curl_setopt($ch, CURLOPT_PROXYTYPE, CURLPROXY_SOCKS5);
 	}
-	if(!empty($auth)) { 
-		curl_setopt($ch, CURLOPT_PROXYUSERPWD, $auth); 
-	}
+	if(!empty($auth)) curl_setopt($ch, CURLOPT_PROXYUSERPWD, $auth); 
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 	curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
 	curl_setopt($ch, CURLOPT_PROTOCOLS, CURLPROTO_HTTP | CURLPROTO_HTTPS);
@@ -70,42 +66,22 @@ if(!empty($_POST["levelid"])) {
 	$result = curl_exec($ch);
 	curl_close($ch);
 	if($result == "" OR $result == "-1" OR $result == "No no no") {
-		if($result=="") {
-			$dl->printSong('<div class="form">
-				<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
-				<form class="form__inner" method="post" action="">
-				<p>'.$dl->getLocalizedString("errorConnection").'</p>
-				<button type="button" onclick="a(\'levels/levelReupload.php\', true, false, \'GET\')" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
-				</form>
-			</div>', 'reupload');
-		} else if($result=="-1") {
-			$dl->printSong('<div class="form">
-				<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
-				<form class="form__inner" method="post" action="">
-				<p>'.$dl->getLocalizedString("levelNotFound").'</p>
-				<button type="button" onclick="a(\'levels/levelReupload.php\', true, false, \'GET\')" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
-				</form>
-			</div>', 'reupload');
-		} else {
-			$dl->printSong('<div class="form">
-				<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
-				<form class="form__inner" method="post" action="">
-				<p>'.$dl->getLocalizedString("robtopLol").'</p>
-				<button type="button" onclick="a(\'levels/levelReupload.php\', true, false, \'GET\')" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
-				</form>
-			</div>', 'reupload');
-		}
+		$errorArray = ["" => $dl->getLocalizedString("errorConnection"), '-1' => $dl->getLocalizedString("levelNotFound"), 'No no no' => $dl->getLocalizedString("robtopLol")];
+		$dl->printSong('<div class="form">
+			<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
+			<form class="form__inner" method="post" action="">
+			<p>'.$errorArray[$result].'</p>
+			<button type="button" onclick="a(\'levels/levelReupload.php\', true, false, \'GET\')" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
+			</form>
+		</div>', 'reupload');
 	} else {
 		$level = explode('#', $result)[0];
 		$resultarray = explode(':', $level);
 		$levelarray = array();
 		$x = 1;
-		foreach($resultarray as &$value){
-			if ($x % 2 == 0) {
-				$levelarray["a$arname"] = $value;
-			}else{
-				$arname = $value;
-			}
+		foreach($resultarray as &$value) {
+			if($x % 2 == 0) $levelarray["a$arname"] = $value;
+			else$arname = $value;
 			$x++;
 		}
 		//echo $result;
@@ -113,7 +89,7 @@ if(!empty($_POST["levelid"])) {
 			$dl->printSong('<div class="form">
 				<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 				<form class="form__inner" method="post" action="">
-				<p>'.htmlspecialchars($result,ENT_QUOTES).'</p>
+				<p>'.htmlspecialchars($result, ENT_QUOTES).'</p>
 				<button type="button" onclick="a(\'levels/levelReupload.php\', true, false, \'GET\')" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 				</form>
 			</div>', 'reupload');
@@ -124,88 +100,68 @@ if(!empty($_POST["levelid"])) {
 		$gameVersion = chkarray($levelarray["a13"]);
 		if(substr($levelString,0,2) == 'eJ') {
 			$levelString = gzuncompress(ExploitPatch::url_base64_decode($levelString));
-			if($gameVersion > 18) {
-				$gameVersion = 18;
-			}
+			if($gameVersion > 18) $gameVersion = 18;
 		}
 		//check if exists
-		$query = $db->prepare("SELECT count(*) FROM levels WHERE originalReup = :lvl OR original = :lvl");
-		$query->execute([':lvl' => $levelarray["a1"]]);
-		if($query->fetchColumn() == 0){
-			$parsedurl = parse_url($url);
-			if($parsedurl["host"] == $_SERVER['SERVER_NAME']){
-				$dl->printSong('<div class="form">
-					<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
-					<form class="form__inner" method="post" action="">
-					<p>'.$dl->getLocalizedString("sameServers").'</p>
-					<button type="button" onclick="a(\'levels/levelReupload.php\', true, false, \'GET\')" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
-					</form>
-				</div>', 'reupload');
-				die();
-			}
-			$hostname = $gs->getIP();
-			//values
-			$twoPlayer = chkarray($levelarray["a31"]);
-			$songID = chkarray($levelarray["a35"]);
-			$coins = chkarray($levelarray["a37"]);
-			$reqstar = chkarray($levelarray["a39"]);
-			$extraString = chkarray($levelarray["a36"], "");
-			$starStars = chkarray($levelarray["a18"]);
-			$isLDM = chkarray($levelarray["a40"]);
-			$password = chkarray($levelarray["a27"]);
-			$songIDs = isset($levelarray["a52"]) ? $levelarray["a52"] : '';
-			$sfxIDs = isset($levelarray["a53"]) ? $levelarray["a53"] : '';
-			$ts = chkarray($levelarray["a57"]);
-			if($password != "0"){
-				$password = XORCipher::cipher(ExploitPatch::url_base64_decode($password),26364);
-			}
-			$starCoins = 0;
-			$starDiff = 0;
-			$starDemon = 0;
-			$starAuto = 0;
-			$starStars = 0;
-			$targetUserID = chkarray($levelarray["a6"]);
-			//linkacc
-			if($automaticID) {
-				$reupUID = $gs->getUserID($_SESSION["accountID"]);
-				$reupAID = $_SESSION["accountID"];
-			}
-			//query
-			$query = $db->prepare("INSERT INTO levels (levelName, gameVersion, binaryVersion, userName, levelDesc, levelVersion, levelLength, audioTrack, auto, password, original, twoPlayer, songID, objects, coins, requestedStars, extraString, levelString, levelInfo, secret, uploadDate, updateDate, originalReup, userID, extID, unlisted, hostname, starStars, starCoins, starDifficulty, starDemon, starAuto, isLDM, songIDs, sfxIDs, ts)
-												VALUES (:name ,:gameVersion, '27', 'Reupload', :desc, :version, :length, :audiotrack, '0', :password, :originalReup, :twoPlayer, :songID, '0', :coins, :reqstar, :extraString, :levelString, '', '', '$uploadDate', '$uploadDate', :originalReup, :userID, :extID, '0', :hostname, :starStars, :starCoins, :starDifficulty, :starDemon, :starAuto, :isLDM, :songIDs, :sfxIDs, :ts)");
-			$query->execute([':password' => $password, ':starDemon' => $starDemon, ':starAuto' => $starAuto, ':gameVersion' => $gameVersion, ':name' => strip_tags($levelarray["a2"]), ':desc' => strip_tags($levelarray["a3"]), ':version' => $levelarray["a5"], ':length' => $levelarray["a15"], ':audiotrack' => $levelarray["a12"], ':twoPlayer' => $twoPlayer, ':songID' => $songID, ':coins' => $coins, ':reqstar' => $reqstar, ':extraString' => $extraString, ':levelString' => "", ':originalReup' => $levelarray["a1"], ':hostname' => $hostname, ':starStars' => 0, ':starCoins' => 0, ':starDifficulty' => $starDiff, ':userID' => $reupUID, ':extID' => $reupAID, ':isLDM' => $isLDM, ':songIDs' => $songIDs, ':sfxIDs' => $sfxIDs, ':ts' => $ts]);
-			$levelID = $db->lastInsertId();
-			file_put_contents("../".$dbPath."data/levels/$levelID", $levelString);
-		if($debug == 1) {
+		$parsedurl = parse_url($url);
+		if($parsedurl["host"] == $_SERVER['SERVER_NAME']) {
 			$dl->printSong('<div class="form">
-					<h1>'.$dl->getLocalizedString("levelReupload").'</h1>
-					<form class="form__inner" method="post" action="">
-					<p>'.$dl->getLocalizedString("levelReuploaded").' '.$levelID.'!</p>
-					<details style="color:white">
-					<summary>Debug</summary>
-					'.$result.'
-					</details>
-					<button type="button" onclick="a(\'levels/levelReupload.php\', true, false, \'GET\')" class="btn-song">'.$dl->getLocalizedString("oneMoreLevel?").'</button>
-					</form>
-				</div>', 'reupload');
-		} else {
-				$dl->printSong('<div class="form">
-					<h1>'.$dl->getLocalizedString("levelReupload").'</h1>
-					<form class="form__inner" method="post" action="">
-					<p>'.$dl->getLocalizedString("levelReuploaded").' '.$levelID.'</p>
-					<button type="button" onclick="a(\'levels/levelReupload.php\', true, false, \'GET\')" class="btn-song">'.$dl->getLocalizedString("oneMoreLevel?").'</button>
-					</form>
-				</div>', 'reupload');
+				<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
+				<form class="form__inner" method="post" action="">
+				<p>'.$dl->getLocalizedString("sameServers").'</p>
+				<button type="button" onclick="a(\'levels/levelReupload.php\', true, false, \'GET\')" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
+				</form>
+			</div>', 'reupload');
+			die();
 		}
-		} else {
-				$dl->printSong('<div class="form">
-					<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
-					<form class="form__inner" method="post" action="">
-					<p>'.$dl->getLocalizedString("levelAlreadyReuploaded").'</p>
-					<button type="button" onclick="a(\'levels/levelReupload.php\', true, false, \'GET\')" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
-					</form>
-				</div>', 'reupload');
+		$query = $db->prepare("SELECT levelID FROM levels WHERE originalReup = :lvl AND originalServer = :server");
+		$query->execute([':lvl' => $levelarray["a1"], ':server' => $parsedurl["host"]]);
+		$hostname = $gs->getIP();
+		//values
+		$twoPlayer = chkarray($levelarray["a31"]);
+		$songID = chkarray($levelarray["a35"]);
+		$coins = chkarray($levelarray["a37"]);
+		$reqstar = chkarray($levelarray["a39"]);
+		$extraString = chkarray($levelarray["a36"], "");
+		$starStars = chkarray($levelarray["a18"]);
+		$isLDM = chkarray($levelarray["a40"]);
+		$password = chkarray($levelarray["a27"]);
+		$songIDs = isset($levelarray["a52"]) ? $levelarray["a52"] : '';
+		$sfxIDs = isset($levelarray["a53"]) ? $levelarray["a53"] : '';
+		$ts = chkarray($levelarray["a57"]);
+		if($password != "0") $password = XORCipher::cipher(ExploitPatch::url_base64_decode($password), 26364);
+		$starCoins = 0;
+		$starDiff = 0;
+		$starDemon = 0;
+		$starAuto = 0;
+		$starStars = 0;
+		$targetUserID = chkarray($levelarray["a6"]);
+		//linkacc
+		if($automaticID) {
+			$reupUID = $gs->getUserID($_SESSION["accountID"]);
+			$reupAID = $_SESSION["accountID"];
 		}
+		//query
+		$levelID = $query->fetchColumn();
+		if(!$levelID) {
+			$query = $db->prepare("INSERT INTO levels (levelName, gameVersion, binaryVersion, userName, levelDesc, levelVersion, levelLength, audioTrack, auto, password, original, twoPlayer, songID, objects, coins, requestedStars, extraString, levelString, levelInfo, secret, uploadDate, updateDate, originalReup, originalServer, userID, extID, unlisted, hostname, starStars, starCoins, starDifficulty, starDemon, starAuto, isLDM, songIDs, sfxIDs, ts) VALUES (:name ,:gameVersion, '27', 'Reupload', :desc, :version, :length, :audiotrack, '0', :password, :originalReup, :twoPlayer, :songID, '0', :coins, :reqstar, :extraString, :levelString, '', '', '$uploadDate', '$uploadDate', :originalReup, :originalServer, :userID, :extID, '0', :hostname, :starStars, :starCoins, :starDifficulty, :starDemon, :starAuto, :isLDM, :songIDs, :sfxIDs, :ts)");
+			$query->execute([':password' => $password, ':starDemon' => $starDemon, ':starAuto' => $starAuto, ':gameVersion' => $gameVersion, ':name' => strip_tags($levelarray["a2"]), ':desc' => strip_tags($levelarray["a3"]), ':version' => $levelarray["a5"], ':length' => $levelarray["a15"], ':audiotrack' => $levelarray["a12"], ':twoPlayer' => $twoPlayer, ':songID' => $songID, ':coins' => $coins, ':reqstar' => $reqstar, ':extraString' => $extraString, ':levelString' => "", ':originalReup' => $levelarray["a1"], ':originalServer' => $parsedurl['host'], ':hostname' => $hostname, ':starStars' => 0, ':starCoins' => 0, ':starDifficulty' => $starDiff, ':userID' => $reupUID, ':extID' => $reupAID, ':isLDM' => $isLDM, ':songIDs' => $songIDs, ':sfxIDs' => $sfxIDs, ':ts' => $ts]);
+			$levelID = $db->lastInsertId();
+		}
+		file_put_contents("../".$dbPath."data/levels/$levelID", $levelString);
+		$dl->printSong('<div class="form">
+			<h1>'.$dl->getLocalizedString("levelReupload").'</h1>
+			<form class="form__inner" method="post" action="">
+			<p>'.$dl->getLocalizedString("levelReuploaded").' '.$levelID.'</p>
+			'.
+			($debug == 1 ? '<details style="color:white">
+			<summary>Debug</summary>
+			'.$result.'
+			</details>' : '')
+			.'
+			<button type="button" onclick="a(\'levels/levelReupload.php\', true, false, \'GET\')" class="btn-song">'.$dl->getLocalizedString("oneMoreLevel?").'</button>
+			</form>
+		</div>', 'reupload');
 	}
 } else {
 	$dl->printSong('<div class="form">

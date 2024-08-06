@@ -185,7 +185,7 @@ switch($type){
 		$order = "likes";
 		break;
 	case 5:
-		$params[] = "levels.userID = '$str'";
+		$params = array("levels.userID = '$str'");
 		break;
 	case 6: //featured
 	case 17: //featured GDW
@@ -221,17 +221,17 @@ switch($type){
 		break;
 	case 21: //DAILY SAFE
 		$morejoins = "INNER JOIN dailyfeatures ON levels.levelID = dailyfeatures.levelID";
-		$params[] = "dailyfeatures.type = 0";
+		$params[] = "dailyfeatures.type = 0 AND timestamp < ".time();
 		$order = "dailyfeatures.feaID";
 		break;
 	case 22: //WEEKLY SAFE
 		$morejoins = "INNER JOIN dailyfeatures ON levels.levelID = dailyfeatures.levelID";
-		$params[] = "dailyfeatures.type = 1";
+		$params[] = "dailyfeatures.type = 1 AND timestamp < ".time();
 		$order = "dailyfeatures.feaID";
 		break;
 	case 23: //EVENT SAFE (assumption)
 		$morejoins = "INNER JOIN dailyfeatures ON levels.levelID = dailyfeatures.levelID";
-		$params[] = "dailyfeatures.type = 2";
+		$params[] = "dailyfeatures.type = 2 AND timestamp < ".time();
 		$order = "dailyfeatures.feaID";
 		break;
 	case 25: // LIST LEVELS

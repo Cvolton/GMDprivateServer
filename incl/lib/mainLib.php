@@ -633,7 +633,7 @@ class mainLib {
 		return false;
 	}
 	public function isCloudFlareIP($ip) {
-    	$cf_ipv4s = array(
+		$cf_ipv4s = array(
 			'173.245.48.0/20',
 			'103.21.244.0/22',
 			'103.22.200.0/22',
@@ -650,7 +650,7 @@ class mainLib {
 			'172.64.0.0/13',
 			'131.0.72.0/22'
 	    );
-    	$cf_ipv6s = array(
+		$cf_ipv6s = array(
 			'2400:cb00::/32',
 			'2606:4700::/32',
 			'2803:f800::/32',
@@ -659,15 +659,11 @@ class mainLib {
 			'2a06:98c0::/29',
 			'2c0f:f248::/32'
 	    );
-	    foreach ($cf_ipv4s as $cf_ip) {
-	        if (ipInRange::ipv4_in_range($ip, $cf_ip)) {
-	            return true;
-	        }
+	    foreach($cf_ipv4s as $cf_ip) {
+	        if(ipInRange::ipv4_in_range($ip, $cf_ip)) return true;
 	    }
-	    foreach ($cf_ipv6s as $cf_ip) {
-	        if (ipInRange::ipv6_in_range($ip, $cf_ip)) {
-	            return true;
-		}
+	    foreach($cf_ipv6s as $cf_ip) {
+	        if(ipInRange::ipv6_in_range($ip, $cf_ip)) return true;
 	    }
 	    return false;
 	}
@@ -1146,7 +1142,8 @@ class mainLib {
 									'authorID' => $song[2],
 									'size' => $song[3],
 									'seconds' => $song[4],
-									'tags' => $tags
+									'tags' => $tags,
+									'ncs' => $song[6] ?? 0
 								];
 								break;
 							case 2:
@@ -1238,7 +1235,8 @@ class mainLib {
 					'authorID' => ($serverIDs[null]. 0 .$folderID[$authorName]),
 					'size' => ($customSongs['size'] * 1024 * 1024),
 					'seconds' => $customSongs['duration'],
-					'tags' => '.'.$serverIDs[null].'.'.$serverIDs[null]. 0 .$customSongs['reuploadID'].'.'
+					'tags' => '.'.$serverIDs[null].'.'.$serverIDs[null]. 0 .$customSongs['reuploadID'].'.',
+					'ncs' => 0
 				];
 			}
 			foreach($library['authors'] AS &$authorList) $authorsEncrypted[] = implode(',', $authorList);

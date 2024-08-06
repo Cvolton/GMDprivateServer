@@ -136,19 +136,19 @@ class ipCheck {
 			'2c0f:f248::/32'
 	    );
 	    foreach ($cf_ipv4s as $cf_ip) {
-	        if (ipInRange::ipv4_in_range($ip, $cf_ip)) {
+	        if ($this->ipv4inrange($ip, $cf_ip)) {
 	            return true;
 	        }
 	    }
 	    foreach ($cf_ipv6s as $cf_ip) {
-	        if (ipInRange::ipv6_in_range($ip, $cf_ip)) {
+	        if ($this->ipv6_in_range($ip, $cf_ip)) {
 	            return true;
 		}
 	    }
 	    return false;
 	}
 	public function getYourIP() {
-		if (isset($_SERVER['HTTP_CF_CONNECTING_IP']) && $this->cloudFlareIP($_SERVER['REMOTE_ADDR'])) //CLOUDFLARE REVERSE PROXY SUPPORT
+		if (isset($_SERVER['HTTP_CF_CONNECTING_IP']) && $this->isCloudFlareIP($_SERVER['REMOTE_ADDR'])) //CLOUDFLARE REVERSE PROXY SUPPORT
   			return $_SERVER['HTTP_CF_CONNECTING_IP'];
 		if(isset($_SERVER['HTTP_X_FORWARDED_FOR']) && $this->ipv4inrange($_SERVER['REMOTE_ADDR'], '127.0.0.0/8')) //LOCALHOST REVERSE PROXY SUPPORT (7m.pl)
 			return $_SERVER['HTTP_X_FORWARDED_FOR'];

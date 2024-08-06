@@ -181,12 +181,28 @@ if(!$installed) {
 							break;
 					}
 				}
-				$db->query('ALTER TABLE `users` DROP `isBanned`');
-				$db->query('ALTER TABLE `users` DROP `isCreatorBanned`');
-				$db->query('ALTER TABLE `users` DROP `isUploadBanned`');
-				$db->query('ALTER TABLE `users` DROP `isCommentBanned`');
-				$db->query('ALTER TABLE `users` DROP `banReason`');
+				$check = $db->query("SHOW COLUMNS FROM `users` LIKE 'isBanned'");
+					$exist = $check->fetchAll();
+					if(!empty($exist)) $db->query('ALTER TABLE `users` DROP `isBanned`');
+				$check = $db->query("SHOW COLUMNS FROM `users` LIKE 'isCreatorBanned'");
+					$exist = $check->fetchAll();
+					if(!empty($exist)) $db->query('ALTER TABLE `users` DROP `isCreatorBanned`');
+				$check = $db->query("SHOW COLUMNS FROM `users` LIKE 'isUploadBanned'");
+					$exist = $check->fetchAll();
+					if(!empty($exist)) $db->query('ALTER TABLE `users` DROP `isUploadBanned`');
+				$check = $db->query("SHOW COLUMNS FROM `users` LIKE 'isCommentBanned'");
+					$exist = $check->fetchAll();
+					if(!empty($exist)) $db->query('ALTER TABLE `users` DROP `isCommentBanned`');
+				$check = $db->query("SHOW COLUMNS FROM `users` LIKE 'banReason'");
+					$exist = $check->fetchAll();
+					if(!empty($exist)) $db->query('ALTER TABLE `users` DROP `banReason`');
 			}
+		$check = $db->query("SHOW COLUMNS FROM `roles` LIKE 'profilecommandDiscord'");
+			$exist = $check->fetchAll();
+			if(!empty($exist)) $db->query("ALTER TABLE `roles` DROP `profilecommandDiscord`");
+		$check = $db->query("SHOW COLUMNS FROM `levels` LIKE 'originalServer'");
+			$exist = $check->fetchAll();
+			if(!empty($exist)) $db->query("ALTER TABLE `levels` ADD `originalServer` VARCHAR(255) NOT NULL DEFAULT '' AFTER `originalReup`");
 	$lines = file($dbPath.'config/dashboard.php');
 	$first_line = $lines[2];
 	$lines = array_slice($lines, 1 + 2);
