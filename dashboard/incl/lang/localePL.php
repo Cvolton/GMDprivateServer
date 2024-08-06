@@ -77,7 +77,7 @@ $string["statsSection"] = "Statystyki";
 $string["dailyTable"] = "Poziomy daily";
 $string["modActionsList"] = "Akcje moderatora";
 $string["modActions"] = "Moderatorzy serwera";
-$string["gauntletTable"] = Lista Gauntletów";
+$string["gauntletTable"] = "Lista Gauntletów";
 $string["packTable"] = "Lista Map Packów";
 $string["leaderboardTime"] = "Progres leaderboardów";
 
