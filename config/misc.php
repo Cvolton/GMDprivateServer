@@ -20,6 +20,18 @@ $orderMapPacksByStars = true;
 $sakujes = true;
 
 /*
+	Count unlisted rated levels in the creator points calculation (cron.php / fixcps.php)
+
+	Whether you want unlisted rated levels to be counted in the creator points calculation or not
+
+	True - Count unlisted rated levels in the creator points calculation
+	False - Do not count unlisted rated levels in the creator points calculation
+
+*/
+
+$unlistedCreatorPoints = false;
+
+/*
 	Comment length limiter
 	
 	This setting will enable comment length limiter to prevent flooding with scripts
