@@ -34,16 +34,6 @@
 */
 
 class ipInRange {
-
-
-    // decbin32
-    // In order to simplify working with IP addresses (in binary) and their
-    // netmasks, it is easier to ensure that the binary strings are padded
-    // with zeros out to 32 characters - IP addresses are 32 bit numbers
-    public static function decbin32 ($dec) {
-        return str_pad(decbin($dec), 32, '0', STR_PAD_LEFT);
-    }
-
     // ipv4_in_range
     // This function takes 2 arguments, an IP address and a "range" in several
     // different formats.
@@ -156,7 +146,7 @@ class ipInRange {
         // Rebuild the final long form IPV6 address
         $final_ip = implode(":", $main_ip_pieces);
 
-        return ip2long6($final_ip);
+        return self::ip2long6($final_ip);
     }
 
 
@@ -207,8 +197,8 @@ class ipInRange {
         }
 
         // Rebuild the final long form IPV6 address
-        $first = ip2long6(implode(":", $first));
-        $last = ip2long6(implode(":", $last));
+        $first = self::ip2long6(implode(":", $first));
+        $last = self::ip2long6(implode(":", $last));
         $in_range = ($ip >= $first && $ip <= $last);
 
         return $in_range;
