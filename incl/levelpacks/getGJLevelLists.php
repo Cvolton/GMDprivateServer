@@ -88,7 +88,7 @@ switch($type){
 		$order = "uploadDate";
 		break;
 	case 5:
-		$params[] = "lists.accountID = '$str'";
+		$params = array("lists.accountID = '$str'");
 		break;
 	case 6: // TOP LISTS
 		$params[] = "lists.starStars > 0";
