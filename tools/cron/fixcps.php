@@ -19,33 +19,58 @@ if(function_exists("set_time_limit")) set_time_limit(0);
 $cplog = "";
 $people = array();
 include "../../incl/lib/connection.php";
+include "../../config/misc.php";
 //getting users
-$query = $db->prepare("UPDATE users
+if ($unlistedCreatorPoints) $query = $db->prepare("UPDATE users
 	LEFT JOIN
 	(
-	    SELECT usersTable.userID, (IFNULL(starredTable.starred, 0) + IFNULL(featuredTable.featured, 0) + (IFNULL(epicTable.epic,0))) as CP FROM (
-            SELECT userID FROM users
-        ) AS usersTable
-        LEFT JOIN
-        (
-	        SELECT count(*) as starred, userID FROM levels WHERE starStars != 0 AND isCPShared = 0 GROUP BY(userID) 
-	    ) AS starredTable ON usersTable.userID = starredTable.userID
-	    LEFT JOIN
-	    (
-	        SELECT count(*) as featured, userID FROM levels WHERE starFeatured != 0 AND isCPShared = 0 GROUP BY(userID) 
-	    ) AS featuredTable ON usersTable.userID = featuredTable.userID
-	    LEFT JOIN
-	    (
-	        SELECT SUM(starEpic) as epic, userID FROM levels WHERE starEpic != 0 AND isCPShared = 0 GROUP BY(userID) 
-	    ) AS epicTable ON usersTable.userID = epicTable.userID
+		SELECT usersTable.userID, (IFNULL(starredTable.starred, 0) + IFNULL(featuredTable.featured, 0) + (IFNULL(epicTable.epic,0))) as CP FROM (
+			SELECT userID FROM users
+		) AS usersTable
+		LEFT JOIN
+		(
+			SELECT count(*) as starred, userID FROM levels WHERE starStars != 0 AND isCPShared = 0 GROUP BY(userID) 
+		) AS starredTable ON usersTable.userID = starredTable.userID
+		LEFT JOIN
+		(
+			SELECT count(*) as featured, userID FROM levels WHERE starFeatured != 0 AND isCPShared = 0 GROUP BY(userID) 
+		) AS featuredTable ON usersTable.userID = featuredTable.userID
+		LEFT JOIN
+		(
+			SELECT SUM(starEpic) as epic, userID FROM levels WHERE starEpic != 0 AND isCPShared = 0 GROUP BY(userID) 
+		) AS epicTable ON usersTable.userID = epicTable.userID
+	) calculated
+	ON users.userID = calculated.userID
+	SET users.creatorPoints = IFNULL(calculated.CP, 0)");
+
+else $query = $db->prepare("UPDATE users
+	LEFT JOIN
+	(
+		SELECT usersTable.userID, (IFNULL(starredTable.starred, 0) + IFNULL(featuredTable.featured, 0) + (IFNULL(epicTable.epic,0))) as CP FROM (
+			SELECT userID FROM users
+		) AS usersTable
+		LEFT JOIN
+		(
+			SELECT count(*) as starred, userID FROM levels WHERE starStars != 0 AND isCPShared = 0 AND unlisted = 0 AND unlisted2 = 0 GROUP BY(userID) 
+		) AS starredTable ON usersTable.userID = starredTable.userID
+		LEFT JOIN
+		(
+			SELECT count(*) as featured, userID FROM levels WHERE starFeatured != 0 AND isCPShared = 0 AND unlisted = 0 AND unlisted2 = 0 GROUP BY(userID) 
+		) AS featuredTable ON usersTable.userID = featuredTable.userID
+		LEFT JOIN
+		(
+			SELECT SUM(starEpic) as epic, userID FROM levels WHERE starEpic != 0 AND isCPShared = 0 AND unlisted = 0 AND unlisted2 = 0 GROUP BY(userID) 
+		) AS epicTable ON usersTable.userID = epicTable.userID
 	) calculated
 	ON users.userID = calculated.userID
 	SET users.creatorPoints = IFNULL(calculated.CP, 0)");
 $query->execute();
+
 /*
 	CP SHARING
 */
-$query = $db->prepare("SELECT levelID, userID, starStars, starFeatured, starEpic FROM levels WHERE isCPShared = 1");
+if ($unlistedCreatorPoints) $query = $db->prepare("SELECT levelID, userID, starStars, starFeatured, starEpic FROM levels WHERE isCPShared = 1");
+else $query = $db->prepare("SELECT levelID, userID, starStars, starFeatured, starEpic FROM levels WHERE isCPShared = 1 AND unlisted = 0 AND unlisted2 = 0");
 $query->execute();
 $result = $query->fetchAll();
 foreach($result as $level){
@@ -76,10 +101,11 @@ $query = $db->prepare("SELECT level1,level2,level3,level4,level5 FROM gauntlets"
 $query->execute();
 $result = $query->fetchAll();
 //getting gauntlets
-foreach($result as $gauntlet){
+foreach($result as $gauntlet) {
 	//getting lvls
 	for($x = 1; $x < 6; $x++){
-		$query = $db->prepare("SELECT userID, levelID FROM levels WHERE levelID = :levelID");
+		if ($unlistedCreatorPoints) $query = $db->prepare("SELECT userID, levelID FROM levels WHERE levelID = :levelID");
+		else $query = $db->prepare("SELECT userID, levelID FROM levels WHERE levelID = :levelID AND unlisted = 0 AND unlisted2 = 0");
 		$query->execute([':levelID' => $gauntlet["level".$x]]);
 		$result = $query->fetch();
 		//getting users
@@ -96,9 +122,10 @@ $query = $db->prepare("SELECT levelID FROM dailyfeatures WHERE timestamp < :time
 $query->execute([':time' => time()]);
 $result = $query->fetchAll();
 //getting gauntlets
-foreach($result as $daily){
+foreach($result as $daily) {
 	//getting lvls
-	$query = $db->prepare("SELECT userID, levelID FROM levels WHERE levelID = :levelID");
+	if ($unlistedCreatorPoints) $query = $db->prepare("SELECT userID, levelID FROM levels WHERE levelID = :levelID");
+	else $query = $db->prepare("SELECT userID, levelID FROM levels WHERE levelID = :levelID AND unlisted = 0 AND unlisted2 = 0");
 	$query->execute([':levelID' => $daily["levelID"]]);
 	$result = $query->fetch();
 	//getting users
