@@ -88,7 +88,11 @@ switch($type){
 		$order = "uploadDate";
 		break;
 	case 5:
-		$params = array("lists.accountID = '$str'");
+		if(!empty($_POST['accountID'])) {
+			$accountID = GJPCheck::getAccountIDOrDie();
+			if($gs->getUserID($accountID, $gs->getAccountName($accountID)) == $str) $params = [];
+		}	
+		$params[]= "lists.accountID = '$str'";
 		break;
 	case 6: // TOP LISTS
 		$params[] = "lists.starStars > 0";

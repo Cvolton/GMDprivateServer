@@ -84,7 +84,7 @@ if(!empty($_POST["gauntlet"])){
 	$ordergauntlet = true;
 	$order = "starStars";
 	$gauntlet = ExploitPatch::remove($_POST["gauntlet"]);
-	$query=$db->prepare("SELECT * FROM gauntlets WHERE ID = :gauntlet");
+	$query = $db->prepare("SELECT * FROM gauntlets WHERE ID = :gauntlet");
 	$query->execute([':gauntlet' => $gauntlet]);
 	$actualgauntlet = $query->fetch();
 	$str = $actualgauntlet["level1"].",".$actualgauntlet["level2"].",".$actualgauntlet["level3"].",".$actualgauntlet["level4"].",".$actualgauntlet["level5"];
@@ -185,7 +185,11 @@ switch($type){
 		$order = "likes";
 		break;
 	case 5:
-		$params = array("levels.userID = '$str'");
+		if(!empty($_POST['accountID'])) {
+			$accountID = GJPCheck::getAccountIDOrDie();
+			if($gs->getUserID($accountID, $gs->getAccountName($accountID)) == $str) $params = [];
+		}	
+		$params[] = "levels.userID = '$str'";
 		break;
 	case 6: //featured
 	case 17: //featured GDW
