@@ -69,7 +69,8 @@ $query->execute();
 /*
 	CP SHARING
 */
-$query = $db->prepare("SELECT levelID, userID, starStars, starFeatured, starEpic FROM levels WHERE isCPShared = 1");
+if ($unlistedCreatorPoints) $query = $db->prepare("SELECT levelID, userID, starStars, starFeatured, starEpic FROM levels WHERE isCPShared = 1");
+else $query = $db->prepare("SELECT levelID, userID, starStars, starFeatured, starEpic FROM levels WHERE isCPShared = 1 AND unlisted = 0 AND unlisted2 = 0");
 $query->execute();
 $result = $query->fetchAll();
 foreach($result as $level){
