@@ -99,7 +99,7 @@ if(!empty($_POST["len"])){
 if($len != "-" AND !empty($len)){
 	$params[] = "levelLength IN ($len)";
 }
-if(!empty($_POST["featured"])) $epicParams[] = "starFeatured = 1";
+if(!empty($_POST["featured"])) $epicParams[] = "starFeatured > 0";
 if(!empty($_POST["epic"])) $epicParams[] = "starEpic = 1";
 if(!empty($_POST["mythic"])) $epicParams[] = "starEpic = 2";
 if(!empty($_POST["legendary"])) $epicParams[] = "starEpic = 3";
