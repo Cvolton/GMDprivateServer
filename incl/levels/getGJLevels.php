@@ -40,7 +40,7 @@ if(!empty($_POST["diff"])){
 
 
 //ADDITIONAL PARAMETERS
-if($showAllLevels) {
+if(!$showAllLevels) {
 	if($gameVersion==0){
 		$params[] = "levels.gameVersion <= 18";
 	}else{
