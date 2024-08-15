@@ -82,25 +82,16 @@ foreach($result as &$action) {
         $iconType = ($action['iconType'] > 8) ? 0 : $action['iconType'];
         $iconTypeMap = [0 => ['type' => 'cube', 'value' => $action['accIcon']], 1 => ['type' => 'ship', 'value' => $action['accShip']], 2 => ['type' => 'ball', 'value' => $action['accBall']], 3 => ['type' => 'ufo', 'value' => $action['accBird']], 4 => ['type' => 'wave', 'value' => $action['accDart']], 5 => ['type' => 'robot', 'value' => $action['accRobot']], 6 => ['type' => 'spider', 'value' => $action['accSpider']], 7 => ['type' => 'swing', 'value' => $action['accSwing']], 8 => ['type' => 'jetpack', 'value' => $action['accJetpack']]];
         $iconValue = $iconTypeMap[$iconType]['value'] ?: 1;
-        $avatarImg = '<img src="https://gdicon.oat.zone/icon.png?type=' . $iconTypeMap[$iconType]['type'] . '&value=' . $iconValue . '&color1=' . $action['color1'] . '&color2=' . $action['color2'] . ($action['accGlow'] != 0 ? '&glow=1&color3=' . $action['color3'] : '') . '" alt="avatar" style="width: 31px; margin-right: 10px; object-fit: contain;">';
+        $avatarImg = '<img src="https://gdicon.oat.zone/icon.png?type=' . $iconTypeMap[$iconType]['type'] . '&value=' . $iconValue . '&color1=' . $action['color1'] . '&color2=' . $action['color2'] . ($action['accGlow'] != 0 ? '&glow=' . $action['accGlow'] . '&color3=' . $action['color3'] : '') . '" alt="avatar" style="width: 31px; margin-right: 10px; object-fit: contain;">';
 
     // Badge management
     $badgeImg = '';
-    $accountID = $action['extID']; // Get the accountID from the action
-    
-    // Finds the roleID associated with the accountID from the roleassign table
     $queryRoleID = $db->prepare("SELECT roleID FROM roleassign WHERE accountID = :accountID");
-    $queryRoleID->execute([':accountID' => $accountID]);
-    $roleAssignData = $queryRoleID->fetch(PDO::FETCH_ASSOC);
-    if ($roleAssignData) {
-        $roleID = $roleAssignData['roleID'];
-        
-        // Finds the modBadgeLevel associated with the roleID from the roles table
+    $queryRoleID->execute([':accountID' => $accountID]);	
+    if ($roleAssignData = $queryRoleID->fetch(PDO::FETCH_ASSOC)) {        
         $queryBadgeLevel = $db->prepare("SELECT modBadgeLevel FROM roles WHERE roleID = :roleID");
-        $queryBadgeLevel->execute([':roleID' => $roleID]);
-        $roleData = $queryBadgeLevel->fetch(PDO::FETCH_ASSOC);
-        $modBadgeLevel = $roleData['modBadgeLevel'] ?? 0;
-        if ($modBadgeLevel >= 1 && $modBadgeLevel <= 3) {
+        $queryBadgeLevel->execute([':roleID' => $roleAssignData['roleID']]);	    
+        if (($modBadgeLevel = $queryBadgeLevel->fetchColumn() ?? 0) >= 1 && $modBadgeLevel <= 3) {
             $badgeImg = '<img src="https://raw.githubusercontent.com/Fenix668/GMDprivateServer/master/dashboard/modBadge_0' . $modBadgeLevel . '_001.png" alt="badge" style="width: 34px; height: 34px; margin-left: 7px; margin-top: -3px; vertical-align: middle;">';
         }
     }	
