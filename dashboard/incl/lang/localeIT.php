@@ -62,7 +62,7 @@ $string["changeUsername"] = "Cambia nome utente";
 $string["unlistedLevels"] = "I tuoi livelli non elencati";
 
 $string["manageSongs"] = "Gestisci i brani";
-$string["gauntletManage"] = "Gestisci i guanti";
+$string["gauntletManage"] = "Gestisci i gauntlets";
 $string["suggestLevels"] = "Livelli suggeriti";
 
 $string["modTools"] = "Strumenti di moderazione";
@@ -575,12 +575,12 @@ $string["modAction13"] = "Descrizione del livello modificata";
 $string["modAction14"] = "LDM abilitato/disabilitato";
 $string["modAction15"] = "Classifica non/vietata";
 $string["modAction16"] = "Modifica dell'ID del brano";
-$string["modAction17"] = "Creato un pacchetto mappe";
-$string["modAction18"] = "Creato un guanto di sfida";
+$string["modAction17"] = "Creato un map pack";
+$string["modAction18"] = "Creato un gauntlet";
 $string["modAction19"] = "Brano cambiato";
 $string["modAction20"] = "Concesso un moderatore al giocatore";
-$string["modAction21"] = "Pacchetto mappe modificato";
-$string["modAction22"] = "Guanto modificato";
+$string["modAction21"] = "Map pack modificato";
+$string["modAction22"] = "Gauntlet modificato";
 $string["modAction23"] = "Missione modificata";
 $string["modAction24"] = "Riassegnato un giocatore";
 $string["modAction25"] = "Creata una missione";

@@ -60,6 +60,8 @@ if(!empty($_POST["userID"]) AND !empty($_POST[$type])) {
 	}
 	$query = $db->prepare("UPDATE accounts SET userName=:userName, salt=:salt WHERE accountID=:accountid");	
 	$query->execute([':userName' => $newnick, ':salt' => $salt, ':accountid' => $accID]);
+	$query = $db->prepare("UPDATE levels SET userName=:userName WHERE userName=:oldUserName");
+    $query->execute([':userName' => $newnick, ':oldUserName' => $gs->getUserName($accID)]); // IMPORTANT: each level's username will change along with the account username
 	$query = $db->prepare("UPDATE users SET userName=:userName WHERE extID=:accountid");
 	$query->execute([':userName' => $newnick,':accountid' => $accID]);
     $auth = $gs->randomString(8);

@@ -180,7 +180,6 @@ foreach($result as &$action){
 	$v2 = '<div class="mavdiv"><div class="profilepic"><i class="fa-solid fa-2" style="background: #29282c; padding: 5px 9.5px; border-radius: 500px;"></i> '.$value2.'</div></div>';
 	$v3 = '<div class="mavdiv"><div class="profilepic"><i class="fa-solid fa-3" style="background: #29282c; padding: 5px 6.5px; border-radius: 500px;"></i> '.$value3.'</div></div>';
 	$stats = $v1.$v2.$v3;
-
         // Avatar management
         $queryUserDetails = $db->prepare("SELECT u.iconType, u.accIcon, u.accShip, u.accBall, u.accBird, u.accDart, u.accRobot, u.accSpider, u.accSwing, u.accJetpack, u.color1, u.color2, u.color3, u.accGlow FROM users u JOIN modactions m ON u.extID = m.account WHERE m.account = :accountID");
         $queryUserDetails->execute([':accountID' => $action['account']]);
@@ -190,7 +189,6 @@ foreach($result as &$action){
             $iconValue = $iconTypeMap[$iconType]['value'] ?: 1;
             $avatarImg = '<img src="https://gdicon.oat.zone/icon.png?type=' . $iconTypeMap[$iconType]['type'] . '&value=' . $iconValue . '&color1=' . $userDetails['color1'] . '&color2=' . $userDetails['color2'] . ($userDetails['accGlow'] != 0 ? '&glow=' . $userDetails['accGlow'] . '&color3=' . $userDetails['color3'] : '') . '" alt="avatar" style="width: 31px; margin-right: -5px; object-fit: contain;">';
         }
-
         // Badge management
         $badgeImg = '';
         $queryAccountID = $db->prepare("SELECT ra.roleID, u.extID FROM roleassign ra JOIN users u ON ra.accountID = u.extID WHERE ra.accountID = :account");
@@ -202,7 +200,6 @@ foreach($result as &$action){
                 $badgeImg = '<img src="https://raw.githubusercontent.com/Fenix668/GMDprivateServer/master/dashboard/modBadge_0' . $modBadgeLevel . '_001.png" alt="badge" style="width: 23px; height: 23px; margin-left: 3px; margin-top: -12px; margin-left: -2px; vertical-align: middle;">';
             }
        }
-
         $members .= '<div style="width: 100%; display: flex; flex-wrap: wrap; justify-content: center;">
             <div class="profile" style="width: 100%;">
                 <div style="display: flex; align-items: center; margin-bottom: 7px;">

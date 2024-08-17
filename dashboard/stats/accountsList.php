@@ -79,11 +79,11 @@ foreach($result as &$action) {
 		if($claninfo["clanOwner"] == $action["accountID"]) $own = '<i style="color:#ffff91" class="fa-solid fa-crown"></i>';
 		$clan = '<span style="display:contents;cursor:pointer"><h2 class="music" style="width: max-content;margin-left: 5px;grid-gap:5px;color:#'.$claninfo["color"].'">'.$claninfo["clan"].$own.'</h2></span>';
 	}
-        $iconType = ($action['iconType'] > 8) ? 0 : $action['iconType'];
-        $iconTypeMap = [0 => ['type' => 'cube', 'value' => $action['accIcon']], 1 => ['type' => 'ship', 'value' => $action['accShip']], 2 => ['type' => 'ball', 'value' => $action['accBall']], 3 => ['type' => 'ufo', 'value' => $action['accBird']], 4 => ['type' => 'wave', 'value' => $action['accDart']], 5 => ['type' => 'robot', 'value' => $action['accRobot']], 6 => ['type' => 'spider', 'value' => $action['accSpider']], 7 => ['type' => 'swing', 'value' => $action['accSwing']], 8 => ['type' => 'jetpack', 'value' => $action['accJetpack']]];
-        $iconValue = $iconTypeMap[$iconType]['value'] ?: 1;
-        $avatarImg = '<img src="https://gdicon.oat.zone/icon.png?type=' . $iconTypeMap[$iconType]['type'] . '&value=' . $iconValue . '&color1=' . $action['color1'] . '&color2=' . $action['color2'] . ($action['accGlow'] != 0 ? '&glow=' . $action['accGlow'] . '&color3=' . $action['color3'] : '') . '" alt="avatar" style="width: 31px; margin-right: 10px; object-fit: contain;">';
-
+	// Avatar management
+    $iconType = ($action['iconType'] > 8) ? 0 : $action['iconType'];
+    $iconTypeMap = [0 => ['type' => 'cube', 'value' => $action['accIcon']], 1 => ['type' => 'ship', 'value' => $action['accShip']], 2 => ['type' => 'ball', 'value' => $action['accBall']], 3 => ['type' => 'ufo', 'value' => $action['accBird']], 4 => ['type' => 'wave', 'value' => $action['accDart']], 5 => ['type' => 'robot', 'value' => $action['accRobot']], 6 => ['type' => 'spider', 'value' => $action['accSpider']], 7 => ['type' => 'swing', 'value' => $action['accSwing']], 8 => ['type' => 'jetpack', 'value' => $action['accJetpack']]];
+    $iconValue = $iconTypeMap[$iconType]['value'] ?: 1;
+    $avatarImg = '<img src="https://gdicon.oat.zone/icon.png?type=' . $iconTypeMap[$iconType]['type'] . '&value=' . $iconValue . '&color1=' . $action['color1'] . '&color2=' . $action['color2'] . ($action['accGlow'] != 0 ? '&glow=' . $action['accGlow'] . '&color3=' . $action['color3'] : '') . '" alt="avatar" style="width: 31px; margin-right: 10px; object-fit: contain;">';
     // Badge management
     $badgeImg = '';
     $queryRoleID = $db->prepare("SELECT roleID FROM roleassign WHERE accountID = :accountID");
@@ -94,8 +94,7 @@ foreach($result as &$action) {
         if (($modBadgeLevel = $queryBadgeLevel->fetchColumn() ?? 0) >= 1 && $modBadgeLevel <= 3) {
             $badgeImg = '<img src="https://raw.githubusercontent.com/Fenix668/GMDprivateServer/master/dashboard/modBadge_0' . $modBadgeLevel . '_001.png" alt="badge" style="width: 34px; height: 34px; margin-left: 7px; margin-top: -3px; vertical-align: middle;">';
         }
-    }	
-	
+    }		
 	$stats = $dl->createProfileStats($action['stars'], $action['moons'], $action['diamonds'], $action['coins'], $action['userCoins'], $action['demons'], $action['creatorPoints'], 0);
 	$registerDate = date("d.m.Y", $action["registerDate"]);
 	if($action['userName'] == "Undefined") $action['userName'] = $gs->getAccountName($action["accountID"]);
