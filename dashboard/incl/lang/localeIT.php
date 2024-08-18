@@ -289,7 +289,7 @@ $string["nooneBeat"] = 'nessuno ha battuto'; //let it be lowercase
 $string["oneBeat"] = '1 giocatore ha battuto'; 
 $string["lower5Beat"] = '%d giocatori hanno battuto'; // russian syntax, sorry
 $string["above5Beat"] = '%d giocatori hanno battuto'; 
-$string["demonlistLevel"] = '%s <text class="dltext">di <button type="button" onclick="a(\'profile/%3$s\', true, true)" style="font-size:25px" class="accbtn" name="accountID" value="%d">%s</button></text>';
+$string["demonlistLevel"] = '%s <text class="dltext">di <button type="button" onclick="a(\'profile/%3$s\', true, true)" style="font-size:25px" class="accbtn" name="accountID" value="%d">%s</button>%4$s</text>';
 $string["noDemons"] = 'Sembra che la tua lista dei demon non abbia demon...';
 $string["addSomeDemons"] = 'Aggiungi alcuni demon per riempire la lista dei demon!';
 $string["askForDemons"] = 'Chiedi all\'amministratore del server di aggiungerne alcuni!';

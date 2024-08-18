@@ -180,56 +180,35 @@ foreach($result as &$action){
 	$v2 = '<div class="mavdiv"><div class="profilepic"><i class="fa-solid fa-2" style="background: #29282c; padding: 5px 9.5px; border-radius: 500px;"></i> '.$value2.'</div></div>';
 	$v3 = '<div class="mavdiv"><div class="profilepic"><i class="fa-solid fa-3" style="background: #29282c; padding: 5px 6.5px; border-radius: 500px;"></i> '.$value3.'</div></div>';
 	$stats = $v1.$v2.$v3;
-        // Avatar management
-        $queryUserDetails = $db->prepare("SELECT u.iconType, u.accIcon, u.accShip, u.accBall, u.accBird, u.accDart, u.accRobot, u.accSpider, u.accSwing, u.accJetpack, u.color1, u.color2, u.color3, u.accGlow FROM users u JOIN modactions m ON u.extID = m.account WHERE m.account = :accountID");
-        $queryUserDetails->execute([':accountID' => $action['account']]);
-        if ($userDetails = $queryUserDetails->fetch(PDO::FETCH_ASSOC)) {
-            $iconType = ($userDetails['iconType'] > 8) ? 0 : $userDetails['iconType'];
-            $iconTypeMap = [0 => ['type' => 'cube', 'value' => $userDetails['accIcon']], 1 => ['type' => 'ship', 'value' => $userDetails['accShip']], 2 => ['type' => 'ball', 'value' => $userDetails['accBall']], 3 => ['type' => 'ufo', 'value' => $userDetails['accBird']], 4 => ['type' => 'wave', 'value' => $userDetails['accDart']], 5 => ['type' => 'robot', 'value' => $userDetails['accRobot']], 6 => ['type' => 'spider', 'value' => $userDetails['accSpider']], 7 => ['type' => 'swing', 'value' => $userDetails['accSwing']], 8 => ['type' => 'jetpack', 'value' => $userDetails['accJetpack']]];
-            $iconValue = $iconTypeMap[$iconType]['value'] ?: 1;
-            $avatarImg = '<img src="https://gdicon.oat.zone/icon.png?type=' . $iconTypeMap[$iconType]['type'] . '&value=' . $iconValue . '&color1=' . $userDetails['color1'] . '&color2=' . $userDetails['color2'] . ($userDetails['accGlow'] != 0 ? '&glow=' . $userDetails['accGlow'] . '&color3=' . $userDetails['color3'] : '') . '" alt="avatar" style="width: 31px; margin-right: -5px; object-fit: contain;">';
-        }
-        // Badge management
-        $badgeImg = '';
-        $queryAccountID = $db->prepare("SELECT ra.roleID, u.extID FROM roleassign ra JOIN users u ON ra.accountID = u.extID WHERE ra.accountID = :account");
-        $queryAccountID->execute([':account' => $action['account']]);
-        if ($accountData = $queryAccountID->fetch(PDO::FETCH_ASSOC)) {
-            $queryBadgeLevel = $db->prepare("SELECT modBadgeLevel FROM roles WHERE roleID = :roleID");
-            $queryBadgeLevel->execute([':roleID' => $accountData['roleID']]);
-            if (($modBadgeLevel = $queryBadgeLevel->fetchColumn() ?? 0) >= 1 && $modBadgeLevel <= 3) {
-                $badgeImg = '<img src="https://raw.githubusercontent.com/Fenix668/GMDprivateServer/master/dashboard/modBadge_0' . $modBadgeLevel . '_001.png" alt="badge" style="width: 23px; height: 23px; margin-left: 3px; margin-top: -12px; margin-left: -2px; vertical-align: middle;">';
-            }
-       }
-        $members .= '<div style="width: 100%; display: flex; flex-wrap: wrap; justify-content: center;">
-            <div class="profile" style="width: 100%;">
-                <div style="display: flex; align-items: center; margin-bottom: 7px;">
-                    <!-- Container for both avatars and username -->
-                    <div style="display: flex; align-items: center;">
-                        <!-- First Avatar -->
-                        '.$avatarImg.'
-                        <!-- Space between first avatar and second avatar -->
-                        <div style="margin-left: 7px;">
-                            <!-- Second Avatar -->
-                            '.$badgeImg.'
-                        </div>
-                        <!-- Space between second avatar and username -->
-                        <div style="margin-left: 4px;">
-                            <h1 class="dlh1 profh1 suggest" style="margin: 0;">
-                                <button type="button" onclick="a(\'profile/'.$account.'\', true, true)" class="accbtn" name="accountID">'.$account.'</button>
-                                <text class="dltext"> '.$actionname.'</text>
-                            </h1>
-                        </div>
+	// Avatar management
+    $queryUserDetails = $db->prepare("SELECT u.iconType, u.accIcon, u.accShip, u.accBall, u.accBird, u.accDart, u.accRobot, u.accSpider, u.accSwing, u.accJetpack, u.color1, u.color2, u.color3, u.accGlow FROM users u JOIN modactions m ON u.extID = m.account WHERE m.account = :accountID");
+    $queryUserDetails->execute([':accountID' => $action['account']]);
+    if($userDetails = $queryUserDetails->fetch(PDO::FETCH_ASSOC)) {
+        $iconType = ($userDetails['iconType'] > 8) ? 0 : $userDetails['iconType'];
+        $iconTypeMap = [0 => ['type' => 'cube', 'value' => $userDetails['accIcon']], 1 => ['type' => 'ship', 'value' => $userDetails['accShip']], 2 => ['type' => 'ball', 'value' => $userDetails['accBall']], 3 => ['type' => 'ufo', 'value' => $userDetails['accBird']], 4 => ['type' => 'wave', 'value' => $userDetails['accDart']], 5 => ['type' => 'robot', 'value' => $userDetails['accRobot']], 6 => ['type' => 'spider', 'value' => $userDetails['accSpider']], 7 => ['type' => 'swing', 'value' => $userDetails['accSwing']], 8 => ['type' => 'jetpack', 'value' => $userDetails['accJetpack']]];
+        $iconValue = $iconTypeMap[$iconType]['value'] ?: 1;
+        $avatarImg = '<img src="https://gdicon.oat.zone/icon.png?type=' . $iconTypeMap[$iconType]['type'] . '&value=' . $iconValue . '&color1=' . $userDetails['color1'] . '&color2=' . $userDetails['color2'] . ($userDetails['accGlow'] != 0 ? '&glow=' . $userDetails['accGlow'] . '&color3=' . $userDetails['color3'] : '') . '" alt="avatar" style="width: 31px; margin-right: 5px; object-fit: contain;">';
+    }
+    $members .= '<div style="width: 100%; display: flex; flex-wrap: wrap; justify-content: center;">
+        <div class="profile" style="width: 100%;">
+            <div style="display: flex; align-items: center; margin-bottom: 7px;">
+                <div style="display: flex; align-items: center;">
+                    '.$avatarImg.'
+                    <div>
+                        <h1 class="dlh1 profh1 suggest" style="margin: 0;">
+                            <button type="button" onclick="a(\'profile/'.$account.'\', true, true)" class="accbtn" name="accountID">'.$account.'</button>
+                            <text class="dltext"> '.$actionname.'</text>
+                        </h1>
                     </div>
                 </div>
-                <!-- Stats section -->
-                <div class="form-control" style="display: flex; width: 100%; height: max-content; align-items: center;">'.$stats.'</div>
-                <!-- Comments section -->
-                <div class="acccomments">
-                    <h3 class="comments" style="margin: 0; width: max-content;">'.$dl->getLocalizedString("ID").':&nbsp;<b>'.$action["ID"].'</b></h3>
-                    <h3 class="comments" style="justify-content: flex-end; grid-gap: 0.5vh; margin: 0; width: max-content;">'.$dl->getLocalizedString("date").': <b>'.$time.'</b></h3>
-                </div>
             </div>
-        </div>';
+            <div class="form-control" style="display: flex; width: 100%; height: max-content; align-items: center;">'.$stats.'</div>
+            <div class="acccomments">
+                <h3 class="comments" style="margin: 0; width: max-content;">'.$dl->getLocalizedString("ID").':&nbsp;<b>'.$action["ID"].'</b></h3>
+                <h3 class="comments" style="justify-content: flex-end; grid-gap: 0.5vh; margin: 0; width: max-content;">'.$dl->getLocalizedString("date").': <b>'.$time.'</b></h3>
+            </div>
+        </div>
+    </div>';
 	$x++;
 }
 $mods = $db->prepare("SELECT * FROM roleassign GROUP BY accountID");

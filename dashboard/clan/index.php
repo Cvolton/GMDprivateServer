@@ -326,16 +326,36 @@ if(!empty($clan)) {
 		$allcp += $mbr['creatorPoints'];
         $stats = $dl->createProfileStats($mbr['stars'], $mbr['moons'], $mbr['diamonds'], $mbr['coins'], $mbr['userCoins'], $mbr['demons'], $mbr['creatorPoints'], 0);
 		$mbr["userName"] = $mbr["userName"] == 'Undefined' ? $gs->getAccountName($mbr['extID']) : $mbr['userName'];
-        if($mbr["extID"] != $clan["clanOwner"]) $members .= '<div style="width: 100%;display: flex;flex-wrap: wrap;justify-content: center;">
-			<div class="profile"><div class="clanmemberndiv"><button style="display:contents;cursor:pointer" type="button" onclick="a(\'profile/'.$mbr["userName"].'\', true, true, \'GET\')"><h2 style="color:rgb('.$gs->getAccountCommentColor($mbr["extID"]).')" class="profilenick clanmembernick">'.$mbr["userName"].'</h2></button>'.$kick.'</div>
-			<div class="form-control" style="display: flex;width: 100%;height: max-content;align-items: center;">'.$stats.'</div>
-			<h3 id="comments" style="justify-content: flex-end;grid-gap: 0.5vh;">'.sprintf($dl->getLocalizedString("joinedAt"), $dl->convertToDate($mbr["joinedAt"], true)).'</h3>
-		</div></div>';
-		else $owner = '<div style="width: 100%;display: flex;flex-wrap: wrap;justify-content: center;">
-			<div class="profile"><div style="display:flex"><button style="display:contents;cursor:pointer" type="button" onclick="a(\'profile/'.$mbr['userName'].'\', true, true, \'GET\')"><h1 style="margin: 0;margin-bottom: 10px;color:rgb('.$gs->getAccountCommentColor($mbr["extID"]).')" class="profilenick clanownernick">'.$mbr["userName"].' <i style="color:#ffff91" class="fa-solid fa-crown"></i></h1></button></div>
-			<div class="form-control" style="display: flex;width: 100%;height: max-content;align-items: center;">'.$stats.'</div>
-			<h3 class="comments clancreatetext">'.sprintf($dl->getLocalizedString("createdAt"), $dl->convertToDate($clan["creationDate"], true)).'</h3>
-		</div></div>';
+		// Avatar management
+		$avatarImg = '';
+		$iconType = ($mbr['iconType'] > 8) ? 0 : $mbr['iconType'];
+		$iconTypeMap = [0 => ['type' => 'cube', 'value' => $mbr['accIcon']], 1 => ['type' => 'ship', 'value' => $mbr['accShip']], 2 => ['type' => 'ball', 'value' => $mbr['accBall']], 3 => ['type' => 'ufo', 'value' => $mbr['accBird']], 4 => ['type' => 'wave', 'value' => $mbr['accDart']], 5 => ['type' => 'robot', 'value' => $mbr['accRobot']], 6 => ['type' => 'spider', 'value' => $mbr['accSpider']], 7 => ['type' => 'swing', 'value' => $mbr['accSwing']], 8 => ['type' => 'jetpack', 'value' => $mbr['accJetpack']]];
+		$iconValue = isset($iconTypeMap[$iconType]) ? $iconTypeMap[$iconType]['value'] : 1;	    
+        if($mbr["extID"] != $clan["clanOwner"]) {
+			$badgeImg = '';
+			$queryRoleID = $db->prepare("SELECT roleID FROM roleassign WHERE accountID = :accountID");
+			$queryRoleID->execute([':accountID' => $mbr["extID"]]);	
+			if($roleAssignData = $queryRoleID->fetch(PDO::FETCH_ASSOC)) {        
+				$queryBadgeLevel = $db->prepare("SELECT modBadgeLevel FROM roles WHERE roleID = :roleID");
+				$queryBadgeLevel->execute([':roleID' => $roleAssignData['roleID']]);	    
+				if(($modBadgeLevel = $queryBadgeLevel->fetchColumn() ?? 0) >= 1 && $modBadgeLevel <= 3) {
+					$badgeImg = '<img src="https://raw.githubusercontent.com/Fenix668/GMDprivateServer/master/dashboard/modBadge_0' . $modBadgeLevel . '_001.png" alt="badge" style="width: 34px; height: 34px; margin-left: -3px; margin-top: -3px; vertical-align: middle;">';
+				}
+			}	
+			$avatarImg = '<img src="https://gdicon.oat.zone/icon.png?type=' . $iconTypeMap[$iconType]['type'] . '&value=' . $iconValue . '&color1=' . $mbr['color1'] . '&color2=' . $mbr['color2'] . ($mbr['accGlow'] != 0 ? '&glow=' . $mbr['accGlow'] . '&color3=' . $mbr['color3'] : '') . '" alt="Avatar" style="width: 30px; height: 30px; vertical-align: middle; object-fit: contain;">';
+			$members .= '<div style="width: 100%;display: flex;flex-wrap: wrap;justify-content: center;">
+				<div class="profile"><div class="clanmemberndiv"><button style="display:contents;cursor:pointer" type="button" onclick="a(\'profile/'.$mbr["userName"].'\', true, true, \'GET\')"><h2 style="color:rgb('.$gs->getAccountCommentColor($mbr["extID"]).')" class="profilenick clanmembernick"><div class="accounts-badge-icon-div">'.$avatarImg.$mbr["userName"].$badgeImg.'</div></h2></button>'.$kick.'</div>
+				<div class="form-control" style="display: flex;width: 100%;height: max-content;align-items: center;">'.$stats.'</div>
+				<h3 id="comments" style="justify-content: flex-end;grid-gap: 0.5vh;">'.sprintf($dl->getLocalizedString("joinedAt"), $dl->convertToDate($mbr["joinedAt"], true)).'</h3>
+			</div></div>';
+		} else {
+			$avatarImg = '<img src="https://gdicon.oat.zone/icon.png?type=' . $iconTypeMap[$iconType]['type'] . '&value=' . $iconValue . '&color1=' . $mbr['color1'] . '&color2=' . $mbr['color2'] . ($mbr['accGlow'] != 0 ? '&glow=' . $mbr['accGlow'] . '&color3=' . $mbr['color3'] : '') . '" alt="Avatar" style="width: 40px; height: 40px; vertical-align: middle; object-fit: contain;">';
+			$owner = '<div style="width: 100%;display: flex;flex-wrap: wrap;justify-content: center;">
+				<div class="profile"><div style="display:flex"><button style="display:contents;cursor:pointer" type="button" onclick="a(\'profile/'.$mbr['userName'].'\', true, true, \'GET\')"><h1 style="margin: 0; margin-bottom: 10px; color: rgb('.$gs->getAccountCommentColor($mbr["extID"]).'); justify-content: center; grid-gap: 10px;" class="profilenick clanownernick accounts-badge-icon-div">'.$avatarImg.$mbr["userName"].'<i style="color:#ffff91" class="fa-solid fa-crown"></i></h1></button></div>
+				<div class="form-control" style="display: flex;width: 100%;height: max-content;align-items: center;">'.$stats.'</div>
+				<h3 class="comments clancreatetext">'.sprintf($dl->getLocalizedString("createdAt"), $dl->convertToDate($clan["creationDate"], true)).'</h3>
+			</div></div>';
+		}
     }
 	$allstats = $dl->createProfileStats($allstars, $allmoons, $alldias, $allcoins, $allucoins, $alldemons, $allcp, 0);
 	$total = '<div style="width: 100%;display: flex;flex-wrap: wrap;justify-content: center;margin-top:10px">
