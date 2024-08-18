@@ -64,14 +64,8 @@ $songIDs = !empty($_POST["songIDs"]) ? ExploitPatch::numbercolon($_POST["songIDs
 $sfxIDs = !empty($_POST["sfxIDs"]) ? ExploitPatch::numbercolon($_POST["sfxIDs"]) : '';
 $ts = !empty($_POST["ts"]) ? ExploitPatch::number($_POST["ts"]) : 0;
 
-if(isset($_POST["password"])){
-	$password = ExploitPatch::remove($_POST["password"]);
-}else{
-	$password = 1;
-	if($gameVersion > 17){
-		$password = 0;
-	}
-}
+if(isset($_POST["password"])) $password = ExploitPatch::remove($_POST["password"]);
+else $password = $gameVersion > 21 ? 1 : 0;
 $id = $gs->getIDFromPost();
 $hostname = $gs->getIP();
 $userID = $mainLib->getUserID($id, $userName);
