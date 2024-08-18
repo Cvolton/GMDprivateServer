@@ -62,7 +62,7 @@ $string["changeUsername"] = "Cambia nome utente";
 $string["unlistedLevels"] = "I tuoi livelli non elencati";
 
 $string["manageSongs"] = "Gestisci i brani";
-$string["gauntletManage"] = "Gestisci i guanti";
+$string["gauntletManage"] = "Gestisci i gauntlets";
 $string["suggestLevels"] = "Livelli suggeriti";
 
 $string["modTools"] = "Strumenti di moderazione";
@@ -289,7 +289,7 @@ $string["nooneBeat"] = 'nessuno ha battuto'; //let it be lowercase
 $string["oneBeat"] = '1 giocatore ha battuto'; 
 $string["lower5Beat"] = '%d giocatori hanno battuto'; // russian syntax, sorry
 $string["above5Beat"] = '%d giocatori hanno battuto'; 
-$string["demonlistLevel"] = '%s <text class="dltext">di <button type="button" onclick="a(\'profile/%3$s\', true, true)" style="font-size:25px" class="accbtn" name="accountID" value="%d">%s</button></text>';
+$string["demonlistLevel"] = '%s <text class="dltext">di <button type="button" onclick="a(\'profile/%3$s\', true, true)" style="font-size:25px" class="accbtn" name="accountID" value="%d">%s</button>%4$s</text>';
 $string["noDemons"] = 'Sembra che la tua lista dei demon non abbia demon...';
 $string["addSomeDemons"] = 'Aggiungi alcuni demon per riempire la lista dei demon!';
 $string["askForDemons"] = 'Chiedi all\'amministratore del server di aggiungerne alcuni!';
@@ -575,12 +575,12 @@ $string["modAction13"] = "Descrizione del livello modificata";
 $string["modAction14"] = "LDM abilitato/disabilitato";
 $string["modAction15"] = "Classifica non/vietata";
 $string["modAction16"] = "Modifica dell'ID del brano";
-$string["modAction17"] = "Creato un pacchetto mappe";
-$string["modAction18"] = "Creato un guanto di sfida";
+$string["modAction17"] = "Creato un map pack";
+$string["modAction18"] = "Creato un gauntlet";
 $string["modAction19"] = "Brano cambiato";
 $string["modAction20"] = "Concesso un moderatore al giocatore";
-$string["modAction21"] = "Pacchetto mappe modificato";
-$string["modAction22"] = "Guanto modificato";
+$string["modAction21"] = "Map pack modificato";
+$string["modAction22"] = "Gauntlet modificato";
 $string["modAction23"] = "Missione modificata";
 $string["modAction24"] = "Riassegnato un giocatore";
 $string["modAction25"] = "Creata una missione";

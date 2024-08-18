@@ -228,7 +228,17 @@ if(isset($_POST["settings"]) AND $_POST["settings"] == 1 AND $accid == $_SESSION
 $query = $db->prepare("SELECT * FROM users WHERE userID=:id");
 $query->execute([':id' => $userID]);
 $res = $query->fetch();
-$maybeban = '<h1 class="profilename" style="color:rgb('.$gs->getAccountCommentColor($accid).');">'.$accname.'</h1>';
+$badgeImg = '';
+$queryRoleID = $db->prepare("SELECT roleID FROM roleassign WHERE accountID = :accountID");
+$queryRoleID->execute([':accountID' => $accid]);	
+if($roleAssignData = $queryRoleID->fetch(PDO::FETCH_ASSOC)) {        
+    $queryBadgeLevel = $db->prepare("SELECT modBadgeLevel FROM roles WHERE roleID = :roleID");
+    $queryBadgeLevel->execute([':roleID' => $roleAssignData['roleID']]);	    
+    if(($modBadgeLevel = $queryBadgeLevel->fetchColumn() ?? 0) >= 1 && $modBadgeLevel <= 3) {
+        $badgeImg = '<img src="https://raw.githubusercontent.com/Fenix668/GMDprivateServer/master/dashboard/modBadge_0' . $modBadgeLevel . '_001.png" alt="badge" style="width: 34px; height: 34px; margin-top: -3px; vertical-align: middle;">';
+    }
+}
+$maybeban = '<h1 class="profilename" style="color:rgb('.$gs->getAccountCommentColor($accid).');">'.$accname.$badgeImg.'</h1>';
 if(isset($_SERVER["HTTP_REFERER"])) $back = '<form method="post" action="'.$_SERVER["HTTP_REFERER"].'"><button type="button" onclick="a(\''.$_SERVER["HTTP_REFERER"].'\', true, true, \'GET\')" class="goback"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i></button></form>'; else $back = '';
 $all = $dl->createProfileStats($res['stars'], $res['moons'], $res['diamonds'], $res['coins'], $res['userCoins'], $res['demons'], $res['creatorPoints'], 0);
 $msgs = $db->prepare("SELECT * FROM acccomments WHERE userID=:uid ORDER BY commentID DESC");

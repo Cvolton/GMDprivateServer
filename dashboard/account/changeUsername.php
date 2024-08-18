@@ -67,6 +67,8 @@ if($pass == 1) {
 	$auth = $gs->randomString(8);
 	$query = $db->prepare("UPDATE accounts SET userName=:userName, salt=:salt, auth=:auth WHERE accountID=:accountid");	
 	$query->execute([':userName' => $newnick, ':salt' => $salt, ':accountid' => $accID, ':auth' => $auth]);
+	$query = $db->prepare("UPDATE levels SET userName=:newnick WHERE userName=:oldnick");
+	$query->execute([':newnick' => $newnick, ':oldnick' => $oldnick]); // IMPORTANT: each level's username will change along with the account username
 	$query = $db->prepare("UPDATE users SET userName=:userName WHERE extID=:accountid");
 	$query->execute([':userName' => $newnick,':accountid' => $accID]);
 	$_SESSION["accountID"] = 0;

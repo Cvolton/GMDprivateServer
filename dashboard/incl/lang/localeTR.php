@@ -287,7 +287,7 @@ $string["nooneBeat"] = 'kimse geçemedi'; //let it be lowercase
 $string["oneBeat"] = '1 oyuncu geçti'; 
 $string["lower5Beat"] = '%d oyuncu geçti'; // russian syntax, sorry
 $string["above5Beat"] = '%d oyuncu geçti'; 
-$string["demonlistLevel"] = '%s<text class="dltext"><button type="button" onclick="a(\'profile/%3$s\', true, true)" style="font-size:25px" class="accbtn" name="accountID" value="%d">%s</button> tarafından</text>';
+$string["demonlistLevel"] = '%s<text class="dltext"><button type="button" onclick="a(\'profile/%3$s\', true, true)" style="margin-left: 5px; font-size: 25px" class="accbtn" name="accountID" value="%d">%s %4$s</button> tarafından</text>';
 $string["noDemons"] = 'Görünüşe göre demon listesi demon seviyesi bölüm içermiyor...';
 $string["addSomeDemons"] = 'Listeyi doldurmak için demon seviyesi bölüm ekle!';
 $string["askForDemons"] = 'Bir yöneticiden bu listeye eklemesini iste!';

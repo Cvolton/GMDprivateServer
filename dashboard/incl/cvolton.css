@@ -2178,3 +2178,9 @@ body:has(.audio) {
 .modactionsspoiler {
 	font-size: 25px;
 }
+
+.accounts-badge-icon-div {
+	display: flex;
+    align-items: center;
+    grid-gap: 5px;
+}
