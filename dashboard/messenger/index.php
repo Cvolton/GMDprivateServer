@@ -148,7 +148,7 @@ foreach($result AS &$chat) {
 	$receiver = $chat['receiverID'];
 	$username = !$youreLast ? $chat['userName'] : $gs->getAccountName($chat['receiverID']);
 	$body = ($youreLast ? $dl->getLocalizedString("messengerYou").' ' : '').htmlspecialchars($xor->plaintext(ExploitPatch::url_base64_decode($chat["body"]), 14251));
-	if(strlen($body) > 50) $body = substr($body, 0, 50).'...';
+	if(strlen($body) > 50) $body = mb_substr($body, 0, 50).'...';
 	$playersLastMessage[$receiver] = $body;
 	// Avatar management
 	$queryAvatar = $db->prepare("SELECT * FROM users WHERE extID = :accountID");
