@@ -244,6 +244,8 @@ $string["noMsgs"] = "Diyalog başlat!";
 $string["subject"] = "Konu";
 $string["msg"] = "Mesaj";
 $string["tooFast"] = "Çok hızlı yazıyorsun!";
+$string["messengerYou"] = "You:";
+$string["chooseChat"] = "Choose chat";
 
 $string["levelToGD"] = "Bölümü hedef sunucuya aktar";
 $string["levelToGDDesc"] = "Burada bölümünü hedef sunucuya aktarabilirsin!";

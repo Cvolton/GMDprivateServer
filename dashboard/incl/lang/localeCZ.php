@@ -244,6 +244,8 @@ $string["noMsgs"] = "Zahajte dialog!";
 $string["subject"] = "Nadpis";
 $string["msg"] = "Zpráva";
 $string["tooFast"] = "Píšete příliš rychle!";
+$string["messengerYou"] = "You:";
+$string["chooseChat"] = "Choose chat";
 
 $string["levelToGD"] = "Znovunahrát úroveň na cílový server";
 $string["levelToGDDesc"] = "Zde múžete znovunahrát vaši úroveň na cílový server!";

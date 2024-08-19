@@ -244,6 +244,8 @@ $string["noMsgs"] = "Comece o diálogo!";
 $string["subject"] = "Assunto";
 $string["msg"] = "Mensagem";
 $string["tooFast"] = "Você está digitando muito rápido!";
+$string["messengerYou"] = "You:";
+$string["chooseChat"] = "Choose chat";
 
 $string["levelToGD"] = "Reenviar nível para o servidor de destino";
 $string["levelToGDDesc"] = "Aqui você pode reenviar seu nível para o servidor de destino!";

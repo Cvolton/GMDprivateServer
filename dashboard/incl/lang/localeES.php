@@ -244,6 +244,8 @@ $string["noMsgs"] = "Empieza una conversación";
 $string["subject"] = "Asunto";
 $string["msg"] = "Mensaje";
 $string["tooFast"] = "¡Hey, estás escribiendo muy rápido!";
+$string["messengerYou"] = "You:";
+$string["chooseChat"] = "Choose chat";
 // reupload to server
 $string["levelToGD"] = "Transferir nivel a otro servidor";
 $string["levelToGDDesc"] = "Resube tu nivel a un servidor externo";

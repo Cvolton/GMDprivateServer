@@ -40,7 +40,7 @@
 	.profileform{width:95vw !important;}
 	.profilemsg{font-size:17px !important;}
 	.mainlist{width:95% !important}
-	.msgbox, .dmbox{min-width:85vw !important}
+	.msgbox {min-width:85vw !important}
 	.form, .demonlist{width:95vw !important}
 	.dlh1 {font-size:25px !important;}
 	.dltext, .dltext button {font-size:20px !important;}
@@ -64,9 +64,8 @@
 	.secondsettingsform {width: 100% !important;}
 	.music {font-size:13px !important;}
 	.dlpoints {font-size: 15px !important; right: 5% !important; top: 3%}
-	.itemsbox {flex-direction: column !important; margin-left: 2.5vw !important; width: 95vw !important; margin-bottom: 50px !important; margin-top: 15px !important}
 	.itemslist {width: max-content !important; flex-direction: row !important; flex-wrap: nowrap !important;}
-	.itembtn {width: max-content !important; margin-right: 0px !important;}
+	.itembtn {width: max-content !important; margin-right: 0px !important; height: auto !important;}
 	.itemoverflow {overflow-x: auto !important; max-width: 100%; padding-right: 10px;overflow-y: hidden !important;}
 	.acccomments {flex-direction: column-reverse !important; align-items: center !important;}
 	.acccomments h3 {font-size:11px !important;}
@@ -107,6 +106,8 @@
 	.form-control {flex-wrap: wrap !important; border-radius: 25px !important; justify-content: center !important;}
 	.profilepic {width: max-content !important;}
 	.modactionsspoiler {font-size: 20px !important;}
+	.another-chat-div {height: 80%;}
+	.itemsbox {flex-direction: column !important; margin-left: 2.5vw !important; width: 95vw !important; margin-bottom: 50px !important; margin-top: 15px !important; flex-wrap: nowrap !important;}
 }
 
 * {
@@ -367,8 +368,7 @@ input, select {
 }
 
 .dmbox {
-	min-width:500px;
-	max-height:50vh;
+	min-width: 500px;
 	overflow: scroll;
 	overflow-x: hidden;
 	padding: 5px 0px 15px 15px !important;
@@ -1357,6 +1357,8 @@ label {
     align-items: center;
 	padding: 15px 0px 15px 15px;
 	grid-gap: 10px;
+	margin: 0px;
+    margin-bottom: 15px;
 }
 
 .messengerbox h1 {
@@ -1504,7 +1506,6 @@ body:has(.audio) {
 	padding: 0px;
 	display: flex;
 	margin: auto;
-	height: 55vh;
 }
 
 .itembtn {
@@ -1512,7 +1513,6 @@ body:has(.audio) {
 	border-radius: 20px;
 	height: max-content;
 	margin: 0px;
-	margin-right: 10px;
 	width: 100%;
 	border: none;
 }
@@ -1522,6 +1522,7 @@ body:has(.audio) {
 	overflow: auto;
     width: 100%;
 	overflow-x: hidden;
+	height: 100%;
 }
 
 .acccomments {
@@ -2183,4 +2184,55 @@ body:has(.audio) {
 	display: flex;
     align-items: center;
     grid-gap: 5px;
+}
+
+.chatdiv {
+	height: 75vh;
+	flex-wrap: nowrap !important;
+}
+
+.chatbox {
+	display: flex;
+    flex-direction: column;
+	width: 100%;
+	height: 100%;
+}
+
+.messenger-username {
+	display: flex;
+    margin-bottom: 5px;
+    align-items: center;
+    justify-content: center;
+    grid-gap: 10px;
+}
+
+.messenger-username .goback,
+.messenger-username .msgupd {
+	margin: 0px;
+}
+
+.chat-opened {
+	background-color: #313539;
+    border: 2px solid #6e757b;
+	padding: 8px;
+}
+
+.friends-button-div {
+	position: relative;
+	width: 100%;
+}
+
+.friends-button {
+	position: absolute;
+    bottom: 10px;
+    width: max-content;
+    padding: 15px;
+    right: 10px;
+    font-size: 20px;
+    background-color: #141414;
+    border: 4px solid #212529;
+}
+
+.itemslist.hide {
+	display: none;
 }
