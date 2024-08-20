@@ -71,7 +71,7 @@ foreach($result as &$comment1) {
 		if($likes < -2) $comment1["isSpam"] = 1;
 		$commentstring .= "2~".$commentText."~3~".$comment1["userID"]."~4~".$likes."~5~0~7~".$comment1["isSpam"]."~9~".$uploadDate."~6~".$comment1["commentID"]."~10~".$comment1["percent"];
 		if ($comment1['userName']) { //TODO: get rid of queries caused by getMaxValuePermission and getAccountCommentColor
-			$extID = is_numeric($comment1["extID"]) ? $comment1["extID"] : 0;
+			$comment1["extID"] = is_numeric($comment1["extID"]) ? $comment1["extID"] : 0;
 			$comment1['userName'] = $gs->makeClanUsername($comment1);
 			if($binaryVersion > 31){
 				$badge = $gs->getMaxValuePermission($extID, "modBadgeLevel");
