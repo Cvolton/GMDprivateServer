@@ -18,7 +18,7 @@ if($accountID != 0){
 }else{
 	$userID = $gs->getUserID($udid);
 }
-$chk = XORCipher::cipher(base64_decode(substr($chk, 5)),19847);
+$chk = XORCipher::cipher(ExploitPatch::url_base64_decode(substr($chk, 5)),19847);
 //Generating quest IDs
 $from = strtotime('2000-12-17');
 $today = time();
@@ -45,7 +45,7 @@ if (empty($result[0]) || empty($result[1]) || empty($result[2])) {
 $quest1 = $quest1ID.",".$result[0]["type"].",".$result[0]["amount"].",".$result[0]["reward"].",".$result[0]["name"]."";
 $quest2 = $quest2ID.",".$result[1]["type"].",".$result[1]["amount"].",".$result[1]["reward"].",".$result[1]["name"]."";
 $quest3 = $quest3ID.",".$result[2]["type"].",".$result[2]["amount"].",".$result[2]["reward"].",".$result[2]["name"]."";
-$string = base64_encode(XORCipher::cipher("SaKuJ:".$userID.":".$chk.":".$udid.":".$accountID.":".$timeleft.":".$quest1.":".$quest2.":".$quest3."",19847));
+$string = ExploitPatch::url_base64_encode(XORCipher::cipher("SaKuJ:".$userID.":".$chk.":".$udid.":".$accountID.":".$timeleft.":".$quest1.":".$quest2.":".$quest3."",19847));
 $hash = GenerateHash::genSolo3($string);
 echo "SaKuJ".$string . "|".$hash;
 ?>

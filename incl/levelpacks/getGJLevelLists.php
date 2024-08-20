@@ -88,7 +88,11 @@ switch($type){
 		$order = "uploadDate";
 		break;
 	case 5:
-		$params[] = "lists.accountID = '$str'";
+		if(!empty($_POST['accountID'])) {
+			$accountID = GJPCheck::getAccountIDOrDie();
+			if($gs->getUserID($accountID, $gs->getAccountName($accountID)) == $str) $params = [];
+		}	
+		$params[]= "lists.accountID = '$str'";
 		break;
 	case 6: // TOP LISTS
 		$params[] = "lists.starStars > 0";
@@ -122,7 +126,7 @@ $querybase = "FROM lists LEFT JOIN users ON lists.accountID LIKE users.extID $mo
 if(!empty($params)){
 	$querybase .= " WHERE (" . implode(" ) AND ( ", $params) . ")";
 }
-$query = "SELECT lists.*, UNIX_TIMESTAMP(uploadDate) AS uploadDateUnix, UNIX_TIMESTAMP(updateDate) AS updateDateUnix, users.userID, users.userName, users.extID $querybase";
+$query = "SELECT lists.*, UNIX_TIMESTAMP(uploadDate) AS uploadDateUnix, UNIX_TIMESTAMP(updateDate) AS updateDateUnix, users.userID, users.userName, users.extID, users.clan $querybase";
 if($order){
 	$query .= "ORDER BY $order DESC";
 }
@@ -141,6 +145,8 @@ $levelcount = $query->rowCount();
 foreach($result as &$list) {
 	if(!$list['uploadDateUnix']) $list['uploadDateUnix'] = 0;
 	if(!$list['updateDateUnix']) $list['updateDateUnix'] = 0;
+	$list['likes'] = $list['likes']; // - $list['dislikes'];
+	$list['userName'] = $gs->makeClanUsername($list);
 	$lvlstring .= "1:{$list['listID']}:2:{$list['listName']}:3:{$list['listDesc']}:5:{$list['listVersion']}:49:{$list['accountID']}:50:{$list['userName']}:10:{$list['downloads']}:7:{$list['starDifficulty']}:14:{$list['likes']}:19:{$list['starFeatured']}:51:{$list['listlevels']}:55:{$list['starStars']}:56:{$list['countForReward']}:28:{$list['uploadDateUnix']}:29:{$list['updateDateUnix']}"."|";
 	$userstring .= $gs->getUserString($list)."|";
 }

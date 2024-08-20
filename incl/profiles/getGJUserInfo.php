@@ -13,14 +13,12 @@ $me = !empty($_POST["accountID"]) ? GJPCheck::getAccountIDOrDie() : 0;
 $query = "SELECT count(*) FROM blocks WHERE (person1 = :extid AND person2 = :me) OR (person2 = :extid AND person1 = :me)";
 $query = $db->prepare($query);
 $query->execute([':extid' => $extid, ':me' => $me]);
-if($query->fetchColumn() > 0)
-	exit("-1");
+if($query->fetchColumn() > 0) exit("-1");
 
 $query = "SELECT * FROM users WHERE extID = :extid";
 $query = $db->prepare($query);
 $query->execute([':extid' => $extid]);
-if($query->rowCount() == 0)
-	exit("-1");
+if($query->rowCount() == 0) exit("-1");
 
 $user = $query->fetch();
 //placeholders
@@ -29,25 +27,46 @@ $creatorpoints = round($user["creatorPoints"], PHP_ROUND_HALF_DOWN);
 $e = "SET @rownum := 0;";
 $query = $db->prepare($e);
 $query->execute();
-/*$f = "SELECT rank FROM (
-                  SELECT @rownum := @rownum + 1 AS rank, extID
-                  FROM users WHERE isBanned = '0' AND gameVersion > 19 AND stars > 25 ORDER BY stars DESC
-                  ) as result WHERE extID=:extid";*/
-$f = "SELECT count(*) FROM users WHERE stars > :stars AND isBanned = 0"; //I can do this, since I already know the stars amount beforehand
+$bans = $gs->getAllBansOfBanType(0);
+$extIDs = $userIDs = $bannedIPs = [];
+foreach($bans AS &$ban) {
+	switch($ban['personType']) {
+		case 0:
+			$extIDs[] = $ban['person'];
+			break;
+		case 1:
+			$userIDs[] = $ban['person'];
+			break;
+		case 2:
+			$bannedIPs[] = $gs->IPForBan($ban['person'], true);
+			break;
+	}
+}
+$extIDsString = "'".implode("','", $extIDs)."'";
+$userIDsString = "'".implode("','", $userIDs)."'";
+$bannedIPsString = implode("|", $bannedIPs);
+$queryArray = [];
+if($extIDsString != '') $queryArray[] = "extID NOT IN (".$extIDsString.")";
+if($userIDsString != '') $queryArray[] = "userID NOT IN (".$userIDsString.")";
+if(!empty($bannedIPsString)) $queryArray[] = "IP NOT REGEXP '".$bannedIPsString."'";
+$queryText = !empty($queryArray) ? '('.implode(' AND ', $queryArray).') AND' : '';
+$f = "SELECT count(*) FROM users WHERE ".$queryText." stars > :stars";
 $query = $db->prepare($f);
 $query->execute([':stars' => $user["stars"]]);
-if($query->rowCount() > 0) {
-	$rank = $query->fetchColumn() + 1;
-} else {
-	$rank = 0;
-}
-if($user['isBanned'] != 0) $rank = 0;
+if($query->rowCount() > 0) $rank = $query->fetchColumn() + 1;
+else $rank = 0;
+$isBanned = $gs->getPersonBan($user['extID'], $user['userID'], 0, $user['IP']);
+if($isBanned) $rank = 0;
 //var_dump($leaderboard);
 	//accinfo
 		$query = "SELECT youtubeurl,twitter,twitch, frS, mS, cS FROM accounts WHERE accountID = :extID";
 		$query = $db->prepare($query);
 		$query->execute([':extID' => $extid]);
 		$accinfo = $query->fetch();
+		$accinfo['youtubeurl'] = mb_ereg_replace("(?!^@)[^a-zA-Z0-9_]", "", $accinfo['youtubeurl']);
+		$accinfo['twitter'] = mb_ereg_replace("[^a-zA-Z0-9_]", "", $accinfo['twitter']);
+		$accinfo['twitch'] = mb_ereg_replace("[^a-zA-Z0-9_]", "", $accinfo['twitch']);
+		if(substr($accinfo['youtubeurl'], 0, 1) == "@") $accinfo['youtubeurl'] = "../".$accinfo['youtubeurl'];
 		$reqsstate = $accinfo["frS"];
 		$msgstate = $accinfo["mS"];
 		$commentstate = $accinfo["cS"];
@@ -113,6 +132,7 @@ if($me == $extid) {
 		$appendix = ":32:".$INCrequestinfo["ID"].":35:".$INCrequestinfo["comment"].":37:".$uploaddate;
 	}
 }
+$user["userName"] = $gs->makeClanUsername($user);
 $user['extID'] = is_numeric($user['extID']) ? $user['extID'] : 0;
 echo "1:".$user["userName"].":2:".$user["userID"].":13:".$user["coins"].":17:".$user["userCoins"].":10:".$user["color1"].":11:".$user["color2"].":51:".$user["color3"].":3:".$user["stars"].":46:".$user["diamonds"].":52:".$user["moons"].":4:".$user["demons"].":8:".$creatorpoints.":18:".$msgstate.":19:".$reqsstate.":50:".$commentstate.":20:".$accinfo["youtubeurl"].":21:".$user["accIcon"].":22:".$user["accShip"].":23:".$user["accBall"].":24:".$user["accBird"].":25:".$user["accDart"].":26:".$user["accRobot"].":28:".$user["accGlow"].":43:".$user["accSpider"].":48:".$user["accExplosion"].":53:".$user["accSwing"].":54:".$user["accJetpack"].":30:".$rank.":16:".$user["extID"].":31:".$friendstate.":44:".$accinfo["twitter"].":45:".$accinfo["twitch"].":49:".$badge.":55:".$user["dinfo"].":56:".$user["sinfo"].":57:".$user["pinfo"].$appendix.":29:1";
 ?>

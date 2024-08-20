@@ -16,7 +16,7 @@ $rewardType = ExploitPatch::remove($_POST["rewardType"]);
 $userid = $gs->getUserID($extID);
 $udid = ExploitPatch::remove($_POST["udid"]);
 $accountID = ExploitPatch::remove($_POST["accountID"]);
-$chk = XORCipher::cipher(base64_decode(substr($chk, 5)),59182);
+$chk = XORCipher::cipher(ExploitPatch::url_base64_decode(substr($chk, 5)),59182);
 
 $query=$db->prepare("SELECT chest1time, chest1count, chest2time, chest2count FROM users WHERE extID = :extID");
 $query->execute([':extID' => $extID]);
@@ -60,8 +60,6 @@ if($rewardType == 2){
 	$query->execute([':chest2count' => $chest2count, ':userID' => $userid, ':currenttime' => $currenttime]);
 	$chest2left = $chest2wait;
 }
-$string = base64_encode(XORCipher::cipher("1:".$userid.":".$chk.":".$udid.":".$accountID.":".$chest1left.":".$chest1stuff.":".$chest1count.":".$chest2left.":".$chest2stuff.":".$chest2count.":".$rewardType."",59182));
-$string = str_replace("/","_",$string);
-$string = str_replace("+","-",$string);
+$string = ExploitPatch::url_base64_encode(XORCipher::cipher("1:".$userid.":".$chk.":".$udid.":".$accountID.":".$chest1left.":".$chest1stuff.":".$chest1count.":".$chest2left.":".$chest2stuff.":".$chest2count.":".$rewardType."",59182));
 $hash = GenerateHash::genSolo4($string);
 echo "SaKuJ".$string . "|".$hash;

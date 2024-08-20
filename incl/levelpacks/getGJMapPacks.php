@@ -2,13 +2,17 @@
 chdir(dirname(__FILE__));
 //error_reporting(0);
 include "../lib/connection.php";
+include "../../config/misc.php";
 require_once "../lib/exploitPatch.php";
 require "../lib/generateHash.php";
+if(!isset($orderMapPacksByStars)) global $orderMapPacksByStars;
+
 $page = ExploitPatch::remove($_POST["page"]);
 $packpage = $page*10;
 $mappackstring = "";
 $lvlsmultistring = "";
-$query = $db->prepare("SELECT colors2,rgbcolors,ID,name,levels,stars,coins,difficulty FROM `mappacks` ORDER BY `ID` ASC LIMIT 10 OFFSET $packpage");
+if ($orderMapPacksByStars) $query = $db->prepare("SELECT colors2, rgbcolors, ID, name, levels, stars, coins, difficulty FROM `mappacks` ORDER BY `stars` ASC LIMIT 10 OFFSET $packpage");
+else $query = $db->prepare("SELECT colors2, rgbcolors, ID, name, levels, stars, coins, difficulty FROM `mappacks` ORDER BY `ID` ASC LIMIT 10 OFFSET $packpage");
 $query->execute();
 $result = $query->fetchAll();
 $packcount = $query->rowCount();

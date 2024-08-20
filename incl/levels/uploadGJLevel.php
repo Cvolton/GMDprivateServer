@@ -19,12 +19,9 @@ $levelName = ExploitPatch::charclean($_POST["levelName"]);
 $levelDesc = ExploitPatch::remove($_POST["levelDesc"]);
 if($gameVersion < 20){
 	$rawDesc = $levelDesc;
-	$levelDesc = str_replace('+', '-', base64_encode($rawDesc));
-	$levelDesc = str_replace('/', '_', $levelDesc);
+	$levelDesc = ExploitPatch::url_base64_encode($rawDesc);
 } else {
-	$rawDesc = str_replace('-', '+', $levelDesc);
-	$rawDesc = str_replace('_', '/', $rawDesc);
-	$rawDesc = base64_decode($rawDesc);
+	$rawDesc = ExploitPatch::url_base64_decode($levelDesc);
 }
 if (strpos($rawDesc, '<c') !== false) {
 	$tags = substr_count($rawDesc, '<c');
@@ -33,8 +30,7 @@ if (strpos($rawDesc, '<c') !== false) {
 		for ($i = 0; $i < $tags; $i++) {
 			$rawDesc .= '</c>';
 		}
-		$levelDesc = str_replace('+', '-', base64_encode($rawDesc));
-		$levelDesc = str_replace('/', '_', $levelDesc);
+		$levelDesc = ExploitPatch::url_base64_encode($rawDesc);
 	}
 }
 $levelVersion = ExploitPatch::remove($_POST["levelVersion"]);
@@ -68,38 +64,36 @@ $songIDs = !empty($_POST["songIDs"]) ? ExploitPatch::numbercolon($_POST["songIDs
 $sfxIDs = !empty($_POST["sfxIDs"]) ? ExploitPatch::numbercolon($_POST["sfxIDs"]) : '';
 $ts = !empty($_POST["ts"]) ? ExploitPatch::number($_POST["ts"]) : 0;
 
-if(isset($_POST["password"])){
-	$password = ExploitPatch::remove($_POST["password"]);
-}else{
-	$password = 1;
-	if($gameVersion > 17){
-		$password = 0;
-	}
-}
+if(isset($_POST["password"])) $password = ExploitPatch::remove($_POST["password"]);
+else $password = $gameVersion > 21 ? 1 : 0;
 $id = $gs->getIDFromPost();
 $hostname = $gs->getIP();
 $userID = $mainLib->getUserID($id, $userName);
+$checkBan = $gs->getPersonBan($id, $userID, 2);
+if($checkBan) exit("-1");
 $uploadDate = time();
 $query = $db->prepare("SELECT count(*) FROM levels WHERE uploadDate > :time AND (userID = :userID OR hostname = :ip)");
-$query->execute([':time' => $uploadDate - 60, ':userID' => $userID, ':ip' => $hostname]);
-if($query->fetchColumn() > 0){
-	exit("-1");
-}
+$query->execute([':time' => $uploadDate - 15, ':userID' => $userID, ':ip' => $hostname]);
+if($query->fetchColumn() > 0) exit("-1");
 $query = $db->prepare("INSERT INTO levels (levelName, gameVersion, binaryVersion, userName, levelDesc, levelVersion, levelLength, audioTrack, auto, password, original, twoPlayer, songID, objects, coins, requestedStars, extraString, levelString, levelInfo, secret, uploadDate, userID, extID, updateDate, unlisted, hostname, isLDM, wt, wt2, unlisted2, settingsString, songIDs, sfxIDs, ts)
 VALUES (:levelName, :gameVersion, :binaryVersion, :userName, :levelDesc, :levelVersion, :levelLength, :audioTrack, :auto, :password, :original, :twoPlayer, :songID, :objects, :coins, :requestedStars, :extraString, :levelString, :levelInfo, :secret, :uploadDate, :userID, :id, :uploadDate, :unlisted, :hostname, :ldm, :wt, :wt2, :unlisted2, :settingsString, :songIDs, :sfxIDs, :ts)");
 
-
-if($levelString != "" AND $levelName != ""){
+if($levelString != "" AND $levelName != "") {
 	$querye=$db->prepare("SELECT levelID FROM levels WHERE levelName = :levelName AND userID = :userID");
 	$querye->execute([':levelName' => $levelName, ':userID' => $userID]);
 	$levelID = $querye->fetchColumn();
 	$lvls = $querye->rowCount();
-	if($lvls==1){
+	if($lvls==1) {
+		include "../../config/misc.php";
+		$query = $db->prepare("SELECT starStars FROM `levels` WHERE levelID = :levelID");
+		$query->execute([":levelID"=> $levelID]);
+		$stars = $query->fetchColumn();
+		if(!$ratedLevelsUpdates && !in_array($levelID, $ratedLevelsUpdatesExceptions) && $stars > 0) exit("-1");
 		$query = $db->prepare("UPDATE levels SET levelName=:levelName, gameVersion=:gameVersion,  binaryVersion=:binaryVersion, userName=:userName, levelDesc=:levelDesc, levelVersion=:levelVersion, levelLength=:levelLength, audioTrack=:audioTrack, auto=:auto, password=:password, original=:original, twoPlayer=:twoPlayer, songID=:songID, objects=:objects, coins=:coins, requestedStars=:requestedStars, extraString=:extraString, levelString=:levelString, levelInfo=:levelInfo, secret=:secret, updateDate=:uploadDate, unlisted=:unlisted, hostname=:hostname, isLDM=:ldm, wt=:wt, wt2=:wt2, unlisted2=:unlisted2, settingsString=:settingsString, songIDs=:songIDs, sfxIDs=:sfxIDs, ts=:ts WHERE levelName=:levelName AND extID=:id");	
 		$query->execute([':levelName' => $levelName, ':gameVersion' => $gameVersion, ':binaryVersion' => $binaryVersion, ':userName' => $userName, ':levelDesc' => $levelDesc, ':levelVersion' => $levelVersion, ':levelLength' => $levelLength, ':audioTrack' => $audioTrack, ':auto' => $auto, ':password' => $password, ':original' => $original, ':twoPlayer' => $twoPlayer, ':songID' => $songID, ':objects' => $objects, ':coins' => $coins, ':requestedStars' => $requestedStars, ':extraString' => $extraString, ':levelString' => "", ':levelInfo' => $levelInfo, ':secret' => $secret, ':levelName' => $levelName, ':id' => $id, ':uploadDate' => $uploadDate, ':unlisted' => $unlisted, ':hostname' => $hostname, ':ldm' => $ldm, ':wt' => $wt, ':wt2' => $wt2, ':unlisted2' => $unlisted2, ':settingsString' => $settingsString, ':songIDs' => $songIDs, ':sfxIDs' => $sfxIDs, ':ts' => $ts]);
 		file_put_contents("../../data/levels/$levelID",$levelString);
 		echo $levelID;
-	}else{
+	} else {
 		$query->execute([':levelName' => $levelName, ':gameVersion' => $gameVersion, ':binaryVersion' => $binaryVersion, ':userName' => $userName, ':levelDesc' => $levelDesc, ':levelVersion' => $levelVersion, ':levelLength' => $levelLength, ':audioTrack' => $audioTrack, ':auto' => $auto, ':password' => $password, ':original' => $original, ':twoPlayer' => $twoPlayer, ':songID' => $songID, ':objects' => $objects, ':coins' => $coins, ':requestedStars' => $requestedStars, ':extraString' => $extraString, ':levelString' => "", ':levelInfo' => $levelInfo, ':secret' => $secret, ':uploadDate' => $uploadDate, ':userID' => $userID, ':id' => $id, ':unlisted' => $unlisted, ':hostname' => $hostname, ':ldm' => $ldm, ':wt' => $wt, ':wt2' => $wt2, ':unlisted2' => $unlisted2, ':settingsString' => $settingsString, ':songIDs' => $songIDs, ':sfxIDs' => $sfxIDs, ':ts' => $ts]);
 		$levelID = $db->lastInsertId();
 		file_put_contents("../../data/levels/$levelID",$levelString);

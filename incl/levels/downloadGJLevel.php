@@ -10,7 +10,7 @@ require "../lib/GJPCheck.php";
 if(empty($_POST["gameVersion"])){
 	$gameVersion = 1;
 }else{
-	$gameVersion = ExploitPatch::remove($_POST["gameVersion"]);
+	$gameVersion = ExploitPatch::number($_POST["gameVersion"]);
 }
 if(empty($_POST["levelID"])){
 	exit("-1");
@@ -18,8 +18,8 @@ if(empty($_POST["levelID"])){
 $extras = !empty($_POST["extras"]) && $_POST["extras"];
 $inc = !empty($_POST["inc"]) && $_POST["inc"];
 $ip = $gs->getIP();
-$levelID = ExploitPatch::remove($_POST["levelID"]);
-$binaryVersion = !empty($_POST["binaryVersion"]) ? ExploitPatch::remove($_POST["levelID"]) : 0;
+$levelID = ExploitPatch::numbercolon($_POST["levelID"]);
+$binaryVersion = !empty($_POST["binaryVersion"]) ? ExploitPatch::number($_POST["binaryVersion"]) : 0;
 $feaID = 0;
 if(!is_numeric($levelID)){
 	echo -1;
@@ -82,9 +82,8 @@ if(!is_numeric($levelID)){
 														(:levelID,INET6_ATON(:ip))");
 			$query6->execute([':levelID' => $levelID, ':ip' => $ip]);
 		}
-		//getting the days since uploaded... or outputting the date in Y-M-D format at least for now...
-		$uploadDate = date("d-m-Y G-i", $result["uploadDate"]);
-		$updateDate = date("d-m-Y G-i", $result["updateDate"]);
+		$uploadDate = $gs->makeTime($result["uploadDate"]);
+		$updateDate = $gs->makeTime($result["updateDate"]);
 		//password xor
 		$pass = $result["password"];
 		$desc = $result["levelDesc"];
@@ -93,9 +92,9 @@ if(!is_numeric($levelID)){
 		}
 		$xorPass = $pass;
 		if($gameVersion > 19){
-			if($pass != 0) $xorPass = base64_encode(XORCipher::cipher($pass,26364));
+			if($pass != 0) $xorPass = ExploitPatch::url_base64_encode(XORCipher::cipher($pass,26364));
 		}else{
-			$desc = ExploitPatch::remove(base64_decode($desc));
+			$desc = ExploitPatch::remove(ExploitPatch::url_base64_decode($desc));
 		}
 		//submitting data
 		if(file_exists("../../data/levels/$levelID")){
@@ -105,9 +104,7 @@ if(!is_numeric($levelID)){
 		}
 		if($gameVersion > 18){
 			if(substr($levelstring,0,3) == 'kS1'){
-				$levelstring = base64_encode(gzcompress($levelstring));
-				$levelstring = str_replace("/","_",$levelstring);
-				$levelstring = str_replace("+","-",$levelstring);
+				$levelstring = ExploitPatch::url_base64_encode(gzcompress($levelstring));
 			}
 		}
 		$response = "1:".$result["levelID"].":2:".$result["levelName"].":3:".$desc.":4:".$levelstring.":5:".$result["levelVersion"].":6:".$result["userID"].":8:10:9:".$result["starDifficulty"].":10:".$result["downloads"].":11:1:12:".$result["audioTrack"].":13:".$result["gameVersion"].":14:".$result["likes"].":17:".$result["starDemon"].":43:".$result["starDemonDiff"].":25:".$result["starAuto"].":18:".$result["starStars"].":19:".$result["starFeatured"].":42:".$result["starEpic"].":45:".$result["objects"].":15:".$result["levelLength"].":30:".$result["original"].":31:".$result['twoPlayer'].":28:".$uploadDate. ":29:".$updateDate. ":35:".$result["songID"].":36:".$result["extraString"].":37:".$result["coins"].":38:".$result["starCoins"].":39:".$result["requestedStars"].":46:".$result["wt"].":47:".$result["wt2"].":48:".$result["settingsString"].":40:".$result["isLDM"].":27:$xorPass:52:".$result["songIDs"].":53:".$result["sfxIDs"].":57:".$result['ts'];

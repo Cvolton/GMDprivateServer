@@ -13,12 +13,12 @@ use Defuse\Crypto\Key;
 $password = !empty($_POST["password"]) ? $_POST["password"] : "";
 
 if(empty($_POST["accountID"])) {
-	$userName = ExploitPatch::remove($_POST["userName"]);
+	$userName = ExploitPatch::charclean($_POST["userName"]);
 	$query = $db->prepare("SELECT accountID FROM accounts WHERE userName = :userName");
 	$query->execute([':userName' => $userName]);
 	$accountID = $query->fetchColumn();
 } else {
-	$accountID = ExploitPatch::remove($_POST["accountID"]);
+	$accountID = ExploitPatch::number($_POST["accountID"]);
 }
 
 $pass = 0;

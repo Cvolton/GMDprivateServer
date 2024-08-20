@@ -26,6 +26,9 @@ $register = 1;
 $userID = $gs->getUserID($id);
 $uploadDate = time();
 
+$checkBan = $gs->getPersonBan($accID, $userID, 3);
+if($checkBan) exit('-1');
+
 $blocked = $db->query("SELECT ID FROM `blocks` WHERE person1 = $toAccountID AND person2 = $accID")->fetchAll(PDO::FETCH_COLUMN);
 $mSOnly = $db->query("SELECT mS FROM `accounts` WHERE accountID = $toAccountID AND mS > 0")->fetchAll(PDO::FETCH_COLUMN);
 $friend = $db->query("SELECT ID FROM `friendships` WHERE (person1 = $accID AND person2 = $toAccountID) || (person2 = $accID AND person1 = $toAccountID)")->fetchAll(PDO::FETCH_COLUMN);
