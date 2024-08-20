@@ -99,7 +99,7 @@ foreach($result as &$action){
 				<h2 style="color:rgb('.$gs->getAccountCommentColor($userid).'); align-items: baseline;" class="profilenick acclistnick"><div class="accounts-badge-icon-div">'.$place.$action["userName"].$avatarImg.'</div></h2>
 			</div></button></div>
 			<div class="form-control" style="display: flex;width: 100%;height: max-content;align-items: center;">'.$stats.'</div>
-			<div class="acccomments"><h3 class="comments" style="margin: 0px;width: max-content;">'.$dl->getLocalizedString("accountID").': <b>'.$userid.'</b></h3></div>
+			<div class="acccomments"><h3 class="comments" style="margin: 0px;width: max-content;">'.$dl->getLocalizedString("accountID").': <b>'.(is_numeric($userid) ? $userid : 0).'</b></h3></div>
 		</div></div>';
 		$x++;
 }

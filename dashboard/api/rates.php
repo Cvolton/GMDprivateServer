@@ -16,6 +16,7 @@ $rates = $rates->fetchAll();
 if(empty($rates)) exit(json_encode(['dashboard' => true, 'success' => false, 'error' => 2, 'message' => 'Nothing was rated!']));
 foreach($rates as &$rate) {
 	$songInfo = $song = $songName = false;
+	$rate['extID'] = is_numeric($rate['extID']) ? $rate['extID'] : 0;
 	if($rate['songID'] != 0) {
 		$songInfo = $gs->getSongInfo($rate['songID']);
 		if($songInfo) {
