@@ -103,9 +103,9 @@ if($gs->checkPermission($_SESSION["accountID"], "dashboardGauntletCreate")) {
 		$gauntletArray = [];
 		foreach($query AS &$key) $gauntletArray[] = $key['ID'];
 		for($x = 1; $x <= $gs->getGauntletCount(); $x++) {
-			if(!in_array($x, $gauntletArray)) $gauntletOptions .= '<option id="gauntlet_id_option'.$x.'" value="'.$x.'">'.$gs->getGauntletName($x).' Gauntlet</option>';
+			if(is_array($gauntletArray) && !in_array($x, $gauntletArray)) $gauntletOptions .= '<option id="gauntlet_id_option'.$x.'" value="'.$x.'">'.$gs->getGauntletName($x).' Gauntlet</option>';
 		}
-		$dl->printSong('<div class="form-control itemsbox">
+		$dl->printSong('<div class="form-control itemsbox chatdiv">
 		<div class="itemoverflow"><div class="itemslist">
 		<button type="submit" onclick="gauntlet(0)" class="btn-primary itembtn">
 			<h2 class="subjectnotyou">'.$dl->getLocalizedString("gauntletCreate").'</h2>

@@ -1519,7 +1519,7 @@ body:has(.audio) {
 
 .itemoverflow {
 	border-radius: 30px;
-	overflow: auto;
+	overflow: scroll;
     width: 100%;
 	overflow-x: hidden;
 	height: 100%;

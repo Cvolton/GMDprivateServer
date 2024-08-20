@@ -150,7 +150,7 @@ if(!empty($_POST["user"])) {
 			<h2 class="messagenotyou" style="font-size: 15px;color: #c0c0c0;" id="stats'.$mod["assignID"].'"><i class="fa-solid fa-circle-dot" id="circle'.$mod["assignID"].'" style="color:rgb('.$gs->getAccountCommentColor($mod["accountID"]).')"></i> <span id="roleName'.$mod["assignID"].'">'.$modName.'</span> | <i class="fa-regular fa-clock"></i> '.$dl->convertToDate($time["timestamp"], true).' | <i class="fa-solid fa-user"></i> '.(!empty($moderator) ? $moderator : 'Unknown').'</h2>
 		</button>';
 	}
-	$dl->printSong('<div class="form-control itemsbox">
+	$dl->printSong('<div class="form-control itemsbox chatdiv">
 	<div class="itemoverflow"><div class="itemslist">
     <button type="submit" onclick="mod(0)" class="btn-primary itembtn">
         <h2 class="subjectnotyou">'.$dl->getLocalizedString("addMod").'</h2>

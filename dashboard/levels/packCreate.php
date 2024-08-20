@@ -96,7 +96,7 @@ if(!empty($_POST["packName"])) {
         <h2 class="subjectnotyou" style="color:rgb('.$pack["rgbcolors"].')" id="name'.$pack["ID"].'">'.$pack["name"].' <i style="opacity:0; margin-right: 10px; color: white; font-size: 13px;transition:0.2s" id="spin'.$pack["ID"].'" class="fa-solid fa-spinner fa-spin"></i></h2>
         <h2 class="messagenotyou" style="font-size: 15px;color: #c0c0c0;" id="stats'.$pack["ID"].'"><i class="fa-solid fa-star"></i> '.$pack["stars"].' | <i class="fa-solid fa-coins"></i> '.$pack["coins"].'</h2>
     </button>';
-	$dl->printSong('<div class="form-control itemsbox">
+	$dl->printSong('<div class="form-control itemsbox chatdiv">
 	<div class="itemoverflow"><div class="itemslist">
     <button type="submit" onclick="pack(0)" class="btn-primary itembtn">
         <h2 class="subjectnotyou">'.$dl->getLocalizedString("packCreate").'</h2>

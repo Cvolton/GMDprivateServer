@@ -83,7 +83,7 @@ if(!empty($_POST["type"]) AND !empty($_POST["amount"]) AND !empty($_POST["reward
 			<h2 class="messagenotyou" style="font-size: 15px;color: #c0c0c0;" id="stats'.$quest["ID"].'">'.$questType.' | <i class="fa-solid fa-check"></i> '.$quest["amount"].' | <i class="fa-solid fa-gem"></i> '.$quest["reward"].'</h2>
 		</button>';
 	}
-		$dl->printSong('<div class="form-control itemsbox">
+		$dl->printSong('<div class="form-control itemsbox chatdiv">
 		<div class="itemoverflow"><div class="itemslist">
     <button type="submit" onclick="quest(0)" class="btn-primary itembtn">
         <h2 class="subjectnotyou">'.$dl->getLocalizedString("questCreate").'</h2>
