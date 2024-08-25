@@ -37,10 +37,10 @@ if ($pass == 1) {
 	$saveData = ExploitPatch::url_base64_decode($saveDataArr[0]);
 	$saveData = gzdecode($saveData);
 	$orbs = explode("</s><k>14</k><s>",$saveData)[1];
-	$orbs = explode("</s>",$orbs)[0];
+	$orbs = explode("</s>",$orbs)[0] ?? 0;
 	$lvls = explode("<k>GS_value</k>",$saveData)[1];
 	$lvls = explode("</s><k>4</k><s>",$lvls)[1];
-	$lvls = explode("</s>",$lvls)[0];
+	$lvls = explode("</s>",$lvls)[0] ?? 0;
 	$protected_key_encoded = "";
 	//if($cloudSaveEncryption == 0){
 		$saveData = str_replace("<k>GJA_002</k><s>".$password."</s>", "<k>GJA_002</k><s>password</s>", $saveData); //replacing pass
