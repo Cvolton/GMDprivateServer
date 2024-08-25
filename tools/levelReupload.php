@@ -17,7 +17,7 @@ include "../incl/lib/connection.php";
 require "../incl/lib/XORCipher.php";
 require "../config/reuploadAcc.php";
 require_once "../incl/lib/mainLib.php";
-require_once "../lib/exploitPatch.php";
+require_once "../incl/lib/exploitPatch.php";
 $gs = new mainLib();
 if(!empty($_POST["levelid"])){
 	$levelID = $_POST["levelid"];
