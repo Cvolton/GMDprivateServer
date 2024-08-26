@@ -21,7 +21,7 @@ $people = array();
 include "../../incl/lib/connection.php";
 include "../../config/misc.php";
 //getting users
-if ($unlistedCreatorPoints) $query = $db->prepare("UPDATE users
+$query = $db->prepare("UPDATE users
 	LEFT JOIN
 	(
 		SELECT usersTable.userID, (IFNULL(starredTable.starred, 0) + IFNULL(featuredTable.featured, 0) + (IFNULL(epicTable.epic,0))) as CP FROM (
@@ -29,43 +29,20 @@ if ($unlistedCreatorPoints) $query = $db->prepare("UPDATE users
 		) AS usersTable
 		LEFT JOIN
 		(
-			SELECT count(*) as starred, userID FROM levels WHERE starStars != 0 AND isCPShared = 0 GROUP BY(userID) 
+			SELECT count(*) as starred, userID FROM levels WHERE starStars != 0 AND isCPShared = 0 ".(!$unlistedCreatorPoints ? "AND unlisted = 0 AND unlisted2 = 0" : "")." GROUP BY(userID) 
 		) AS starredTable ON usersTable.userID = starredTable.userID
 		LEFT JOIN
 		(
-			SELECT count(*) as featured, userID FROM levels WHERE starFeatured != 0 AND isCPShared = 0 GROUP BY(userID) 
+			SELECT count(*) as featured, userID FROM levels WHERE starFeatured != 0 AND isCPShared = 0 ".(!$unlistedCreatorPoints ? "AND unlisted = 0 AND unlisted2 = 0" : "")." GROUP BY(userID) 
 		) AS featuredTable ON usersTable.userID = featuredTable.userID
 		LEFT JOIN
 		(
-			SELECT SUM(starEpic) as epic, userID FROM levels WHERE starEpic != 0 AND isCPShared = 0 GROUP BY(userID) 
-		) AS epicTable ON usersTable.userID = epicTable.userID
-	) calculated
-	ON users.userID = calculated.userID
-	SET users.creatorPoints = IFNULL(calculated.CP, 0)");
-
-else $query = $db->prepare("UPDATE users
-	LEFT JOIN
-	(
-		SELECT usersTable.userID, (IFNULL(starredTable.starred, 0) + IFNULL(featuredTable.featured, 0) + (IFNULL(epicTable.epic,0))) as CP FROM (
-			SELECT userID FROM users
-		) AS usersTable
-		LEFT JOIN
-		(
-			SELECT count(*) as starred, userID FROM levels WHERE starStars != 0 AND isCPShared = 0 AND unlisted = 0 AND unlisted2 = 0 GROUP BY(userID) 
-		) AS starredTable ON usersTable.userID = starredTable.userID
-		LEFT JOIN
-		(
-			SELECT count(*) as featured, userID FROM levels WHERE starFeatured != 0 AND isCPShared = 0 AND unlisted = 0 AND unlisted2 = 0 GROUP BY(userID) 
-		) AS featuredTable ON usersTable.userID = featuredTable.userID
-		LEFT JOIN
-		(
-			SELECT SUM(starEpic) as epic, userID FROM levels WHERE starEpic != 0 AND isCPShared = 0 AND unlisted = 0 AND unlisted2 = 0 GROUP BY(userID) 
+			SELECT SUM(starEpic) as epic, userID FROM levels WHERE starEpic != 0 AND isCPShared = 0 ".(!$unlistedCreatorPoints ? "AND unlisted = 0 AND unlisted2 = 0" : "")." GROUP BY(userID) 
 		) AS epicTable ON usersTable.userID = epicTable.userID
 	) calculated
 	ON users.userID = calculated.userID
 	SET users.creatorPoints = IFNULL(calculated.CP, 0)");
 $query->execute();
-
 /*
 	CP SHARING
 */
