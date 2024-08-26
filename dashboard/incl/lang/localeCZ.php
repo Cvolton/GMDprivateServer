@@ -355,8 +355,10 @@ $string["createdClan"] = "Úspěšně jste vytvořili klan <span style='font-wei
 $string["createClanDesc"] = "Zde můžete vytvořit klan!";
 $string["create"] = "Vytvořit";
 $string["mainSettings"] = "Hlavní nastavení";
-$string["takenClanName"] = "JménoThis clan name was already taken!";
+$string["takenClanName"] = "This clan name was already taken!";
 $string["takenClanTag"] = "This clan tag was already taken!";
+$string["badClanName"] = "Please choose another clan name.";
+$string["badClanTag"] = "Please choose another clan tag.";
 
 $string["suggestedName"] = '<button type="button" onclick="a(\'profile/%1$s\', true, true)" class="accbtn" name="accountID">%1$s</button><text class="dltext"> navhrhl/a <b>%4$s%3$s</b> pro </text><text class="levelname">%2$s</text>'; // %1$s - Mod username, %2$s - level name, %3$s - x stars, %4$s - Featured/Epic (%4$s%3$s - Featured, x stars)
 $string["reportedName"] = '%1$s<text class="dltext"> nahlásil/a </text><text class="levelname">%2$s</text>';
@@ -587,6 +589,7 @@ $string["modAction25"] = "Vytvořil(a) quest";
 $string["modAction26"] = "Změnil(a) jméno/heslo hráče";
 $string["modAction27"] = "Změnil(a) zvukový efekt";
 $string["modAction28"] = "Zabanoval(a) osobu";
+$string["modAction29"] = "Locked/unlocked level updating";
 $string["modAction30"] = "Ohodnotil(a) list";
 $string["modAction31"] = "Odeslal(a) list";
 $string["modAction32"] = "Odstranil/přidal(a) zvláštní hodnocení listu";
@@ -595,6 +598,8 @@ $string["modAction34"] = "Odstranil(a) list";
 $string["modAction35"] = "Změnil(a) autora listu";
 $string["modAction36"] = "Změnil(a) jméno listu";
 $string["modAction37"] = "Změnil(a) popis listu";
+$string["modAction38"] = "Locked/unlocked level commenting";
+$string["modAction39"] = "Locked/unlocked list commenting";
 $string["everyActions"] = "Všechny činy";
 $string["everyMod"] = "Každý moderátor";
 $string["Kish!"] = "Nemáš co tady dělat!";

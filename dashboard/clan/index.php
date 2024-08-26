@@ -14,6 +14,7 @@ include "../".$dbPath."incl/lib/exploitPatch.php";
 include_once "../".$dbPath."incl/lib/mainLib.php";
 $gs = new mainLib();
 include "../".$dbPath."incl/lib/connection.php";
+include "../".$dbPath."config/security.php";
 $getID = explode("/", $_GET["id"])[count(explode("/", $_GET["id"]))-1];
 if($getID == "settings") {
     $getID = explode("/", $_GET["id"])[count(explode("/", $_GET["id"]))-2];
@@ -249,19 +250,79 @@ if(!empty($clan)) {
 			}
 		</script>', 'profile'));
         } else {
-            $name = base64_encode(strip_tags(ExploitPatch::rucharclean(str_replace(' ', '', $_POST["clanname"]), 20)));
-			$tag = base64_encode(strip_tags(ExploitPatch::charclean(str_replace(' ', '', strtoupper($_POST["clantag"])), 5)));
+            $name = strip_tags(ExploitPatch::rucharclean(str_replace(' ', '', $_POST["clanname"]), 20));
+			$tag = strip_tags(ExploitPatch::charclean(str_replace(' ', '', strtoupper($_POST["clantag"])), 5));
             $desc = base64_encode(strip_tags(ExploitPatch::rucharclean($_POST["clandesc"], 255)));
             $color = ExploitPatch::charclean(mb_substr($_POST["clancolor"], 1), 6);
 			$isClosed = ExploitPatch::number($_POST["isclosed"], 1);
-            if(!empty($name) AND !empty($color) AND !empty($tag) AND strlen($_POST['clantag']) > 2 AND strlen($_POST['clantag']) < 6 AND is_numeric($isClosed)) {
-				$check = $db->prepare('SELECT count(*) FROM clans WHERE clan LIKE :c AND tag LIKE :t AND ID != :id');
-				$check->execute([':c' => $name, ':id' => $clan['ID'], ':t' => $tag]);
+            if(!empty($name) AND !empty($color) AND !empty($tag) AND strlen($tag) > 1 AND is_numeric($isClosed)) {
+				if($filterClanNames >= 1) {
+					$bannedClanNamesList = array_map('strtolower', $bannedClanNames);
+					switch($filterClanNames) {
+						case 1:
+							if(in_array(strtolower($name), $bannedClanNamesList)) exit($dl->printSong('<div class="form">
+								<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
+								<form class="form__inner" method="post" action="">
+								<p>'.$dl->getLocalizedString("badClanName").'</p>
+								<button type="submit" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
+								</form>
+							</div>'));
+							break;
+						case 2:
+							foreach($bannedClanNamesList as $bannedClanName) {
+								if(!empty($bannedClanName) && mb_strpos(strtolower($name), $bannedClanName) !== false) exit($dl->printSong('<div class="form">
+								<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
+								<form class="form__inner" method="post" action="">
+								<p>'.$dl->getLocalizedString("badClanName").'</p>
+								<button type="submit" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
+								</form>
+							</div>'));
+							}
+					}
+				}
+				if($filterClanTags >= 1) {
+					$bannedClanTagsList = array_map('strtolower', $bannedClanTags);
+					switch($filterClanTags) {
+						case 1:
+							if(in_array(strtolower($tag), $bannedClanTagsList)) exit($dl->printSong('<div class="form">
+								<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
+								<form class="form__inner" method="post" action="">
+								<p>'.$dl->getLocalizedString("badClanTag").'</p>
+								<button type="submit" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
+								</form>
+							</div>'));
+							break;
+						case 2:
+							foreach($bannedClanTagsList as $bannedClanTag) {
+								if(!empty($bannedClanTag) && mb_strpos(strtolower($tag), $bannedClanTag) !== false) exit($dl->printSong('<div class="form">
+								<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
+								<form class="form__inner" method="post" action="">
+								<p>'.$dl->getLocalizedString("badClanTag").'</p>
+								<button type="submit" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
+								</form>
+							</div>'));
+							}
+					}
+				}
+				$name = base64_encode($name);
+				$tag = base64_encode($tag);
+				$check = $db->prepare('SELECT count(*) FROM clans WHERE clan LIKE :c AND ID != :id');
+				$check->execute([':c' => $name, ':id' => $clan['ID']]);
 				$check = $check->fetchColumn();
 				if($check > 0) exit($dl->printSong('<div class="form">
 					<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 					<form class="form__inner" method="post" action=".">
 						<p>'.$dl->getLocalizedString("takenClanName").'</p>
+							<button type="button" onclick="a(\'clan/'.$clan['clan'].'/settings\', true, true, \'GET\')" class="btn-primary">'.$dl->getLocalizedString("tryAgainBTN").'</button>
+					</form>
+				</div>', 'browse'));
+				$check = $db->prepare('SELECT count(*) FROM clans WHERE tag LIKE :t AND ID != :id');
+				$check->execute([':id' => $clan['ID'], ':t' => $tag]);
+				$check = $check->fetchColumn();
+				if($check > 0) exit($dl->printSong('<div class="form">
+					<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
+					<form class="form__inner" method="post" action=".">
+						<p>'.$dl->getLocalizedString("takenClanTag").'</p>
 							<button type="button" onclick="a(\'clan/'.$clan['clan'].'/settings\', true, true, \'GET\')" class="btn-primary">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 					</form>
 				</div>', 'browse'));

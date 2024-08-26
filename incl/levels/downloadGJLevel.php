@@ -7,6 +7,7 @@ require_once "../lib/mainLib.php";
 $gs = new mainLib();
 require "../lib/generateHash.php";
 require "../lib/GJPCheck.php";
+include "../../config/misc.php";
 if(empty($_POST["gameVersion"])){
 	$gameVersion = 1;
 }else{
@@ -65,13 +66,18 @@ if(!is_numeric($levelID)){
 	$lvls = $query->rowCount();
 	if($lvls!=0){
 		$result = $query->fetch();
-
+		$isPlayerAnAdmin = false;
+		$accountID = GJPCheck::getAccountIDOrDie();
+		if(!empty($_POST['accountID'])) {
+			if($unlistedLevelsForAdmins) {
+				$checkAdmin = $db->prepare('SELECT isAdmin FROM accounts WHERE accountID = :accountID');
+				$checkAdmin->execute([':accountID' => $accountID]);
+				$checkAdmin = $checkAdmin->fetchColumn();
+				if($checkAdmin) $isPlayerAnAdmin = true;
+			}
+		}	
 		//Verifying friends only unlisted
-		if($result["unlisted2"] != 0){
-			$accountID = GJPCheck::getAccountIDOrDie();
-			if(! ($result["extID"] == $accountID || $gs->isFriends($accountID, $result["extID"])) ) exit("-1");
-		}
-
+		if($result["unlisted2"] != 0) if(!($result["extID"] == $accountID || $gs->isFriends($accountID, $result["extID"])) && !$isPlayerAnAdmin) exit("-1");
 		//adding the download
 		$query6 = $db->prepare("SELECT count(*) FROM actions_downloads WHERE levelID=:levelID AND ip=INET6_ATON(:ip)");
 		$query6->execute([':levelID' => $levelID, ':ip' => $ip]);
@@ -102,7 +108,7 @@ if(!is_numeric($levelID)){
 		}else{
 			$levelstring = $result["levelString"];
 		}
-		if($gameVersion > 18){
+		if($gameVersion > 18) {
 			if(substr($levelstring,0,3) == 'kS1'){
 				$levelstring = ExploitPatch::url_base64_encode(gzcompress($levelstring));
 			}

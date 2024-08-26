@@ -79,11 +79,13 @@ $query = $db->prepare("INSERT INTO levels (levelName, gameVersion, binaryVersion
 VALUES (:levelName, :gameVersion, :binaryVersion, :userName, :levelDesc, :levelVersion, :levelLength, :audioTrack, :auto, :password, :original, :twoPlayer, :songID, :objects, :coins, :requestedStars, :extraString, :levelString, :levelInfo, :secret, :uploadDate, :userID, :id, :uploadDate, :unlisted, :hostname, :ldm, :wt, :wt2, :unlisted2, :settingsString, :songIDs, :sfxIDs, :ts)");
 
 if($levelString != "" AND $levelName != "") {
-	$querye=$db->prepare("SELECT levelID FROM levels WHERE levelName = :levelName AND userID = :userID");
+	$querye=$db->prepare("SELECT levelID, updateLocked FROM levels WHERE levelName = :levelName AND userID = :userID");
 	$querye->execute([':levelName' => $levelName, ':userID' => $userID]);
-	$levelID = $querye->fetchColumn();
+	$level = $querye->fetch();
+	$levelID = $level['levelID'];
+	if($level['updateLocked']) exit("-1");
 	$lvls = $querye->rowCount();
-	if($lvls==1) {
+	if($lvls == 1) {
 		include "../../config/misc.php";
 		$query = $db->prepare("SELECT starStars FROM `levels` WHERE levelID = :levelID");
 		$query->execute([":levelID"=> $levelID]);

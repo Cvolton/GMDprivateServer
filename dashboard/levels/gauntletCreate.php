@@ -62,7 +62,7 @@ if($gs->checkPermission($_SESSION["accountID"], "dashboardGauntletCreate")) {
 			$check = $db->prepare("SELECT count(*) FROM gauntlets WHERE ID = :gid");
 			$check->execute([':gid' => $gauntletID]);
 			$check = $check->fetchColumn();
-			if($check > 0) { // Shit code
+			if($check > 0) { // Shit code // Why
 				$query = $db->prepare("INSERT INTO gauntlets (level1, level2, level3, level4, level5, timestamp) VALUES (:l1, :l2, :l3, :l4, :l5, :t)");
 				$query->execute([':l1' => $gauntletLevels[0], ':l2' => $gauntletLevels[1], ':l3' => $gauntletLevels[2], ':l4' => $gauntletLevels[3], ':l5' => $gauntletLevels[4], ':t' => time()]);
 			} else {

@@ -12,6 +12,15 @@ require "../lib/generateHash.php";
 $lvlstring = $userstring = $songsstring = $sug = $sugg = $str = $morejoins = ""; $lvlsmultistring = []; $epicParams = []; $order = "uploadDate";
 $orderenabled = true; $ordergauntlet = false; $isIDSearch = false;
 $params = array("unlisted = 0");
+if(!empty($_POST['accountID'])) {
+	$accountID = GJPCheck::getAccountIDOrDie();
+	if($unlistedLevelsForAdmins) {
+		$checkAdmin = $db->prepare('SELECT isAdmin FROM accounts WHERE accountID = :accountID');
+		$checkAdmin->execute([':accountID' => $accountID]);
+		$checkAdmin = $checkAdmin->fetchColumn();
+		if($checkAdmin) $params = [];
+	}
+}	
 
 if(!empty($_POST["gameVersion"])){
 	$gameVersion = ExploitPatch::number($_POST["gameVersion"]);
@@ -185,10 +194,7 @@ switch($type){
 		$order = "likes";
 		break;
 	case 5:
-		if(!empty($_POST['accountID'])) {
-			$accountID = GJPCheck::getAccountIDOrDie();
-			if($gs->getUserID($accountID, $gs->getAccountName($accountID)) == $str) $params = [];
-		}	
+		if($gs->getUserID($accountID, $gs->getAccountName($accountID)) == $str) $params = [];
 		$params[] = "levels.userID = '$str'";
 		break;
 	case 6: //featured

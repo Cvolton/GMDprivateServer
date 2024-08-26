@@ -357,6 +357,8 @@ $string["create"] = "Create";
 $string["mainSettings"] = "Main settings";
 $string["takenClanName"] = "This clan name was already taken!";
 $string["takenClanTag"] = "This clan tag was already taken!";
+$string["badClanName"] = "Please choose another clan name.";
+$string["badClanTag"] = "Please choose another clan tag.";
 
 $string["suggestedName"] = '<button type="button" onclick="a(\'profile/%1$s\', true, true)" class="accbtn" name="accountID">%1$s</button><text class="dltext"> suggested <b>%4$s%3$s</b> for</text><text class="levelname">%2$s</text>'; // %1$s - Mod username, %2$s - level name, %3$s - x stars, %4$s - Featured/Epic (%4$s%3$s - Featured, x stars)
 $string["reportedName"] = '%1$s<text class="dltext"> was reported</text><text class="levelname">%2$s</text>';
@@ -587,6 +589,7 @@ $string["modAction25"] = "Created a quest";
 $string["modAction26"] = "Changed player's username/password";
 $string["modAction27"] = "Changed SFX";
 $string["modAction28"] = "Banned person";
+$string["modAction29"] = "Locked/unlocked level updating";
 $string["modAction30"] = "Rated list";
 $string["modAction31"] = "Sent list";
 $string["modAction32"] = "Un/featured list";
@@ -595,6 +598,8 @@ $string["modAction34"] = "Deleted list";
 $string["modAction35"] = "Changed list's creator";
 $string["modAction36"] = "Changed list's name";
 $string["modAction37"] = "Changed list's description";
+$string["modAction38"] = "Locked/unlocked level commenting";
+$string["modAction39"] = "Locked/unlocked list commenting";
 $string["everyActions"] = "Any actions";
 $string["everyMod"] = "All moderators";
 $string["Kish!"] = "Go away!";

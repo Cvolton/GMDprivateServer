@@ -148,4 +148,15 @@ $specialCommentLikes = [
     1 => 10,
     2 => 20
 ];
+
+/*
+	Let GDPS administrators to see unlisted levels
+	
+	This setting will show unlisted levels for administrators
+	
+	True - Show unlisted levels
+	False - Don't show unlisted levels
+*/
+
+$unlistedLevelsForAdmins = false;
 ?>

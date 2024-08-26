@@ -201,8 +201,8 @@ class Commands {
 				$query->execute([':levelID' => $levelID]);
 				$query = $db->prepare("DELETE from levels WHERE levelID = :levelID LIMIT 1");
 				$query->execute([':levelID' => $levelID]);
-				$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('6', :value, :levelID, :timestamp, :id)");
-				$query->execute([':value' => "1", ':timestamp' => $uploadDate, ':id' => $accountID, ':levelID' => $levelID]);
+				$query = $db->prepare("INSERT INTO modactions (type, value, value2, value3, timestamp, account) VALUES ('6', :value, :value2, :levelID, :timestamp, :id)");
+				$query->execute([':value' => "1", ":value2" => $levelName, ':timestamp' => $uploadDate, ':id' => $accountID, ':levelID' => $levelID]);
 				if(file_exists(dirname(__FILE__)."../../data/levels/$levelID")) rename(dirname(__FILE__)."../../data/levels/$levelID", dirname(__FILE__)."../../data/levels/deleted/$levelID");
 				return 'You successfully deleted '.$levelName.'!';
 				break;
@@ -224,6 +224,20 @@ class Commands {
 				$query->execute([':value' => $targetUserName, ':timestamp' => $uploadDate, ':id' => $accountID, ':levelID' => $levelID]);
 				return 'You successfully set '.$gs->getAccountName($targetAcc).' as creator of '.$gs->getLevelName($levelID).'!';
 				break;
+			case '!lockUpdating':
+			case '!unlockUpdating':
+			case '!lu':
+			case '!unlu':
+				if(!$gs->checkPermission($accountID, "commandLockUpdating")) return false;
+				if(!isset($commentarray[1])) {
+					$lockArray = ['!lockUpdating' => 1, '!unlockUpdating' => 0, '!lu' => 1, '!unlu' => 0];
+					$lockValue = $lockArray[$commentarray[0]];
+				} else $lockValue = $commentarray[1];
+				$query = $db->prepare("UPDATE levels SET updateLocked = :updateLocked WHERE levelID = :levelID");
+				$query->execute([':levelID' => $levelID, ':updateLocked' => $lockValue]);
+				$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('29', :value, :levelID, :timestamp, :id)");
+				$query->execute([':value' => $lockValue, ':timestamp' => $uploadDate, ':id' => $accountID, ':levelID' => $levelID]);
+				return 'You successfully '.($lockValue ? 'locked updating of' : 'unlocked updating of').' level '.$gs->getLevelName($levelID).'!';
 			case '!re':
 			case '!rename':
 				if(self::ownCommand("rename", $accountID, $targetExtID)) {
@@ -232,9 +246,9 @@ class Commands {
 					if(!$levelName) return false;
 					$query = $db->prepare("UPDATE levels SET levelName = :levelName WHERE levelID = :levelID");
 					$query->execute([':levelID' => $levelID, ':levelName' => $name]);
-					$query = $db->prepare("INSERT INTO modactions (type, value, timestamp, account, value3) VALUES ('8', :value, :timestamp, :id, :levelID)");
-					$query->execute([':value' => $name, ':timestamp' => $uploadDate, ':id' => $accountID, ':levelID' => $levelID]);
-					return 'You successfully renamed '.$levelName.' to'.$gs->getLevelName($levelID).'!';
+					$query = $db->prepare("INSERT INTO modactions (type, value, value2, timestamp, account, value3) VALUES ('8', :value, :value2, :timestamp, :id, :levelID)");
+					$query->execute([':value' => $name, ":value2" => $levelName, ':timestamp' => $uploadDate, ':id' => $accountID, ':levelID' => $levelID]);
+					return 'You successfully renamed '.$levelName.' to '.$gs->getLevelName($levelID).'!';
 				}
 				break;
 			case '!p':
@@ -250,7 +264,7 @@ class Commands {
 						$query->execute([':levelID' => $levelID, ':password' => $pass]);
 						$query = $db->prepare("INSERT INTO modactions (type, value, timestamp, account, value3) VALUES ('9', :value, :timestamp, :id, :levelID)");
 						$query->execute([':value' => $pass, ':timestamp' => $uploadDate, ':id' => $accountID, ':levelID' => $levelID]);
-						$returnText = empty($pass) ? 'You successfully removed password of level '.$gs->getLevelName($levelID).'!' : 'You successfully set password of level '.$gs->getLevelName($levelID).' to '.ExploitPatch::number($commentarray[1]).'!';
+						$returnText = $pass == 1 ? 'You successfully removed password of level '.$gs->getLevelName($levelID).'!' : 'You successfully set password of level '.$gs->getLevelName($levelID).' to '.ExploitPatch::number($commentarray[1]).'!';
 						return $returnText;
 					}
 				}
@@ -321,11 +335,26 @@ class Commands {
 				} else $permission = $commentarray[1] == 1 ? 'ldm' : 'unldm';
 				if(self::ownCommand($permission, $accountID, $targetExtID)) {
 					$ldm = $permission == 'ldm' ? 1 : 0;
-					$query = $db->prepare("UPDATE levels SET isLDM = :ldm WHERE levelID=:levelID");
+					$query = $db->prepare("UPDATE levels SET isLDM = :ldm WHERE levelID = :levelID");
 					$query->execute([':levelID' => $levelID, ':ldm' => $ldm]);
 					$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('14', :value, :levelID, :timestamp, :id)");
 					$query->execute([':value' => $ldm, ':timestamp' => $uploadDate, ':id' => $accountID, ':levelID' => $levelID]);
 					return 'You successfully '.($ldm ? 'added LDM to' : 'removed LDM from').' level '.$gs->getLevelName($levelID).'!';
+				}
+			case '!lockComments':
+			case '!unlockComments':
+			case '!lc':
+			case '!unlc':
+				if(self::ownCommand("lockComments", $accountID, $targetExtID)) {
+					if(!isset($commentarray[1])) {
+						$lockArray = ['!lockComments' => 1, '!unlockComments' => 0, '!lc' => 1, '!unlc' => 0];
+						$lockValue = $lockArray[$commentarray[0]];
+					} else $lockValue = $commentarray[1];
+					$query = $db->prepare("UPDATE levels SET commentLocked = :commentLocked WHERE levelID = :levelID");
+					$query->execute([':levelID' => $levelID, ':commentLocked' => $lockValue]);
+					$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('38', :value, :levelID, :timestamp, :id)");
+					$query->execute([':value' => $lockValue, ':timestamp' => $uploadDate, ':id' => $accountID, ':levelID' => $levelID]);
+					return 'You successfully '.($lockValue ? 'locked comments on' : 'unlocked comments on').' level '.$gs->getLevelName($levelID).'!';
 				}
 		}
 		return false;
@@ -397,10 +426,11 @@ class Commands {
 			case '!d':
 			case '!delete':
 				if(!$gs->checkPermission($accountID, "commandDelete")) return false;
+				$oldName = $gs->getListName($listID);
 				$query = $db->prepare("DELETE FROM lists WHERE listID = :listID");
 				$query->execute([':listID' => $listID]);
-				$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('34', 0, :listID, :timestamp, :id)");
-				$query->execute([':timestamp' => time(), ':id' => $accountID, ':listID' => $listID]);
+				$query = $db->prepare("INSERT INTO modactions (type, value, value2, value3, timestamp, account) VALUES ('34', 0, :value2, :listID, :timestamp, :id)");
+				$query->execute([':timestamp' => time(), ':value2' => $oldName, ':id' => $accountID, ':listID' => $listID]);
 				break;
 			case '!acc':
 			case '!setacc':
@@ -436,6 +466,21 @@ class Commands {
 				$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('37', :value, :listID, :timestamp, :id)");
 				$query->execute([':value' => $name, ':timestamp' => time(), ':id' => $accountID, ':listID' => $listID]);
 				break;
+			case '!lockComments':
+			case '!unlockComments':
+			case '!lc':
+			case '!unlc':
+				if(self::ownCommand("lockComments", $accountID, $targetExtID)) {
+					if(!isset($carray[1])) {
+						$lockArray = ['!lockComments' => 1, '!unlockComments' => 0, '!lc' => 1, '!unlc' => 0];
+						$lockValue = $lockArray[$carray[0]];
+					} else $lockValue = $carray[1];
+					$query = $db->prepare("UPDATE lists SET commentLocked = :commentLocked WHERE listID = :listID");
+					$query->execute([':listID' => $listID, ':commentLocked' => $lockValue]);
+					$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('39', :value, :listID, :timestamp, :id)");
+					$query->execute([':value' => $lockValue, ':timestamp' => time(), ':id' => $accountID, ':listID' => $listID]);
+					return 'You successfully '.($lockValue ? 'locked comments on' : 'unlocked comments on').' list '.$gs->getListName($listID).'!';
+				}
 		}
 		return true;
 	}

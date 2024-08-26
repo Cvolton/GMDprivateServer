@@ -4,9 +4,22 @@ $unregisteredSubmissions = false; // false = green accounts can't upload levels,
 $preactivateAccounts = true; // false = accounts need to be activated at dashboard/login/activate.php; true = accounts can log in immediately
 $activeBanIP = true; // false = no check for banned IPs, true = active banip check (IP check every connection to GDPS)
 
-$filterUsernames = 0; // 0 = Disabled, 1 = Checks if the username is word, 2 = Checks if the username contains word
+$filterUsernames = 2; // 0 = Disabled, 1 = Checks if the username is word, 2 = Checks if the username contains word
 $bannedUsernames = [ // Add words to ban if it is a username/if it is in a username
 	'RobTop'
+];
+
+$filterClanNames = 2; // 0 = Disabled, 1 = Checks if the clan name is word, 2 = Checks if the clan name contains word
+$bannedClanNames = [ // Add words to ban if it is a clan name/if it is in a clan name
+	'Support',
+	'Administration',
+	'Moderation'
+];
+
+$filterClanTags = 2; // 0 = Disabled, 1 = Checks if the clan tag is word, 2 = Checks if the clan tag contains word
+$bannedClanTags = [ // Add words to ban if it is a clan tag/if it is in a clan tag
+	'ADMIN',
+	'MOD'
 ];
 
 /*

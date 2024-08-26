@@ -35,7 +35,7 @@ if(!empty($_POST["username"]) AND !empty($_POST["email"]) AND !empty($_POST["rep
 		$bannedUsernamesList = array_map('strtolower', $bannedUsernames);
 		switch($filterUsernames) {
 			case 1:
-				if(in_array(strtolower($userName), $bannedUsernamesList)) exit($dl->printSong('<div class="form">
+				if(in_array(strtolower($username), $bannedUsernamesList)) exit($dl->printSong('<div class="form">
 					<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 					<form class="form__inner" method="post" action="">
 					<p>'.$dl->getLocalizedString("badUsername").'</p>

@@ -359,6 +359,8 @@ $string["create"] = "Créer";
 $string["mainSettings"] = "Réglages principaux";
 $string["takenClanName"] = "Le nom du clan est déjà pris !";
 $string["takenClanTag"] = "Ce tag de clan est déjà pris !";
+$string["badClanName"] = "Please choose another clan name.";
+$string["badClanTag"] = "Please choose another clan tag.";
 
 $string["suggestedName"] = '<button type="button" onclick="a(\'profile/%1$s\', true, true)" class="accbtn" name="accountID">%1$s</button><text class="dltext"> a suggéré <b>%4$s%3$s</b> pour </text><text class="levelname">%2$s</text>'; // %1$s - Mod username, %2$s - level name, %3$s - x stars, %4$s - Featured/Epic (%4$s%3$s - Featured, x stars)
 $string["reportedName"] = '%1$s<text class="dltext"> a signalé </text><text class="levelname">%2$s</text>';
@@ -589,6 +591,7 @@ $string["modAction25"] = "A créé une quête";
 $string["modAction26"] = "A changé le nom d'utilisateur/mot de passe du joueur";
 $string["modAction27"] = "A changé un SFX";
 $string["modAction28"] = "Banned person";
+$string["modAction29"] = "Locked/unlocked level updating";
 $string["modAction30"] = "La liste a été rate";
 $string["modAction31"] = "La liste a été sent (envoyé aux modérateurs)";
 $string["modAction32"] = "La list a été (ou a eu son) featured (supprimé)";
@@ -597,6 +600,8 @@ $string["modAction34"] = "Liste supprimé";
 $string["modAction35"] = "Changé le créateur de la liste";
 $string["modAction36"] = "Changé le nom de la liste";
 $string["modAction37"] = "Changé la description de la liste"; // snoring
+$string["modAction38"] = "Locked/unlocked level commenting";
+$string["modAction39"] = "Locked/unlocked list commenting";
 $string["everyActions"] = "Toutes les actions";
 $string["everyMod"] = "Tous les modérateurs";
 $string["Kish!"] = "Partez d'ici !";

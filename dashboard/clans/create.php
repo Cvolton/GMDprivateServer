@@ -14,6 +14,7 @@ include "../".$dbPath."incl/lib/exploitPatch.php";
 include_once "../".$dbPath."incl/lib/mainLib.php";
 $gs = new mainLib();
 include "../".$dbPath."incl/lib/connection.php";
+include "../".$dbPath."config/security.php";
 $isPlayerInClan = $gs->isPlayerInClan($_SESSION["accountID"]);
 $dl->printFooter('../');
 $dl->title($dl->getLocalizedString("createClan"));
@@ -25,22 +26,61 @@ if($isPlayerInClan) die($dl->printSong('<div class="form">
     </form>
 </div>', 'browse'));
 if(isset($_POST["name"]) AND isset($_POST["desc"]) AND isset($_POST["color"])) {
-        $name = base64_encode(strip_tags(ExploitPatch::rucharclean(str_replace(' ', '', $_POST["name"]), 20)));
-		$tag = base64_encode(strip_tags(ExploitPatch::charclean(str_replace(' ', '', strtoupper($_POST["tag"])), 5)));
+        $name = strip_tags(ExploitPatch::rucharclean(str_replace(' ', '', $_POST["name"]), 20));
+		$tag = strip_tags(ExploitPatch::charclean(str_replace(' ', '', strtoupper($_POST["tag"])), 5));
         $desc = base64_encode(strip_tags(ExploitPatch::rucharclean($_POST["desc"], 255)));
         $color = ExploitPatch::charclean(mb_substr($_POST["color"], 1), 6);
-		if(!empty($name) AND !empty($color) AND !empty($tag) AND strlen($_POST['tag']) > 2 AND strlen($_POST['tag']) < 6) {
-			$check = $db->prepare('SELECT count(*) FROM clans WHERE clan LIKE :c');
-			$check->execute([':c' => $name]);
-			$check = $check->fetchColumn();
-			if($check > 0) exit($dl->printSong('<div class="form">
-				<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
-				<form class="form__inner" method="post" action=".">
-					<p>'.$dl->getLocalizedString("takenClanName").'</p>
-						<button type="button" onclick="a(\'clans/create.php\', true, false, \'GET\')" class="btn-primary">'.$dl->getLocalizedString("tryAgainBTN").'</button>
-				</form>
-			</div>', 'browse'));
-			
+		if(!empty($name) AND !empty($color) AND !empty($tag) AND strlen($tag) > 1) {
+			if($filterClanNames >= 1) {
+				$bannedClanNamesList = array_map('strtolower', $bannedClanNames);
+				switch($filterClanNames) {
+					case 1:
+						if(in_array(strtolower($name), $bannedClanNamesList)) exit($dl->printSong('<div class="form">
+							<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
+							<form class="form__inner" method="post" action="">
+							<p>'.$dl->getLocalizedString("badClanName").'</p>
+							<button type="submit" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
+							</form>
+						</div>'));
+						break;
+					case 2:
+						foreach($bannedClanNamesList as $bannedClanName) {
+							if(!empty($bannedClanName) && mb_strpos(strtolower($name), $bannedClanName) !== false) exit($dl->printSong('<div class="form">
+							<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
+							<form class="form__inner" method="post" action="">
+							<p>'.$dl->getLocalizedString("badClanName").'</p>
+							<button type="submit" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
+							</form>
+						</div>'));
+						}
+				}
+			}
+			if($filterClanTags >= 1) {
+				$bannedClanTagsList = array_map('strtolower', $bannedClanTags);
+				switch($filterClanTags) {
+					case 1:
+						if(in_array(strtolower($tag), $bannedClanTagsList)) exit($dl->printSong('<div class="form">
+							<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
+							<form class="form__inner" method="post" action="">
+							<p>'.$dl->getLocalizedString("badClanTag").'</p>
+							<button type="submit" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
+							</form>
+						</div>'));
+						break;
+					case 2:
+						foreach($bannedClanTagsList as $bannedClanTag) {
+							if(!empty($bannedClanTag) && mb_strpos(strtolower($tag), $bannedClanTag) !== false) exit($dl->printSong('<div class="form">
+							<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
+							<form class="form__inner" method="post" action="">
+							<p>'.$dl->getLocalizedString("badClanTag").'</p>
+							<button type="submit" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
+							</form>
+						</div>'));
+						}
+				}
+			}
+			$name = base64_encode($name);
+			$tag = base64_encode($tag);
 			$check = $db->prepare('SELECT count(*) FROM clans WHERE tag LIKE :t');
 			$check->execute([':t' => $tag]);
 			$check = $check->fetchColumn();

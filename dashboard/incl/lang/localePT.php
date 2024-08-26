@@ -356,6 +356,8 @@ $string["create"] = "Criar";
 $string["mainSettings"] = "Configurações principais";
 $string["takenClanName"] = "Este nome de clã já foi tomado!";
 $string["takenClanTag"] = "Esta tag de clã já foi tomada!";
+$string["badClanName"] = "Please choose another clan name.";
+$string["badClanTag"] = "Please choose another clan tag.";
 
 $string["suggestedName"] = '<button type="button" onclick="a(\'profile/%1$s\', true, true)" class="accbtn" name="accountID">%1$s</button><text class="dltext"> sugeriu <b>%4$s%3$s</b> para</text><text class="levelname">%2$s</text>'; // %1$s - Nome do Moderador, %2$s - nome do nível, %3$s - x estrelas, %4$s - Destacado/Épico (%4$s%3$s - Destacado, x estrelas)
 $string["reportedName"] = '%1$s<text class="dltext"> foi relatado</text><text class="levelname">%2$s</text>';
@@ -586,6 +588,7 @@ $string["modAction25"] = "Criou uma missão";
 $string["modAction26"] = "Alterou o nome de usuário/senha do jogador";
 $string["modAction27"] = "Alterou os efeitos sonoros";
 $string["modAction28"] = "Baniu uma pessoa";
+$string["modAction29"] = "Locked/unlocked level updating";
 $string["modAction30"] = "Avaliou lista";
 $string["modAction31"] = "Enviou lista";
 $string["modAction32"] = "Destaque/Não destaque da lista";
@@ -594,6 +597,8 @@ $string["modAction34"] = "Deletou lista";
 $string["modAction35"] = "Alterado o criador da lista";
 $string["modAction36"] = "Alterado o nome da lista";
 $string["modAction37"] = "Alterada a descrição da lista";
+$string["modAction38"] = "Locked/unlocked level commenting";
+$string["modAction39"] = "Locked/unlocked list commenting";
 $string["everyActions"] = "Qualquer ação";
 $string["everyMod"] = "Todos os moderadores";
 $string["Kish!"] = "Vai embora!";
