@@ -77,7 +77,7 @@ if(!empty($_POST["packName"])) {
 			break;
 	}
 	$query = $db->prepare("INSERT INTO mappacks (name, levels, stars, coins, difficulty, rgbcolors, colors2, timestamp) VALUES (:name, :levels, :stars, :coins, :diff, :rgb, :c2, :time)");
-	$query->execute([':name' => $name, ':levels' => $levels, ':stars' => $stars, ':coins' => $coins, ':diff' => $diff, ':rgb' => $color, ':c2' => ExploitPatch::remove(str_replace("#", '', $_POST["color"])), ':time' => time()]);
+	$query->execute([':name' => $name, ':levels' => $levels, ':stars' => $stars, ':coins' => $coins, ':diff' => $diff, ':rgb' => $color, ':c2' => $color, ':time' => time()]);
 	$query = $db->prepare("INSERT INTO modactions  (type, value, timestamp, account, value2, value3, value4, value7) VALUES ('17',:value,:timestamp,:account,:levels, :stars, :coins, :rgb)");
 	$query->execute([':value' => $name, ':timestamp' => time(), ':account' => $accountID, ':levels' => $levels, ':stars' => $stars, ':coins' => $coins, ':rgb' => $color]);
 	$success = $dl->getLocalizedString("packCreateSuccess").' <b style="color:'.$_POST["color"].'">'.$name."</b>!";
