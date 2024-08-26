@@ -6,8 +6,8 @@ require_once "../".$dbPath."incl/lib/mainLib.php";
 $gs = new mainLib();
 $dl->title($dl->getLocalizedString("listTableMod"));
 $dl->printFooter('../');
-include "../".$dbPath."incl/lib/connection.php";
-include "../".$dbPath."incl/lib/exploitPatch.php";
+require "../".$dbPath."incl/lib/connection.php";
+require "../".$dbPath."incl/lib/exploitPatch.php";
 $modcheck = $gs->checkPermission($_SESSION["accountID"], "dashboardModTools");
 if(!$modcheck) exit($dl->printSong('<div class="form">
     <h1>'.$dl->getLocalizedString("errorGeneric").'</h1>

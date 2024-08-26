@@ -1,5 +1,5 @@
 <?php
-include_once __DIR__ . "/ip_in_range.php";
+require_once __DIR__ . "/ip_in_range.php";
 class ipCheck {
 	public function ipv4inrange($ip, $range) {
 		return ipInRange::ipv4_in_range($ip, $range);
@@ -57,7 +57,7 @@ class ipCheck {
 		return $_SERVER['REMOTE_ADDR'];
 	}
 	public function checkProxy() {
-		include __DIR__."/../../config/security.php";
+		require __DIR__."/../../config/security.php";
 		if(!isset($blockFreeProxies)) global $blockFreeProxies;
 		if(!isset($proxies)) global $proxies;
 		if(!$blockFreeProxies) return;
@@ -81,7 +81,7 @@ class ipCheck {
 		}
 	}
 	public function checkVPN() {
-		include __DIR__."/../../config/security.php";
+		require __DIR__."/../../config/security.php";
 		if(!isset($blockCommonVPNs)) global $blockCommonVPNs;
 		if(!isset($vpns)) global $vpns;
 		if(!$blockCommonVPNs) return;

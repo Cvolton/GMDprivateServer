@@ -4,7 +4,7 @@ header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: GET');
 header("Access-Control-Allow-Headers: X-Requested-With");
 require_once "../incl/dashboardLib.php";
-include "../".$dbPath."incl/lib/connection.php";
+require "../".$dbPath."incl/lib/connection.php";
 // 2592000 seconds = 30d
 $query = $db->prepare("SELECT
     (SELECT COUNT(*) FROM users) AS users,

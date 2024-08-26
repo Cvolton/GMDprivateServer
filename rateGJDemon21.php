@@ -1,3 +1,3 @@
 <?php
-include "incl/levels/rateGJDemon.php";
+require "incl/levels/rateGJDemon.php";
 ?>

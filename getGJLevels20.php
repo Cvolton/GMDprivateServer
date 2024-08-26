@@ -1,3 +1,3 @@
 <?php
-include "incl/levels/getGJLevels.php";
+require "incl/levels/getGJLevels.php";
 ?>

@@ -1,3 +1,3 @@
 <?php
-include "syncGJAccount20.php";
+require "syncGJAccount20.php";
 ?>

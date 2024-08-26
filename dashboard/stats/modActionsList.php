@@ -5,7 +5,7 @@ $dl = new dashboardLib();
 require_once "../".$dbPath."incl/lib/mainLib.php";
 require "../".$dbPath."incl/lib/exploitPatch.php";
 $gs = new mainLib();
-include "../".$dbPath."incl/lib/connection.php";
+require "../".$dbPath."incl/lib/connection.php";
 $dl->title($dl->getLocalizedString("modActionsList"));
 if(isset($_GET["page"]) AND is_numeric($_GET["page"]) AND $_GET["page"] > 0){
 	$page = ($_GET["page"] - 1) * 10;

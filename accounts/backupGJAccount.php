@@ -4,11 +4,11 @@ if(function_exists("set_time_limit")) set_time_limit(0);
 ini_set("memory_limit","128M");
 ini_set("post_max_size","50M");
 ini_set("upload_max_filesize","50M");
-include "../config/security.php";
-include "../incl/lib/connection.php";
+require "../config/security.php";
+require "../incl/lib/connection.php";
 require "../incl/lib/generatePass.php";
 require_once "../incl/lib/exploitPatch.php";
-/*include_once "../incl/lib/defuse-crypto.phar";
+/*require_once "../incl/lib/defuse-crypto.phar";
 use Defuse\Crypto\KeyProtectedByPassword;
 use Defuse\Crypto\Crypto;
 use Defuse\Crypto\Key;*/

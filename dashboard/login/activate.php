@@ -1,12 +1,12 @@
 <?php
 session_start();
-include "../incl/dashboardLib.php";
+require "../incl/dashboardLib.php";
 require "../".$dbPath."incl/lib/Captcha.php";
-include "../".$dbPath."incl/lib/connection.php";
+require "../".$dbPath."incl/lib/connection.php";
 require "../".$dbPath."incl/lib/generatePass.php";
 require_once "../".$dbPath."incl/lib/exploitPatch.php";
-include "../".$dbPath."config/security.php";
-include "../".$dbPath."config/mail.php";
+require "../".$dbPath."config/security.php";
+require "../".$dbPath."config/mail.php";
 $dl = new dashboardLib();
 $dl->title($dl->getLocalizedString("activateAccount"));
 $dl->printFooter('../');

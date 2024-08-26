@@ -5,7 +5,7 @@ require "../".$dbPath."incl/lib/connection.php";
 $dl = new dashboardLib();
 require_once "../".$dbPath."incl/lib/mainLib.php";
 $gs = new mainLib();
-include "../".$dbPath."incl/lib/connection.php";
+require "../".$dbPath."incl/lib/connection.php";
 require "../".$dbPath."incl/lib/exploitPatch.php";
 $dl->title($dl->getLocalizedString("manageSongs"));
 $dl->printFooter('../');

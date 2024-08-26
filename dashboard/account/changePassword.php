@@ -2,11 +2,11 @@
 session_start();
 require "../incl/dashboardLib.php";
 require "../".$dbPath."incl/lib/Captcha.php";
-include "../".$dbPath."incl/lib/connection.php";
-include_once "../".$dbPath."config/security.php";
+require "../".$dbPath."incl/lib/connection.php";
+require_once "../".$dbPath."config/security.php";
 require "../".$dbPath."incl/lib/generatePass.php";
 require_once "../".$dbPath."incl/lib/exploitPatch.php";
-include_once "../".$dbPath."incl/lib/defuse-crypto.phar";
+require_once "../".$dbPath."incl/lib/defuse-crypto.phar";
 require_once "../".$dbPath."incl/lib/mainLib.php";
 $gs = new mainLib();
 $dl = new dashboardLib();

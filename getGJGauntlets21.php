@@ -1,3 +1,3 @@
 <?php
-include "incl/levelpacks/getGJGauntlets.php";
+require "incl/levelpacks/getGJGauntlets.php";
 ?>

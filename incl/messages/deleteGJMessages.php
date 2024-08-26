@@ -2,7 +2,7 @@
 //TODO: unify the queries
 //TODO: does real geometry dash only delete messages for one person? if so, implement this
 chdir(dirname(__FILE__));
-include "../lib/connection.php";
+require "../lib/connection.php";
 require_once "../lib/GJPCheck.php";
 require_once "../lib/exploitPatch.php";
 if(isset($_POST['messageID'])){$messageID = ExploitPatch::remove($_POST["messageID"]);}

@@ -1,3 +1,3 @@
 <?php
-include "incl/relationships/blockGJUser.php";
+require "incl/relationships/blockGJUser.php";
 ?>

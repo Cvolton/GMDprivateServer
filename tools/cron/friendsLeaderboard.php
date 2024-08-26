@@ -14,7 +14,7 @@ if(file_exists("../logs/fixfrndlog.txt")){
 }
 file_put_contents("../logs/fixfrndlog.txt",time());
 if(function_exists("set_time_limit")) set_time_limit(0);
-include "../../incl/lib/connection.php";
+require "../../incl/lib/connection.php";
 $query = $db->prepare("UPDATE accounts
 	LEFT JOIN
 	(

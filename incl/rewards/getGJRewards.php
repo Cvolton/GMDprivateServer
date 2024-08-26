@@ -1,8 +1,8 @@
 <?php
 //TODO: see how much of this can be replaced by mainlib functions
 chdir(dirname(__FILE__));
-include "../lib/connection.php";
-include "../../config/dailyChests.php";
+require "../lib/connection.php";
+require "../../config/dailyChests.php";
 require "../lib/XORCipher.php";
 require "../lib/GJPCheck.php";
 require_once "../lib/mainLib.php";

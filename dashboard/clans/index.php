@@ -1,6 +1,6 @@
 <?php
 session_start();
-include "../incl/dashboardLib.php";
+require "../incl/dashboardLib.php";
 $dl = new dashboardLib();
 global $clansEnabled;
 if(!$clansEnabled) exit($dl->printSong('<div class="form">
@@ -10,10 +10,10 @@ if(!$clansEnabled) exit($dl->printSong('<div class="form">
 			<button type="button" onclick="a(\'\', true, false, \'GET\')" class="btn-song">'.$dl->getLocalizedString("dashboard").'</button>
 			</form>
 		</div>', 'browse'));
-include "../".$dbPath."incl/lib/exploitPatch.php";
-include_once "../".$dbPath."incl/lib/mainLib.php";
+require "../".$dbPath."incl/lib/exploitPatch.php";
+require_once "../".$dbPath."incl/lib/mainLib.php";
 $gs = new mainLib();
-include "../".$dbPath."incl/lib/connection.php";
+require "../".$dbPath."incl/lib/connection.php";
 $isPlayerInClan = $gs->isPlayerInClan($_SESSION["accountID"]);
 $dl->printFooter('../');
 $dl->title($dl->getLocalizedString("clans"));

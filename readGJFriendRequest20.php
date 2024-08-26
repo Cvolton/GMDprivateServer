@@ -1,3 +1,3 @@
 <?php
-include "incl/relationships/readGJFriendRequest.php";
+require "incl/relationships/readGJFriendRequest.php";
 ?>

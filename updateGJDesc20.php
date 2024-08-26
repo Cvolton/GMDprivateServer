@@ -1,3 +1,3 @@
 <?php
-include "incl/levels/updateGJDesc.php";
+require "incl/levels/updateGJDesc.php";
 ?>

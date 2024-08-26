@@ -1,3 +1,3 @@
 <?php
-include "incl/relationships/getGJUserList.php";
+require "incl/relationships/getGJUserList.php";
 ?>

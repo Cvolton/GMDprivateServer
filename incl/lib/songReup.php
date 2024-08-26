@@ -1,7 +1,7 @@
 <?php
 class SongReup {
 	public static function reup($result) {
-		include dirname(__FILE__)."/connection.php";
+		require dirname(__FILE__)."/connection.php";
 		$resultarray = explode('~|~', $result);
 		$uploadDate = time();
 		$query = $db->prepare("INSERT INTO songs (ID, name, authorID, authorName, size, download)

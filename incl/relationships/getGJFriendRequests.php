@@ -1,9 +1,9 @@
 <?php
 chdir(dirname(__FILE__));
-include "../lib/connection.php";
+require "../lib/connection.php";
 require_once "../lib/exploitPatch.php";
 require_once "../lib/GJPCheck.php";
-include_once "../lib/mainLib.php";
+require_once "../lib/mainLib.php";
 $gs = new mainLib();
 $reqstring = "";
 $getSent = !empty($_POST["getSent"]) ? ExploitPatch::remove($_POST["getSent"]) : 0;

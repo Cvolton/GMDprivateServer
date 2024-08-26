@@ -1,8 +1,8 @@
 <?php
 chdir(dirname(__FILE__));
 error_reporting(0);
-include "../lib/connection.php";
-include "../lib/mainLib.php";
+require "../lib/connection.php";
+require "../lib/mainLib.php";
 $gs = new mainLib();
 require_once "../lib/exploitPatch.php";
 $accountID = ExploitPatch::remove($_POST["accountID"]);

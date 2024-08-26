@@ -1,3 +1,3 @@
 <?php
-include "incl/levelpacks/getGJLevelLists.php";
+require "incl/levelpacks/getGJLevelLists.php";
 ?>

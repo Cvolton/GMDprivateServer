@@ -1,6 +1,6 @@
 <?php
 session_start();
-include "../incl/dashboardLib.php";
+require "../incl/dashboardLib.php";
 require "../".$dbPath."incl/lib/Captcha.php";
 $dl = new dashboardLib();
 global $lrEnabled;
@@ -12,8 +12,8 @@ function chkarray($source, $default = 0) {
 	else $target = $source;
 	return $target;
 }
-include "../".$dbPath."incl/lib/connection.php";
-include "../".$dbPath."incl/lib/exploitPatch.php";
+require "../".$dbPath."incl/lib/connection.php";
+require "../".$dbPath."incl/lib/exploitPatch.php";
 require "../".$dbPath."incl/lib/XORCipher.php";
 require "../".$dbPath."config/reuploadAcc.php";
 require "../".$dbPath."config/proxy.php";

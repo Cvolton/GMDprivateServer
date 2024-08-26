@@ -1,8 +1,8 @@
 <?php
 ob_flush();
 flush();
-include "../../incl/lib/connection.php";
-include "../../incl/lib/mainLib.php";
+require "../../incl/lib/connection.php";
+require "../../incl/lib/mainLib.php";
 $gs = new mainLib();
 //note: this needs a better algorithm
 $query = $db->prepare("

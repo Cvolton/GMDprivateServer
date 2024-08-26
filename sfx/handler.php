@@ -1,7 +1,7 @@
 <?php
-include_once "../incl/lib/connection.php";
-include_once "../incl/lib/mainLib.php";
-include "../config/dashboard.php";
+require_once "../incl/lib/connection.php";
+require_once "../incl/lib/mainLib.php";
+require "../config/dashboard.php";
 require "../config/proxy.php";
 $gs = new mainLib();
 $file = trim(basename($_GET['request']));

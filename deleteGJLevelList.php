@@ -1,3 +1,3 @@
 <?php
-include "incl/levelpacks/deleteGJLevelList.php";
+require "incl/levelpacks/deleteGJLevelList.php";
 ?>

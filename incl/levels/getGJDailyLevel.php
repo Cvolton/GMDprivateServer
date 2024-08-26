@@ -1,8 +1,8 @@
 <?php
 chdir(dirname(__FILE__));
-include "../lib/connection.php";
-include "../lib/mainLib.php";
-include "../../config/misc.php";
+require "../lib/connection.php";
+require "../lib/mainLib.php";
+require "../../config/misc.php";
 $gs = new mainLib();
 $type = !empty($_POST["type"]) ? $_POST["type"] : (!empty($_POST["weekly"]) ? $_POST["weekly"] : 0);
 $midnight = ($type == 1) ? strtotime("next monday") : strtotime("tomorrow 00:00:00");

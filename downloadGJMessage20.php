@@ -1,3 +1,3 @@
 <?php
-include "incl/messages/downloadGJMessage.php";
+require "incl/messages/downloadGJMessage.php";
 ?>

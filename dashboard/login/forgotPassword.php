@@ -1,9 +1,9 @@
 <?php
 session_start();
-include "../incl/dashboardLib.php";
+require "../incl/dashboardLib.php";
 require "../".$dbPath."incl/lib/Captcha.php";
-include "../".$dbPath."config/mail.php";
-include "../".$dbPath."incl/lib/connection.php";
+require "../".$dbPath."config/mail.php";
+require "../".$dbPath."incl/lib/connection.php";
 require "../".$dbPath."incl/lib/exploitPatch.php";
 require "../".$dbPath."incl/lib/generatePass.php";
 require_once "../".$dbPath."incl/lib/mainLib.php";

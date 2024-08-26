@@ -1,3 +1,3 @@
 <?php
-include "incl/comments/deleteGJAccComment.php";
+require "incl/comments/deleteGJAccComment.php";
 ?>

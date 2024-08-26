@@ -1,10 +1,9 @@
 <?php
 require "../incl/lib/Captcha.php";
-include "../incl/lib/connection.php";
-require "../incl/lib/generatePass.php";
+require "../incl/lib/connection.php";
 require_once "../incl/lib/exploitPatch.php";
-include "../config/security.php";
-include "../config/mail.php";
+require "../config/security.php";
+require "../config/mail.php";
 if(!$preactivateAccounts) {
 	if($mailEnabled) {
 		if(isset($_GET["mail"])) {

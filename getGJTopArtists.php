@@ -1,3 +1,3 @@
 <?php
-include "incl/misc/getTopArtists.php";
+require "incl/misc/getTopArtists.php";
 ?>

@@ -1,5 +1,5 @@
 <?php
-include "../incl/lib/connection.php";
+require "../incl/lib/connection.php";
 require "../incl/lib/generatePass.php";
 require_once "../incl/lib/exploitPatch.php";
 require_once "../incl/lib/mainLib.php";

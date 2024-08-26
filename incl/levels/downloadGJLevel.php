@@ -1,13 +1,13 @@
 <?php
 chdir(dirname(__FILE__));
-include "../lib/connection.php";
+require "../lib/connection.php";
 require "../lib/XORCipher.php";
 require_once "../lib/exploitPatch.php";
 require_once "../lib/mainLib.php";
 $gs = new mainLib();
 require "../lib/generateHash.php";
 require "../lib/GJPCheck.php";
-include "../../config/misc.php";
+require "../../config/misc.php";
 if(empty($_POST["gameVersion"])){
 	$gameVersion = 1;
 }else{

@@ -7,8 +7,8 @@ if(file_exists("../logs/misc.txt")) {
 	$newtime = time() - 30;
 	if($cptime > $newtime) exit("-1");
 }
-include "../../incl/lib/connection.php";
-include_once "../../incl/lib/mainLib.php";
+require "../../incl/lib/connection.php";
+require_once "../../incl/lib/mainLib.php";
 $gs = new mainLib();
 
 /* Unbanning everyone who has expired ban */

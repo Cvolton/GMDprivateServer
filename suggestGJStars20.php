@@ -1,3 +1,3 @@
 <?php
-include "incl/levels/suggestGJStars.php";
+require "incl/levels/suggestGJStars.php";
 ?>

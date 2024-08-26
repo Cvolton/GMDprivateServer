@@ -1,7 +1,7 @@
 <?php
 chdir(dirname(__FILE__));
 //error_reporting(0);
-include "../lib/connection.php";
+require "../lib/connection.php";
 require_once "../lib/exploitPatch.php";
 require_once "../lib/mainLib.php";
 $gs = new mainLib();

@@ -1,3 +1,3 @@
 <?php
-include "incl/relationships/removeGJFriend.php";
+require "incl/relationships/removeGJFriend.php";
 ?>
