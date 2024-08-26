@@ -1,8 +1,8 @@
 <?php
-include "incl/dashboardLib.php";
-include $dbPath."incl/lib/connection.php";
-include $dbPath."incl/lib/mainLib.php";
-include $dbPath."config/dashboard.php";
+require "incl/dashboardLib.php";
+require $dbPath."incl/lib/connection.php";
+require $dbPath."incl/lib/mainLib.php";
+require $dbPath."config/dashboard.php";
 $gs = new mainLib();
 if(!$installed) {
 	$check = $db->query("SHOW TABLES LIKE 'replies'");

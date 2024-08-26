@@ -3,8 +3,8 @@ header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: GET, POST');
 header("Access-Control-Allow-Headers: X-Requested-With");
 require "../incl/dashboardLib.php";
-include "../".$dbPath."incl/lib/connection.php";
-include_once "../".$dbPath."incl/lib/mainLib.php";
+require "../".$dbPath."incl/lib/connection.php";
+require_once "../".$dbPath."incl/lib/mainLib.php";
 require_once "../".$dbPath."incl/lib/exploitPatch.php";
 
 $gs = new mainLib();

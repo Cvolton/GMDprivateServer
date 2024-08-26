@@ -1,3 +1,3 @@
 <?php
-include "incl/comments/uploadGJAccComment.php";
+require "incl/comments/uploadGJAccComment.php";
 ?>

@@ -12,14 +12,14 @@ class GeneratePass
 	}
 
 	public static function assignGJP2($accid, $pass) {
-		include dirname(__FILE__)."/connection.php";
+		require dirname(__FILE__)."/connection.php";
 
 		$query = $db->prepare("UPDATE accounts SET gjp2 = :gjp2 WHERE accountID = :id");
 		$query->execute(["gjp2" => self::GJP2hash($pass), ":id" => $accid]);
 	}
 
 	public static function attemptsFromIP() {
-		include dirname(__FILE__)."/connection.php";
+		require dirname(__FILE__)."/connection.php";
 		$gs = new mainLib();
 		$ip = $gs->getIP();
 		$newtime = time() - (60*60);
@@ -33,7 +33,7 @@ class GeneratePass
 	}
 
 	public static function logInvalidAttemptFromIP($accid) {
-		include dirname(__FILE__)."/connection.php";
+		require dirname(__FILE__)."/connection.php";
 		$gs = new mainLib();
 		$ip = $gs->getIP();
 		$query6 = $db->prepare("INSERT INTO actions (type, value, timestamp, value2) VALUES 
@@ -43,7 +43,7 @@ class GeneratePass
 
 	public static function assignModIPs($accountID, $ip) {
 		//this system is most likely going to be removed altogether soon
-		include dirname(__FILE__)."/connection.php";
+		require dirname(__FILE__)."/connection.php";
 		$gs = new mainLib();
 		$modipCategory = $gs->getMaxValuePermission($accountID, "modipCategory");
 		if($modipCategory > 0){ //modIPs
@@ -59,7 +59,7 @@ class GeneratePass
 	}
 
 	public static function isGJP2Valid($accid, $gjp2) {
-		include dirname(__FILE__)."/connection.php";
+		require dirname(__FILE__)."/connection.php";
 		$gs = new mainLib();
 
 		if(self::tooManyAttemptsFromIP()) return -1;
@@ -84,7 +84,7 @@ class GeneratePass
 	}
 
 	public static function isGJP2ValidUsrname($userName, $gjp2) {
-		include dirname(__FILE__)."/connection.php";
+		require dirname(__FILE__)."/connection.php";
 		$query = $db->prepare("SELECT accountID FROM accounts WHERE userName LIKE :userName");
 		$query->execute([':userName' => $userName]);
 		if($query->rowCount() == 0){
@@ -97,7 +97,7 @@ class GeneratePass
 	}
 
 	public static function isValid($accid, $pass) {
-		include dirname(__FILE__)."/connection.php";
+		require dirname(__FILE__)."/connection.php";
 		$gs = new mainLib();
 
 		if(self::tooManyAttemptsFromIP()) return -1;
@@ -121,7 +121,7 @@ class GeneratePass
 	}
 
 	public static function isValidUsrname($userName, $pass){
-		include dirname(__FILE__)."/connection.php";
+		require dirname(__FILE__)."/connection.php";
 		$query = $db->prepare("SELECT accountID FROM accounts WHERE userName LIKE :userName");
 		$query->execute([':userName' => $userName]);
 		if($query->rowCount() == 0){
@@ -133,7 +133,7 @@ class GeneratePass
 	}
 
 	public static function isValidToken($auth) {
-		include dirname(__FILE__)."/connection.php";
+		require dirname(__FILE__)."/connection.php";
 		$gs = new mainLib();
 		if(self::tooManyAttemptsFromIP() || empty(trim($auth))) return '-3';
 		$query = $db->prepare("SELECT userName, accountID, isActive FROM accounts WHERE auth = :id");

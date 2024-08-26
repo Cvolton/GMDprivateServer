@@ -1,7 +1,7 @@
 <?php
 $dbPath = '../'; // Path to main directory. It needs to point to main endpoint files. If you didn't change dashboard place, don't change this value. Usually it's '../' (cuz dashboard folder is inside main endpoints folder) (https://imgur.com/a/P8LdhzY).
-include __DIR__."/../".$dbPath."config/dashboard.php";
-include_once "auth.php";
+require __DIR__."/../".$dbPath."config/dashboard.php";
+require_once "auth.php";
 $au = new au();
 $dashCheck = $au->auth($dbPath);
 // Dashboard library
@@ -46,11 +46,11 @@ class dashboardLib {
 		}
 		$lang = substr($lang, 0, 2);
 		$locale = __DIR__."/lang/locale".$lang.".php";
-		if(file_exists($locale)) include $locale;
-		else include __DIR__."/lang/localeEN.php";
+		if(file_exists($locale)) require $locale;
+		else require __DIR__."/lang/localeEN.php";
 		if(isset($string[$stringName])) return $string[$stringName];
 		else {
-		    include __DIR__."/lang/localeEN.php";
+		    require __DIR__."/lang/localeEN.php";
 		    if(isset($string[$stringName])) return $string[$stringName];
 			else return "lnf:$stringName";
 		}
@@ -117,11 +117,11 @@ class dashboardLib {
         global $iosLauncher;
 		global $thirdParty;
       	global $dbPath;
-		include_once __DIR__."/../".$dbPath."incl/lib/Captcha.php";
-		include_once __DIR__."/../".$dbPath."config/security.php";
-		include_once __DIR__."/../".$dbPath."config/mail.php";
+		require_once __DIR__."/../".$dbPath."incl/lib/Captcha.php";
+		require_once __DIR__."/../".$dbPath."config/security.php";
+		require_once __DIR__."/../".$dbPath."config/mail.php";
 		require_once __DIR__."/../".$dbPath."incl/lib/mainLib.php";
-      	include __DIR__."/../".$dbPath."incl/lib/connection.php";
+      	require __DIR__."/../".$dbPath."incl/lib/connection.php";
       	if($enableCaptcha) {
       	    $captchaTypes = ['hcaptcha', 'grecaptcha', 'turnstile'];
       	    $captchaUsed = $captchaTypes[$captchaType-1];

@@ -1,3 +1,3 @@
 <?php
-include "incl/scores/getGJScores.php";
+require "incl/scores/getGJScores.php";
 ?>

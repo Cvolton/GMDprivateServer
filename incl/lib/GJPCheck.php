@@ -1,13 +1,13 @@
 <?php
 require_once dirname(__FILE__)."/XORCipher.php";
 require_once dirname(__FILE__)."/generatePass.php";
-include_once dirname(__FILE__)."/mainLib.php";
+require_once dirname(__FILE__)."/mainLib.php";
 
 class GJPCheck {
 	public static function check($gjp, $accountID) {
-		include dirname(__FILE__)."/connection.php";
-		include dirname(__FILE__)."/exploitPatch.php";
-		include dirname(__FILE__)."/../../config/security.php";
+		require dirname(__FILE__)."/connection.php";
+		require dirname(__FILE__)."/exploitPatch.php";
+		require dirname(__FILE__)."/../../config/security.php";
 		$ml = new mainLib();
 		if($sessionGrants){
 			$ip = $ml->getIP();

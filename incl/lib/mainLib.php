@@ -1,5 +1,5 @@
 <?php
-include_once __DIR__ . "/ip_in_range.php";
+require_once __DIR__ . "/ip_in_range.php";
 class mainLib {
 	public function getAudioTrack($id) {
 		$songs = ["Stereo Madness by ForeverBound",
@@ -141,7 +141,7 @@ class mainLib {
 		return array('diff' => $diff, 'auto' => $auto, 'demon' => $demon, 'name' => $diffname);
 	}
 	public function getLevelDiff($levelID) {
-		include __DIR__ . "/connection.php";
+		require __DIR__ . "/connection.php";
 		$diff = $db->prepare("SELECT starDifficulty FROM levels WHERE levelID = :id");
 		$diff->execute([':id' => $levelID]);
 		$diff = $diff->fetch();
@@ -149,7 +149,7 @@ class mainLib {
 		return $diff;
 	}
 	public function getLevelStars($levelID) {
-		include __DIR__ . "/connection.php";
+		require __DIR__ . "/connection.php";
 		$diff = $db->prepare("SELECT starStars FROM levels WHERE levelID = :id");
 		$diff->execute([':id' => $levelID]);
 		$diff = $diff->fetch();
@@ -256,7 +256,7 @@ class mainLib {
 		return count($this->getGauntletName(0, true))-1;
 	}
 	public function makeTime($time) {
-		include __DIR__ . "/../../config/dashboard.php";
+		require __DIR__ . "/../../config/dashboard.php";
 		if(!isset($timeType)) $timeType = 0;
 		switch($timeType) {
 			case 1:
@@ -281,9 +281,9 @@ class mainLib {
 		}
 	}
 	public function getIDFromPost() {
-		include __DIR__ . "/../../config/security.php";
-		include_once __DIR__ . "/exploitPatch.php";
-		include_once __DIR__ . "/GJPCheck.php";
+		require __DIR__ . "/../../config/security.php";
+		require_once __DIR__ . "/exploitPatch.php";
+		require_once __DIR__ . "/GJPCheck.php";
 		if(!empty($_POST["udid"]) AND $unregisteredSubmissions) {
 			$id = ExploitPatch::remove($_POST["udid"]);
 			if(is_numeric($id)) exit("-1");
@@ -292,7 +292,7 @@ class mainLib {
 		return $id;
 	}
 	public function getUserID($extID, $userName = "Undefined") {
-		include __DIR__ . "/connection.php";
+		require __DIR__ . "/connection.php";
 		if(is_numeric($extID)){
 			$register = 1;
 		}else{
@@ -314,7 +314,7 @@ class mainLib {
 	public function getAccountName($accountID) {
 		if(!is_numeric($accountID)) return false;
 
-		include __DIR__ . "/connection.php";
+		require __DIR__ . "/connection.php";
 		$query = $db->prepare("SELECT userName FROM accounts WHERE accountID = :id");
 		$query->execute([':id' => $accountID]);
 		if ($query->rowCount() > 0) {
@@ -325,7 +325,7 @@ class mainLib {
 		return $userName;
 	}
 	public function getUserName($userID) {
-		include __DIR__ . "/connection.php";
+		require __DIR__ . "/connection.php";
 		$query = $db->prepare("SELECT userName FROM users WHERE userID = :id");
 		$query->execute([':id' => $userID]);
 		if ($query->rowCount() > 0) {
@@ -336,7 +336,7 @@ class mainLib {
 		return $userName;
 	}
 	public function getAccountIDFromName($userName) {
-		include __DIR__ . "/connection.php";
+		require __DIR__ . "/connection.php";
 		$query = $db->prepare("SELECT accountID FROM accounts WHERE userName LIKE :usr");
 		$query->execute([':usr' => $userName]);
 		if ($query->rowCount() > 0) {
@@ -347,7 +347,7 @@ class mainLib {
 		return $accountID;
 	}
 	public function getExtID($userID) {
-		include __DIR__ . "/connection.php";
+		require __DIR__ . "/connection.php";
 		$query = $db->prepare("SELECT extID FROM users WHERE userID = :id");
 		$query->execute([':id' => $userID]);
 		if ($query->rowCount() > 0) {
@@ -362,8 +362,8 @@ class mainLib {
 		return "{$userdata['userID']}:{$userdata["userName"]}:{$extID}";
 	}
 	public function getSongString($song){
-		include __DIR__ . "/connection.php";
-		include_once __DIR__ . "/exploitPatch.php";
+		require __DIR__ . "/connection.php";
+		require_once __DIR__ . "/exploitPatch.php";
 		if(!isset($song['ID'])) $song = $this->getLibrarySongInfo($song['songID']);
 		if(!$song || $song['ID'] == 0 || empty($song['ID']) || $song["isDisabled"] == 1) return false;
 		$dl = $song["download"];
@@ -374,7 +374,7 @@ class mainLib {
 	}
 	public function getSongInfo($id, $column = "*") {
 	    if(!is_numeric($id)) return;
-	    include __DIR__ . "/connection.php";
+	    require __DIR__ . "/connection.php";
 	    $sinfo = $db->prepare("SELECT $column FROM songs WHERE ID = :id");
 	    $sinfo->execute([':id' => $id]);
 	    $sinfo = $sinfo->fetch();
@@ -393,7 +393,7 @@ class mainLib {
 	}
 	public function getSFXInfo($id, $column = "*") {
 	    if(!is_numeric($id)) return;
-	    include __DIR__ . "/connection.php";
+	    require __DIR__ . "/connection.php";
 	    $sinfo = $db->prepare("SELECT $column FROM sfxs WHERE ID = :id");
 	    $sinfo->execute([':id' => $id]);
 	    $sinfo = $sinfo->fetch();
@@ -406,7 +406,7 @@ class mainLib {
 	public function getClanInfo($clan, $column = "*") {
 	    global $dashCheck;
 	    if(!is_numeric($clan) || $dashCheck === 'no') return false;
-	    include __DIR__ . "/connection.php";
+	    require __DIR__ . "/connection.php";
 	    $claninfo = $db->prepare("SELECT $column FROM clans WHERE ID = :id");
 	    $claninfo->execute([':id' => $clan]);
 	    $claninfo = $claninfo->fetch();
@@ -422,7 +422,7 @@ class mainLib {
 	public function getClanID($clan) {
 		global $dashCheck;
 	    if($dashCheck === 'no') return false;
-	    include __DIR__ . "/connection.php";
+	    require __DIR__ . "/connection.php";
 	    $claninfo = $db->prepare("SELECT ID FROM clans WHERE clan = :id");
 	    $claninfo->execute([':id' => base64_encode($clan)]);
 	    $claninfo = $claninfo->fetch();
@@ -431,7 +431,7 @@ class mainLib {
 	public function isPlayerInClan($id) {
 		global $dashCheck;
 	    if(!is_numeric($id) || $dashCheck === 'no') return false;
-	    include __DIR__ . "/connection.php";
+	    require __DIR__ . "/connection.php";
 	    $claninfo = $db->prepare("SELECT clan FROM users WHERE extID = :id");
 	    $claninfo->execute([':id' => $id]);
 	    $claninfo = $claninfo->fetch();
@@ -441,13 +441,13 @@ class mainLib {
 	public function isPendingRequests($clan) {
 		global $dashCheck;
 	    if(!is_numeric($clan) || $dashCheck === 'no') return false;
-		include __DIR__ . "/connection.php";
+		require __DIR__ . "/connection.php";
 	    $claninfo = $db->prepare("SELECT count(*) FROM clanrequests WHERE clanID = :id");
 		$claninfo->execute([':id' => $clan]);
 		return $claninfo->fetchColumn();
 	}
     public function sendDiscordPM($receiver, $message, $json = false){
-		include __DIR__ . "/../../config/discord.php";
+		require __DIR__ . "/../../config/discord.php";
 		if(!$discordEnabled) {
 			return false;
 		}
@@ -491,7 +491,7 @@ class mainLib {
 		return $response;
 	}
 	public function getDiscordAcc($discordID){
-		include __DIR__ . "/../../config/discord.php";
+		require __DIR__ . "/../../config/discord.php";
 		///getting discord acc info
 		$url = "https://discord.com/api/v8/users/".$discordID;
 		$crl = curl_init($url);
@@ -511,8 +511,8 @@ class mainLib {
 		return $userinfo["username"].$userinfo["discriminator"];
 	}
 	public function getDesc($lid, $dashboard = false) {
-		include __DIR__ . "/connection.php";
-		include __DIR__ . "/exploitPatch.php";
+		require __DIR__ . "/connection.php";
+		require __DIR__ . "/exploitPatch.php";
 		$desc = $db->prepare("SELECT levelDesc FROM levels WHERE levelID = :id");
 		$desc->execute([':id' => $lid]);
 		$desc = $desc->fetch();
@@ -520,14 +520,14 @@ class mainLib {
 		else return ExploitPatch::url_base64_decode($desc["levelDesc"]);
 	}
 	public function getLevelName($lid) {
-		include __DIR__ . "/connection.php";
+		require __DIR__ . "/connection.php";
 		$desc = $db->prepare("SELECT levelName FROM levels WHERE levelID = :id");
 		$desc->execute([':id' => $lid]); 
 		$desc = $desc->fetch();
 		if(!empty($desc["levelName"])) return $desc["levelName"]; else return false;
 	} 
 	public function getLevelStats($lid) {
-		include __DIR__ . "/connection.php";
+		require __DIR__ . "/connection.php";
 		$info = $db->prepare("SELECT downloads, likes, requestedStars FROM levels WHERE levelID = :id");
 		$info->execute([':id' => $lid]);
 		$info = $info->fetch();
@@ -535,14 +535,14 @@ class mainLib {
 		if(!empty($info)) return array('dl' => $info["downloads"], 'likes' => $likes, 'req' => $info["requestedStars"]);
 	}
 	public function getLevelAuthor($lid) {
-		include __DIR__ . "/connection.php";
+		require __DIR__ . "/connection.php";
 		$desc = $db->prepare("SELECT extID FROM levels WHERE levelID = :id");
 		$desc->execute([':id' => $lid]);
 		$desc = $desc->fetch();
 		return $desc["extID"];
 	}
 	public function isRated($lid) {
-		include __DIR__ . "/connection.php";
+		require __DIR__ . "/connection.php";
 		$desc = $db->prepare("SELECT starStars FROM levels WHERE levelID = :id");
 		$desc->execute([':id' => $lid]);
 		$desc = $desc->fetch();
@@ -550,7 +550,7 @@ class mainLib {
 		else return true;
 	} 
 	public function hasDiscord($acc) {
-		include __DIR__ . "/connection.php";
+		require __DIR__ . "/connection.php";
 		$ds = $db->prepare("SELECT discordID, discordLinkReq FROM accounts WHERE accountID = :id");
 		$ds->execute([':id' => $acc]); 
 		$ds = $ds->fetch();
@@ -572,7 +572,7 @@ class mainLib {
 		return $randomString;
 	}
 	public function getAccountsWithPermission($permission){
-		include __DIR__ . "/connection.php";
+		require __DIR__ . "/connection.php";
 		$query = $db->prepare("SELECT roleID FROM roles WHERE $permission = 1 ORDER BY priority DESC");
 		$query->execute();
 		$result = $query->fetchAll();
@@ -590,7 +590,7 @@ class mainLib {
 	public function checkPermission($accountID, $permission){
 		if(!is_numeric($accountID)) return false;
 
-		include __DIR__ . "/connection.php";
+		require __DIR__ . "/connection.php";
 		//isAdmin check
 		$query = $db->prepare("SELECT isAdmin FROM accounts WHERE accountID = :accountID");
 		$query->execute([':accountID' => $accountID]);
@@ -675,7 +675,7 @@ class mainLib {
 		return $_SERVER['REMOTE_ADDR'];
 	}
 	public function checkModIPPermission($permission){
-		include __DIR__ . "/connection.php";
+		require __DIR__ . "/connection.php";
 		$ip = $this->getIP();
 		$query=$db->prepare("SELECT modipCategory FROM modips WHERE IP = :ip");
 		$query->execute([':ip' => $ip]);
@@ -696,7 +696,7 @@ class mainLib {
 	public function getFriends($accountID){
 		if(!is_numeric($accountID)) return false;
 
-		include __DIR__ . "/connection.php";
+		require __DIR__ . "/connection.php";
 		$friendsarray = array();
 		$query = "SELECT person1,person2 FROM friendships WHERE person1 = :accountID OR person2 = :accountID"; //selecting friendships
 		$query = $db->prepare($query);
@@ -720,7 +720,7 @@ class mainLib {
 	public function isFriends($accountID, $targetAccountID) {
 		if(!is_numeric($accountID) || !is_numeric($targetAccountID)) return false;
 
-		include __DIR__ . "/connection.php";
+		require __DIR__ . "/connection.php";
 		$query = $db->prepare("SELECT count(*) FROM friendships WHERE person1 = :accountID AND person2 = :targetAccountID OR person1 = :targetAccountID AND person2 = :accountID");
 		$query->execute([':accountID' => $accountID, ':targetAccountID' => $targetAccountID]);
 		return $query->fetchColumn() > 0;
@@ -728,7 +728,7 @@ class mainLib {
 	public function getMaxValuePermission($accountID, $permission){
 		if(!is_numeric($accountID)) return false;
 
-		include __DIR__ . "/connection.php";
+		require __DIR__ . "/connection.php";
 		$maxvalue = 0;
 		$query = $db->prepare("SELECT roleID FROM roleassign WHERE accountID = :accountID");
 		$query->execute([':accountID' => $accountID]);
@@ -752,7 +752,7 @@ class mainLib {
 	}
 	public function getAccountCommentColor($accountID){
 		if(!is_numeric($accountID)) return false;
-		include __DIR__ . "/connection.php";
+		require __DIR__ . "/connection.php";
 		$query = $db->prepare("SELECT roleID FROM roleassign WHERE accountID = :accountID");
 		$query->execute([':accountID' => $accountID]);
 		$roleIDarray = $query->fetchAll();
@@ -779,7 +779,7 @@ class mainLib {
 	}
 	public function rateLevel($accountID, $levelID, $stars, $difficulty, $auto, $demon) {
 		if(!is_numeric($accountID)) return false;
-		include __DIR__ . "/connection.php";
+		require __DIR__ . "/connection.php";
 		$diffName = $this->getDiffFromStars($stars)["name"];
 		$query = "UPDATE levels SET starDemon=:demon, starAuto=:auto, starDifficulty=:diff, starStars=:stars, rateDate=:now WHERE levelID=:levelID";
 		$query = $db->prepare($query);	
@@ -790,7 +790,7 @@ class mainLib {
 	}
 	public function featureLevel($accountID, $levelID, $state) {
 		if(!is_numeric($accountID)) return false;
-		include __DIR__ . "/connection.php";
+		require __DIR__ . "/connection.php";
 		$query = $db->prepare("SELECT starFeatured FROM levels WHERE levelID=:levelID ORDER BY starFeatured DESC LIMIT 1");
 		$query->execute([':levelID' => $levelID]);
 		$featured = $query->fetchColumn();
@@ -819,7 +819,7 @@ class mainLib {
 	}
 	public function verifyCoinsLevel($accountID, $levelID, $coins) {
 		if(!is_numeric($accountID)) return false;
-		include __DIR__ . "/connection.php";
+		require __DIR__ . "/connection.php";
 		$query = "UPDATE levels SET starCoins=:coins WHERE levelID=:levelID";
 		$query = $db->prepare($query);	
 		$query->execute([':coins' => $coins, ':levelID'=>$levelID]);
@@ -877,13 +877,13 @@ class mainLib {
 	}
 	public function suggestLevel($accountID, $levelID, $difficulty, $stars, $feat, $auto, $demon) {
 		if(!is_numeric($accountID)) return false;
-		include __DIR__ . "/connection.php";
+		require __DIR__ . "/connection.php";
 		$query = $db->prepare("INSERT INTO suggest (suggestBy, suggestLevelID, suggestDifficulty, suggestStars, suggestFeatured, suggestAuto, suggestDemon, timestamp) VALUES (:account, :level, :diff, :stars, :feat, :auto, :demon, :timestamp)");
 		$query->execute([':account' => $accountID, ':level' => $levelID, ':diff' => $difficulty, ':stars' => $stars, ':feat' => $feat, ':auto' => $auto, ':demon' => $demon, ':timestamp' => time()]);
 		$this->sendSuggestWebhook($accountID, $levelID, $difficulty, $stars, $feat, $auto, $demon);
 	}
  	public function isUnlisted($levelID) {
-        include __DIR__."/connection.php";
+        require __DIR__."/connection.php";
         $query = $db->prepare("SELECT count(*) FROM levels WHERE unlisted = 1, levelID = :id");
         $query->execute([':id' => $levelID]);
         $query = $query->fetch();
@@ -892,14 +892,14 @@ class mainLib {
 	}
 	public function getListOwner($listID) {
 		if(!is_numeric($listID)) return false;
-		include __DIR__ . "/connection.php";
+		require __DIR__ . "/connection.php";
 		$query = $db->prepare('SELECT accountID FROM lists WHERE listID = :id');
 		$query->execute([':id' => $listID]);
 		return $query->fetchColumn();
 	}
 	public function getListLevels($listID) {
 		if(!is_numeric($listID)) return false;
-		include __DIR__ . "/connection.php";
+		require __DIR__ . "/connection.php";
 		$query = $db->prepare('SELECT listlevels FROM lists WHERE listID = :id');
 		$query->execute([':id' => $listID]);
 		return $query->fetchColumn();
@@ -911,13 +911,13 @@ class mainLib {
 	}
 	public function getListName($listID) {
 		if(!is_numeric($listID)) return false;
-		include __DIR__ . "/connection.php";
+		require __DIR__ . "/connection.php";
 		$query = $db->prepare('SELECT listName FROM lists WHERE listID = :id');
 		$query->execute([':id' => $listID]);
 		return $query->fetchColumn();
 	}
 	public function makeClanUsername($user) {
-		include __DIR__ . "/../../config/dashboard.php";
+		require __DIR__ . "/../../config/dashboard.php";
 		if($clansEnabled && $user['clan'] > 0 && !isset($_REQUEST['noClan'])) {
 			$clan = $this->getClanInfo($user['clan'], 'tag');
 			if(!empty($clan)) return '['.$clan.'] '.$user['userName'];
@@ -925,7 +925,7 @@ class mainLib {
 		return $user['userName'];
 	}
 	public function updateLibraries($token, $expires, $mainServerTime, $type = 0) {
-		include __DIR__ . "/../../config/dashboard.php";
+		require __DIR__ . "/../../config/dashboard.php";
 		$servers = [];
 		$types = ['sfx', 'music'];
 		if(!isset($customLibrary)) $customLibrary = [[1, 'Geometry Dash', 'https://geometrydashfiles.b-cdn.net'], [3, $gdps, null]]; 
@@ -976,9 +976,9 @@ class mainLib {
 		if($oldVersion < $mainServerTime || $updatedLib) $this->generateDATFile($mainServerTime, $type);
 	}
 	public function generateDATFile($mainServerTime, $type = 0) {
-		include __DIR__ . "/connection.php";
-		include __DIR__ . "/exploitPatch.php";
-		include __DIR__ . "/../../config/dashboard.php";
+		require __DIR__ . "/connection.php";
+		require __DIR__ . "/exploitPatch.php";
+		require __DIR__ . "/../../config/dashboard.php";
 		$library = $servers = $serverIDs = $serverTypes = [];
 		if(!isset($customLibrary)) $customLibrary = [[1, 'Geometry Dash', 'https://geometrydashfiles.b-cdn.net', 2], [3, $gdps, null, 2]]; 
 		$types = ['sfx', 'music'];
@@ -1265,7 +1265,7 @@ class mainLib {
 		return $result;
 	}
 	public function convertSFX($file, $server, $name, $token) {
-		include __DIR__."/../../config/dashboard.php";
+		require __DIR__."/../../config/dashboard.php";
 		if(!$convertEnabled) return false;
 		$link = $convertSFXAPI[rand(0, count($convertSFXAPI) - 1)];
 		$filePath = $file['tmp_name'];
@@ -1288,7 +1288,7 @@ class mainLib {
 		return $result;
 	}
 	public function getLibrarySongInfo($id, $type = 'music') {
-		include __DIR__."/../../config/dashboard.php";
+		require __DIR__."/../../config/dashboard.php";
 		if(!file_exists(__DIR__.'/../../'.$type.'/ids.json')) return false;
 		$servers = $serverIDs = $serverNames = [];
 		foreach($customLibrary AS $customLib) {
@@ -1315,12 +1315,12 @@ class mainLib {
 		}
 	}
 	public function sendRateWebhook($modAccID, $levelID) {
-		include __DIR__."/connection.php";
-		if(!class_exists('ExploitPatch')) include_once __DIR__."/exploitPatch.php";
-		include __DIR__."/../../config/dashboard.php";
-		include __DIR__."/../../config/discord.php";
+		require __DIR__."/connection.php";
+		if(!class_exists('ExploitPatch')) require_once __DIR__."/exploitPatch.php";
+		require __DIR__."/../../config/dashboard.php";
+		require __DIR__."/../../config/discord.php";
 		if(!$webhooksEnabled OR !is_numeric($modAccID) OR !is_numeric($levelID) OR !in_array("rate", $webhooksToEnable)) return false;
-		include_once __DIR__."/../../config/webhooks/DiscordWebhook.php";
+		require_once __DIR__."/../../config/webhooks/DiscordWebhook.php";
 		$webhookLangArray = $this->webhookStartLanguage($webhookLanguage);
 		$dw = new DiscordWebhook($rateWebhook);
 		$level = $db->prepare('SELECT * FROM levels WHERE levelID = :levelID');
@@ -1441,7 +1441,7 @@ class mainLib {
 	public function webhookStartLanguage($lang) {
 		$fileExists = file_exists(__DIR__."/../../config/webhooks/lang/".$lang.".php");
 		if(!$fileExists) return false;
-		include __DIR__."/../../config/webhooks/lang/".$lang.".php";
+		require __DIR__."/../../config/webhooks/lang/".$lang.".php";
 		return $webhookLang;
 	}
 	public function webhookLanguage($langString, $webhookLangArray) {
@@ -1453,7 +1453,7 @@ class mainLib {
 	}
 	public function changeDifficulty($accountID, $levelID, $difficulty, $auto, $demon) {
 		if(!is_numeric($accountID)) return false;
-		include __DIR__ . "/connection.php";
+		require __DIR__ . "/connection.php";
 		$query = "UPDATE levels SET starDemon=:demon, starAuto=:auto, starDifficulty=:diff, rateDate=:now WHERE levelID=:levelID";
 		$query = $db->prepare($query);	
 		$query->execute([':demon' => $demon, ':auto' => $auto, ':diff' => $difficulty, ':levelID'=>$levelID, ':now' => time()]);
@@ -1461,12 +1461,12 @@ class mainLib {
 		$query->execute([':value' => $diffName, ':timestamp' => time(), ':id' => $accountID, ':value2' => 0, ':levelID' => $levelID]);
 	}
 	public function sendSuggestWebhook($modAccID, $levelID, $difficulty, $stars, $featured, $auto, $demon) {
-		include __DIR__."/connection.php";
-		if(!class_exists('ExploitPatch')) include __DIR__."/exploitPatch.php";
-		include __DIR__."/../../config/dashboard.php";
-		include __DIR__."/../../config/discord.php";
+		require __DIR__."/connection.php";
+		if(!class_exists('ExploitPatch')) require __DIR__."/exploitPatch.php";
+		require __DIR__."/../../config/dashboard.php";
+		require __DIR__."/../../config/discord.php";
 		if(!$webhooksEnabled OR !is_numeric($modAccID) OR !is_numeric($levelID) OR !in_array("suggest", $webhooksToEnable)) return false;
-		include_once __DIR__."/../../config/webhooks/DiscordWebhook.php";
+		require_once __DIR__."/../../config/webhooks/DiscordWebhook.php";
 		$webhookLangArray = $this->webhookStartLanguage($webhookLanguage);
 		$dw = new DiscordWebhook($suggestWebhook);
 		$level = $db->prepare('SELECT * FROM levels WHERE levelID = :levelID');
@@ -1514,11 +1514,11 @@ class mainLib {
 		->send();
 	}
 	public function sendDemonlistRecordWebhook($recordAccID, $recordID) {
-		include __DIR__."/connection.php";
-		include __DIR__."/../../config/dashboard.php";
-		include __DIR__."/../../config/discord.php";
+		require __DIR__."/connection.php";
+		require __DIR__."/../../config/dashboard.php";
+		require __DIR__."/../../config/discord.php";
 		if(!$webhooksEnabled OR !is_numeric($recordAccID) OR !is_numeric($recordID) OR !in_array("demonlist", $webhooksToEnable)) return false;
-		include_once __DIR__."/../../config/webhooks/DiscordWebhook.php";
+		require_once __DIR__."/../../config/webhooks/DiscordWebhook.php";
 		$webhookLangArray = $this->webhookStartLanguage($webhookLanguage);
 		$dw = new DiscordWebhook($dlApproveWebhook);
 		$record = $db->prepare('SELECT * FROM dlsubmits WHERE ID = :ID');
@@ -1559,11 +1559,11 @@ class mainLib {
 		->send();
 	}
 	public function sendDemonlistResultWebhook($modAccID, $recordID) {
-		include __DIR__."/connection.php";
-		include __DIR__."/../../config/dashboard.php";
-		include __DIR__."/../../config/discord.php";
+		require __DIR__."/connection.php";
+		require __DIR__."/../../config/dashboard.php";
+		require __DIR__."/../../config/discord.php";
 		if(!$webhooksEnabled OR !is_numeric($modAccID) OR !is_numeric($recordID) OR !in_array("demonlist", $webhooksToEnable)) return false;
-		include_once __DIR__."/../../config/webhooks/DiscordWebhook.php";
+		require_once __DIR__."/../../config/webhooks/DiscordWebhook.php";
 		$webhookLangArray = $this->webhookStartLanguage($webhookLanguage);
 		$dw = new DiscordWebhook($dlWebhook);
 		$record = $db->prepare('SELECT * FROM dlsubmits WHERE ID = :ID');
@@ -1635,11 +1635,11 @@ class mainLib {
 		}
 	}
 	public function sendBanWebhook($banID, $modAccID) {
-		include __DIR__."/connection.php";
-		include __DIR__."/../../config/dashboard.php";
-		include __DIR__."/../../config/discord.php";
+		require __DIR__."/connection.php";
+		require __DIR__."/../../config/dashboard.php";
+		require __DIR__."/../../config/discord.php";
 		if(!$webhooksEnabled OR !is_numeric($banID) OR !is_numeric($modAccID) OR !in_array("ban", $webhooksToEnable)) return false;
-		include_once __DIR__."/../../config/webhooks/DiscordWebhook.php";
+		require_once __DIR__."/../../config/webhooks/DiscordWebhook.php";
 		$webhookLangArray = $this->webhookStartLanguage($webhookLanguage);
 		$dw = new DiscordWebhook($banWebhook);
 		$ban = $this->getBanByID($banID);
@@ -1795,12 +1795,12 @@ class mainLib {
 		}
 	}
 	public function sendDailyWebhook($levelID, $type) {
-		include __DIR__."/connection.php";
-		if(!class_exists('ExploitPatch')) include __DIR__."/exploitPatch.php";
-		include __DIR__."/../../config/dashboard.php";
-		include __DIR__."/../../config/discord.php";
+		require __DIR__."/connection.php";
+		if(!class_exists('ExploitPatch')) require __DIR__."/exploitPatch.php";
+		require __DIR__."/../../config/dashboard.php";
+		require __DIR__."/../../config/discord.php";
 		if(!$webhooksEnabled OR !is_numeric($levelID) OR !is_numeric($type) OR !in_array("daily", $webhooksToEnable)) return false;
-		include_once __DIR__."/../../config/webhooks/DiscordWebhook.php";
+		require_once __DIR__."/../../config/webhooks/DiscordWebhook.php";
 		$webhookLangArray = $this->webhookStartLanguage($webhookLanguage);
 		$dw = new DiscordWebhook($dailyWebhook);
 		$level = $db->prepare('SELECT * FROM levels WHERE levelID = :levelID');
@@ -1896,31 +1896,31 @@ class mainLib {
 		}
 	}
 	public function getAllBans($onlyActive = true) {
-		include __DIR__."/connection.php";
+		require __DIR__."/connection.php";
 		$bans = $db->prepare('SELECT * FROM bans'.($onlyActive ? ' AND isActive = 1' : '').' ORDER BY timestamp DESC');
 		$bans->execute();
 		return $bans->fetchAll();
 	}
 	public function getAllBansFromPerson($person, $personType, $onlyActive = true) {
-		include __DIR__."/connection.php";
+		require __DIR__."/connection.php";
 		$bans = $db->prepare('SELECT * FROM bans WHERE person = :person AND personType = :personType'.($onlyActive ? ' AND isActive = 1' : '').' ORDER BY timestamp DESC');
 		$bans->execute([':person' => $person, ':personType' => $personType]);
 		return $bans->fetchAll();
 	}
 	public function getAllBansOfPersonType($personType, $onlyActive = true) {
-		include __DIR__."/connection.php";
+		require __DIR__."/connection.php";
 		$bans = $db->prepare('SELECT * FROM bans WHERE personType = :personType'.($onlyActive ? ' AND isActive = 1' : '').' ORDER BY timestamp DESC');
 		$bans->execute([':personType' => $personType]);
 		return $bans->fetchAll();
 	}
 	public function getAllBansOfBanType($banType, $onlyActive = true) {
-		include __DIR__."/connection.php";
+		require __DIR__."/connection.php";
 		$bans = $db->prepare('SELECT * FROM bans WHERE banType = :banType'.($onlyActive ? ' AND isActive = 1' : '').' ORDER BY timestamp DESC');
 		$bans->execute([':banType' => $banType]);
 		return $bans->fetchAll();
 	}
 	public function banPerson($modID, $person, $reason, $banType, $personType, $expires) {
-		include __DIR__."/connection.php";
+		require __DIR__."/connection.php";
 		if($banType == 4) {
 			switch($personType) {
 				case 0:
@@ -1951,13 +1951,13 @@ class mainLib {
 		return $banID;
 	}
 	public function getBan($person, $personType, $banType) {
-		include __DIR__."/connection.php";
+		require __DIR__."/connection.php";
 		$ban = $db->prepare('SELECT * FROM bans WHERE person = :person AND personType = :personType AND banType = :banType AND isActive = 1 ORDER BY timestamp DESC');
 		$ban->execute([':person' => $person, ':personType' => $personType, ':banType' => $banType]);
 		return $ban->fetch();
 	}
 	public function unbanPerson($banID, $modID) {
-		include __DIR__."/connection.php";
+		require __DIR__."/connection.php";
 		$ban = $this->getBanByID($banID);
 		if($ban) {
 			if($ban['personType'] == 2 && $ban['banType'] == 4) {
@@ -1976,13 +1976,13 @@ class mainLib {
 		return false;
 	}
 	public function getBanByID($banID) {
-		include __DIR__."/connection.php";
+		require __DIR__."/connection.php";
 		$ban = $db->prepare('SELECT * FROM bans WHERE banID = :banID');
 		$ban->execute([':banID' => $banID]);
 		return $ban->fetch();
 	}
 	public function getPersonBan($accountID, $userID, $banType, $IP = false) {
-		include __DIR__."/connection.php";
+		require __DIR__."/connection.php";
 		$IP = $IP ? $this->IPForBan($IP) : $this->IPForBan($this->getIP());
 		$ban = $db->prepare('SELECT * FROM bans WHERE ((person = :accountID AND personType = 0) OR (person = :userID AND personType = 1) OR (person = :IP AND personType = 2)) AND banType = :banType AND isActive = 1 ORDER BY expires DESC');
 		$ban->execute([':accountID' => $accountID, ':userID' => $userID, ':IP' => $IP, ':banType' => $banType]);
@@ -1993,7 +1993,7 @@ class mainLib {
 		return $IP[0].'.'.$IP[1].'.'.$IP[2].($isSearch ? '' : '.0');
 	}
 	public function changeBan($banID, $modID, $reason, $expires) {
-		include __DIR__."/connection.php";
+		require __DIR__."/connection.php";
 		$ban = $this->getBanByID($banID);
 		$reason = base64_encode($reason);
 		if($ban && $ban['isActive'] != 0) {
@@ -2008,13 +2008,13 @@ class mainLib {
 	}
   	public function mail($mail = '', $user = '', $isForgotPass = false) {
 		if(empty($mail) OR empty($user)) return;
-		include __DIR__."/../../config/mail.php";
+		require __DIR__."/../../config/mail.php";
 		if($mailEnabled) {
-			include __DIR__."/connection.php";
-			include __DIR__."/../../config/dashboard.php";
-			include __DIR__."/../../config/mail/PHPMailer.php";
-			include __DIR__."/../../config/mail/SMTP.php";
-			include __DIR__."/../../config/mail/Exception.php";
+			require __DIR__."/connection.php";
+			require __DIR__."/../../config/dashboard.php";
+			require __DIR__."/../../config/mail/PHPMailer.php";
+			require __DIR__."/../../config/mail/SMTP.php";
+			require __DIR__."/../../config/mail/Exception.php";
 			$m = new PHPMailer\PHPMailer\PHPMailer();
 			$m->CharSet = 'utf-8';
 			$m->isSMTP();

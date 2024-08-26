@@ -10,7 +10,7 @@ class Commands {
 	public static function doCommands($accountID, $comment, $levelID) {
 		if(!is_numeric($accountID) || !is_numeric($levelID) || substr($comment, 0, 1) != '!') return false;
 		if($levelID < 0) return self::doListCommands($accountID, $comment, $levelID);
-		include dirname(__FILE__)."/../lib/connection.php";
+		require dirname(__FILE__)."/../lib/connection.php";
 		require_once "../lib/exploitPatch.php";
 		require_once "../lib/mainLib.php";
 		$gs = new mainLib();
@@ -362,7 +362,7 @@ class Commands {
 	public static function doListCommands($accountID, $command, $listID) {
 		if(substr($command,0,1) != '!') return false;
 		$listID = $listID * -1;
-		include dirname(__FILE__)."/../lib/connection.php";
+		require dirname(__FILE__)."/../lib/connection.php";
 		require_once "../lib/exploitPatch.php";
 		require_once "../lib/mainLib.php";
 		$gs = new mainLib();
@@ -485,11 +485,11 @@ class Commands {
 		return true;
 	}
 	public static function doProfileCommands($accountID, $command){
-		include __DIR__."/connection.php";
+		require __DIR__."/connection.php";
 		require_once __DIR__."/exploitPatch.php";
 		require_once __DIR__."/mainLib.php";
-		include __DIR__."/../../config/dashboard.php";
-		include __DIR__."/../../config/discord.php";
+		require __DIR__."/../../config/dashboard.php";
+		require __DIR__."/../../config/discord.php";
 		$gs = new mainLib();
 		$carray = explode(' ', $command);
 		$acc = $gs->getAccountName($accountID);

@@ -1,8 +1,8 @@
 <?php
 chdir(dirname(__FILE__));
 //error_reporting(0);
-include "../lib/connection.php";
-include "../../config/misc.php";
+require "../lib/connection.php";
+require "../../config/misc.php";
 require_once "../lib/exploitPatch.php";
 require "../lib/generateHash.php";
 if(!isset($orderMapPacksByStars)) global $orderMapPacksByStars;

@@ -18,8 +18,8 @@ file_put_contents("../logs/fixcpslog.txt",time());
 if(function_exists("set_time_limit")) set_time_limit(0);
 $cplog = "";
 $people = array();
-include "../../incl/lib/connection.php";
-include "../../config/misc.php";
+require "../../incl/lib/connection.php";
+require "../../config/misc.php";
 //getting users
 $query = $db->prepare("UPDATE users
 	LEFT JOIN

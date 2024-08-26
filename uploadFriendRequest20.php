@@ -1,3 +1,3 @@
 <?php
-include "incl/relationships/uploadFriendRequest.php";
+require "incl/relationships/uploadFriendRequest.php";
 ?>

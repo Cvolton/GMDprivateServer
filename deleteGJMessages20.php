@@ -1,3 +1,3 @@
 <?php
-include "incl/messages/deleteGJMessages.php";
+require "incl/messages/deleteGJMessages.php";
 ?>

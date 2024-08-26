@@ -1,7 +1,7 @@
 <?php
 class Captcha {
 	public static function displayCaptcha($returnOrEcho = false) {
-		include __DIR__ . "/../../config/security.php";
+		require __DIR__ . "/../../config/security.php";
 		if ($enableCaptcha) {
 			if($returnOrEcho) {
 				switch($captchaType) {
@@ -43,7 +43,7 @@ class Captcha {
 	}
 
 	public static function validateCaptcha() {
-		include __DIR__ . "/../../config/security.php";
+		require __DIR__ . "/../../config/security.php";
 		if(!$enableCaptcha) return true;
 		switch($captchaType) {
 			case 1:

@@ -1,9 +1,9 @@
 <?php
 session_start();
 require "../incl/dashboardLib.php";
-include "../".$dbPath."incl/lib/connection.php";
-include "../".$dbPath."config/security.php";
-include "../".$dbPath."config/mail.php";
+require "../".$dbPath."incl/lib/connection.php";
+require "../".$dbPath."config/security.php";
+require "../".$dbPath."config/mail.php";
 $dl = new dashboardLib();
 require "../".$dbPath."incl/lib/generatePass.php";
 require "../".$dbPath."incl/lib/exploitPatch.php";

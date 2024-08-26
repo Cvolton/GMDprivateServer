@@ -7,7 +7,7 @@ if(!function_exists("intdiv")) {
 }
 class GenerateHash {
 	public static function genMulti($lvlsmultistring) {
-		include dirname(__FILE__)."/connection.php";
+		require dirname(__FILE__)."/connection.php";
 		$hash = "";
 		foreach($lvlsmultistring as $result) {
 			$id = strval($result['levelID']);
@@ -35,7 +35,7 @@ class GenerateHash {
 	}
 	public static function genPack($lvlsmultistring) {
 		$lvlsarray = explode(",", $lvlsmultistring);
-		include dirname(__FILE__)."/connection.php";
+		require dirname(__FILE__)."/connection.php";
 		$hash = "";
 		foreach($lvlsarray as $id){
 			$query=$db->prepare("SELECT ID,stars,coins FROM mappacks WHERE ID = :id");

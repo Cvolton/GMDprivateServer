@@ -7,7 +7,7 @@ chdir(dirname(__FILE__));
 ob_flush();
 flush();
 if(function_exists("set_time_limit")) set_time_limit(0);
-include "../../incl/lib/connection.php";
+require "../../incl/lib/connection.php";
 $query = $db->prepare("UPDATE users
 	INNER JOIN accounts ON accounts.accountID = users.extID
 	SET users.userName = accounts.userName

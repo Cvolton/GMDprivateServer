@@ -1,8 +1,8 @@
 <?php
 session_start();
-include "../incl/dashboardLib.php";
-include "../".$dbPath."incl/lib/exploitPatch.php";
-include_once "../".$dbPath."incl/lib/mainLib.php";
+require "../incl/dashboardLib.php";
+require "../".$dbPath."incl/lib/exploitPatch.php";
+require_once "../".$dbPath."incl/lib/mainLib.php";
 require_once "../".$dbPath."config/misc.php";
 
 function generate_timezone_list()
@@ -50,7 +50,7 @@ function generate_timezone_list()
 }
 
 $gs = new mainLib();
-include "../".$dbPath."incl/lib/connection.php";
+require "../".$dbPath."incl/lib/connection.php";
 $dl = new dashboardLib();
 $clan = $none = "";
 if((!isset($_SESSION["accountID"]) OR $_SESSION["accountID"] == 0) AND (empty($_POST["accountID"]) AND empty($_GET["id"]))) {

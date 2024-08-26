@@ -1,5 +1,5 @@
 <?php
-include '../../incl/lib/connection.php';
+require '../../incl/lib/connection.php';
 $dl = $db->prepare("SELECT accountID, levelID FROM dlsubmits WHERE approve = 1 ORDER BY accountID ASC");
 $dl->execute();
 $dl = $dl->fetchAll();

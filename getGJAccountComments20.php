@@ -1,3 +1,3 @@
 <?php
-include "incl/comments/getGJAccountComments.php";
+require "incl/comments/getGJAccountComments.php";
 ?>

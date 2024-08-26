@@ -1,3 +1,3 @@
 <?php
-include "incl/profiles/getGJUserInfo.php";
+require "incl/profiles/getGJUserInfo.php";
 ?>

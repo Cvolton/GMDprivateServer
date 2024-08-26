@@ -5,7 +5,7 @@ require "../incl/dashboardLib.php";
 $dl = new dashboardLib();
 require "../../incl/lib/mainLib.php";
 $gs = new mainLib();
-include "../../incl/lib/connection.php";
+require "../../incl/lib/connection.php";
 if(!isset($_SESSION["accountID"]) OR $_SESSION["accountID"] == 0){
 	header("Location: ../login/login.php");
 	exit();

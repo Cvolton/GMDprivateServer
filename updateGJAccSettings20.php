@@ -1,3 +1,3 @@
 <?php
-include "incl/profiles/updateGJAccSettings.php";
+require "incl/profiles/updateGJAccSettings.php";
 ?>

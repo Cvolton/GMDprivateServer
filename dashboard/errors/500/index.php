@@ -2,7 +2,7 @@
 $e = 500;
 $path = str_replace($_SERVER['DOCUMENT_ROOT'], '', $_SERVER['SCRIPT_FILENAME']);
 $path =  str_replace('/errors/'.$e.'/index.php', '', $path);
-include $_SERVER['DOCUMENT_ROOT'].''.$path.'/incl/dashboardLib.php';
+require $_SERVER['DOCUMENT_ROOT'].''.$path.'/incl/dashboardLib.php';
 $dl = new dashboardLib();
 $dl->title($e);
 echo '<a href="../"><p class="error">'.$e.'</p></a>

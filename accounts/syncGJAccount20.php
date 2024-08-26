@@ -1,11 +1,11 @@
 <?php
 chdir(dirname(__FILE__));
 //error_reporting(0);
-include "../incl/lib/connection.php";
+require "../incl/lib/connection.php";
 require "../incl/lib/generatePass.php";
 require_once "../incl/lib/exploitPatch.php";
-include_once "../config/security.php";
-include_once "../incl/lib/defuse-crypto.phar";
+require_once "../config/security.php";
+require_once "../incl/lib/defuse-crypto.phar";
 use Defuse\Crypto\KeyProtectedByPassword;
 use Defuse\Crypto\Crypto;
 use Defuse\Crypto\Key;

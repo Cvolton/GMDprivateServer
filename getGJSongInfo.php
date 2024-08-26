@@ -1,3 +1,3 @@
 <?php
-include "incl/misc/getGJSongInfo.php";
+require "incl/misc/getGJSongInfo.php";
 ?>

@@ -2,10 +2,10 @@
 if(!isset($db)) global $db;
 if(empty($db)) {
 	error_reporting(0);
-	include dirname(__FILE__)."/../../config/connection.php";
-	include dirname(__FILE__)."/../../config/misc.php";
-	include_once dirname(__FILE__)."/../../config/security.php";
-	include_once dirname(__FILE__)."/../../config/dashboard.php";
+	require dirname(__FILE__)."/../../config/connection.php";
+	require dirname(__FILE__)."/../../config/misc.php";
+	require_once dirname(__FILE__)."/../../config/security.php";
+	require_once dirname(__FILE__)."/../../config/dashboard.php";
 	require_once dirname(__FILE__)."/ipCheck.php";
 	$ic = new ipCheck();
 	@header('Content-Type: text/html; charset=utf-8');

@@ -1,6 +1,6 @@
 <?php
 chdir(dirname(__FILE__));
-include "../lib/connection.php";
+require "../lib/connection.php";
 require "../lib/XORCipher.php";
 require "../lib/generateHash.php";
 require_once "../lib/exploitPatch.php";

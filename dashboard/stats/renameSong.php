@@ -5,7 +5,7 @@ require "../".$dbPath."incl/lib/connection.php";
 $dl = new dashboardLib();
 require_once "../".$dbPath."incl/lib/mainLib.php";
 $gs = new mainLib();
-include "../".$dbPath."incl/lib/connection.php";
+require "../".$dbPath."incl/lib/connection.php";
 require "../".$dbPath."incl/lib/exploitPatch.php";
 if($gs->checkPermission($_SESSION["accountID"], "dashboardManageSongs")){
 	$author = mb_substr(ExploitPatch::rucharclean($_POST["author"]), 0, 23);

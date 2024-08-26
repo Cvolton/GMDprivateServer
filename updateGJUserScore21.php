@@ -1,3 +1,3 @@
 <?php
-include "incl/scores/updateGJUserScore.php";
+require "incl/scores/updateGJUserScore.php";
 ?>

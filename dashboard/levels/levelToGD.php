@@ -1,14 +1,14 @@
 <?php
 session_start();
-include "../incl/dashboardLib.php";
-include "../".$dbPath."incl/lib/connection.php";
+require "../incl/dashboardLib.php";
+require "../".$dbPath."incl/lib/connection.php";
 require "../".$dbPath."config/proxy.php";
-include "../".$dbPath."incl/lib/Captcha.php";
+require "../".$dbPath."incl/lib/Captcha.php";
 require "../".$dbPath."incl/lib/XORCipher.php";
 require_once "../".$dbPath."incl/lib/generatePass.php";
 require_once "../".$dbPath."incl/lib/exploitPatch.php";
 require_once "../".$dbPath."incl/lib/generateHash.php";
-include_once "../".$dbPath."incl/lib/mainLib.php";
+require_once "../".$dbPath."incl/lib/mainLib.php";
 $gs = new mainLib();
 $dl = new dashboardLib();
 global $lrEnabled;

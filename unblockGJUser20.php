@@ -1,3 +1,3 @@
 <?php
-include "incl/relationships/unblockGJUser.php";
+require "incl/relationships/unblockGJUser.php";
 ?>

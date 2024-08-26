@@ -1,9 +1,9 @@
 <?php
 session_start();
-include '../incl/dashboardLib.php';
-include '../'.$dbPath.'incl/lib/connection.php';
-include '../'.$dbPath.'incl/lib/exploitPatch.php';
-include '../'.$dbPath.'incl/lib/mainLib.php';
+require '../incl/dashboardLib.php';
+require '../'.$dbPath.'incl/lib/connection.php';
+require '../'.$dbPath.'incl/lib/exploitPatch.php';
+require '../'.$dbPath.'incl/lib/mainLib.php';
 $id = ExploitPatch::number($_GET["id"]);
 if(!empty($id) AND $_SESSION["accountID"] != 0) {
 	$favourites = $db->prepare("SELECT * FROM favsongs WHERE songID = :id AND accountID = :aid");

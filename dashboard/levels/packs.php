@@ -1,10 +1,10 @@
 <?php
 session_start();
 error_reporting(E_ALL);
-include '../incl/dashboardLib.php';
-include '../'.$dbPath.'incl/lib/connection.php';
-include '../'.$dbPath.'incl/lib/exploitPatch.php';
-include '../'.$dbPath.'incl/lib/mainLib.php';
+require '../incl/dashboardLib.php';
+require '../'.$dbPath.'incl/lib/connection.php';
+require '../'.$dbPath.'incl/lib/exploitPatch.php';
+require '../'.$dbPath.'incl/lib/mainLib.php';
 $id = ExploitPatch::number($_GET["id"]);
 $gs = new mainLib();
 if(!empty($id)) {

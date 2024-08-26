@@ -1,3 +1,3 @@
 <?php
-include "incl/levels/deleteGJLevelUser.php";
+require "incl/levels/deleteGJLevelUser.php";
 ?>

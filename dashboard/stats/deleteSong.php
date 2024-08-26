@@ -2,7 +2,7 @@
 session_start();
 require "../incl/dashboardLib.php";
 require "../".$dbPath."incl/lib/connection.php";
-include "../".$dbPath."incl/lib/connection.php";
+require "../".$dbPath."incl/lib/connection.php";
 require "../".$dbPath."incl/lib/exploitPatch.php";
 $accID = $_SESSION["accountID"];
 $songid = ExploitPatch::remove($_GET["ID"]);

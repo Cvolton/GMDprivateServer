@@ -1,7 +1,7 @@
 <?php
 //error_reporting(0);
 chdir(dirname(__FILE__));
-include "../lib/connection.php";
+require "../lib/connection.php";
 require_once "../lib/GJPCheck.php";
 require_once "../lib/exploitPatch.php";
 require_once "../lib/mainLib.php";
@@ -86,7 +86,7 @@ if($levelString != "" AND $levelName != "") {
 	if($level['updateLocked']) exit("-1");
 	$lvls = $querye->rowCount();
 	if($lvls == 1) {
-		include "../../config/misc.php";
+		require "../../config/misc.php";
 		$query = $db->prepare("SELECT starStars FROM `levels` WHERE levelID = :levelID");
 		$query->execute([":levelID"=> $levelID]);
 		$stars = $query->fetchColumn();

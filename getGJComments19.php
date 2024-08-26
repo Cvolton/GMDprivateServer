@@ -1,3 +1,3 @@
 <?php
-include "incl/comments/getGJComments.php";
+require "incl/comments/getGJComments.php";
 ?>

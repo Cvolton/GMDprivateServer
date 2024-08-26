@@ -1,6 +1,6 @@
 <?php
 chdir(dirname(__FILE__));
-include "../lib/connection.php";
+require "../lib/connection.php";
 require "../lib/GJPCheck.php";
 require_once "../lib/exploitPatch.php";
 if(empty($_POST["requestID"])){
