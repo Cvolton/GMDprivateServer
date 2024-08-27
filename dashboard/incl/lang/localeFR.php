@@ -403,20 +403,20 @@ $string['youAreBanned'] = 'Vous avez été banni jusqu\'au <b>%2$s</b> pour la r
 $string['banChange'] = 'Changer';
 $string['system'] = 'Système';
 
-$string['levelComments'] = 'Level comments';
-$string['levelLeaderboards'] = 'Level leaderboards';
-$string['manageLevel'] = 'Manage level';
-$string['noComments'] = 'No comments!';
-$string['commentHere'] = 'Publish comment...';
-$string['weekLeaderboards'] = 'For a week';
-$string['noLeaderboards'] = 'No leaderboards!';
-$string['manageLevelDesc'] = 'Here you can change level!';
+$string['levelComments'] = 'Commentaires du niveau';
+$string['levelLeaderboards'] = 'Classements du niveau';
+$string['manageLevel'] = 'Gérer le niveau';
+$string['noComments'] = 'Aucun commentaire !';
+$string['commentHere'] = 'Publier un commentaire...';
+$string['weekLeaderboards'] = 'Durant la semaine';
+$string['noLeaderboards'] = 'Pas de classement !';
+$string['manageLevelDesc'] = 'Ici, vous pouvez gérer les paramètres d\'un niveau !';
 $string['silverCoins'] = 'Silver coins';
-$string['unlistedLevel'] = 'Unlisted level';
-$string['lockUpdates'] = 'Lock updating';
-$string['lockCommenting'] = 'Lock commenting';
-$string['successfullyChangedLevel'] = 'You successfully changed level!';
-$string['successfullyDeletedLevel'] = 'You successfully deleted level!';
+$string['unlistedLevel'] = 'Niveau non-listé';
+$string['lockUpdates'] = 'Vérouiller les mises à jour';
+$string['lockCommenting'] = 'Vérouiller les commentaires';
+$string['successfullyChangedLevel'] = 'Vous avez changé les paramètres du niveau avec succès !';
+$string['successfullyDeletedLevel'] = 'Vous avez supprimé ce niveau avec succès !';
 
 /*
 	REUPLOAD
