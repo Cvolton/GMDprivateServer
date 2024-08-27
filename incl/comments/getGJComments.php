@@ -3,6 +3,7 @@ chdir(dirname(__FILE__));
 require "../lib/connection.php";
 require_once "../lib/exploitPatch.php";
 require_once "../lib/mainLib.php";
+require_once "../lib/GJPCheck.php";
 require_once "../../config/misc.php";
 $gs = new mainLib();
 
@@ -33,7 +34,7 @@ if(isset($_POST['levelID'])) {
 		$levelExists = $db->prepare("SELECT COUNT(*) FROM lists WHERE listID = :levelID");
 		$levelExists->execute([':levelID' => ExploitPatch::number($filterID)]);
 	}
-	if($levelExists->fetchColumn() == 0) $userListWhere = "AND 1=0"; // Don't return comments from nonexistent levels
+	if($levelExists->fetchColumn() == 0) exit("-2"); // Don't return comments from nonexistent levels
 	$userListJoin = "";
 } elseif(isset($_POST['userID'])) {
 	$filterColumn = 'userID';
@@ -43,7 +44,13 @@ if(isset($_POST['levelID'])) {
 	$userListColumns = ", levels.unlisted";
 	$userListJoin = "INNER JOIN levels ON comments.levelID = levels.levelID";
 	$userListWhere = "AND levels.unlisted = 0";
-} else exit(-1);
+	$accountID = !empty($_POST['accountID']) ? GJPCheck::getAccountIDOrDie() : 0;
+	$targetAccountID = $gs->getExtID($filterID);
+	$cS = $db->prepare("SELECT cS FROM accounts WHERE accountID = :targetAccountID");
+	$cS->execute([':targetAccountID' => $targetAccountID]);
+	$cS = $cS->fetchColumn();
+	if($accountID != $targetAccountID && (($cS == 1 && !$gs->isFriends($accountID, $targetAccountID)) || $cS > 1)) exit("-2");
+} else exit("-1");
 
 $countquery = "SELECT count(*) FROM comments ${userListJoin} WHERE ${filterToFilter}${filterColumn} = :filterID ${userListWhere}";
 $countquery = $db->prepare($countquery);
@@ -58,7 +65,7 @@ $result = $query->fetchAll();
 $visiblecount = $query->rowCount();
 
 foreach($result as &$comment1) {
-	if($comment1["commentID"]!=""){
+	if($comment1["commentID"]!="") {
       	$uploadDate = $gs->makeTime($comment1["timestamp"]);
 		$commentText = ($gameVersion < 20) ? ExploitPatch::url_base64_decode($comment1["comment"]) : $comment1["comment"];
 		if($enableCommentLengthLimiter) $commentText = ExploitPatch::url_base64_encode(substr(ExploitPatch::url_base64_decode($commentText), 0, $maxCommentLength));
@@ -70,15 +77,14 @@ foreach($result as &$comment1) {
         }
 		if($likes < -2) $comment1["isSpam"] = 1;
 		$commentstring .= "2~".$commentText."~3~".$comment1["userID"]."~4~".$likes."~5~0~7~".$comment1["isSpam"]."~9~".$uploadDate."~6~".$comment1["commentID"]."~10~".$comment1["percent"];
-		if ($comment1['userName']) { //TODO: get rid of queries caused by getMaxValuePermission and getAccountCommentColor
+		if($comment1['userName']) {
 			$comment1["extID"] = is_numeric($comment1["extID"]) ? $comment1["extID"] : 0;
 			$comment1['userName'] = $gs->makeClanUsername($comment1);
-			if($binaryVersion > 31){
+			if($binaryVersion > 31) {
 				$badge = $gs->getMaxValuePermission($extID, "modBadgeLevel");
-				$badge = $badge > 2 ? '' : $badge;
 				$colorString = $badge > 0 ? "~12~".$gs->getAccountCommentColor($extID) : "";
 				$commentstring .= "~11~${badge}${colorString}:1~".$comment1["userName"]."~7~1~9~".$comment1["icon"]."~10~".$comment1["color1"]."~11~".$comment1["color2"]."~14~".$comment1["iconType"]."~15~".$comment1["special"]."~16~".$comment1["extID"];
-			}elseif(!in_array($comment1["userID"], $users)){
+			} elseif(!in_array($comment1["userID"], $users)) {
 				$users[] = $comment1["userID"];
 				$userstring .=  $comment1["userID"] . ":" . $comment1["userName"] . ":" . $extID . "|";
 			}
@@ -89,7 +95,7 @@ foreach($result as &$comment1) {
 
 $commentstring = substr($commentstring, 0, -1);
 echo $commentstring;
-if($binaryVersion < 32){
+if($binaryVersion < 32) {
 	$userstring = substr($userstring, 0, -1);
 	echo "#$userstring";
 }
