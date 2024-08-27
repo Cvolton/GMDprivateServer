@@ -39,6 +39,9 @@ $bottoken = "";
 		ES — Spanish (Español)
 		PT — Portuguese (Português)
   		CZ — Czech (Čeština)
+  		PL — Polish (Polski)
+  		IT — Italian (Italiano)
+		VI — Vietnamese (Tiếng Việt)
 	
 	Emojis:
 		$likeEmoji — Custom like emoji (👍)
