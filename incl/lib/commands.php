@@ -155,7 +155,7 @@ class Commands {
 				} else $verifyCoins = ExploitPatch::number($commentarray[0]) > 1 ? 1 : ExploitPatch::number($commentarray[0]);
 				$query = $db->prepare("UPDATE levels SET starCoins = :starCoins WHERE levelID = :levelID");
 				$query->execute([':levelID' => $levelID, ':starCoins' => $verifyCoins]);
-				$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('2', :value, :levelID, :timestamp, :id)");
+				$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('3', :value, :levelID, :timestamp, :id)");
 				$query->execute([':value' => $verifyCoins, ':timestamp' => $uploadDate, ':id' => $accountID, ':levelID' => $levelID]);
 				return 'You successfully '.($verifyCoins ? '' : 'un').'verified coins in '.$gs->getLevelName($levelID).'!';
 				break;

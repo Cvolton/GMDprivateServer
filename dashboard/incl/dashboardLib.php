@@ -70,7 +70,7 @@ class dashboardLib {
 	}
 	public function printSong($content, $active = "", $isSubdirectory = true){
 		$this->printHeader($isSubdirectory);
-		$this->printNavbar($active);
+		$this->printNavbar($active, $isSubdirectory);
 		echo '<span id="htmlpage" style="width: 100%;height: 100%;display: contents;">'.$content.'</span>';
 	}
 	public function printBoxFooter(){
@@ -100,7 +100,7 @@ class dashboardLib {
 	public function printLoginBoxError($content){
 		$this->printLoginBox("<p>An error has occured: $content. <a href=''>Click here to try again.</a>");
 	}
-	public function printNavbar($active){
+	public function printNavbar($active, $isSubdirectory = true) {
 		global $gdps;
 		global $lrEnabled;
       	global $msgEnabled;
@@ -128,7 +128,7 @@ class dashboardLib {
       	}
 		$gs = new mainLib();
 		$homeActive = $accountActive = $browseActive = $modActive = $reuploadActive = $statsActive = $msgActive = $profileActive = "";
-		switch($active){
+		switch($active) {
 			case "home":
 				$homeActive = "active tooactive";
 				break;
@@ -155,7 +155,8 @@ class dashboardLib {
 				break;
 		}
 		echo '<nav id="navbarepta" class="navbar navbar-expand-lg navbar-dark menubar">
-			<button href="." onclick="a(\'\')" class="navbar-brand" style="margin-right:0.5rem;background:none;border:none"><img style="width:30px" src="icon.png"></button>
+			<input type="hidden" id="isSubdirectory" value="'.($isSubdirectory ? 'true' : 'false').'"></input>
+			<button href="." onclick="a(\'\')" class="navbar-brand" style="margin-right:0.5rem;background:none;border:none"><img style="width:40px" src="icon.svg"></button>
 			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
 				<span class="navbar-toggler-icon"></span>
 			</button>
@@ -308,8 +309,8 @@ class dashboardLib {
 							<a class="dropdown-item dontblock" href="lang/switchLang.php?lang=PT" title="Translated by OmgRod"><div class="icon flag"><img class="imgflag" src="incl/flags/pt.png?2"></div>Português</a>
 							<a class="dropdown-item dontblock" href="lang/switchLang.php?lang=CZ" title="Translated by Matto58"><div class="icon flag"><img class="imgflag" src="incl/flags/cz.png?2"></div>Čeština</a>
 							<a class="dropdown-item dontblock" href="lang/switchLang.php?lang=IT" title="Translated by Fenix668"><div class="icon flag"><img class="imgflag" src="incl/flags/it.png?2"></div>Italiano</a>
-							<a class="dropdown-item dontblock" href="lang/switchLang.php?lang=PL" title="Translated by ExtremeSpeGD"><div class="icon flag"><img class="imgflag" src="incl/flags/pl.png?2"></div>Polski</a>
-                            <a class="dropdown-item dontblock" href="lang/switchLang.php?lang=VI" title="Translated by TacoEnjoyer"><div class="icon flag"><img class="imgflag" src="incl/flags/vi.png?2"></div>Tiếng Việt</a>
+       						<a class="dropdown-item dontblock" href="lang/switchLang.php?lang=PL" title="Translated by ExtremeSpeGD"><div class="icon flag"><img class="imgflag" src="incl/flags/pl.png?2"></div>Polski</a>
+							<a class="dropdown-item dontblock" href="lang/switchLang.php?lang=VI" title="Translated by TacoEnjoyer"><div class="icon flag"><img class="imgflag" src="incl/flags/vi.png?2"></div>Tiếng Việt</a>
 						</div>';
 						$glob = function_exists('glob') ? (!empty(glob("../download/".$gdps.".*")) OR !empty(glob("download/".$gdps.".*"))) : true;
 						if($glob OR !empty($pc) OR !empty($mac) OR !empty($android) OR !empty($ios)) {
@@ -555,7 +556,10 @@ class dashboardLib {
 					}
 				}
 				player.skip = function() {
-					if(player.number >= player.queue.length-1) return false;
+					if(player.number >= player.queue.length-1) {
+						player.stop();
+						return false;
+					}
 					player.isPlaying = false;
 					if(typeof document.getElementById("icon"+player.song.ID) != "undefined" && document.getElementById("icon"+player.song.ID) != null) document.getElementById("icon"+player.song.ID).classList.replace("fa-pause", "fa-play");
 					player.process();
@@ -727,19 +731,18 @@ class dashboardLib {
 		try {
 			if((window.location.pathname.indexOf(page) != "1" || page == "profile") || skipcheck) {
 				phpCheck = page.substr(page.length - 4);
-				if(phpCheck != ".php" && page != "" && page != "profile/'.$gs->getAccountName($_SESSION["accountID"]).'" && !skipslash) page = page + "/";
+				isSubdirectory = document.getElementById("isSubdirectory").value;
+				if(phpCheck != ".php" && !isSubdirectory && page != "profile/'.$gs->getAccountName($_SESSION["accountID"]).'" && !skipslash) page = page + "/";
 				document.getElementById("loadingloool").innerHTML = \'<i class="fa-solid fa-spinner fa-spin"></i>\';
 				document.getElementById("loadingloool").style.opacity = "1";
+				pageLimiters = page.split("?");
+				page = pageLimiters[0];
 				pg = new XMLHttpRequest();
 				sendget = "";
-				if(getdata >= 0) {
+				if(getdata > 0) {
 					if(getdata != 69) fd = new FormData(document.getElementsByTagName("form")[document.getElementsByTagName("form").length-getdata]);
 					else fd = new FormData(searchform);
 					delimiter = "?";
-					if(fd.get("page") !== null) {
-						sendget = sendget + delimiter + "page=" + encodeURIComponent(fd.get("page"));
-						delimiter = "&";
-					}
 					if(fd.get("search") !== null) {
 						sendget = sendget + delimiter + "search=" + encodeURIComponent(fd.get("search"));
 						delimiter = "&";
@@ -756,7 +759,15 @@ class dashboardLib {
 						sendget = sendget + delimiter + "ng=" + encodeURIComponent(fd.get("ng"));
 						delimiter = "&";
 					}
-				} 
+					if(fd.get("levelID") !== null) {
+						sendget = sendget + delimiter + "levelID=" + encodeURIComponent(fd.get("levelID"));
+						delimiter = "&";
+					}
+					if(fd.get("page") !== null) {
+						sendget = sendget + delimiter + "page=" + encodeURIComponent(fd.get("page"));
+						delimiter = "&";
+					}
+				} else if(typeof pageLimiters[1] != "undefined") page = page + "?" + pageLimiters[1];
 				pg.open(method, page + sendget, true);
 				pg.responseType = "document";
 				htmlpage = document.querySelector("#htmlpage");
@@ -811,25 +822,24 @@ class dashboardLib {
 						if(typeof bottomrowscript != "undefined" && bottomrowscript != null) scrp.innerHTML += bottomrowscript.textContent;
 						if(document.getElementById("pagescript") !== null) document.getElementById("pagescript").remove();
 						document.body.appendChild(scrp);
-						if(!isback) history.pushState(null,null,page);
+						isSubdirectory = document.getElementById("isSubdirectory").value;
+						if(!isback) history.pushState(null,null,page + sendget);
 						if(typeof document.querySelector("base") != "object") {
 							base = document.createElement("base");
-							if(page.indexOf("settings") != "-1") base.href = "../../";
-							else if(page != "") base.href = "../";
+							if(page.endsWith("settings")) base.href = "../../";
+							else if(isSubdirectory) base.href = "../";
 							else base.href = ".";
 							document.body.appendChild(base);
 						} else {
 							base = document.querySelectorAll("base")[0];
-							if(page.indexOf("settings") != "-1") base.href = "../../";
-							else if(page != "") base.href = "../";
+							if(page.endsWith("settings")) base.href = "../../";
+							else if(isSubdirectory) base.href = "../";
 							else base.href = ".";
 							document.body.appendChild(base);
 							if(typeof document.querySelectorAll("base")[1] == "object") document.querySelectorAll("base")[0].remove();
 						}
 						try {
 							if(typeof captchascript != "undefined") {
-								//var elems = document.querySelectorAll("div[aria-hidden=true]");
-								//for(var i=0; i < elems.length; i++) elems[i].remove();
 								if(typeof turnstile != "object" && typeof grecaptcha != "object" && typeof hcaptcha != "object") {
 									cptscr = document.createElement("script");
 									cptscr.id = "captchascript";
@@ -903,11 +913,7 @@ class dashboardLib {
 		return text.replace(/[&<>""]/g, function(m) { return map[m]; });
 	}
 	window.addEventListener("popstate", function(e) { 
-		goback = window.location.pathname.split("/");
-		if(goback[goback.length-1] != "") backpage = goback[goback.length-2]+"/"+goback[goback.length-1];
-		else backpage = goback[goback.length-2];
-		if(backpage != "dashboard") a(backpage, true, true, "GET", false, "", true);
-		else a("", true, true, "GET", false, "", true);
+		a(e.target.location.href, true, true, "GET", false, "", true);
 	}, false);
 </script>';
 	if((date("F", time()) == "December" AND date("j", time()) > 17) OR (date("F", time()) == "January" AND date("j", time()) < 10)) echo "<script>var embedimSnow=document.getElementById(\"embedim--snow\");if(!embedimSnow){function embRand(a,b){return Math.floor(Math.random()*(b-a+1))+a}var embCSS='.embedim-snow{position: absolute;width: 10px;height: 10px;background: white;border-radius: 50%;margin-top:-10px}';var embHTML='';for(i=1;i<200;i++){embHTML+='<i class=\"embedim-snow\"></i>';var rndX=(embRand(0,1000000)*0.0001),rndO=embRand(-100000,100000)*0.0001,rndT=(embRand(3,7)*10).toFixed(2),rndS=(embRand(0,6000)*0.0001).toFixed(2);embCSS+='.embedim-snow:nth-child('+i+'){'+'opacity:'+(embRand(1,10000)*0.0001).toFixed(2)+';'+'transform:translate('+rndX.toFixed(2)+'vw,-10px) scale('+rndS+');'+'animation:fall-'+i+' '+embRand(10,30)+'s -'+embRand(0,30)+'s linear infinite'+'}'+'@keyframes fall-'+i+'{'+rndT+'%{'+'transform:translate('+(rndX+rndO).toFixed(2)+'vw,'+rndT+'vh) scale('+rndS+')'+'}'+'to{'+'transform:translate('+(rndX+(rndO/2)).toFixed(2)+'vw, 105vh) scale('+rndS+')'+'}'+'}'}embedimSnow=document.createElement('div');embedimSnow.id='embedim--snow';embedimSnow.innerHTML='<style>#embedim--snow{position:fixed;left:0;top:0;bottom:0;width:100vw;height:100vh;overflow:hidden;z-index:9999999;pointer-events:none}'+embCSS+'</style>'+embHTML;document.body.appendChild(embedimSnow)}</script>";
@@ -921,7 +927,7 @@ class dashboardLib {
 				</div>
 			</div></span>';
 	}
-	public function handleLangStart(){
+	public function handleLangStart() {
 		if(!isset($_COOKIE["lang"]) OR !ctype_alpha($_COOKIE["lang"])){
 			if(file_exists('/lang/locale'.strtoupper(substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2))).'.php') setcookie("lang", strtoupper(substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2)), 2147483647, "/");
 			else setcookie("lang", "EN", 2147483647, "/");
@@ -930,21 +936,19 @@ class dashboardLib {
         if(!isset($_SESSION["msgNew"])) $_SESSION["msgNew"] = 0;
 	}
 	public function hex2RGB($hexStr, $returnAsString = false, $seperator = ',') {
-    $hexStr = preg_replace("/[^0-9A-Fa-f]/", '', $hexStr);
-    $rgbArray = array();
-    if (strlen($hexStr) == 6) {
-        $colorVal = hexdec($hexStr);
-        $rgbArray['red'] = 0xFF & ($colorVal >> 0x10);
-        $rgbArray['green'] = 0xFF & ($colorVal >> 0x8);
-        $rgbArray['blue'] = 0xFF & $colorVal;
-    } elseif (strlen($hexStr) == 3) {
-        $rgbArray['red'] = hexdec(str_repeat(substr($hexStr, 0, 1), 2));
-        $rgbArray['green'] = hexdec(str_repeat(substr($hexStr, 1, 1), 2));
-        $rgbArray['blue'] = hexdec(str_repeat(substr($hexStr, 2, 1), 2));
-    } else {
-        return false;
-    }
-    return $returnAsString ? implode($seperator, $rgbArray) : $rgbArray; 
+		$hexStr = preg_replace("/[^0-9A-Fa-f]/", '', $hexStr);
+		$rgbArray = [];
+		if(strlen($hexStr) == 6) {
+			$colorVal = hexdec($hexStr);
+			$rgbArray['red'] = 0xFF & ($colorVal >> 0x10);
+			$rgbArray['green'] = 0xFF & ($colorVal >> 0x8);
+			$rgbArray['blue'] = 0xFF & $colorVal;
+		} elseif (strlen($hexStr) == 3) {
+			$rgbArray['red'] = hexdec(str_repeat(substr($hexStr, 0, 1), 2));
+			$rgbArray['green'] = hexdec(str_repeat(substr($hexStr, 1, 1), 2));
+			$rgbArray['blue'] = hexdec(str_repeat(substr($hexStr, 2, 1), 2));
+		} else return false;
+		return $returnAsString ? implode($seperator, $rgbArray) : $rgbArray; 
 	}
 	public function convertToDate($timestamp, $acc = false){
 		if($acc) {
@@ -966,84 +970,247 @@ class dashboardLib {
 		if(empty($all) && $returnText) $all = '<p style="font-size:25px;color:#212529">'.$this->getLocalizedString("empty").'</p>';
 		return $all;
 	}
-	public function generateBottomRow($pagecount, $actualpage){
+	public function generateLevelsCard($action, $modcheck = false, $extraDetails = '') {
+		global $dbPath;
+		require __DIR__."/../".$dbPath."incl/lib/connection.php";
+		require_once __DIR__."/../".$dbPath."incl/lib/mainLib.php";
+		$gs = new mainLib();
+		$levelid = $action["levelID"];
+		$levelname = $action["levelName"];
+		$levelIDlol = '<button id="copy'.$action["levelID"].'" class="accbtn songidyeah" onclick="copysong('.$action["levelID"].')">'.$action["levelID"].'</button>';
+		$levelDesc = htmlspecialchars(ExploitPatch::url_base64_decode($action["levelDesc"]));
+		if(empty($levelDesc)) $levelDesc = '<text style="color:gray">'.$this->getLocalizedString("noDesc").'</text>';
+		$levelpass = $action["password"];
+		$likes = '<span style="color: #c0c0c0;">'.$action["likes"].'</span>';
+		$dislikes = '<span style="color: #c0c0c0;">'.$action["dislikes"].'</span>';
+		$stats = '<div class="profilepic" style="display: inline-flex; grid-gap :3px; color: #c0c0c0;"><i class="fa-regular fa-thumbs-up"></i> '.$likes.' '.(isset($action['dislikes']) ? '<text style="color: gray;">•</text> <i class="fa-regular fa-thumbs-down"></i> '.$dislikes : '').'</div>';
+		if($modcheck) {
+			$levelpass = substr($levelpass, 1);
+			$levelpass = preg_replace('/(0)\1+/', '', $levelpass);
+			if($levelpass == 0 OR empty($levelpass)) $lp = '<p class="profilepic"><i class="fa-solid fa-unlock"></i> '.$this->getLocalizedString("nopass").'</p>';
+			else {
+				if(strlen($levelpass) < 4) while(strlen($levelpass) < 4) $levelpass = '0'.$levelpass;
+				$lp = '<p class="profilepic"><i class="fa-solid fa-lock"></i> '.$levelpass.'</p>';
+			}
+			if($action["requestedStars"] <= 0 && $action["requestedStars"] > 10) $rs = '<p class="profilepic"><i class="fa-solid fa-star-half-stroke"></i> 0</p>';
+			else $rs = '<p class="profilepic"><i class="fa-solid fa-star-half-stroke"></i> '.$action["requestedStars"].'</p>';
+		} else $lp = $rs = '';
+		if($action["songID"] > 0) {
+			$songlol = $gs->getSongInfo($action["songID"]);
+			$btn = '<button type="button" name="btnsng" id="btn'.$action["songID"].'" title="'.$songlol["authorName"].' — '.$songlol["name"].'" style="display: contents;color: white;margin: 0;" download="'.str_replace('http://', 'https://', $songlol["download"]).'" onclick="btnsong(\''.$action["songID"].'\');"><div class="icon songbtnpic""><i id="icon'.$action["songID"].'" name="iconlol" class="fa-solid fa-play" aria-hidden="false"></i></div></button>';
+			$songid = '<div class="profilepic songpic">'.$btn.'<div class="songfullname"><div class="songauthor">'.$songlol["authorName"].'</div><div class="songname">'.$songlol["name"].'</div></div></div>';
+		} else $songid = '<p class="profilepic"><i class="fa-solid fa-music"></i> '.strstr($gs->getAudioTrack($action["audioTrack"]), ' by ', true).'</p>';
+		$username =  '<form style="margin:0" method="post" action="./profile/"><button type="button" onclick="a(\'profile/'.$action["userName"].'\', true, true, \'POST\')" style="margin:0" class="accbtn" name="accountID">'.$action["userName"].'</button></form>';
+		$time = $this->convertToDate($action["uploadDate"], true);
+		$diff = $gs->getDifficulty($action["starDifficulty"], $action["auto"], $action["starDemonDiff"]);
+		if($modcheck) {
+			$stars = '<div class="dropdown-menu" style="padding:17px 17px 0px 17px; top:0%;">
+				<form style="grid-gap: 10px;" class="form__inner" method="post" action="levels/rateLevel.php">
+					<p>'.$this->getLocalizedString('featureLevel').'</p>
+					<div class="field"><input type="number" id="p1" name="rateStars" placeholder="'.($action['levelLength'] == 5 ? $this->getLocalizedString("moons") : $this->getLocalizedString("stars")).'" value="'.($action["starStars"] > 0 ? $action["starStars"] : "").'"></div>
+					<select style="margin: 0px;" name="featured" onclick="event.stopPropagation();">
+						<option value="0">'.$this->getLocalizedString('isAdminNo').'</option>
+						<option value="1" '.(($action["starFeatured"] > 0 && $action["starEpic"] == 0) ? 'selected' : '').'>Featured</option>
+						<option value="2" '.($action["starEpic"] == 1 ? 'selected' : '').'>Epic</option>
+						<option value="3" '.($action["starEpic"] == 2 ? 'selected' : '').'>Legendary</option>
+						<option value="4" '.($action["starEpic"] == 3 ? 'selected' : '').'>Mythic</option>
+					</select>
+					<button type="submit" class="btn-song" id="submit" name="level" value="'.$levelid.'">'.$this->getLocalizedString("rate").'</button>
+				</form>
+			</div>';
+		}
+		if($action['levelLength'] == 5) $starIcon = 'moon'; else $starIcon = 'star';
+		if(!empty($stars)) $st = '<a class="dropdown" href="#" data-toggle="dropdown"><p class="profilepic"><i class="fa-solid fa-'.$starIcon.'"></i> '.$diff.', '.$action["starStars"].'</p></a>'.$stars;
+		else $st = '<p class="profilepic"><i class="fa-solid fa-'.$starIcon.'"></i> '.$diff.', '.$action["starStars"].'</p>';
+		$ln = '<p class="profilepic"><i class="fa-solid fa-clock"></i> '.$gs->getLength($action['levelLength']).'</p>';
+		$dls = '<p class="profilepic"><i class="fa-solid fa-reply fa-rotate-270"></i> '.$action['downloads'].'</p>';
+		$all = $dls.$stats.$st.$ln.$lp.$rs.$extraDetails;
+		// Avatar management
+		$avatarImg = '';
+		$extIDvalue = $action['extID'];
+		$query = $db->prepare('SELECT userName, iconType, color1, color2, color3, accGlow, accIcon, accShip, accBall, accBird, accDart, accRobot, accSpider, accSwing, accJetpack FROM users WHERE extID = :extID');
+		$query->execute(['extID' => $extIDvalue]);
+		$userData = $query->fetch(PDO::FETCH_ASSOC);
+		if($userData) {
+			$iconType = ($userData['iconType'] > 8) ? 0 : $userData['iconType'];
+			$iconTypeMap = [0 => ['type' => 'cube', 'value' => $userData['accIcon']], 1 => ['type' => 'ship', 'value' => $userData['accShip']], 2 => ['type' => 'ball', 'value' => $userData['accBall']], 3 => ['type' => 'ufo', 'value' => $userData['accBird']], 4 => ['type' => 'wave', 'value' => $userData['accDart']], 5 => ['type' => 'robot', 'value' => $userData['accRobot']], 6 => ['type' => 'spider', 'value' => $userData['accSpider']], 7 => ['type' => 'swing', 'value' => $userData['accSwing']], 8 => ['type' => 'jetpack', 'value' => $userData['accJetpack']]];
+			$iconValue = isset($iconTypeMap[$iconType]) ? $iconTypeMap[$iconType]['value'] : 1;	    
+			$avatarImg = '<img src="https://gdicon.oat.zone/icon.png?type=' . $iconTypeMap[$iconType]['type'] . '&value=' . $iconValue . '&color1=' . $userData['color1'] . '&color2=' . $userData['color2'] . ($userData['accGlow'] != 0 ? '&glow=' . $userData['accGlow'] . '&color3=' . $userData['color3'] : '') . '" alt="Avatar" style="width: 30px; height: 30px; vertical-align: middle; object-fit: contain;">';
+		}
+		$manage = '<a class="btn-rendel btn-manage" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+			<i class="fa-solid fa-ellipsis-vertical"></i>
+		</a>
+		<div onclick="event.stopPropagation()" class="dropdown-menu dropdown-menu-left" aria-labelledby="navbarDropdownMenuLink">
+			<button type="button" class="dropdown-item" onclick="a(\'stats/levelComments.php?levelID='.$action['levelID'].'\', true, true, \'GET\')">
+				<div class="icon"><i class="fa-solid fa-comments"></i></div>
+				'.$this->getLocalizedString("levelComments").'
+			</button>
+			<button type="button" class="dropdown-item" onclick="a(\'stats/'.($action['levelLength'] != 5 ? 'level' : 'platformer').'Leaderboards.php?levelID='.$action['levelID'].'\', true, true, \'GET\')">
+				<div class="icon"><i class="fa-solid fa-chart-simple"></i></div>
+				'.$this->getLocalizedString("levelLeaderboards").'
+			</button>'.($gs->checkPermission($_SESSION['accountID'], 'dashboardManageLevels') ? '
+			<button type="button" class="dropdown-item" onclick="a(\'levels/manageLevel.php?levelID='.$action['levelID'].'\', true, true, \'GET\')">
+				<i class="fa-solid fa-pencil" style="position: absolute;font-size: 10px;margin: 0px 5px 5px -7px;" aria-hidden="false"></i>
+				<div class="icon"><i class="fa-solid fa-gamepad"></i></div>
+				'.$this->getLocalizedString("manageLevel").'
+			</button>' : '').'
+		</div>';
+		return '<div style="width: 100%;display: flex;flex-wrap: wrap;justify-content: center;">
+			<div class="profile">
+			<div class="profacclist">
+				<div class="accnamedesc">
+					<div class="profcard1">
+						<h1 class="dlh1 profh1 manage-button-div">'.$manage.sprintf($this->getLocalizedString("demonlistLevel"), $levelname, 0, $action["userName"], $avatarImg).'</h1>
+					</div>
+					<p class="dlp">'.$levelDesc.'</p>
+				</div>
+				<div class="form-control acccontrol">
+					<div class="acccontrol2">
+						'.$all.'
+					</div>
+					'.$songid.'
+				</div>
+			</div>
+			<div style="display: flex;justify-content: space-between;margin-top: 10px;"><h3 id="comments" class="songidyeah" style="margin: 0px;width: max-content;align-items: center;">'.$this->getLocalizedString("levelid").': <b>'.$levelIDlol.'</b></h3><h3 id="comments" class="songidyeah"  style="justify-content: flex-end;grid-gap: 0.5vh;margin: 0px;width: max-content;">'.$this->getLocalizedString("date").': <b>'.$time.'</b></h3></div>
+		</div></div>';
+	}
+	public function generateCommentsCard($comment, $commentDeleteCheck = false) {
+		global $dbPath;
+		require __DIR__."/../".$dbPath."incl/lib/connection.php";
+		require_once __DIR__."/../".$dbPath."incl/lib/mainLib.php";
+		$gs = new mainLib();
+		$commentAccountName = $gs->getUserName($comment['userID']);
+		$commentMessage = htmlspecialchars(ExploitPatch::url_base64_decode($comment["comment"]));
+		$extIDvalue = $gs->getExtID($comment['userID']);
+		$likes = '<span style="color: #c0c0c0;">'.$comment["likes"].'</span>';
+		$dislikes = '<span style="color: #c0c0c0;">'.$comment["dislikes"].'</span>';
+		$stats = '<i class="fa-regular fa-thumbs-up"></i> '.$likes.' '.(isset($comment['dislikes']) ? '<text style="color: gray;">•</text> <i class="fa-regular fa-thumbs-down"></i> '.$dislikes : '');
+		$commentIDDiv = '<button id="copy'.$comment["commentID"].'" class="accbtn big" onclick="copysong('.$comment["commentID"].')">'.$comment["commentID"].'</button>';
+		if($commentDeleteCheck || $extIDvalue == $_SESSION['accountID']) $deleteComment = '<button onclick="a(\'stats/levelComments.php?levelID='.$comment['levelID'].'\', true, true, \'POST\', false, \'deleteComment\')" style="color:#ffbbbb;margin-left:5px;width:max-content;padding:7px 10px;font-size:15px"  class="btn-rendel">
+			<i class="fa-solid fa-xmark"></i>
+			<form name="deleteComment" style="display: none;">
+				<input type="hidden" name="deleteCommentID" value="'.$comment["commentID"].'"></input>
+			</form>
+		</button>';
+		// Avatar management
+		$avatarImg = '';
+		$query = $db->prepare('SELECT userName, iconType, color1, color2, color3, accGlow, accIcon, accShip, accBall, accBird, accDart, accRobot, accSpider, accSwing, accJetpack FROM users WHERE extID = :extID');
+		$query->execute([':extID' => $extIDvalue]);
+		$userData = $query->fetch(PDO::FETCH_ASSOC);
+		if($userData) {
+			$iconType = ($userData['iconType'] > 8) ? 0 : $userData['iconType'];
+			$iconTypeMap = [0 => ['type' => 'cube', 'value' => $userData['accIcon']], 1 => ['type' => 'ship', 'value' => $userData['accShip']], 2 => ['type' => 'ball', 'value' => $userData['accBall']], 3 => ['type' => 'ufo', 'value' => $userData['accBird']], 4 => ['type' => 'wave', 'value' => $userData['accDart']], 5 => ['type' => 'robot', 'value' => $userData['accRobot']], 6 => ['type' => 'spider', 'value' => $userData['accSpider']], 7 => ['type' => 'swing', 'value' => $userData['accSwing']], 8 => ['type' => 'jetpack', 'value' => $userData['accJetpack']]];
+			$iconValue = isset($iconTypeMap[$iconType]) ? $iconTypeMap[$iconType]['value'] : 1;	    
+			$avatarImg = '<img src="https://gdicon.oat.zone/icon.png?type=' . $iconTypeMap[$iconType]['type'] . '&value=' . $iconValue . '&color1=' . $userData['color1'] . '&color2=' . $userData['color2'] . ($userData['accGlow'] != 0 ? '&glow=' . $userData['accGlow'] . '&color3=' . $userData['color3'] : '') . '" alt="Avatar" style="width: 30px; height: 30px; vertical-align: middle; object-fit: contain;">';
+		}
+		// Badge management
+		$badgeImg = '';
+		$queryRoleID = $db->prepare("SELECT roleID FROM roleassign WHERE accountID = :accountID");
+		$queryRoleID->execute([':accountID' => $extIDvalue]);	
+		if($roleAssignData = $queryRoleID->fetch(PDO::FETCH_ASSOC)) {        
+			$queryBadgeLevel = $db->prepare("SELECT modBadgeLevel FROM roles WHERE roleID = :roleID");
+			$queryBadgeLevel->execute([':roleID' => $roleAssignData['roleID']]);	    
+			if(($modBadgeLevel = $queryBadgeLevel->fetchColumn() ?? 0) >= 1 && $modBadgeLevel <= 3) {
+				$badgeImg = '<img src="https://raw.githubusercontent.com/Fenix668/GMDprivateServer/master/dashboard/modBadge_0' . $modBadgeLevel . '_001.png" alt="badge" style="width: 34px; height: 34px; margin-left: -3px; margin-top: -3px; vertical-align: middle;">';
+			}
+		}		
+		return '<div style="width: 100%;display: flex;flex-wrap: wrap;justify-content: center;">
+			<div class="profile big">
+				<div style="display:flex">
+					<p class="profilenick big" onclick="a(\'profile/'.$commentAccountName.'\', true, true)">'.$avatarImg.$commentAccountName.$badgeImg.'</p>
+					<div class="delete-comment-div">'.$deleteComment.'<p class="profilelikes big">'.$stats.'</p></div>
+				</div>
+				<h3 class="profilemsg big">'.$commentMessage.'</h3>
+				<h3 class="comments big">
+					<text>'.$this->getLocalizedString("ID").': '.$commentIDDiv.'</text>
+					<text>'.$this->convertToDate($comment['timestamp'], true).'</text>
+				</h3>
+			</div>
+		</div>';
+	}
+	public function generateLeaderboardsCard($x, $leaderboard, $action, $leaderboardDeleteCheck = false, $stats = '') {
+		global $dbPath;
+		require __DIR__."/../".$dbPath."incl/lib/connection.php";
+		require_once __DIR__."/../".$dbPath."incl/lib/mainLib.php";
+		$gs = new mainLib();
+		switch($x) {
+			case 1:
+				$place = '<i class="fa-solid fa-trophy" style="color:#ffd700;"> 1</i>';
+				break;
+			case 2:
+				$place = '<i class="fa-solid fa-trophy" style="color:#c0c0c0;"> 2</i>';
+				break;
+			case 3:
+				$place = '<i class="fa-solid fa-trophy" style="color:#cd7f32;"> 3</i>';
+				break;
+			default:
+				$place = '<i class="fa" style="color:white;"># '.$x.'</i>';
+				break;
+		}
+		if($leaderboardDeleteCheck) $deleteLeaderboard = '<button onclick="a(\'stats/'.($action['levelLength'] != 5 ? 'level' : 'platformer').'Leaderboards.php?levelID='.$leaderboard['levelID'].'\', true, true, \'POST\', false, \'deleteLeaderboard\')" style="color:#ffbbbb;margin-left:5px;width:max-content;padding:7px 10px;font-size:15px"  class="btn-rendel">
+			<i class="fa-solid fa-xmark"></i>
+			<form name="deleteLeaderboard" style="display: none;">
+				<input type="hidden" name="deleteLeaderboardID" value="'.($action['levelLength'] != 5 ? $leaderboard['scoreID'] : $leaderboard['ID']).'"></input>
+			</form>
+		</button>';
+		// Avatar management
+		$avatarImg = '';
+		$extIDvalue = $action['extID'];
+		$query = $db->prepare('SELECT userName, iconType, color1, color2, color3, accGlow, accIcon, accShip, accBall, accBird, accDart, accRobot, accSpider, accSwing, accJetpack FROM users WHERE extID = :extID');
+		$query->execute(['extID' => $extIDvalue]);
+		$userData = $query->fetch(PDO::FETCH_ASSOC);
+		if($userData) {
+			$iconType = ($userData['iconType'] > 8) ? 0 : $userData['iconType'];
+			$iconTypeMap = [0 => ['type' => 'cube', 'value' => $userData['accIcon']], 1 => ['type' => 'ship', 'value' => $userData['accShip']], 2 => ['type' => 'ball', 'value' => $userData['accBall']], 3 => ['type' => 'ufo', 'value' => $userData['accBird']], 4 => ['type' => 'wave', 'value' => $userData['accDart']], 5 => ['type' => 'robot', 'value' => $userData['accRobot']], 6 => ['type' => 'spider', 'value' => $userData['accSpider']], 7 => ['type' => 'swing', 'value' => $userData['accSwing']], 8 => ['type' => 'jetpack', 'value' => $userData['accJetpack']]];
+			$iconValue = isset($iconTypeMap[$iconType]) ? $iconTypeMap[$iconType]['value'] : 1;	    
+			$avatarImg = '<img src="https://gdicon.oat.zone/icon.png?type=' . $iconTypeMap[$iconType]['type'] . '&value=' . $iconValue . '&color1=' . $userData['color1'] . '&color2=' . $userData['color2'] . ($userData['accGlow'] != 0 ? '&glow=' . $userData['accGlow'] . '&color3=' . $userData['color3'] : '') . '" alt="Avatar" style="width: 30px; height: 30px; vertical-align: middle; object-fit: contain;">';
+		}
+		return '<div style="width: 100%;display: flex;flex-wrap: wrap;justify-content: center;">
+				<div class="profile"><div style="display: flex;width: 100%;justify-content: space-between;margin-bottom: 7px;align-items: center;"><button style="display:contents;cursor:pointer" type="button" onclick="a(\'profile/'.$action["userName"].'\', true, true, \'GET\')"><div class="acclistdiv">
+					<h2 style="color:rgb('.$gs->getAccountCommentColor($userid).'); align-items: baseline;" class="profilenick acclistnick"><div class="accounts-badge-icon-div">'.$place.$action["userName"].$avatarImg.'</div></h2>
+				</div></button>'.$deleteLeaderboard.'</div>
+				<div class="form-control" style="display: flex;width: 100%;height: max-content;align-items: center;">'.$stats.'</div>
+				<div class="acccomments"><h3 class="comments" style="margin: 0px;width: max-content;">'.$this->getLocalizedString("accountID").': <b>'.$extIDvalue.'</b></h3><h3 class="comments" style="margin: 0px;width: max-content;">'.$this->getLocalizedString("date").': <b>'.$this->convertToDate($leaderboard['uploadDate'], true).'</b></h3></div>
+		</div></div>';
+	}
+	public function generateBottomRow($pagecount, $actualpage) {
 		$pageminus = $actualpage - 1;
 		$pageplus = $actualpage + 1;
       	if($pagecount < 2) return '';
 		$pagelol = explode("/", $_SERVER["REQUEST_URI"]);
 		$pagelol = $pagelol[count($pagelol)-2]."/".$pagelol[count($pagelol)-1];
-		$pagelol = explode("?", $pagelol)[0];
 		$ng = strpos($_SERVER["REQUEST_URI"], '/songList.php') ? '<form method="get" style="margin:0"><input type="hidden" name="ng" value="1"><button type="button" onclick="a(\''.$pagelol.'\', true, true, \'GET\', 6)" style="margin-right: 10px;border-radius: 500px;" class="btn btn-outline-secondary" type="submit" name="ng" value="1">Newgrounds?</button></form>' : '';
 		$inputSearch = !empty($_GET["search"]) ? '<input type="hidden" name="search" value="'.$_GET["search"].'">' : '';
 		if(!empty($_GET["type"] OR !empty($_GET["who"]))) $inputSearch .= '<input type="hidden" name="type" value="'.$_GET["type"].'"><input type="hidden" name="who" value="'.$_GET["who"].'">';
 		if(!empty($_GET["ng"])) $inputSearch .= '<input type="hidden" name="ng" value="'.$_GET["ng"].'">';
+		if(!empty($_GET["levelID"])) $inputSearch .= '<input type="hidden" name="levelID" value="'.$_GET["levelID"].'">';
 		if($_GET["ng"] == 1) $ng = '<button type="button" onclick="a(\''.$pagelol.'\', true, true, \'GET\', 6)" name="ng" value="0" class="btn btn-outline-secondary" style="border-radius:500px;font-size:20px;margin-right:10px;display: flex;margin-left: 0px;align-items: center;justify-content: center;color: indianred; text-decoration:none"><i class="fa-solid fa-xmark"></i></button>';
-		$bottomrow = '<div style="margin-bottom:100px">'.sprintf($this->getLocalizedString("pageInfo"),$actualpage,$pagecount).'</div><div class="btn-group" style="margin-bottom:100px;margin-left:auto; margin-right:0;z-index:1;">';
-		$bottomrow .= $ng.'<form method="get" style="margin:0">'.$inputSearch.'<input type="hidden" name="page" value="0"><button type="button" onclick="a(\''.$pagelol.'\', true, true, \'GET\', 5)" name="page" id="first" style="border-top-right-radius:0px !important;border-bottom-right-radius:0px !important;border-radius:500px" value=1 class="btn btn-outline-secondary"><i class="fa-solid fa-backward" aria-hidden="true"></i></button></form>
-		<form method="get" style="margin:0">'.$inputSearch.'<input type="hidden" name="page" value="'.$pageminus.'"><button style="border-radius:0" name="page" type="button" onclick="a(\''.$pagelol.'\', true, true, \'GET\', 4)" id="prev" value='. $pageminus .' class="btn btn-outline-secondary"><i class="fa-solid fa-chevron-left" aria-hidden="true"></i></button></form>';
-		$bottomrow .= '<button class="btn btn-outline-secondary" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">..</button>
+		$bottomrow = '<div class="page-buttons">'.sprintf($this->getLocalizedString("pageInfo"), $actualpage, $pagecount).'<div class="btn-group" style="margin-left:auto; margin-right:0; z-index:1; bottom: 50px;">'.$ng.'
+		<form method="get" style="margin:0">'.$inputSearch.'<input type="hidden" name="page" value="1"><button type="button" onclick="a(\''.$pagelol.'\', true, true, \'GET\', 5)" name="page" id="first" style="border-top-right-radius:0px !important;border-bottom-right-radius:0px !important;border-radius:500px" value=1 class="btn btn-outline-secondary"><i class="fa-solid fa-backward" aria-hidden="true"></i></button></form>
+		<form method="get" style="margin:0">'.$inputSearch.'<input type="hidden" name="page" value="'.$pageminus.'"><button style="border-radius:0" name="page" type="button" onclick="a(\''.$pagelol.'\', true, true, \'GET\', 4)" id="prev" value='. $pageminus .' class="btn btn-outline-secondary"><i class="fa-solid fa-chevron-left" aria-hidden="true"></i></button></form>
+		<button class="btn btn-outline-secondary" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">..</button>
 			<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink" style="padding:17px 17px 4px 17px;">
 				<form action="" method="get">
 					<div class="form-group">
 					'.$inputSearch.'
-						<input type="text" class="form-control" name="page" placeholder="'.$this->getLocalizedString("page").'">';
-		$bottomrow .= '</div>
+						<input type="text" class="form-control" name="page" placeholder="'.$this->getLocalizedString("page").'"></div>
 					<button type="button" onclick="a(\''.$pagelol.'\', true, true, \'GET\', 3)" class="btn btn-primary">'.$this->getLocalizedString("go").'</button>
 				</form>
-			</div>';
-		$bottomrow .= '<form method="get" style="margin:0">'.$inputSearch.'<input type="hidden" name="page" value="'.$pageplus.'"><button type="button" onclick="a(\''.$pagelol.'\', true, true, \'GET\', 2)" name="page" style="border-radius:0px"  id="next" class="btn btn-outline-secondary"><i class="fa-solid fa-chevron-right" aria-hidden="true"></i></button></form>
-		<form method="get" style="margin:0;">'.$inputSearch.'<input type="hidden" name="page" value="'.$pagecount.'"><button type="button" onclick="a(\''.$pagelol.'\', true, true, \'GET\', 1)" name="page" id="last" style="border-top-left-radius:0px !important;border-bottom-left-radius:0px !important;border-radius:500px" value='. $pagecount .' class="btn btn-outline-secondary"><i class="fa-solid fa-forward" aria-hidden="true"></i></button></form>';
-		$bottomrow .= "</div><script id='bottomrowscript'>
-			function disableElement(element){
-				if(element) element.className += first.className ? ' disabled' : 'disabled';
+			</div><form method="get" style="margin:0">'.$inputSearch.'<input type="hidden" name="page" value="'.$pageplus.'"><button type="button" onclick="a(\''.$pagelol.'\', true, true, \'GET\', 2)" name="page" style="border-radius:0px"  id="next" class="btn btn-outline-secondary"><i class="fa-solid fa-chevron-right" aria-hidden="true"></i></button></form>
+		<form method="get" style="margin:0;">'.$inputSearch.'<input type="hidden" name="page" value="'.$pagecount.'"><button type="button" onclick="a(\''.$pagelol.'\', true, true, \'GET\', 1)" name="page" id="last" style="border-top-left-radius:0px !important;border-bottom-left-radius:0px !important;border-radius:500px" value='. $pagecount .' class="btn btn-outline-secondary"><i class="fa-solid fa-forward" aria-hidden="true"></i></button></form>
+		</div></div><script id="bottomrowscript">
+			var pagecount = '.$pagecount.';
+			var actualpage = '.$actualpage.';
+			if(actualpage == 1) {
+				document.getElementById("first").disabled = true;
+				document.getElementById("prev").disabled = true;
 			}
-			var pagecount = $pagecount;
-			var actualpage = $actualpage;
-			if(actualpage == 1){
-				document.getElementById('first').disabled = true;
-				document.getElementById('prev').disabled = true;
+			if(pagecount == actualpage) {
+				document.getElementById("last").disabled = true;
+				document.getElementById("next").disabled = true;
 			}
-			if(pagecount == actualpage){
-				document.getElementById('last').disabled = true;
-				document.getElementById('next').disabled = true;
-			}
-			</script>";
+			</script>';
 		return $bottomrow;
-	}
-	public function generateLineChart($elementID, $name, $data){
-		$labels = implode('","', array_keys($data));
-		$data = implode(',', $data);
-		$chart = "<script>
-					var ctx = document.getElementById(\"$elementID\");
-					var myChart = new Chart(ctx, {
-						type: 'line',
-						data: {
-							labels: [\"$labels\"],
-							datasets: [{
-								label: '$name',
-								data: [$data],
-								backgroundColor: [
-									'rgba(255, 99, 132, 0.2)'
-								],
-								borderColor: [
-									'rgba(255,99,132,1)'
-								],
-							}]
-						},
-						options: {
-							responsive: true,
-							maintainAspectRatio: false,
-							scales: {
-								yAxes: [{
-									ticks: {
-										beginAtZero:true
-									}
-								}]
-							}
-						}
-					});
-					</script>";
-		return $chart;
 	}
 	public function title($title) {
       	global $gdps;

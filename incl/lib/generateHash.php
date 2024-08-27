@@ -1,13 +1,7 @@
 <?php
 //credits to pavlukivan for decoding and to IAD for most of genSolo
-if(!function_exists("intdiv")) {
-	function intdiv($a, $b){
-		return ($a - $a % $b) / $b;
-	}
-}
-class GenerateHash {
+class generateHash {
 	public static function genMulti($lvlsmultistring) {
-		require dirname(__FILE__)."/connection.php";
 		$hash = "";
 		foreach($lvlsmultistring as $result) {
 			$id = strval($result['levelID']);
@@ -17,7 +11,7 @@ class GenerateHash {
 	}
 	public static function genSolo($levelstring) {
 		$len = strlen($levelstring);
-		if($len < 41)return sha1("{$levelstring}xI25fpAapCQg");
+		if($len < 41) return sha1("{$levelstring}xI25fpAapCQg");
 		$hash = '????????????????????????????????????????xI25fpAapCQg';
 		$m = intdiv($len, 40);
 		$i = 40;
@@ -30,20 +24,14 @@ class GenerateHash {
 	public static function genSolo3($lvlsmultistring) {
 		return sha1($lvlsmultistring . "oC36fpYaPtdg");
 	}
-	public static function genSolo4($lvlsmultistring){
+	public function genSolo4($lvlsmultistring){
 		return sha1($lvlsmultistring . "pC26fpYaQCtg");
 	}
 	public static function genPack($lvlsmultistring) {
-		$lvlsarray = explode(",", $lvlsmultistring);
-		require dirname(__FILE__)."/connection.php";
 		$hash = "";
-		foreach($lvlsarray as $id){
-			$query=$db->prepare("SELECT ID,stars,coins FROM mappacks WHERE ID = :id");
-			$query->execute([':id' => $id]);
-			$result2 = $query->fetchAll();
-			$result = $result2[0];
-			$idstring = strval($result["ID"]);
-			$hash = $hash . $idstring[0].$idstring[strlen($idstring)-1].$result["stars"].$result["coins"];
+		foreach($lvlsmultistring as $result) {
+			$result["ID"] = strval($result["ID"]);
+			$hash = $hash . $result["ID"][0].$result["ID"][strlen($result["ID"])-1].$result["stars"].$result["coins"];
 		}
 		return sha1($hash . "xI25fpAapCQg");
 	}

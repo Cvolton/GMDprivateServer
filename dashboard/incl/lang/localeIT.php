@@ -403,6 +403,21 @@ $string['youAreBanned'] = 'Sei stato bannato fino al <b>%2$s</b> per il motivo:<
 $string['banChange'] = 'Modifica';
 $string['system'] = 'Sistema';
 
+$string['levelComments'] = 'Level comments';
+$string['levelLeaderboards'] = 'Level leaderboards';
+$string['manageLevel'] = 'Manage level';
+$string['noComments'] = 'No comments!';
+$string['commentHere'] = 'Publish comment...';
+$string['weekLeaderboards'] = 'For a week';
+$string['noLeaderboards'] = 'No leaderboards!';
+$string['manageLevelDesc'] = 'Here you can change level!';
+$string['silverCoins'] = 'Silver coins';
+$string['unlistedLevel'] = 'Unlisted level';
+$string['lockUpdates'] = 'Lock updating';
+$string['lockCommenting'] = 'Lock commenting';
+$string['successfullyChangedLevel'] = 'You successfully changed level!';
+$string['successfullyDeletedLevel'] = 'You successfully deleted level!';
+
 /*
 	REUPLOAD
 */

@@ -401,6 +401,21 @@ $string['youAreBanned'] = 'Вы были заблокированы до <b>%2$s
 $string['banChange'] = 'Изменение';
 $string['system'] = 'Система';
 
+$string['levelComments'] = 'Комментарии к уровню';
+$string['levelLeaderboards'] = 'Таблица лидеров уровней';
+$string['manageLevel'] = 'Управление уровнем';
+$string['noComments'] = 'Комментариев нет!';
+$string['commentHere'] = 'Напишите комментарий...';
+$string['weekLeaderboards'] = 'За неделю';
+$string['noLeaderboards'] = 'Нет записей в таблице!';
+$string['manageLevelDesc'] = 'Здесь вы можете изменить уровень!';
+$string['silverCoins'] = 'Серебряные монетки';
+$string['unlistedLevel'] = 'Скрытый уровень';
+$string['lockUpdates'] = 'Заблокировать обновления';
+$string['lockCommenting'] = 'Заблокировать комментирование';
+$string['successfullyChangedLevel'] = 'Вы успешно изменили уровень!';
+$string['successfullyDeletedLevel'] = 'Вы успешно удалили уровень!';
+
 /*
 	REUPLOAD
 */

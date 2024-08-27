@@ -400,6 +400,21 @@ $string['person'] = 'Usuario';
 $string['youAreBanned'] = 'Has sido baneado hasta <b>%2$s</b> por la razón:<br><b>%1$s</b>';
 $string['banChange'] = 'Modificar';
 $string['system'] = 'Sistema';
+
+$string['levelComments'] = 'Level comments';
+$string['levelLeaderboards'] = 'Level leaderboards';
+$string['manageLevel'] = 'Manage level';
+$string['noComments'] = 'No comments!';
+$string['commentHere'] = 'Publish comment...';
+$string['weekLeaderboards'] = 'For a week';
+$string['noLeaderboards'] = 'No leaderboards!';
+$string['manageLevelDesc'] = 'Here you can change level!';
+$string['silverCoins'] = 'Silver coins';
+$string['unlistedLevel'] = 'Unlisted level';
+$string['lockUpdates'] = 'Lock updating';
+$string['lockCommenting'] = 'Lock commenting';
+$string['successfullyChangedLevel'] = 'You successfully changed level!';
+$string['successfullyDeletedLevel'] = 'You successfully deleted level!';
 // REUPLOAD
 $string["reuploadBTN"] = "Subir";
 $string["errorGeneric"] = "¡Ha ocurrido un error!";

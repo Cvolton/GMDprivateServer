@@ -317,9 +317,10 @@ input, select {
 
 .checkbox {
     justify-items: left;
-    color: white;
-    width: 10%;
-    margin-left: -22% !important;
+    color: #c0c0c0;
+    display: flex;
+    align-items: center;
+    grid-gap: 5px;
 }
 
 .messengeryou {
@@ -436,10 +437,11 @@ input, select {
 }
 
 .profilemsg {
-	font-size:17px;
-	color:white;
-	margin:5px;
-	text-align:left;
+	font-size: 17px;
+	color: #c0c0c0;
+	margin: 5px;
+	text-align: left;
+	overflow-wrap: anywhere;
 }
 
 .msgbox {
@@ -538,17 +540,21 @@ input, select {
 #selecthihi {
 	display: flex;
 	justify-content: space-between;
+	grid-gap: 10px;
 }
+
 #selecthihi > select {
     width: 100%;
+	margin: 0px;
 }
+
 #file-upload-button {
- opacity:0;
- cursor:pointer;
+	opacity:0;
+	cursor:pointer;
 }
 
 form p,
-p{
+p {
     font-size: 20px;
     color: #c0c0c0;
 	text-align:center;
@@ -1261,8 +1267,8 @@ label {
 
 .dlp {
 	margin-bottom: 10px;
-	width:100%;
-	text-align:left;
+	width: calc(100% - 10px);
+	text-align: left;
 	overflow-wrap: anywhere;
 }
 
@@ -1330,10 +1336,6 @@ label {
 
 .songauthor {
     font-size: 12.5px;
-}
-
-.songfullname {
-    width: 90%;
 }
 
 .songname {
@@ -2235,4 +2237,127 @@ body:has(.audio) {
 
 .itemslist.hide {
 	display: none;
+}
+
+.page-buttons {
+	display: flex;
+    height: max-content;
+    width: 100%;
+}
+
+.form.new-form h1 {
+	margin-bottom: 5px;
+}
+
+.manage-button-div {
+	display: flex;
+    align-items: flex-end;
+    grid-gap: 5px;
+}
+
+.btn-manage {
+	width: 35px;
+    color: white;
+    padding: 7px;
+    font-size: 20px;
+    height: 35px;
+    text-align: center;
+}
+
+.profilenick.big {
+	font-size: 27px;
+	grid-gap: 10px;
+    display: flex;
+    align-items: center;
+	cursor: pointer;
+}
+
+.profilelikes {
+	text-align: right;
+}
+ 
+.profilelikes.big {
+	font-size: 25px;
+	width: max-content;
+}
+ 
+.profilemsg.big {
+	font-size: 22px;
+}
+
+.comments.big {
+	font-size: 15px;
+	margin-left: 5px;
+}
+
+.profile.big {
+	display: flex;
+    flex-direction: column;
+    grid-gap: 5px;
+}
+
+.level-card {
+	overflow: visible;
+	height: max-content;
+	padding: 5px 15px 15px 15px;
+}
+
+.goback-title {
+	display: flex;
+    align-items: center;
+    justify-content: center;
+	margin-bottom: 5px;
+	grid-gap: 10px;
+}
+
+.no-margin {
+	margin: 0px;
+}
+
+.delete-comment-div {
+	width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    grid-gap: 10px;
+}
+
+.empty-section {
+	display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    flex-direction: column;
+	grid-gap: 10px;
+}
+
+.empty-section i {
+	font-size: 100px;
+	color: #c0c0c0;
+}
+
+.empty-section p {
+	font-size: 30px;
+	color: #c0c0c0;
+}
+
+.checkboxes {
+    display: grid !important;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    flex-direction: column;
+    grid-gap: 5px;
+    grid-template-columns: repeat(2, 49.5%);
+}
+
+.checkbox input {
+	width: 20px;
+    height: 20px;
+}
+
+.checkbox h3 {
+	margin: 0px;
+	font-size: 17px;
+	text-align: left;
 }
