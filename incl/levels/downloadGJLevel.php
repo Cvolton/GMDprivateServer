@@ -67,8 +67,8 @@ if(!is_numeric($levelID)){
 	if($lvls!=0){
 		$result = $query->fetch();
 		$isPlayerAnAdmin = false;
-		$accountID = GJPCheck::getAccountIDOrDie();
 		if(!empty($_POST['accountID'])) {
+			$accountID = GJPCheck::getAccountIDOrDie();
 			if($unlistedLevelsForAdmins) {
 				$checkAdmin = $db->prepare('SELECT isAdmin FROM accounts WHERE accountID = :accountID');
 				$checkAdmin->execute([':accountID' => $accountID]);
