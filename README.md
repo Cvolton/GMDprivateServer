@@ -6,11 +6,7 @@ Supported version of Geometry Dash: 1.0 - 2.206
 
 (See [the backwards compatibility section of this article](https://github.com/Cvolton/GMDprivateServer/wiki/Deliberate-differences-from-real-GD) for more information)
 
-Required version of PHP: 5.5+ (tested up to 8.3)
-
-### Branches
-- master - This is the main version of the server.
-- untested - This branch contains the newest breaking changes. Note that this branch has virtually no support and therefore you're on your own if stuff breaks.
+Required version of PHP: 7.0+ (tested up to 8.3)
 
 ### Setup
 1) Upload the files on a webserver
@@ -18,7 +14,9 @@ Required version of PHP: 5.5+ (tested up to 8.3)
 3) Edit the links in GeometryDash.exe (some are base64 encoded since 2.1, remember that)
 
 #### Updating the server
-See [README.md in the `_updates`](_updates/README.md)
+1) Upload the files on a webserver
+2) Set `$installed` to false in config/dashboard.php
+3) Run main dashboard's page
 
 ### Credits
 Base for account settings and the private messaging system by someguy28
@@ -43,7 +41,7 @@ Common VPNs list — https://github.com/X4BNet/lists_vpn — (config/vpns.txt)
 
 Discord Webhooks — https://github.com/renzbobz/DiscordWebhook-PHP — (config/webhooks/DiscordWebhook.php)
 
-GD icons — https://github.com/oatmealine/gd-icon-renderer-web — (dashboard/profile/index.php)
+GD icons — https://github.com/oatmealine/gd-icon-renderer-web — (any page with player's username)
 
 Cloudflare IPs List — https://www.cloudflare.com/ips — (incl/lib/mainLib.php & incl/lib/ipCheck.php)
 
