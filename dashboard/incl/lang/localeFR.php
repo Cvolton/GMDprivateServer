@@ -415,7 +415,7 @@ $string['silverCoins'] = 'Silver coins';
 $string['unlistedLevel'] = 'Niveau non-listé';
 $string['lockUpdates'] = 'Vérouiller les mises à jour';
 $string['lockCommenting'] = 'Vérouiller les commentaires';
-$string['successfullyChangedLevel'] = 'Vous avez changé les paramètres du niveau avec succès !';
+$string['successfullyChangedLevel'] = 'Vous avez changé les paramètres de ce niveau avec succès !';
 $string['successfullyDeletedLevel'] = 'Vous avez supprimé ce niveau avec succès !';
 
 /*
