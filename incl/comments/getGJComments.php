@@ -81,12 +81,12 @@ foreach($result as &$comment1) {
 			$comment1["extID"] = is_numeric($comment1["extID"]) ? $comment1["extID"] : 0;
 			$comment1['userName'] = $gs->makeClanUsername($comment1);
 			if($binaryVersion > 31) {
-				$badge = $gs->getMaxValuePermission($extID, "modBadgeLevel");
-				$colorString = $badge > 0 ? "~12~".$gs->getAccountCommentColor($extID) : "";
+				$badge = $gs->getMaxValuePermission($comment1["extID"], "modBadgeLevel");
+				$colorString = $badge > 0 ? "~12~".$gs->getAccountCommentColor($comment1["extID"]) : "";
 				$commentstring .= "~11~${badge}${colorString}:1~".$comment1["userName"]."~7~1~9~".$comment1["icon"]."~10~".$comment1["color1"]."~11~".$comment1["color2"]."~14~".$comment1["iconType"]."~15~".$comment1["special"]."~16~".$comment1["extID"];
 			} elseif(!in_array($comment1["userID"], $users)) {
 				$users[] = $comment1["userID"];
-				$userstring .=  $comment1["userID"] . ":" . $comment1["userName"] . ":" . $extID . "|";
+				$userstring .=  $comment1["userID"] . ":" . $comment1["userName"] . ":" . $comment1["extID"] . "|";
 			}
 			$commentstring .= "|";
 		}
