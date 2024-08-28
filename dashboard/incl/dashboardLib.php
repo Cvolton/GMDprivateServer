@@ -9,6 +9,7 @@ class dashboardLib {
 	public function printHeader($isSubdirectory = true){
 		$this->handleLangStart();
       	global $gdps;
+		global $dashboardFavicon;
 		if(file_exists("../../incl/cvolton.css")) $css = filemtime("../../incl/cvolton.css");
 		elseif(file_exists("../incl/cvolton.css")) $css = filemtime("../incl/cvolton.css");
 		else $css = filemtime("incl/cvolton.css");
@@ -16,7 +17,7 @@ class dashboardLib {
 				<html lang="en">
 					<head>
                     	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
-						<link rel="icon" type="image/png" sizes="64x64" href="/favicon.png">
+						<link rel="icon" type="image/png" sizes="64x64" href="'.$dashboardFavicon.'">
 						<meta charset="utf-8">
 						<meta name="color-scheme" content="dark">
 						<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit="no">';
@@ -117,6 +118,7 @@ class dashboardLib {
         global $iosLauncher;
 		global $thirdParty;
       	global $dbPath;
+      	global $dashboardIcon;
 		require_once __DIR__."/../".$dbPath."incl/lib/Captcha.php";
 		require_once __DIR__."/../".$dbPath."config/security.php";
 		require_once __DIR__."/../".$dbPath."config/mail.php";
@@ -156,7 +158,7 @@ class dashboardLib {
 		}
 		echo '<nav id="navbarepta" class="navbar navbar-expand-lg navbar-dark menubar">
 			<input type="hidden" id="isSubdirectory" value="'.($isSubdirectory ? 'true' : 'false').'"></input>
-			<button href="." onclick="a(\'\')" class="navbar-brand" style="margin-right:0.5rem;background:none;border:none"><img style="width:40px" src="icon.svg"></button>
+			<button href="." onclick="a(\'\')" class="navbar-brand" style="margin-right:0.5rem;background:none;border:none"><img style="width:30px" src="'.$dashboardIcon.'"></button>
 			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
 				<span class="navbar-toggler-icon"></span>
 			</button>
