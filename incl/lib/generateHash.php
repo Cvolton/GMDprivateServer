@@ -1,6 +1,6 @@
 <?php
 //credits to pavlukivan for decoding and to IAD for most of genSolo
-class generateHash {
+class GenerateHash {
 	public static function genMulti($lvlsmultistring) {
 		$hash = "";
 		foreach($lvlsmultistring as $result) {
@@ -24,7 +24,7 @@ class generateHash {
 	public static function genSolo3($lvlsmultistring) {
 		return sha1($lvlsmultistring . "oC36fpYaPtdg");
 	}
-	public function genSolo4($lvlsmultistring){
+	public static function genSolo4($lvlsmultistring){
 		return sha1($lvlsmultistring . "pC26fpYaQCtg");
 	}
 	public static function genPack($lvlsmultistring) {
