@@ -615,6 +615,7 @@ $string["modAction36"] = "Změnil(a) jméno listu";
 $string["modAction37"] = "Změnil(a) popis listu";
 $string["modAction38"] = "Locked/unlocked level commenting";
 $string["modAction39"] = "Locked/unlocked list commenting";
+$string["modAction40"] = "Remove sented level";
 $string["everyActions"] = "Všechny činy";
 $string["everyMod"] = "Každý moderátor";
 $string["Kish!"] = "Nemáš co tady dělat!";
