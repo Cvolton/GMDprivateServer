@@ -368,7 +368,7 @@ class dashboardLib {
 							<i class="fa-solid fa-user-circle" aria-hidden="true"></i> '.$userName.'
 						</a>
 						<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
-							<a type="button" href="profile/'.$userName.'" onclick="a(\'profile/'.$userName.'\')" class="dropdown-item"><div class="icon"><i class="fa-regular fa-id-badge"></i></div>'.$this->getLocalizedString("profile").'</a>';
+							<a type="button" href="profile/'.$userName.'" onclick="a(\'profile/'.$userName.'\', true, true)" class="dropdown-item"><div class="icon"><i class="fa-regular fa-id-badge"></i></div>'.$this->getLocalizedString("profile").'</a>';
 							$claaan = $gs->isPlayerInClan($_SESSION["accountID"]);
 							if($claaan) echo '<a href="clan/'.$gs->getClanInfo($claaan, "clan").'" onclick="a(\'clan/'.$gs->getClanInfo($claaan, "clan").'\', false, true)" class="dropdown-item"><div class="icon"><i class="fa-solid fa-dungeon"></i></div>'.$this->getLocalizedString("yourClan").'</a>';
 							echo '<a class="dropdown-item dontblock" href="login/logout.php"><div class="icon"><i class="fa-solid fa-sign-out" aria-hidden="false"></i></div>'.$this->getLocalizedString("logout").'</a>
@@ -731,10 +731,10 @@ class dashboardLib {
 	});
 	function a(page, skipcheck = false, skipslash = false, method = "GET", getdata = false, formname = "", isback = false) {
 		try {
-			if((window.location.pathname.indexOf(page) != "1" || page == "profile") || skipcheck) {
+			if(window.location.pathname.indexOf(page) != "1" || skipcheck) {
 				phpCheck = page.substr(page.length - 4);
 				isSubdirectory = document.getElementById("isSubdirectory").value;
-				if(phpCheck != ".php" && !isSubdirectory && page != "profile/'.$gs->getAccountName($_SESSION["accountID"]).'" && !skipslash) page = page + "/";
+				if((phpCheck != ".php" || !isSubdirectory) && !skipslash) page = page + "/";
 				document.getElementById("loadingloool").innerHTML = \'<i class="fa-solid fa-spinner fa-spin"></i>\';
 				document.getElementById("loadingloool").style.opacity = "1";
 				pageLimiters = page.split("?");
