@@ -16,6 +16,8 @@ if($gs->checkPermission($accountID, "actionRateStars")) {
 	$gs->featureLevel($accountID, $levelID, $feature);
 	$gs->verifyCoinsLevel($accountID, $levelID, 1);
 	$gs->rateLevel($accountID, $levelID, $stars, $difficulty["diff"], $difficulty["auto"], $difficulty["demon"], $feature);
+	$query = $db->prepare("DELETE FROM suggest WHERE suggestLevelId = ?");
+	$query->execute([$levelID]);
 	echo 1;
 } elseif($gs->checkPermission($accountID, "actionSuggestRating")) {
 	$gs->suggestLevel($accountID, $levelID, $difficulty["diff"], $stars, $feature, $difficulty["auto"], $difficulty["demon"]);
