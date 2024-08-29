@@ -205,6 +205,7 @@ foreach($result as &$action){
 			else $value = '<text style="color:gray">'.$dl->getLocalizedString("isAdminNo").'</text>';
 			$value2 = $gs->getListName($value3);
 			break;
+		case 40:
 	}
 	if(mb_strlen($action["value"]) > 18) $value = "<details><summary class='modactionsspoiler'>".$dl->getLocalizedString("spoiler")."</summary>$value</details>";
   	if(mb_strlen($action["value2"]) > 18) $value2 = "<details><summary class='modactionsspoiler'>".$dl->getLocalizedString("spoiler")."</summary>$value2</details>";
@@ -299,6 +300,7 @@ $pagel = '<div class="form new-form">
 			<option value="37">'.$dl->getLocalizedString("modAction37").' (37)</option>
 			<option value="38">'.$dl->getLocalizedString("modAction38").' (38)</option>
 			<option value="39">'.$dl->getLocalizedString("modAction39").' (39)</option>
+   			<option value="40">'.$dl->getLocalizedString("modAction40").' (40)</option>
 		</select>
 		<select id="sel2" style="border-radius: 0;margin:0;width:35%" name="who" value="'.$_GET["who"].'" placeholder="'.$dl->getLocalizedString("search").'">
 			<option value="0">'.$dl->getLocalizedString("everyMod").'</option>
