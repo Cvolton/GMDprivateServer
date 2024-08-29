@@ -206,6 +206,10 @@ foreach($result as &$action){
 			$value2 = $gs->getListName($value3);
 			break;
 		case 40:
+			$value = $value3;
+			$value2 = $gs->getLevelName($value3);
+			$value3 = date("d.m.Y", $action["timestamp"]);
+			break;
 	}
 	if(mb_strlen($action["value"]) > 18) $value = "<details><summary class='modactionsspoiler'>".$dl->getLocalizedString("spoiler")."</summary>$value</details>";
   	if(mb_strlen($action["value2"]) > 18) $value2 = "<details><summary class='modactionsspoiler'>".$dl->getLocalizedString("spoiler")."</summary>$value2</details>";
