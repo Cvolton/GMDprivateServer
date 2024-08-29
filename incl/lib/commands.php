@@ -206,6 +206,20 @@ class Commands {
 				if(file_exists(dirname(__FILE__)."../../data/levels/$levelID")) rename(dirname(__FILE__)."../../data/levels/$levelID", dirname(__FILE__)."../../data/levels/deleted/$levelID");
 				return 'You successfully deleted '.$levelName.'!';
 				break;
+			case '!unsent':
+				if(!$gs->checkPermission($accountID, "actionSuggestRating")) return false;
+				$levelName = $gs->getLevelName($levelID);
+				if(!$levelName) return false;
+				$query = $db->prepare("SELECT COUNT(*) FROM suggest WHERE suggestLevelId = :levelID");
+				$query->execute([':levelID' => $levelID]);
+				$count = $query->fetchColumn();
+				if ($count == 0) return false;
+				$query = $db->prepare("DELETE FROM suggest WHERE suggestLevelId = :levelID LIMIT 1");
+				$query->execute([':levelID' => $levelID]);
+				$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('40', :value, :levelID, :timestamp, :id)");
+				$query->execute([':value' => "1", ':timestamp' => $uploadDate, ':id' => $accountID, ':levelID' => $levelID]);
+				return 'You successfully remove sent level';
+				break;
 			case '!sa':
 			case '!setacc':
 				if(!$gs->checkPermission($accountID, "commandSetacc")) return false;
