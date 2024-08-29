@@ -593,6 +593,7 @@ $string["modAction34"] = "Xóa danh sách";
 $string["modAction35"] = "Thay đổi người tạo danh sách";
 $string["modAction36"] = "Thay đổi tên danh sách";
 $string["modAction37"] = "Thay đổi mô tả danh sách";
+$string["modAction40"] = "Remove sented level";
 $string["everyActions"] = "Mọi hành động";
 $string["everyMod"] = "Tất cả người kiểm duyệt";
 $string["Kish!"] = "Đi đi!";
