@@ -608,6 +608,7 @@ $string["modAction36"] = "Nombre de lista cambiado";
 $string["modAction37"] = " Descripción de lista cambiada";
 $string["modAction38"] = "Locked/unlocked level commenting";
 $string["modAction39"] = "Locked/unlocked list commenting";
+$string["modAction40"] = "Remove sented level";
 $string["everyActions"] = "Cualquier acción";
 $string["everyMod"] = "Todos los moderadores";
 $string["Kish!"] = "¡Atrás!";
