@@ -42,8 +42,8 @@ if(isset($_POST['levelID'])) {
 	$displayLevelID = true;
 	$filterID = ExploitPatch::number($_POST["userID"]);
 	$userListColumns = ", levels.unlisted";
-	$userListJoin = "INNER JOIN levels ON comments.levelID = levels.levelID";
-	$userListWhere = "AND levels.unlisted = 0";
+	$userListJoin = " LEFT JOIN levels ON comments.levelID = levels.levelID LEFT JOIN lists ON (comments.levelID * -1) = lists.listID";
+	$userListWhere = "AND (levels.unlisted = 0 OR lists.unlisted = 0)";
 	$accountID = !empty($_POST['accountID']) ? GJPCheck::getAccountIDOrDie() : 0;
 	$targetAccountID = $gs->getExtID($filterID);
 	$cS = $db->prepare("SELECT cS FROM accounts WHERE accountID = :targetAccountID");
@@ -52,13 +52,13 @@ if(isset($_POST['levelID'])) {
 	if($accountID != $targetAccountID && (($cS == 1 && !$gs->isFriends($accountID, $targetAccountID)) || $cS > 1)) exit("-2");
 } else exit("-1");
 
-$countquery = "SELECT count(*) FROM comments ${userListJoin} WHERE ${filterToFilter}${filterColumn} = :filterID ${userListWhere}";
+$countquery = "SELECT count(*) FROM comments {$userListJoin} WHERE ${filterToFilter}${filterColumn} = :filterID {$userListWhere}";
 $countquery = $db->prepare($countquery);
 $countquery->execute([':filterID' => $filterID]);
 $commentcount = $countquery->fetchColumn();
 if($commentcount == 0) exit("-2");
 
-$query = "SELECT comments.levelID, comments.commentID, comments.timestamp, comments.comment, comments.userID, comments.likes, comments.isSpam, comments.percent, users.userName, users.clan, users.icon, users.color1, users.color2, users.iconType, users.special, users.extID FROM comments LEFT JOIN users ON comments.userID = users.userID ${userListJoin} WHERE comments.${filterColumn} = :filterID ${userListWhere} ORDER BY comments.${modeColumn} DESC LIMIT ${count} OFFSET ${commentpage}";
+$query = "SELECT comments.levelID, comments.commentID, comments.timestamp, comments.comment, comments.userID, comments.likes, comments.isSpam, comments.percent, users.userName, users.clan, users.icon, users.color1, users.color2, users.iconType, users.special, users.extID FROM comments LEFT JOIN users ON comments.userID = users.userID {$userListJoin} WHERE comments.${filterColumn} = :filterID {$userListWhere} ORDER BY comments.${modeColumn} DESC LIMIT ${count} OFFSET ${commentpage}";
 $query = $db->prepare($query);
 $query->execute([':filterID' => $filterID]);
 $result = $query->fetchAll();

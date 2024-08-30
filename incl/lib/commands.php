@@ -366,6 +366,9 @@ class Commands {
 		require_once "../lib/exploitPatch.php";
 		require_once "../lib/mainLib.php";
 		$gs = new mainLib();
+		$query2 = $db->prepare("SELECT accountID FROM lists WHERE listID = :listID");
+		$query2->execute([':listID' => $listID]);
+		$targetExtID = $query2->fetchColumn();
 		$carray = explode(' ', $command);
 		switch($carray[0]) {
 			case '!r':
@@ -403,6 +406,7 @@ class Commands {
 					$query = $db->prepare("INSERT INTO modactions (type, value, value2, value3, timestamp, account) VALUES ('31', :value, :value2, :listID, :timestamp, :id)");
 					$query->execute([':value' => $reward, ':value2' => $diff, ':timestamp' => time(), ':id' => $accountID, ':listID' => $listID]);
 				} else return false;
+				return 'You succesfully rated '.$gs->getListName($listID).'!';
 				break;
 			case '!f':
 			case '!feature':
@@ -413,15 +417,23 @@ class Commands {
 				$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('32', :value, :listID, :timestamp, :id)");
 				$query->execute([':value' => $carray[1], ':timestamp' => time(), ':id' => $accountID, ':listID' => $listID]);
 				break;
+			case '!pub':
+			case '!public':
 			case '!un':
 			case '!unlist':
-				$accCheck = $gs->getListOwner($listID);
-				if(!$gs->checkPermission($accountID, "commandUnlistAll") AND $accountID != $accCheck) return false;
-				if(!isset($carray[1])) $carray[1] = 1;
-				$query = $db->prepare("UPDATE lists SET unlisted = :unlisted WHERE listID=:listID");
-				$query->execute([':listID' => $listID, ':unlisted' => $carray[1]]);
-				$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('33', :value, :listID, :timestamp, :id)");
-				$query->execute([':value' => $carray[1], ':timestamp' => time(), ':id' => $accountID, ':listID' => $listID]);
+				if(!isset($carray[1])) {
+					$permsArray = ['!pub' => 'public', '!public' => 'public', '!unlist' => 'unlist'];
+					$permission = $permsArray[$carray[0]];
+				} else $permission = $carray[1] == 1 ? 'public' : 'unlist';
+				if(self::ownCommand($permission, $accountID, $targetExtID)) {
+					$unlisted = $permission == 'public' ? 0 : 1;
+					$query = $db->prepare("UPDATE lists SET unlisted = :unlisted WHERE listID = :listID");
+					$query->execute([':listID' => $listID, ':unlisted' => $unlisted]);
+					$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('33', :value, :listID, :timestamp, :id)");
+					$query->execute([':value' => $unlisted, ':timestamp' =>time(), ':id' => $accountID, ':listID' => $listID]);
+					$returnText = $unlisted ? 'You successfully unlisted list '.$gs->getListName($listID).'!' : 'You successfully made list '.$gs->getListName($listID).' public!';
+					return $returnText;
+				}
 				break;
 			case '!d':
 			case '!delete':
@@ -431,6 +443,7 @@ class Commands {
 				$query->execute([':listID' => $listID]);
 				$query = $db->prepare("INSERT INTO modactions (type, value, value2, value3, timestamp, account) VALUES ('34', 0, :value2, :listID, :timestamp, :id)");
 				$query->execute([':timestamp' => time(), ':value2' => $oldName, ':id' => $accountID, ':listID' => $listID]);
+				return 'You succesfully deleted list '.$oldName.'!';
 				break;
 			case '!acc':
 			case '!setacc':
@@ -442,6 +455,7 @@ class Commands {
 				$query->execute([':listID' => $listID, ':accID' => $acc]);
 				$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('35', :value, :listID, :timestamp, :id)");
 				$query->execute([':value' => $acc, ':timestamp' => time(), ':id' => $accountID, ':listID' => $listID]);
+				return 'You succesfully '.$gs->getListName($listID).'\'s creator to '.$gs->getAccountName($acc).'!';
 				break;
 			case '!re':
 			case '!rename':
@@ -454,6 +468,7 @@ class Commands {
 				$query->execute([':listID' => $listID, ':name' => $name]);
 				$query = $db->prepare("INSERT INTO modactions (type, value, value2, value3, timestamp, account) VALUES ('36', :value, :value2, :listID, :timestamp, :id)");
 				$query->execute([':value' => $name, ':value2' => $oldName, ':timestamp' => time(), ':id' => $accountID, ':listID' => $listID]);
+				return 'You succesfully renamed '.$oldName.' to '.$gs->getListName($listID).'!';
 				break;
 			case '!desc':
 			case '!description':
@@ -465,6 +480,7 @@ class Commands {
 				$query->execute([':listID' => $listID, ':name' => $name]);
 				$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('37', :value, :listID, :timestamp, :id)");
 				$query->execute([':value' => $name, ':timestamp' => time(), ':id' => $accountID, ':listID' => $listID]);
+				return 'You succesfully changed description on list '.$gs->getListName($listID).'!';
 				break;
 			case '!lockComments':
 			case '!unlockComments':
@@ -482,7 +498,7 @@ class Commands {
 					return 'You successfully '.($lockValue ? 'locked comments on' : 'unlocked comments on').' list '.$gs->getListName($listID).'!';
 				}
 		}
-		return true;
+		return false;
 	}
 	public static function doProfileCommands($accountID, $command){
 		require __DIR__."/connection.php";
