@@ -127,7 +127,7 @@ $string["samePass"] = "Le password che hai inserito sono le stesse!";
 $string["changePassDesc"] = "Qui puoi cambiare la tua password!";
 $string["oldPassword"] = "Vecchia password";
 $string["newPassword"] = "Nuova password";
-$string["confirmNew"] = "Conferma password";
+$string["confirmNew"] = "Conferma password";
 
 $string["forcePassword"] = "Forza la modifica della password";
 $string["forcePasswordDesc"] = "Qui puoi forzare la modifica della password del giocatore!";
@@ -246,8 +246,8 @@ $string["noMsgs"] = "Inizia il dialogo!";
 $string["subject"] = "Soggetto";
 $string["msg"] = "Messaggio";
 $string["tooFast"] = "Stai digitando troppo velocemente!";
-$string["messengerYou"] = "You:";
-$string["chooseChat"] = "Choose chat";
+$string["messengerYou"] = "Tu:";
+$string["chooseChat"] = "Scegli la chat";
 
 $string["levelToGD"] = "Ricarica il livello sul server di destinazione";
 $string["levelToGDDesc"] = "Qui puoi ricaricare il tuo livello sul server di destinazione!";
@@ -359,8 +359,8 @@ $string["create"] = "Crea";
 $string["mainSettings"] = "Impostazioni principali";
 $string["takenClanName"] = "Il nome di questo clan è già stato preso!";
 $string["takenClanTag"] = "Questo tag clan è già stato preso!";
-$string["badClanName"] = "Please choose another clan name.";
-$string["badClanTag"] = "Please choose another clan tag.";
+$string["badClanName"] = "Scegli un altro nome del clan.";
+$string["badClanTag"] = "Scegli un altro tag del clan.";
 
 $string["suggestedName"] = '<button type="button" onclick="a(\'profile/%1$s\', true, true)" class="accbtn" name="accountID">%1$s</button><text class="dltext"> suggerisce <b>%4$s%3$s</b> per</text><text class="levelname">%2$s</text>'; // %1$s - Mod username, %2$s - level name, %3$s - x stars, %4$s - Featured/Epic (%4$s%3$s - Featured, x stars)
 $string["reportedName"] = '%1$s<text class="dltext"> è stato segnalato</text><text class="levelname">%2$s</text>';
@@ -403,20 +403,20 @@ $string['youAreBanned'] = 'Sei stato bannato fino al <b>%2$s</b> per il motivo:<
 $string['banChange'] = 'Modifica';
 $string['system'] = 'Sistema';
 
-$string['levelComments'] = 'Level comments';
-$string['levelLeaderboards'] = 'Level leaderboards';
-$string['manageLevel'] = 'Manage level';
-$string['noComments'] = 'No comments!';
-$string['commentHere'] = 'Publish comment...';
-$string['weekLeaderboards'] = 'For a week';
-$string['noLeaderboards'] = 'No leaderboards!';
-$string['manageLevelDesc'] = 'Here you can change level!';
-$string['silverCoins'] = 'Silver coins';
-$string['unlistedLevel'] = 'Unlisted level';
-$string['lockUpdates'] = 'Lock updating';
-$string['lockCommenting'] = 'Lock commenting';
-$string['successfullyChangedLevel'] = 'You successfully changed level!';
-$string['successfullyDeletedLevel'] = 'You successfully deleted level!';
+$string['levelComments'] = 'Commenti del livello';
+$string['levelLeaderboards'] = 'Classifiche del livello';
+$string['manageLevel'] = 'Gestisci il livello';
+$string['noComments'] = 'Non ci sono commenti!';
+$string['commentHere'] = 'Pubblica commento...';
+$string['weekLeaderboards'] = 'Per una settimana';
+$string['noLeaderboards'] = 'Nessuna classifica!';
+$string['manageLevelDesc'] = 'Qui puoi cambiare livello!';
+$string['silverCoins'] = 'Monete d\'argento';
+$string['unlistedLevel'] = 'Livello non in elenco';
+$string['lockUpdates'] = 'Blocca l\'aggiornamento';
+$string['lockCommenting'] = 'Blocca i commenti';
+$string['successfullyChangedLevel'] = 'Hai cambiato livello con successo!';
+$string['successfullyDeletedLevel'] = 'Hai eliminato il livello con successo!';
 
 /*
 	REUPLOAD
@@ -606,7 +606,7 @@ $string["modAction25"] = "Creata una missione";
 $string["modAction26"] = "Nome utente/password del giocatore modificati";
 $string["modAction27"] = "Effetti sonori modificati";
 $string["modAction28"] = "Persona bannata";
-$string["modAction29"] = "Locked/unlocked level updating";
+$string["modAction29"] = "Aggiornamento del livello bloccato/sbloccato";
 $string["modAction30"] = "Elenco valutato";
 $string["modAction31"] = "Elenco inviato";
 $string["modAction32"] = "Elenco non/in primo piano";
@@ -615,8 +615,8 @@ $string["modAction34"] = "Elenco eliminato";
 $string["modAction35"] = "Creatore dell'elenco modificato";
 $string["modAction36"] = "Nome della lista cambiato";
 $string["modAction37"] = "Descrizione della lista modificata";
-$string["modAction38"] = "Locked/unlocked level commenting";
-$string["modAction39"] = "Locked/unlocked list commenting";
+$string["modAction38"] = "Commenti del livello bloccati/sbloccati";
+$string["modAction39"] = "Commenti lista bloccata/sbloccata";
 $string["modAction40"] = "Removed sented level";
 $string["modAction41"] = "Suggested level";
 $string["everyActions"] = "Qualsiasi azione";

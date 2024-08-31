@@ -229,7 +229,7 @@ foreach($result as &$action){
     if($userDetails = $queryUserDetails->fetch(PDO::FETCH_ASSOC)) {
         $iconType = ($userDetails['iconType'] > 8) ? 0 : $userDetails['iconType'];
         $iconTypeMap = [0 => ['type' => 'cube', 'value' => $userDetails['accIcon']], 1 => ['type' => 'ship', 'value' => $userDetails['accShip']], 2 => ['type' => 'ball', 'value' => $userDetails['accBall']], 3 => ['type' => 'ufo', 'value' => $userDetails['accBird']], 4 => ['type' => 'wave', 'value' => $userDetails['accDart']], 5 => ['type' => 'robot', 'value' => $userDetails['accRobot']], 6 => ['type' => 'spider', 'value' => $userDetails['accSpider']], 7 => ['type' => 'swing', 'value' => $userDetails['accSwing']], 8 => ['type' => 'jetpack', 'value' => $userDetails['accJetpack']]];
-        $iconValue = $iconTypeMap[$iconType]['value'] ?: 1;
+        $iconValue = (isset($iconTypeMap[$iconType]) && $iconTypeMap[$iconType]['value'] > 0) ? $iconTypeMap[$iconType]['value'] : 1;
         $avatarImg = '<img src="https://gdicon.oat.zone/icon.png?type=' . $iconTypeMap[$iconType]['type'] . '&value=' . $iconValue . '&color1=' . $userDetails['color1'] . '&color2=' . $userDetails['color2'] . ($userDetails['accGlow'] != 0 ? '&glow=' . $userDetails['accGlow'] . '&color3=' . $userDetails['color3'] : '') . '" alt="avatar" style="width: 31px; margin-right: 5px; object-fit: contain;">';
     }
     $members .= '<div style="width: 100%; display: flex; flex-wrap: wrap; justify-content: center;">

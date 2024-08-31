@@ -384,20 +384,20 @@ $string['sfxs'] = 'SFX';
 $string['sfxID'] = 'SFX ID';
 $string['manageSFX'] = 'Quản lý SFXs';
 
-$string['levelComments'] = 'Level comments';
-$string['levelLeaderboards'] = 'Level leaderboards';
-$string['manageLevel'] = 'Manage level';
-$string['noComments'] = 'No comments!';
-$string['commentHere'] = 'Publish comment...';
-$string['weekLeaderboards'] = 'For a week';
-$string['noLeaderboards'] = 'No leaderboards!';
-$string['manageLevelDesc'] = 'Here you can change level!';
-$string['silverCoins'] = 'Silver coins';
-$string['unlistedLevel'] = 'Unlisted level';
-$string['lockUpdates'] = 'Lock updating';
-$string['lockCommenting'] = 'Lock commenting';
-$string['successfullyChangedLevel'] = 'You successfully changed level!';
-$string['successfullyDeletedLevel'] = 'You successfully deleted level!';
+$string['levelComments'] = 'Bình luận trong level';
+$string['levelLeaderboards'] = 'Bảng xếp hạng của level';
+$string['manageLevel'] = 'Quản lý level';
+$string['noComments'] = 'Không có bình luận!';
+$string['commentHere'] = 'Đăng bình luận...';
+$string['weekLeaderboards'] = 'Trong một tuần';
+$string['noLeaderboards'] = 'Không có xếp hạng!';
+$string['manageLevelDesc'] = 'Ở đây bạn có thể chỉnh sửa level!';
+$string['silverCoins'] = 'Xu bạc';
+$string['unlistedLevel'] = 'Level không được liệt kê';
+$string['lockUpdates'] = 'Khoá cập nhật';
+$string['lockCommenting'] = 'Khoá bình luận';
+$string['successfullyChangedLevel'] = 'Bạn đã chỉnh sửa level thành công!';
+$string['successfullyDeletedLevel'] = 'Bạn đã xoá level thành công!';
 
 /*
 	ĐĂNG LẠI
