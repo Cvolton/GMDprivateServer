@@ -18,7 +18,6 @@ if($gs->checkPermission($accountID, "actionRateStars")) {
 	$gs->rateLevel($accountID, $levelID, $stars, $difficulty["diff"], $difficulty["auto"], $difficulty["demon"], $feature);
 	echo 1;
 } elseif($gs->checkPermission($accountID, "actionSuggestRating")) {
-	$currentTimestamp = time();
 	$gs->suggestLevel($accountID, $levelID, $difficulty["diff"], $stars, $feature, $difficulty["auto"], $difficulty["demon"]);
 	echo 1;
 } else echo -2;
