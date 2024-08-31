@@ -16,14 +16,10 @@ if($gs->checkPermission($accountID, "actionRateStars")) {
 	$gs->featureLevel($accountID, $levelID, $feature);
 	$gs->verifyCoinsLevel($accountID, $levelID, 1);
 	$gs->rateLevel($accountID, $levelID, $stars, $difficulty["diff"], $difficulty["auto"], $difficulty["demon"], $feature);
-	$query = $db->prepare("DELETE FROM suggest WHERE suggestLevelId = ?");
-	$query->execute([$levelID]);
 	echo 1;
 } elseif($gs->checkPermission($accountID, "actionSuggestRating")) {
 	$currentTimestamp = time();
 	$gs->suggestLevel($accountID, $levelID, $difficulty["diff"], $stars, $feature, $difficulty["auto"], $difficulty["demon"]);
-	$query = $db->prepare("INSERT INTO modactions (type, value, value3, account, timestamp) VALUES ('41', :value, :value3, :id, :timestamp)");
-	$query->execute([':value' => $stars, ':value3' => $levelID, ':id' => $accountID, ':timestamp' => $currentTimestamp]);
 	echo 1;
 } else echo -2;
 ?>

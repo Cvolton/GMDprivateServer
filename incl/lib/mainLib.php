@@ -880,11 +880,21 @@ class mainLib {
 		require __DIR__ . "/connection.php";
 		$query = $db->prepare("INSERT INTO suggest (suggestBy, suggestLevelID, suggestDifficulty, suggestStars, suggestFeatured, suggestAuto, suggestDemon, timestamp) VALUES (:account, :level, :diff, :stars, :feat, :auto, :demon, :timestamp)");
 		$query->execute([':account' => $accountID, ':level' => $levelID, ':diff' => $difficulty, ':stars' => $stars, ':feat' => $feat, ':auto' => $auto, ':demon' => $demon, ':timestamp' => time()]);
+		$query = $db->prepare("INSERT INTO modactions (type, value, value3, account, timestamp) VALUES ('41', :value, :value3, :id, :timestamp)");
+		$query->execute([':value' => $stars, ':value3' => $levelID, ':id' => $accountID, ':timestamp' => time()]);
 		$this->sendSuggestWebhook($accountID, $levelID, $difficulty, $stars, $feat, $auto, $demon);
+	}
+	public function removeSuggestedLevel($accountID, $levelID) {
+		if(!is_numeric($accountID)) return false;
+		require __DIR__ . "/connection.php";
+		$query = $db->prepare("DELETE FROM suggest WHERE suggestLevelId = :levelID");
+		$query->execute([':levelID' => $levelID]);
+		$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('40', :value, :levelID, :timestamp, :id)");
+		$query->execute([':value' => "1", ':timestamp' => time(), ':id' => $accountID, ':levelID' => $levelID]);
 	}
  	public function isUnlisted($levelID) {
         require __DIR__."/connection.php";
-        $query = $db->prepare("SELECT count(*) FROM levels WHERE unlisted = 1, levelID = :id");
+        $query = $db->prepare("SELECT count(*) FROM levels WHERE unlisted > 0 AND levelID = :id");
         $query->execute([':id' => $levelID]);
         $query = $query->fetch();
         if(!empty($query)) return true; 
@@ -905,8 +915,8 @@ class mainLib {
 		return $query->fetchColumn();
 	}
 	public function getListDiffName($diff) {
-		if($diff == -1) return 'N/A';
 		$diffs = ['Auto', 'Easy', 'Normal', 'Hard', 'Harder', 'Extreme', 'Easy Demon', 'Medium Demon', 'Hard Demon', 'Insane Demon', 'Extreme Demon'];
+		if($diff == -1 || $diff >= count($diffs)) return 'N/A';
 		return $diffs[$diff];
 	}
 	public function getListName($listID) {
