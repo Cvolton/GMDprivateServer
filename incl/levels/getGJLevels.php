@@ -249,10 +249,11 @@ switch($type){
 		$params = array("levelID IN (".$listLevels.")");
 		break;
 	case 27: // SENT LEVELS
-		$sug = ", suggest.suggestLevelId, suggest.timestamp";
-        $sugg = "LEFT JOIN suggest ON levels.levelID = suggest.suggestLevelId";
-		$params[] = "suggestLevelId > 0";
-    	$order = 'suggest.timestamp';
+		$sug = ", s.max_timestamp";
+		$sugg = "LEFT JOIN (SELECT suggestLevelId, MAX(timestamp) as max_timestamp FROM suggest GROUP BY suggestLevelId) s ON levels.levelID = s.suggestLevelId";
+		$params[] = "s.suggestLevelId > 0";
+		$params[] = "starStars = 0";
+		$order = 's.max_timestamp';
 		break;
 }
 //ACTUAL QUERY EXECUTION
