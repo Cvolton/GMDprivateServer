@@ -213,15 +213,15 @@ class Commands {
 				if(!$levelName) return false;
 				$sendArray = ['!send' => 1, '!unsend' => 0];
 				$sendValue = $sendArray[$commentarray[0]];
-				$query = $db->prepare("SELECT COUNT(*) FROM suggest WHERE suggestLevelId = :levelID");
-				$query->execute([':levelID' => $levelID]);
-				$count = $query->fetchColumn();
 				if($sendValue)  {
-					if($count != 0 && $sendValue != 0) return $levelName.' is already suggested!';
+					$query = $db->prepare("SELECT COUNT(*) FROM suggest WHERE suggestLevelId = :levelID AND suggestBy = :accountID");
+					$query->execute([':levelID' => $levelID, ':accountID' => $accountID]);
+					if($query->fetchColumn() != 0) return 'You already suggested '.$levelName.'!';
+					$diffVariable = ExploitPatch::charclean($commentarray[1]);
 					$starStars = ExploitPatch::number($commentarray[2]);
 					$starFeatured = ExploitPatch::number($commentarray[3]);
 					if(!is_numeric($starFeatured)) $starFeatured = 0;
-					$diffArray = $gs->getDiffFromName(ExploitPatch::charclean($commentarray[1]));
+					$diffArray = $gs->getDiffFromName($diffVariable);
 					$starDemon = $diffArray[1];
 					$starAuto = $diffArray[2];
 					$starDifficulty = $diffArray[0];
@@ -232,7 +232,9 @@ class Commands {
 					$gs->suggestLevel($accountID, $levelID, $starDifficulty, $starStars, $starFeatured, $starAuto, $starDemon);
 					return 'You successfully suggested '.$levelName.' as '.$diffic.', '.$starStars.' star'.($starStars == 1 ? '' : 's').'!';
 				} else {
-					if($count == 0 && $sendValue == 0) return $levelName.' is not suggested!';
+					$query = $db->prepare("SELECT COUNT(*) FROM suggest WHERE suggestLevelId = :levelID");
+					$query->execute([':levelID' => $levelID]);
+					if($query->fetchColumn() == 0) return $levelName.' is not suggested!';
 					$gs->removeSuggestedLevel($accountID, $levelID);
 					return 'You successfully removed level '.$levelName.' from being suggested!';
 				}
