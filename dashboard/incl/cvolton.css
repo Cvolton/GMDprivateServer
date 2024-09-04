@@ -108,6 +108,7 @@
 	.modactionsspoiler {font-size: 20px !important;}
 	.another-chat-div {height: 80%;}
 	.itemsbox {flex-direction: column !important; margin-left: 2.5vw !important; width: 95vw !important; margin-bottom: 50px !important; margin-top: 15px !important; flex-wrap: nowrap !important;}
+	.manage-button-div {align-items: flex-start !important; flex-direction: column !important;}
 }
 
 * {
@@ -1263,6 +1264,7 @@ label {
 	font-weight: 400;
 	grid-gap: 5px;
 	flex-wrap: wrap;
+	align-items: center;
 }
 
 .dlp {
@@ -2360,4 +2362,12 @@ body:has(.audio) {
 	margin: 0px;
 	font-size: 17px;
 	text-align: left;
+}
+
+.manage-level-name-div {
+	display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+	grid-gap: 5px;
 }
