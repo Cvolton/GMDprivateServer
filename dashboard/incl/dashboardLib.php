@@ -313,6 +313,7 @@ class dashboardLib {
 							<a class="dropdown-item dontblock" href="lang/switchLang.php?lang=IT" title="Translated by Fenix668"><div class="icon flag"><img class="imgflag" src="incl/flags/it.png?2"></div>Italiano</a>
        						<a class="dropdown-item dontblock" href="lang/switchLang.php?lang=PL" title="Translated by ExtremeSpeGD"><div class="icon flag"><img class="imgflag" src="incl/flags/pl.png?2"></div>Polski</a>
 							<a class="dropdown-item dontblock" href="lang/switchLang.php?lang=VI" title="Translated by TacoEnjoyer"><div class="icon flag"><img class="imgflag" src="incl/flags/vi.png?2"></div>Tiếng Việt</a>
+							<a class="dropdown-item dontblock" href="lang/switchLang.php?lang=ID" title="Translated by IHNGEYMING"><div class="icon flag"><img class="imgflag" src="incl/flags/id.png?2"></div>Bahasa Indonesia</a>
 						</div>';
 						$glob = function_exists('glob') ? (!empty(glob("../download/".$gdps.".*")) OR !empty(glob("download/".$gdps.".*"))) : true;
 						if($glob OR !empty($pc) OR !empty($mac) OR !empty($android) OR !empty($ios)) {

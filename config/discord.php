@@ -42,6 +42,7 @@ $bottoken = "";
   		PL — Polish (Polski)
   		IT — Italian (Italiano)
 		VI — Vietnamese (Tiếng Việt)
+		ID — Indonesian (Bahasa Indonesia)
 	
 	Emojis:
 		$likeEmoji — Custom like emoji (👍)
