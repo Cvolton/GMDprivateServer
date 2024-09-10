@@ -1,8 +1,8 @@
 <?php
 /*
 	Welcome to webhooks translation file!
-	You're currently at English (English) language
-	Credits: *your username*
+	You're currently at Indonesian (Bahasa Indonesia) language
+	Credits: IHNGEYMING
 	
 	If you see array instead of simple string, that means you can add as many variations of translation as you want and they will be picked randomly
 */

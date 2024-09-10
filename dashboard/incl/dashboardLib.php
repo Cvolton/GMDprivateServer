@@ -1063,7 +1063,7 @@ class dashboardLib {
 			<div class="profacclist">
 				<div class="accnamedesc">
 					<div class="profcard1">
-						<h1 class="dlh1 profh1 manage-button-div">'.$manage.sprintf($this->getLocalizedString("demonlistLevel"), $levelname, 0, $action["userName"], $avatarImg).'</h1>
+						<h1 class="dlh1 profh1 manage-button-div"><div class="manage-level-name-div">'.$manage.sprintf($this->getLocalizedString("demonlistLevel"), $levelname.'</div>', 0, $action["userName"], $avatarImg).'</h1>
 					</div>
 					<p class="dlp">'.$levelDesc.'</p>
 				</div>
