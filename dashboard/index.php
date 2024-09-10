@@ -47,8 +47,8 @@ if(empty($name)) {
 				</button>
 				<div id="downloadid" style="display:none;font-size: 24px;display: none;grid-gap: 10px;">'.$downloadlinks.'</div>';
 } else {
-	$namebtn = '<button onclick="a(\'profile/'.$name.'\')" style="padding:0;font-weight: 900;background:none;border:none;cursor:pointer;color:rgb('.$gs->getAccountCommentColor($_SESSION["accountID"]).')">'.$name.'</button>';
-	$accountcards = '<button onclick="a(\'profile/'.$name.'\')" style="background:none;border:none;cursor:pointer;width: 100%;padding: 0px;border-radius: 30px;"><div class="lilcard"><div class="lilcardcontent"><div style="margin-right: 10px;">
+	$namebtn = '<button onclick="a(\'profile/'.$name.'\', true, true, \'GET\')" style="padding:0;font-weight: 900;background:none;border:none;cursor:pointer;color:rgb('.$gs->getAccountCommentColor($_SESSION["accountID"]).')">'.$name.'</button>';
+	$accountcards = '<button onclick="a(\'profile/'.$name.'\', true, true, \'GET\')" style="background:none;border:none;cursor:pointer;width: 100%;padding: 0px;border-radius: 30px;"><div class="lilcard"><div class="lilcardcontent"><div style="margin-right: 10px;">
 					<div style="display: flex;justify-content: space-between;align-items: center;"><h1 class="mainpagecardh1"><div class="icon mph1" style="font-size: 25px;height: 50px;width: 50px;"><i class="fa-solid fa-dungeon"></i></div>'.$dl->getLocalizedString("yourProfile").'</h1></div>
 					<p class="mpp">'.$dl->getLocalizedString("profileOptDesc").'</p></div></div></div>
 				</button>
