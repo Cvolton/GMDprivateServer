@@ -25,7 +25,7 @@ foreach($clans as &$clan) {
 	$closed = '';
 	$name = htmlspecialchars(base64_decode($clan["clan"]));
 	$tag = htmlspecialchars(base64_decode($clan["tag"]));
-	$desc = htmlspecialchars(base64_decode($clan["desc"]));
+	$desc = $dl->parseMessage(htmlspecialchars(base64_decode($clan["desc"])));
 	if(empty($desc)) $desc = $dl->getLocalizedString("noClanDesc");
 	$members = $db->prepare("SELECT count(clan) FROM users WHERE clan = :id");
 	$members->execute([':id' => $clan["ID"]]);

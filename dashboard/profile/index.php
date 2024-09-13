@@ -128,7 +128,7 @@ if(!empty($_POST["msg"])) {
     $query = $db->prepare("SELECT timestamp FROM acccomments WHERE userID=:accid ORDER BY timestamp DESC LIMIT 1");
     $query->execute([':accid' => $userID]);
     $res = $query->fetch();
-    $time = time() - 10;
+    $time = time() - 5;
     if($res["timestamp"] > $time) die($dl->printSong('<div class="form">
 	<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
        	<form class="form__inner" method="post" action="">
@@ -241,7 +241,7 @@ if($roleAssignData = $queryRoleID->fetch(PDO::FETCH_ASSOC)) {
 $maybeban = '<h1 class="profilename" style="color:rgb('.$gs->getAccountCommentColor($accid).');">'.$accname.$badgeImg.'</h1>';
 if(isset($_SERVER["HTTP_REFERER"])) $back = '<form method="post" action="'.$_SERVER["HTTP_REFERER"].'"><button type="button" onclick="a(\''.$_SERVER["HTTP_REFERER"].'\', true, true, \'GET\')" class="goback"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i></button></form>'; else $back = '';
 $all = $dl->createProfileStats($res['stars'], $res['moons'], $res['diamonds'], $res['coins'], $res['userCoins'], $res['demons'], $res['creatorPoints'], 0);
-$msgs = $db->prepare("SELECT * FROM acccomments WHERE userID=:uid ORDER BY commentID DESC");
+$msgs = $db->prepare("SELECT * FROM acccomments WHERE userID = :uid ORDER BY commentID DESC");
 $msgs->execute([':uid' => $userID]);
 $msgs = $msgs->fetchAll();
 $comments = $send = '';
@@ -250,17 +250,18 @@ foreach($msgs AS &$msg) {
 	$reply = $db->prepare("SELECT count(*) FROM replies WHERE commentID = :id");
 	$reply->execute([':id' => $msg["commentID"]]);
 	$reply = $reply->fetchColumn();	
-  	$message = ExploitPatch::url_base64_decode($msg["comment"]);
+  	$message = $dl->parseMessage(htmlspecialchars(ExploitPatch::url_base64_decode($msg["comment"])));
 	if($enableCommentLengthLimiter) $message = substr($message, 0, $maxAccountCommentLength);
   	$time = $msg["timestamp"];
-	$likes = $msg["likes"];
-	if($likes >= 0) $likes = $likes.' <i class="fa-regular fa-thumbs-up"></i>'; else $likes = mb_substr($likes, 1).' <i class="fa-regular fa-thumbs-down"></i>';
+	$likes = '<span style="color: #c0c0c0;">'.$msg["likes"].'</span>';
+	$dislikes = '<span style="color: #c0c0c0;">'.$msg["dislikes"].'</span>';
+	$stats = '<i class="fa-regular fa-thumbs-up"></i> '.$likes.' '.(isset($msg['dislikes']) ? '<text style="color: gray;">•</text> <i class="fa-regular fa-thumbs-down"></i> '.$dislikes : '');
 	if($reply < 1) $none = 'display:none';
 	$replies = '<button id="btnreply'.$msg["commentID"].'" onclick="reply('.$msg["commentID"].')" class="btn-rendel" style="padding: 7 10;margin-right: 10px;min-width: max-content;width: max-content;'.$none.'">'.$dl->getLocalizedString("replies").' ('.$reply.')</button>';
 	if($_SESSION["accountID"] != 0) $input = '<div class="field" style="display:flex;margin-right:10px"><input id="inputReply'.$msg["commentID"].'" type="text" placeholder="'.$dl->getLocalizedString("replyToComment").'"><button onclick="sendReply('.$msg["commentID"].')" id="btninput'.$msg["commentID"].'" style="width: max-content;margin-left: 10px;padding: 8px;" class="btn-rendel"><i style="color:white" class="fa-regular fa-paper-plane" aria-hidden="true"></i></button></div>';
   	$comments .= '<div style="width: 100%;display: flex;flex-wrap: wrap;justify-content: center;">
-			<div class="profile"><div style="display:flex"><h2 class="profilenick">'.$accname.'</h2><p style="text-align:right">'.$likes.'</p></div>
-			<h3 class="profilemsg">'.htmlspecialchars($message).'</h3>
+			<div class="profile"><div style="display:flex"><h2 class="profilenick">'.$accname.'</h2><p style="text-align:right">'.$stats.'</p></div>
+			<h3 class="profilemsg">'.$message.'</h3>
 			<h3 id="comments"><div id="replyBtn'.$msg["commentID"].'">'.$replies.'</div><i style="display: none;margin-right: 10px;color: white;font-size: 13px;" id="spin'.$msg["commentID"].'" class="fa-solid fa-spinner fa-spin"></i>'.$input.''.$dl->convertToDate($time, true).'</h3></div>
 			<div style="width: 90%;" id="reply'.$msg["commentID"].'"></div>
 		</div>';
@@ -268,27 +269,35 @@ foreach($msgs AS &$msg) {
 if(empty($comments)) $comments = '<p class="profile" style="font-size:25px;color:#c0c0c0">'.$dl->getLocalizedString("empty").'</p>';
 $msgtopl = '<form method="post" action="messenger/'.$accname.'"><button type="button" onclick="a(\'messenger/'.$accname.'\', true, true, \'GET\')" class="msgupd" name="accountID" value="'.$accid.'"><i class="fa-regular fa-comment" aria-hidden="true"></i></button></form>';
 if($accid == $_SESSION["accountID"]) {
-if(empty($comments)) $comments = '<p class="profile" style="font-size:25px;color:#c0c0c0">'.$dl->getLocalizedString("writeSomething").'</p>';
+	if(empty($comments)) $comments = '<p class="profile" style="font-size:25px;color:#c0c0c0">'.$dl->getLocalizedString("writeSomething").'</p>';
 	$send = '<div class="field" style="margin-top:10px">
-				<form method="post" action=""><input type="text" name="msg" id="p1" placeholder="'.$dl->getLocalizedString("msg").'"></input>
-				<button type="button" onclick="a(\'profile/'.$accname.'\', true, true, \'POST\')" style="margin-top: 10px;" class="btn-primary btn-block" id="submit" disabled>'.$dl->getLocalizedString("send").'</button></form>
-			</div><script>
+		<form method="post" action=""><input type="text" name="msg" id="p1" placeholder="'.$dl->getLocalizedString("msg").'"></input>
+		<button type="button" onclick="a(\'profile/'.$accname.'\', true, true, \'POST\')" style="margin-top: 10px;" class="btn-primary btn-block" id="submit" disabled>'.$dl->getLocalizedString("send").'</button></form>
+	</div><script>
 	$(document).on("keyup keypress change keydown",function(){
 	   const p1 = document.getElementById("p1");
 	   const btn = document.getElementById("submit");
 	   if(!p1.value.trim().length) {
-					btn.disabled = true;
-					btn.classList.add("btn-block");
-					btn.classList.remove("btn-primary");
+			btn.disabled = true;
+			btn.classList.add("btn-block");
+			btn.classList.remove("btn-primary");
 		} else {
-					btn.removeAttribute("disabled");
-					btn.classList.remove("btn-block");
-					btn.classList.remove("btn-size");
-					btn.classList.add("btn-primary");
+			btn.removeAttribute("disabled");
+			btn.classList.remove("btn-block");
+			btn.classList.remove("btn-size");
+			btn.classList.add("btn-primary");
 		}
 	});
 	</script>';
 	$msgtopl = '<form method="post" name="settingsform"><input type="hidden" name="settings" value="1"><button type="button" onclick="a(\'profile/'.$accname.'/settings\', true, true, \'POST\', false, \'settingsform\')" title="'.$dl->getLocalizedString("settings").'" class="msgupd" name="settings" value="1"><i class="fa-solid fa-user-gear" aria-hidden="true"></i></button></form>';
+} else {
+	$privacySettings = $db->prepare("SELECT mS FROM accounts WHERE accountID = :receiver");
+	$privacySettings->execute([':receiver' => $accid]);
+	$privacySettings = $privacySettings->fetchColumn();
+	$block = $db->prepare("SELECT count(*) FROM blocks WHERE (person1 = :receiver AND person2 = :accountID) OR (person2 = :receiver AND person1 = :accountID)");
+	$block->execute([':receiver' => $accid, ':accountID' => $_SESSION['accountID']]);
+	$block = $block->fetchColumn();
+	if(($privacySettings == 1 && !$gs->isFriends($accid, $_SESSION["accountID"])) || $privacySettings == 2 || $block > 0) $msgtopl = '';
 }
 if($_SESSION["accountID"] == 0) $msgtopl = '';
 if($res["dlPoints"] != 0) $points = '<i class="fa-solid fa-medal dlpoints"> '.$res["dlPoints"].'</i>';
@@ -329,7 +338,7 @@ $dl->printSong('<div class="form profileform">
 		'.$send.'
 </div></div>
 <script>
-'.(isset($msgTooLong)?'alert("You cannot post account comments above '.$maxAccountCommentLength.' characters!");':'').'
+'.(isset($msgTooLong) ? 'alert("You cannot post account comments above '.$maxAccountCommentLength.' characters!");':'').'
 function reply(id) {
 	document.getElementById("spin" + id).style.display = "block";
     replies = new XMLHttpRequest();

@@ -18,14 +18,34 @@ if(!isset($_POST["receiver"])) {
 		else $_POST["receiver"] = $gs->getAccountIDFromName(ExploitPatch::charclean($receiver));
 	}
 }
-$allChats = $alertScript = '';
-$chatBox = '<h1>'.$dl->getLocalizedString("chooseChat").'</h1>
-<script>
-	function friendsList() {
-		document.getElementById("lastChats").classList.toggle("hide");
-		document.getElementById("friendsChats").classList.toggle("hide");
+$allChats = '<div class="empty-section">
+	<i class="fa-solid fa-comment-slash"></i>
+</div>';
+$allChatsEmpty = true;
+$friendsChats = '<div class="empty-section">
+	<i class="fa-solid fa-face-sad-cry"></i>
+</div>';
+$friendsChatsEmpty = true;
+$alertScript = '';
+$chatBox = '<div class="empty-section">
+	<i class="fa-solid fa-comments"></i>
+	<p>'.$dl->getLocalizedString('chooseChat').'</p>
+</div>';
+$pageScript = 'function friendsList() {
+	if(window.currentMessengerTab == "chats") {
+		document.getElementById("lastChats").classList.add("hide");
+		document.getElementById("friendsChats").classList.remove("hide");
+		window.currentMessengerTab = "friends";
+		if(friendsChatsEmpty) document.getElementById("itemoverflow").classList.add("empty-itemoverflow");
+		else document.getElementById("itemoverflow").classList.remove("empty-itemoverflow");
+	} else {
+		document.getElementById("lastChats").classList.remove("hide");
+		document.getElementById("friendsChats").classList.add("hide");
+		window.currentMessengerTab = "chats";
+		if(allChatsEmpty) document.getElementById("itemoverflow").classList.add("empty-itemoverflow");
+		else document.getElementById("itemoverflow").classList.remove("empty-itemoverflow");
 	}
-</script>';
+}';
 if($msgEnabled == 0) {
 	$dl->title($dl->getLocalizedString("messenger"));
 	exit($dl->printSong('<div class="form">
@@ -50,7 +70,7 @@ if($_POST['receiver'] != 0 && ExploitPatch::number($_POST['receiver']) != $_SESS
 	$receiver = ExploitPatch::number($_POST['receiver']);
 	$receiverUsername = $gs->getAccountName($receiver);
 	if(isset($_POST['subject']) && isset($_POST['body'])) {
-		$checkBan = $gs->getPersonBan($_SESSION['accountID'], $gs->getUserID($_SESSION['accountID'], $gs->getAccountName($_SESSION['accountID'])), 3);
+		$checkBan = $gs->getPersonBan($_SESSION['accountID'], $gs->getUserID($_SESSION['accountID']), 3);
 		if($checkBan) exit($dl->printSong('<div class="form">
 			<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 			<form class="form__inner" action="" method="post">
@@ -58,8 +78,10 @@ if($_POST['receiver'] != 0 && ExploitPatch::number($_POST['receiver']) != $_SESS
 			<button type="button" onclick="a(\'\', true, false, \'GET\')" class="btn btn-primary">'.$dl->getLocalizedString("dashboard").'</button>
 			</form>
 		</div>'));
-		$subject = ExploitPatch::url_base64_encode(trim(strip_tags(ExploitPatch::rucharclean($_POST["subject"]))));
-		$body = ExploitPatch::url_base64_encode(trim($xor->cipher(strip_tags(ExploitPatch::rucharclean($_POST["body"])), 14251)));
+		$subject = ExploitPatch::url_base64_encode(trim(ExploitPatch::rucharclean($_POST["subject"])));
+		$body = ExploitPatch::rucharclean($_POST["body"]);
+		if(is_numeric(mb_substr($body, -3)) && !is_numeric(mb_substr($body, -4))) $body .= ' ';
+		$body = base64_encode(trim($xor->cipher($body, 14251)));
         $query = $db->prepare("SELECT timestamp FROM messages WHERE accID = :accountID AND toAccountID = :toAccountID ORDER BY timestamp DESC LIMIT 1");
         $query->execute([':accountID' => $_SESSION['accountID'], ':toAccountID' => $receiver]);
         $res = $query->fetch();
@@ -91,11 +113,19 @@ if($_POST['receiver'] != 0 && ExploitPatch::number($_POST['receiver']) != $_SESS
 		if($messages["accID"] == $_SESSION['accountID']) $div = 'you';
         else $div = 'notyou';
 		$subject = htmlspecialchars(ExploitPatch::url_base64_decode($messages["subject"]));
-		$body = htmlspecialchars($xor->plaintext(ExploitPatch::url_base64_decode($messages["body"]), 14251));
-		$chatMessages .= '<div class="message '.$div.'"><div class="messenger'.$div.'"><h2 class="subject'.$div.'">'.$subject.'</h2>
-		<h3 class="message'.$div.'">'.$body.'</h3>
-		<h3 id="comments" style="justify-content:flex-end">'.$dl->convertToDate($messages["timestamp"], true).'</h3></div></div>';
+		$body = $dl->parseMessage(htmlspecialchars($xor->plaintext(ExploitPatch::url_base64_decode($messages["body"]), 14251)));
+		$chatMessages .= '<div class="message '.$div.'">
+			<div class="messenger'.$div.'">
+				<h2 class="subject'.$div.'">'.$subject.'</h2>
+				<h3 class="message'.$div.'">'.$body.'</h3>
+				<h3 id="comments" style="justify-content:flex-end">'.$dl->convertToDate($messages["timestamp"], true).'</h3>
+			</div>
+		</div>';
 	}
+	if(empty($chatMessages)) $chatMessages = '<div class="empty-section">
+		<i class="fa-solid fa-comment"></i>
+		<p>'.$dl->getLocalizedString('noMsgs').'</p>
+	</div>';
 	$readAllMessages = $db->prepare("UPDATE messages SET isNew=1 WHERE accID = :receiver AND toAccountID = :accountID");
 	$readAllMessages->execute([':receiver' => $receiver, ':accountID' => $_SESSION['accountID']]);
 	$chatBox = '<div class="messenger-username">
@@ -108,9 +138,9 @@ if($_POST['receiver'] != 0 && ExploitPatch::number($_POST['receiver']) != $_SESS
 		<div class="field"><input type="text" name="subject" id="chatSubject" placeholder="'.$dl->getLocalizedString("subject").'"></input></div>
 		<div class="field"><input type="text" name="body" id="chatBody" placeholder="'.$dl->getLocalizedString("msg").'"></input></div>
 		<input type="hidden" name="receiver" value="'.$receiver.'"></input>
-	<button type="button" onclick="a(\'messenger/'.$receiverUsername.'\', true, true, \'POST\')"; class="btn-primary btn-block" id="chatSubmit" disabled>'.$dl->getLocalizedString("send").'</button></form>
-	<script>
-		var element = document.getElementById("chatMessages");
+	<button type="button" onclick="a(\'messenger/'.$receiverUsername.'\', true, true, \'POST\')"; class="btn-primary btn-block" id="chatSubmit" disabled>'.$dl->getLocalizedString("send").'</button></form>';
+	$dl->title($dl->getLocalizedString("messenger").", ".$receiverUsername);
+	$pageScript .= PHP_EOL.'var element = document.getElementById("chatMessages");
 		element.scrollTop = element.scrollHeight;
 		var scrollAll = document.getElementById("chat-opened-all");
 		if(scrollAll !== null) scrollAll.scrollIntoView();
@@ -131,18 +161,16 @@ if($_POST['receiver'] != 0 && ExploitPatch::number($_POST['receiver']) != $_SESS
 				btn.classList.add("btn-primary");
 			}
 		});
-		function friendsList() {
-			document.getElementById("lastChats").classList.toggle("hide");
-			document.getElementById("friendsChats").classList.toggle("hide");
-		}
-		'.(!empty($alertScript) ? 'alert("'.$alertScript.'");' : '').'
-	</script>';
-	$dl->title($dl->getLocalizedString("messenger").", ".$receiverUsername);
+		'.(!empty($alertScript) ? 'alert("'.$alertScript.'");' : '').'';
 }
 $query = $db->prepare("SELECT * FROM messages, (SELECT max(messageID) messageIDs, (CASE WHEN accID = :accountID THEN toAccountID ELSE accID END) receiverID FROM messages WHERE accID = :accountID OR toAccountID = :accountID GROUP BY receiverID ORDER BY timestamp DESC) messageIDs WHERE messageID = messageIDs ORDER BY timestamp DESC");
 $query->execute([':accountID' => $_SESSION['accountID']]);
 $result = $query->fetchAll();
 $playersLastMessage = [];
+if(!empty($result)) {
+	$allChats = '';
+	$allChatsEmpty = false;
+}
 foreach($result AS &$chat) {
 	$youreLast = $chat['accID'] != $_SESSION['accountID'] ? false : true;
 	$receiver = $chat['receiverID'];
@@ -176,13 +204,18 @@ foreach($result AS &$chat) {
 	$newMessages = $newMessage['newMessage'] == 0 && $newMessage['messageCount'] > 0 ? '<i class="fa fa-circle" aria-hidden="true" style="font-size: 10px;margin-left:5px;color: #e35151;"></i>' : '';
 	$allChats .= '<button type="submit" onclick="a(\'messenger/'.$username.'\', true, true, \'POST\', false, \'messengerReceiver'.$receiver.'\')" class="btn-primary itembtn'.(isset($_POST['receiver']) && $_POST['receiver'] == $receiver ? ' chat-opened" id="chat-opened-all"' : '"').'>
 		<h2 class="subjectnotyou accounts-badge-icon-div">'.$avatarImg.$username.$badgeImg.$newMessages.'</h2>
-		<h2 class="messagenotyou" style="font-size: 15px;color: #c0c0c0;">'.$body.'</h2>
+		<h2 class="messagenotyou chat" style="font-size: 15px;color: #c0c0c0;">'.$body.'</h2>
+		<h3 id="comments" style="justify-content: flex-end; margin: 0px;">'.$dl->convertToDate($chat["timestamp"], true).'</h3>
 	</button>
 	<form style="display: none" name="messengerReceiver'.$receiver.'"><input type="hidden" name="receiver" value="'.$receiver.'"></input></form>';
 }
 $friends = $db->prepare("SELECT * FROM friendships INNER JOIN users ON users.extID = (CASE WHEN person1 = :accountID THEN person2 ELSE person1 END) WHERE person1 = :accountID OR person2 = :accountID ORDER BY userName ASC");
 $friends->execute([':accountID' => $_SESSION['accountID']]);
 $friends = $friends->fetchAll();
+if(!empty($friends)) {
+	$friendsChats = '';
+	$friendsChatsEmpty = false;
+}
 foreach($friends AS &$friend) {
 	$receiver = $friend['extID'];
 	$username = $friend['userName'];
@@ -209,13 +242,13 @@ foreach($friends AS &$friend) {
     }
 	$friendsChats .= '<button type="submit" onclick="a(\'messenger/'.$username.'\', true, true, \'POST\', false, \'messengerReceiver'.$receiver.'\')" class="btn-primary itembtn'.(isset($_POST['receiver']) && $_POST['receiver'] == $receiver ? ' chat-opened" id="chat-opened-friends"' : '"').'>
 		<h2 class="subjectnotyou accounts-badge-icon-div">'.$avatarImg.$username.$badgeImg.'</h2>
-		<h2 class="messagenotyou" style="font-size: 15px;color: #c0c0c0;">'.$body.'</h2>
+		<h2 class="messagenotyou chat" style="font-size: 15px;color: #c0c0c0;">'.$body.'</h2>
 	</button>
 	<form style="display: none" name="messengerReceiver'.$receiver.'"><input type="hidden" name="receiver" value="'.$receiver.'"></input></form>';
 }
-$dl->printSong('<div class="form-control itemsbox chatdiv">
+$dl->printSong('<div class="form-control itemsbox chatdiv" style="width: 75%;">
 	<div class="friends-button-div">
-		<div class="itemoverflow">
+		<div class="itemoverflow '.($allChatsEmpty ? 'empty-itemoverflow' : '').'" id="itemoverflow">
 			<div class="itemslist" id="lastChats">
 				'.$allChats.'
 			</div>
@@ -231,5 +264,15 @@ $dl->printSong('<div class="form-control itemsbox chatdiv">
 			</div>
 		</div>
 	</div>
-</div>', 'msg');
+</div><script>
+	'.$pageScript.'
+	allChatsEmpty = '.($allChatsEmpty ? 'true' : 'false').';
+	friendsChatsEmpty = '.($friendsChatsEmpty ? 'true' : 'false').';
+	console.log(window.currentMessengerTab);
+	if(typeof window.currentMessengerTab == "undefined") window.currentMessengerTab = "chats";
+	else if(window.currentMessengerTab == "friends") {
+		window.currentMessengerTab = "chats";
+		friendsList();
+	}
+</script>', 'msg');
 ?>

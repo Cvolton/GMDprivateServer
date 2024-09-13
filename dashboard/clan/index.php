@@ -376,8 +376,8 @@ if(!empty($clan)) {
     $mbrs->execute([':cid' => $clan["ID"]]);
     $mbrs = $mbrs->fetchAll();
     foreach($mbrs as &$mbr) {
-		if($clan["clanOwner"] == $_SESSION["accountID"]) $kick = '<form name="kick" style="margin:0px"><input type="hidden" name="kick" value="1"></input><input type="hidden" name="accountID" value="'.$mbr["extID"].'"></input></form>
-			<button type="button" onclick="a(\'clan/'.$clan["clan"].'\', true, true, \'POST\', false, \'kick\')" style="width: max-content;height: max-content;color: #ffbbbb;padding: 7px 10px;" title="'.$dl->getLocalizedString("kickMember").'" class="btn-rendel"><i class="fa-solid fa-xmark"></i></button>';
+		if($clan["clanOwner"] == $_SESSION["accountID"]) $kick = '<form name="kick'.$mbr["extID"].'" style="margin:0px"><input type="hidden" name="kick" value="1"></input><input type="hidden" name="accountID" value="'.$mbr["extID"].'"></input></form>
+			<button type="button" onclick="a(\'clan/'.$clan["clan"].'\', true, true, \'POST\', false, \'kick'.$mbr["extID"].'\')" style="width: max-content;height: max-content;color: #ffbbbb;padding: 7px 10px;" title="'.$dl->getLocalizedString("kickMember").'" class="btn-rendel"><i class="fa-solid fa-xmark"></i></button>';
 		$allstars += $mbr['stars'];
 		$allmoons += $mbr['moons'];
 		$alldias += $mbr['diamonds'];
@@ -441,6 +441,7 @@ if(!empty($clan)) {
     $dontmind = mb_substr($membercount, -1);
     if($dontmind == 1) $dm = 0; elseif($dontmind < 5 AND $dontmind > 0) $dm = 1; else $dm = 2;
     if($membercount > 9 AND $membercount < 20) $dm = 2;
+	$clanDescription = $dl->parseMessage(htmlspecialchars($clan["desc"]));
     if($_SESSION["accountID"] != 0 AND $clan["clanOwner"] != $_SESSION["accountID"] AND !empty($membermenu)) $menu = '<li class="nav-item dropdown dropleft" style="position: absolute;right: 8px; list-style-type: none;top: 8px;">
 					<a style="margin: 0px;padding: 10px 17px; font-size: 17px;" class="nav-link dropdown-toggle menu-arrow dropleft msgupd" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="false" aria-expanded="false"><i class="fa-solid fa-ellipsis-vertical" aria-hidden="true"></i></a>
 					<div style="background: #141414" class="dropdown-menu dropdown-menu-left" aria-labelledby="navbarDropdownMenuLink">
@@ -452,7 +453,7 @@ if(!empty($clan)) {
     	<style>.menu-arrow::after {display:none}</style>
         	'.$back.'<div style="display: flex;flex-direction: column;align-items: center">'.$clanname.'</div>'.$settings.$menu.'
         </div>
-        <p class="clandesc">'.htmlspecialchars($clan["desc"]).'</p>
+        <p class="clandesc">'.$clanDescription.'</p>
 		<div>
             '.$total.'
         </div>

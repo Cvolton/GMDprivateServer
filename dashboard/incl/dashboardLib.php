@@ -981,7 +981,7 @@ class dashboardLib {
 		$levelid = $action["levelID"];
 		$levelname = $action["levelName"];
 		$levelIDlol = '<button id="copy'.$action["levelID"].'" class="accbtn songidyeah" onclick="copysong('.$action["levelID"].')">'.$action["levelID"].'</button>';
-		$levelDesc = htmlspecialchars(ExploitPatch::url_base64_decode($action["levelDesc"]));
+		$levelDesc = $this->parseMessage(htmlspecialchars(ExploitPatch::url_base64_decode($action["levelDesc"])));
 		if(empty($levelDesc)) $levelDesc = '<text style="color:gray">'.$this->getLocalizedString("noDesc").'</text>';
 		$levelpass = $action["password"];
 		$likes = '<span style="color: #c0c0c0;">'.$action["likes"].'</span>';
@@ -1083,7 +1083,7 @@ class dashboardLib {
 		require_once __DIR__."/../".$dbPath."incl/lib/mainLib.php";
 		$gs = new mainLib();
 		$commentAccountName = $gs->getUserName($comment['userID']);
-		$commentMessage = htmlspecialchars(ExploitPatch::url_base64_decode($comment["comment"]));
+		$commentMessage = $this->parseMessage(htmlspecialchars(ExploitPatch::url_base64_decode($comment["comment"])));
 		$extIDvalue = $gs->getExtID($comment['userID']);
 		$likes = '<span style="color: #c0c0c0;">'.$comment["likes"].'</span>';
 		$dislikes = '<span style="color: #c0c0c0;">'.$comment["dislikes"].'</span>';
@@ -1177,6 +1177,41 @@ class dashboardLib {
 				<div class="form-control" style="display: flex;width: 100%;height: max-content;align-items: center;">'.$stats.'</div>
 				<div class="acccomments"><h3 class="comments" style="margin: 0px;width: max-content;">'.$this->getLocalizedString("accountID").': <b>'.$extIDvalue.'</b></h3><h3 class="comments" style="margin: 0px;width: max-content;">'.$this->getLocalizedString("date").': <b>'.$this->convertToDate($leaderboard['uploadDate'], true).'</b></h3></div>
 		</div></div>';
+	}
+	public function parseMessage($body) {
+		global $dbPath;
+		require __DIR__."/../".$dbPath."incl/lib/connection.php";
+		require_once __DIR__."/../".$dbPath."incl/lib/exploitPatch.php";
+		$parseBody = explode(' ', $body);
+		$playersFound = $levelsFound = [];
+		foreach($parseBody AS &$element) {
+			$firstChar = mb_substr($element, 0, 1);
+			if(!in_array($firstChar, ['@', '#'])) continue;
+			$element = mb_substr($element, 1);
+			switch($firstChar) {
+				case '@':
+					$element = ExploitPatch::charclean($element);
+					$check = $db->prepare('SELECT count(*) FROM accounts WHERE userName = :userName AND isActive != 0');
+					$check->execute([':userName' => $element]);
+					$check = $check->fetchColumn();
+					if($check) {
+						$body = str_replace('@'.$element, '<span class="messenger-link" onclick="a(\'profile/'.$element.'\', true, true, \'GET\')">@'.$element.'</span>', $body);
+						$playersFound[$element] = true;
+					}
+					break;		
+				case '#':
+					if(!is_numeric($element) || $levelsFound[$element]) break;
+					$check = $db->prepare('SELECT levelName FROM levels WHERE levelID = :levelID AND unlisted = 0 AND unlisted2 = 0');
+					$check->execute([':levelID' => $element]);
+					$check = $check->fetchColumn();
+					if($check) {
+						$body = str_replace('#'.$element, '<span class="messenger-link" onclick="a(\'stats/levelsList.php?search='.$check.'\', true, true, \'GET\')">#'.$check.'</span>', $body);
+						$levelsFound[$element] = true;
+					}
+					break;					
+			}
+		}
+		return $body;
 	}
 	public function generateBottomRow($pagecount, $actualpage) {
 		$pageminus = $actualpage - 1;

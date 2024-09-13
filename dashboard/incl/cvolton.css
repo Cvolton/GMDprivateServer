@@ -14,6 +14,7 @@
 	.icon-cube, .icon-ball, .icon-ufo, .icon-robot, .icon-spider, .icon-swing, .icon-jetpack {height: 50px !important;}
 	.icon-ship {height: 37px !important;}
 	.icon-wave {height: 33px !important;}
+	.friends-button-div {min-width: 40% !important; width: 40% !important;}
 }
 
 @media (min-width: 1537px) {
@@ -109,6 +110,7 @@
 	.another-chat-div {height: 80%;}
 	.itemsbox {flex-direction: column !important; margin-left: 2.5vw !important; width: 95vw !important; margin-bottom: 50px !important; margin-top: 15px !important; flex-wrap: nowrap !important;}
 	.manage-button-div {align-items: flex-start !important; flex-direction: column !important;}
+	.friends-button-div {min-width: 100% !important; width: 100% !important;}
 }
 
 * {
@@ -430,11 +432,11 @@ input, select {
 }
 
 .messagenotyou {
-	font-size:13px;
+	font-size: 13px;
     overflow-wrap: anywhere;
-	color:white;
-	margin:5px;
-	text-align:left;
+	color: white;
+	margin: 5px;
+	text-align: left;
 }
 
 .profilemsg {
@@ -2200,6 +2202,7 @@ body:has(.audio) {
     flex-direction: column;
 	width: 100%;
 	height: 100%;
+	justify-content: center;
 }
 
 .messenger-username {
@@ -2223,7 +2226,8 @@ body:has(.audio) {
 
 .friends-button-div {
 	position: relative;
-	width: 100%;
+	min-width: 30%;
+	width: 30%;
 }
 
 .friends-button {
@@ -2370,4 +2374,23 @@ body:has(.audio) {
     align-items: center;
     justify-content: flex-start;
 	grid-gap: 5px;
+}
+
+.chat {
+	overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.empty-itemoverflow {
+	display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-left: 15px;
+}
+
+.messenger-link {
+	font-weight: 700;
+	color: #007bff;
+	cursor: pointer;
 }
