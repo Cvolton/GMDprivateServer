@@ -734,8 +734,9 @@ class dashboardLib {
 		try {
 			if(window.location.pathname.indexOf(page) != "1" || skipcheck) {
 				phpCheck = page.substr(page.length - 4);
-				isSubdirectory = document.getElementById("isSubdirectory").value;
-				if((phpCheck != ".php" || !isSubdirectory) && !skipslash) page = page + "/";
+				isSubdirectory = document.getElementById("isSubdirectory").value == "true" ? true : false;
+				if(phpCheck != ".php" && !isSubdirectory && !skipslash) page = page + "/";
+				if(page == "/") page = "";
 				document.getElementById("loadingloool").innerHTML = \'<i class="fa-solid fa-spinner fa-spin"></i>\';
 				document.getElementById("loadingloool").style.opacity = "1";
 				pageLimiters = page.split("?");
@@ -825,8 +826,8 @@ class dashboardLib {
 						if(typeof bottomrowscript != "undefined" && bottomrowscript != null) scrp.innerHTML += bottomrowscript.textContent;
 						if(document.getElementById("pagescript") !== null) document.getElementById("pagescript").remove();
 						document.body.appendChild(scrp);
-						isSubdirectory = document.getElementById("isSubdirectory").value;
-						if(!isback) history.pushState(null,null,page + sendget);
+						isSubdirectory = document.getElementById("isSubdirectory").value == "true" ? true : false;
+						if(!isback) history.pushState(null, null, page + sendget);
 						if(typeof document.querySelector("base") != "object") {
 							base = document.createElement("base");
 							if(page.endsWith("settings")) base.href = "../../";
@@ -839,7 +840,6 @@ class dashboardLib {
 							else if(isSubdirectory) base.href = "../";
 							else base.href = ".";
 							document.body.appendChild(base);
-							if(typeof document.querySelectorAll("base")[1] == "object") document.querySelectorAll("base")[0].remove();
 						}
 						try {
 							if(typeof captchascript != "undefined") {
