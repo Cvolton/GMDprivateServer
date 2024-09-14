@@ -50,7 +50,7 @@ if($_FILES && $_FILES['filename']['error'] == UPLOAD_ERR_OK) {
 						if($checkID->fetchColumn() == 0) $freeID = true;
 					}
 					move_uploaded_file($_FILES['filename']['tmp_name'], "$db_fid.mp3");
-					$duration = $gs->getAudioDuration(realpath("$db_fid.ogg"));
+					$duration = $gs->getAudioDuration(realpath("$db_fid.mp3"));
 					$duration = empty($duration) ? 0 : $duration;
 					$size = ($_FILES['filename']['size'] / 1048576);
 					$size = round($size, 2);

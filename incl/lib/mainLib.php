@@ -1094,7 +1094,6 @@ class mainLib {
 						if(empty($song[0])) continue;
 						if(!isset($idsConverter['originalIDs'][$server][$song[0]]) && !isset($idsConverter['IDs'][$song[0]])) {
 							$idsConverter['count']++;
-							$fuckText .= $song[1].' ('.$song[0].') was not found! New ID: '.$idsConverter['count'].PHP_EOL;
 							$idsConverter['IDs'][$idsConverter['count']] = ['server' => $server, 'ID' => $song[0], 'name' => $song[1], 'type' => $x];
 							if($x == 1) {
 								$idsConverter['IDs'][$idsConverter['count']]['size'] = $song[3];
@@ -1109,7 +1108,6 @@ class mainLib {
 							$idsConverter['originalIDs'][$server][$song[0]] = $idsConverter['count'];
 							$song[0] = $idsConverter['count'];
 						} else {
-							$fuckText .= $song[1].' ('.$song[0].') was found! ID: '.$idsConverter['originalIDs'][$server][$song[0]].PHP_EOL;
 							$song[0] = $idsConverter['originalIDs'][$server][$song[0]];
 							if($x == 1) {
 								$idsConverter['IDs'][$idsConverter['count']]['size'] = $song[3];
@@ -1145,7 +1143,21 @@ class mainLib {
 									$newTags[] = $tag;
 								}
 								$newTags[] = $server;
+								$artists = explode('.', $song[7]);
 								$tags = '.'.implode('.', $newTags).'.';
+								if($tags == '..') $tags = '.';
+								$newArtists = [];
+								foreach($artists AS &$artist) {
+									if(empty($artists)) continue;
+									if(!isset($idsConverter['originalIDs'][$server][$artist]) && !isset($idsConverter['IDs'][$artist])) {
+										$idsConverter['count']++;
+										$idsConverter['IDs'][$idsConverter['count']] = ['server' => $server, 'ID' => $artist, 'type' => 2];
+										$idsConverter['originalIDs'][$server][$artist] = $idsConverter['count'];
+										$artist = $idsConverter['count'];
+									} else $artist = $idsConverter['originalIDs'][$server][$artist];
+									$newArtists[] = $artist;
+								}
+								$artists = implode('.', $newArtists);
 								$library['songs'][$song[0]] = [
 									'ID' => $song[0],
 									'name' => ExploitPatch::escapedat($song[1]),
@@ -1153,7 +1165,11 @@ class mainLib {
 									'size' => $song[3],
 									'seconds' => $song[4],
 									'tags' => $tags,
-									'ncs' => $song[6] ?? 0
+									'ncs' => $song[6] ?: 0,
+									'artists' => $artists,
+									'externalLink' => $song[8] ?: '',
+									'new' => $song[9] ?: 0,
+									'priorityOrder' => $song[10] ?: 0
 								];
 								break;
 							case 2:
@@ -1246,7 +1262,11 @@ class mainLib {
 					'size' => ($customSongs['size'] * 1024 * 1024),
 					'seconds' => $customSongs['duration'],
 					'tags' => '.'.$serverIDs[null].'.'.$serverIDs[null]. 0 .$customSongs['reuploadID'].'.',
-					'ncs' => 0
+					'ncs' => 0,
+					'artists' => '',
+					'externalLink' => $customSongs['download'],
+					'new' => ($customSongs['reuploadTime'] > time() - 604800 ? 1 : 0),
+					'priorityOrder' => 0
 				];
 			}
 			foreach($library['authors'] AS &$authorList) $authorsEncrypted[] = implode(',', $authorList);
