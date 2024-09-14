@@ -1148,7 +1148,7 @@ class mainLib {
 								if($tags == '..') $tags = '.';
 								$newArtists = [];
 								foreach($artists AS &$artist) {
-									if(empty($artists)) continue;
+									if(empty($artist)) continue;
 									if(!isset($idsConverter['originalIDs'][$server][$artist]) && !isset($idsConverter['IDs'][$artist])) {
 										$idsConverter['count']++;
 										$idsConverter['IDs'][$idsConverter['count']] = ['server' => $server, 'ID' => $artist, 'type' => 2];
