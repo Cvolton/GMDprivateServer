@@ -733,10 +733,10 @@ class dashboardLib {
 	function a(page, skipcheck = false, skipslash = false, method = "GET", getdata = false, formname = "", isback = false) {
 		try {
 			if(window.location.pathname.indexOf(page) != "1" || skipcheck) {
+				page = page + "/";
 				phpCheck = page.substr(page.length - 4);
-				isSubdirectory = document.getElementById("isSubdirectory").value == "true" ? true : false;
-				if(phpCheck != ".php" && !isSubdirectory && !skipslash) page = page + "/";
 				if(page == "/") page = "";
+				if(phpCheck == "php/") page = page.substring(0, page.length - 1);
 				document.getElementById("loadingloool").innerHTML = \'<i class="fa-solid fa-spinner fa-spin"></i>\';
 				document.getElementById("loadingloool").style.opacity = "1";
 				pageLimiters = page.split("?");

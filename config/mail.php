@@ -1,10 +1,31 @@
 <?php
-$mailEnabled = 0; // 0 - off, 1 - on
+/*
+	Mail configuration
+	
+	This file will help you config account verification by link
+	
+	$mailEnabled:
+		True - enable mail verification
+		False - disable mail verification
 
-$mailbox = 'mail.example.com'; // Your SMTP mail host
-$mailport = '587'; // Your SMTP mail port
-$mailuser = 'noreply@example.com'; // Your mail login
-$mailpass = 'password'; // Your mail password
-$mailtype = false; // Mail security type (ssl or tls), set to false to disable security
-$yourmail = 'noreply@example.com'; // Mail, that you will use (its same to $mailuser ig)
+	$mailbox - Your mail server
+	$mailport - Port of your mail server
+	$mailuser - Your mail account's login
+	$mailpass - Your mail account's password
+	$mailtype:
+		'tls' - Use TLS encryption for sending mails
+		'ssl' - Use SSL encryption for sending mails
+		false - Don't encrypt mails
+	$yourmail - This is what will player see as mail sender, often should be same as $mailuser
+	
+	Note: you can use your Gmail or other mail services for this, though you need to find tutorial yourself
+*/
+$mailEnabled = false;
+
+$mailbox = 'mail.example.com';
+$mailport = 587;
+$mailuser = 'noreply@example.com';
+$mailpass = 'password';
+$mailtype = false;
+$yourmail = 'noreply@example.com';
 ?>

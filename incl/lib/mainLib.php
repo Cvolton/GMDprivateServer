@@ -2054,6 +2054,16 @@ class mainLib {
 			$m->Password = $mailpass;
 			$m->Port = $mailport;
 			if($mailtype) $m->SMTPSecure = $mailtype;
+			else {
+				$m->SMTPSecure = 'tls';
+				$m->SMTPOptions = array(
+					'ssl' => array(
+						'verify_peer' => false,
+						'verify_peer_name' => false,
+						'allow_self_signed' => true
+					)
+				);
+			}
 			$m->setFrom($yourmail, $gdps);
 			$m->addAddress($mail, $user);
 			$m->isHTML(true);
