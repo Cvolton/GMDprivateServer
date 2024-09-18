@@ -50,11 +50,12 @@ $customLibrary[] = array(1, 'Geometry Dash', 'https://geometrydashfiles.b-cdn.ne
 $customLibrary[] = array(2, 'GDPSFH', 'https://sfx.fhgdps.com', 0); 
 $customLibrary[] = array(3, $gdps, null, 2); // Your GDPS's library, don't remove it
 
-// SFX converter API links, make one using code from https://github.com/MegaSa1nt/GDPS-ConvertSFX
+// SFX converter API links, make one by using code from https://github.com/MegaSa1nt/GDPS-ConvertSFX
 // Template: $convertSFXAPI[] = "";
 
 $convertSFXAPI[] = "https://niko.gcs.icu";
-$convertSFXAPI[] = "https://lamb.gcs.icu"; // You're welcome
-$convertSFXAPI[] = "https://omori.gcs.icu";
+$convertSFXAPI[] = "https://lamb.gcs.icu";
+$convertSFXAPI[] = "https://omori.gcs.icu"; // You're welcome
 $convertSFXAPI[] = "https://im.gcs.icu";
+$convertSFXAPI[] = "https://hat.gcs.icu";
 ?>
