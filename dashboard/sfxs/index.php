@@ -40,21 +40,25 @@ if($_FILES && $_FILES['filename']['error'] == UPLOAD_ERR_OK) {
 		else {
 			if($_FILES['filename']['size'] >= $sfxSize * 1024 * 1024) $db_fid = -5;
 			else {
+				$server = (((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || $_SERVER['SERVER_PORT'] == 443) ? "https" : "http")."://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
 				$time = time();
 				$length = 10;
 				$types = array('.mp3', '.ogg', '.mpeg');
 				$name = !empty(mb_substr(ExploitPatch::rucharclean($_POST['name']), 0, 40)) ? mb_substr(ExploitPatch::rucharclean($_POST['name']), 0, 40) : 'Unnamed SFX';
 				$author = $gs->getAccountName($_SESSION['accountID']);
 				$size = $_FILES['filename']['size'];
-				$query = $db->prepare("INSERT INTO sfxs (name, authorName, size, download,  reuploadTime, reuploadID) VALUES (:name, :author, :size, :download, :reuploadTime, :reuploadID)");
-				$query->execute([':name' => $name, ':download' => '', ':author' => $author, ':size' => $size, ':reuploadTime' => $time, ':reuploadID' => $_SESSION['accountID']]);
+				$query = $db->prepare("INSERT INTO sfxs (name, authorName, size, download,  reuploadTime, reuploadID) VALUES (:name, :author, :size, '', :reuploadTime, :reuploadID)");
+				$query->execute([':name' => $name, ':author' => $author, ':size' => $size, ':reuploadTime' => $time, ':reuploadID' => $_SESSION['accountID']]);
 				$db_fid = $db->lastInsertId();
-				$song = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]".$db_fid.".ogg";
-				move_uploaded_file($_FILES['filename']['tmp_name'], "$db_fid.ogg");
-				$duration = $gs->getAudioDuration(realpath("$db_fid.ogg"));
+				$token = $convertEnabled ? $gs->randomString(16) : '';
+				$convert = $gs->convertSFX($_FILES['filename'], $server, $name, $token);
+				$temp = $convert ? '_temp' : '';
+				$song = $server.$db_fid.$temp.".ogg";
+				move_uploaded_file($_FILES['filename']['tmp_name'], $db_fid.$temp.".ogg");
+				$duration = $gs->getAudioDuration(realpath($db_fid.$temp.".ogg"));
 				$duration = empty($duration) ? 0 : $duration * 1000;
-				$query = $db->prepare('UPDATE sfxs SET download = :dl, milliseconds = :ms WHERE ID = :id');
-				$query->execute([':dl' => $song, ':ms' => $duration, ':id' => $db_fid]);
+				$query = $db->prepare('UPDATE sfxs SET download = :dl, milliseconds = :ms, token = :token WHERE ID = :id');
+				$query->execute([':dl' => $song, ':ms' => $duration, ':id' => $db_fid, ':token' => $token]);
 				$fontsize = 27;
 				$songIDlol = '<button id="copy'.$db_fid.'" class="accbtn songidyeah" onclick="copysong('.$db_fid.')">'.$db_fid.'</button>';
 				$time = $dl->convertToDate($time, true);
