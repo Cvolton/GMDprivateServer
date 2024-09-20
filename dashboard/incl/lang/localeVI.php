@@ -399,6 +399,11 @@ $string['lockCommenting'] = 'Khoá bình luận';
 $string['successfullyChangedLevel'] = 'Bạn đã chỉnh sửa level thành công!';
 $string['successfullyDeletedLevel'] = 'Bạn đã xoá level thành công!';
 
+$string['resendMailTitle'] = 'Send email message again';
+$string['resendMailHint'] = 'Didn\'t get mail message?';
+$string['resendMailDesc'] = 'Here you can send email message again if you didn\'t get it!';
+$string['resendMailButton'] = 'Send message';
+
 /*
 	ĐĂNG LẠI
 */

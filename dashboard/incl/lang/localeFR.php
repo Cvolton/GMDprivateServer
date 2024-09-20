@@ -418,6 +418,11 @@ $string['lockCommenting'] = 'Vérouiller les commentaires';
 $string['successfullyChangedLevel'] = 'Vous avez changé les paramètres de ce niveau avec succès !';
 $string['successfullyDeletedLevel'] = 'Vous avez supprimé ce niveau avec succès !';
 
+$string['resendMailTitle'] = 'Send email message again';
+$string['resendMailHint'] = 'Didn\'t get mail message?';
+$string['resendMailDesc'] = 'Here you can send email message again if you didn\'t get it!';
+$string['resendMailButton'] = 'Send message';
+
 /*
 	REUPLOAD
 */

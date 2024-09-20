@@ -416,6 +416,11 @@ $string['lockCommenting'] = 'Lock commenting';
 $string['successfullyChangedLevel'] = 'You successfully changed level!';
 $string['successfullyDeletedLevel'] = 'You successfully deleted level!';
 
+$string['resendMailTitle'] = 'Send email message again';
+$string['resendMailHint'] = 'Didn\'t get mail message?';
+$string['resendMailDesc'] = 'Here you can send email message again if you didn\'t get it!';
+$string['resendMailButton'] = 'Send message';
+
 /*
 	REUPLOAD
 */

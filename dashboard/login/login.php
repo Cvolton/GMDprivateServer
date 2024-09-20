@@ -9,11 +9,25 @@ require "../".$dbPath."incl/lib/generatePass.php";
 require "../".$dbPath."incl/lib/exploitPatch.php";
 require_once "../".$dbPath."incl/lib/mainLib.php";
 $gs = new mainLib();
-if(isset($_SESSION["accountID"]) AND $_SESSION["accountID"] != 0) {
-	header('Location: ../');
-	exit();
+if(isset($_SESSION["accountID"]) && $_SESSION["accountID"] != 0) header('Location: ../');
+if(isset($_POST["resendMailUserName"]) && isset($_POST["resendMailEmail"]) && $mailEnabled) {
+	$userName = ExploitPatch::charclean($_POST["resendMailUserName"]);
+	$email = ExploitPatch::rucharclean($_POST["resendMailEmail"]);
+	$check = $db->prepare('SELECT count(*) FROM accounts WHERE userName = :username AND email = :email AND isActive = 0');
+	$check->execute([':username' => $userName, ':email' => $email]);
+	$check = $check->fetchColumn();
+	if($check) $gs->mail($email, $userName);
+	$dl->title($dl->getLocalizedString("resendMailTitle"));
+	$dl->printFooter('../');
+	exit($dl->printSong('<div class="form">
+		<h1>'.$dl->getLocalizedString("resendMailTitle").'</h1>
+		<form class="form__inner" action="" method="post">
+			<p>'.$dl->getLocalizedString("maybeSentAMessage").'</p>
+			<button type="button" onclick="a(\'\', true, false, \'GET\')" class="btn btn-primary">'.$dl->getLocalizedString("dashboard").'</button>
+		</form>
+	</div>'));
 }
-if(isset($_POST["userName"]) AND isset($_POST["password"])) {
+if(isset($_POST["userName"]) && isset($_POST["password"])) {
 	$userName = ExploitPatch::charclean($_POST["userName"]);
 	$password = $_POST["password"];
 	$valid = GeneratePass::isValidUsrname($userName, $password);
@@ -22,18 +36,19 @@ if(isset($_POST["userName"]) AND isset($_POST["password"])) {
         $dl->printFooter('../');
       	if($valid == -2) {
             if($mailEnabled) $dl->printSong('<div class="form">
-            <h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
-            <form class="form__inner" action="" method="post">
-            <p>'.$dl->getLocalizedString("didntActivatedEmail").'</p><br>
-            <button type="button" onclick="a(\'login/login.php\', true, false, \'GET\')" class="btn btn-primary">'.$dl->getLocalizedString("tryAgainBTN").'</button>
-            </form>
+				<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
+				<form class="form__inner" action="" method="post">
+					<p>'.$dl->getLocalizedString("didntActivatedEmail").'</p>
+					<p style="margin-top: -20px;"><a style="color: #007bff; cursor: pointer;" onclick="a(\'login/login.php?resend_mail\', true, true, \'GET\')">'.$dl->getLocalizedString("resendMailHint").'</a></p>
+					<button type="button" onclick="a(\'login/login.php\', true, false, \'GET\')" class="btn btn-primary">'.$dl->getLocalizedString("tryAgainBTN").'</button>
+				</form>
             </div>');
 			else $dl->printSong('<div class="form">
-            <h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
-            <form class="form__inner" action="" method="post">
-            <p><a href="login/activate.php">'.$dl->getLocalizedString("activateDesc").'</a></p><br>
-            <button type="button" onclick="a(\'login/login.php\', true, false, \'GET\')" class="btn btn-primary">'.$dl->getLocalizedString("tryAgainBTN").'</button>
-            </form>
+				<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
+				<form class="form__inner" action="" method="post">
+					<p style="margin-top: -20px;"><a style="color: #007bff; cursor: pointer;" onclick="a(\'login/activate.php\', true, false, \'GET\'>'.$dl->getLocalizedString("activateDesc").'</a></p>
+					<button type="button" onclick="a(\'login/login.php\', true, false, \'GET\')" class="btn btn-primary">'.$dl->getLocalizedString("tryAgainBTN").'</button>
+				</form>
             </div>');
 			die();
         }
@@ -51,14 +66,13 @@ if(isset($_POST["userName"]) AND isset($_POST["password"])) {
 				</div>'));
 			}
 		}
-		$dl->printSong('<div class="form">
+		exit($dl->printSong('<div class="form">
 		<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
-		<form class="form__inner" action="" method="post">
-		<p>'.$dl->getLocalizedString("wrongNickOrPass").'</p>
-		<button type="button" onclick="a(\'login/login.php\', true, false, \'GET\')" class="btn btn-primary">'.$dl->getLocalizedString("tryAgainBTN").'</button>
-		</form>
-		</div>');
-		exit();
+			<form class="form__inner" action="" method="post">
+				<p>'.$dl->getLocalizedString("wrongNickOrPass").'</p>
+				<button type="button" onclick="a(\'login/login.php\', true, false, \'GET\')" class="btn btn-primary">'.$dl->getLocalizedString("tryAgainBTN").'</button>
+			</form>
+		</div>'));
 	}
 	$accountID = $gs->getAccountIDFromName($userName);
   	$_SESSION["accountID"] = $accountID;
@@ -71,45 +85,73 @@ if(isset($_POST["userName"]) AND isset($_POST["password"])) {
           $query->execute([':auth' => $auth, ':id' => $accountID]);
 		  setcookie('auth', $auth, 2147483647, '/');
     } else setcookie('auth', $auth["auth"], 2147483647, '/');
-	if(!empty($_POST["ref"])) header('Location: '.$_POST["ref"]);
-	elseif(!empty($_SERVER["HTTP_REFERER"])) header('Location: '.$_SERVER["HTTP_REFERER"]);
+	if(!empty($_SERVER["HTTP_REFERER"])) header('Location: '.$_SERVER["HTTP_REFERER"]);
 	else header('Location: ../');
 } else {
-	$loginbox = '<form class="field" action="" method="post">
-							<div class="form-group">
-								<input type="text" class="form-control login-input" id="p1" name="userName" placeholder="'.$dl->getLocalizedString("enterUsername").'">
-							</div>
-							<div class="form-group">
-								<input type="password" class="form-control" id="p2" name="password" placeholder="'.$dl->getLocalizedString("enterPassword").'">
-							</div>'.($mailEnabled ? '<button style="margin-top: -10px" type="button" onclick="a(\'login/forgotPassword.php\')" class="forgotPassword">'.$dl->getLocalizedString("forgotPasswordTitle").'</button>' : '');
-	if(isset($_SERVER["HTTP_REFERER"])){
-		$loginbox .= '<input type="hidden" name="ref" value="'.$_SERVER["HTTP_REFERER"].'">';
-	}
-	$loginbox .= '<button type="submit" class="btn-primary btn-block" id="submit2" disabled>'.$dl->getLocalizedString("login").'</button>
-						</form>
-<script>
-$(document).on("keyup keypress change keydown",function(){
-   const p1 = document.getElementById("p1");
-   const p2 = document.getElementById("p2");
-   const btn = document.getElementById("submit2");
-   if(!p1.value.trim().length || !p2.value.trim().length) {
-                btn.disabled = true;
-                btn.classList.add("btn-block");
-                btn.classList.remove("btn-primary");
-	} else {
-		        btn.removeAttribute("disabled");
-                btn.classList.remove("btn-block");
-                btn.classList.remove("btn-size");
-                btn.classList.add("btn-primary");
-	}
-});
-</script>';
-	$dl->title($dl->getLocalizedString("loginBox"));
 	$dl->printFooter('../');
+	if(isset($_GET['resend_mail']) && $mailEnabled) {
+		$dl->title($dl->getLocalizedString("resendMailTitle"));
+		exit($dl->printSong('<div class="form">
+		<h1>'.$dl->getLocalizedString("resendMailTitle").'</h1>
+		<form class="form__inner" action="" method="post">
+			<p>'.$dl->getLocalizedString('resendMailDesc').'</p>
+			<div class="field">
+				<input type="text" class="form-control login-input" id="resendMailUserName" name="resendMailUserName" placeholder="'.$dl->getLocalizedString("username").'">
+			</div>
+			<div class="field">
+				<input type="email" class="form-control" id="resendMailEmail" name="resendMailEmail" placeholder="'.$dl->getLocalizedString("email").'">
+			</div>
+			<button type="submit" class="btn-primary btn-block" id="resendMailSubmit" disabled>'.$dl->getLocalizedString("resendMailButton").'</button>
+		</form>
+		<script>
+		$(document).on("keyup keypress change keydown", function() {
+		   const resendMailUserName = document.getElementById("resendMailUserName");
+		   const resendMailEmail = document.getElementById("resendMailEmail");
+		   const btn = document.getElementById("resendMailSubmit");
+		   if(!resendMailUserName.value.trim().length || !resendMailEmail.value.trim().length) {
+				btn.disabled = true;
+				btn.classList.add("btn-block");
+				btn.classList.remove("btn-primary");
+			} else {
+				btn.removeAttribute("disabled");
+				btn.classList.remove("btn-block");
+				btn.classList.remove("btn-size");
+				btn.classList.add("btn-primary");
+			}
+		});
+		</script>
+	</div>'));
+	}
+	$dl->title($dl->getLocalizedString("loginBox"));
 	$dl->printSong('<div class="form">
-		<h1 style="margin-bottom:10px">'.$dl->getLocalizedString("loginBox").'</h1>
-		<p style="margin-bottom:15px">'.$dl->getLocalizedString('loginDesc').'</p>
-			'.$loginbox.'
+		<h1>'.$dl->getLocalizedString("loginBox").'</h1>
+		<form class="form__inner" action="" method="post">
+			<p>'.$dl->getLocalizedString('loginDesc').'</p>
+			<div class="field">
+				<input type="text" class="form-control login-input" id="loginPageUserName" name="userName" placeholder="'.$dl->getLocalizedString("enterUsername").'">
+			</div>
+			<div class="field">
+				<input type="password" class="form-control" id="loginPagePassword" name="password" placeholder="'.$dl->getLocalizedString("enterPassword").'">
+			</div>'.(!$preactivateAccounts ? ($mailEnabled ? '<button style="margin: -15px 0px;" type="button" onclick="a(\'login/forgotPassword.php\')" class="forgotPassword">'.$dl->getLocalizedString("forgotPasswordTitle").'</button>' : '<button style="margin: -15px 0px;" type="button" onclick="a(\'login/activate.php\')" class="forgotPassword">'.$dl->getLocalizedString("activateAccount").'</button>') : '').'
+			<button type="submit" class="btn-primary btn-block" id="loginPageSubmit" disabled>'.$dl->getLocalizedString("login").'</button>
+		</form>
+		<script>
+		$(document).on("keyup keypress change keydown", function() {
+		   const loginPageUserName = document.getElementById("loginPageUserName");
+		   const loginPagePassword = document.getElementById("loginPagePassword");
+		   const btn = document.getElementById("loginPageSubmit");
+		   if(!loginPageUserName.value.trim().length || !loginPagePassword.value.trim().length) {
+				btn.disabled = true;
+				btn.classList.add("btn-block");
+				btn.classList.remove("btn-primary");
+			} else {
+				btn.removeAttribute("disabled");
+				btn.classList.remove("btn-block");
+				btn.classList.remove("btn-size");
+				btn.classList.add("btn-primary");
+			}
+		});
+		</script>
 	</div>');
 }
 ?>

@@ -120,10 +120,12 @@ class dashboardLib {
       	global $dbPath;
       	global $dashboardIcon;
 		require_once __DIR__."/../".$dbPath."incl/lib/Captcha.php";
-		require_once __DIR__."/../".$dbPath."config/security.php";
-		require_once __DIR__."/../".$dbPath."config/mail.php";
+		require __DIR__."/../".$dbPath."config/security.php";
+		require __DIR__."/../".$dbPath."config/mail.php";
 		require_once __DIR__."/../".$dbPath."incl/lib/mainLib.php";
       	require __DIR__."/../".$dbPath."incl/lib/connection.php";
+		if(!isset($enableCaptcha)) global $enableCaptcha;
+		if(!isset($preactivateAccounts)) global $preactivateAccounts;
       	if($enableCaptcha) {
       	    $captchaTypes = ['hcaptcha', 'grecaptcha', 'turnstile'];
       	    $captchaUsed = $captchaTypes[$captchaType-1];
@@ -385,10 +387,10 @@ class dashboardLib {
 										<div class="form-group">
 											<input type="text" class="form-control login-input" id="usernameField" name="userName" placeholder="'.$this->getLocalizedString("username").'">
 										</div>
-										<div'.(!$mailEnabled ? ' class="form-group"' : '').'>
+										<div'.($preactivateAccounts ? ' class="form-group"' : '').'>
 											<input type="password" class="form-control login-input" id="passwordField" name="password" placeholder="'.$this->getLocalizedString("password").'">
 										</div>
-										'.($mailEnabled ? '<button type="button" onclick="a(\'login/forgotPassword.php\')" class="forgotPassword">'.$this->getLocalizedString("forgotPasswordTitle").'</button>' : '').'
+										'.(!$preactivateAccounts ? ($mailEnabled ? '<button type="button" onclick="a(\'login/forgotPassword.php\')" class="forgotPassword">'.$this->getLocalizedString("forgotPasswordTitle").'</button>' : '<button type="button" onclick="a(\'login/activate.php\')" class="forgotPassword">'.$this->getLocalizedString("activateAccount").'</button>') : '').'
 										<div style="display: flex;flex-wrap: wrap;justify-content: center"><button type="submit" class="btn-primary btn-block" id="submit" disabled>'.$this->getLocalizedString("login").'</button>
 										</form>
 										<form action="login/register.php" style="width: 80%;margin-top: 10px;margin-bottom: -5px">

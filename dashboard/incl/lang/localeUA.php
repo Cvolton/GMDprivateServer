@@ -417,6 +417,11 @@ $string['lockCommenting'] = 'Заблокировать комментирова
 $string['successfullyChangedLevel'] = 'Вы успешно изменили уровень!';
 $string['successfullyDeletedLevel'] = 'Вы успешно удалили уровень!';
 
+$string['resendMailTitle'] = 'Повторно отправить письмо';
+$string['resendMailHint'] = 'Не пришло письмо?';
+$string['resendMailDesc'] = 'Здесь вы можете повторно отправить письмо с активацией на почту, если оно вам не пришло!';
+$string['resendMailButton'] = 'Отправить письмо';
+
 /*
 	REUPLOAD
 */

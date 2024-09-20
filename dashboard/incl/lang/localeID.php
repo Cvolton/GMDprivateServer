@@ -415,6 +415,11 @@ $string['lockCommenting'] = 'Kunci komentar';
 $string['successfullyChangedLevel'] = 'Anda berhasil mengubah level!';
 $string['successfullyDeletedLevel'] = 'Anda berhasil menghapus level!';
 
+$string['resendMailTitle'] = 'Send email message again';
+$string['resendMailHint'] = 'Didn\'t get mail message?';
+$string['resendMailDesc'] = 'Here you can send email message again if you didn\'t get it!';
+$string['resendMailButton'] = 'Send message';
+
 /*
 	REUPLOAD
 */

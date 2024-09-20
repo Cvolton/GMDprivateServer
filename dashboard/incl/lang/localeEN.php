@@ -206,7 +206,7 @@ $string["activateAccount"] = "Account activation";
 $string["activateDesc"] = "Activate your account!";
 $string["activated"] = "Your account has been successfully activated!";
 $string["alreadyActivated"] = "Your account is already activated";
-$string["maybeActivate"] = "Maybe you didn't activated your account yet.";
+$string["maybeActivate"] = "Maybe you didn't activate your account yet.";
 $string["activate"] = "Activate";
 $string["activateDisabled"] = "Account activation is disabled!";
 
@@ -304,7 +304,7 @@ $string["changedDemon"] = 'You replaced <b>%s</b> to <b>%d</b> place!';
 $string["changeDemonDesc"] = 'Here you can change a demon!<br>
 If you want to delete demon, set place to 0.';
 
-$string["didntActivatedEmail"] = 'You didn\'t activated your account through email!';
+$string["didntActivatedEmail"] = 'You didn\'t activate your account through email!';
 $string["checkMail"] = 'You should check your email...';
 
 $string["likeSong"] = "Add song to favourites";
@@ -415,6 +415,11 @@ $string['lockUpdates'] = 'Lock updating';
 $string['lockCommenting'] = 'Lock commenting';
 $string['successfullyChangedLevel'] = 'You successfully changed level!';
 $string['successfullyDeletedLevel'] = 'You successfully deleted level!';
+
+$string['resendMailTitle'] = 'Send email message again';
+$string['resendMailHint'] = 'Didn\'t get mail message?';
+$string['resendMailDesc'] = 'Here you can send email message again if you didn\'t get it!';
+$string['resendMailButton'] = 'Send message';
 
 /*
 	REUPLOAD
