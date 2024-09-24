@@ -12,7 +12,7 @@ $string["tipsAfterInstalling"] = "Witaj na panelu! Oto kilka porad po instalacji
 1. Wygląda na to, że pojawiły się nowe uprawnienia w tabeli SQL 'roles'! Powinieneś(naś) to sprawdzić...<br>
 2. Jeśli wrzucisz 'icon.png' do folderu 'dashboard', ikona twojego GDPS pojawi się w lewym górnym rogu!<br>
 3. Powinieneś(naś) skonfigurować config/dashboard.php!";
-$string["wwygdt"] = "Co dzisiaj zrobisz?";
+$string["wwygdt"] = "Co zamierzasz dzisiaj zrobić?";
 $string["game"] = "Gra";
 $string["guest"] = "gość";
 $string["account"] = "Konto";
@@ -61,7 +61,7 @@ $string["unlistedLevels"] = "Twoje ukryte poziomy";
 
 $string["manageSongs"] = "Zarządzaj piosenkami";
 $string["gauntletManage"] = "Zarządzaj Gauntletami";
-$string["suggestLevels"] = "Zasugerowane poziomy";
+$string["suggestLevels"] = "Suggestowane poziomy";
 
 $string["modTools"] = "Narzędzia moderatora";
 $string["leaderboardBan"] = "Zbanuj użytkownika";
@@ -137,7 +137,7 @@ $string["changePassOrNick"] = "Zmień nazwę lub hasło gracza";
 
 $string["changeNickTitle"] = "Zmień nazwę";
 $string["changedNick"] = "Nazwa pomyślnie zmieniona! Teraz musisz ponownie się zalogować na swoje konto.";
-$string["wrongNick"] = "Wrong username!";
+$string["wrongNick"] = "Zła nazwa!";
 $string["sameNick"] = "Nazwy są takie same!";
 $string["alreadyUsedNick"] = "Wprowadzona nazwa jest zajęta!";
 $string["changeNickDesc"] = "Możesz tutaj zmienić swoją nazwę!";
@@ -211,11 +211,11 @@ $string["activate"] = "Aktywuj";
 $string["activateDisabled"] = "Aktywacja kont jest wyłączona!";
 
 $string["addMod"] = "Dodaj moderatora";
-$string["addModDesc"] = "Możesz tutaj promować na stanowisko Moderatora!";
+$string["addModDesc"] = "Możesz tutaj promować na stanowisko moderatora!";
 $string["modYourself"] = "Nie możesz promować samego siebie na moderatora!";
-$string["alreadyMod"] = "Ten gracz już jest Moderatorem!";
-$string["addedMod"] = "Pomyślnie promowałeś(aś) gracza na Moderatora";
-$string["addModOneMore"] = "Jeszcze jeden moderator?";
+$string["alreadyMod"] = "Ten gracz już jest moderatorem!";
+$string["addedMod"] = "Pomyślnie promowałeś(aś) gracza na moderatora";
+$string["addModOneMore"] = "Jeszcze jedno promowanie na moderatora?";
 $string["modAboveYourRole"] = "Próbujesz dać role powyżej swojej najwyższej!";
 $string["makeNewMod"] = "Zrób kogoś moderatorem!";
 $string["reassignMod"] = "Przypisz ponownie moderatora";
@@ -234,7 +234,7 @@ $string["userIsBanned"] = "Ten gracz jest zbanowany!";
 $string["shareCPSuccess"] = "Pomyślnie przekazano Creator Pointy poziomu";
 $string["shareCPSuccess2"] = "graczowi";
 $string["updateCron"] = "Może powinieneś(innaś) zaktualizować Creator Pointy.";
-$string["shareCPOneMore"] = "Jeszcze jedno przekazanie?";
+$string["shareCPOneMore"] = "Jeszcze jedno przekazanie CP?";
 $string['shareCPSuccessNew'] = 'Pomyślnie przekazano Creator Pointy poziomu <b>%1$s</b> graczowi <b>%2$s</b>!';
 
 $string["messenger"] = "Komunikator";
@@ -244,8 +244,8 @@ $string["noMsgs"] = "Rozpocznij dialog!";
 $string["subject"] = "Temat";
 $string["msg"] = "Wiadomość";
 $string["tooFast"] = "Piszesz za szybko!";
-$string["messengerYou"] = "You:";
-$string["chooseChat"] = "Choose chat";
+$string["messengerYou"] = "Ty:";
+$string["chooseChat"] = "Wybierz czat";
 
 $string["levelToGD"] = "Zreuploaduj poziom do wybranego serwera";
 $string["levelToGDDesc"] = "Możesz tutaj zreuploadować poziom do wybranego serwera!";
@@ -357,10 +357,10 @@ $string["create"] = "Stwórz";
 $string["mainSettings"] = "Główne ustawienia";
 $string["takenClanName"] = "Ta nazwa klanu jest zajęta!";
 $string["takenClanTag"] = "Ten znak klanu jest zajęty!";
-$string["badClanName"] = "Please choose another clan name.";
-$string["badClanTag"] = "Please choose another clan tag.";
+$string["badClanName"] = "Proszę wybrać inną nazwę klanu.";
+$string["badClanTag"] = "Proszę wybrać inny tag klanu.";
 
-$string["suggestedName"] = '<button type="button" onclick="a(\'profile/%1$s\', true, true)" class="accbtn" name="accountID">%1$s</button><text class="dltext"> zasuggestował(a) <b>%4$s%3$s</b> dla</text><text class="levelname">%2$s</text>'; // %1$s - Mod username, %2$s - level name, %3$s - x stars, %4$s - Featured/Epic (%4$s%3$s - Featured, x stars)
+$string["suggestedName"] = '<button type="button" onclick="a(\'profile/%1$s\', true, true)" class="accbtn" name="accountID">%1$s</button><text class="dltext"> suggestował(a) <b>%4$s%3$s</b> dla</text><text class="levelname">%2$s</text>'; // %1$s - Mod username, %2$s - level name, %3$s - x stars, %4$s - Featured/Epic (%4$s%3$s - Featured, x stars)
 $string["reportedName"] = '%1$s<text class="dltext"> został zgłoszony</text><text class="levelname">%2$s</text>';
 
 $string['listTable'] = "Listy";
@@ -401,25 +401,25 @@ $string['youAreBanned'] = 'Zostałeś(aś) zbanowany(na) do <b>%2$s</b> za:<br><
 $string['banChange'] = 'Zmień';
 $string['system'] = 'System';
 
-$string['levelComments'] = 'Level comments';
-$string['levelLeaderboards'] = 'Level leaderboards';
-$string['manageLevel'] = 'Manage level';
-$string['noComments'] = 'No comments!';
-$string['commentHere'] = 'Publish comment...';
-$string['weekLeaderboards'] = 'For a week';
-$string['noLeaderboards'] = 'No leaderboards!';
-$string['manageLevelDesc'] = 'Here you can change level!';
-$string['silverCoins'] = 'Silver coins';
-$string['unlistedLevel'] = 'Unlisted level';
-$string['lockUpdates'] = 'Lock updating';
-$string['lockCommenting'] = 'Lock commenting';
-$string['successfullyChangedLevel'] = 'You successfully changed level!';
-$string['successfullyDeletedLevel'] = 'You successfully deleted level!';
+$string['levelComments'] = 'Komentarze poziomu';
+$string['levelLeaderboards'] = 'Leaderboardy poziomu';
+$string['manageLevel'] = 'Zarządzaj poziomem';
+$string['noComments'] = 'Brak komentarzy!';
+$string['commentHere'] = 'Opublikuj komentarz...';
+$string['weekLeaderboards'] = 'Na tydzień';
+$string['noLeaderboards'] = 'Brak leaderboardów!';
+$string['manageLevelDesc'] = 'Możesz tutaj zmienić poziom!';
+$string['silverCoins'] = 'Srebrne coiny';
+$string['unlistedLevel'] = 'Ukryty poziom';
+$string['lockUpdates'] = 'Zablokuj aktualizowanie';
+$string['lockCommenting'] = 'Zablokuj komentowanie';
+$string['successfullyChangedLevel'] = 'Pomyślnie zmieniłeś(aś) poziom!';
+$string['successfullyDeletedLevel'] = 'Pomyślnie usunąłeś(aś) poziom!';
 
-$string['resendMailTitle'] = 'Send email message again';
-$string['resendMailHint'] = 'Didn\'t get mail message?';
-$string['resendMailDesc'] = 'Here you can send email message again if you didn\'t get it!';
-$string['resendMailButton'] = 'Send message';
+$string['resendMailTitle'] = 'Wyślij wiadomość email ponownie';
+$string['resendMailHint'] = 'Nie otrzymałeś(aś) maila?';
+$string['resendMailDesc'] = 'Możesz tutaj wysłać wiadomość email ponownie jeśli jej nie otrzymałeś(aś)!';
+$string['resendMailButton'] = 'Wyślij wiadomość';
 
 /*
 	REUPLOAD
@@ -436,7 +436,7 @@ $string["songAddUrlFieldPlaceholder"] = "URL Piosenki";
 $string["songAddNameFieldPlaceholder"] = "Nazwa";
 $string["songAddAuthorFieldPlaceholder"] = "Autor";
 $string["songAddButton"] = "Wybierz piosenkę";
-$string["songAddAnotherBTN"] = "Inna Piosenka?";
+$string["songAddAnotherBTN"] = "Jeszcze jedna piosenka?";
 $string["songAdded"] = "Piosenka dodana";
 $string["deletedSong"] = "Pomyślnie usunięto piosenkę";
 $string["renamedSong"] = "Pomyślnie zmieniono nazwę piosenki na";
@@ -582,10 +582,10 @@ $string["value"] = "Pierwsza wartość";
 $string["value2"] = "Druga wartość";
 $string["value3"] = "Trzecia wartość";
 $string["modAction1"] = "Oceniono poziom";
-$string["modAction2"] = "Od-polecił poziom";
+$string["modAction2"] = "Od-featurował poziom";
 $string["modAction3"] = "Od-weryfikował coiny";
-$string["modAction4"] = "Od-epikował poziom";
-$string["modAction5"] = "Ustaw jako dzienny polecony";
+$string["modAction4"] = "Od-epicował poziom";
+$string["modAction5"] = "Ustaw jako featured daily";
 $string["modAction6"] = "Usunął poziom";
 $string["modAction7"] = "Zmiana twórcy";
 $string["modAction8"] = "Zmienił nazwę poziomu";
@@ -604,24 +604,24 @@ $string["modAction20"] = "Promował gracza na moderatora";
 $string["modAction21"] = "Zmienił Map Packa";
 $string["modAction22"] = "Zmienił Gauntlet";
 $string["modAction23"] = "Zmienił questa";
-$string["modAction24"] = "Reassigned a player";
+$string["modAction24"] = "Ponownie przydzielił gracza";
 $string["modAction25"] = "Stworzył questa";
 $string["modAction26"] = "Zmienił nazwę/hasło gracza";
 $string["modAction27"] = "Zmienił SFX";
 $string["modAction28"] = "Zbanował osobę";
-$string["modAction29"] = "Locked/unlocked level updating";
+$string["modAction29"] = "Zablokował/odblokował aktualizowanie poziomu";
 $string["modAction30"] = "Ocenił lista";
 $string["modAction31"] = "Wysłał listę";
-$string["modAction32"] = "Polecił/od-polecił listę";
+$string["modAction32"] = "Featurował/od-featurował listę";
 $string["modAction33"] = "Opublikował/od-publikował";
 $string["modAction34"] = "Usunął listę";
 $string["modAction35"] = "Zmienił twórcę listy";
 $string["modAction36"] = "Zmienił nazwę listy";
 $string["modAction37"] = "Zmienił opis listy";
-$string["modAction38"] = "Locked/unlocked level commenting";
-$string["modAction39"] = "Locked/unlocked list commenting";
-$string["modAction40"] = "Removed sent level";
-$string["modAction41"] = "Suggested level";
+$string["modAction38"] = "Zablokował/odblokował komentowanie poziomu";
+$string["modAction39"] = "Zablokował/odblokował komentowanie listy";
+$string["modAction40"] = "Usunął suggestowany poziom";
+$string["modAction41"] = "Suggestował poziom";
 $string["everyActions"] = "Jakiekolwiek akcje";
 $string["everyMod"] = "Wszyscy moderatorzy";
 $string["Kish!"] = "Idź sobie!";
