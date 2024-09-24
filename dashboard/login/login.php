@@ -9,16 +9,26 @@ require "../".$dbPath."incl/lib/generatePass.php";
 require "../".$dbPath."incl/lib/exploitPatch.php";
 require_once "../".$dbPath."incl/lib/mainLib.php";
 $gs = new mainLib();
+require "../".$dbPath."incl/lib/Captcha.php";
 if(isset($_SESSION["accountID"]) && $_SESSION["accountID"] != 0) header('Location: ../');
 if(isset($_POST["resendMailUserName"]) && isset($_POST["resendMailEmail"]) && $mailEnabled) {
+	$dl->title($dl->getLocalizedString("resendMailTitle"));
+	$dl->printFooter('../');
+	if(!Captcha::validateCaptcha()) {
+		exit($dl->printSong('<div class="form">
+			<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
+			<form class="form__inner" method="post" action="">
+			<p>'.$dl->getLocalizedString("invalidCaptcha").'</p>
+			<button type="submit" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
+			</form>
+		</div>'));
+	}
 	$userName = ExploitPatch::charclean($_POST["resendMailUserName"]);
 	$email = ExploitPatch::rucharclean($_POST["resendMailEmail"]);
 	$check = $db->prepare('SELECT count(*) FROM accounts WHERE userName = :username AND email = :email AND isActive = 0');
 	$check->execute([':username' => $userName, ':email' => $email]);
 	$check = $check->fetchColumn();
 	if($check) $gs->mail($email, $userName);
-	$dl->title($dl->getLocalizedString("resendMailTitle"));
-	$dl->printFooter('../');
 	exit($dl->printSong('<div class="form">
 		<h1>'.$dl->getLocalizedString("resendMailTitle").'</h1>
 		<form class="form__inner" action="" method="post">
@@ -101,6 +111,7 @@ if(isset($_POST["userName"]) && isset($_POST["password"])) {
 			<div class="field">
 				<input type="email" class="form-control" id="resendMailEmail" name="resendMailEmail" placeholder="'.$dl->getLocalizedString("email").'">
 			</div>
+			'.Captcha::displayCaptcha(true).'
 			<button type="submit" class="btn-primary btn-block" id="resendMailSubmit" disabled>'.$dl->getLocalizedString("resendMailButton").'</button>
 		</form>
 		<script>
