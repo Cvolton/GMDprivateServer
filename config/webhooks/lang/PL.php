@@ -2,7 +2,7 @@
 /*
 	Welcome to webhooks translation file!
 	You're currently at Polish (Polski) language
-	Credits: extremespegd
+	Credits: ExtremeSpe98
 	
 	If you see array instead of simple string, that means you can add as many variations of translation as you want and they will be picked randomly
 */
@@ -37,8 +37,8 @@ $webhookLang['descTitle'] = 'Opis';
 $webhookLang['descDesc'] = '*Brak opisu*';
 $webhookLang['footer'] = '%1$s, dziękuję za grę!';
 
-$webhookLang['suggestTitle'] = ['Sparwdź ten poziom!', 'Poziom został zasuggestowany!', 'Ktoś zasuggestował poziom!'];
-$webhookLang['suggestDesc'] = '%1$s zasuggestował ocenienie poziomu!';
+$webhookLang['suggestTitle'] = ['Sparwdź ten poziom!', 'Poziom został suggestowany!', 'Ktoś suggestował poziom!'];
+$webhookLang['suggestDesc'] = '%1$s suggestował ocenienie poziomu!';
 $webhookLang['footerSuggest'] = '%1$s, dziękuję za moderację!';
 
 $webhookLang['demonlistTitle'] = ['Nowy rekord!', 'Ktoś opublikował nowy rekord!'];
@@ -64,15 +64,15 @@ $webhookLang['accountCodeFirst'] = 'Pierwszy numer';
 $webhookLang['accountCodeSecond'] = 'Drugi numer';
 $webhookLang['accountCodeThird'] = 'Trzeci numer';
 $webhookLang['accountCodeFourth'] = 'Czwarty numer';
-$webhookLang['accountUnlinkTitle'] = ['Odłączanie konta!', 'Odłączyłeś swoje konto!'];
-$webhookLang['accountUnlinkDesc'] = 'Pomyślnie odłączyłeś %1$s od swojego konta Discord!';
-$webhookLang['accountAcceptTitle'] = ['Łączenie konta!', 'Połączyłeś swoje konto!'];
-$webhookLang['accountAcceptDesc'] = 'Pomyślnie połączyłeś %1$s ze swoim kontem Discord!';
+$webhookLang['accountUnlinkTitle'] = ['Odłączanie konta!', 'Odłączyłeś(aś) swoje konto!'];
+$webhookLang['accountUnlinkDesc'] = 'Pomyślnie odłączyłeś(aś) %1$s od swojego konta Discord!';
+$webhookLang['accountAcceptTitle'] = ['Łączenie konta!', 'Połączyłeś(aś) swoje konto!'];
+$webhookLang['accountAcceptDesc'] = 'Pomyślnie połączyłeś(aś) %1$s ze swoim kontem Discord!';
 
 $webhookLang['playerBanTitle'] = ['Gracz został zbanowany!', 'Ktoś kogoś zbanował!', 'Ban!'];
-$webhookLang['playerBanTitleDM'] = ['Zostałeś zbanowany!', 'Ktoś cię zbanował!', 'Ban!'];
+$webhookLang['playerBanTitleDM'] = ['Zostałeś(aś) zbanowany!', 'Ktoś cię zbanował!', 'Ban!'];
 $webhookLang['playerUnbanTitle'] = ['Gracz został odbanowany!', 'Ktoś kogoś odbanował!', 'Odbanowanie!'];
-$webhookLang['playerUnbanTitleDM'] = ['Zostałeś odbanowany!', 'Ktoś cię odbanował!', 'Odbanowanie!'];
+$webhookLang['playerUnbanTitleDM'] = ['Zostałeś(aś) odbanowany!', 'Ktoś cię odbanował!', 'Odbanowanie!'];
 $webhookLang['playerBanTopDesc'] = '%1$s zbanował(a) %2$s z top graczy!';
 $webhookLang['playerBanTopDescDM'] = '%1$s zbanował(a) cię z top graczy.';
 $webhookLang['playerUnbanTopDesc'] = '%1$s odbanował(a) %2$s z top graczy!';
@@ -91,7 +91,7 @@ $webhookLang['playerBanReason'] = '*Brak powodu*';
 $webhookLang['footerBan'] = '%1$s.';
 $webhookLang['playerBanCommentDesc'] = '%1$s zablokował(a) %2$s możliwość komentowania!';
 $webhookLang['playerBanCommentDescDM'] = '%1$s zablokował(a) tobie możliwość komentowania.';
-$webhookLang['playerUnbanCommentDesc'] = '%1$s odblokował(a) %2$s\'s ability to comment!';
+$webhookLang['playerUnbanCommentDesc'] = '%1$s odblokował(a) możliwość komentowania gracza %2$s!';
 $webhookLang['playerUnbanCommentDescDM'] = '%1$s odblokował(a) tobie możliwość komentowania!';
 $webhookLang['playerBanAccountDesc'] = '%1$s zbanował(a) konto %2$s!';
 $webhookLang['playerBanAccountDescDM'] = '%1$s zbanował(a) twoje konto.';
