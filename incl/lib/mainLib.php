@@ -974,9 +974,12 @@ class mainLib {
 					CURLOPT_RETURNTRANSFER => 1
 				]);
 				$dat = curl_exec($download);
-				file_put_contents(__DIR__.'/../../'.$types[$type].'/'.$key.'.dat', $dat);
+				$resultStatus = curl_getinfo($download, CURLINFO_HTTP_CODE);
 				curl_close($download);
-				$updatedLib = true;
+				if($resultStatus == 200) {
+					file_put_contents(__DIR__.'/../../'.$types[$type].'/'.$key.'.dat', $dat);
+					$updatedLib = true;
+				}
 			}
 		}
 		// Now this server's version check
@@ -1022,8 +1025,13 @@ class mainLib {
 			$bits = null;
 			$res = file_get_contents(__DIR__.'/../../'.$types[$type].'/'.$key.'.dat');
 			$res = mb_convert_encoding($res, 'UTF-8', 'UTF-8');
-			$res = ExploitPatch::url_base64_decode($res);
-			$res = zlib_decode($res);
+			try {
+				$res = ExploitPatch::url_base64_decode($res);
+				$res = zlib_decode($res);
+			} catch(Exception $e) {
+				unlink(__DIR__.'/../../'.$types[$type].'/'.$key.'.dat');
+				continue;
+			}
 			$res = explode('|', $res);
 			if(!$type) {
 				for($i = 0; $i < count($res); $i++) { // SFX library decoding was made by MigMatos, check their ObeyGDBot! https://obeybd.web.app/
