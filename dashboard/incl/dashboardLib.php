@@ -735,7 +735,7 @@ class dashboardLib {
 	function a(page, skipcheck = false, skipslash = false, method = "GET", getdata = false, formname = "", isback = false) {
 		try {
 			if(window.location.pathname.indexOf(page) != "1" || skipcheck) {
-				page = page + "/";
+				if(!skipslash) page = page + "/";
 				phpCheck = page.substr(page.length - 4);
 				if(page == "/") page = "";
 				if(phpCheck == "php/") page = page.substring(0, page.length - 1);
