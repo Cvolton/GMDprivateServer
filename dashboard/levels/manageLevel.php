@@ -153,6 +153,7 @@ if(!empty($_POST["levelName"]) && !empty($_POST["levelAuthor"])) {
 	}
 	$updateLevel = $db->prepare("UPDATE levels SET levelName = :levelName, extID = :extID, userID = :userID, levelDesc = :levelDesc, starStars = :stars, starFeatured = :starFeatured, starEpic = :starEpic, songID = :songID, password = :password, starCoins = :starCoins, unlisted = :unlisted, unlisted2 = :unlisted, updateLocked = :updateLocked, commentLocked = :commentLocked WHERE levelID = :levelID");
 	$updateLevel->execute([':levelName' => $newLevelName, ':extID' => $newLevelAuthor, ':userID' => $gs->getUserID($newLevelAuthor), ':levelDesc' => $newLevelDesc, ':stars' => $newStars, ':starFeatured' => $starFeatured, ':starEpic' => $starEpic, ':songID' => $newSongID, ':password' => $newPassword, ':starCoins' => $newVerifyCoins, ':unlisted' => $newUnlisted, ':updateLocked' => $newLockUpdating, ':commentLocked' => $newLockCommenting, ':levelID' => $levelID]);
+	$gs->sendLogsLevelChangeWebhook($levelID, $_SESSION['accountID'], $level);
 	$dl->printSong('<div class="form">
 		<h1>'.$dl->getLocalizedString("manageLevel").'</h1>
 		<form class="form__inner" method="post" action="">

@@ -27,6 +27,9 @@ if($_POST["oldpassword"] != "" AND $_POST["newpassword"] != "" AND $_POST["newpa
 		</div>', 'account');
 		die();
 	}
+	$getAccountData = $db->prepare("SELECT * FROM accounts WHERE accountID = :accountID");
+	$getAccountData->execute([':accountID' => $_SESSION["accountID"]]);
+	$getAccountData = $getAccountData->fetch();
 	$userName = $gs->getAccountName($_SESSION["accountID"]);
 	$oldpass = ExploitPatch::remove($_POST["oldpassword"]);
 	$newpass = ExploitPatch::remove($_POST["newpassword"]);
@@ -48,6 +51,7 @@ if($pass == 1) {
 	$auth = $gs->randomString(8);
 	$query = $db->prepare("UPDATE accounts SET password=:password, gjp2 = :gjp, salt=:salt, auth=:auth WHERE userName=:userName");	
 	$query->execute([':password' => $passhash, ':userName' => $userName, ':salt' => $salt, ':gjp' => $gjp2, ':auth' => $auth]);
+	$gs->sendLogsAccountChangeWebhook($_SESSION["accountID"], $_SESSION["accountID"], $getAccountData);
 	$_SESSION["accountID"] = 0;
 	setcookie('auth', 'no', 2147483647, '/');
 	$dl->printSong('<div class="form">

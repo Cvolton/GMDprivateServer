@@ -75,9 +75,9 @@ if(!empty($_POST["user"])) {
 		</div>', 'mod');
 		die();
 	}
-	$query = $db->prepare("SELECT accountID FROM roleassign WHERE accountID = :mod");
+	$query = $db->prepare("SELECT * FROM roleassign WHERE accountID = :mod");
 	$query->execute([':mod' => $mod]);
-	$res = $query->fetchAll();
+	$res = $query->fetch();
 	if(count($res) != 0) {
 		$dl->printSong('<div class="form">
 			<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
@@ -101,7 +101,7 @@ if(!empty($_POST["user"])) {
 			<button type="button" onclick="a(\'account/addMod.php\', true, false, \'GET\')" class="btn-primary">'.$dl->getLocalizedString("addModOneMore").'</button>
 		</form>
 		</div>', 'mod');
-	} else {
+	} else { // I just realized this code will never run LOL
 		$query = $db->prepare("DELETE FROM roleassign WHERE accountID = :accID");
 		$query->execute([':accID' => $accountID]);
 		$mod2 = $gs->getAccountName($mod);
@@ -115,6 +115,7 @@ if(!empty($_POST["user"])) {
 		</form>
 		</div>', 'mod');
 	}
+	$gs->sendLogsModChangeWebhook($res['accountID'], $_SESSION['accountID'], $res['assignID'], $res); 
 } else {
 	$admin = $db->prepare('SELECT isAdmin FROM accounts WHERE accountID = :accID');
 	$admin->execute([':accID' => $_SESSION['accountID']]);

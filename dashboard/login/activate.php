@@ -4,6 +4,7 @@ require "../incl/dashboardLib.php";
 require "../".$dbPath."incl/lib/Captcha.php";
 require "../".$dbPath."incl/lib/connection.php";
 require "../".$dbPath."incl/lib/generatePass.php";
+$gs = new mainLib();
 require_once "../".$dbPath."incl/lib/exploitPatch.php";
 require "../".$dbPath."config/security.php";
 require "../".$dbPath."config/mail.php";
@@ -15,7 +16,7 @@ if(!isset($_SESSION["accountID"]) OR $_SESSION["accountID"] == 0){
 if($mailEnabled) {
 	if(isset($_GET["mail"])) {
 		$mail = ExploitPatch::remove(explode('/', $_GET["mail"])[count(explode('/', $_GET["mail"]))-1]);
-		$check = $db->prepare("SELECT accountID FROM accounts WHERE mail = :mail");
+		$check = $db->prepare("SELECT * FROM accounts WHERE mail = :mail");
 		$check->execute([':mail' => $mail]);
 		$check = $check->fetch();
 		if(empty($check)) {
@@ -29,6 +30,7 @@ if($mailEnabled) {
 		} else {
   			$query = $db->prepare("UPDATE accounts SET isActive = '1', mail = 'activated' WHERE accountID = :acc");
   			$query->execute([':acc' => $check["accountID"]]);
+			$gs->sendLogsAccountChangeWebhook($check['accountID'], $check['accountID'], $check);
 			$dl->printSong('<div class="form">
               <h1>'.$dl->getLocalizedString("activateAccount").'</h1>
               <form class="form__inner" method="post" action=".">
@@ -60,9 +62,13 @@ if(!empty($_POST["userName"]) && !empty($_POST["password"])){
 	$userName = ExploitPatch::charclean($_POST["userName"]);
 	$password = $_POST["password"];
 	$pass = GeneratePass::isValidUsrname($userName, $password);
-	if ($pass == -2){
+	$getAccountData = $db->prepare('SELECT * FROM accounts WHERE userName LIKE :userName');
+	$getAccountData->execute([':userName' => $userName]);
+	$getAccountData = $getAccountData->fetch();
+	if($pass == '-2') {
 		$query = $db->prepare("UPDATE accounts SET isActive = 1 WHERE userName LIKE :userName");
 		$query->execute(['userName' => $userName]);
+		$gs->sendLogsAccountChangeWebhook($getAccountData['accountID'], $getAccountData['accountID'], $getAccountData);
 		 $dl->printSong('<div class="form">
 			<h1>'.$dl->getLocalizedString("activateAccount").'</h1>
 			<form class="form__inner" method="post" action=".">

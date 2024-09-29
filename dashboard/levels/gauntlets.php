@@ -20,11 +20,15 @@ if(!empty($id)) {
 			exit(json_encode(['success' => false]));
 		}
 		$gid = ExploitPatch::number($_GET['gid']);
+		$gauntletData = $db->prepare('SELECT * FROM gauntlets WHERE ID = :gid');
+		$gauntletData->execute([':gid' => $id]);
+		$gauntletData = $gauntletData->fetch();
 		$change = $db->prepare("UPDATE gauntlets SET ID = :gid, level1 = :l1, level2 = :l2, level3 = :l3, level4 = :l4, level5 = :l5 WHERE ID = :i");
 		$change->execute([':i' => $id, ':gid' => $gid,':l1' => $gauntletLevels[0], ':l2' => $gauntletLevels[1], ':l3' => $gauntletLevels[2], ':l4' => $gauntletLevels[3], ':l5' => $gauntletLevels[4]]);
 		$levels = $gauntletLevels[0].','.$gauntletLevels[1].','.$gauntletLevels[2].','.$gauntletLevels[3].','.$gauntletLevels[4];
 		$query = $db->prepare("INSERT INTO modactions  (type, value, value3, timestamp, account) VALUES ('22',:value, :value3, :timestamp,:account)");
 		$query->execute([':value' => $levels, ':value3' => $gid, ':timestamp' => time(), ':account' => $_SESSION["accountID"]]);
+		$gs->sendLogsGauntletChangeWebhook($gid, $_SESSION['accountID'], $gauntletData);
 		echo json_encode(['success' => true, 'name' => $gs->getGauntletName($gid)." Gauntlet"]);
 	} else {
 	  $pck = $db->prepare("SELECT * FROM gauntlets WHERE ID = :id");

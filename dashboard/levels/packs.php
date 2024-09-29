@@ -44,10 +44,14 @@ if(!empty($id)) {
 		$color = $color[0].','.$color[1].','.$color[2];
 		if($_GET["stars"] > 10) $stars = 10; elseif($_GET["stars"] < 1) $stars = 1; else $stars = ExploitPatch::number($_GET["stars"]);
 		if($_GET["coins"] > 2) $coins = 2; elseif($_GET["coins"] < 1) $coins = 1; else $coins = ExploitPatch::number($_GET["coins"]);
+		$getPack = $db->prepare("SELECT * FROM mappacks WHERE ID = :packID");
+		$getPack->execute([':packID' => $id]);
+		$getPack = $getPack->fetch();
 		$change = $db->prepare("UPDATE mappacks SET name = :n, levels = :l, rgbcolors = :r, stars = :s, coins = :c, difficulty = :d WHERE id = :i");
 		$change->execute([':n' => ExploitPatch::remove($_GET["name"]), ':l' => ExploitPatch::remove($_GET["levels"]), ':r' => $color, ':s' => $stars, ':c' => $coins, ':i' => $id, ':d' => $diff]);
 		$query = $db->prepare("INSERT INTO modactions  (type, value, timestamp, account, value2, value3, value4, value7) VALUES ('21',:value,:timestamp,:account,:levels, :stars, :coins, :rgb)");
 		$query->execute([':value' => ExploitPatch::remove($_GET["name"]), ':timestamp' => time(), ':account' => $_SESSION["accountID"], ':levels' => ExploitPatch::remove($_GET["levels"]), ':stars' => $stars, ':coins' => $coins, ':rgb' => $color]);
+		$gs->sendLogsMapPackChangeWebhook($id, $_SESSION['accountID'], $getPack);
 		echo 1;
 	} else {
 	  $pck = $db->prepare("SELECT * FROM mappacks WHERE ID = :id");

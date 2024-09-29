@@ -114,7 +114,7 @@ if(!empty($_POST["levelid"])) {
 			</div>', 'reupload');
 			die();
 		}
-		$query = $db->prepare("SELECT levelID FROM levels WHERE originalReup = :lvl AND originalServer = :server");
+		$query = $db->prepare("SELECT * FROM levels WHERE originalReup = :lvl AND originalServer = :server");
 		$query->execute([':lvl' => $levelarray["a1"], ':server' => $parsedurl["host"]]);
 		$hostname = $gs->getIP();
 		//values
@@ -142,12 +142,14 @@ if(!empty($_POST["levelid"])) {
 			$reupAID = $_SESSION["accountID"];
 		}
 		//query
-		$levelID = $query->fetchColumn();
+		$levelData = $query->fetch();
+		$levelID = $levelData['levelID'];
 		if(!$levelID) {
 			$query = $db->prepare("INSERT INTO levels (levelName, gameVersion, binaryVersion, userName, levelDesc, levelVersion, levelLength, audioTrack, auto, password, original, twoPlayer, songID, objects, coins, requestedStars, extraString, levelString, levelInfo, secret, uploadDate, updateDate, originalReup, originalServer, userID, extID, unlisted, hostname, starStars, starCoins, starDifficulty, starDemon, starAuto, isLDM, songIDs, sfxIDs, ts, settingsString) VALUES (:name ,:gameVersion, '27', 'Reupload', :desc, :version, :length, :audiotrack, '0', :password, :originalReup, :twoPlayer, :songID, '0', :coins, :reqstar, :extraString, :levelString, '', '', '$uploadDate', '$uploadDate', :originalReup, :originalServer, :userID, :extID, '0', :hostname, :starStars, :starCoins, :starDifficulty, :starDemon, :starAuto, :isLDM, :songIDs, :sfxIDs, :ts, '')");
 			$query->execute([':password' => $password, ':starDemon' => $starDemon, ':starAuto' => $starAuto, ':gameVersion' => $gameVersion, ':name' => strip_tags($levelarray["a2"]), ':desc' => strip_tags($levelarray["a3"]), ':version' => $levelarray["a5"], ':length' => $levelarray["a15"], ':audiotrack' => $levelarray["a12"], ':twoPlayer' => $twoPlayer, ':songID' => $songID, ':coins' => $coins, ':reqstar' => $reqstar, ':extraString' => $extraString, ':levelString' => "", ':originalReup' => $levelarray["a1"], ':originalServer' => $parsedurl['host'], ':hostname' => $hostname, ':starStars' => 0, ':starCoins' => 0, ':starDifficulty' => $starDiff, ':userID' => $reupUID, ':extID' => $reupAID, ':isLDM' => $isLDM, ':songIDs' => $songIDs, ':sfxIDs' => $sfxIDs, ':ts' => $ts]);
 			$levelID = $db->lastInsertId();
 		}
+		$gs->sendLogsLevelChangeWebhook($levelID, $_SESSION['accountID'], $levelData);
 		file_put_contents("../".$dbPath."data/levels/$levelID", $levelString);
 		$dl->printSong('<div class="form">
 			<h1>'.$dl->getLocalizedString("levelReupload").'</h1>

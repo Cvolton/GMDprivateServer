@@ -35,10 +35,10 @@ if(!empty($_POST["packName"])) {
 </div>', 'mod');
 		die();
 	}
-	$name = ExploitPatch::remove($_POST["packName"]);
+	$name = ExploitPatch::rucharclean($_POST["packName"]);
 	$color = ExploitPatch::remove($dl->hex2RGB($_POST["color"], true));
-	$stars = ExploitPatch::remove($_POST["stars"]);
-	$coins = ExploitPatch::remove($_POST["coins"]);
+	$stars = ExploitPatch::number($_POST["stars"]);
+	$coins = ExploitPatch::number($_POST["coins"]);
 	if(!is_numeric($_POST['level_1']) OR !is_numeric($_POST['level_2']) OR !is_numeric($_POST['level_3']) OR $stars > 10 OR $stars < 0 OR $coins > 2 OR $coins < 0 OR !$gs->getLevelName(ExploitPatch::remove($_POST['level_1'])) OR !$gs->getLevelName(ExploitPatch::remove($_POST['level_2'])) OR !$gs->getLevelName(ExploitPatch::remove($_POST['level_3']))) {
 	$dl->printSong('<div class="form">
 			<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
@@ -49,7 +49,7 @@ if(!empty($_POST["packName"])) {
 			</div>', 'mod');
 		die();
 	}
-	$levels = ExploitPatch::remove($_POST['level_1']) . ',' . ExploitPatch::remove($_POST['level_2']) . ',' . ExploitPatch::remove($_POST['level_3']);
+	$levels = ExploitPatch::number($_POST['level_1']) . ',' . ExploitPatch::number($_POST['level_2']) . ',' . ExploitPatch::number($_POST['level_3']);
 	switch($stars) {
 		case 1:
 			$diff = 0;
@@ -78,6 +78,8 @@ if(!empty($_POST["packName"])) {
 	}
 	$query = $db->prepare("INSERT INTO mappacks (name, levels, stars, coins, difficulty, rgbcolors, colors2, timestamp) VALUES (:name, :levels, :stars, :coins, :diff, :rgb, :c2, :time)");
 	$query->execute([':name' => $name, ':levels' => $levels, ':stars' => $stars, ':coins' => $coins, ':diff' => $diff, ':rgb' => $color, ':c2' => $color, ':time' => time()]);
+	$packID = $db->lastInsertId();
+	$gs->sendLogsMapPackChangeWebhook($packID, $_SESSION['accountID']);
 	$query = $db->prepare("INSERT INTO modactions  (type, value, timestamp, account, value2, value3, value4, value7) VALUES ('17',:value,:timestamp,:account,:levels, :stars, :coins, :rgb)");
 	$query->execute([':value' => $name, ':timestamp' => time(), ':account' => $accountID, ':levels' => $levels, ':stars' => $stars, ':coins' => $coins, ':rgb' => $color]);
 	$success = $dl->getLocalizedString("packCreateSuccess").' <b style="color:'.$_POST["color"].'">'.$name."</b>!";

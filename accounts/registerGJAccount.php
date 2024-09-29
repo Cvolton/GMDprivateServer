@@ -46,6 +46,7 @@ if(!empty($_POST["userName"]) AND !empty($_POST["password"]) AND !empty($_POST["
 		VALUES (:userName, :password, :email, :time, :isActive, :gjp)");
 		$query->execute([':userName' => $userName, ':password' => $hashpass, ':email' => $email, ':time' => time(), ':isActive' => $preactivateAccounts ? 1 : 0, ':gjp' => $gjp2]);
 		echo "1";
+		$gs->sendLogsRegisterWebhook($db->lastInsertId());
       	if($mailEnabled) $gs->mail($email, $userName);
 	}
 } else echo "-1";

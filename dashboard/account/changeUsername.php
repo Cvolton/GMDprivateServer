@@ -26,6 +26,9 @@ if($_POST["oldnickname"] != "" AND $_POST["newnickname"] != "" AND $_POST["passw
 	}
 	$userName = $gs->getAccountName($_SESSION["accountID"]);
 	$accID = $_SESSION["accountID"];
+	$getAccountData = $db->prepare("SELECT * FROM accounts WHERE accountID = :accountID");
+	$getAccountData->execute([':accountID' => $accID]);
+	$getAccountData = $getAccountData->fetch();
 	$oldnick = ExploitPatch::charclean($_POST["oldnickname"]);
 	$newnick = ExploitPatch::charclean($_POST["newnickname"]);
 	if($oldnick != $userName){
@@ -71,6 +74,7 @@ if($pass == 1) {
 	$query->execute([':newnick' => $newnick, ':oldnick' => $oldnick]); // IMPORTANT: each level's username will change along with the account username
 	$query = $db->prepare("UPDATE users SET userName=:userName WHERE extID=:accountid");
 	$query->execute([':userName' => $newnick,':accountid' => $accID]);
+	$gs->sendLogsAccountChangeWebhook($accID, $accID, $getAccountData);
 	$_SESSION["accountID"] = 0;
 	setcookie('auth', 'no', 2147483647, '/');
 	$dl->printSong('<div class="form">

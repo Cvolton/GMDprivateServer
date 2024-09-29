@@ -59,9 +59,9 @@ if($gs->checkPermission($_SESSION["accountID"], "dashboardGauntletCreate")) {
 		$gauntletID = ExploitPatch::number($_POST['gauntlet_id']);
 		$levels = $gauntletLevels[0].','.$gauntletLevels[1].','.$gauntletLevels[2].','.$gauntletLevels[3].','.$gauntletLevels[4];
 		if($gauntletID > 0) {
-			$check = $db->prepare("SELECT count(*) FROM gauntlets WHERE ID = :gid");
+			$check = $db->prepare("SELECT * FROM gauntlets WHERE ID = :gid");
 			$check->execute([':gid' => $gauntletID]);
-			$check = $check->fetchColumn();
+			$check = $check->fetch();
 			if($check > 0) { // Shit code // Why
 				$query = $db->prepare("INSERT INTO gauntlets (level1, level2, level3, level4, level5, timestamp) VALUES (:l1, :l2, :l3, :l4, :l5, :t)");
 				$query->execute([':l1' => $gauntletLevels[0], ':l2' => $gauntletLevels[1], ':l3' => $gauntletLevels[2], ':l4' => $gauntletLevels[3], ':l5' => $gauntletLevels[4], ':t' => time()]);
@@ -74,6 +74,7 @@ if($gs->checkPermission($_SESSION["accountID"], "dashboardGauntletCreate")) {
 			$query->execute([':l1' => $gauntletLevels[0], ':l2' => $gauntletLevels[1], ':l3' => $gauntletLevels[2], ':l4' => $gauntletLevels[3], ':l5' => $gauntletLevels[4], ':t' => time()]);
 		}
 		$gauntletID = $db->lastInsertId();
+		$gs->sendLogsGauntletChangeWebhook($gauntletID, $_SESSION['accountID']);
 		$query = $db->prepare("INSERT INTO modactions  (type, value, value3, timestamp, account) VALUES ('18', :value, :value3, :timestamp, :account)");
 		$query->execute([':value' => $levels, ':value3' => $gauntletID, ':timestamp' => time(), ':account' => $accountID]);
 		$dl->printSong('<div class="form">

@@ -137,7 +137,8 @@ if(!empty($_POST["username"]) AND !empty($_POST["email"]) AND !empty($_POST["rep
 				$query2 = $db->prepare("INSERT INTO accounts (userName, password, email, registerDate, isActive, gjp2)
 				VALUES (:userName, :password, :email, :time, :isActive, :gjp)");
 				$query2->execute([':userName' => $username, ':password' => $hashpass, ':email' => $email, ':time' => time(), ':isActive' => $preactivateAccounts ? 1 : 0, ':gjp' => $gjp2]);
-              	if($mailEnabled) {
+              	$gs->sendLogsRegisterWebhook($db->lastInsertId());
+				if($mailEnabled) {
 					$gs->mail($email, $username);
 					exit($dl->printSong('<div class="form">
 						<h1>'.$dl->getLocalizedString("registerAcc").'</h1>

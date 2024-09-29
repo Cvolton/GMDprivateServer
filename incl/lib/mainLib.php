@@ -312,15 +312,15 @@ class mainLib {
 		return $userID;
 	}
 	public function getAccountName($accountID) {
-		if(!is_numeric($accountID)) return false;
-
 		require __DIR__ . "/connection.php";
-		$query = $db->prepare("SELECT userName FROM accounts WHERE accountID = :id");
-		$query->execute([':id' => $accountID]);
-		if ($query->rowCount() > 0) {
+		if(is_numeric($accountID)) {
+			$query = $db->prepare("SELECT userName FROM accounts WHERE accountID = :id");
+			$query->execute([':id' => $accountID]);
 			$userName = $query->fetchColumn();
 		} else {
-			$userName = false;
+			$query = $db->prepare("SELECT userName FROM users WHERE extID = :id");
+			$query->execute([':id' => $accountID]);
+			$userName = $query->fetchColumn();
 		}
 		return $userName;
 	}
@@ -1359,7 +1359,7 @@ class mainLib {
 		if(!class_exists('ExploitPatch')) require_once __DIR__."/exploitPatch.php";
 		require __DIR__."/../../config/dashboard.php";
 		require __DIR__."/../../config/discord.php";
-		if(!$webhooksEnabled OR !is_numeric($modAccID) OR !is_numeric($levelID) OR !in_array("rate", $webhooksToEnable)) return false;
+		if(!$webhooksEnabled OR !is_numeric($levelID) OR !in_array("rate", $webhooksToEnable)) return false;
 		require_once __DIR__."/../../config/webhooks/DiscordWebhook.php";
 		$webhookLangArray = $this->webhookStartLanguage($webhookLanguage);
 		$dw = new DiscordWebhook($rateWebhook);
@@ -1406,7 +1406,7 @@ class mainLib {
 			$dmDescription = sprintf($this->webhookLanguage('rateFailDescDM', $webhookLangArray), $modFormattedUsername, $sobEmoji);
 			$setNotificationText = $unrateNotificationText;
 		}
-		$stats = $downloadEmoji.' '.$level['downloads'].' | '.($level['likes'] - $level['dislikes'] >= 0 ? $likeEmoji.' '.abs($level['likes'] - $level['dislikes']) : $dislikeEmoji.' '.abs($level['likes'] - $level['dislikes']));
+		$stats = $downloadEmoji.' '.$level['downloads'].' • '.($level['likes'] - $level['dislikes'] >= 0 ? $likeEmoji.' '.abs($level['likes'] - $level['dislikes']) : $dislikeEmoji.' '.abs($level['likes'] - $level['dislikes']));
 		$levelField = [$this->webhookLanguage('levelTitle', $webhookLangArray), sprintf($this->webhookLanguage('levelDesc', $webhookLangArray), '**'.$level['levelName'].'**', $creatorFormattedUsername), true];
 		$IDField = [$this->webhookLanguage('levelIDTitle', $webhookLangArray), $level['levelID'], true];
 		if($level['starStars'] == 1) $action = 0; elseif(($level['starStars'] < 5 AND $level['starStars'] != 0) AND !($level['starStars'] > 9 AND $level['starStars'] < 20)) $action = 1; else $action = 2;
@@ -1489,7 +1489,7 @@ class mainLib {
 			if(is_array($webhookLangArray[$langString])) return $webhookLangArray[$langString][rand(0, count($webhookLangArray[$langString]) - 1)];
 			else return $webhookLangArray[$langString];
 		}
-		return false;
+		return $langString;
 	}
 	public function changeDifficulty($accountID, $levelID, $difficulty, $auto, $demon) {
 		if(!is_numeric($accountID)) return false;
@@ -1505,7 +1505,7 @@ class mainLib {
 		if(!class_exists('ExploitPatch')) require __DIR__."/exploitPatch.php";
 		require __DIR__."/../../config/dashboard.php";
 		require __DIR__."/../../config/discord.php";
-		if(!$webhooksEnabled OR !is_numeric($modAccID) OR !is_numeric($levelID) OR !in_array("suggest", $webhooksToEnable)) return false;
+		if(!$webhooksEnabled OR !is_numeric($levelID) OR !in_array("suggest", $webhooksToEnable)) return false;
 		require_once __DIR__."/../../config/webhooks/DiscordWebhook.php";
 		$webhookLangArray = $this->webhookStartLanguage($webhookLanguage);
 		$dw = new DiscordWebhook($suggestWebhook);
@@ -1530,11 +1530,11 @@ class mainLib {
         $setColor = empty($successColor) ? $originalDiffColorArray[$diffIcon] : $successColor;
 		$setTitle = $this->webhookLanguage('suggestTitle', $webhookLangArray);
 		$setDescription = sprintf($this->webhookLanguage('suggestDesc', $webhookLangArray), $modFormattedUsername);
-		$stats = $downloadEmoji.' '.$level['downloads'].' | '.($level['likes'] - $level['dislikes'] >= 0 ? $likeEmoji.' '.abs($level['likes'] - $level['dislikes']) : $dislikeEmoji.' '.abs($level['likes'] - $level['dislikes']));
+		$stats = $downloadEmoji.' '.$level['downloads'].' • '.($level['likes'] - $level['dislikes'] >= 0 ? $likeEmoji.' '.abs($level['likes'] - $level['dislikes']) : $dislikeEmoji.' '.abs($level['likes'] - $level['dislikes']));
 		$levelField = [$this->webhookLanguage('levelTitle', $webhookLangArray), sprintf($this->webhookLanguage('levelDesc', $webhookLangArray), '**'.$level['levelName'].'**', $creatorFormattedUsername), true];
 		$IDField = [$this->webhookLanguage('levelIDTitle', $webhookLangArray), $level['levelID'], true];
 		if($stars == 1) $action = 0; elseif(($stars < 5 AND $stars != 0) AND !($stars > 9 AND $stars < 20)) $action = 1; else $action = 2;
-		$difficultyField = [$this->webhookLanguage('difficultyTitle', $webhookLangArray), sprintf($this->webhookLanguage('difficultyDesc' . ($level['levelLength'] == 5 ? 'Moon' : '') . $action, $webhookLangArray), $difficulty, $level['starStars']), true];
+		$difficultyField = [$this->webhookLanguage('difficultyTitle', $webhookLangArray), sprintf($this->webhookLanguage('difficultyDesc' . ($level['levelLength'] == 5 ? 'Moon' : '') . $action, $webhookLangArray), $difficulty, $stars), true];
 		$statsField = [$this->webhookLanguage('statsTitle', $webhookLangArray), $stats, true];
 		if($level['requestedStars'] == 1) $action = 0; elseif(($level['requestedStars'] < 5 AND $level['requestedStars'] != 0) AND !($level['requestedStars'] > 9 AND $level['requestedStars'] < 20)) $action = 1; else $action = 2;
 		$requestedField = $level['requestedStars'] > 0 ? [$this->webhookLanguage('requestedTitle', $webhookLangArray), sprintf($this->webhookLanguage('requestedDesc' . ($level['levelLength'] == 5 ? 'Moon' : '') . $action, $webhookLangArray), $level['requestedStars']), true] : [];
@@ -1553,132 +1553,11 @@ class mainLib {
 		->setTimestamp()
 		->send();
 	}
-	public function sendDemonlistRecordWebhook($recordAccID, $recordID) {
-		require __DIR__."/connection.php";
-		require __DIR__."/../../config/dashboard.php";
-		require __DIR__."/../../config/discord.php";
-		if(!$webhooksEnabled OR !is_numeric($recordAccID) OR !is_numeric($recordID) OR !in_array("demonlist", $webhooksToEnable)) return false;
-		require_once __DIR__."/../../config/webhooks/DiscordWebhook.php";
-		$webhookLangArray = $this->webhookStartLanguage($webhookLanguage);
-		$dw = new DiscordWebhook($dlApproveWebhook);
-		$record = $db->prepare('SELECT * FROM dlsubmits WHERE ID = :ID');
-		$record->execute([':ID' => $recordID]);
-		$record = $record->fetch();
-		if(!$record) return false;
-		$level = $db->prepare('SELECT * FROM levels WHERE levelID = :ID');
-		$level->execute([':ID' => $record['levelID']]);
-		$level = $level->fetch();
-		if(!$level) return false;
-		$recordUsername = $this->getAccountName($recordAccID);
-		$recordHasDiscord = $this->hasDiscord($recordAccID);
-		$recordFormattedUsername = $recordHasDiscord ? "<@".$recordHasDiscord.">" : "**".$recordUsername."**";
-		$creatorAccID = $level['extID'];
-		$creatorUsername = $this->getAccountName($creatorAccID);
-		$creatorHasDiscord = $this->hasDiscord($creatorAccID);
-		$creatorFormattedUsername = $creatorHasDiscord ? "<@".$creatorHasDiscord.">" : "**".$creatorUsername."**";
-		$setColor = $pendingColor;
-		$setTitle = $this->webhookLanguage('demonlistTitle', $webhookLangArray);
-		$setDescription = sprintf($this->webhookLanguage('demonlistDesc', $webhookLangArray), $recordFormattedUsername, '**'.$level['levelName'].'**', $demonlistLink.'/approve.php?str='.$record['auth']);
-		$recordField = [$this->webhookLanguage('levelTitle', $webhookLangArray), sprintf($this->webhookLanguage('levelDesc', $webhookLangArray), '**'.$level['levelName'].'**', $creatorFormattedUsername), true];
-		$authorField = [$this->webhookLanguage('recordAuthorTitle', $webhookLangArray), $recordFormattedUsername, true];
-		if($record['atts'] == 1) $action = 0; elseif(($record['atts'] < 5 AND $record['atts'] != 0) AND !($record['atts'] > 9 AND $record['atts'] < 20)) $action = 1; else $action = 2;
-		$attemptsField = [$this->webhookLanguage('recordAttemptsTitle', $webhookLangArray), sprintf($this->webhookLanguage('recordAttemptsDesc'.$action, $webhookLangArray), $record['atts']), true];
-		$proofField = [$this->webhookLanguage('recordProofTitle', $webhookLangArray), "https://youtu.be/".$record['ytlink'], true];
-		$setThumbnail = $demonlistThumbnailURL;
-		$setFooter = sprintf($this->webhookLanguage('footer', $webhookLangArray), $gdps);
-		$dw->newMessage()
-		->setContent($dlsubmitNotificationText)
-		->setAuthor($gdps, $authorURL, $authorIconURL)
-		->setColor($setColor)
-		->setTitle($setTitle, $rateTitleURL)
-		->setDescription($setDescription)
-		->setThumbnail($setThumbnail)
-		->addFields($recordField, $authorField, $attemptsField, $proofField)
-		->setFooter($setFooter, $footerIconURL)
-		->setTimestamp()
-		->send();
-	}
-	public function sendDemonlistResultWebhook($modAccID, $recordID) {
-		require __DIR__."/connection.php";
-		require __DIR__."/../../config/dashboard.php";
-		require __DIR__."/../../config/discord.php";
-		if(!$webhooksEnabled OR !is_numeric($modAccID) OR !is_numeric($recordID) OR !in_array("demonlist", $webhooksToEnable)) return false;
-		require_once __DIR__."/../../config/webhooks/DiscordWebhook.php";
-		$webhookLangArray = $this->webhookStartLanguage($webhookLanguage);
-		$dw = new DiscordWebhook($dlWebhook);
-		$record = $db->prepare('SELECT * FROM dlsubmits WHERE ID = :ID');
-		$record->execute([':ID' => $recordID]);
-		$record = $record->fetch();
-		if(!$record) return false;
-		$level = $db->prepare('SELECT * FROM levels WHERE levelID = :ID');
-		$level->execute([':ID' => $record['levelID']]);
-		$level = $level->fetch();
-		if(!$level) return false;
-		$modUsername = $this->getAccountName($modAccID);
-		$modHasDiscord = $this->hasDiscord($modAccID);
-		$modFormattedUsername = $modHasDiscord ? "<@".$modHasDiscord.">" : "**".$modUsername."**";
-		$recordAccID = $record['accountID'];
-		$recordUsername = $this->getAccountName($recordAccID);
-		$recordHasDiscord = $this->hasDiscord($recordAccID);
-		$recordFormattedUsername = $recordHasDiscord ? "<@".$recordHasDiscord.">" : "**".$recordUsername."**";
-		$creatorAccID = $level['extID'];
-		$creatorUsername = $this->getAccountName($creatorAccID);
-		$creatorHasDiscord = $this->hasDiscord($creatorAccID);
-		$creatorFormattedUsername = $creatorHasDiscord ? "<@".$creatorHasDiscord.">" : "**".$creatorUsername."**";
-		if($record['approve'] == '1') {
-			$setColor = $successColor;
-			$setTitle = $this->webhookLanguage('demonlistApproveTitle', $webhookLangArray);
-			$dmTitle = $this->webhookLanguage('demonlistApproveTitleDM', $webhookLangArray);
-			$setDescription = sprintf($this->webhookLanguage('demonlistApproveDesc', $webhookLangArray), $modFormattedUsername, $recordFormattedUsername, '**'.$level['levelName'].'**');
-			$dmDescription = sprintf($this->webhookLanguage('demonlistApproveDescDM', $webhookLangArray), $modFormattedUsername, '**'.$level['levelName'].'**');
-		} else {
-			$setColor = $failColor;
-			$setTitle = $this->webhookLanguage('demonlistDenyTitle', $webhookLangArray);
-			$dmTitle = $this->webhookLanguage('demonlistDenyTitleDM', $webhookLangArray);
-			$setDescription = sprintf($this->webhookLanguage('demonlistDenyDesc', $webhookLangArray), $modFormattedUsername, $recordFormattedUsername, '**'.$level['levelName'].'**');
-			$dmDescription = sprintf($this->webhookLanguage('demonlistDenyDescDM', $webhookLangArray), $modFormattedUsername, '**'.$level['levelName'].'**');
-		}
-		$recordField = [$this->webhookLanguage('levelTitle', $webhookLangArray), sprintf($this->webhookLanguage('levelDesc', $webhookLangArray), '**'.$level['levelName'].'**', $creatorFormattedUsername), true];
-		$authorField = [$this->webhookLanguage('recordAuthorTitle', $webhookLangArray), $recordFormattedUsername, true];
-		if($record['atts'] == 1) $action = 0; elseif(($record['atts'] < 5 AND $record['atts'] != 0) AND !($record['atts'] > 9 AND $record['atts'] < 20)) $action = 1; else $action = 2;
-		$attemptsField = [$this->webhookLanguage('recordAttemptsTitle', $webhookLangArray), sprintf($this->webhookLanguage('recordAttemptsDesc'.$action, $webhookLangArray), $record['atts']), true];
-		$proofField = [$this->webhookLanguage('recordProofTitle', $webhookLangArray), "https://youtu.be/".$record['ytlink'], true];
-		$setThumbnail = $demonlistThumbnailURL;
-		$setFooter = sprintf($this->webhookLanguage('footer', $webhookLangArray), $gdps);
-		$dw->newMessage()
-		->setContent($dlresultNotificationText)
-		->setAuthor($gdps, $authorURL, $authorIconURL)
-		->setColor($setColor)
-		->setTitle($setTitle, $demonlistTitleURL)
-		->setDescription($setDescription)
-		->setThumbnail($setThumbnail)
-		->addFields($recordField, $authorField, $attemptsField, $proofField)
-		->setFooter($setFooter, $footerIconURL)
-		->setTimestamp()
-		->send();
-		if($dmNotifications && $recordHasDiscord) {
-			$embed = $this->generateEmbedArray(
-				[$gdps, $authorURL, $authorIconURL],
-				$setColor,
-				[$dmTitle, $demonlistTitleURL],
-				$dmDescription,
-				$setThumbnail,
-				[$recordField, $authorField, $attemptsField, $proofField],
-				[$setFooter, $footerIconURL]
-			);
-			$json = json_encode([
-				"content" => "",
-				"tts" => false,
-				"embeds" => [$embed]
-			], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
-			$this->sendDiscordPM($recordHasDiscord, $json, true);
-		}
-	}
 	public function sendBanWebhook($banID, $modAccID) {
 		require __DIR__."/connection.php";
 		require __DIR__."/../../config/dashboard.php";
 		require __DIR__."/../../config/discord.php";
-		if(!$webhooksEnabled OR !is_numeric($banID) OR !is_numeric($modAccID) OR !in_array("ban", $webhooksToEnable)) return false;
+		if(!$webhooksEnabled OR !is_numeric($banID) OR !in_array("ban", $webhooksToEnable)) return false;
 		require_once __DIR__."/../../config/webhooks/DiscordWebhook.php";
 		$webhookLangArray = $this->webhookStartLanguage($webhookLanguage);
 		$dw = new DiscordWebhook($banWebhook);
@@ -1895,7 +1774,7 @@ class mainLib {
 				$setNotificationText = $eventNotificationText;
 				break;
 		}
-		$stats = $downloadEmoji.' '.$level['downloads'].' | '.($level['likes'] - $level['dislikes'] >= 0 ? $likeEmoji.' '.abs($level['likes'] - $level['dislikes']) : $dislikeEmoji.' '.abs($level['likes'] - $level['dislikes']));
+		$stats = $downloadEmoji.' '.$level['downloads'].' • '.($level['likes'] - $level['dislikes'] >= 0 ? $likeEmoji.' '.abs($level['likes'] - $level['dislikes']) : $dislikeEmoji.' '.abs($level['likes'] - $level['dislikes']));
 		$levelField = [$this->webhookLanguage('levelTitle', $webhookLangArray), sprintf($this->webhookLanguage('levelDesc', $webhookLangArray), '**'.$level['levelName'].'**', $creatorFormattedUsername), true];
 		$IDField = [$this->webhookLanguage('levelIDTitle', $webhookLangArray), $level['levelID'], true];
 		if($level['starStars'] == 1) $action = 0; elseif(($level['starStars'] < 5 AND $level['starStars'] != 0) AND !($level['starStars'] > 9 AND $level['starStars'] < 20)) $action = 1; else $action = 2;
@@ -2046,6 +1925,643 @@ class mainLib {
 		}
 		return false;
 	}
+	public function sendLogsRegisterWebhook($accountID) {
+		include __DIR__."/connection.php";
+		if(!class_exists('ExploitPatch')) include __DIR__."/exploitPatch.php";
+		include __DIR__."/../../config/dashboard.php";
+		include __DIR__."/../../config/discord.php";
+		if(!$webhooksEnabled OR !is_numeric($accountID) OR !in_array("register", $webhooksToEnable)) return false;
+		include_once __DIR__."/../../config/webhooks/DiscordWebhook.php";
+		$webhookLangArray = $this->webhookStartLanguage($webhookLanguage);
+		$dw = new DiscordWebhook($logsRegisterWebhook);
+		$account = $db->prepare('SELECT * FROM accounts WHERE accountID = :accountID');
+		$account->execute([':accountID' => $accountID]);
+		$account = $account->fetch();
+		if(!$account) return false;
+		$setTitle = $this->webhookLanguage('logsRegisterTitle', $webhookLangArray);
+		$setDescription = $this->webhookLanguage('logsRegisterDesc', $webhookLangArray);
+		$usernameField = [$this->webhookLanguage('logsUsernameField', $webhookLangArray), $account['userName'], true];
+		$playerIDField = [$this->webhookLanguage('logsPlayerIDField', $webhookLangArray), $accountID.' • '.$this->getUserID($accountID, $account['userName']), true]; // Yes, this line creates userID for account. Yes, i did this on purpose.
+		$isActivatedField = [$this->webhookLanguage('logsIsActivatedField', $webhookLangArray), $this->webhookLanguage('logsRegister'.($account['isActive'] ? 'Yes' : 'No'), $webhookLangArray), true];
+		$registerTimeField = [$this->webhookLanguage('logsRegisterTimeField', $webhookLangArray), '<t:'.$account['registerDate'].':F>', false];
+		$setFooter = sprintf($this->webhookLanguage('footer', $webhookLangArray), $gdps);
+		$dw->newMessage()
+		->setContent($logsRegisterNotificationText)
+		->setAuthor($gdps, $authorURL, $authorIconURL)
+		->setColor($logsRegisterColor)
+		->setTitle($setTitle, $logsRegisterTitleURL)
+		->setDescription($setDescription)
+		->setThumbnail($logsRegisterThumbnailURL)
+		->addFields($usernameField, $playerIDField, $isActivatedField, $registerTimeField)
+		->setFooter($setFooter, $footerIconURL)
+		->setTimestamp()
+		->send();
+	}
+	public function sendLogsLevelChangeWebhook($levelID, $whoChangedID, $levelData = []) {
+		include __DIR__."/connection.php";
+		if(!class_exists('ExploitPatch')) include __DIR__."/exploitPatch.php";
+		include __DIR__."/../../config/dashboard.php";
+		include __DIR__."/../../config/discord.php";
+		if(!$webhooksEnabled OR !is_numeric($levelID) OR !in_array("levels", $webhooksToEnable)) return false;
+		include_once __DIR__."/../../config/webhooks/DiscordWebhook.php";
+		$webhookLangArray = $this->webhookStartLanguage($webhookLanguage);
+		$dw = new DiscordWebhook($logsLevelChangeWebhook);
+		$level = $db->prepare('SELECT * FROM levels WHERE levelID = :levelID');
+		$level->execute([':levelID' => $levelID]);
+		$level = $level->fetch();
+		$isDeleted = false;
+		if(!$level) {
+			if(empty($levelData)) return false;
+			$isDeleted = true;
+			$level = $levelData;
+		}
+		$creatorAccID = $level['extID'];
+		$creatorUsername = $this->getAccountName($creatorAccID);
+		$creatorHasDiscord = $this->hasDiscord($creatorAccID);
+		$creatorFormattedUsername = $creatorHasDiscord ? "<@".$creatorHasDiscord.">" : "**".$creatorUsername."**";
+		$whoChangedUsername = $this->getAccountName($whoChangedID);
+		$whoChangedHasDiscord = $this->hasDiscord($whoChangedID);
+		$whoChangedFormattedUsername = $whoChangedHasDiscord ? "<@".$whoChangedHasDiscord.">" : "**".$whoChangedUsername."**";
+		$difficulty = $this->getDifficulty($level['starDifficulty'], $level['starAuto'], $level['starDemon'], $level['starDemonDiff']);
+		$starsIcon = 'stars';
+		$diffIcon = 'na';
+		switch(true) {
+			case ($level['starEpic'] > 0):
+				$starsArray = ['', 'epic', 'legendary', 'mythic'];
+				$starsIcon = $starsArray[$level['starEpic']];
+				break;
+			case ($level['starFeatured'] > 0):
+				$starsIcon = 'featured';
+				break;
+		}
+		$diffArray = ['n/a' => 'na', 'auto' => 'auto', 'easy' => 'easy', 'normal' => 'normal', 'hard' => 'hard', 'harder' => 'harder', 'insane' => 'insane', 'demon' => 'demon-hard', 'easy demon' => 'demon-easy', 'medium demon' => 'demon-medium', 'hard demon' => 'demon-hard', 'insane demon' => 'demon-insane', 'extreme demon' => 'demon-extreme'];
+		$diffIcon = $diffArray[strtolower($difficulty)] ?? 'na';
+		$newLevelNameField = $newExtIDField = $newLevelDescField = $newSongIDField = $newAudioTrackField = $newPasswordField = $newStarCoinsField = $newUnlistedField = $newUnlisted2Field = $newUpdateLockedField = $newCommentLockedField = [];
+		$whoChangedField = [$this->webhookLanguage('logsLevelChangeWhoField', $webhookLangArray), $whoChangedFormattedUsername, false];
+		$whatWasChangedField = [$this->webhookLanguage('logsWhatWasChangedField', $webhookLangArray), sprintf($this->webhookLanguage('levelDesc', $webhookLangArray), '**'.$level['levelName'].'**', $creatorFormattedUsername).', *'.$level['levelID'].'*', false];
+		$setNotificationText = $logsLevelChangedNotificationText;
+		if($isDeleted || empty($levelData)) {
+			if($isDeleted) {
+				$whatWasChangedField = [];
+				$setColor = $failColor;
+				$setTitle = $this->webhookLanguage('logsLevelDeletedTitle', $webhookLangArray);
+				$setDescription = $this->webhookLanguage('logsLevelDeletedDesc', $webhookLangArray);
+			} else {
+				$whoChangedField = $whatWasChangedField = [];
+				$setColor = $successColor;
+				$setTitle = $this->webhookLanguage('logsLevelUploadedTitle', $webhookLangArray);
+				$setDescription = $this->webhookLanguage('logsLevelUploadedDesc', $webhookLangArray);
+			}
+			$stats = $downloadEmoji.' '.$level['downloads'].' • '.($level['likes'] - $level['dislikes'] >= 0 ? $likeEmoji.' '.abs($level['likes'] - $level['dislikes']) : $dislikeEmoji.' '.abs($level['likes'] - $level['dislikes']));
+			$levelField = [$this->webhookLanguage('levelTitle', $webhookLangArray), sprintf($this->webhookLanguage('levelDesc', $webhookLangArray), '**'.$level['levelName'].'**', $creatorFormattedUsername), true];
+			$IDField = [$this->webhookLanguage('levelIDTitle', $webhookLangArray), $level['levelID'], true];
+			if($level['starStars'] == 1) $action = 0; elseif(($level['starStars'] < 5 AND $level['starStars'] != 0) AND !($level['starStars'] > 9 AND $level['starStars'] < 20)) $action = 1; else $action = 2;
+			$difficultyField = [$this->webhookLanguage('difficultyTitle', $webhookLangArray), sprintf($this->webhookLanguage('difficultyDesc'.$action, $webhookLangArray), $difficulty, $level['starStars']), true];
+			$statsField = [$this->webhookLanguage('statsTitle', $webhookLangArray), $stats, true];
+			if($level['requestedStars'] == 1) $action = 0; elseif(($level['requestedStars'] < 5 AND $level['requestedStars'] != 0) AND !($level['requestedStars'] > 9 AND $level['requestedStars'] < 20)) $action = 1; else $action = 2;
+			$requestedField = $level['requestedStars'] > 0 ? [$this->webhookLanguage('requestedTitle', $webhookLangArray), sprintf($this->webhookLanguage('requestedDesc'.$action, $webhookLangArray), $level['requestedStars']), true] : [];
+			$descriptionField = [$this->webhookLanguage('descTitle', $webhookLangArray), (!empty($level['levelDesc']) ? ExploitPatch::url_base64_decode($level['levelDesc']) : $this->webhookLanguage('descDesc', $webhookLangArray)), false];
+			$songInfo = $this->getSongInfo($level['songID']);
+			$newSongIDField = [$this->webhookLanguage('songTitle', $webhookLangArray), (!empty($level['songID']) ? '**'.$songInfo['authorName'].'** — **'.$songInfo['name'].'**, *'.$songInfo['ID'].'*' : '**'.str_replace(' by ', '** by **', $this->getAudioTrack($level['audioTrack'])).'**'), true];
+			$unlistedArray = [$this->webhookLanguage('levelIsPublic', $webhookLangArray), $this->webhookLanguage('levelOnlyForFriends', $webhookLangArray), $this->webhookLanguage('levelIsUnlisted', $webhookLangArray)];
+			$unlistedText = $unlistedArray[$level['unlisted']];
+			$newUnlistedField = [$this->webhookLanguage('unlistedTitle', $webhookLangArray), $unlistedText, true];
+		} else {
+			$setColor = $pendingColor;
+			$setTitle = $this->webhookLanguage('logsLevelChangedTitle', $webhookLangArray);
+			$setDescription = $this->webhookLanguage('logsLevelChangedDesc', $webhookLangArray);
+			if($levelData['levelName'] != $level['levelName']) $newLevelNameField = [$this->webhookLanguage('logsLevelChangeNameField', $webhookLangArray), sprintf($this->webhookLanguage('logsLevelChangeNameValue', $webhookLangArray), '`'.$levelData['levelName'].'`', '`'.$level['levelName'].'`'), false];
+			if($levelData['extID'] != $level['extID']) $newExtIDField = [$this->webhookLanguage('logsLevelChangeExtIDField', $webhookLangArray), sprintf($this->webhookLanguage('logsLevelChangeExtIDValue', $webhookLangArray), '`'.$levelData['extID'].'`', '`'.$level['extID'].'`'), false];
+			if($levelData['levelDesc'] != $level['levelDesc']) $newLevelDescField = [$this->webhookLanguage('logsLevelChangeDescField', $webhookLangArray), sprintf($this->webhookLanguage('logsLevelChangeDescValue', $webhookLangArray), (!empty($levelData['levelDesc']) ? '`'.ExploitPatch::url_base64_decode($levelData['levelDesc']).'`' : $this->webhookLanguage('descDesc', $webhookLangArray)), (!empty($level['levelDesc']) ? '`'.ExploitPatch::url_base64_decode($level['levelDesc']).'`' : $this->webhookLanguage('descDesc', $webhookLangArray))), false];
+			if($levelData['songID'] != $level['songID']) $newSongIDField = [$this->webhookLanguage('logsLevelChangeSongIDField', $webhookLangArray), sprintf($this->webhookLanguage('logsLevelChangeSongIDValue', $webhookLangArray), '`'.$levelData['songID'].'`', '`'.$level['songID'].'`'), false];
+			if($levelData['audioTrack'] != $level['audioTrack']) $newAudioTrackField = [$this->webhookLanguage('logsLevelChangeAudioTrackField', $webhookLangArray), sprintf($this->webhookLanguage('logsLevelChangeAudioTrackValue', $webhookLangArray), '`'.$this->getAudioTrack($levelData['audioTrack']).'`', '`'.$this->getAudioTrack($level['audioTrack']).'`'), false];
+			if($levelData['password'] != $level['password']) $newPasswordField = [$this->webhookLanguage('logsLevelChangePasswordField', $webhookLangArray), sprintf($this->webhookLanguage('logsLevelChangePasswordValue', $webhookLangArray), '`'.$levelData['password'].'`', '`'.$level['password'].'`'), false];
+			if($levelData['starCoins'] != $level['starCoins']) $newStarCoinsField = [$this->webhookLanguage('logsLevelChangeCoinsField', $webhookLangArray), sprintf($this->webhookLanguage('logsLevelChangeCoinsValue', $webhookLangArray), ($levelData['starCoins'] ? $this->webhookLanguage('logsRegisterYes', $webhookLangArray) : $this->webhookLanguage('logsRegisterNo', $webhookLangArray)), ($level['starCoins'] ? $this->webhookLanguage('logsRegisterYes', $webhookLangArray) : $this->webhookLanguage('logsRegisterNo', $webhookLangArray))), false];
+			if($levelData['unlisted'] != $level['unlisted']) {
+				$unlistedArray = [$this->webhookLanguage('levelIsPublic', $webhookLangArray), $this->webhookLanguage('levelOnlyForFriends', $webhookLangArray), $this->webhookLanguage('levelIsUnlisted', $webhookLangArray)];
+				$oldUnlistedText = $unlistedArray[$levelData['unlisted']];
+				$newUnlistedText = $unlistedArray[$level['unlisted']];
+				$newUnlistedField = [$this->webhookLanguage('logsLevelChangeUnlistedField', $webhookLangArray), sprintf($this->webhookLanguage('logsLevelChangeUnlistedValue', $webhookLangArray), $oldUnlistedText, $newUnlistedText), true];
+			}
+			// I don't think we need this, but i already made it lol // if($levelData['unlisted2'] != $level['unlisted2']) $newUnlisted2Field = [$this->webhookLanguage('logsLevelChangeUnlisted2Field', $webhookLangArray), sprintf($this->webhookLanguage('logsLevelChangeUnlisted2Value', $webhookLangArray), ($levelData['unlisted2'] ? $this->webhookLanguage('logsRegisterYes', $webhookLangArray) : $this->webhookLanguage('logsRegisterNo', $webhookLangArray)), ($level['unlisted2'] ? $this->webhookLanguage('logsRegisterYes', $webhookLangArray) : $this->webhookLanguage('logsRegisterNo', $webhookLangArray))), false];
+			if($levelData['updateLocked'] != $level['updateLocked']) $newUpdateLockedField = [$this->webhookLanguage('logsLevelChangeUpdateLockedField', $webhookLangArray), sprintf($this->webhookLanguage('logsLevelChangeUpdateLockedValue', $webhookLangArray), ($levelData['updateLocked'] ? $this->webhookLanguage('logsRegisterYes', $webhookLangArray) : $this->webhookLanguage('logsRegisterNo', $webhookLangArray)), ($level['updateLocked'] ? $this->webhookLanguage('logsRegisterYes', $webhookLangArray) : $this->webhookLanguage('logsRegisterNo', $webhookLangArray))), false];
+			if($levelData['commentLocked'] != $level['commentLocked']) $newCommentLockedField = [$this->webhookLanguage('logsLevelChangeCommentLockedField', $webhookLangArray), sprintf($this->webhookLanguage('logsLevelChangeCommentLockedValue', $webhookLangArray), ($levelData['commentLocked'] ? $this->webhookLanguage('logsRegisterYes', $webhookLangArray) : $this->webhookLanguage('logsRegisterNo', $webhookLangArray)), ($level['commentLocked'] ? $this->webhookLanguage('logsRegisterYes', $webhookLangArray) : $this->webhookLanguage('logsRegisterNo', $webhookLangArray))), false];
+		}
+		$setThumbnail = $difficultiesURL.$starsIcon.'/'.$diffIcon.'.png';
+		$setFooter = sprintf($this->webhookLanguage('footer', $webhookLangArray), $gdps);
+		$dw->newMessage()
+		->setContent($setNotificationText)
+		->setAuthor($gdps, $authorURL, $authorIconURL)
+		->setColor($setColor)
+		->setTitle($setTitle, $logsLevelChangeTitleURL)
+		->setDescription($setDescription)
+		->setThumbnail($setThumbnail)
+		->addFields($whoChangedField, $whatWasChangedField, $levelField, $IDField, $difficultyField, $statsField, $requestedField, $descriptionField, $newLevelNameField, $newExtIDField, $newLevelDescField, $newSongIDField, $newAudioTrackField, $newPasswordField, $newStarCoinsField, $newUnlistedField, $newUnlisted2Field, $newUpdateLockedField, $newCommentLockedField)
+		->setFooter($setFooter, $footerIconURL)
+		->setTimestamp()
+		->send(); 
+	}
+	public function sendLogsAccountChangeWebhook($accountID, $whoChangedID, $accountData) {
+		include __DIR__."/connection.php";
+		if(!class_exists('ExploitPatch')) include __DIR__."/exploitPatch.php";
+		include __DIR__."/../../config/dashboard.php";
+		include __DIR__."/../../config/discord.php";
+		if(!$webhooksEnabled OR !is_numeric($accountID) OR empty($accountData) OR !in_array("account", $webhooksToEnable)) return false;
+		include_once __DIR__."/../../config/webhooks/DiscordWebhook.php";
+		$webhookLangArray = $this->webhookStartLanguage($webhookLanguage);
+		$dw = new DiscordWebhook($logsAccountChangeWebhook);
+		$newAccountData = $db->prepare('SELECT * FROM accounts WHERE accountID = :accountID');
+		$newAccountData->execute([':accountID' => $accountID]);
+		$newAccountData = $newAccountData->fetch();
+		$creatorUsername = $this->getAccountName($accountID);
+		$creatorHasDiscord = $this->hasDiscord($accountID);
+		$creatorFormattedUsername = $creatorHasDiscord ? "<@".$creatorHasDiscord.">" : "**".$creatorUsername."**";
+		$whoChangedUsername = $this->getAccountName($whoChangedID);
+		$whoChangedHasDiscord = $this->hasDiscord($whoChangedID);
+		$whoChangedFormattedUsername = $whoChangedHasDiscord ? "<@".$whoChangedHasDiscord.">" : "**".$whoChangedUsername."**";
+		$whoChangedField = [$this->webhookLanguage('logsAccountChangeWhoField', $webhookLangArray), $whoChangedFormattedUsername, false];
+		$whatWasChangedField = [$this->webhookLanguage('logsWhatWasChangedField', $webhookLangArray), $creatorFormattedUsername.', *'.$newAccountData['accountID'].'*', false];
+		$newUsernameField = $newPasswordField = $newMSField = $newFRSField = $newCSField = $newYoutubeField = $newTwitterField = $newTwitchField = $newIsActivatedField = [];
+		$setColor = $pendingColor;
+		$setTitle = $this->webhookLanguage('logsAccountChangedTitle', $webhookLangArray);
+		$setDescription = $this->webhookLanguage('logsAccountChangedDesc', $webhookLangArray);	
+		$setNotificationText = $logsAccountChangedNotificationText;
+		if($newAccountData['userName'] != $accountData['userName']) $newUsernameField = [$this->webhookLanguage('logsAccountChangeUsernameField', $webhookLangArray), sprintf($this->webhookLanguage('logsAccountChangeUsernameValue'), $accountData['userName'], $newAccountData['userName']), false];
+		if($newAccountData['password'] != $accountData['password']) $newPasswordField = [$this->webhookLanguage('logsAccountChangePasswordField', $webhookLangArray), $this->webhookLanguage('logsAccountChangePasswordValue', $webhookLangArray), false];
+		if($newAccountData['mS'] != $accountData['mS']) {
+			$msArray = [$this->webhookLanguage('mS0', $webhookLangArray), $this->webhookLanguage('mS1', $webhookLangArray), $this->webhookLanguage('mS2', $webhookLangArray)];
+			$oldMS = $msArray[$accountData['mS']];
+			$newMS = $msArray[$newAccountData['mS']];
+			$newMSField = [$this->webhookLanguage('logsAccountChangeMSField', $webhookLangArray), sprintf($this->webhookLanguage('logsAccountChangeMSValue', $webhookLangArray), $oldMS, $newMS), false];
+		}
+		if($newAccountData['frS'] != $accountData['frS']) {
+			$frsArray = [$this->webhookLanguage('frS0', $webhookLangArray), $this->webhookLanguage('frS1', $webhookLangArray)];
+			$oldFRS = $frsArray[$accountData['frS']];
+			$newFRS = $frsArray[$newAccountData['frS']];
+			$newFRSField = [$this->webhookLanguage('logsAccountChangeFRSField', $webhookLangArray), sprintf($this->webhookLanguage('logsAccountChangeFRSValue', $webhookLangArray), $oldFRS, $newFRS), false];
+		}
+		if($newAccountData['cS'] != $accountData['cS']) {
+			$csArray = [$this->webhookLanguage('cS0', $webhookLangArray), $this->webhookLanguage('cS1', $webhookLangArray), $this->webhookLanguage('cS2', $webhookLangArray)];
+			$oldCS = $csArray[$accountData['cS']];
+			$newCS = $csArray[$newAccountData['cS']];
+			$newCSField = [$this->webhookLanguage('logsAccountChangeCSField', $webhookLangArray), sprintf($this->webhookLanguage('logsAccountChangeCSValue', $webhookLangArray), $oldCS, $newCS), false];
+		}
+		if($newAccountData['youtubeurl'] != $accountData['youtubeurl']) $newYoutubeField = [$this->webhookLanguage('logsAccountChangeYTField', $webhookLangArray), sprintf($this->webhookLanguage('logsAccountChangeYTValue', $webhookLangArray), (!empty($accountData['youtubeurl']) ? $accountData['youtubeurl'] : $this->webhookLanguage('logsAccountChangeNoYT', $webhookLangArray)), (!empty($newAccountData['youtubeurl']) ? $newAccountData['youtubeurl'] : $this->webhookLanguage('logsAccountChangeNoYT', $webhookLangArray))), false];
+		if($newAccountData['twitter'] != $accountData['twitter']) $newTwitterField = [$this->webhookLanguage('logsAccountChangeTWField', $webhookLangArray), sprintf($this->webhookLanguage('logsAccountChangeTWValue', $webhookLangArray), (!empty($accountData['twitter']) ? $accountData['twitter'] : $this->webhookLanguage('logsAccountChangeNoTW', $webhookLangArray)), (!empty($newAccountData['twitter']) ? $newAccountData['twitter'] : $this->webhookLanguage('logsAccountChangeNoTW', $webhookLangArray))), false];
+		if($newAccountData['twitch'] != $accountData['twitch']) $newTwitchField = [$this->webhookLanguage('logsAccountChangeTTVField', $webhookLangArray), sprintf($this->webhookLanguage('logsAccountChangeTTVValue', $webhookLangArray), (!empty($accountData['twitch']) ? $accountData['twitch'] : $this->webhookLanguage('logsAccountChangeNoTTV', $webhookLangArray)), (!empty($newAccountData['twitch']) ? $newAccountData['twitch'] : $this->webhookLanguage('logsAccountChangeNoTTV', $webhookLangArray))), false];
+		if($newAccountData['isActive'] != $accountData['isActive']) $newIsActivatedField = [$this->webhookLanguage('logsAccountChangeActiveField', $webhookLangArray), sprintf($this->webhookLanguage('logsAccountChangeActiveValue', $webhookLangArray), $this->webhookLanguage('logsRegister'.($accountData['isActive'] ? 'Yes' : 'No'), $webhookLangArray), $this->webhookLanguage('logsRegister'.($newAccountData['isActive'] ? 'Yes' : 'No'), $webhookLangArray)), true];
+		$setFooter = sprintf($this->webhookLanguage('footer', $webhookLangArray), $gdps);
+		$dw->newMessage()
+		->setContent($setNotificationText)
+		->setAuthor($gdps, $authorURL, $authorIconURL)
+		->setColor($setColor)
+		->setTitle($setTitle, $logsAccountChangeTitleURL)
+		->setDescription($setDescription)
+		->setThumbnail($logsAccountChangeThumbnailURL)
+		->addFields($whoChangedField, $whatWasChangedField, $newUsernameField, $newPasswordField, $newMSField, $newFRSField, $newCSField, $newYoutubeField, $newTwitterField, $newTwitchField, $newIsActivatedField)
+		->setFooter($setFooter, $footerIconURL)
+		->setTimestamp()
+		->send();
+	}
+	public function sendLogsListChangeWebhook($listID, $whoChangedID, $listData = []) {
+		include __DIR__."/connection.php";
+		if(!class_exists('ExploitPatch')) include __DIR__."/exploitPatch.php";
+		include __DIR__."/../../config/dashboard.php";
+		include __DIR__."/../../config/discord.php";
+		if(!$webhooksEnabled OR !is_numeric($listID) OR !in_array("lists", $webhooksToEnable)) return false;
+		include_once __DIR__."/../../config/webhooks/DiscordWebhook.php";
+		$webhookLangArray = $this->webhookStartLanguage($webhookLanguage);
+		$dw = new DiscordWebhook($logsListChangeWebhook);
+		$newListData = $db->prepare('SELECT * FROM lists WHERE listID = :listID');
+		$newListData->execute([':listID' => $listID]);
+		$newListData = $newListData->fetch();
+		$isDeleted = false;
+		if(!$newListData) {
+			if(empty($listData)) return false;
+			$isDeleted = true;
+			$newListData = $listData;
+		}
+		$accountID = $newListData['accountID'];
+		$creatorUsername = $this->getAccountName($accountID);
+		$creatorHasDiscord = $this->hasDiscord($accountID);
+		$creatorFormattedUsername = $creatorHasDiscord ? "<@".$creatorHasDiscord.">" : "**".$creatorUsername."**";
+		$whoChangedUsername = $this->getAccountName($whoChangedID);
+		$whoChangedHasDiscord = $this->hasDiscord($whoChangedID);
+		$whoChangedFormattedUsername = $whoChangedHasDiscord ? "<@".$whoChangedHasDiscord.">" : "**".$whoChangedUsername."**";
+		$whoChangedField = [$this->webhookLanguage('logsListChangeWhoField', $webhookLangArray), $whoChangedFormattedUsername, false];
+		$whatWasChangedField = [$this->webhookLanguage('logsWhatWasChangedField', $webhookLangArray), $creatorFormattedUsername.', *'.$newListData['listID'].'*', false];
+		$setNotificationText = $logsListChangedNotificationText;
+		$diffArray = ['n/a' => 'na', 'auto' => 'auto', 'easy' => 'easy', 'normal' => 'normal', 'hard' => 'hard', 'harder' => 'harder', 'insane' => 'insane', 'demon' => 'demon-hard', 'easy demon' => 'demon-easy', 'medium demon' => 'demon-medium', 'hard demon' => 'demon-hard', 'insane demon' => 'demon-insane', 'extreme demon' => 'demon-extreme'];
+		$starsIcon = $newListData['starFeatured'] > 0 ? 'featured' : 'stars';
+		$diffIcon = $diffArray[strtolower($this->getListDiffName($newListData['starDifficulty']))] ?? 'na';
+		if($isDeleted || empty($listData)) {
+			if($isDeleted) {
+				$whatWasChangedField = [];
+				$setColor = $failColor;
+				$setTitle = $this->webhookLanguage('logsListDeletedTitle', $webhookLangArray);
+				$setDescription = $this->webhookLanguage('logsListDeletedDesc', $webhookLangArray);
+			} else {
+				$whoChangedField = $whatWasChangedField = [];
+				$setColor = $successColor;
+				$setTitle = $this->webhookLanguage('logsListUploadedTitle', $webhookLangArray);
+				$setDescription = $this->webhookLanguage('logsListUploadedDesc', $webhookLangArray);
+			}
+			$stats = $downloadEmoji.' '.$newListData['downloads'].' • '.($newListData['likes'] - $newListData['dislikes'] >= 0 ? $likeEmoji.' '.abs($newListData['likes'] - $newListData['dislikes']) : $dislikeEmoji.' '.abs($newListData['likes'] - $newListData['dislikes']));
+			$listField = [$this->webhookLanguage('listTitle', $webhookLangArray), sprintf($this->webhookLanguage('levelDesc', $webhookLangArray), '**'.$newListData['listName'].'**', $creatorFormattedUsername), true];
+			$IDField = [$this->webhookLanguage('listIDTitle', $webhookLangArray), $newListData['listID'], true];
+			$actions = $newListData['starStars'][strlen($newListData['starStars'])-1];
+			if($actions == 1) $action = 0; elseif($actions < 5 AND $actions != 0 AND !($newListData['starStars'] > 9 AND $newListData['starStars'] < 20)) $action = 1; else $action = 2;
+			$difficultyField = [$this->webhookLanguage('difficultyTitle', $webhookLangArray), sprintf($this->webhookLanguage('difficultyListDesc'.$action, $webhookLangArray), $this->getListDiffName($newListData['starDifficulty']), $newListData['starStars']), true];
+			$statsField = [$this->webhookLanguage('statsTitle', $webhookLangArray), $stats, true];
+			$descriptionField = [$this->webhookLanguage('descTitle', $webhookLangArray), (!empty($newListData['listDesc']) ? ExploitPatch::url_base64_decode($newListData['listDesc']) : $this->webhookLanguage('descDesc', $webhookLangArray)), false];
+			$unlistedArray = [$this->webhookLanguage('listIsPublic', $webhookLangArray), $this->webhookLanguage('listOnlyForFriends', $webhookLangArray), $this->webhookLanguage('listIsUnlisted', $webhookLangArray)];
+			$unlistedText = $unlistedArray[$newListData['unlisted']] ?? $unlistedArray[1];
+			$newUnlistedField = [$this->webhookLanguage('unlistedListTitle', $webhookLangArray), $unlistedText, true];
+		} else {
+			$setColor = $pendingColor;
+			$setTitle = $this->webhookLanguage('logsListChangedTitle', $webhookLangArray);
+			$setDescription = $this->webhookLanguage('logsListChangedDesc', $webhookLangArray);	
+			if($listData['listName'] != $newListData['listName']) $newListNameField = [$this->webhookLanguage('logsListChangeNameField', $webhookLangArray), sprintf($this->webhookLanguage('logsListChangeNameValue', $webhookLangArray), '`'.$listData['listName'].'`', '`'.$newListData['listName'].'`'), true];
+			if($listData['accountID'] != $newListData['accountID']) $newExtIDField = [$this->webhookLanguage('logsListChangeAccountIDField', $webhookLangArray), sprintf($this->webhookLanguage('logsListChangeAccountIDValue', $webhookLangArray), '`'.$listData['accountID'].'`', '`'.$newListData['accountID'].'`'), true];
+			if($listData['listDesc'] != $newListData['listDesc']) $newListDescField = [$this->webhookLanguage('logsListChangeDescField', $webhookLangArray), sprintf($this->webhookLanguage('logsListChangeDescValue', $webhookLangArray), (!empty($listData['listDesc']) ? '`'.ExploitPatch::url_base64_decode($listData['listDesc']).'`' : $this->webhookLanguage('descDesc', $webhookLangArray)), (!empty($newListData['listDesc']) ? '`'.ExploitPatch::url_base64_decode($newListData['listDesc']).'`' : $this->webhookLanguage('descDesc', $webhookLangArray))), false];
+			if($listData['starStars'] != $newListData['starStars']) {
+				$oldReward = $listData['starStars'][strlen($listData['starStars'])-1];
+				if($oldReward == 1) $action = 0; elseif($oldReward < 5 AND $oldReward != 0 AND !($listData['starStars'] > 9 AND $listData['starStars'] < 20)) $action = 1; else $action = 2;
+				$oldReward = sprintf($this->webhookLanguage('logsListChangeReward'.$action, $webhookLangArray), $listData['starStars']);
+				$newReward = $newListData['starStars'][strlen($newListData['starStars'])-1];
+				if($newReward == 1) $action = 0; elseif($newReward < 5 AND $newReward != 0 AND !($newListData['starStars'] > 9 AND $newListData['starStars'] < 20)) $action = 1; else $action = 2;
+				$newReward = sprintf($this->webhookLanguage('logsListChangeReward'.$action, $webhookLangArray), $newListData['starStars']);
+				$newRewardField = [$this->webhookLanguage('logsListChangeRewardField', $webhookLangArray), sprintf($this->webhookLanguage('logsListChangeRewardValue', $webhookLangArray), $oldReward, $newReward), true];
+			}
+			if($listData['unlisted'] != $newListData['unlisted']) {
+				$unlistedArray = [$this->webhookLanguage('listIsPublic', $webhookLangArray), $this->webhookLanguage('listOnlyForFriends', $webhookLangArray), $this->webhookLanguage('listIsUnlisted', $webhookLangArray)];
+				$oldUnlistedText = $unlistedArray[$listData['unlisted']] ?? $unlistedArray[1];
+				$newUnlistedText = $unlistedArray[$newListData['unlisted']] ?? $unlistedArray[1];
+				$newUnlistedField = [$this->webhookLanguage('logsListChangeUnlistedField', $webhookLangArray), sprintf($this->webhookLanguage('logsListChangeUnlistedValue', $webhookLangArray), $oldUnlistedText, $newUnlistedText), false];
+			}
+			if($listData['starDifficulty'] != $newListData['starDifficulty']) {
+				$oldDiffText = $this->getListDiffName($listData['starDifficulty']);
+				$newDiffText = $this->getListDiffName($newListData['starDifficulty']);
+				$newDiffField = [$this->webhookLanguage('logsListChangeDiffField', $webhookLangArray), sprintf($this->webhookLanguage('logsListChangeDiffValue', $webhookLangArray), $oldDiffText, $newDiffText), true];
+			}
+			if($listData['listlevels'] != $newListData['listlevels']) $newLevelsField = [$this->webhookLanguage('logsListChangeLevelsField', $webhookLangArray), sprintf($this->webhookLanguage('logsListChangeLevelsValue', $webhookLangArray), $listData['listlevels'], $newListData['listlevels']), false];
+			if($listData['countForReward'] != $newListData['countForReward']) {
+				$oldReward = $listData['countForReward'][strlen($listData['countForReward'])-1];
+				if($oldReward == 1) $action = 0; elseif($oldReward < 5 AND $oldReward != 0 AND !($listData['countForReward'] > 9 AND $listData['countForReward'] < 20)) $action = 1; else $action = 2;
+				$oldReward = sprintf($this->webhookLanguage('logsListChangeRewardCount'.$action, $webhookLangArray), $listData['countForReward']);
+				$newReward = $newListData['countForReward'][strlen($newListData['countForReward'])-1];
+				if($newReward == 1) $action = 0; elseif($newReward < 5 AND $newReward != 0 AND !($newListData['countForReward'] > 9 AND $newListData['countForReward'] < 20)) $action = 1; else $action = 2;
+				$newReward = sprintf($this->webhookLanguage('logsListChangeRewardCount'.$action, $webhookLangArray), $newListData['countForReward']);
+				$newRewardCountField = [$this->webhookLanguage('logsListChangeRewardCountField', $webhookLangArray), sprintf($this->webhookLanguage('logsListChangeRewardCountValue', $webhookLangArray), $oldReward, $newReward), true];
+			}
+			if($listData['commentLocked'] != $newListData['commentLocked']) $newCommentLockedField = [$this->webhookLanguage('logsListChangeCommentLockedField', $webhookLangArray), sprintf($this->webhookLanguage('logsListChangeCommentLockedValue', $webhookLangArray), ($listData['commentLocked'] ? $this->webhookLanguage('logsRegisterYes', $webhookLangArray) : $this->webhookLanguage('logsRegisterNo', $webhookLangArray)), ($newListData['commentLocked'] ? $this->webhookLanguage('logsRegisterYes', $webhookLangArray) : $this->webhookLanguage('logsRegisterNo', $webhookLangArray))), false];
+		}
+		$setThumbnail = $difficultiesURL.$starsIcon.'/'.$diffIcon.'.png';
+		$setFooter = sprintf($this->webhookLanguage('footer', $webhookLangArray), $gdps);
+		$dw->newMessage()
+		->setContent($setNotificationText)
+		->setAuthor($gdps, $authorURL, $authorIconURL)
+		->setColor($setColor)
+		->setTitle($setTitle, $logsListChangeTitleURL)
+		->setDescription($setDescription)
+		->setThumbnail($setThumbnail)
+		->addFields($whoChangedField, $whatWasChangedField, $listField, $IDField, $difficultyField, $statsField, $descriptionField, $newUnlistedField, $newListNameField, $newExtIDField, $newListDescField, $newLevelsField, $newRewardField, $newDiffField, $newRewardCountField, $newCommentLockedField)
+		->setFooter($setFooter, $footerIconURL)
+		->setTimestamp()
+		->send();
+	}
+	public function sendLogsModChangeWebhook($modID, $whoChangedID, $assignID, $modData = []) {
+		include __DIR__."/connection.php";
+		if(!class_exists('ExploitPatch')) include __DIR__."/exploitPatch.php";
+		include __DIR__."/../../config/dashboard.php";
+		include __DIR__."/../../config/discord.php";
+		if(!$webhooksEnabled OR !is_numeric($modID) OR !is_numeric($assignID) OR !in_array("mods", $webhooksToEnable)) return false;
+		include_once __DIR__."/../../config/webhooks/DiscordWebhook.php";
+		$webhookLangArray = $this->webhookStartLanguage($webhookLanguage);
+		$dw = new DiscordWebhook($logsModChangeWebhook);
+		$newAssignData = $db->prepare('SELECT * FROM roleassign WHERE assignID = :assignID');
+		$newAssignData->execute([':assignID' => $assignID]);
+		$newAssignData = $newAssignData->fetch();
+		$isDeleted = false;
+		if(!$newAssignData) {
+			if(empty($modData)) return false;
+			$isDeleted = true;
+			$newAssignData = $modData;
+		}
+		$creatorUsername = $this->getAccountName($modID);
+		$creatorHasDiscord = $this->hasDiscord($modID);
+		$creatorFormattedUsername = $creatorHasDiscord ? "<@".$creatorHasDiscord.">" : "**".$creatorUsername."**";
+		$whoChangedUsername = $this->getAccountName($whoChangedID);
+		$whoChangedHasDiscord = $this->hasDiscord($whoChangedID);
+		$whoChangedFormattedUsername = $whoChangedHasDiscord ? "<@".$whoChangedHasDiscord.">" : "**".$whoChangedUsername."**";
+		$whoChangedField = [$this->webhookLanguage('logsModChangeWhoField', $webhookLangArray), $whoChangedFormattedUsername, false];
+		$whatWasChangedField = [$this->webhookLanguage('logsWhatWasChangedField', $webhookLangArray), $creatorFormattedUsername.', *'.$modID.'*', false];
+		$setNotificationText = $logsModChangedNotificationText;
+		if($isDeleted || empty($modData)) {
+			if($isDeleted) {
+				$setColor = $failColor;
+				$setTitle = $this->webhookLanguage('logsModDemotedTitle', $webhookLangArray);
+				$setDescription = $this->webhookLanguage('logsModDemotedDesc', $webhookLangArray);
+			} else {
+				$setColor = $successColor;
+				$setTitle = $this->webhookLanguage('logsModPromotedTitle', $webhookLangArray);
+				$setDescription = $this->webhookLanguage('logsModPromotedDesc', $webhookLangArray);
+			}
+			$getRole = $db->prepare("SELECT roleName FROM roles WHERE roleID = :roleID");
+			$getRole->execute([':roleID' => $newAssignData['roleID']]);
+			$getRole = $getRole->fetchColumn();
+			if(empty($getRole)) $getRole = $this->webhookLanguage('logsModChangeRoleUnknown', $webhookLangArray);
+			$roleField = [$this->webhookLanguage('roleField', $webhookLangArray), $getRole, true];
+		} else {
+			$setColor = $pendingColor;
+			$setTitle = $this->webhookLanguage('logsModChangedTitle', $webhookLangArray);
+			$setDescription = $this->webhookLanguage('logsModChangedDesc', $webhookLangArray);	
+			if($modData['roleID'] != $newAssignData['roleID']) {
+				$getRole = $db->prepare("SELECT roleName FROM roles WHERE roleID = :roleID");
+				$getRole->execute([':roleID' => $modData['roleID']]);
+				$oldRole = $getRole->fetchColumn();
+				if(empty($oldRole)) $oldRole = $this->webhookLanguage('logsModChangeRoleUnknown', $webhookLangArray);
+				$getRole = $db->prepare("SELECT roleName FROM roles WHERE roleID = :roleID");
+				$getRole->execute([':roleID' => $newAssignData['roleID']]);
+				$newRole = $getRole->fetchColumn();
+				if(empty($newRole)) $newRole = $this->webhookLanguage('logsModChangeRoleUnknown', $webhookLangArray);
+				$roleField = [$this->webhookLanguage('logsModChangeRoleField', $webhookLangArray), sprintf($this->webhookLanguage('logsModChangeRoleValue', $webhookLangArray), $oldRole, $newRole), true];
+			}
+		}
+		$setFooter = sprintf($this->webhookLanguage('footer', $webhookLangArray), $gdps);
+		$dw->newMessage()
+		->setContent($setNotificationText)
+		->setAuthor($gdps, $authorURL, $authorIconURL)
+		->setColor($setColor)
+		->setTitle($setTitle, $logsModChangeTitleURL)
+		->setDescription($setDescription)
+		->setThumbnail($logsModChangeThumbnailURL)
+		->addFields($whoChangedField, $whatWasChangedField, $roleField)
+		->setFooter($setFooter, $footerIconURL)
+		->setTimestamp()
+		->send();
+	}
+	public function sendLogsGauntletChangeWebhook($gauntletID, $whoChangedID, $gauntletData = []) {
+		include __DIR__."/connection.php";
+		if(!class_exists('ExploitPatch')) include __DIR__."/exploitPatch.php";
+		include __DIR__."/../../config/dashboard.php";
+		include __DIR__."/../../config/discord.php";
+		if(!$webhooksEnabled OR !is_numeric($gauntletID) OR !in_array("gauntlets", $webhooksToEnable)) return false;
+		include_once __DIR__."/../../config/webhooks/DiscordWebhook.php";
+		$webhookLangArray = $this->webhookStartLanguage($webhookLanguage);
+		$dw = new DiscordWebhook($logsGauntletChangeWebhook);
+		$newGauntletData = $db->prepare('SELECT * FROM gauntlets WHERE ID = :gauntletID');
+		$newGauntletData->execute([':gauntletID' => $gauntletID]);
+		$newGauntletData = $newGauntletData->fetch();
+		$isDeleted = false;
+		if(!$newGauntletData) {
+			if(empty($gauntletData)) return false;
+			$isDeleted = true;
+			$newGauntletData = $gauntletData;
+		}
+		$whoChangedUsername = $this->getAccountName($whoChangedID);
+		$whoChangedHasDiscord = $this->hasDiscord($whoChangedID);
+		$whoChangedFormattedUsername = $whoChangedHasDiscord ? "<@".$whoChangedHasDiscord.">" : "**".$whoChangedUsername."**";
+		$whoChangedField = [$this->webhookLanguage('logsGauntletChangeWhoField', $webhookLangArray), $whoChangedFormattedUsername, false];
+		$whatWasChangedField = [$this->webhookLanguage('logsWhatWasChangedField', $webhookLangArray), $this->getGauntletName($newGauntletData['ID']).' Gauntlet', false];
+		$setNotificationText = $logsGauntletChangedNotificationText;
+		if($isDeleted || empty($gauntletData)) {
+			$whatWasChangedField = [];
+			if($isDeleted) {
+				$setColor = $failColor;
+				$setTitle = $this->webhookLanguage('logsGauntletDeletedTitle', $webhookLangArray);
+				$setDescription = $this->webhookLanguage('logsGauntletDeletedDesc', $webhookLangArray);
+			} else {
+				$setColor = $successColor;
+				$setTitle = $this->webhookLanguage('logsGauntletCreatedTitle', $webhookLangArray);
+				$setDescription = $this->webhookLanguage('logsGauntletCreatedDesc', $webhookLangArray);
+			}
+			$gauntletName = [$this->webhookLanguage('gauntletNameField', $webhookLangArray), $this->getGauntletName($newGauntletData['ID']).' Gauntlet', false];
+			$getLevels = $db->prepare('SELECT levelName, levelID, extID FROM levels WHERE levelID IN ('.$newGauntletData['level1'].', '.$newGauntletData['level2'].', '.$newGauntletData['level3'].', '.$newGauntletData['level4'].', '.$newGauntletData['level5'].')');
+			$getLevels->execute();
+			$getLevels = $getLevels->fetchAll();
+			$level1Author = $getLevels[0]['extID'];
+			$level1AuthorUsername = $this->getAccountName($level1Author);
+			$level1AuthorHasDiscord = $this->hasDiscord($level1Author);
+			$level1AuthorFormattedUsername = $level1AuthorHasDiscord ? "<@".$level1AuthorHasDiscord.">" : "**".$level1AuthorUsername."**";
+			$level2Author = $getLevels[1]['extID'];
+			$level2AuthorUsername = $this->getAccountName($level2Author);
+			$level2AuthorHasDiscord = $this->hasDiscord($level2Author);
+			$level2AuthorFormattedUsername = $level2AuthorHasDiscord ? "<@".$level2AuthorHasDiscord.">" : "**".$level2AuthorUsername."**";
+			$level3Author = $getLevels[2]['extID'];
+			$level3AuthorUsername = $this->getAccountName($level3Author);
+			$level3AuthorHasDiscord = $this->hasDiscord($level3Author);
+			$level3AuthorFormattedUsername = $level3AuthorHasDiscord ? "<@".$level3AuthorHasDiscord.">" : "**".$level3AuthorUsername."**";
+			$level4Author = $getLevels[3]['extID'];
+			$level4AuthorUsername = $this->getAccountName($level4Author);
+			$level4AuthorHasDiscord = $this->hasDiscord($level4Author);
+			$level4AuthorFormattedUsername = $level4AuthorHasDiscord ? "<@".$level4AuthorHasDiscord.">" : "**".$level4AuthorUsername."**";
+			$level5Author = $getLevels[4]['extID'];
+			$level5AuthorUsername = $this->getAccountName($level5Author);
+			$level5AuthorHasDiscord = $this->hasDiscord($level5Author);
+			$level5AuthorFormattedUsername = $level5AuthorHasDiscord ? "<@".$level5AuthorHasDiscord.">" : "**".$level5AuthorUsername."**";
+			$level1Field = [$this->webhookLanguage('level1Field', $webhookLangArray), sprintf($this->webhookLanguage('levelDesc', $webhookLangArray), $getLevels[0]['levelName'], $level1AuthorFormattedUsername).', *'.$getLevels[0]['levelID'].'*', false];
+			$level2Field = [$this->webhookLanguage('level2Field', $webhookLangArray), sprintf($this->webhookLanguage('levelDesc', $webhookLangArray), $getLevels[1]['levelName'], $level2AuthorFormattedUsername).', *'.$getLevels[1]['levelID'].'*', false];
+			$level3Field = [$this->webhookLanguage('level3Field', $webhookLangArray), sprintf($this->webhookLanguage('levelDesc', $webhookLangArray), $getLevels[2]['levelName'], $level3AuthorFormattedUsername).', *'.$getLevels[2]['levelID'].'*', false];
+			$level4Field = [$this->webhookLanguage('level4Field', $webhookLangArray), sprintf($this->webhookLanguage('levelDesc', $webhookLangArray), $getLevels[3]['levelName'], $level4AuthorFormattedUsername).', *'.$getLevels[3]['levelID'].'*', false];
+			$level5Field = [$this->webhookLanguage('level5Field', $webhookLangArray), sprintf($this->webhookLanguage('levelDesc', $webhookLangArray), $getLevels[4]['levelName'], $level5AuthorFormattedUsername).', *'.$getLevels[4]['levelID'].'*', false];
+		} else {
+			$setColor = $pendingColor;
+			$setTitle = $this->webhookLanguage('logsGauntletChangedTitle', $webhookLangArray);
+			$setDescription = $this->webhookLanguage('logsGauntletChangedDesc', $webhookLangArray);
+			if($gauntletData['ID'] != $newGauntletData['ID']) $level1Field = [$this->webhookLanguage('logsGauntletChangeGauntletField', $webhookLangArray), sprintf($this->webhookLanguage('logsGauntletChangeGauntletValue', $webhookLangArray), $this->getGauntletName($gauntletData['ID']).' Gauntlet', $this->getGauntletName($newGauntletData['ID']).' Gauntlet'), false];
+			if($gauntletData['level1'] != $newGauntletData['level1']) {
+				$getLevel = $db->prepare('SELECT * FROM levels WHERE levelID = :levelID');
+				$getLevel->execute([':levelID' => $gauntletData['level1']]);
+				$oldLevel1 = $getLevel->fetch();
+				$getLevel = $db->prepare('SELECT * FROM levels WHERE levelID = :levelID');
+				$getLevel->execute([':levelID' => $newGauntletData['level1']]);
+				$newLevel1 = $getLevel->fetch();
+				$oldLevel1AuthorUsername = $this->getAccountName($oldLevel1['extID']);
+				$oldLevel1AuthorHasDiscord = $this->hasDiscord($oldLevel1['extID']);
+				$oldLevel1AuthorFormattedUsername = $oldLevel1AuthorHasDiscord ? "<@".$oldLevel1AuthorHasDiscord.">" : "**".$oldLevel1AuthorUsername."**";
+				$newLevel1AuthorUsername = $this->getAccountName($newLevel1['extID']);
+				$newLevel1AuthorHasDiscord = $this->hasDiscord($newLevel1['extID']);
+				$newLevel1AuthorFormattedUsername = $newLevel1AuthorHasDiscord ? "<@".$newLevel1AuthorHasDiscord.">" : "**".$newLevel1AuthorUsername."**";
+				$level1Field = [$this->webhookLanguage('logsGauntletChangeLevel1Field', $webhookLangArray), sprintf($this->webhookLanguage('logsGauntletChangeLevelValue', $webhookLangArray), sprintf($this->webhookLanguage('levelDesc', $webhookLangArray), $oldLevel1['levelName'], $oldLevel1AuthorFormattedUsername).', *'.$oldLevel1['levelID'].'*', sprintf($this->webhookLanguage('levelDesc', $webhookLangArray), $newLevel1['levelName'], $newLevel1AuthorFormattedUsername).', *'.$newLevel1['levelID'].'*'), false];
+			}
+			if($gauntletData['level2'] != $newGauntletData['level2']) {
+				$getLevel = $db->prepare('SELECT * FROM levels WHERE levelID = :levelID');
+				$getLevel->execute([':levelID' => $gauntletData['level2']]);
+				$oldLevel2 = $getLevel->fetch();
+				$getLevel = $db->prepare('SELECT * FROM levels WHERE levelID = :levelID');
+				$getLevel->execute([':levelID' => $newGauntletData['level2']]);
+				$newLevel2 = $getLevel->fetch();
+				$oldLevel2AuthorUsername = $this->getAccountName($oldLevel2['extID']);
+				$oldLevel2AuthorHasDiscord = $this->hasDiscord($oldLevel2['extID']);
+				$oldLevel2AuthorFormattedUsername = $oldLevel2AuthorHasDiscord ? "<@".$oldLevel2AuthorHasDiscord.">" : "**".$oldLevel2AuthorUsername."**";
+				$newLevel2AuthorUsername = $this->getAccountName($newLevel2['extID']);
+				$newLevel2AuthorHasDiscord = $this->hasDiscord($newLevel2['extID']);
+				$newLevel2AuthorFormattedUsername = $newLevel2AuthorHasDiscord ? "<@".$newLevel2AuthorHasDiscord.">" : "**".$newLevel2AuthorUsername."**";
+				$level2Field = [$this->webhookLanguage('logsGauntletChangeLevel2Field', $webhookLangArray), sprintf($this->webhookLanguage('logsGauntletChangeLevelValue', $webhookLangArray), sprintf($this->webhookLanguage('levelDesc', $webhookLangArray), $oldLevel2['levelName'], $oldLevel2AuthorFormattedUsername).', *'.$oldLevel2['levelID'].'*', sprintf($this->webhookLanguage('levelDesc', $webhookLangArray), $newLevel2['levelName'], $newLevel2AuthorFormattedUsername).', *'.$newLevel2['levelID'].'*'), false];
+			}
+			if($gauntletData['level3'] != $newGauntletData['level3']) {
+				$getLevel = $db->prepare('SELECT * FROM levels WHERE levelID = :levelID');
+				$getLevel->execute([':levelID' => $gauntletData['level3']]);
+				$oldLevel3 = $getLevel->fetch();
+				$getLevel = $db->prepare('SELECT * FROM levels WHERE levelID = :levelID');
+				$getLevel->execute([':levelID' => $newGauntletData['level3']]);
+				$newLevel3 = $getLevel->fetch();
+				$oldLevel3AuthorUsername = $this->getAccountName($oldLevel3['extID']);
+				$oldLevel3AuthorHasDiscord = $this->hasDiscord($oldLevel3['extID']);
+				$oldLevel3AuthorFormattedUsername = $oldLevel3AuthorHasDiscord ? "<@".$oldLevel3AuthorHasDiscord.">" : "**".$oldLevel3AuthorUsername."**";
+				$newLevel3AuthorUsername = $this->getAccountName($newLevel3['extID']);
+				$newLevel3AuthorHasDiscord = $this->hasDiscord($newLevel3['extID']);
+				$newLevel3AuthorFormattedUsername = $newLevel3AuthorHasDiscord ? "<@".$newLevel3AuthorHasDiscord.">" : "**".$newLevel3AuthorUsername."**";
+				$level3Field = [$this->webhookLanguage('logsGauntletChangeLevel3Field', $webhookLangArray), sprintf($this->webhookLanguage('logsGauntletChangeLevelValue', $webhookLangArray), sprintf($this->webhookLanguage('levelDesc', $webhookLangArray), $oldLevel3['levelName'], $oldLevel3AuthorFormattedUsername).', *'.$oldLevel3['levelID'].'*', sprintf($this->webhookLanguage('levelDesc', $webhookLangArray), $newLevel3['levelName'], $newLevel3AuthorFormattedUsername).', *'.$newLevel3['levelID'].'*'), false];
+			}
+			if($gauntletData['level4'] != $newGauntletData['level4']) {
+				$getLevel = $db->prepare('SELECT * FROM levels WHERE levelID = :levelID');
+				$getLevel->execute([':levelID' => $gauntletData['level4']]);
+				$oldLevel4 = $getLevel->fetch();
+				$getLevel = $db->prepare('SELECT * FROM levels WHERE levelID = :levelID');
+				$getLevel->execute([':levelID' => $newGauntletData['level4']]);
+				$newLevel4 = $getLevel->fetch();
+				$oldLevel4AuthorUsername = $this->getAccountName($oldLevel4['extID']);
+				$oldLevel4AuthorHasDiscord = $this->hasDiscord($oldLevel4['extID']);
+				$oldLevel4AuthorFormattedUsername = $oldLevel4AuthorHasDiscord ? "<@".$oldLevel4AuthorHasDiscord.">" : "**".$oldLevel4AuthorUsername."**";
+				$newLevel4AuthorUsername = $this->getAccountName($newLevel4['extID']);
+				$newLevel4AuthorHasDiscord = $this->hasDiscord($newLevel4['extID']);
+				$newLevel4AuthorFormattedUsername = $newLevel4AuthorHasDiscord ? "<@".$newLevel4AuthorHasDiscord.">" : "**".$newLevel4AuthorUsername."**";
+				$level4Field = [$this->webhookLanguage('logsGauntletChangeLevel4Field', $webhookLangArray), sprintf($this->webhookLanguage('logsGauntletChangeLevelValue', $webhookLangArray), sprintf($this->webhookLanguage('levelDesc', $webhookLangArray), $oldLevel4['levelName'], $oldLevel4AuthorFormattedUsername).', *'.$oldLevel4['levelID'].'*', sprintf($this->webhookLanguage('levelDesc', $webhookLangArray), $newLevel4['levelName'], $newLevel4AuthorFormattedUsername).', *'.$newLevel4['levelID'].'*'), false];
+			}
+			if($gauntletData['level5'] != $newGauntletData['level5']) {
+				$getLevel = $db->prepare('SELECT * FROM levels WHERE levelID = :levelID');
+				$getLevel->execute([':levelID' => $gauntletData['level5']]);
+				$oldLevel5 = $getLevel->fetch();
+				$getLevel = $db->prepare('SELECT * FROM levels WHERE levelID = :levelID');
+				$getLevel->execute([':levelID' => $newGauntletData['level5']]);
+				$newLevel5 = $getLevel->fetch();
+				$oldLevel5AuthorUsername = $this->getAccountName($oldLevel5['extID']);
+				$oldLevel5AuthorHasDiscord = $this->hasDiscord($oldLevel5['extID']);
+				$oldLevel5AuthorFormattedUsername = $oldLevel5AuthorHasDiscord ? "<@".$oldLevel5AuthorHasDiscord.">" : "**".$oldLevel5AuthorUsername."**";
+				$newLevel5AuthorUsername = $this->getAccountName($newLevel5['extID']);
+				$newLevel5AuthorHasDiscord = $this->hasDiscord($newLevel5['extID']);
+				$newLevel5AuthorFormattedUsername = $newLevel5AuthorHasDiscord ? "<@".$newLevel5AuthorHasDiscord.">" : "**".$newLevel5AuthorUsername."**";
+				$level5Field = [$this->webhookLanguage('logsGauntletChangeLevel5Field', $webhookLangArray), sprintf($this->webhookLanguage('logsGauntletChangeLevelValue', $webhookLangArray), sprintf($this->webhookLanguage('levelDesc', $webhookLangArray), $oldLevel5['levelName'], $oldLevel5AuthorFormattedUsername).', *'.$oldLevel5['levelID'].'*', sprintf($this->webhookLanguage('levelDesc', $webhookLangArray), $newLevel5['levelName'], $newLevel5AuthorFormattedUsername).', *'.$newLevel5['levelID'].'*'), false];
+			}
+		}
+		$setFooter = sprintf($this->webhookLanguage('footer', $webhookLangArray), $gdps);
+		$dw->newMessage()
+		->setContent($setNotificationText)
+		->setAuthor($gdps, $authorURL, $authorIconURL)
+		->setColor($setColor)
+		->setTitle($setTitle, $logsGauntletChangeTitleURL)
+		->setDescription($setDescription)
+		->setThumbnail($logsGauntletChangeThumbnailURL)
+		->addFields($whoChangedField, $whatWasChangedField, $gauntletName, $level1Field, $level2Field, $level3Field, $level4Field, $level5Field)
+		->setFooter($setFooter, $footerIconURL)
+		->setTimestamp()
+		->send();
+	}
+	public function sendLogsMapPackChangeWebhook($packID, $whoChangedID, $packData = []) {
+		include __DIR__."/connection.php";
+		if(!class_exists('ExploitPatch')) include __DIR__."/exploitPatch.php";
+		include __DIR__."/../../config/dashboard.php";
+		include __DIR__."/../../config/discord.php";
+		if(!$webhooksEnabled OR !is_numeric($packID) OR !in_array("mappacks", $webhooksToEnable)) return false;
+		include_once __DIR__."/../../config/webhooks/DiscordWebhook.php";
+		$webhookLangArray = $this->webhookStartLanguage($webhookLanguage);
+		$dw = new DiscordWebhook($logsMapPackChangeWebhook);
+		$newPackData = $db->prepare('SELECT * FROM mappacks WHERE ID = :packID');
+		$newPackData->execute([':packID' => $packID]);
+		$newPackData = $newPackData->fetch();
+		$isDeleted = false;
+		if(!$newPackData) {
+			if(empty($packData)) return false;
+			$isDeleted = true;
+			$newPackData = $packData;
+		}
+		$whoChangedUsername = $this->getAccountName($whoChangedID);
+		$whoChangedHasDiscord = $this->hasDiscord($whoChangedID);
+		$whoChangedFormattedUsername = $whoChangedHasDiscord ? "<@".$whoChangedHasDiscord.">" : "**".$whoChangedUsername."**";
+		$whoChangedField = [$this->webhookLanguage('logsMapPackChangeWhoField', $webhookLangArray), $whoChangedFormattedUsername, false];
+		$whatWasChangedField = [$this->webhookLanguage('logsWhatWasChangedField', $webhookLangArray), $newPackData['name'].', *'.$packID.'*', false];
+		$setNotificationText = $logsMapPackChangedNotificationText;
+		if($isDeleted || empty($packData)) {
+			$whatWasChangedField = [];
+			if($isDeleted) {
+				$setColor = $failColor;
+				$setTitle = $this->webhookLanguage('logsMapPackDeletedTitle', $webhookLangArray);
+				$setDescription = $this->webhookLanguage('logsMapPackDeletedDesc', $webhookLangArray);
+			} else {
+				$setColor = $successColor;
+				$setTitle = $this->webhookLanguage('logsMapPackCreatedTitle', $webhookLangArray);
+				$setDescription = $this->webhookLanguage('logsMapPackCreatedDesc', $webhookLangArray);
+			}
+			$packField = [$this->webhookLanguage('packField', $webhookLangArray), $newPackData['name'], true];
+			if($newPackData['stars'] == 1) $action = 0; elseif(($newPackData['stars'] < 5 AND $newPackData['stars'] != 0)) $action = 1; else $action = 2;
+			$starsText = sprintf($this->webhookLanguage('requestedDesc'.$action, $webhookLangArray), $newPackData['stars']);
+			if($newPackData['coins'] == 1) $action = 0; elseif(($newPackData['coins'] < 5 AND $newPackData['coins'] != 0)) $action = 1; else $action = 2;
+			$coinsText = sprintf($this->webhookLanguage('packRewardCoins'.$action, $webhookLangArray), $newPackData['coins']);
+			$packRewardField = [$this->webhookLanguage('packRewardField', $webhookLangArray), sprintf($this->webhookLanguage('packRewardValue', $webhookLangArray), $starsText, $coinsText), true];
+			$packLevels = explode(',', $newPackData['levels']);
+			$packLevelsValue = '';
+			foreach($packLevels AS &$packLevel) {
+				$getLevel = $db->prepare('SELECT * FROM levels WHERE levelID = :levelID');
+				$getLevel->execute([':levelID' => $packLevel]);
+				$getLevel = $getLevel->fetch();
+				if(!$getLevel) {
+					$packLevelsValue .= $this->webhookLanguage('undefinedLevel', $webhookLangArray).PHP_EOL;
+					continue;
+				}
+				$levelAuthorUsername = $this->getAccountName($getLevel['extID']);
+				$levelAuthorHasDiscord = $this->hasDiscord($getLevel['extID']);
+				$levelAuthorFormattedUsername = $levelAuthorHasDiscord ? "<@".$levelAuthorHasDiscord.">" : "**".$levelAuthorUsername."**";
+				$difficulty = $this->getDifficulty($getLevel['starDifficulty'], $getLevel['starAuto'], $getLevel['starDemon'], $getLevel['starDemonDiff']);
+				if($getLevel['starStars'] == 1) $action = 0; elseif(($getLevel['starStars'] < 5 AND $getLevel['starStars'] != 0) AND !($getLevel['starStars'] > 9 AND $getLevel['starStars'] < 20)) $action = 1; else $action = 2;
+				$packLevelsValue .= sprintf($this->webhookLanguage('levelDesc', $webhookLangArray), '**'.$getLevel['levelName'].'**', $levelAuthorFormattedUsername).' • '.sprintf($this->webhookLanguage('difficultyDesc' . ($getLevel['levelLength'] == 5 ? 'Moon' : '') . $action, $webhookLangArray), $difficulty, $getLevel['starStars']).' (*'.$packLevel.'*)'.PHP_EOL;
+			}
+			$packLevelsField = [$this->webhookLanguage('packLevelsField', $webhookLangArray), $packLevelsValue, false];
+			$packColorsField = [$this->webhookLanguage('packColorsField', $webhookLangArray), sprintf($this->webhookLanguage('packColorsValue', $webhookLangArray), $newPackData['rgbcolors'], $newPackData['colors2']), true];
+			$packTimestampField = [$this->webhookLanguage('packTimestampField', $webhookLangArray), '<t:'.$newPackData['timestamp'].':F>', false];
+		} else {
+			$setColor = $pendingColor;
+			$setTitle = $this->webhookLanguage('logsMapPackChangedTitle', $webhookLangArray);
+			$setDescription = $this->webhookLanguage('logsMapPackChangedDesc', $webhookLangArray);	
+			if($packData['name'] != $newPackData['name']) $packField = [$this->webhookLanguage('logsMapPackChangeNameField', $webhookLangArray), sprintf($this->webhookLanguage('logsMapPackChangeNameValue', $webhookLangArray), $packData['name'], $newPackData['name']), false];
+			if($packData['levels'] != $newPackData['levels']) $packLevelsField = [$this->webhookLanguage('logsMapPackChangeLevelsField', $webhookLangArray), sprintf($this->webhookLanguage('logsMapPackChangeLevelsValue', $webhookLangArray), $packData['levels'], $newPackData['levels']), false];
+			if($packData['stars'] != $newPackData['stars']) {
+				if($packData['stars'] == 1) $action = 0; elseif(($packData['stars'] < 5 AND $packData['stars'] != 0)) $action = 1; else $action = 2;
+				$oldStarsText = sprintf($this->webhookLanguage('requestedDesc'.$action, $webhookLangArray), $packData['stars']);
+				if($newPackData['stars'] == 1) $action = 0; elseif(($newPackData['stars'] < 5 AND $newPackData['stars'] != 0)) $action = 1; else $action = 2;
+				$newStarsText = sprintf($this->webhookLanguage('requestedDesc'.$action, $webhookLangArray), $newPackData['stars']);
+				$packStarsField = [$this->webhookLanguage('logsMapPackChangeStarsField', $webhookLangArray), sprintf($this->webhookLanguage('logsMapPackChangeStarsValue', $webhookLangArray), $oldStarsText, $newStarsText), false];
+			}
+			if($packData['coins'] != $newPackData['coins']) {
+				if($packData['coins'] == 1) $action = 0; elseif(($packData['coins'] < 5 AND $packData['coins'] != 0)) $action = 1; else $action = 2;
+				$oldCoinsText = sprintf($this->webhookLanguage('packRewardCoins'.$action, $webhookLangArray), $packData['coins']);
+				if($newPackData['coins'] == 1) $action = 0; elseif(($newPackData['coins'] < 5 AND $newPackData['coins'] != 0)) $action = 1; else $action = 2;
+				$newCoinsText = sprintf($this->webhookLanguage('packRewardCoins'.$action, $webhookLangArray), $newPackData['coins']);
+				$packCoinsField = [$this->webhookLanguage('logsMapPackChangeCoinsField', $webhookLangArray), sprintf($this->webhookLanguage('logsMapPackChangeCoinsValue', $webhookLangArray), $oldCoinsText, $newCoinsText), false];
+			}
+			if($packData['difficulty'] != $newPackData['difficulty']) {
+				$diffarray = ['Auto', 'Easy', 'Normal', 'Hard', 'Harder', 'Insane', 'Demon'];
+				$packDifficultyField = [$this->webhookLanguage('logsMapPackChangeDifficultyField', $webhookLangArray), sprintf($this->webhookLanguage('logsMapPackChangeDifficultyValue', $webhookLangArray), $diffarray[$packData['difficulty']], $diffarray[$newPackData['difficulty']]), false];
+			}
+			if($packData['rgbcolors'] != $newPackData['rgbcolors']) $packColor1Field = [$this->webhookLanguage('logsMapPackChangeColor1Field', $webhookLangArray), sprintf($this->webhookLanguage('logsMapPackChangeColorValue', $webhookLangArray), $packData['rgbcolors'], $newPackData['rgbcolors']), false];
+			if($packData['colors2'] != $newPackData['colors2']) $packColor2Field = [$this->webhookLanguage('logsMapPackChangeColor2Field', $webhookLangArray), sprintf($this->webhookLanguage('logsMapPackChangeColorValue', $webhookLangArray), $packData['colors2'], $newPackData['colors2']), false];
+		}
+		$diffarray = ['auto', 'easy', 'normal', 'hard', 'harder', 'insane', 'demon-hard'];
+		$setThumbnail = $difficultiesURL.'stars/'.$diffarray[$newPackData['difficulty']].'.png';
+		$setFooter = sprintf($this->webhookLanguage('footer', $webhookLangArray), $gdps);
+		$dw->newMessage()
+		->setContent($setNotificationText)
+		->setAuthor($gdps, $authorURL, $authorIconURL)
+		->setColor($setColor)
+		->setTitle($setTitle, $logsMapPackChangeTitleURL)
+		->setDescription($setDescription)
+		->setThumbnail($setThumbnail)
+		->addFields($whoChangedField, $whatWasChangedField, $packField, $packRewardField, $packStarsField, $packCoinsField, $packDifficultyField, $packColor1Field, $packColor2Field, $packColorsField, $packLevelsField, $packTimestampField)
+		->setFooter($setFooter, $footerIconURL)
+		->setTimestamp()
+		->send();
+	}
   	public function mail($mail = '', $user = '', $isForgotPass = false) {
 		if(empty($mail) OR empty($user)) return;
 		require __DIR__."/../../config/mail.php";
@@ -2097,4 +2613,3 @@ class mainLib {
 		}
 	}
 }
-?>
