@@ -26,7 +26,7 @@ $string["messengerOptDesc"] ="Otwórz komunikator";
 $string["addSongOptDesc"] = "Dodaj piosenkę do serwerów";
 $string["loginOptDesc"] = "Zaloguj się";
 $string["createAcc"] = "Stwórz konto";
-$string["registerOptDesc"] = "Zarejestruj %s";
+$string["registerOptDesc"] = "Zarejestruj konto do %s";
 $string["downloadOptDesc"] = "Pobierz %s";
 
 $string["tryCron"] = "Uruchom Cron";
