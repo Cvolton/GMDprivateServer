@@ -37,7 +37,7 @@ if($query2->rowCount() == 0) {
 }
 
 $query->execute([':accountID' => $accountID, ':levelID' => $levelID, ':percent' => $percent, ':uploadDate' => $uploadDate, ':coins' => $coins, ':attempts' => $attempts, ':clicks' => $clicks, ':time' => $time, ':progresses' => $progresses, ':dailyID' => $dailyID]);
-if($percent > 100 || $percent < 0) $gs->banPerson(0, $accountID, '', 0, 0, 2147483647);
+if($percent > 100 || $percent < 0) $gs->banPerson(0, $accountID, 'Bro tried to post invalid percent value to level leaderboards. ('.$percent.')', 0, 0, 2147483647);
 
 //GETTING SCORES
 $type = $_POST['type'] ?? 1;

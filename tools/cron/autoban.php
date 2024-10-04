@@ -48,7 +48,13 @@ $stars = $levelstuff['stars']; $coins = $levelstuff['coins']; $demons = $levelst
 $query = $db->prepare("SELECT userID FROM users WHERE stars > :stars OR demons > :demons OR userCoins > :coins OR moons > :moons OR stars < 0 OR demons < 0 OR coins < 0 OR userCoins < 0 OR diamonds < 0 OR moons < 0");
 $query->execute([':stars' => $stars, ':demons' => $demons, ':coins' => $coins, ':moons' => $moons]);
 $query = $query->fetchAll();
-foreach($query AS &$ban) $gs->banPerson(0, $ban['userID'], '', 0, 1, 2147483647);
+foreach($query AS &$ban) {
+	$getUser = $db->prepare('SELECT stars, demons, userCoins, moons FROM users WHERE userID = :userID');
+	$getUser->execute([':userID' => $ban['userID']]);
+	$getUser = $getUser->fetch();
+	$maxText = 'MAX: ⭐'.$stars.' • 🌙'.$moons.' • 👿'.$demons.' • 🪙'.$coins.' | USER: ⭐'.$getUser['stars'].' • 🌙'.$getUser['moons'].' • 👿'.$getUser['demons'].' • 🪙'.$getUser['userCoins'];
+	$gs->banPerson(0, $ban['userID'], $maxText, 0, 1, 2147483647);
+}
 ob_flush();
 flush();
 ?>
