@@ -1855,7 +1855,7 @@ class mainLib {
 		if($personType == 2) $person = $this->IPForBan($person);
 		$check = $this->getBan($person, $personType, $banType);
 		if($check) {
-			if($check['expires'] < $expires) return true;
+			if($check['expires'] <= $expires) return true;
 			$this->unbanPerson($check['banID'], $modID);
 		}
 		$reason = base64_encode($reason);

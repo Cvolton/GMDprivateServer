@@ -4,6 +4,7 @@ require $dbPath."incl/lib/connection.php";
 require $dbPath."incl/lib/mainLib.php";
 require $dbPath."config/dashboard.php";
 $gs = new mainLib();
+http_response_code(307);
 if(!$installed) {
 	$check = $db->query("SHOW TABLES LIKE 'replies'");
       	$exist = $check->fetchAll();
