@@ -252,7 +252,7 @@ switch($type){
 		$sug = ", s.max_timestamp";
 		$sugg = "LEFT JOIN (SELECT suggestLevelId, MAX(timestamp) as max_timestamp FROM suggest GROUP BY suggestLevelId) s ON levels.levelID = s.suggestLevelId";
 		$params[] = "s.suggestLevelId > 0";
-		$params[] = "starStars = 0";
+		if(!$ratedLevelsInSent) $params[] = "starStars = 0";
 		$order = 's.max_timestamp';
 		break;
 }

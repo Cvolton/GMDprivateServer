@@ -159,4 +159,14 @@ $specialCommentLikes = [
 */
 
 $unlistedLevelsForAdmins = false;
+
+/*
+	Show rated levels in sent tab
+	This setting will show rated levels in sent tab
+	
+	True - Show rated levels in sent tab
+	False - Don't show rated levels in sent tab
+*/
+
+$ratedLevelsInSent = false;
 ?>
