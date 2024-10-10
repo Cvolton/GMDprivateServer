@@ -31,7 +31,6 @@ class GeneratePass {
 		return self::attemptsFromIP() > 7;
 	}
 
-		require dirname(__FILE__)."/connection.php";
 	public static function logInvalidAttemptFromIP($accountID) {
 		$gs = new mainLib();
 		$gs->logAction($accountID, 6, $accountID);
