@@ -3,6 +3,7 @@ session_start();
 require "../incl/dashboardLib.php";
 require "../".$dbPath."incl/lib/exploitPatch.php";
 require_once "../".$dbPath."incl/lib/mainLib.php";
+include_once "../".$dbPath."incl/lib/automod.php";
 require_once "../".$dbPath."config/misc.php";
 
 function generate_timezone_list()
@@ -117,6 +118,13 @@ if($accid != $_SESSION["accountID"] && is_numeric($accid)) {
 	</div>'));
 }
 if(!empty($_POST["msg"])) {
+	if(Automod::isAccountsDisabled(1)) die($dl->printSong('<div class="form">
+	<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
+       	<form class="form__inner" method="post" action="">
+       	<p>'.$dl->getLocalizedString("postingIsDisabled").'</p>
+       	<button type="button" onclick="a(\'profile/'.$accname.'\', true, true, \'GET\')" class="btn-primary" name="accountID" value="'.$accid.'">'.$dl->getLocalizedString("tryAgainBTN").'</button>
+		</form>
+	</div>', 'profile'));
 	$checkBan = $gs->getPersonBan($accid, $userID, 3);
 	if($checkBan) exit($dl->printSong('<div class="form">
 		<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
@@ -141,6 +149,8 @@ if(!empty($_POST["msg"])) {
 	else {
 		$query = $db->prepare("INSERT INTO acccomments (userID, userName, comment, timestamp) VALUES (:id, :name, :msg, :time)");
 		$query->execute([':id' => $userID, ':name' => $accname, ':msg' => $msg, ':time' => time()]);
+		$gs->logAction($_SESSION['accountID'], 14, $accname, $msg, $db->lastInsertId());
+		Automod::checkAccountPostsSpamming($userID);
 	}
 }
 if(isset($_POST["settings"]) AND $_POST["settings"] == 1 AND $accid == $_SESSION["accountID"]) {
@@ -215,6 +225,9 @@ if(isset($_POST["settings"]) AND $_POST["settings"] == 1 AND $accid == $_SESSION
             </div>
     </div></div>'));
     } else {
+		$getAccountData = $db->prepare("SELECT * FROM accounts WHERE accountID = :accountID");
+		$getAccountData->execute([':accountID' => $accid]);
+		$getAccountData = $getAccountData->fetch();
         if(ExploitPatch::number($_POST["messages"]) > 2 OR ExploitPatch::number($_POST["messages"]) < 0 OR empty(ExploitPatch::number($_POST["messages"]))) $_POST["messages"] = 0;
         if(ExploitPatch::number($_POST["friendreqs"]) > 1 OR ExploitPatch::number($_POST["friendreqs"]) < 0 OR empty(ExploitPatch::number($_POST["friendreqs"]))) $_POST["friendreqs"] = 0;
         if(ExploitPatch::number($_POST["comments"]) > 2 OR ExploitPatch::number($_POST["comments"]) < 0 OR empty(ExploitPatch::number($_POST["comments"]))) $_POST["comments"] = 0;
@@ -223,6 +236,7 @@ if(isset($_POST["settings"]) AND $_POST["settings"] == 1 AND $accid == $_SESSION
 		$_POST["twitch"] = mb_ereg_replace("[^a-zA-Z0-9_]", "", $_POST["twitch"]);
         $query = $db->prepare("UPDATE accounts SET mS = :ms, frS = :frs, cS = :cs, youtubeurl = :yt, twitter = :twt, twitch = :ttv, timezone = :tz WHERE accountID=:id");
         $query->execute([':id' => $accid, ':ms' => ExploitPatch::number($_POST["messages"]), ':frs' => ExploitPatch::number($_POST["friendreqs"]), ':cs' => ExploitPatch::number($_POST["comments"]), ':yt' => ExploitPatch::remove($_POST["youtube"]), ':twt' => ExploitPatch::remove($_POST["twitter"]), ':ttv' => ExploitPatch::remove($_POST["twitch"]), ':tz' => ExploitPatch::rucharclean($_POST["timezone"])]);
+		$gs->sendLogsAccountChangeWebhook($accid, $accid, $getAccountData);
     }
 }
 $query = $db->prepare("SELECT * FROM users WHERE userID=:id");
@@ -407,9 +421,9 @@ function sendReply(id) {
 			document.getElementById("spin" + id).style.display = "none";
 			document.getElementById("btninput" + id).removeAttribute("disabled");
 			document.getElementById("btninput" + id).classList.remove("btn-block");
-			if(repsend.response == -1) {
-				alert("You cannot post comments above '.$maxAccountCommentLength.' characters!");
-			}
+			if(repsend.response == -1) return alert("'.sprintf($dl->getLocalizedString('cantPostAccountCommentsAboveChars'), $maxAccountCommentLength).'");
+			if(repsend.response == -2) return alert("'.$dl->getLocalizedString('replyingIsDisabled').'");
+			if(repsend.response == -3) return alert("'.$dl->getLocalizedString('youAreBannedFromCommenting').'");
 			if(repsend.response == 1) {
 				replyCount++;
 				input.value = "";

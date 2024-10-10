@@ -14,7 +14,7 @@ if(isset($_POST["userName"]) AND isset($_POST["password"])){
 	$userName = $_POST["userName"];
 	$password = $_POST["password"];
 	$valid = GeneratePass::isValidUsrname($userName, $password);
-	if($valid != 1){
+	if($valid != 1) {
       	if($valid == -2) exit(json_encode(['success' => false, 'error' => '-2']));
 		exit(json_encode(['success' => false, 'error' => '-1']));
 	}
@@ -30,20 +30,12 @@ if(isset($_POST["userName"]) AND isset($_POST["password"])){
 		  $auth["auth"] = $auth;
     }
 	$color = $gs->getAccountCommentColor($accountID);
-	exit(json_encode(["success" => true, "user" => $userName, "id" => $accountID, "auth" => $auth["auth"], "color" => $color]));
+	exit(json_encode(["success" => true, "user" => $userName, "accountID" => $accountID, "auth" => $auth["auth"], "color" => $color]));
 } elseif(isset($_GET["auth"])) {
-	$query6 = $db->prepare("SELECT count(*) FROM actions WHERE type = '6' AND timestamp > :time AND value2 = :ip");
-	$query6->execute([':time' => time() - (60*60), ':ip' => $gs->getIP()]);
-	if($query6->fetchColumn() > 20) exit(json_encode(['success' => false, 'error' => '-3']));
-	$auth = ExploitPatch::remove($_GET["auth"]);
+	$auth = ExploitPatch::charclean($_GET["auth"]);
 	if(empty($auth)) exit(json_encode(['success' => false, 'error' => '-3']));
-	$query = $db->prepare("SELECT userName, accountID FROM accounts WHERE auth = :id");
-  	$query->execute([':id' => $auth]);
-  	$fetch = $query->fetch();
-	if(!$fetch[0]) {
-		$query = $db->prepare("INSERT INTO actions (type, value, timestamp, value2) VALUES ('6',:accid,:time,:ip)");
-		$query->execute([':accid' => 0, ':time' => time(), ':ip' => $gs->getIP()]);
-		exit(json_encode(['success' => false, 'error' => '-4']));
-	} else exit(json_encode(['success' => true, 'user' => $fetch["userName"], 'color' => $gs->getAccountCommentColor($fetch["accountID"])]));
+	$check = GeneratePass::isValidToken($auth);
+	if(!is_array($check)) exit(json_encode(['success' => false, 'error' => $check]));
+	else exit(json_encode(['success' => true, 'accountID' => $check['accountID'], 'userID' => $check['userID'], 'user' => $check["userName"], 'color' => $check['color']]));
 } else exit(json_encode(['success' => false, 'error' => '0']));
 ?>

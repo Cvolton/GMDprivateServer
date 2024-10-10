@@ -6,6 +6,8 @@ require_once "../incl/lib/mainLib.php";
 $gs = new mainLib();
 require_once "../incl/lib/exploitPatch.php";
 require_once "../incl/lib/generatePass.php";
+require_once "../incl/lib/automod.php";
+if(Automod::isAccountsDisabled(0)) exit('-1');
 if(!isset($preactivateAccounts)) $preactivateAccounts = true;
 if(!isset($filterUsernames)) global $filterUsernames;
 if(!empty($_POST["userName"]) AND !empty($_POST["password"]) AND !empty($_POST["email"])) {
@@ -45,8 +47,10 @@ if(!empty($_POST["userName"]) AND !empty($_POST["password"]) AND !empty($_POST["
 		$query = $db->prepare("INSERT INTO accounts (userName, password, email, registerDate, isActive, gjp2)
 		VALUES (:userName, :password, :email, :time, :isActive, :gjp)");
 		$query->execute([':userName' => $userName, ':password' => $hashpass, ':email' => $email, ':time' => time(), ':isActive' => $preactivateAccounts ? 1 : 0, ':gjp' => $gjp2]);
+		$accountID = $db->lastInsertId();
 		echo "1";
-		$gs->sendLogsRegisterWebhook($db->lastInsertId());
+		$gs->logAction($accountID, 1, $userName, $email, $gs->getUserID($accountID, $userName));
+		$gs->sendLogsRegisterWebhook($accountID);
       	if($mailEnabled) $gs->mail($email, $userName);
 	}
 } else echo "-1";

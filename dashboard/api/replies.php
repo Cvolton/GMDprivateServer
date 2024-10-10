@@ -7,6 +7,7 @@ require "../".$dbPath."incl/lib/connection.php";
 $dl = new dashboardLib();
 require_once "../".$dbPath."incl/lib/mainLib.php";
 require_once "../".$dbPath."incl/lib/generatePass.php";
+require_once "../".$dbPath."incl/lib/automod.php";
 $gs = new mainLib();
 require "../".$dbPath."incl/lib/exploitPatch.php";
 require_once "../".$dbPath."config/misc.php";
@@ -50,10 +51,13 @@ if(!empty($auth)) {
 		}
 		exit(json_encode(['dashboard' -> true, 'success' => true, 'replies' => $replies, 'count' => count($replies)]));
 	} else {
+		$userID = $gs->getUserID($check["accountID"], $gs->getAccountName($check["accountID"]));
+		$checkBan = $gs->getPersonBan($check["accountID"], $userID, 3);
+		if(Automod::isAccountsDisabled(1) || $checkBan) exit(json_encode(['dashboard' => true, 'success' => false]));
 		$body = base64_encode(strip_tags(ExploitPatch::rucharclean($_POST["body"])));
 		if($enableCommentLengthLimiter && strlen(base64_decode($body)) > $maxCommentLength) exit("-1");
 		$reply = $db->prepare("INSERT INTO replies (commentID, accountID, body, timestamp) VALUES (:cid, :acc, :body, :time)");
-		if($reply->execute([':cid' => $id, ':acc' => $check['accountID'], ':body' => $body, ':time' => time()])) exit(json_encode(['success' => true]));
+		if($reply->execute([':cid' => $id, ':acc' => $check['accountID'], ':body' => $body, ':time' => time()])) exit(json_encode(['dashboard' => true, 'success' => true]));
 		else exit(json_encode(['dashboard' => true, 'success' => false]));
 	}
 } else {

@@ -3,19 +3,11 @@ chdir(dirname(__FILE__));
 require "../lib/connection.php";
 require_once "../lib/GJPCheck.php";
 require_once "../lib/exploitPatch.php";
-
-if(empty($_POST['targetAccountID']))
-	exit("-1");
-
+require_once "../lib/mainLib.php";
+$gs = new mainLib();
+if(empty($_POST['targetAccountID'])) exit("-1");
 $accountID = GJPCheck::getAccountIDOrDie();
 $targetAccountID = ExploitPatch::remove($_POST["targetAccountID"]);
-
-$query = "DELETE FROM friendships WHERE person1 = :accountID AND person2 = :targetAccountID";
-$query = $db->prepare($query);
-$query->execute([':accountID' => $accountID, ':targetAccountID' => $targetAccountID]);
-
-$query = "DELETE FROM friendships WHERE person2 = :accountID AND person1 = :targetAccountID";
-$query = $db->prepare($query);
-$query->execute([':accountID' => $accountID, ':targetAccountID' => $targetAccountID]);
-
+$query = $db->prepare("DELETE FROM friendships WHERE (person1 = :accountID AND person2 = :targetAccountID) OR (person2 = :accountID AND person1 = :targetAccountID)");
+if($query->execute([':accountID' => $accountID, ':targetAccountID' => $targetAccountID])) $gs->logAction($accountID, 31, $targetAccountID);
 echo "1";

@@ -5,28 +5,11 @@ require_once dirname(__FILE__)."/mainLib.php";
 
 class GJPCheck {
 	public static function check($gjp, $accountID) {
-		require dirname(__FILE__)."/connection.php";
-		require dirname(__FILE__)."/exploitPatch.php";
-		require dirname(__FILE__)."/../../config/security.php";
-		$ml = new mainLib();
-		if($sessionGrants){
-			$ip = $ml->getIP();
-			$query = $db->prepare("SELECT count(*) FROM actions WHERE type = 16 AND value = :accountID AND value2 = :ip AND timestamp > :timestamp");
-			$query->execute([':accountID' => $accountID, ':ip' => $ip, ':timestamp' => time() - 3600]);
-			if($query->fetchColumn() > 0){
-				return 1;
-			}
-		}
-		$gjpdecode = str_replace("_","/",$gjp);
-		$gjpdecode = str_replace("-","+",$gjpdecode);
-		$gjpdecode = ExploitPatch::url_base64_decode($gjpdecode);
-		$gjpdecode = XORCipher::cipher($gjpdecode,37526);
+		include dirname(__FILE__)."/connection.php";
+		include dirname(__FILE__)."/exploitPatch.php";
+		include dirname(__FILE__)."/../../config/security.php";
+		$gjpdecode = XORCipher::cipher(ExploitPatch::url_base64_decode($gjp), 37526);
 		$validationResult = GeneratePass::isValid($accountID, $gjpdecode);
-		if($validationResult == 1 AND $sessionGrants) {
-			$ip = $ml->getIP();
-			$query = $db->prepare("INSERT INTO actions (type, value, value2, timestamp) VALUES (16, :accountID, :ip, :timestamp)");
-			$query->execute([':accountID' => $accountID, ':ip' => $ip, ':timestamp' => time()]);
-		}
 		return $validationResult;
 	}
 

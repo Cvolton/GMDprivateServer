@@ -8,7 +8,7 @@ $gs = new mainLib();
 $msgstring = "";
 //code begins
 $toAccountID = GJPCheck::getAccountIDOrDie();
-$page = ExploitPatch::remove($_POST["page"]);
+$page = ExploitPatch::number($_POST["page"]);
 $offset = $page * 10;
 
 if(!isset($_POST["getSent"]) OR $_POST["getSent"] != 1){
@@ -30,7 +30,7 @@ if($msgcount == 0){
 	exit("-2");
 }
 foreach ($result as &$message1) {
-	if($message1["messageID"]!=""){
+	if($message1["messageID"] != ""){
 		$uploadDate = $gs->makeTime($message1["timestamp"]);
 		if($getSent == 1){
 			$accountID = $message1["toAccountID"];

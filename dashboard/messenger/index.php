@@ -4,6 +4,7 @@ require "../incl/dashboardLib.php";
 require "../".$dbPath."incl/lib/connection.php";
 $dl = new dashboardLib();
 require_once "../".$dbPath."incl/lib/mainLib.php";
+require_once "../".$dbPath."incl/lib/automod.php";
 $gs = new mainLib();
 require "../".$dbPath."incl/lib/exploitPatch.php";
 require "../incl/XOR.php";
@@ -80,6 +81,10 @@ if($_POST['receiver'] != 0 && ExploitPatch::number($_POST['receiver']) != $_SESS
 		</div>'));
 		$subject = ExploitPatch::url_base64_encode(trim(ExploitPatch::rucharclean($_POST["subject"])));
 		$body = ExploitPatch::rucharclean($_POST["body"]);
+		if(Automod::isAccountsDisabled(3)) {
+			$alertScript = 'Messaging is disabled!';
+			$subject = $body = "";
+		}
 		if(is_numeric(mb_substr($body, -3)) && !is_numeric(mb_substr($body, -4))) $body .= ' ';
 		$body = base64_encode(trim($xor->cipher($body, 14251)));
         $query = $db->prepare("SELECT timestamp FROM messages WHERE accID = :accountID AND toAccountID = :toAccountID ORDER BY timestamp DESC LIMIT 1");

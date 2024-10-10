@@ -20,6 +20,7 @@ if($mailEnabled) {
 		$check->execute([':mail' => $mail]);
 		$check = $check->fetch();
 		if(empty($check)) {
+			$gs->logAction(0, 4, 1);
 			$dl->printSong('<div class="form">
 				<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 				<form class="form__inner" method="post" action=".">
@@ -30,6 +31,7 @@ if($mailEnabled) {
 		} else {
   			$query = $db->prepare("UPDATE accounts SET isActive = '1', mail = 'activated' WHERE accountID = :acc");
   			$query->execute([':acc' => $check["accountID"]]);
+			$gs->logAction($check["accountID"], 3, 1);
 			$gs->sendLogsAccountChangeWebhook($check['accountID'], $check['accountID'], $check);
 			$dl->printSong('<div class="form">
               <h1>'.$dl->getLocalizedString("activateAccount").'</h1>
@@ -68,6 +70,7 @@ if(!empty($_POST["userName"]) && !empty($_POST["password"])){
 	if($pass == '-2') {
 		$query = $db->prepare("UPDATE accounts SET isActive = 1 WHERE userName LIKE :userName");
 		$query->execute(['userName' => $userName]);
+		$gs->logAction($getAccountData["accountID"], 3, 1);
 		$gs->sendLogsAccountChangeWebhook($getAccountData['accountID'], $getAccountData['accountID'], $getAccountData);
 		 $dl->printSong('<div class="form">
 			<h1>'.$dl->getLocalizedString("activateAccount").'</h1>
@@ -77,13 +80,15 @@ if(!empty($_POST["userName"]) && !empty($_POST["password"])){
 		</form></div>');
 	}
 	elseif ($pass == 1) {
+		$gs->logAction($getAccountData["accountID"], 4, 1);
 		 $dl->printSong('<div class="form">
 			<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 			<form class="form__inner" method="post" action=".">
 			<p>'.$dl->getLocalizedString("alreadyActivated").'</p>
 			<button type="submit" class="btn btn-primary">'.$dl->getLocalizedString("dashboard").'</button>
 		</form></div>');
-	}else{
+	} else {
+		if($getAccountData) $gs->logAction($getAccountData["accountID"], 4, 2);
 		 $dl->printSong('<div class="form">
 			<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 			<form class="form__inner" method="post" action="">
@@ -91,7 +96,7 @@ if(!empty($_POST["userName"]) && !empty($_POST["password"])){
 			<button type="submit" class="btn btn-primary">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 		</form></div>');
 	}
-}else{
+} else {
 	 $dl->printSong('<div class="form">
 		<h1>'.$dl->getLocalizedString("activateAccount").'</h1>
 		<form class="form__inner" method="post" action="">

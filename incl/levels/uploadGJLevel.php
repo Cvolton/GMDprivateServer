@@ -4,10 +4,10 @@ chdir(dirname(__FILE__));
 require "../lib/connection.php";
 require_once "../lib/GJPCheck.php";
 require_once "../lib/exploitPatch.php";
-require_once "../lib/mainLib.php";
-$mainLib = new mainLib();
+require_once "../lib/automod.php";
 require_once "../lib/mainLib.php";
 $gs = new mainLib();
+if(Automod::isLevelsDisabled(0)) exit('-1');
 //here im getting all the data
 $gjp2check = isset($_POST['gjp2']) ? $_POST['gjp2'] : $_POST['gjp'];
 $gjp = ExploitPatch::remove($gjp2check);
@@ -17,7 +17,7 @@ $levelID = ExploitPatch::remove($_POST["levelID"]);
 $levelName = ExploitPatch::charclean($_POST["levelName"]);
 //TODO: move description fixing code to a function
 $levelDesc = ExploitPatch::remove($_POST["levelDesc"]);
-if($gameVersion < 20){
+if($gameVersion < 20) {
 	$rawDesc = $levelDesc;
 	$levelDesc = ExploitPatch::url_base64_encode($rawDesc);
 } else {
@@ -68,7 +68,7 @@ if(isset($_POST["password"])) $password = $_POST["password"] != 0 ? ExploitPatch
 else $password = $gameVersion > 21 ? 1 : 0;
 $id = $gs->getIDFromPost();
 $hostname = $gs->getIP();
-$userID = $mainLib->getUserID($id, $userName);
+$userID = $gs->getUserID($id, $userName);
 $checkBan = $gs->getPersonBan($id, $userID, 2);
 if($checkBan) exit("-1");
 $uploadDate = time();
@@ -87,19 +87,26 @@ if($levelString != "" AND $levelName != "") {
 	$lvls = $querye->rowCount();
 	if($lvls == 1) {
 		require "../../config/misc.php";
-		$query = $db->prepare("SELECT starStars FROM `levels` WHERE levelID = :levelID");
+		$query = $db->prepare("SELECT * FROM levels WHERE levelID = :levelID");
 		$query->execute([":levelID"=> $levelID]);
-		$stars = $query->fetchColumn();
+		$getLevelData = $query->fetch();
+		$stars = $getLevelData['starStars'];
 		if(!$ratedLevelsUpdates && !in_array($levelID, $ratedLevelsUpdatesExceptions) && $stars > 0) exit("-1");
 		$query = $db->prepare("UPDATE levels SET levelName=:levelName, gameVersion=:gameVersion,  binaryVersion=:binaryVersion, userName=:userName, levelDesc=:levelDesc, levelVersion=:levelVersion, levelLength=:levelLength, audioTrack=:audioTrack, auto=:auto, password=:password, original=:original, twoPlayer=:twoPlayer, songID=:songID, objects=:objects, coins=:coins, requestedStars=:requestedStars, extraString=:extraString, levelString=:levelString, levelInfo=:levelInfo, secret=:secret, updateDate=:uploadDate, unlisted=:unlisted, hostname=:hostname, isLDM=:ldm, wt=:wt, wt2=:wt2, unlisted2=:unlisted2, settingsString=:settingsString, songIDs=:songIDs, sfxIDs=:sfxIDs, ts=:ts WHERE levelName=:levelName AND extID=:id");	
 		$query->execute([':levelName' => $levelName, ':gameVersion' => $gameVersion, ':binaryVersion' => $binaryVersion, ':userName' => $userName, ':levelDesc' => $levelDesc, ':levelVersion' => $levelVersion, ':levelLength' => $levelLength, ':audioTrack' => $audioTrack, ':auto' => $auto, ':password' => $password, ':original' => $original, ':twoPlayer' => $twoPlayer, ':songID' => $songID, ':objects' => $objects, ':coins' => $coins, ':requestedStars' => $requestedStars, ':extraString' => $extraString, ':levelString' => "", ':levelInfo' => $levelInfo, ':secret' => $secret, ':levelName' => $levelName, ':id' => $id, ':uploadDate' => $uploadDate, ':unlisted' => $unlisted, ':hostname' => $hostname, ':ldm' => $ldm, ':wt' => $wt, ':wt2' => $wt2, ':unlisted2' => $unlisted2, ':settingsString' => $settingsString, ':songIDs' => $songIDs, ':sfxIDs' => $sfxIDs, ':ts' => $ts]);
-		file_put_contents("../../data/levels/$levelID",$levelString);
+		file_put_contents("../../data/levels/$levelID", $levelString);
 		echo $levelID;
+		$gs->logAction($id, 23, $levelName, $levelDesc, $levelID);
+		$gs->sendLogsLevelChangeWebhook($levelID, $id, $getLevelData);
+		Automod::checkLevelsCount();
 	} else {
 		$query->execute([':levelName' => $levelName, ':gameVersion' => $gameVersion, ':binaryVersion' => $binaryVersion, ':userName' => $userName, ':levelDesc' => $levelDesc, ':levelVersion' => $levelVersion, ':levelLength' => $levelLength, ':audioTrack' => $audioTrack, ':auto' => $auto, ':password' => $password, ':original' => $original, ':twoPlayer' => $twoPlayer, ':songID' => $songID, ':objects' => $objects, ':coins' => $coins, ':requestedStars' => $requestedStars, ':extraString' => $extraString, ':levelString' => "", ':levelInfo' => $levelInfo, ':secret' => $secret, ':uploadDate' => $uploadDate, ':userID' => $userID, ':id' => $id, ':unlisted' => $unlisted, ':hostname' => $hostname, ':ldm' => $ldm, ':wt' => $wt, ':wt2' => $wt2, ':unlisted2' => $unlisted2, ':settingsString' => $settingsString, ':songIDs' => $songIDs, ':sfxIDs' => $sfxIDs, ':ts' => $ts]);
 		$levelID = $db->lastInsertId();
-		file_put_contents("../../data/levels/$levelID",$levelString);
+		file_put_contents("../../data/levels/$levelID", $levelString);
 		echo $levelID;
+		$gs->logAction($id, 22, $levelName, $levelDesc, $levelID);
+		$gs->sendLogsLevelChangeWebhook($levelID, $id);
+		Automod::checkLevelsCount();
 	}
 }else{
 	echo -1;

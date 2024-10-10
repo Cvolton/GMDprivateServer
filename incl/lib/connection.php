@@ -11,27 +11,20 @@ if(empty($db)) {
 	@header('Content-Type: text/html; charset=utf-8');
 	if(!isset($port)) $port = 3306;
 	try {
-		$ic->checkIP();
 		$db = new PDO("mysql:host=$servername;port=$port;dbname=$dbname", $username, $password, array(PDO::ATTR_PERSISTENT => true));
 		$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+		$ic->checkIP();
 		$ip = $ic->getYourIP();
-		
 		if($minGameVersion != 0 && isset($_POST['gameVersion']) && $_POST['gameVersion'] != 0 && $_POST['gameVersion'] < $minGameVersion && !isset($_SESSION)) exit("-1");
 		if($maxGameVersion != 0 && isset($_POST['gameVersion']) && $_POST['gameVersion'] != 0 && $_POST['gameVersion'] > $maxGameVersion && !isset($_SESSION)) exit("-1");
 		if($minBinaryVersion != 0 && isset($_POST['binaryVersion']) && $_POST['binaryVersion'] != 0 && $_POST['binaryVersion'] < $minBinaryVersion && !isset($_SESSION)) exit("-1");
 		if($maxBinaryVersion != 0 && isset($_POST['binaryVersion']) && $_POST['binaryVersion'] != 0 && $_POST['binaryVersion'] > $maxBinaryVersion && !isset($_SESSION)) exit("-1");
-		
-		if($activeBanIP) {
-			$banip = $db->prepare("SELECT IP FROM bannedips WHERE IP=:ip");
-			$banip->execute([':ip' => $ip]);
-			$banip = $banip->fetch();
-			if($banip != 0) exit(-1);
-		}
 		if(!isset($_SESSION['accountID'])) {
 			$getExtID = $db->prepare('SELECT extID FROM users WHERE isRegistered = 1 AND IP = :ip LIMIT 1');
 			$getExtID->execute([':ip' => $ip]);
 			$getExtID = $getExtID->fetchColumn();
 		}
+		if(!isset($installed)) global $installed;
 		if($installed && (!empty($getExtID) || isset($_SESSION['accountID']))) {
 			$accountIDcheck = $getExtID ?? $_SESSION['accountID'];
 			$timezone = $db->prepare('SELECT timezone FROM accounts WHERE accountID = :id');

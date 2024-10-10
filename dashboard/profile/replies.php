@@ -1,11 +1,11 @@
 <?php
 session_start();
 require "../incl/dashboardLib.php";
-require "../".$dbPath."incl/lib/connection.php";
-$dl = new dashboardLib();
+require "../".$dbPath."incl/lib/connection.php";-
 require_once "../".$dbPath."incl/lib/mainLib.php";
 $gs = new mainLib();
 require "../".$dbPath."incl/lib/exploitPatch.php";
+require "../".$dbPath."incl/lib/automod.php";
 require_once "../".$dbPath."config/misc.php";
 if(!isset($_POST["delete"])) $_POST["delete"] = "";
 if(!isset($_POST["body"])) $_POST["body"] = "";
@@ -34,6 +34,10 @@ if($_SESSION["accountID"] != 0) {
 			$x++;
 		}
 	} else {
+		if(Automod::isAccountsDisabled(1)) exit('-2');
+		$userID = $gs->getUserID($_SESSION["accountID"], $gs->getAccountName($_SESSION["accountID"]));
+		$checkBan = $gs->getPersonBan($_SESSION["accountID"], $userID, 3);
+		if($checkBan) exit('-3');
 		$body = base64_encode(strip_tags(ExploitPatch::rucharclean($_POST["body"])));
 		if($enableCommentLengthLimiter && strlen(base64_decode($body)) > $maxCommentLength) exit("-1");
 		$reply = $db->prepare("INSERT INTO replies (commentID, accountID, body, timestamp) VALUES (:cid, :acc, :body, :time)");

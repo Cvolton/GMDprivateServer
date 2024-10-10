@@ -28,6 +28,7 @@ $bottoken = "";
 		"mods" — mods promotion/change/demotion
 		"gauntlets" — Gauntlets creation/change
 		"mappacks" — Map Packs creation/change
+		"warnings" — warnings about something happening on GDPS (automod)
 	
 	Rates:
 		$rateWebhook — Webhook link to channel you want to send rates to (PLAYER)
@@ -43,6 +44,7 @@ $bottoken = "";
 		$logsModChangeWebhook — Webhook link to channel you want to send mod promotions/changes/demotions (MOD)
 		$logsGauntletChangeWebhook — Webhook link to channel you want to send gauntlet creations/changes (MOD)
 		$logsMapPackChangeWebhook — Webhook link to channel you want to send map pack creations/changes (MOD)
+		$warningsWebhook — Webhook link to channel you want to send warnings (MOD)
 		
 	$dmNotifications — true to enable rates and demonlist notifications to player DMs (if he connected his Discord account with in-game account), false to disable
 	
@@ -82,8 +84,9 @@ $bottoken = "";
 		$logsModChangeTitleURL — URL to open when changed moderator text is clicked
 		$logsGauntletChangeTitleURL — URL to open when changed Gauntlet text is clicked
 		$logsMapPackChangeTitleURL — URL to open when changed Map Pack text is clicked
+		$warningsTitleURL — URL to open when warning text is clicked
 		
-		$successColor — Color for succeeded actions (rate, demonlist record approve, unban)
+		$successColor — Color for succeeded actions (rate, unban, upload, etc)
 			Optional, if you leave it blank you will enable automatic colors for the webhook based on the difficulty of the level
 		$failColor — Color for failed actions
 		$pendingColor — Color for pending actions
@@ -104,7 +107,7 @@ $bottoken = "";
 		$logsGauntletChangeThumbnailURL — Image to show for changing Gauntlets
 */
 $webhooksEnabled = false;
-$webhooksToEnable = ["rate", "suggest", "ban", "daily", "register", "levels", "account", "lists", "mods", "gauntlets", "mappacks"];
+$webhooksToEnable = ["rate", "suggest", "ban", "daily", "register", "levels", "account", "lists", "mods", "gauntlets", "mappacks", "warnings"];
 $rateWebhook = "";
 $suggestWebhook = "";
 $banWebhook = "";
@@ -116,6 +119,7 @@ $logsListChangeWebhook = "";
 $logsModChangeWebhook = "";
 $logsGauntletChangeWebhook = "";
 $logsMapPackChangeWebhook = "";
+$warningsWebhook = "";
 $dmNotifications = false;
 
 $webhookLanguage = 'EN';
@@ -138,6 +142,7 @@ $logsListChangeTitleURL = "";
 $logsModChangeTitleURL = "";
 $logsGauntletChangeTitleURL = "";
 $logsMapPackChangeTitleURL = "";
+$warningsTitleURL = "";
 
 $successColor = "BBFFBB";
 $failColor = "FFBBBB";
@@ -178,6 +183,7 @@ $logsGauntletChangeThumbnailURL = "";
 	$logsModChangedNotificationText — Text to show when someone changes some moderator
 	$logsGauntletChangedNotificationText — Text to show when someone changes some Gauntlet
 	$logsMapPackChangedNotificationText — Text to show when someone changes some Map Pack
+	$warningsNotificationText — Text to show when warning is sent
 */
 
 $rateNotificationText = "";
@@ -194,4 +200,5 @@ $logsListChangedNotificationText = "";
 $logsModChangedNotificationText = "";
 $logsGauntletChangedNotificationText = "";
 $logsMapPackChangedNotificationText = "";
+$warningsNotificationText = "";
 ?>

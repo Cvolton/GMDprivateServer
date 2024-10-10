@@ -62,14 +62,14 @@ $dl->printSong('<div class="form">
     <h1>'.$dl->getLocalizedString("banUserPlace").'</h1>
 	<h2>'.$dl->getLocalizedString("banDesc").'</h2>
     <form class="form__inner" method="post" action="">
-        <div class="field selectField"><input type="text" name="person" id="personField" placeholder="'.$dl->getLocalizedString("person").'">
-		<select style="width:60%" name="personType">
+        <div class="field selectField"><input type="text" value="'.ExploitPatch::rucharclean($_GET['person']).'" name="person" id="personField" placeholder="'.$dl->getLocalizedString("person").'">
+		<select style="width:60%" name="personType" id="personType">
 			<option value="0">'.$dl->getLocalizedString('accountID').'</option>
 			<option value="1">'.$dl->getLocalizedString('userID').'</option>
 			<option value="2">'.$dl->getLocalizedString('IP').'</option>
 		</select>
 		</div>
-        <div class="field selectField"><select style="width:60%" name="banType">
+        <div class="field selectField"><select style="width:60%" name="banType" id="banType">
 			<option value="0">'.$dl->getLocalizedString('playerTop').'</option>
 			<option value="1">'.$dl->getLocalizedString('creatorTop').'</option>
 			<option value="2">'.$dl->getLocalizedString('levelUploading').'</option>
@@ -82,7 +82,9 @@ $dl->printSong('<div class="form">
     </form>
 </div>
 <script>
-$(document).on("keyup keypress change keydown",function(){
+document.getElementById("personType").value = "'.ExploitPatch::number($_GET['personType']).'";
+document.getElementById("banType").value = "'.ExploitPatch::number($_GET['banType']).'";
+$(document).on("keyup keypress change keydown",function() {
    const personField = document.getElementById("personField");
    const btn = document.getElementById("banSubmit");
    if(!personField.value.trim().length) {

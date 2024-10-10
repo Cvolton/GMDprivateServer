@@ -46,7 +46,7 @@ if($type == "top" OR $type == "creators" OR $type == "relative"){
 		if($userIDsString != '') $queryArray[] = "userID NOT IN (".$userIDsString.")";
 		if(!empty($bannedIPsString)) $queryArray[] = "IP NOT REGEXP '".$bannedIPsString."'";
 		$queryText = !empty($queryArray) ? '('.implode(' AND ', $queryArray).') AND' : '';
-		$query = $db->prepare("SELECT * FROM users WHERE ".$queryText." stars > :stars ORDER BY stars DESC LIMIT 100");
+		$query = $db->prepare("SELECT * FROM users WHERE ".$queryText." stars > :stars ORDER BY stars + moons DESC LIMIT 100");
 		$query->execute([':stars' => $leaderboardMinStars]);
 	}
 	if($type == "creators") {
@@ -114,7 +114,7 @@ if($type == "top" OR $type == "creators" OR $type == "relative"){
 				SELECT	*	FROM users
 				WHERE stars <= :stars
 				".$queryText."
-				ORDER BY stars DESC
+				ORDER BY stars + moons DESC
 				LIMIT $count
 			)
 			UNION
@@ -122,7 +122,7 @@ if($type == "top" OR $type == "creators" OR $type == "relative"){
 				SELECT * FROM users
 				WHERE stars >= :stars
 				".$queryText."
-				ORDER BY stars ASC
+				ORDER BY stars + moons ASC
 				LIMIT $count
 			)
 		) as A
@@ -139,7 +139,7 @@ if($type == "top" OR $type == "creators" OR $type == "relative"){
 		$queryText = trim($queryText) != 'AND' ? 'WHERE '.substr($queryText, 4) : '';
 		$f = "SELECT rank, stars FROM (
 							SELECT @rownum := @rownum + 1 AS rank, stars, extID
-							FROM users ".$queryText." ORDER BY stars DESC
+							FROM users ".$queryText." ORDER BY stars + moons DESC
 							) as result WHERE extID=:extid";
 		$query = $db->prepare($f);
 		$query->execute([':extid' => $extid]);

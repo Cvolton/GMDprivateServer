@@ -5,6 +5,7 @@ require_once "../lib/GJPCheck.php";
 require_once "../lib/exploitPatch.php";
 require_once "../lib/XORCipher.php";
 require_once "../lib/mainLib.php";
+require_once "../lib/automod.php";
 $gs = new mainLib();
 
 $accountID = GJPCheck::getAccountIDOrDie();
@@ -19,24 +20,26 @@ $time = !empty($_POST["s3"]) ? $_POST["s3"] - 4085 : 0;
 $progresses = !empty($_POST["s6"]) ? XORCipher::cipher(ExploitPatch::url_base64_decode($_POST["s6"]), 41274) : 0;
 $coins = !empty($_POST["s9"]) ? $_POST["s9"] - 5819 : 0;
 $dailyID = !empty($_POST["s10"]) ? $_POST["s10"] : 0;
-//UPDATING SCORE
-$userID = $gs->getUserID($accountID);
-$condition = ($dailyID > 0) ? ">" : "=";
-$query2 = $db->prepare("SELECT percent FROM levelscores WHERE accountID = :accountID AND levelID = :levelID AND dailyID $condition 0");
-$query2->execute([':accountID' => $accountID, ':levelID' => $levelID]);
-$oldPercent = $query2->fetchColumn();
-if($query2->rowCount() == 0) {
-	$query = $db->prepare("INSERT INTO levelscores (accountID, levelID, percent, uploadDate, coins, attempts, clicks, time, progresses, dailyID)
-	VALUES (:accountID, :levelID, :percent, :uploadDate, :coins, :attempts, :clicks, :time, :progresses, :dailyID)");
-} else {
-	if($oldPercent < $percent) {
-		$query = $db->prepare("UPDATE levelscores SET percent=:percent, uploadDate=:uploadDate, coins=:coins, attempts=:attempts, clicks=:clicks, time=:time, progresses=:progresses, dailyID=:dailyID WHERE accountID=:accountID AND levelID=:levelID AND dailyID $condition 0");
+if(!Automod::isLevelsDisabled(2)) {
+	$condition = ($dailyID > 0) ? ">" : "=";
+	$query2 = $db->prepare("SELECT percent FROM levelscores WHERE accountID = :accountID AND levelID = :levelID AND dailyID $condition 0");
+	$query2->execute([':accountID' => $accountID, ':levelID' => $levelID]);
+	$oldPercent = $query2->fetchColumn();
+	if($query2->rowCount() == 0) {
+		$gs->logAction($accountID, 34, $levelID, $percent, $coins, $attempts, $clicks, $time);
+		$query = $db->prepare("INSERT INTO levelscores (accountID, levelID, percent, uploadDate, coins, attempts, clicks, time, progresses, dailyID)
+		VALUES (:accountID, :levelID, :percent, :uploadDate, :coins, :attempts, :clicks, :time, :progresses, :dailyID)");
 	} else {
-		$query = $db->prepare("SELECT count(*) FROM levelscores WHERE percent=:percent AND uploadDate=:uploadDate AND accountID=:accountID AND levelID=:levelID AND coins = :coins AND attempts = :attempts AND clicks = :clicks AND time = :time AND progresses = :progresses AND dailyID = :dailyID");
+		if($oldPercent < $percent) {
+			$gs->logAction($accountID, 35, $levelID, $percent, $coins, $attempts, $clicks, $time);
+			$query = $db->prepare("UPDATE levelscores SET percent=:percent, uploadDate=:uploadDate, coins=:coins, attempts=:attempts, clicks=:clicks, time=:time, progresses=:progresses, dailyID=:dailyID WHERE accountID=:accountID AND levelID=:levelID AND dailyID $condition 0");
+		} else {
+			$query = $db->prepare("SELECT count(*) FROM levelscores WHERE percent=:percent AND uploadDate=:uploadDate AND accountID=:accountID AND levelID=:levelID AND coins = :coins AND attempts = :attempts AND clicks = :clicks AND time = :time AND progresses = :progresses AND dailyID = :dailyID");
+		}
 	}
-}
 
-$query->execute([':accountID' => $accountID, ':levelID' => $levelID, ':percent' => $percent, ':uploadDate' => $uploadDate, ':coins' => $coins, ':attempts' => $attempts, ':clicks' => $clicks, ':time' => $time, ':progresses' => $progresses, ':dailyID' => $dailyID]);
+	$query->execute([':accountID' => $accountID, ':levelID' => $levelID, ':percent' => $percent, ':uploadDate' => $uploadDate, ':coins' => $coins, ':attempts' => $attempts, ':clicks' => $clicks, ':time' => $time, ':progresses' => $progresses, ':dailyID' => $dailyID]);
+}
 if($percent > 100 || $percent < 0) $gs->banPerson(0, $accountID, 'Bro tried to post invalid percent value to level leaderboards. ('.$percent.')', 0, 0, 2147483647);
 
 //GETTING SCORES
@@ -58,7 +61,7 @@ switch($type) {
 		$query2args = [':levelID' => $levelID, ':time' => time() - 604800];
 		break;
 	default:
-		return -1;
+		exit('-1');
 		break;
 }
 $query2->execute($query2args);

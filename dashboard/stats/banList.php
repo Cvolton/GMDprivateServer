@@ -74,7 +74,7 @@ foreach($result as &$action) {
 				<input type="text" name="reason" value="'.htmlspecialchars(base64_decode($action['reason'])).'" placeholder="'.$dl->getLocalizedString("banReason").'">
 			</div>
 			<div class="field">
-				<input type="datetime-local" name="expires" value="'.substr(explode('+', date('c', $action['expires']))[0], 0, -3).'" min="'.substr(explode('+', (new DateTime())->format('c'))[0], 0, -3).'" placeholder="'.$dl->getLocalizedString("expires").'">
+				<input type="datetime-local" name="expires" value="'.substr(explode('+', date('c', $action['expires']))[0], 0, -3).'" min="'.(new DateTime())->format('Y-m-d\TH:i:s').'" placeholder="'.$dl->getLocalizedString("expires").'">
 			</div>
 			<div class="banbuttons">
 				<input type="hidden" name="banID" value="'.$action['banID'].'"></input>

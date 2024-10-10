@@ -855,7 +855,6 @@ option,
    font-size: 13px;
    background: #141414;
    color: #c0c0c0;
-	margin: 0px 4px 0px 4px;
 }
 .number {
 	margin: 0px 2px 0px 2px;
@@ -2393,4 +2392,94 @@ body:has(.audio) {
 	font-weight: 700;
 	color: #007bff;
 	cursor: pointer;
+}
+
+.automod-boxes {
+	display: flex;
+    width: 100%;
+    justify-content: center;
+	grid-gap: 10px;
+	margin-top: 10px;
+	height: calc(100% - 68px);
+}
+
+.automod-boxes .new-form-control {
+	min-width: 45%;
+	margin: 0px;
+}
+
+.new-form-control .profile {
+	border-radius: 25px;
+}
+
+.automod-boxes .profile {
+	display: flex;
+	flex-direction: column;
+	grid-gap: 5px;
+}
+
+.automod-boxes .btns {
+	margin-top: 5px;
+}
+
+.no-scroll {
+	overflow: hidden !important;
+	max-height: max-content !important;
+	padding: 0px !important;
+}
+
+.attribute-div {
+	background: #373A3F;
+    border-radius: 50px;
+    font-size: 25px;
+    padding: 7px 15px;
+    color: white;
+    width: 100%;
+	display: flex;
+	grid-gap: 5px;
+	align-items: center;
+}
+
+.attribute-divs {
+	display: flex;
+	grid-gap: 5px;
+}
+
+.attribute-div.attribute-button {
+	width: max-content;
+	transition: 0.2s;
+	cursor: pointer
+}
+
+.attributes {
+    display: flex;
+    flex-direction: column;
+	grid-gap: 10px;
+}
+
+.attribute-divs.text text {
+	font-size: 20px;
+}
+
+.attribute-div.enabled {
+	color: #bbffbb;
+	font-weight: 700;
+}
+
+.attribute-div.disabled {
+	color: #ffbbbb;
+	font-weight: 700;
+}
+
+.attribute-div.attribute-button:hover {
+	background: #47494e;
+}
+
+.invisible {
+	width: 0px;
+    height: 0px;
+    border: none;
+    background: none;
+    position: absolute;
+    opacity: 0;
 }

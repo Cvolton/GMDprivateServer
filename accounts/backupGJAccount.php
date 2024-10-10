@@ -9,7 +9,9 @@ if(function_exists("ini_set")) {
 require "../config/security.php";
 require "../incl/lib/connection.php";
 require "../incl/lib/generatePass.php";
+require "../incl/lib/mainLib.php";
 require_once "../incl/lib/exploitPatch.php";
+$gs = new mainLib();
 $userName = ExploitPatch::charclean($_POST["userName"]);
 $password = !empty($_POST["password"]) ? $_POST["password"] : "";
 $saveData = ExploitPatch::remove($_POST["saveData"]);
@@ -40,11 +42,12 @@ if($pass == 1) {
 	$saveData = $saveData . ";" . $saveDataArr[1];
 	file_put_contents("../data/accounts/$accountID",$saveData);
 	file_put_contents("../data/accounts/keys/$accountID","");
-	$query = $db->prepare("SELECT extID FROM users WHERE userName = :userName LIMIT 1");
-	$query->execute([':userName' => $userName]);
-	$extID = $query->fetchColumn();
 	$query = $db->prepare("UPDATE `users` SET `orbs` = :orbs, `completedLvls` = :lvls WHERE extID = :extID");
-	$query->execute([':orbs' => $orbs, ':extID' => $extID, ':lvls' => $lvls]);
+	$query->execute([':orbs' => $orbs, ':extID' => $accountID, ':lvls' => $lvls]);
+	$gs->logAction($accountID, 5, $userName, filesize("../data/accounts/$accountID"), $orbs, $lvls);
 	echo "1";
-} else echo "-1";
+} else {
+	$gs->logAction($accountID, 7, $userName, strlen($saveData));
+	echo "-1";
+}
 ?>

@@ -7,11 +7,19 @@ require "../".$dbPath."config/mail.php";
 require "../".$dbPath."incl/lib/connection.php";
 require "../".$dbPath."incl/lib/exploitPatch.php";
 require "../".$dbPath."incl/lib/generatePass.php";
+require "../".$dbPath."incl/lib/automod.php";
 require_once "../".$dbPath."incl/lib/mainLib.php";
 $gs = new mainLib();
 $dl = new dashboardLib();
 $dl->title($dl->getLocalizedString("registerAcc"));
 $dl->printFooter('../');
+if(Automod::isAccountsDisabled(0)) exit($dl->printSong('<div class="form">
+	<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
+	<form class="form__inner" method="post" action="">
+	<p>'.$dl->getLocalizedString("pageDisabled").'</p>
+	<button type="submit" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
+	</form>
+</div>'));
 if(!isset($_SESSION["accountID"]) OR $_SESSION["accountID"] == 0) {
 if(!isset($preactivateAccounts)) $preactivateAccounts = false;
 if(!isset($filterUsernames)) global $filterUsernames;
@@ -137,7 +145,9 @@ if(!empty($_POST["username"]) AND !empty($_POST["email"]) AND !empty($_POST["rep
 				$query2 = $db->prepare("INSERT INTO accounts (userName, password, email, registerDate, isActive, gjp2)
 				VALUES (:userName, :password, :email, :time, :isActive, :gjp)");
 				$query2->execute([':userName' => $username, ':password' => $hashpass, ':email' => $email, ':time' => time(), ':isActive' => $preactivateAccounts ? 1 : 0, ':gjp' => $gjp2]);
-              	$gs->sendLogsRegisterWebhook($db->lastInsertId());
+				$accountID = $db->lastInsertId();
+				$gs->logAction($accountID, 1, $username, $email, $gs->getUserID($accountID, $username));
+              	$gs->sendLogsRegisterWebhook($accountID);
 				if($mailEnabled) {
 					$gs->mail($email, $username);
 					exit($dl->printSong('<div class="form">

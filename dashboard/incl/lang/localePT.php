@@ -420,6 +420,62 @@ $string['resendMailHint'] = 'Didn\'t get mail message?';
 $string['resendMailDesc'] = 'Here you can send email message again if you didn\'t get it!';
 $string['resendMailButton'] = 'Send message';
 
+$string['automodTitle'] = 'Automod';
+$string['possibleLevelsSpamming'] = 'Possible levels spamming';
+$string['disableLevelsUploading'] = 'Disable levels uploading';
+$string['possibleAccountsSpamming'] = 'Possible accounts spamming';
+$string['disableAccountsRegistering'] = 'Disable registering accounts';
+$string['possibleCommentsSpamming'] = 'Possible comments spamming';
+$string['disableComments'] = 'Disable commenting';
+$string['similarCommentsCount'] = 'Similar comments count';
+$string['similarityValueOfAllComments'] = 'Similarity value out of all comments';
+$string['possibleCommentsSpammer'] = 'Possible comments spammer';
+$string['banCommenting'] = 'Ban commenting';
+$string['spammerUsername'] = 'Spammer\'s username';
+$string['possibleAccountPostsSpamming'] = 'Possible account posts spamming';
+$string['disablePosting'] = 'Disable posting';
+$string['similarPostsCount'] = 'Similar posts count';
+$string['similarityValueOfAllPosts'] = 'Similarity value out of all posts';
+$string['possibleAccountPostsSpammer'] = 'Possible account posts spammer';
+$string['possibleRepliesSpamming'] = 'Possible replies spamming';
+$string['possibleRepliesSpammer'] = 'Possible replies spammer';
+$string['similarRepliesCount'] = 'Similar replies count';
+$string['similarityValueOfAllReplies'] = 'Similarity value out of all replies';
+$string['unknownWarning'] = 'Unknown warning';
+$string['before'] = 'Before';
+$string['after'] = 'After';
+$string['compare'] = 'Compare';
+$string['resolvedWarning'] = 'Resolved warning';
+$string['resolveWarning'] = 'Resolve warning';
+$string['enabled'] = 'Enabled';
+$string['disabled'] = 'Disabled';
+$string['yesterday'] = 'Yesterday';
+$string['today'] = 'Today';
+$string['uploading'] = 'Uploading';
+$string['commenting'] = 'Commenting';
+$string['leaderboardSubmits'] = 'Leaderboard submits';
+$string['manageLevels'] = 'Manage levels';
+$string['disableLevelsUploading'] = 'Disable levels uploading';
+$string['disableLevelsCommenting'] = 'Disable levels commenting';
+$string['disableLevelsLeaderboardSubmits'] = 'Disable levels leaderboard submits';
+$string['disable'] = 'Disable';
+$string['enable'] = 'Enable';
+$string['registering'] = 'Registering';
+$string['accountPosting'] = 'Making account posts';
+$string['updatingProfileStats'] = 'Updating profile stats';
+$string['messaging'] = 'Messaging';
+$string['manageAccounts'] = 'Manage accounts';
+$string['disableAccountsRegistering'] = 'Disable registering new accounts';
+$string['disableAccountPosting'] = 'Disable making account posts';
+$string['disableUpdatingProfileStats'] = 'Disable updating profile stats';
+$string['disableMessaging'] = 'Disable messaging';
+
+$string['cantPostCommentsAboveChars'] = 'You cannot post comments above %1$s characters!';
+$string['replyingIsDisabled'] = 'Replying to comments is currently disabled!';
+$string['youAreBannedFromCommenting'] = 'You are banned from commenting!';
+$string['cantPostAccountCommentsAboveChars'] = 'You cannot post account comments above %1$s characters!';
+$string['commentingIsDisabled'] = 'Commenting is currently disabled!';
+
 /*
 	REUPLOAD
 */

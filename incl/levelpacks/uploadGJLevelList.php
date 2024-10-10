@@ -25,12 +25,17 @@ if($listID != 0) {
 	$list->execute([':listID' => $listID, ':accountID' => $accountID]);
 	$list = $list->fetch();
 	if(!empty($list)) {
-		$list = $db->prepare('UPDATE lists SET listDesc = :listDesc, listVersion = :listVersion, listlevels = :listlevels, starDifficulty = :difficulty, original = :original, unlisted = :unlisted, updateDate = :timestamp WHERE listID = :listID');
-		$list->execute([':listID' => $listID, ':listDesc' => $listDesc, ':listVersion' => $listVersion, ':listlevels' => $listLevels, ':difficulty' => $difficulty, ':original' => $original, ':unlisted' => $unlisted, ':timestamp' => time()]);
+		$updateList = $db->prepare('UPDATE lists SET listDesc = :listDesc, listVersion = :listVersion, listlevels = :listlevels, starDifficulty = :difficulty, original = :original, unlisted = :unlisted, updateDate = :timestamp WHERE listID = :listID');
+		$updateList->execute([':listID' => $listID, ':listDesc' => $listDesc, ':listVersion' => $listVersion, ':listlevels' => $listLevels, ':difficulty' => $difficulty, ':original' => $original, ':unlisted' => $unlisted, ':timestamp' => time()]);
+		$gs->logAction($accountID, 18, $listName, $listLevels, $listID, $difficulty, $unlisted);
+		$gs->sendLogsListChangeWebhook($listID, $accountID, $list);
 		exit($listID);
 	}
 }
 $list = $db->prepare('INSERT INTO lists (listName, listDesc, listVersion, accountID, listlevels, starDifficulty, original, unlisted, uploadDate) VALUES (:listName, :listDesc, :listVersion, :accountID, :listlevels, :difficulty, :original, :unlisted, :timestamp)');
 $list->execute([':listName' => $listName, ':listDesc' => $listDesc, ':listVersion' => $listVersion, ':accountID' => $accountID, ':listlevels' => $listLevels, ':difficulty' => $difficulty, ':original' => $original, ':unlisted' => $unlisted, ':timestamp' => time()]);
-echo $db->lastInsertId();
+$listID = $db->lastInsertId();
+$gs->logAction($accountID, 17, $listName, $listLevels, $listID, $difficulty, $unlisted);
+$gs->sendLogsListChangeWebhook($listID, $accountID);
+echo $listID;
 ?>

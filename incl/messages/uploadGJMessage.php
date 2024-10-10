@@ -1,10 +1,11 @@
 <?php
 chdir(dirname(__FILE__));
-//error_reporting(0);
 require "../lib/connection.php";
 require_once "../lib/GJPCheck.php";
 require_once "../lib/exploitPatch.php";
 require_once "../lib/mainLib.php";
+require_once "../lib/automod.php";
+if(Automod::isAccountsDisabled(3)) exit('-1');
 $gs = new mainLib();
 $gameVersion =  ExploitPatch::remove($_POST["gameVersion"]);
 $binaryVersion =  ExploitPatch::remove($_POST["binaryVersion"]);
@@ -13,9 +14,7 @@ $subject =  ExploitPatch::remove($_POST["subject"]);
 $toAccountID =  ExploitPatch::number($_POST["toAccountID"]);
 $body =  ExploitPatch::remove($_POST["body"]);
 $accID =  GJPCheck::getAccountIDOrDie();
-if($accID == $toAccountID){
-	exit("-1");
-}
+if($accID == $toAccountID) exit("-1");
 $query3 = "SELECT userName FROM users WHERE extID = :accID ORDER BY userName DESC";
 $query3 = $db->prepare($query3);
 $query3->execute([':accID' => $accID]);

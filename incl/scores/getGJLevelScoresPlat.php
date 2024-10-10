@@ -4,6 +4,7 @@ require "../lib/connection.php";
 require_once "../lib/GJPCheck.php";
 require_once "../lib/exploitPatch.php";
 require_once "../lib/mainLib.php";
+require_once "../lib/automod.php";
 $gs = new mainLib();
 $accountID = GJPCheck::getAccountIDOrDie();
 $levelID = ExploitPatch::remove($_POST["levelID"]);
@@ -14,24 +15,26 @@ $uploadDate = time();
 $lvlstr = '';
 $mode = $_POST['mode'] == 1 ? 'points' : 'time';
 $order = $mode == 'time' ? 'ASC' : 'DESC';
-//UPDATING SCORE
-$query2 = $db->prepare("SELECT {$mode} FROM platscores WHERE accountID = :accountID AND levelID = :levelID");
-$query2->execute([':accountID' => $accountID, ':levelID' => $levelID]);
-$oldPercent = $query2->fetchColumn();
-if($query2->rowCount() == 0) {
-	if($scores['time'] > 0) {
-		$query = $db->prepare("INSERT INTO platscores (accountID, levelID, time, timestamp) VALUES (:accountID, :levelID, :time, :timestamp)");
-		$query->execute([':accountID' => $accountID, ':levelID' => $levelID, ":time" => $scores['time'], ':timestamp' => $uploadDate]);
-	}
-} else {
-	if((($mode == "time" AND $oldPercent > $scores['time']) OR ($mode == "points" AND $oldPercent < $scores['points'])) AND $scores['time'] > 0) {
-		$query = $db->prepare("UPDATE platscores SET {$mode}=:{$mode}, timestamp=:timestamp WHERE accountID=:accountID AND levelID=:levelID");
+if(!Automod::isLevelsDisabled(2)) {
+	$query2 = $db->prepare("SELECT {$mode} FROM platscores WHERE accountID = :accountID AND levelID = :levelID");
+	$query2->execute([':accountID' => $accountID, ':levelID' => $levelID]);
+	$oldPercent = $query2->fetchColumn();
+	if($query2->rowCount() == 0) {
+		if($scores['time'] > 0) {
+			$query = $db->prepare("INSERT INTO platscores (accountID, levelID, time, points, timestamp) VALUES (:accountID, :levelID, :time, :points, :timestamp)");
+			$query->execute([':accountID' => $accountID, ':levelID' => $levelID, ":time" => $scores['time'], ':points' => $scores['points'], ':timestamp' => $uploadDate]);
+			$gs->logAction($accountID, 36, $levelID, $mode, $scores['time'], $scores['points']);
+		}
 	} else {
-		$query = $db->prepare("SELECT count(*) FROM platscores WHERE {$mode}=:{$mode} AND timestamp=:timestamp AND accountID=:accountID AND levelID=:levelID");
+		if((($mode == "time" AND $oldPercent > $scores['time']) OR ($mode == "points" AND $oldPercent < $scores['points'])) AND $scores['time'] > 0) {
+			$gs->logAction($accountID, 37, $levelID, $mode, $scores['time'], $scores['points']);
+			$query = $db->prepare("UPDATE platscores SET {$mode}=:{$mode}, timestamp=:timestamp WHERE accountID=:accountID AND levelID=:levelID");
+		} else {
+			$query = $db->prepare("SELECT count(*) FROM platscores WHERE {$mode}=:{$mode} AND timestamp=:timestamp AND accountID=:accountID AND levelID=:levelID");
+		}
+		$query->execute([':accountID' => $accountID, ':levelID' => $levelID, ":{$mode}" => $scores[$mode], ':timestamp' => $uploadDate]);
 	}
-	$query->execute([':accountID' => $accountID, ':levelID' => $levelID, ":{$mode}" => $scores[$mode], ':timestamp' => $uploadDate]);
 }
-//GETTING SCORES
 if(!isset($_POST["type"])){
 	$type = 1;
 }else{

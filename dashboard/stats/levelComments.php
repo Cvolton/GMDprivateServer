@@ -7,6 +7,7 @@ require_once "../".$dbPath."incl/lib/mainLib.php";
 require "../".$dbPath."incl/lib/exploitPatch.php";
 $gs = new mainLib();
 require "../".$dbPath."incl/lib/connection.php";
+require "../".$dbPath."incl/lib/automod.php";
 require "../".$dbPath."config/misc.php";
 $dl->title($dl->getLocalizedString("levelComments"));
 $dl->printFooter('../');
@@ -41,20 +42,26 @@ if($_SESSION['accountID'] != 0) {
 		$query = $db->prepare("SELECT * FROM comments WHERE commentID = :deleteCommentID");
 		$query->execute([':deleteCommentID' => $commentID]);
 		$comment = $query->fetch();
-		if($comment && ($commentDeleteCheck || $_SESSION['accountID'] == $gs->getExtID($comment['userID']))) {
+		$creatorAccID = $gs->getExtID($comment['userID']);
+		if($comment && ($commentDeleteCheck || $_SESSION['accountID'] == $creatorAccID)) {
 			$query = $db->prepare("DELETE FROM comments WHERE commentID = :deleteCommentID");
 			$query->execute([':deleteCommentID' => $commentID]);
+			$gs->logAction($_SESSION['accountID'], 13, $comment['userName'], $comment['comment'], $creatorAccID, $commentID, ($comment['likes'] - $comment['dislikes']), $comment['levelID']);
 		}
 	}
 	if(isset($_POST['commentText'])) {
-		$commentText = trim(ExploitPatch::rucharclean($_POST['commentText']));
-		$commentLength = mb_strlen($commentText);
-		if($enableCommentLengthLimiter && $commentLength > $maxCommentLength) $msgTooLong = true;
-		elseif($commentText) {
-			$commentText = ExploitPatch::url_base64_encode($commentText);
-			$query = $db->prepare("INSERT INTO comments (userName, comment, levelID, userID, timeStamp, percent) VALUES (:userName, :comment, :levelID, :userID, :uploadDate, :percent)");
-			$query->execute([':userName' => $gs->getAccountName($_SESSION['accountID']), ':comment' => $commentText, ':levelID' => $levelID, ':userID' => $gs->getUserID($_SESSION['accountID']), ':uploadDate' => time(), ':percent' => 0]);
-		}
+		if(!Automod::isLevelsDisabled(1)) {
+			$commentText = trim(ExploitPatch::rucharclean($_POST['commentText']));
+			$commentLength = mb_strlen($commentText);
+			if($enableCommentLengthLimiter && $commentLength > $maxCommentLength) $alertText = sprintf($dl->getLocalizedString('cantPostCommentsAboveChars'), $maxCommentLength);
+			elseif($commentText) {
+				$commentText = ExploitPatch::url_base64_encode($commentText);
+				$userName = $gs->getAccountName($_SESSION['accountID']);
+				$query = $db->prepare("INSERT INTO comments (userName, comment, levelID, userID, timeStamp, percent) VALUES (:userName, :comment, :levelID, :userID, :uploadDate, :percent)");
+				$query->execute([':userName' => $userName, ':comment' => $commentText, ':levelID' => $levelID, ':userID' => $gs->getUserID($_SESSION['accountID'], $userName), ':uploadDate' => time(), ':percent' => 0]);
+				$gs->logAction($_SESSION['accountID'], 15, $userName, $commentText, $db->lastInsertId(), $levelID);
+			}
+		} else $alertText = $dl->getLocalizedString('commentingIsDisabled');
 	}
 }
 $query = $db->prepare("SELECT * FROM comments WHERE levelID = :levelID ORDER BY timestamp DESC LIMIT 10 OFFSET $page");
@@ -89,7 +96,7 @@ $pagel = '<div class="form new-form">
 	</button>
 </div>' : '').'
 <script>
-	'.(isset($msgTooLong) ? 'alert("You cannot post account comments above '.$maxCommentLength.' characters!");' : '').'
+	'.(isset($alertText) ? 'alert("'.$alertText.'");' : '').'
 </script>';
 /*
 	bottom row

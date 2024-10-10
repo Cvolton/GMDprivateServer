@@ -7,7 +7,8 @@ require_once "../lib/GJPCheck.php";
 require_once "../lib/exploitPatch.php";
 require_once "../lib/commands.php";
 require_once "../../config/misc.php";
-
+require_once "../lib/automod.php";
+if(Automod::isLevelsDisabled(1)) exit(($_POST['gameVersion'] > 20 ? 'temp_0_Commenting is currently disabled!' : '-1'));
 $userName = !empty($_POST['userName']) ? ExploitPatch::charclean($_POST['userName']) : "";
 $gameVersion = !empty($_POST['gameVersion']) ? ExploitPatch::number($_POST['gameVersion']) : 0;
 $comment = ExploitPatch::rucharclean($_POST["comment"]);
@@ -40,17 +41,21 @@ if($checkLevelExist->fetch()['commentLocked']) exit("temp_0_Comments on this ".(
 if($id != "" AND $comment != "") {
 	$query = $db->prepare("INSERT INTO comments (userName, comment, levelID, userID, timeStamp, percent) VALUES (:userName, :comment, :levelID, :userID, :uploadDate, :percent)");
 	$query->execute([':userName' => $userName, ':comment' => $comment, ':levelID' => $levelID, ':userID' => $userID, ':uploadDate' => $uploadDate, ':percent' => $percent]);
+	$gs->logAction($id, 15, $userName, $comment, $db->lastInsertId(), $levelID); 
+	Automod::checkCommentsSpamming($userID);
 	echo 1;
 	if($register) {
 		if($percent != 0) {
 			$query2 = $db->prepare("SELECT percent FROM levelscores WHERE accountID = :accountID AND levelID = :levelID");
 			$query2->execute([':accountID' => $id, ':levelID' => $levelID]);
 			$result = $query2->fetchColumn();
-			if ($query2->rowCount() == 0) {
+			if($query2->rowCount() == 0) {
 				$query = $db->prepare("INSERT INTO levelscores (accountID, levelID, percent, uploadDate)
 				VALUES (:accountID, :levelID, :percent, :uploadDate)");
+				$gs->logAction($id, 34, $levelID, $percent);
 			} else {
 				if($result < $percent) {
+					$gs->logAction($id, 35, $levelID, $percent);
 					$query = $db->prepare("UPDATE levelscores SET percent=:percent, uploadDate=:uploadDate WHERE accountID=:accountID AND levelID=:levelID");
 					$query->execute([':accountID' => $id, ':levelID' => $levelID, ':percent' => $percent, ':uploadDate' => $uploadDate]);
 				}

@@ -39,9 +39,9 @@ class mainLib {
 			"Embers by Dex Arson",
 			"Round 1 by Dex Arson",
 			"Monster Dance Off by F-777",
- 		        "Press Start by MDK",
-   		        "Nock Em by Bossfight",
-  		        "Power Trip by Boom Kitty"];
+ 		    "Press Start by MDK",
+   		    "Nock Em by Bossfight",
+  		    "Power Trip by Boom Kitty"];
 		if($id < 0 || $id >= count($songs))
 			return "Unknown by DJVI";
 		return $songs[$id];
@@ -303,10 +303,10 @@ class mainLib {
 		if ($query->rowCount() > 0) {
 			$userID = $query->fetchColumn();
 		} else {
-			$query = $db->prepare("INSERT INTO users (isRegistered, extID, userName, lastPlayed)
-			VALUES (:register, :id, :userName, :uploadDate)");
-
-			$query->execute([':id' => $extID, ':register' => $register, ':userName' => $userName, ':uploadDate' => time()]);
+			$query = $db->prepare("INSERT INTO users (isRegistered, extID, userName, lastPlayed, IP)
+			VALUES (:register, :id, :userName, :uploadDate, :IP)");
+			$ip = $this->getIP();
+			$query->execute([':id' => $extID, ':register' => $register, ':userName' => $userName, ':uploadDate' => time(), ':IP' => $ip]);
 			$userID = $db->lastInsertId();
 		}
 		return $userID;
@@ -1855,7 +1855,7 @@ class mainLib {
 		if($personType == 2) $person = $this->IPForBan($person);
 		$check = $this->getBan($person, $personType, $banType);
 		if($check) {
-			if($check['expires'] <= $expires) return true;
+			if($check['expires'] <= $expires) return $check['banID'];
 			$this->unbanPerson($check['banID'], $modID);
 		}
 		$reason = base64_encode($reason);
@@ -2169,7 +2169,7 @@ class mainLib {
 			$stats = $downloadEmoji.' '.$newListData['downloads'].' • '.($newListData['likes'] - $newListData['dislikes'] >= 0 ? $likeEmoji.' '.abs($newListData['likes'] - $newListData['dislikes']) : $dislikeEmoji.' '.abs($newListData['likes'] - $newListData['dislikes']));
 			$listField = [$this->webhookLanguage('listTitle', $webhookLangArray), sprintf($this->webhookLanguage('levelDesc', $webhookLangArray), '**'.$newListData['listName'].'**', $creatorFormattedUsername), true];
 			$IDField = [$this->webhookLanguage('listIDTitle', $webhookLangArray), $newListData['listID'], true];
-			$actions = $newListData['starStars'][strlen($newListData['starStars'])-1];
+			$actions = $newListData['starStars'][strlen($newListData['starStars'])-1] ?? $newListData['starStars'];
 			if($actions == 1) $action = 0; elseif($actions < 5 AND $actions != 0 AND !($newListData['starStars'] > 9 AND $newListData['starStars'] < 20)) $action = 1; else $action = 2;
 			$difficultyField = [$this->webhookLanguage('difficultyTitle', $webhookLangArray), sprintf($this->webhookLanguage('difficultyListDesc'.$action, $webhookLangArray), $this->getListDiffName($newListData['starDifficulty']), $newListData['starStars']), true];
 			$statsField = [$this->webhookLanguage('statsTitle', $webhookLangArray), $stats, true];
@@ -2185,10 +2185,10 @@ class mainLib {
 			if($listData['accountID'] != $newListData['accountID']) $newExtIDField = [$this->webhookLanguage('logsListChangeAccountIDField', $webhookLangArray), sprintf($this->webhookLanguage('logsListChangeAccountIDValue', $webhookLangArray), '`'.$listData['accountID'].'`', '`'.$newListData['accountID'].'`'), true];
 			if($listData['listDesc'] != $newListData['listDesc']) $newListDescField = [$this->webhookLanguage('logsListChangeDescField', $webhookLangArray), sprintf($this->webhookLanguage('logsListChangeDescValue', $webhookLangArray), (!empty($listData['listDesc']) ? '`'.ExploitPatch::url_base64_decode($listData['listDesc']).'`' : $this->webhookLanguage('descDesc', $webhookLangArray)), (!empty($newListData['listDesc']) ? '`'.ExploitPatch::url_base64_decode($newListData['listDesc']).'`' : $this->webhookLanguage('descDesc', $webhookLangArray))), false];
 			if($listData['starStars'] != $newListData['starStars']) {
-				$oldReward = $listData['starStars'][strlen($listData['starStars'])-1];
+				$oldReward = $listData['starStars'][strlen($listData['starStars'])-1] ?? $listData['starStars'];
 				if($oldReward == 1) $action = 0; elseif($oldReward < 5 AND $oldReward != 0 AND !($listData['starStars'] > 9 AND $listData['starStars'] < 20)) $action = 1; else $action = 2;
 				$oldReward = sprintf($this->webhookLanguage('logsListChangeReward'.$action, $webhookLangArray), $listData['starStars']);
-				$newReward = $newListData['starStars'][strlen($newListData['starStars'])-1];
+				$newReward = $newListData['starStars'][strlen($newListData['starStars'])-1] ?? $newListData['starStars'];
 				if($newReward == 1) $action = 0; elseif($newReward < 5 AND $newReward != 0 AND !($newListData['starStars'] > 9 AND $newListData['starStars'] < 20)) $action = 1; else $action = 2;
 				$newReward = sprintf($this->webhookLanguage('logsListChangeReward'.$action, $webhookLangArray), $newListData['starStars']);
 				$newRewardField = [$this->webhookLanguage('logsListChangeRewardField', $webhookLangArray), sprintf($this->webhookLanguage('logsListChangeRewardValue', $webhookLangArray), $oldReward, $newReward), true];
@@ -2206,10 +2206,10 @@ class mainLib {
 			}
 			if($listData['listlevels'] != $newListData['listlevels']) $newLevelsField = [$this->webhookLanguage('logsListChangeLevelsField', $webhookLangArray), sprintf($this->webhookLanguage('logsListChangeLevelsValue', $webhookLangArray), $listData['listlevels'], $newListData['listlevels']), false];
 			if($listData['countForReward'] != $newListData['countForReward']) {
-				$oldReward = $listData['countForReward'][strlen($listData['countForReward'])-1];
+				$oldReward = $listData['countForReward'][strlen($listData['countForReward'])-1] ?? $listData['countForReward'];
 				if($oldReward == 1) $action = 0; elseif($oldReward < 5 AND $oldReward != 0 AND !($listData['countForReward'] > 9 AND $listData['countForReward'] < 20)) $action = 1; else $action = 2;
 				$oldReward = sprintf($this->webhookLanguage('logsListChangeRewardCount'.$action, $webhookLangArray), $listData['countForReward']);
-				$newReward = $newListData['countForReward'][strlen($newListData['countForReward'])-1];
+				$newReward = $newListData['countForReward'][strlen($newListData['countForReward'])-1] ?? $newListData['countForReward'];
 				if($newReward == 1) $action = 0; elseif($newReward < 5 AND $newReward != 0 AND !($newListData['countForReward'] > 9 AND $newListData['countForReward'] < 20)) $action = 1; else $action = 2;
 				$newReward = sprintf($this->webhookLanguage('logsListChangeRewardCount'.$action, $webhookLangArray), $newListData['countForReward']);
 				$newRewardCountField = [$this->webhookLanguage('logsListChangeRewardCountField', $webhookLangArray), sprintf($this->webhookLanguage('logsListChangeRewardCountValue', $webhookLangArray), $oldReward, $newReward), true];
@@ -2558,6 +2558,278 @@ class mainLib {
 		->setDescription($setDescription)
 		->setThumbnail($setThumbnail)
 		->addFields($whoChangedField, $whatWasChangedField, $packField, $packRewardField, $packStarsField, $packCoinsField, $packDifficultyField, $packColor1Field, $packColor2Field, $packColorsField, $packLevelsField, $packTimestampField)
+		->setFooter($setFooter, $footerIconURL)
+		->setTimestamp()
+		->send();
+	}
+	public function logAction($accountID, $type, $value1 = '', $value2 = '', $value3 = 0, $value4 = 0, $value5 = 0, $value6 = 0) {
+		require __DIR__."/connection.php";
+		$insertAction = $db->prepare('INSERT INTO actions (account, type, timestamp, value, value2, value3, value4, value5, value6, IP) VALUES (:account, :type, :timestamp, :value, :value2, :value3, :value4, :value5, :value6, :IP)');
+		$insertAction->execute([':account' => $accountID, ':type' => $type, ':value' => $value1, ':value2' => $value2, ':value3' => $value3, ':value4' => $value4, ':value5' => $value5, ':value6' => $value6, ':timestamp' => time(), ':IP' => $this->getIP()]);
+		return $db->lastInsertId();
+	}
+	public function sendLevelsWarningWebhook($levelsYesterday, $levelsToday) {
+		include __DIR__."/connection.php";
+		if(!class_exists('ExploitPatch')) include __DIR__."/exploitPatch.php";
+		include __DIR__."/../../config/dashboard.php";
+		include __DIR__."/../../config/discord.php";
+		if(!$webhooksEnabled OR !is_numeric($levelsYesterday) OR !is_numeric($levelsToday) OR !in_array("warnings", $webhooksToEnable)) return false;
+		include_once __DIR__."/../../config/webhooks/DiscordWebhook.php";
+		$webhookLangArray = $this->webhookStartLanguage($webhookLanguage);
+		$dw = new DiscordWebhook($warningsWebhook);
+		$setTitle = $this->webhookLanguage('levelsWarningTitle', $webhookLangArray);
+		$setDescription = $this->webhookLanguage('levelsWarningDesc', $webhookLangArray);
+		$lYchar = $levelsYesterday[strlen($levelsYesterday)-1] ?? $levelsYesterday;
+		if($lYchar == 1) $action = 0; elseif($lYchar < 5 AND $lYchar != 0 AND !($levelsYesterday > 9 AND $levelsYesterday < 20)) $action = 1; else $action = 2;
+		$levelsYesterdayField = [$this->webhookLanguage('levelsYesterdayField', $webhookLangArray), sprintf($this->webhookLanguage('logsListChangeRewardCount'.$action, $webhookLangArray), $levelsYesterday), true];
+		$lTchar = $levelsToday[strlen($levelsToday)-1] ?? $levelsToday;
+		if($lTchar == 1) $action = 0; elseif($lTchar < 5 AND $lTchar != 0 AND !($levelsToday > 9 AND $levelsToday < 20)) $action = 1; else $action = 2;
+		$levelsTodayField = [$this->webhookLanguage('levelsTodayField', $webhookLangArray), sprintf($this->webhookLanguage('logsListChangeRewardCount'.$action, $webhookLangArray), $levelsToday), true];
+		$levelsCompareField = [$this->webhookLanguage('levelsCompareField', $webhookLangArray), sprintf($this->webhookLanguage('levelsCompareValue', $webhookLangArray), (ceil($accountsToday / $accountsYesterday * 10)) / 10), true];
+		$setFooter = sprintf($this->webhookLanguage('footer', $webhookLangArray), $gdps);
+		$dw->newMessage()
+		->setContent($warningsNotificationText)
+		->setAuthor($gdps, $authorURL, $authorIconURL)
+		->setColor($failColor)
+		->setTitle($setTitle, $warningsTitleURL)
+		->setDescription($setDescription)
+		->setThumbnail($setThumbnail)
+		->addFields($levelsYesterdayField, $levelsTodayField, $levelsCompareField)
+		->setFooter($setFooter, $footerIconURL)
+		->setTimestamp()
+		->send();
+	}
+	public function sendAccountsWarningWebhook($accountsYesterday, $accountsToday) {
+		include __DIR__."/connection.php";
+		if(!class_exists('ExploitPatch')) include __DIR__."/exploitPatch.php";
+		include __DIR__."/../../config/dashboard.php";
+		include __DIR__."/../../config/discord.php";
+		if(!$webhooksEnabled OR !is_numeric($accountsYesterday) OR !is_numeric($accountsToday) OR !in_array("warnings", $webhooksToEnable)) return false;
+		include_once __DIR__."/../../config/webhooks/DiscordWebhook.php";
+		$webhookLangArray = $this->webhookStartLanguage($webhookLanguage);
+		$dw = new DiscordWebhook($warningsWebhook);
+		$setTitle = $this->webhookLanguage('accountsWarningTitle', $webhookLangArray);
+		$setDescription = $this->webhookLanguage('accountsWarningDesc', $webhookLangArray);
+		$lYchar = $accountsYesterday[strlen($accountsYesterday)-1] ?? $accountsYesterday;
+		if($lYchar == 1) $action = 0; elseif($lYchar < 5 AND $lYchar != 0 AND !($accountsYesterday > 9 AND $accountsYesterday < 20)) $action = 1; else $action = 2;
+		$accountsYesterdayField = [$this->webhookLanguage('accountsYesterdayField', $webhookLangArray), sprintf($this->webhookLanguage('accountsCountValue'.$action, $webhookLangArray), $accountsYesterday), true];
+		$lTchar = $accountsToday[strlen($accountsToday)-1] ?? $accountsToday;
+		if($lTchar == 1) $action = 0; elseif($lTchar < 5 AND $lTchar != 0 AND !($accountsToday > 9 AND $accountsToday < 20)) $action = 1; else $action = 2;
+		$accountsTodayField = [$this->webhookLanguage('accountsTodayField', $webhookLangArray), sprintf($this->webhookLanguage('accountsCountValue'.$action, $webhookLangArray), $accountsToday), true];
+		$accountsCompareField = [$this->webhookLanguage('levelsCompareField', $webhookLangArray), sprintf($this->webhookLanguage('levelsCompareValue', $webhookLangArray), (ceil($accountsToday / $accountsYesterday * 10)) / 10), true];
+		$setFooter = sprintf($this->webhookLanguage('footer', $webhookLangArray), $gdps);
+		$dw->newMessage()
+		->setContent($warningsNotificationText)
+		->setAuthor($gdps, $authorURL, $authorIconURL)
+		->setColor($failColor)
+		->setTitle($setTitle, $warningsTitleURL)
+		->setDescription($setDescription)
+		->setThumbnail($setThumbnail)
+		->addFields($accountsYesterdayField, $accountsTodayField, $accountsCompareField)
+		->setFooter($setFooter, $footerIconURL)
+		->setTimestamp()
+		->send();
+	}
+	public function sendCommentsSpammingWarningWebhook($similarCommentsCount, $similarCommentsAuthors) {
+		include __DIR__."/connection.php";
+		if(!class_exists('ExploitPatch')) include __DIR__."/exploitPatch.php";
+		include __DIR__."/../../config/dashboard.php";
+		include __DIR__."/../../config/discord.php";
+		if(!$webhooksEnabled OR !is_numeric($similarCommentsCount) OR !is_array($similarCommentsAuthors) OR !in_array("warnings", $webhooksToEnable)) return false;
+		include_once __DIR__."/../../config/webhooks/DiscordWebhook.php";
+		$webhookLangArray = $this->webhookStartLanguage($webhookLanguage);
+		$dw = new DiscordWebhook($warningsWebhook);
+		$setTitle = $this->webhookLanguage('commentsSpammingWarningTitle', $webhookLangArray);
+		$setDescription = $this->webhookLanguage('commentsSpammingWarningDesc', $webhookLangArray);
+		$lYchar = $similarCommentsCount[strlen($similarCommentsCount)-1] ?? $similarCommentsCount;
+		if($lYchar == 1) $action = 0; elseif($lYchar < 5 AND $lYchar != 0 AND !($similarCommentsCount > 9 AND $similarCommentsCount < 20)) $action = 1; else $action = 2;
+		$similarCommentsField = [$this->webhookLanguage('similarCommentsField', $webhookLangArray), sprintf($this->webhookLanguage('similarCommentsValue'.$action, $webhookLangArray), $similarCommentsCount), true];
+		$similarCommentsAuthorsText = '';
+		foreach($similarCommentsAuthors AS &$commentAuthor) {
+			$commentAuthorID = $this->getExtID($commentAuthor);
+			$commentAuthorUsername = $this->getAccountName($commentAuthorID);
+			$commentAuthorHasDiscord = $this->hasDiscord($commentAuthorID);
+			$commentAuthorFormattedUsername = $commentAuthorHasDiscord ? "<@".$commentAuthorHasDiscord.">" : "**".$commentAuthorUsername."**";
+			$similarCommentsAuthorsText .= $commentAuthorFormattedUsername.', '.$commentAuthorID.' • '.$commentAuthor.PHP_EOL;
+		}
+		$similarCommentsAuthorsField = [$this->webhookLanguage('similarCommentsAuthorsField', $webhookLangArray), $similarCommentsAuthorsText, false];
+		$setFooter = sprintf($this->webhookLanguage('footer', $webhookLangArray), $gdps);
+		$dw->newMessage()
+		->setContent($warningsNotificationText)
+		->setAuthor($gdps, $authorURL, $authorIconURL)
+		->setColor($failColor)
+		->setTitle($setTitle, $warningsTitleURL)
+		->setDescription($setDescription)
+		->setThumbnail($setThumbnail)
+		->addFields($similarCommentsField, $similarCommentsAuthorsField)
+		->setFooter($setFooter, $footerIconURL)
+		->setTimestamp()
+		->send();
+	}
+	public function sendCommentsSpammerWarningWebhook($similarCommentsCount, $commentSpammer) {
+		include __DIR__."/connection.php";
+		if(!class_exists('ExploitPatch')) include __DIR__."/exploitPatch.php";
+		include __DIR__."/../../config/dashboard.php";
+		include __DIR__."/../../config/discord.php";
+		if(!$webhooksEnabled OR !is_numeric($similarCommentsCount) OR !is_numeric($commentSpammer) OR !in_array("warnings", $webhooksToEnable)) return false;
+		include_once __DIR__."/../../config/webhooks/DiscordWebhook.php";
+		$webhookLangArray = $this->webhookStartLanguage($webhookLanguage);
+		$dw = new DiscordWebhook($warningsWebhook);
+		$setTitle = $this->webhookLanguage('commentsSpammerWarningTitle', $webhookLangArray);
+		$setDescription = $this->webhookLanguage('commentsSpammerWarningDesc', $webhookLangArray);
+		$lYchar = $similarCommentsCount[strlen($similarCommentsCount)-1] ?? $similarCommentsCount;
+		if($lYchar == 1) $action = 0; elseif($lYchar < 5 AND $lYchar != 0 AND !($similarCommentsCount > 9 AND $similarCommentsCount < 20)) $action = 1; else $action = 2;
+		$similarCommentsField = [$this->webhookLanguage('similarCommentsField', $webhookLangArray), sprintf($this->webhookLanguage('similarCommentsValue'.$action, $webhookLangArray), $similarCommentsCount), true];
+		$commentAuthorID = $this->getExtID($commentSpammer);
+		$commentAuthorUsername = $this->getAccountName($commentAuthorID);
+		$commentAuthorHasDiscord = $this->hasDiscord($commentAuthorID);
+		$commentAuthorFormattedUsername = $commentAuthorHasDiscord ? "<@".$commentAuthorHasDiscord.">" : "**".$commentAuthorUsername."**";
+		$similarCommentsAuthorsField = [$this->webhookLanguage('commentSpammerField', $webhookLangArray), $commentAuthorFormattedUsername.', '.$commentAuthorID.' • '.$commentSpammer, true];
+		$setFooter = sprintf($this->webhookLanguage('footer', $webhookLangArray), $gdps);
+		$dw->newMessage()
+		->setContent($warningsNotificationText)
+		->setAuthor($gdps, $authorURL, $authorIconURL)
+		->setColor($failColor)
+		->setTitle($setTitle, $warningsTitleURL)
+		->setDescription($setDescription)
+		->setThumbnail($setThumbnail)
+		->addFields($similarCommentsField, $similarCommentsAuthorsField)
+		->setFooter($setFooter, $footerIconURL)
+		->setTimestamp()
+		->send();
+	}
+	public function sendAccountPostsSpammingWarningWebhook($similarCommentsCount, $similarCommentsAuthors) {
+		include __DIR__."/connection.php";
+		if(!class_exists('ExploitPatch')) include __DIR__."/exploitPatch.php";
+		include __DIR__."/../../config/dashboard.php";
+		include __DIR__."/../../config/discord.php";
+		if(!$webhooksEnabled OR !is_numeric($similarCommentsCount) OR !is_array($similarCommentsAuthors) OR !in_array("warnings", $webhooksToEnable)) return false;
+		include_once __DIR__."/../../config/webhooks/DiscordWebhook.php";
+		$webhookLangArray = $this->webhookStartLanguage($webhookLanguage);
+		$dw = new DiscordWebhook($warningsWebhook);
+		$setTitle = $this->webhookLanguage('accountPostsSpammingWarningTitle', $webhookLangArray);
+		$setDescription = $this->webhookLanguage('accountPostsSpammingWarningDesc', $webhookLangArray);
+		$lYchar = $similarCommentsCount[strlen($similarCommentsCount)-1] ?? $similarCommentsCount;
+		if($lYchar == 1) $action = 0; elseif($lYchar < 5 AND $lYchar != 0 AND !($similarCommentsCount > 9 AND $similarCommentsCount < 20)) $action = 1; else $action = 2;
+		$similarCommentsField = [$this->webhookLanguage('similarAccountPostsField', $webhookLangArray), sprintf($this->webhookLanguage('similarAccountPostsValue'.$action, $webhookLangArray), $similarCommentsCount), true];
+		$similarCommentsAuthorsText = '';
+		foreach($similarCommentsAuthors AS &$commentAuthor) {
+			$commentAuthorID = $this->getExtID($commentAuthor);
+			$commentAuthorUsername = $this->getAccountName($commentAuthorID);
+			$commentAuthorHasDiscord = $this->hasDiscord($commentAuthorID);
+			$commentAuthorFormattedUsername = $commentAuthorHasDiscord ? "<@".$commentAuthorHasDiscord.">" : "**".$commentAuthorUsername."**";
+			$similarCommentsAuthorsText .= $commentAuthorFormattedUsername.', '.$commentAuthorID.' • '.$commentAuthor.PHP_EOL;
+		}
+		$similarCommentsAuthorsField = [$this->webhookLanguage('similarAccountPostsAuthorsField', $webhookLangArray), $similarCommentsAuthorsText, false];
+		$setFooter = sprintf($this->webhookLanguage('footer', $webhookLangArray), $gdps);
+		$dw->newMessage()
+		->setContent($warningsNotificationText)
+		->setAuthor($gdps, $authorURL, $authorIconURL)
+		->setColor($failColor)
+		->setTitle($setTitle, $warningsTitleURL)
+		->setDescription($setDescription)
+		->setThumbnail($setThumbnail)
+		->addFields($similarCommentsField, $similarCommentsAuthorsField)
+		->setFooter($setFooter, $footerIconURL)
+		->setTimestamp()
+		->send();
+	}
+	public function sendAccountPostsSpammerWarningWebhook($similarCommentsCount, $commentSpammer) {
+		include __DIR__."/connection.php";
+		if(!class_exists('ExploitPatch')) include __DIR__."/exploitPatch.php";
+		include __DIR__."/../../config/dashboard.php";
+		include __DIR__."/../../config/discord.php";
+		if(!$webhooksEnabled OR !is_numeric($similarCommentsCount) OR !is_numeric($commentSpammer) OR !in_array("warnings", $webhooksToEnable)) return false;
+		include_once __DIR__."/../../config/webhooks/DiscordWebhook.php";
+		$webhookLangArray = $this->webhookStartLanguage($webhookLanguage);
+		$dw = new DiscordWebhook($warningsWebhook);
+		$setTitle = $this->webhookLanguage('accountPostsSpammerWarningTitle', $webhookLangArray);
+		$setDescription = $this->webhookLanguage('accountPostsSpammerWarningDesc', $webhookLangArray);
+		$lYchar = $similarCommentsCount[strlen($similarCommentsCount)-1] ?? $similarCommentsCount;
+		if($lYchar == 1) $action = 0; elseif($lYchar < 5 AND $lYchar != 0 AND !($similarCommentsCount > 9 AND $similarCommentsCount < 20)) $action = 1; else $action = 2;
+		$similarCommentsField = [$this->webhookLanguage('similarAccountPostsField', $webhookLangArray), sprintf($this->webhookLanguage('similarAccountPostsValue'.$action, $webhookLangArray), $similarCommentsCount), true];
+		$commentAuthorID = $this->getExtID($commentSpammer);
+		$commentAuthorUsername = $this->getAccountName($commentAuthorID);
+		$commentAuthorHasDiscord = $this->hasDiscord($commentAuthorID);
+		$commentAuthorFormattedUsername = $commentAuthorHasDiscord ? "<@".$commentAuthorHasDiscord.">" : "**".$commentAuthorUsername."**";
+		$similarCommentsAuthorsField = [$this->webhookLanguage('accountPostsSpammerField', $webhookLangArray), $commentAuthorFormattedUsername.', '.$commentAuthorID.' • '.$commentSpammer, true];
+		$setFooter = sprintf($this->webhookLanguage('footer', $webhookLangArray), $gdps);
+		$dw->newMessage()
+		->setContent($warningsNotificationText)
+		->setAuthor($gdps, $authorURL, $authorIconURL)
+		->setColor($failColor)
+		->setTitle($setTitle, $warningsTitleURL)
+		->setDescription($setDescription)
+		->setThumbnail($setThumbnail)
+		->addFields($similarCommentsField, $similarCommentsAuthorsField)
+		->setFooter($setFooter, $footerIconURL)
+		->setTimestamp()
+		->send();
+	}
+	public function sendRepliesSpammingWarningWebhook($similarCommentsCount, $similarCommentsAuthors) {
+		include __DIR__."/connection.php";
+		if(!class_exists('ExploitPatch')) include __DIR__."/exploitPatch.php";
+		include __DIR__."/../../config/dashboard.php";
+		include __DIR__."/../../config/discord.php";
+		if(!$webhooksEnabled OR !is_numeric($similarCommentsCount) OR !is_array($similarCommentsAuthors) OR !in_array("warnings", $webhooksToEnable)) return false;
+		include_once __DIR__."/../../config/webhooks/DiscordWebhook.php";
+		$webhookLangArray = $this->webhookStartLanguage($webhookLanguage);
+		$dw = new DiscordWebhook($warningsWebhook);
+		$setTitle = $this->webhookLanguage('repliesSpammingWarningTitle', $webhookLangArray);
+		$setDescription = $this->webhookLanguage('repliesSpammingWarningDesc', $webhookLangArray);
+		$lYchar = $similarCommentsCount[strlen($similarCommentsCount)-1] ?? $similarCommentsCount;
+		if($lYchar == 1) $action = 0; elseif($lYchar < 5 AND $lYchar != 0 AND !($similarCommentsCount > 9 AND $similarCommentsCount < 20)) $action = 1; else $action = 2;
+		$similarCommentsField = [$this->webhookLanguage('similarRepliesField', $webhookLangArray), sprintf($this->webhookLanguage('similarRepliesValue'.$action, $webhookLangArray), $similarCommentsCount), true];
+		$similarCommentsAuthorsText = '';
+		foreach($similarCommentsAuthors AS &$commentAuthorID) {
+			$commentAuthorUsername = $this->getAccountName($commentAuthorID);
+			$commentAuthor = $this->getUserID($commentAuthorID, $commentAuthorUsername);
+			$commentAuthorHasDiscord = $this->hasDiscord($commentAuthorID);
+			$commentAuthorFormattedUsername = $commentAuthorHasDiscord ? "<@".$commentAuthorHasDiscord.">" : "**".$commentAuthorUsername."**";
+			$similarCommentsAuthorsText .= $commentAuthorFormattedUsername.', '.$commentAuthorID.' • '.$commentAuthor.PHP_EOL;
+		}
+		$similarCommentsAuthorsField = [$this->webhookLanguage('similarRepliesAuthorsField', $webhookLangArray), $similarCommentsAuthorsText, false];
+		$setFooter = sprintf($this->webhookLanguage('footer', $webhookLangArray), $gdps);
+		$dw->newMessage()
+		->setContent($warningsNotificationText)
+		->setAuthor($gdps, $authorURL, $authorIconURL)
+		->setColor($failColor)
+		->setTitle($setTitle, $warningsTitleURL)
+		->setDescription($setDescription)
+		->setThumbnail($setThumbnail)
+		->addFields($similarCommentsField, $similarCommentsAuthorsField)
+		->setFooter($setFooter, $footerIconURL)
+		->setTimestamp()
+		->send();
+	}
+	public function sendRepliesSpammerWarningWebhook($similarCommentsCount, $commentAuthorID) {
+		include __DIR__."/connection.php";
+		if(!class_exists('ExploitPatch')) include __DIR__."/exploitPatch.php";
+		include __DIR__."/../../config/dashboard.php";
+		include __DIR__."/../../config/discord.php";
+		if(!$webhooksEnabled OR !is_numeric($similarCommentsCount) OR !is_numeric($commentAuthorID) OR !in_array("warnings", $webhooksToEnable)) return false;
+		include_once __DIR__."/../../config/webhooks/DiscordWebhook.php";
+		$webhookLangArray = $this->webhookStartLanguage($webhookLanguage);
+		$dw = new DiscordWebhook($warningsWebhook);
+		$setTitle = $this->webhookLanguage('repliesSpammerWarningTitle', $webhookLangArray);
+		$setDescription = $this->webhookLanguage('repliesSpammerWarningDesc', $webhookLangArray);
+		$lYchar = $similarCommentsCount[strlen($similarCommentsCount)-1] ?? $similarCommentsCount;
+		if($lYchar == 1) $action = 0; elseif($lYchar < 5 AND $lYchar != 0 AND !($similarCommentsCount > 9 AND $similarCommentsCount < 20)) $action = 1; else $action = 2;
+		$similarCommentsField = [$this->webhookLanguage('similarRepliesField', $webhookLangArray), sprintf($this->webhookLanguage('similarRepliesValue'.$action, $webhookLangArray), $similarCommentsCount), true];
+		$commentAuthorUsername = $this->getAccountName($commentAuthorID);
+		$commentAuthor = $this->getUserID($commentAuthorID, $commentAuthorUsername);
+		$commentAuthorHasDiscord = $this->hasDiscord($commentAuthorID);
+		$commentAuthorFormattedUsername = $commentAuthorHasDiscord ? "<@".$commentAuthorHasDiscord.">" : "**".$commentAuthorUsername."**";
+		$similarCommentsAuthorsField = [$this->webhookLanguage('repliesSpammerField', $webhookLangArray), $commentAuthorFormattedUsername.', '.$commentAuthorID.' • '.$commentAuthor, true];
+		$setFooter = sprintf($this->webhookLanguage('footer', $webhookLangArray), $gdps);
+		$dw->newMessage()
+		->setContent($warningsNotificationText)
+		->setAuthor($gdps, $authorURL, $authorIconURL)
+		->setColor($failColor)
+		->setTitle($setTitle, $warningsTitleURL)
+		->setDescription($setDescription)
+		->setThumbnail($setThumbnail)
+		->addFields($similarCommentsField, $similarCommentsAuthorsField)
 		->setFooter($setFooter, $footerIconURL)
 		->setTimestamp()
 		->send();

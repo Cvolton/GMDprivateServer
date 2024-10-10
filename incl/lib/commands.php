@@ -16,9 +16,12 @@ class Commands {
 		$gs = new mainLib();
 		$commentarray = explode(' ', $comment);
 		$uploadDate = time();
-		$query2 = $db->prepare("SELECT extID FROM levels WHERE levelID = :id");
-		$query2->execute([':id' => $levelID]);
+		$query2 = $db->prepare("SELECT extID FROM levels WHERE levelID = :levelID");
+		$query2->execute([':levelID' => $levelID]);
 		$targetExtID = $query2->fetchColumn();
+		$getLevelData = $db->prepare("SELECT * FROM levels WHERE levelID = :levelID");
+		$getLevelData->execute([':levelID' => $levelID]);
+		$getLevelData = $getLevelData->fetch();
 		switch($commentarray[0]) {
 			case '!r':
 			case '!rate':
@@ -62,7 +65,7 @@ class Commands {
 						$query->execute([':starFeatured' => $featuredID + 1, ':levelID' => $levelID]);
 					}
 				} else $starFeatured = 0;
-				if(!empty($starCoins)){
+				if(!empty($starCoins)) {
 					if($starCoins > 1 OR $starCoins < 0) $starCoins = 1;
 					$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('3', :value, :levelID, :timestamp, :id)");
 					$query->execute([':value' => $starCoins, ':timestamp' => $uploadDate, ':id' => $accountID, ':levelID' => $levelID]);
@@ -70,6 +73,7 @@ class Commands {
 					$query->execute([':starCoins' => $starCoins, ':levelID' => $levelID]);
 				}
 				$gs->sendRateWebhook($accountID, $levelID);
+				$gs->sendLogsLevelChangeWebhook($levelID, $accountID, $getLevelData);
 				return 'You successfully rated '.$gs->getLevelName($levelID).' as '.$diffic.', '.$starStars.' star'.($starStars == 1 ? '' : 's').'!';
 				break;
 			case '!unr':
@@ -81,6 +85,7 @@ class Commands {
 				$query->execute([':value' => 0, ':timestamp' => $uploadDate, ':id' => $accountID, ':value2' => 0, ':levelID' => $levelID]);
 				$levelDiff = $gs->getLevelDiff($levelID);
 				$gs->sendRateWebhook($accountID, $levelID);
+				$gs->sendLogsLevelChangeWebhook($levelID, $accountID, $getLevelData);
 				return 'You successfully unrated '.$gs->getLevelName($levelID).'!';
 				break;
 			case '!f':
@@ -157,6 +162,7 @@ class Commands {
 				$query->execute([':levelID' => $levelID, ':starCoins' => $verifyCoins]);
 				$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('3', :value, :levelID, :timestamp, :id)");
 				$query->execute([':value' => $verifyCoins, ':timestamp' => $uploadDate, ':id' => $accountID, ':levelID' => $levelID]);
+				$gs->sendLogsLevelChangeWebhook($levelID, $accountID, $getLevelData);
 				return 'You successfully '.($verifyCoins ? '' : 'un').'verified coins in '.$gs->getLevelName($levelID).'!';
 				break;
 			case '!da':
@@ -204,6 +210,7 @@ class Commands {
 				$query = $db->prepare("INSERT INTO modactions (type, value, value2, value3, timestamp, account) VALUES ('6', :value, :value2, :levelID, :timestamp, :id)");
 				$query->execute([':value' => "1", ":value2" => $levelName, ':timestamp' => $uploadDate, ':id' => $accountID, ':levelID' => $levelID]);
 				if(file_exists(dirname(__FILE__)."../../data/levels/$levelID")) rename(dirname(__FILE__)."../../data/levels/$levelID", dirname(__FILE__)."../../data/levels/deleted/$levelID");
+				$gs->sendLogsLevelChangeWebhook($levelID, $accountID, $getLevelData);
 				return 'You successfully deleted '.$levelName.'!';
 				break;
 			case '!send':
@@ -255,6 +262,7 @@ class Commands {
 				$query->execute([':extID' => $targetAcc, ':userID' => $userID, ':userName' => $targetUserName, ':levelID' => $levelID]);
 				$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('7', :value, :levelID, :timestamp, :id)");
 				$query->execute([':value' => $targetUserName, ':timestamp' => $uploadDate, ':id' => $accountID, ':levelID' => $levelID]);
+				$gs->sendLogsLevelChangeWebhook($levelID, $accountID, $getLevelData);
 				return 'You successfully set '.$gs->getAccountName($targetAcc).' as creator of '.$gs->getLevelName($levelID).'!';
 				break;
 			case '!lockUpdating':
@@ -270,6 +278,7 @@ class Commands {
 				$query->execute([':levelID' => $levelID, ':updateLocked' => $lockValue]);
 				$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('29', :value, :levelID, :timestamp, :id)");
 				$query->execute([':value' => $lockValue, ':timestamp' => $uploadDate, ':id' => $accountID, ':levelID' => $levelID]);
+				$gs->sendLogsLevelChangeWebhook($levelID, $accountID, $getLevelData);
 				return 'You successfully '.($lockValue ? 'locked updating of' : 'unlocked updating of').' level '.$gs->getLevelName($levelID).'!';
 			case '!re':
 			case '!rename':
@@ -281,6 +290,7 @@ class Commands {
 					$query->execute([':levelID' => $levelID, ':levelName' => $name]);
 					$query = $db->prepare("INSERT INTO modactions (type, value, value2, timestamp, account, value3) VALUES ('8', :value, :value2, :timestamp, :id, :levelID)");
 					$query->execute([':value' => $name, ":value2" => $levelName, ':timestamp' => $uploadDate, ':id' => $accountID, ':levelID' => $levelID]);
+					$gs->sendLogsLevelChangeWebhook($levelID, $accountID, $getLevelData);
 					return 'You successfully renamed '.$levelName.' to '.$gs->getLevelName($levelID).'!';
 				}
 				break;
@@ -298,6 +308,7 @@ class Commands {
 						$query = $db->prepare("INSERT INTO modactions (type, value, timestamp, account, value3) VALUES ('9', :value, :timestamp, :id, :levelID)");
 						$query->execute([':value' => $pass, ':timestamp' => $uploadDate, ':id' => $accountID, ':levelID' => $levelID]);
 						$returnText = $pass == 1 ? 'You successfully removed password of level '.$gs->getLevelName($levelID).'!' : 'You successfully set password of level '.$gs->getLevelName($levelID).' to '.ExploitPatch::number($commentarray[1]).'!';
+						$gs->sendLogsLevelChangeWebhook($levelID, $accountID, $getLevelData);
 						return $returnText;
 					}
 				}
@@ -313,6 +324,7 @@ class Commands {
 						$query->execute([':levelID' => $levelID, ':song' => $song]);
 						$query = $db->prepare("INSERT INTO modactions (type, value, timestamp, account, value3) VALUES ('16', :value, :timestamp, :id, :levelID)");
 						$query->execute([':value' => $song, ':timestamp' => $uploadDate, ':id' => $accountID, ':levelID' => $levelID]);
+						$gs->sendLogsLevelChangeWebhook($levelID, $accountID, $getLevelData);
 						return 'You successfully changed song of level '.$gs->getLevelName($levelID).' to '.$songInfo['authorName'].' - '.$songInfo['name'].' ('.$songInfo['ID'].')!';
 					}
 				}
@@ -325,6 +337,7 @@ class Commands {
 					$query->execute([':levelID' => $levelID, ':desc' => $desc]);
 					$query = $db->prepare("INSERT INTO modactions (type, value, timestamp, account, value3) VALUES ('13', :value, :timestamp, :id, :levelID)");
 					$query->execute([':value' => $desc, ':timestamp' => $uploadDate, ':id' => $accountID, ':levelID' => $levelID]);
+					$gs->sendLogsLevelChangeWebhook($levelID, $accountID, $getLevelData);
 					return 'You successfully changed description of level '.$gs->getLevelName($levelID).'!';
 				}
 				break;
@@ -342,6 +355,7 @@ class Commands {
 					$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('12', :value, :levelID, :timestamp, :id)");
 					$query->execute([':value' => $unlisted, ':timestamp' => $uploadDate, ':id' => $accountID, ':levelID' => $levelID]);
 					$returnText = $unlisted ? 'You successfully unlisted level '.$gs->getLevelName($levelID).'!' : 'You successfully made level '.$gs->getLevelName($levelID).' public!';
+					$gs->sendLogsLevelChangeWebhook($levelID, $accountID, $getLevelData);
 					return $returnText;
 				}
 				break;
@@ -387,6 +401,7 @@ class Commands {
 					$query->execute([':levelID' => $levelID, ':commentLocked' => $lockValue]);
 					$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('38', :value, :levelID, :timestamp, :id)");
 					$query->execute([':value' => $lockValue, ':timestamp' => $uploadDate, ':id' => $accountID, ':levelID' => $levelID]);
+					$gs->sendLogsLevelChangeWebhook($levelID, $accountID, $getLevelData);
 					return 'You successfully '.($lockValue ? 'locked comments on' : 'unlocked comments on').' level '.$gs->getLevelName($levelID).'!';
 				}
 		}
@@ -399,16 +414,13 @@ class Commands {
 		require_once "../lib/exploitPatch.php";
 		require_once "../lib/mainLib.php";
 		$gs = new mainLib();
-		$query2 = $db->prepare("SELECT accountID FROM lists WHERE listID = :listID");
-		$query2->execute([':listID' => $listID]);
-		$targetExtID = $query2->fetchColumn();
 		$carray = explode(' ', $command);
+		$getList = $db->prepare('SELECT * FROM lists WHERE listID = :listID');
+		$getList->execute([':listID' => $listID]);
+		$getList = $getList->fetch();
 		switch($carray[0]) {
 			case '!r':
 			case '!rate':
-				$getList = $db->prepare('SELECT * FROM lists WHERE listID = :listID');
-				$getList->execute([':listID' => $listID]);
-				$getList = $getList->fetch();
 				$reward = ExploitPatch::number($carray[1]);
 				$diff = ExploitPatch::charclean($carray[2]);
 				$featured = is_numeric($carray[3]) ? ExploitPatch::number($carray[3]) : ExploitPatch::number($carray[4]);
@@ -433,13 +445,15 @@ class Commands {
 					$query->execute([':listID' => $listID, ':reward' => $reward, ':diff' => $diff, ':feat' => $featured, ':count' => $count]);
 					$query = $db->prepare("INSERT INTO modactions (type, value, value2, value3, timestamp, account) VALUES ('30', :value, :value2, :listID, :timestamp, :id)");
 					$query->execute([':value' => $reward, ':value2' => $diff, ':timestamp' => time(), ':id' => $accountID, ':listID' => $listID]);
+					$gs->sendLogsListChangeWebhook($listID, $accountID, $getList);
+					return 'You successfully '.($reward == 0 ? 'un' : '').'rated list '.$gs->getListName($listID).'!';
 				} elseif($gs->checkPermission($accountID, "actionSuggestRating")) {
 					$query = $db->prepare("INSERT INTO suggest (suggestBy, suggestLevelId, suggestDifficulty, suggestStars, suggestFeatured, timestamp) VALUES (:accID, :listID, :diff, :reward, :feat, :time)");
 					$query->execute([':listID' => $listID*-1, ':reward' => $reward, ':diff' => $diff, ':accID' => $accountID, ':feat' => $featured, ':time' => time()]);
 					$query = $db->prepare("INSERT INTO modactions (type, value, value2, value3, timestamp, account) VALUES ('31', :value, :value2, :listID, :timestamp, :id)");
 					$query->execute([':value' => $reward, ':value2' => $diff, ':timestamp' => time(), ':id' => $accountID, ':listID' => $listID]);
+					return 'You successfully suggested list '.$gs->getListName($listID).'!';
 				} else return false;
-				return 'You succesfully rated '.$gs->getListName($listID).'!';
 				break;
 			case '!f':
 			case '!feature':
@@ -449,24 +463,22 @@ class Commands {
 				$query->execute([':listID' => $listID, ':feat' => $carray[1]]);
 				$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('32', :value, :listID, :timestamp, :id)");
 				$query->execute([':value' => $carray[1], ':timestamp' => time(), ':id' => $accountID, ':listID' => $listID]);
+				$gs->sendLogsListChangeWebhook($listID, $accountID, $getList);
+				return 'You successfully '.($carray[1] == 0 ? 'un' : '').'featured list '.$gs->getListName($listID).'!';
 				break;
-			case '!pub':
-			case '!public':
 			case '!un':
 			case '!unlist':
-				if(!isset($carray[1])) {
-					$permsArray = ['!pub' => 'public', '!public' => 'public', '!unlist' => 'unlist'];
-					$permission = $permsArray[$carray[0]];
-				} else $permission = $carray[1] == 1 ? 'public' : 'unlist';
-				if(self::ownCommand($permission, $accountID, $targetExtID)) {
-					$unlisted = $permission == 'public' ? 0 : 1;
-					$query = $db->prepare("UPDATE lists SET unlisted = :unlisted WHERE listID = :listID");
-					$query->execute([':listID' => $listID, ':unlisted' => $unlisted]);
-					$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('33', :value, :listID, :timestamp, :id)");
-					$query->execute([':value' => $unlisted, ':timestamp' =>time(), ':id' => $accountID, ':listID' => $listID]);
-					$returnText = $unlisted ? 'You successfully unlisted list '.$gs->getListName($listID).'!' : 'You successfully made list '.$gs->getListName($listID).' public!';
-					return $returnText;
-				}
+				$accCheck = $gs->getListOwner($listID);
+				if(!$gs->checkPermission($accountID, "commandUnlistAll") AND $accountID != $accCheck) return false;
+				if(!isset($carray[1])) $carray[1] = 2;
+				$query = $db->prepare("UPDATE lists SET unlisted = :unlisted WHERE listID=:listID");
+				$query->execute([':listID' => $listID, ':unlisted' => $carray[1]]);
+				$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('33', :value, :listID, :timestamp, :id)");
+				$query->execute([':value' => $carray[1], ':timestamp' => time(), ':id' => $accountID, ':listID' => $listID]);
+				$listName = $gs->getListName($listID);
+				$unlistedText = ['You successfully made public list '.$listName.'!', 'You successfully made list '.$listName.' only for friends!', 'You successfully unlisted list '.$listName.'!'];
+				$gs->sendLogsListChangeWebhook($listID, $accountID, $getList);
+				return $unlistedText[$carray[1]] ?? $unlistedText[2];
 				break;
 			case '!d':
 			case '!delete':
@@ -476,7 +488,8 @@ class Commands {
 				$query->execute([':listID' => $listID]);
 				$query = $db->prepare("INSERT INTO modactions (type, value, value2, value3, timestamp, account) VALUES ('34', 0, :value2, :listID, :timestamp, :id)");
 				$query->execute([':timestamp' => time(), ':value2' => $oldName, ':id' => $accountID, ':listID' => $listID]);
-				return 'You succesfully deleted list '.$oldName.'!';
+				$gs->sendLogsListChangeWebhook($listID, $accountID, $getList);
+				return 'You successfully deleted list '.$oldName.'!';
 				break;
 			case '!acc':
 			case '!setacc':
@@ -488,7 +501,8 @@ class Commands {
 				$query->execute([':listID' => $listID, ':accID' => $acc]);
 				$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('35', :value, :listID, :timestamp, :id)");
 				$query->execute([':value' => $acc, ':timestamp' => time(), ':id' => $accountID, ':listID' => $listID]);
-				return 'You succesfully '.$gs->getListName($listID).'\'s creator to '.$gs->getAccountName($acc).'!';
+				$gs->sendLogsListChangeWebhook($listID, $accountID, $getList);
+				return 'You successfully changed creator of list '.$gs->getListName($listID).'!';
 				break;
 			case '!re':
 			case '!rename':
@@ -501,7 +515,8 @@ class Commands {
 				$query->execute([':listID' => $listID, ':name' => $name]);
 				$query = $db->prepare("INSERT INTO modactions (type, value, value2, value3, timestamp, account) VALUES ('36', :value, :value2, :listID, :timestamp, :id)");
 				$query->execute([':value' => $name, ':value2' => $oldName, ':timestamp' => time(), ':id' => $accountID, ':listID' => $listID]);
-				return 'You succesfully renamed '.$oldName.' to '.$gs->getListName($listID).'!';
+				$gs->sendLogsListChangeWebhook($listID, $accountID, $getList);
+				return 'You successfully changed description renamed '.$oldName.' to '.$gs->getListName($listID).'!';
 				break;
 			case '!desc':
 			case '!description':
@@ -513,7 +528,8 @@ class Commands {
 				$query->execute([':listID' => $listID, ':name' => $name]);
 				$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('37', :value, :listID, :timestamp, :id)");
 				$query->execute([':value' => $name, ':timestamp' => time(), ':id' => $accountID, ':listID' => $listID]);
-				return 'You succesfully changed description on list '.$gs->getListName($listID).'!';
+				$gs->sendLogsListChangeWebhook($listID, $accountID, $getList);
+				return 'You successfully changed description on list '.$gs->getListName($listID).'!';
 				break;
 			case '!lockComments':
 			case '!unlockComments':
@@ -528,6 +544,7 @@ class Commands {
 					$query->execute([':listID' => $listID, ':commentLocked' => $lockValue]);
 					$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('39', :value, :listID, :timestamp, :id)");
 					$query->execute([':value' => $lockValue, ':timestamp' => time(), ':id' => $accountID, ':listID' => $listID]);
+					$gs->sendLogsListChangeWebhook($listID, $accountID, $getList);
 					return 'You successfully '.($lockValue ? 'locked comments on' : 'unlocked comments on').' list '.$gs->getListName($listID).'!';
 				}
 		}
@@ -573,7 +590,7 @@ class Commands {
 						"embeds" => [$embed]
 					], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
 					$gs->sendDiscordPM($check["discordID"], $json, true);
-					$gs->linkMember($check["discordID"], $acc);
+					$gs->logAction($accountID, 24, $check["discordID"]);
 					return true;
 			    }
 			}
@@ -605,7 +622,7 @@ class Commands {
 						"embeds" => [$embed]
 					], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
 					$gs->sendDiscordPM($check["discordID"], $json, true);
-					$gs->unlinkMember($check["discordID"]);
+					$gs->logAction($accountID, 25, $check["discordID"]);
 					return true;
 			    }
 			}
@@ -648,6 +665,7 @@ class Commands {
 				$query = $db->prepare("UPDATE accounts SET discordLinkReq = :id, discordID = :did WHERE accountID = :accountID");
 				$query->execute([':accountID' => $accountID, ':id' => $code, ':did' => ExploitPatch::number($carray[2])]);
 				$gs->sendDiscordPM($carray[2], $json, true);
+				$gs->logAction($accountID, 26, $check["discordID"]);
 				return true;
 			}
 		}

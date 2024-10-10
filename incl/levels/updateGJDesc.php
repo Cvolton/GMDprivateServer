@@ -2,12 +2,13 @@
 chdir(dirname(__FILE__));
 require "../lib/connection.php";
 require_once "../lib/GJPCheck.php";
-$GJPCheck = new GJPCheck();
 require_once "../lib/exploitPatch.php";
 require_once "../lib/mainLib.php";
+require_once "../lib/automod.php";
+if(Automod::isLevelsDisabled(0)) exit('-1');
 $mainLib = new mainLib();
 $levelDesc = ExploitPatch::remove($_POST["levelDesc"]);
-$levelID = ExploitPatch::numbercolon($_POST["levelID"]);
+$levelID = ExploitPatch::number($_POST["levelID"]);
 if (isset($_POST['udid']) && !empty($_POST['udid'])) {
 	$id = ExploitPatch::remove($_POST["udid"]);
 	if (is_numeric($id)) {
@@ -29,4 +30,6 @@ if (strpos($rawDesc, '<c') !== false) {
 }
 $query = $db->prepare("UPDATE levels SET levelDesc=:levelDesc WHERE levelID=:levelID AND extID=:extID");
 $query->execute([':levelID' => $levelID, ':extID' => $id, ':levelDesc' => $levelDesc]);
+$gs->logAction($id, 21, $levelID, $levelDesc);
 echo 1;
+?>

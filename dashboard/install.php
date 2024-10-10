@@ -99,6 +99,21 @@ if(!$installed) {
 			 `timestamp` int(11) NOT NULL DEFAULT 0,
 			 PRIMARY KEY (`banID`)
 			) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci");
+		$check = $db->query("SHOW TABLES LIKE 'automod'");
+      		$exist = $check->fetchAll();
+      		if(empty($exist)) $db->query("CREATE TABLE `automod` (
+			 `ID` int(11) NOT NULL AUTO_INCREMENT,
+			 `type` int(11) NOT NULL DEFAULT 0,
+			 `value1` varchar(255) NOT NULL DEFAULT '',
+			 `value2` varchar(255) NOT NULL DEFAULT '',
+			 `value3` varchar(255) NOT NULL DEFAULT '',
+			 `value4` varchar(255) NOT NULL DEFAULT '',
+			 `value5` varchar(255) NOT NULL DEFAULT '',
+			 `value6` varchar(255) NOT NULL DEFAULT '',
+			 `timestamp` int(11) NOT NULL DEFAULT 0,
+			 `resolved` int(11) NOT NULL DEFAULT 0,
+			 PRIMARY KEY (`ID`)
+			) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci");
 		$check = $db->query("SHOW COLUMNS FROM `roles` LIKE 'dashboardLevelPackCreate'");
       		$exist = $check->fetchAll();
       		if(empty($exist)) $db->query("ALTER TABLE roles ADD dashboardLevelPackCreate INT NOT NULL DEFAULT '0' AFTER dashboardModTools");
@@ -198,6 +213,9 @@ if(!$installed) {
 					$exist = $check->fetchAll();
 					if(!empty($exist)) $db->query('ALTER TABLE `users` DROP `banReason`');
 			}
+		$check = $db->query("SHOW COLUMNS FROM `roles` LIKE 'profilecommandDiscord'");
+			$exist = $check->fetchAll();
+			if(empty($exist)) $db->query("ALTER TABLE `roles` DROP `profilecommandDiscord`");
 		$check = $db->query("SHOW COLUMNS FROM `levels` LIKE 'originalServer'");
 			$exist = $check->fetchAll();
 			if(empty($exist)) $db->query("ALTER TABLE `levels` ADD `originalServer` VARCHAR(255) NOT NULL DEFAULT '' AFTER `originalReup`");
@@ -228,6 +246,14 @@ if(!$installed) {
 		$check = $db->query("SHOW COLUMNS FROM `sfxs` LIKE 'token'");
 			$exist = $check->fetchAll();
 			if(empty($exist)) $db->query("ALTER TABLE `sfxs` ADD `token` varchar(255) NOT NULL DEFAULT '' AFTER `reuploadTime`");
+		$db->query("ALTER TABLE `actions` CHANGE `account` `account` VARCHAR(255) NOT NULL DEFAULT ''");
+		$check = $db->query("SHOW COLUMNS FROM `actions` LIKE 'IP'");
+			$exist = $check->fetchAll();
+			if(empty($exist)) $db->query("ALTER TABLE `actions` ADD `IP` VARCHAR(255) NOT NULL DEFAULT '' AFTER `account`");
+		$check = $db->query("SHOW COLUMNS FROM `roles` LIKE 'dashboardManageAutomod'");
+			$exist = $check->fetchAll();
+			if(empty($exist)) $db->query("ALTER TABLE `roles` ADD `dashboardManageAutomod` INT NOT NULL DEFAULT '0' AFTER `dashboardManageLevels`");
+		
 	$lines = file($dbPath.'config/dashboard.php');
 	$first_line = $lines[2];
 	$lines = array_slice($lines, 1 + 2);

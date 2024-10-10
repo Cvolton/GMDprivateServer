@@ -421,6 +421,62 @@ $string['resendMailHint'] = 'Не пришло письмо?';
 $string['resendMailDesc'] = 'Здесь вы можете повторно отправить письмо с активацией на почту, если оно вам не пришло!';
 $string['resendMailButton'] = 'Отправить письмо';
 
+$string['automodTitle'] = 'Автомод';
+$string['possibleLevelsSpamming'] = 'Возможный спам уровнями';
+$string['disableLevelsUploading'] = 'Отключить публикацию уровней';
+$string['possibleAccountsSpamming'] = 'Возможный спам аккаунтами';
+$string['disableAccountsRegistering'] = 'Отключить регистрацию аккаунтов';
+$string['possibleCommentsSpamming'] = 'Возможный спам комментариями';
+$string['disableComments'] = 'Отключить комментирование';
+$string['similarCommentsCount'] = 'Количество однотипных комментариев';
+$string['similarityValueOfAllComments'] = 'Значение схожести ко всем комментариям';
+$string['possibleCommentsSpammer'] = 'Возможный спаммер комментариями';
+$string['banCommenting'] = 'Заблокировать комментирование';
+$string['spammerUsername'] = 'Никнейм спаммера';
+$string['possibleAccountPostsSpamming'] = 'Возможный спам постами';
+$string['disablePosting'] = 'Отключить публикацию постов';
+$string['similarPostsCount'] = 'Количество однотипных постов';
+$string['similarityValueOfAllPosts'] = 'Значение схожести ко всем постам';
+$string['possibleAccountPostsSpammer'] = 'Возможный спаммер постами';
+$string['possibleRepliesSpamming'] = 'Возможный спам ответами';
+$string['possibleRepliesSpammer'] = 'Возможный спаммер ответами';
+$string['similarRepliesCount'] = 'Количество однотипных ответов';
+$string['similarityValueOfAllReplies'] = 'Значение схожести ко всем ответам';
+$string['unknownWarning'] = 'Неизвестное предупреждение';
+$string['before'] = 'До';
+$string['after'] = 'После';
+$string['compare'] = 'Сравнение';
+$string['resolvedWarning'] = 'Решённое предупреждение';
+$string['resolveWarning'] = 'Решить предупреждение';
+$string['enabled'] = 'Включено';
+$string['disabled'] = 'Отключено';
+$string['yesterday'] = 'Вчера';
+$string['today'] = 'Сегодня';
+$string['uploading'] = 'Публикация';
+$string['commenting'] = 'Комментирование';
+$string['leaderboardSubmits'] = 'Публикация рекордов';
+$string['manageLevels'] = 'Управление уровнями';
+$string['disableLevelsUploading'] = 'Отключить публикацию уровней';
+$string['disableLevelsCommenting'] = 'Отключить комментирование';
+$string['disableLevelsLeaderboardSubmits'] = 'Отключить публикацию рекордов';
+$string['disable'] = 'Отключить';
+$string['enable'] = 'Включить';
+$string['registering'] = 'Регистрация';
+$string['accountPosting'] = 'Публикация постов';
+$string['updatingProfileStats'] = 'Обновление статистики';
+$string['messaging'] = 'Личные сообщения';
+$string['manageAccounts'] = 'Управление аккаунтами';
+$string['disableAccountsRegistering'] = 'Отключить регистрацию';
+$string['disableAccountPosting'] = 'Отключить публикацию постов';
+$string['disableUpdatingProfileStats'] = 'Отключить обновление статистики';
+$string['disableMessaging'] = 'Отключить личные сообщения';
+
+$string['cantPostCommentsAboveChars'] = 'Вы не можете публиковать комментарии свыше %1$s символов!';
+$string['replyingIsDisabled'] = 'Ответы на посты на данный момент отключены!';
+$string['youAreBannedFromCommenting'] = 'Вам запрещено комментировать!';
+$string['cantPostAccountCommentsAboveChars'] = 'Вы не можете публиковать посты свыше %1$s символов!';
+$string['commentingIsDisabled'] = 'Комментирование на данный момент отключено!';
+
 /*
 	REUPLOAD
 */

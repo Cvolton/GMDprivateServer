@@ -108,8 +108,16 @@ class ipCheck {
 		}
 	}
 	public function checkIP() {
+		global $db;
 		$this->checkProxy();
 		$this->checkVPN();
+		$banip = $db->prepare("SELECT count(*) FROM bannedips WHERE IP = :ip");
+		$banip->execute([':ip' => $this->getYourIP()]);
+		$banip = $banip->fetchColumn();
+		if($banip > 0) {
+			http_response_code(404);
+			exit;
+		}
 	}
 }
 ?>
