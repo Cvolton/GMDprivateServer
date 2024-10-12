@@ -4,6 +4,7 @@ require "../incl/dashboardLib.php";
 require "../".$dbPath."incl/lib/connection.php";-
 require_once "../".$dbPath."incl/lib/mainLib.php";
 $gs = new mainLib();
+$dl = new dashboardLib();
 require "../".$dbPath."incl/lib/exploitPatch.php";
 require "../".$dbPath."incl/lib/automod.php";
 require_once "../".$dbPath."config/misc.php";

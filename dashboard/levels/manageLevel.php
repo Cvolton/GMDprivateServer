@@ -15,7 +15,7 @@ if(!$manageLevelCheck) exit($dl->printSong('<div class="form">
     <h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
     <form class="form__inner" method="post" action=".">
 		<p>'.$dl->getLocalizedString("noPermission").'</p>
-	        <button type="button" onclick="a(\'\', true, false, \'GET\')" class="btn-primary">'.$dl->getLocalizedString("Kish!").'</button>
+	        <button type="button" onclick="a(\'\', true, true, \'GET\')" class="btn-primary">'.$dl->getLocalizedString("Kish!").'</button>
     </form>
 </div>', 'browse'));
 $levelID = ExploitPatch::number($_GET['levelID']);
@@ -26,7 +26,7 @@ if(empty($level)) die($dl->printSong('<div class="form">
 	<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 	<form class="form__inner" method="post" action="">
 		<p>'.$dl->getLocalizedString("emptyPage").'</p>
-		<button type="button" onclick="a(\'\', true, false, \'GET\')" class="btn-primary">'.$dl->getLocalizedString("dashboard").'</button>
+		<button type="button" onclick="a(\'\', true, true, \'GET\')" class="btn-primary">'.$dl->getLocalizedString("dashboard").'</button>
 	</form>
 </div>', 'browse'));
 if(isset($_GET['deleteLevel'])) {
@@ -41,7 +41,7 @@ if(isset($_GET['deleteLevel'])) {
 			<h1>'.$dl->getLocalizedString("manageLevel").'</h1>
 			<form class="form__inner" method="post" action="">
 				<p>'.$dl->getLocalizedString("successfullyDeletedLevel").'</p>
-				<button type="button" onclick="a(\'stats/levelsList.php\', true, false, \'GET\')" class="btn-primary">'.$dl->getLocalizedString("levelsList").'</button>
+				<button type="button" onclick="a(\'stats/levelsList.php\', true, true, \'GET\')" class="btn-primary">'.$dl->getLocalizedString("levelsList").'</button>
 			</form>
 		</div>', 'browse');
 	} else die($dl->printSong('<div class="form">
@@ -50,7 +50,7 @@ if(isset($_GET['deleteLevel'])) {
 		<p>'.$dl->getLocalizedString("areYouSure").'</p>
 		<input type="hidden" name="yesIAmSure" value="1"></input>
 		<button type="button" onclick="a(\'levels/manageLevel.php?levelID='.$levelID.'\', true, false, \'GET\')" class="btn-song">'.$dl->getLocalizedString("change").'</button>
-		<button style="width: 80%;" type="button" onclick="a(\'levels/manageLevel.php?levelID='.$levelID.'&deleteLevel\', true, false, \'POST\')" class="btn-song btn-size">'.$dl->getLocalizedString("delete").'</button>
+		<button style="width: 80%;" type="button" onclick="a(\'levels/manageLevel.php?levelID='.$levelID.'&deleteLevel\', true, true, \'POST\')" class="btn-song btn-size">'.$dl->getLocalizedString("delete").'</button>
 		</form>
 	</div>', 'mod'));
 }
@@ -153,12 +153,13 @@ if(!empty($_POST["levelName"]) && !empty($_POST["levelAuthor"])) {
 	}
 	$updateLevel = $db->prepare("UPDATE levels SET levelName = :levelName, extID = :extID, userID = :userID, levelDesc = :levelDesc, starStars = :stars, starFeatured = :starFeatured, starEpic = :starEpic, songID = :songID, password = :password, starCoins = :starCoins, unlisted = :unlisted, unlisted2 = :unlisted, updateLocked = :updateLocked, commentLocked = :commentLocked WHERE levelID = :levelID");
 	$updateLevel->execute([':levelName' => $newLevelName, ':extID' => $newLevelAuthor, ':userID' => $gs->getUserID($newLevelAuthor), ':levelDesc' => $newLevelDesc, ':stars' => $newStars, ':starFeatured' => $starFeatured, ':starEpic' => $starEpic, ':songID' => $newSongID, ':password' => $newPassword, ':starCoins' => $newVerifyCoins, ':unlisted' => $newUnlisted, ':updateLocked' => $newLockUpdating, ':commentLocked' => $newLockCommenting, ':levelID' => $levelID]);
+	if($newStars != $level['starStars']) $gs->sendRateWebhook($_SESSION['accountID'], $levelID);
 	$gs->sendLogsLevelChangeWebhook($levelID, $_SESSION['accountID'], $level);
 	$dl->printSong('<div class="form">
 		<h1>'.$dl->getLocalizedString("manageLevel").'</h1>
 		<form class="form__inner" method="post" action="">
 			<p>'.$dl->getLocalizedString("successfullyChangedLevel").'</p>
-			<button type="button" onclick="a(\'levels/manageLevel.php?levelID='.$levelID.'\', true, false, \'GET\')" class="btn-primary">'.$dl->getLocalizedString("change").'</button>
+			<button type="button" onclick="a(\'levels/manageLevel.php?levelID='.$levelID.'\', true, true, \'GET\')" class="btn-primary">'.$dl->getLocalizedString("change").'</button>
 		</form>
 	</div>', 'browse');
 } else {
@@ -224,7 +225,7 @@ if(!empty($_POST["levelName"]) && !empty($_POST["levelAuthor"])) {
 	</div>
     '.Captcha::displayCaptcha(true).'
 	<button type="button" onclick="a(\'levels/manageLevel.php?levelID='.$levelID.'\', true, false, \'POST\')" class="btn-primary btn-block" id="levelChange" disabled>' . $dl->getLocalizedString("change") . '</button>
-	<button style="width: 80%" type="button" onclick="a(\'levels/manageLevel.php?levelID='.$levelID.'&deleteLevel\', true, false, \'GET\')" class="btn-primary btn-size">' . $dl->getLocalizedString("delete") . '</button>
+	<button style="width: 80%" type="button" onclick="a(\'levels/manageLevel.php?levelID='.$levelID.'&deleteLevel\', true, true, \'GET\')" class="btn-primary btn-size">' . $dl->getLocalizedString("delete") . '</button>
     </form>
     </div></div>
     <script>
