@@ -209,6 +209,10 @@ foreach($actions AS &$actionValue) {
 		</div>
 	</div>';
 }
+if(empty($actionsDiv)) $actionsDiv = '<div class="empty-section">
+	<i class="fa-solid fa-triangle-exclamation"></i>
+	<p>'.$dl->getLocalizedString('noWarnings').'</p>
+</div>';
 $levelsCount = Automod::getLevelsCountPerDay();
 if(empty($levelsCount['yesterday'])) $levelsCountCompare = '∞';
 else $levelsCountCompare = ceil(($levelsCount['today'] / $levelsCount['yesterday']) * 1000) / 10 .'%';
@@ -224,7 +228,7 @@ $accountRegisteringState = empty($accountsDisableTimes[0]) ? 'enabled' : 'disabl
 $accountPostingState = empty($accountsDisableTimes[1]) ? 'enabled' : 'disabled';
 $accountStatsUpdatingState = empty($accountsDisableTimes[2]) ? 'enabled' : 'disabled';
 $accountMessagingState = empty($accountsDisableTimes[3]) ? 'enabled' : 'disabled';
-$dl->printPage('<div class="form new-form">
+$dl->printPage('<div class="form new-form automod-form">
 	<h1>'.$dl->getLocalizedString("automodTitle").'</h1>
 	<div class="automod-boxes">
 		<div class="form-control new-form-control">

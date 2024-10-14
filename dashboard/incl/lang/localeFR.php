@@ -478,6 +478,7 @@ $string['replyingIsDisabled'] = 'La publication de réponses est actuellement d�
 $string['youAreBannedFromCommenting'] = 'Vous êtes interdit de publier de nouveaux commentaires!';
 $string['cantPostAccountCommentsAboveChars'] = 'Vous ne pouvez pas publier de posts de plus de %1$s charactères !';
 $string['commentingIsDisabled'] = 'La publication de commentaires est actuellement désactivée !';
+$string['noWarnings'] = 'No warnings';
 
 /*
 	REUPLOAD

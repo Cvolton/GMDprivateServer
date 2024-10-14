@@ -109,15 +109,6 @@ $pagel = '<div class="form new-form">
 		'.$srcbtn.'
 	</div>
 </form>';
-if($x > 0 AND !empty(trim(ExploitPatch::remove($_GET["search"])))) {
-	if($x > 1) {
-		echo '<meta name="description" content="Послушай '.$x.' звуковых эффектов по запросу '.trim($_GET["search"]).'!">';
-	} else {
-		echo '<meta property="og:video" content="'.str_replace('http://', 'https://', $result[0]["download"]).'">
-		<meta property="og:audio:type" content="audio/mpeg">
-		<meta name="description" content="Послушай звуковой эффект '.$result[0]["name"].'!">';
-	}
-}
 if(!empty(trim($_GET["search"]))) $query = $db->prepare("SELECT count(*) FROM sfxs WHERE name LIKE '%".trim(ExploitPatch::remove($_GET["search"]))."%' OR authorName LIKE '%".trim(ExploitPatch::remove($_GET["search"]))."%'");
 else $query = $db->prepare("SELECT count(*) FROM sfxs");
 $query->execute();

@@ -477,6 +477,7 @@ $string['replyingIsDisabled'] = 'Ответы на посты на данный 
 $string['youAreBannedFromCommenting'] = 'Вам запрещено комментировать!';
 $string['cantPostAccountCommentsAboveChars'] = 'Вы не можете публиковать посты свыше %1$s символов!';
 $string['commentingIsDisabled'] = 'Комментирование на данный момент отключено!';
+$string['noWarnings'] = 'Предупреждений нет';
 
 /*
 	REUPLOAD

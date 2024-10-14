@@ -104,13 +104,17 @@
 	.icon-wave {height: 27px !important;}
 	.icon-kit-div {width: 20% !important;}
 	.icon-kit {flex-wrap: wrap !important;}
-	.form-control {flex-wrap: wrap !important; border-radius: 25px !important; justify-content: center !important;}
+	.form-control {flex-wrap: wrap !important; justify-content: center !important;}
 	.profilepic {width: max-content !important;}
 	.modactionsspoiler {font-size: 20px !important;}
 	.another-chat-div {height: 80%;}
 	.itemsbox {flex-direction: column !important; margin-left: 2.5vw !important; width: 95vw !important; margin-bottom: 50px !important; margin-top: 15px !important; flex-wrap: nowrap !important;}
 	.manage-button-div {align-items: flex-start !important; flex-direction: column !important;}
 	.friends-button-div {min-width: 100% !important; width: 100% !important;}
+	#htmlpage > div {margin-bottom: 50px !important;}
+	.automod-form {max-height: 140vh !important; height: 140vh !important;}
+	.automod-boxes, .attribute-divs {flex-direction: column !important;}
+	.attribute-button {width: 100% !important;}
 }
 
 * {
@@ -2430,7 +2434,7 @@ body:has(.audio) {
 
 .attribute-div {
 	background: #373A3F;
-    border-radius: 50px;
+    border-radius: 20px;
     font-size: 25px;
     padding: 7px 15px;
     color: white;
@@ -2443,6 +2447,9 @@ body:has(.audio) {
 .attribute-divs {
 	display: flex;
 	grid-gap: 5px;
+	background: #141414;
+    padding: 10px;
+    border-radius: 25px;
 }
 
 .attribute-div.attribute-button {
@@ -2454,7 +2461,10 @@ body:has(.audio) {
 .attributes {
     display: flex;
     flex-direction: column;
-	grid-gap: 10px;
+	grid-gap: 5px;
+    padding: 10px !important;
+	background: #373A3F;
+    border-radius: 30px;
 }
 
 .attribute-divs.text text {
