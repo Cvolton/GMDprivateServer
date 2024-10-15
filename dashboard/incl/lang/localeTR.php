@@ -200,7 +200,7 @@ $string["levelAlreadyReuploaded"] = "Bölüm zaten aktarılmış!";
 $string["server"] = "Sunucu";
 $string["levelID"] = "Bölüm ID";
 $string["pageDisabled"] = "Bu sayfa devre dışı!";
-$string["levelUploadBanned"] = "You're banned from uploading levels!";
+$string["levelUploadBanned"] = "Bölüm yüklemekten yasaklandınız!";
 
 $string["activateAccount"] = "Hesap aktifleştirme";
 $string["activateDesc"] = "Hesabını aktif et!";
@@ -244,8 +244,8 @@ $string["noMsgs"] = "Diyalog başlat!";
 $string["subject"] = "Konu";
 $string["msg"] = "Mesaj";
 $string["tooFast"] = "Çok hızlı yazıyorsun!";
-$string["messengerYou"] = "You:";
-$string["chooseChat"] = "Choose chat";
+$string["messengerYou"] = "Sen:";
+$string["chooseChat"] = "Sohbet seç";
 
 $string["levelToGD"] = "Bölümü hedef sunucuya aktar";
 $string["levelToGDDesc"] = "Burada bölümünü hedef sunucuya aktarabilirsin!";
@@ -322,7 +322,7 @@ $string["clanOwner"] = "Klan sahibi";
 $string["noClanDesc"] = "<i>Açıklama yok</i>";
 $string["noClan"] = "Bu klan mevcut değil!";
 $string["clanName"] = "Klan ismi";
-$string["clanTag"] = "Clan tag (3-5 characters)";
+$string["clanTag"] = "Klan etiketi (3-5 karakter)";
 $string["clanDesc"] = "Klan açıklaması";
 $string["clanColor"] = "Klan rengi";
 $string["dangerZone"] = "Tehlikeli bölge";
@@ -357,8 +357,8 @@ $string["create"] = "Oluştur";
 $string["mainSettings"] = "Ana ayarlar";
 $string["takenClanName"] = "Bu klan ismi zaten alınmış!";
 $string["takenClanTag"] = "Bu klan etiketi zaten alınmış!";
-$string["badClanName"] = "Please choose another clan name.";
-$string["badClanTag"] = "Please choose another clan tag.";
+$string["badClanName"] = "Lütfen başka bir klan ismi seç.";
+$string["badClanTag"] = "Lütfen başka bir klan etiketi seç.";
 
 $string["suggestedName"] = '<button type="button" onclick="a(\'profile/%1$s\', true, true)" class="accbtn" name="accountID">%1$s</button><text class="dltext"> adlı oyuncu </text><text class="levelname">%2$s</text><text class="dltext"> adlı bölümü <b>%4$s%3$s</b> için önerdi.</text>'; // %1$s - Mod username, %2$s - level name, %3$s - x stars, %4$s - Featured/Epic (%4$s%3$s - Featured, x stars)
 $string["reportedName"] = '%1$s <text class="levelname">%2$s</text><text class="dltext"> adlı bölümü raporladı</text>';
