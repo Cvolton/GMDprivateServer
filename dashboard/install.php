@@ -215,7 +215,7 @@ if(!$installed) {
 			}
 		$check = $db->query("SHOW COLUMNS FROM `roles` LIKE 'profilecommandDiscord'");
 			$exist = $check->fetchAll();
-			if(empty($exist)) $db->query("ALTER TABLE `roles` DROP `profilecommandDiscord`");
+			if(!empty($exist)) $db->query("ALTER TABLE `roles` DROP `profilecommandDiscord`");
 		$check = $db->query("SHOW COLUMNS FROM `levels` LIKE 'originalServer'");
 			$exist = $check->fetchAll();
 			if(empty($exist)) $db->query("ALTER TABLE `levels` ADD `originalServer` VARCHAR(255) NOT NULL DEFAULT '' AFTER `originalReup`");
