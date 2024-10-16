@@ -42,7 +42,7 @@ if(!empty($_POST["user"])) {
 	$query = $db->prepare("SELECT accountID FROM accounts WHERE accountID = :id");
 	$query->execute([':id' => $mod]);
 	$res = $query->fetchAll();
-	if(count($res) == 0) {
+	if(!$res) {
 		$dl->printSong('<div class="form">
 			<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 			<form class="form__inner" method="post" action="">
@@ -78,7 +78,7 @@ if(!empty($_POST["user"])) {
 	$query = $db->prepare("SELECT * FROM roleassign WHERE accountID = :mod");
 	$query->execute([':mod' => $mod]);
 	$res = $query->fetch();
-	if(count($res) != 0) {
+	if($res) {
 		$dl->printSong('<div class="form">
 			<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 			<form class="form__inner" method="post" action="">

@@ -9,7 +9,7 @@ if(function_exists("ini_set")) {
 require "../config/security.php";
 require "../incl/lib/connection.php";
 require "../incl/lib/generatePass.php";
-require "../incl/lib/mainLib.php";
+require_once "../incl/lib/mainLib.php";
 require_once "../incl/lib/exploitPatch.php";
 $gs = new mainLib();
 $userName = ExploitPatch::charclean($_POST["userName"]);
