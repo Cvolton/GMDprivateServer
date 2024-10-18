@@ -19,12 +19,6 @@ function chkarray($source, $default = 0) {
 	else $target = $source;
 	return $target;
 }
-require "../".$dbPath."incl/lib/connection.php";
-require "../".$dbPath."incl/lib/exploitPatch.php";
-require "../".$dbPath."incl/lib/XORCipher.php";
-require "../".$dbPath."config/reuploadAcc.php";
-require "../".$dbPath."config/proxy.php";
-require_once "../".$dbPath."incl/lib/mainLib.php";
 $gs = new mainLib();
 if(isset($_SESSION["accountID"]) AND $_SESSION["accountID"] != 0) {
 $checkBan = $gs->getPersonBan($_SESSION['accountID'], $gs->getUserID($_SESSION['accountID'], $gs->getAccountName($_SESSION['accountID'])), 2);

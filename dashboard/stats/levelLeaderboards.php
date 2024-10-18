@@ -109,7 +109,7 @@ if(empty($leaderboards)) $leaderboards = '<div class="empty-section">
 	<i class="fa-solid fa-chart-simple"></i>
 	<p>'.$dl->getLocalizedString('noLeaderboards').'</p>
 </div>';
-$pagel = '<div class="form new-form">
+$pagel = '<div class="form new-form twice-form">
 	<h1 class="goback-title">'.$back.$dl->getLocalizedString("levelLeaderboards").$typeMenu.'</h1>
 	<div class="form-control new-form-control level-card">
 		'.$dl->generateLevelsCard($level, $modcheck).'

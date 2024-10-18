@@ -194,7 +194,7 @@ switch($type){
 		$order = "likes";
 		break;
 	case 5:
-		if($gs->getUserID($accountID, $gs->getAccountName($accountID)) == $str) $params = [];
+		if($accountID && $gs->getUserID($accountID, $gs->getAccountName($accountID)) == $str) $params = [];
 		$params[] = "levels.userID = '$str'";
 		break;
 	case 6: //featured

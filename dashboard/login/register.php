@@ -34,7 +34,7 @@ if(!empty($_POST["username"]) AND !empty($_POST["email"]) AND !empty($_POST["rep
 			</form>
 		</div>'));
 	}
-	$username = ExploitPatch::charclean($_POST["username"]);
+	$username = str_replace(' ', '', ExploitPatch::charclean($_POST["username"]));
 	$password = $_POST["password"];
 	$repeat_password = $_POST["repeatpassword"];
 	$email = ExploitPatch::rucharclean($_POST["email"]);
@@ -62,15 +62,6 @@ if(!empty($_POST["username"]) AND !empty($_POST["email"]) AND !empty($_POST["rep
 				</div>'));
 				}
 		}
-	}
-	if(strpos($userName, ' ') !== false) {
-		exit($dl->printSong('<div class="form">
-			<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
-			<form class="form__inner" method="post" action="">
-			<p>'.$dl->getLocalizedString("badUsername").'</p>
-			<button type="submit" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
-			</form>
-		</div>'));
 	}
 	if(strlen($username) < 3) {
 		exit($dl->printSong('<div class="form">

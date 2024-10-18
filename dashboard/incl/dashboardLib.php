@@ -1094,6 +1094,7 @@ class dashboardLib {
 				<input type="hidden" name="deleteCommentID" value="'.$comment["commentID"].'"></input>
 			</form>
 		</button>';
+		$percentText = $comment['percent'] > 0 ? '<text class="profilepercent">'.$comment['percent'].'%</text>' : '';
 		// Avatar management
 		$avatarImg = '';
 		$query = $db->prepare('SELECT userName, iconType, color1, color2, color3, accGlow, accIcon, accShip, accBall, accBird, accDart, accRobot, accSpider, accSwing, accJetpack FROM users WHERE extID = :extID');
@@ -1121,7 +1122,7 @@ class dashboardLib {
 		return '<div style="width: 100%;display: flex;flex-wrap: wrap;justify-content: center;">
 			<div class="profile big">
 				<div style="display:flex">
-					<p class="profilenick big" onclick="a(\'profile/'.$commentAccountName.'\', true, true)">'.$avatarImg.$commentAccountName.$badgeImg.'</p>
+					<p class="profilenick big" onclick="a(\'profile/'.$commentAccountName.'\', true, true)">'.$avatarImg.$commentAccountName.$badgeImg.$percentText.'</p>
 					<div class="delete-comment-div">'.$deleteComment.'<p class="profilelikes big">'.$stats.'</p></div>
 				</div>
 				<h3 class="profilemsg big"'.($queryColorLevel != '255,255,255' ? ' style="color:rgb('.$queryColorLevel.');"' : '').'>'.$commentMessage.'</h3>
@@ -1189,6 +1190,7 @@ class dashboardLib {
 			$element = mb_substr($element, 1);
 			switch($firstChar) {
 				case '@':
+					if($playersFound[$element]) break;
 					$element = ExploitPatch::charclean($element);
 					$check = $db->prepare('SELECT count(*) FROM accounts WHERE userName = :userName AND isActive != 0');
 					$check->execute([':userName' => $element]);

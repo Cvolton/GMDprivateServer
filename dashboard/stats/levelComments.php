@@ -78,7 +78,7 @@ if(empty($comments)) $comments = '<div class="empty-section">
 	<i class="fa-solid fa-comment-slash"></i>
 	<p>'.$dl->getLocalizedString('noComments').'</p>
 </div>';
-$pagel = '<div class="form new-form">
+$pagel = '<div class="form new-form twice-form">
 	<h1 class="goback-title">'.$back.$dl->getLocalizedString("levelComments").'</h1>
 	<div class="form-control new-form-control level-card">
 		'.$dl->generateLevelsCard($level, $modcheck).'

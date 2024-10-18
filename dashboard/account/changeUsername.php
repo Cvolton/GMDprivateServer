@@ -30,7 +30,7 @@ if($_POST["oldnickname"] != "" AND $_POST["newnickname"] != "" AND $_POST["passw
 	$getAccountData->execute([':accountID' => $accID]);
 	$getAccountData = $getAccountData->fetch();
 	$oldnick = ExploitPatch::charclean($_POST["oldnickname"]);
-	$newnick = ExploitPatch::charclean($_POST["newnickname"]);
+	$newnick = str_replace(' ', '', ExploitPatch::charclean($_POST["newnickname"]));
 	if($oldnick != $userName){
 		$dl->printSong('<div class="form">
 		<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
@@ -54,7 +54,7 @@ if($_POST["oldnickname"] != "" AND $_POST["newnickname"] != "" AND $_POST["passw
 	$pass = GeneratePass::isValidUsrname($userName, $pass);
 	$salt = "";
 if($pass == 1) {
-	$query = $db->prepare("SELECT count(*) FROM accounts WHERE userName=:userName");
+	$query = $db->prepare("SELECT count(*) FROM accounts WHERE userName LIKE :userName");
 	$query->execute([':userName' => $newnick]);
 	$count = $query->fetchColumn();
 	if($count > 0){

@@ -115,6 +115,8 @@
 	.automod-form {max-height: 140vh !important; height: 140vh !important;}
 	.automod-boxes, .attribute-divs {flex-direction: column !important;}
 	.attribute-button {width: 100% !important;}
+	.profilelikes {font-size: 20px !important; height: max-content;}
+	.twice-form {max-height: 100vh !important; height: 100vh !important;}
 }
 
 * {
@@ -2328,6 +2330,7 @@ body:has(.audio) {
     display: flex;
     justify-content: flex-end;
     grid-gap: 10px;
+	align-items: center;
 }
 
 .empty-section {
@@ -2492,4 +2495,11 @@ body:has(.audio) {
     background: none;
     position: absolute;
     opacity: 0;
+}
+
+.profilepercent {
+	font-size: 20px;
+    font-weight: 400;
+    margin-left: -5px;
+    color: gray;
 }

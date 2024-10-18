@@ -103,7 +103,7 @@ if(!empty($_POST["user"])) {
 		</div>', 'mod');
 	} else { // I just realized this code will never run LOL
 		$query = $db->prepare("DELETE FROM roleassign WHERE accountID = :accID");
-		$query->execute([':accID' => $accountID]);
+		$query->execute([':accID' => $mod]);
 		$mod2 = $gs->getAccountName($mod);
 		$query = $db->prepare("INSERT INTO modactions  (type, value, timestamp, account, value2, value3) VALUES ('20', :value, :timestamp, :account, :value2, :value3)");
 		$query->execute([':value' => $mod2, ':timestamp' => time(), ':account' => $accountID, ':value2' => $mod, ':value3' => -1]);

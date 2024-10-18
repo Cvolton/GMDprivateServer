@@ -11,7 +11,7 @@ if(Automod::isAccountsDisabled(0)) exit('-1');
 if(!isset($preactivateAccounts)) $preactivateAccounts = true;
 if(!isset($filterUsernames)) global $filterUsernames;
 if(!empty($_POST["userName"]) AND !empty($_POST["password"]) AND !empty($_POST["email"])) {
-	$userName = ExploitPatch::charclean($_POST["userName"]);
+	$userName = str_replace(' ', '', ExploitPatch::charclean($_POST["userName"]));
 	$password = $_POST["password"];
     $email = ExploitPatch::rucharclean($_POST["email"]);
 	if($filterUsernames >= 1) {
@@ -26,7 +26,7 @@ if(!empty($_POST["userName"]) AND !empty($_POST["password"]) AND !empty($_POST["
 				}
 		}
 	}
-	if(strlen($userName) > 20 || strpos($userName, ' ') !== false) exit("-4");
+	if(strlen($userName) > 20) exit("-4");
 	if(strlen($userName) < 3) exit("-9");
 	if(strlen($password) < 6) exit("-8");
 	if(!filter_var($email, FILTER_VALIDATE_EMAIL)) exit("-6");

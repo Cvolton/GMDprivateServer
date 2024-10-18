@@ -41,11 +41,11 @@ if(!empty($_POST["userID"]) AND !empty($_POST[$type])) {
 		die();
 	}
   if(!empty($_POST["Nick"])) {
-    $newnick = ExploitPatch::charclean($_POST["Nick"]);
+    $newnick = str_replace(' ', '', ExploitPatch::charclean($_POST["Nick"]));
     if(!is_numeric($_POST["userID"])) $accID = $gs->getAccountIDFromName($_POST["userID"]); 
     else $accID = ExploitPatch::number($_POST["userID"]);
     $salt = '';
-   	$query = $db->prepare("SELECT count(*) FROM accounts WHERE userName=:userName");
+   	$query = $db->prepare("SELECT count(*) FROM accounts WHERE userName LIKE :userName");
 	$query->execute([':userName' => $newnick]);
 	$count = $query->fetchColumn();
 	if($count > 0) {
