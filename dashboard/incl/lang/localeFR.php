@@ -363,7 +363,7 @@ $string["badClanName"] = "Please choose another clan name.";
 $string["badClanTag"] = "Please choose another clan tag.";
 
 $string["suggestedName"] = '<button type="button" onclick="a(\'profile/%1$s\', true, true)" class="accbtn" name="accountID">%1$s</button><text class="dltext"> a suggéré <b>%4$s%3$s</b> pour </text><text class="levelname">%2$s</text>'; // %1$s - Mod username, %2$s - level name, %3$s - x stars, %4$s - Featured/Epic (%4$s%3$s - Featured, x stars)
-$string["reportedName"] = '%1$s<text class="dltext"> a signalé </text><text class="levelname">%2$s</text>';
+$string["reportedName"] = '%1$s<text class="dltext"> a été signalé </text><text class="levelname">%2$s</text>';
 
 $string['listTable'] = "Listes";
 $string['listTableMod'] = "Listes non répertoriées";
