@@ -949,7 +949,7 @@ class mainLib {
 		}
 		$updatedLib = false;
 		foreach($servers AS $key => &$server) {
-			if ($types[$type] == 'music') {
+			if($types[$type] == 'music') {
 			    $versionUrl = $server.'/'.$types[$type].'/'.$types[$type].'library_version_02.txt';
 			    $dataUrl = $server.'/'.$types[$type].'/'.$types[$type].'library_02.dat';
 			} else {
@@ -962,7 +962,8 @@ class mainLib {
 			$curl = curl_init($versionUrl.'?token='.$token.'&expires='.$expires);
 			curl_setopt_array($curl, [
 				CURLOPT_PROTOCOLS => CURLPROTO_HTTP | CURLPROTO_HTTPS,
-				CURLOPT_RETURNTRANSFER => 1
+				CURLOPT_RETURNTRANSFER => 1,
+				CURLOPT_FOLLOWLOCATION => 1
 			]);
 			$newVersion = (int)curl_exec($curl);
 			curl_close($curl);
@@ -971,7 +972,8 @@ class mainLib {
 				$download = curl_init($dataUrl.'?token='.$token.'&expires='.$expires.'&dashboard=1');
 				curl_setopt_array($download, [
 					CURLOPT_PROTOCOLS => CURLPROTO_HTTP | CURLPROTO_HTTPS,
-					CURLOPT_RETURNTRANSFER => 1
+					CURLOPT_RETURNTRANSFER => 1,
+					CURLOPT_FOLLOWLOCATION => 1
 				]);
 				$dat = curl_exec($download);
 				$resultStatus = curl_getinfo($download, CURLINFO_HTTP_CODE);
@@ -1046,8 +1048,8 @@ class mainLib {
 						$bits = explode(',', $res[$i][$j]);
 						switch($i) {
 							case 0: // File/Folder
-								if(empty(trim($bits[1]))) continue 2;
-								if(!isset($idsConverter['originalIDs'][$server][$bits[0]]) && !isset($idsConverter['IDs'][$bits[0]])) {
+								if(empty(trim($bits[1])) || empty($bits[0]) || !is_numeric($bits[0])) break;
+								if(!isset($idsConverter['originalIDs'][$server][$bits[0]])) {
 									$idsConverter['count']++;
 									while(in_array($idsConverter['count'], $skipSFXIDs)) $idsConverter['count']++;
 									$idsConverter['IDs'][$idsConverter['count']] = ['server' => $server, 'ID' => $bits[0], 'name' => $bits[1], 'type' => $bits[2]];
@@ -1058,7 +1060,7 @@ class mainLib {
 									if(!isset($idsConverter['IDs'][$bits[0]]['name'])) $idsConverter['IDs'][$bits[0]] = ['server' => $server, 'ID' => $bits[0], 'name' => $bits[1], 'type' => $bits[2]];
 								}
 								if($bits[3] != 1) {
-									if(!isset($idsConverter['originalIDs'][$server][$bits[3]]) && !isset($idsConverter['IDs'][$bits[3]])) {
+									if(!isset($idsConverter['originalIDs'][$server][$bits[3]])) {
 										$idsConverter['count']++;
 										while(in_array($idsConverter['count'], $skipSFXIDs)) $idsConverter['count']++;
 										$idsConverter['IDs'][$idsConverter['count']] = ['server' => $server, 'ID' => $bits[3], 'name' => $bits[1], 'type' => 1];
@@ -1101,13 +1103,13 @@ class mainLib {
 					$music = explode(';', $data);
 					foreach($music AS &$songString) {
 						$song = explode(',', $songString);
-						if(empty($song[0])) continue;
-						if(!isset($idsConverter['originalIDs'][$server][$song[0]]) && !isset($idsConverter['IDs'][$song[0]])) {
+						if(empty($song[0]) || !is_numeric($song[0])) continue;
+						if(!isset($idsConverter['originalIDs'][$server][$song[0]])) {
 							$idsConverter['count']++;
 							$idsConverter['IDs'][$idsConverter['count']] = ['server' => $server, 'ID' => $song[0], 'name' => $song[1], 'type' => $x];
 							if($x == 1) {
 								$idsConverter['IDs'][$idsConverter['count']]['size'] = $song[3];
-								if(!isset($idsConverter['originalIDs'][$server][$song[2]]) && !isset($idsConverter['IDs'][$song[2]])) {
+								if(!isset($idsConverter['originalIDs'][$server][$song[2]])) {
 									$idsConverter['count']++;
 									$idsConverter['IDs'][$idsConverter['count']] = ['server' => $server, 'ID' => $song[2], 'type' => 0];
 									$idsConverter['originalIDs'][$server][$song[2]] = $idsConverter['count'];
@@ -1121,7 +1123,7 @@ class mainLib {
 							$song[0] = $idsConverter['originalIDs'][$server][$song[0]];
 							if($x == 1) {
 								$idsConverter['IDs'][$idsConverter['count']]['size'] = $song[3];
-								if(!isset($idsConverter['originalIDs'][$server][$song[2]]) && !isset($idsConverter['IDs'][$song[2]])) {
+								if(!isset($idsConverter['originalIDs'][$server][$song[2]])) {
 									$idsConverter['count']++;
 									$idsConverter['IDs'][$idsConverter['count']] = ['server' => $server, 'ID' => $song[2], 'type' => 0];
 									$idsConverter['originalIDs'][$server][$song[2]] = $idsConverter['count'];
@@ -1144,7 +1146,7 @@ class mainLib {
 								$newTags = [];
 								foreach($tags AS &$tag) {
 									if(empty($tag)) continue;
-									if(!isset($idsConverter['originalIDs'][$server][$tag]) && !isset($idsConverter['IDs'][$tag])) {
+									if(!isset($idsConverter['originalIDs'][$server][$tag])) {
 										$idsConverter['count']++;
 										$idsConverter['IDs'][$idsConverter['count']] = ['server' => $server, 'ID' => $tag, 'type' => 2];
 										$idsConverter['originalIDs'][$server][$tag] = $idsConverter['count'];
@@ -1153,13 +1155,13 @@ class mainLib {
 									$newTags[] = $tag;
 								}
 								$newTags[] = $server;
-								$artists = explode('.', $song[7]);
 								$tags = '.'.implode('.', $newTags).'.';
 								if($tags == '..') $tags = '.';
 								$newArtists = [];
+								$artists = explode('.', $song[7]);
 								foreach($artists AS &$artist) {
 									if(empty($artist)) continue;
-									if(!isset($idsConverter['originalIDs'][$server][$artist]) && !isset($idsConverter['IDs'][$artist])) {
+									if(!isset($idsConverter['originalIDs'][$server][$artist])) {
 										$idsConverter['count']++;
 										$idsConverter['IDs'][$idsConverter['count']] = ['server' => $server, 'ID' => $artist, 'type' => 2];
 										$idsConverter['originalIDs'][$server][$artist] = $idsConverter['count'];
