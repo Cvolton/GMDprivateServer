@@ -77,11 +77,11 @@ if(!is_numeric($levelID)){
 			}
 		}	
 		//Verifying friends only unlisted
-		if($result["unlisted2"] != 0) if(!($result["extID"] == $accountID || $gs->isFriends($accountID, $result["extID"])) && !$isPlayerAnAdmin) exit("-1");
+		if($result["unlisted2"] == 1) if(!($result["extID"] == $accountID || $gs->isFriends($accountID, $result["extID"])) && !$isPlayerAnAdmin) exit("-1");
 		//adding the download
 		$query6 = $db->prepare("SELECT count(*) FROM actions_downloads WHERE levelID=:levelID AND ip=INET6_ATON(:ip)");
 		$query6->execute([':levelID' => $levelID, ':ip' => $ip]);
-		if($inc && $query6->fetchColumn() < 2){
+		if($inc && $query6->fetchColumn() < 2) {
 			$query2=$db->prepare("UPDATE levels SET downloads = downloads + 1 WHERE levelID = :levelID");
 			$query2->execute([':levelID' => $levelID]);
 			$query6 = $db->prepare("INSERT INTO actions_downloads (levelID, ip) VALUES 
@@ -92,28 +92,27 @@ if(!is_numeric($levelID)){
 		$updateDate = $gs->makeTime($result["updateDate"]);
 		//password xor
 		$pass = $result["password"];
-		$desc = $result["levelDesc"];
-		if($gs->checkModIPPermission("actionFreeCopy") == 1){
+		$desc = ExploitPatch::translit(ExploitPatch::rucharclean(ExploitPatch::url_base64_decode($result["levelDesc"])));
+		if($gs->checkModIPPermission("actionFreeCopy") == 1) {
 			$pass = "1";
 		}
 		$xorPass = $pass;
-		if($gameVersion > 19){
-			if($pass != 0) $xorPass = ExploitPatch::url_base64_encode(XORCipher::cipher($pass,26364));
-		}else{
-			$desc = ExploitPatch::remove(ExploitPatch::url_base64_decode($desc));
+		if($gameVersion > 19) {
+			if($pass != 0) $xorPass = ExploitPatch::url_base64_encode(XORCipher::cipher($pass, 26364));
+			$desc = ExploitPatch::url_base64_encode($desc);
 		}
 		//submitting data
-		if(file_exists("../../data/levels/$levelID")){
+		if(file_exists("../../data/levels/$levelID")) {
 			$levelstring = file_get_contents("../../data/levels/$levelID");
-		}else{
+		} else {
 			$levelstring = $result["levelString"];
 		}
 		if($gameVersion > 18) {
-			if(substr($levelstring,0,3) == 'kS1'){
+			if(substr($levelstring,0,3) == 'kS1') {
 				$levelstring = ExploitPatch::url_base64_encode(gzcompress($levelstring));
 			}
 		}
-		$response = "1:".$result["levelID"].":2:".$result["levelName"].":3:".$desc.":4:".$levelstring.":5:".$result["levelVersion"].":6:".$result["userID"].":8:10:9:".$result["starDifficulty"].":10:".$result["downloads"].":11:1:12:".$result["audioTrack"].":13:".$result["gameVersion"].":14:".$result["likes"].":17:".$result["starDemon"].":43:".$result["starDemonDiff"].":25:".$result["starAuto"].":18:".$result["starStars"].":19:".$result["starFeatured"].":42:".$result["starEpic"].":45:".$result["objects"].":15:".$result["levelLength"].":30:".$result["original"].":31:".$result['twoPlayer'].":28:".$uploadDate. ":29:".$updateDate. ":35:".$result["songID"].":36:".$result["extraString"].":37:".$result["coins"].":38:".$result["starCoins"].":39:".$result["requestedStars"].":46:".$result["wt"].":47:".$result["wt2"].":48:".$result["settingsString"].":40:".$result["isLDM"].":27:$xorPass:52:".$result["songIDs"].":53:".$result["sfxIDs"].":57:".$result['ts'];
+		$response = "1:".$result["levelID"].":2:".ExploitPatch::translit($result["levelName"]).":3:".$desc.":4:".$levelstring.":5:".$result["levelVersion"].":6:".$result["userID"].":8:10:9:".$result["starDifficulty"].":10:".$result["downloads"].":11:1:12:".$result["audioTrack"].":13:".$result["gameVersion"].":14:".$result["likes"].":17:".$result["starDemon"].":43:".$result["starDemonDiff"].":25:".$result["starAuto"].":18:".$result["starStars"].":19:".$result["starFeatured"].":42:".$result["starEpic"].":45:".$result["objects"].":15:".$result["levelLength"].":30:".$result["original"].":31:".$result['twoPlayer'].":28:".$uploadDate. ":29:".$updateDate. ":35:".$result["songID"].":36:".$result["extraString"].":37:".$result["coins"].":38:".$result["starCoins"].":39:".$result["requestedStars"].":46:".$result["wt"].":47:".$result["wt2"].":48:".$result["settingsString"].":40:".$result["isLDM"].":27:$xorPass:52:".$result["songIDs"].":53:".$result["sfxIDs"].":57:".$result['ts'];
 		if($daily == 1) $response .= ":41:".$feaID;
 		if($extras) $response .= ":26:" . $result["levelInfo"];
 		//2.02 stuff

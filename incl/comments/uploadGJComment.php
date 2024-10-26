@@ -11,10 +11,9 @@ require_once "../lib/automod.php";
 if(Automod::isLevelsDisabled(1)) exit(($_POST['gameVersion'] > 20 ? 'temp_0_Commenting is currently disabled!' : '-1'));
 $userName = !empty($_POST['userName']) ? ExploitPatch::charclean($_POST['userName']) : "";
 $gameVersion = !empty($_POST['gameVersion']) ? ExploitPatch::number($_POST['gameVersion']) : 0;
-$comment = ExploitPatch::rucharclean($_POST["comment"]);
 $commentLength = ($gameVersion >= 20) ? mb_strlen(ExploitPatch::url_base64_decode($comment)) : mb_strlen($comment);
 if($enableCommentLengthLimiter && $commentLength > $maxCommentLength) exit("temp_0_You cannot post comments above $maxCommentLength characters! (Your's ".$commentLength.")");
-$comment = ($gameVersion < 20) ? ExploitPatch::url_base64_encode($comment) : $comment;
+$comment = ($gameVersion < 20) ? ExploitPatch::url_base64_encode(ExploitPatch::rucharclean($comment)) : ExploitPatch::url_base64_encode(ExploitPatch::rucharclean(ExploitPatch::url_base64_decode($comment)));
 $levelID = ExploitPatch::numbercolon($_POST["levelID"]);
 $percent = !empty($_POST["percent"]) ? ExploitPatch::number($_POST["percent"]) : 0;
 
@@ -36,7 +35,7 @@ $command = Commands::doCommands($id, $decodecomment, $levelID);
 if($command) ($_POST['gameVersion'] > 20 ? exit("temp_0_".$command) : exit('-1'));
 if($percent < 0 || $percent > 100) exit("temp_0_Invalid percentage!");
 $checkCommentBan = $gs->getPersonBan($id, $userID, 3);
-if($checkCommentBan) ($_POST['gameVersion'] > 20 ? exit("temp_".($checkCommentBan['expires'] - time())."_".ExploitPatch::rutoen(ExploitPatch::url_base64_decode($checkCommentBan['reason']))) : exit('-10'));
+if($checkCommentBan) ($_POST['gameVersion'] > 20 ? exit("temp_".($checkCommentBan['expires'] - time())."_".ExploitPatch::translit(ExploitPatch::url_base64_decode($checkCommentBan['reason']))) : exit('-10'));
 if($checkLevelExist->fetch()['commentLocked']) exit("temp_0_Comments on this ".(strpos($levelID, '-') === 0 ? 'list' : 'level')." are locked!");
 if($id != "" AND $comment != "") {
 	$query = $db->prepare("INSERT INTO comments (userName, comment, levelID, userID, timeStamp, percent) VALUES (:userName, :comment, :levelID, :userID, :uploadDate, :percent)");

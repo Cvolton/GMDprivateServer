@@ -10,29 +10,24 @@ $gs = new mainLib();
 if(Automod::isLevelsDisabled(0)) exit('-1');
 //here im getting all the data
 $gjp2check = isset($_POST['gjp2']) ? $_POST['gjp2'] : $_POST['gjp'];
-$gjp = ExploitPatch::remove($gjp2check);
-$gameVersion = ExploitPatch::remove($_POST["gameVersion"]);
+$gjp = ExploitPatch::charclean($gjp2check);
+$gameVersion = ExploitPatch::number($_POST["gameVersion"]);
 $userName = ExploitPatch::charclean($_POST["userName"]);
-$levelID = ExploitPatch::remove($_POST["levelID"]);
+$levelID = ExploitPatch::number($_POST["levelID"]);
 $levelName = ExploitPatch::charclean($_POST["levelName"]);
 //TODO: move description fixing code to a function
 $levelDesc = ExploitPatch::remove($_POST["levelDesc"]);
-if($gameVersion < 20) {
-	$rawDesc = $levelDesc;
-	$levelDesc = ExploitPatch::url_base64_encode($rawDesc);
-} else {
-	$rawDesc = ExploitPatch::url_base64_decode($levelDesc);
-}
-if (strpos($rawDesc, '<c') !== false) {
+$rawDesc = $gameVersion < 20 ? ExploitPatch::translit($levelDesc) : ExploitPatch::translit(ExploitPatch::url_base64_decode($levelDesc));
+if(strpos($rawDesc, '<c') !== false) {
 	$tags = substr_count($rawDesc, '<c');
-	if ($tags > substr_count($rawDesc, '</c>')) {
+	if($tags > substr_count($rawDesc, '</c>')) {
 		$tags = $tags - substr_count($rawDesc, '</c>');
-		for ($i = 0; $i < $tags; $i++) {
+		for($i = 0; $i < $tags; $i++) {
 			$rawDesc .= '</c>';
 		}
-		$levelDesc = ExploitPatch::url_base64_encode($rawDesc);
 	}
 }
+$levelDesc = ExploitPatch::url_base64_encode(ExploitPatch::rucharclean($rawDesc));
 $levelVersion = ExploitPatch::remove($_POST["levelVersion"]);
 $levelLength = ExploitPatch::remove($_POST["levelLength"]);
 $audioTrack = ExploitPatch::remove($_POST["audioTrack"]);
@@ -108,7 +103,7 @@ if($levelString != "" AND $levelName != "") {
 		$gs->sendLogsLevelChangeWebhook($levelID, $id);
 		Automod::checkLevelsCount();
 	}
-}else{
-	echo -1;
+} else {
+	exit('-1');
 }
 ?>

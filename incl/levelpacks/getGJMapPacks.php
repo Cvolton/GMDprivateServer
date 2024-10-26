@@ -1,11 +1,9 @@
 <?php
 chdir(dirname(__FILE__));
-//error_reporting(0);
 require "../lib/connection.php";
-require "../../config/misc.php";
 require_once "../lib/exploitPatch.php";
 require "../lib/generateHash.php";
-include "../../config/misc.php";
+require "../../config/misc.php";
 if(!isset($orderMapPacksByStars)) global $orderMapPacksByStars;
 $page = ExploitPatch::number($_POST["page"]);
 $packpage = $page*10;
@@ -20,7 +18,7 @@ foreach($result as &$mappack) {
 	$lvlsmultistring[] = ['ID' => $mappack["ID"], 'stars' => $mappack["stars"], 'coins' => $mappack["coins"]];
 	$colors2 = $mappack["colors2"];
 	if($colors2 == "none" OR $colors2 == "") $colors2 = $mappack["rgbcolors"];
-	$mappackstring .= "1:".$mappack["ID"].":2:".$mappack["name"].":3:".$mappack["levels"].":4:".$mappack["stars"].":5:".$mappack["coins"].":6:".$mappack["difficulty"].":7:".$mappack["rgbcolors"].":8:".$colors2."|";
+	$mappackstring .= "1:".$mappack["ID"].":2:".ExploitPatch::translit($mappack["name"]).":3:".$mappack["levels"].":4:".$mappack["stars"].":5:".$mappack["coins"].":6:".$mappack["difficulty"].":7:".$mappack["rgbcolors"].":8:".$colors2."|";
 }
 $query = $db->prepare("SELECT count(*) FROM mappacks");
 $query->execute();

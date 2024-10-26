@@ -93,13 +93,9 @@ if($query3->rowCount() == 0 && !$librarySong) {
 	$reup = SongReup::reup($result);
 } else {
 	$result4 = !$librarySong ? $query3->fetch() : $librarySong;
-	if($result4["isDisabled"] == 1){
-		exit("-2");
-	}
+	if($result4["isDisabled"] == 1) exit("-2");
 	$dl = $result4["download"];
-	if(strpos($dl, ':') !== false){
-		$dl = urlencode($dl);
-	}
-	echo "1~|~".$result4["ID"]."~|~2~|~".ExploitPatch::rutoen($result4["name"])."~|~3~|~".$result4["authorID"]."~|~4~|~".ExploitPatch::rutoen($result4["authorName"])."~|~5~|~".$result4["size"]."~|~6~|~~|~10~|~".$dl."~|~7~|~~|~8~|~0";
+	if(strpos($dl, ':') !== false) $dl = urlencode($dl);
+	echo "1~|~".$result4["ID"]."~|~2~|~".ExploitPatch::translit($result4["name"])."~|~3~|~".$result4["authorID"]."~|~4~|~".ExploitPatch::translit($result4["authorName"])."~|~5~|~".$result4["size"]."~|~6~|~~|~10~|~".$dl."~|~7~|~~|~8~|~0";
 }
 ?>

@@ -6,18 +6,16 @@ require_once "../lib/exploitPatch.php";
 require_once "../lib/mainLib.php";
 require_once "../lib/automod.php";
 if(Automod::isLevelsDisabled(0)) exit('-1');
-$mainLib = new mainLib();
+$gs = new mainLib();
 $levelDesc = ExploitPatch::remove($_POST["levelDesc"]);
 $levelID = ExploitPatch::number($_POST["levelID"]);
-if (isset($_POST['udid']) && !empty($_POST['udid'])) {
+if(isset($_POST['udid']) && !empty($_POST['udid'])) {
 	$id = ExploitPatch::remove($_POST["udid"]);
-	if (is_numeric($id)) {
-		exit("-1");
-	}
+	if(is_numeric($id)) exit("-1");
 } else {
 	$id = GJPCheck::getAccountIDOrDie();
 }
-$rawDesc = ExploitPatch::url_base64_decode($levelDesc);
+$rawDesc = ExploitPatch::rucharclean(ExploitPatch::url_base64_decode($levelDesc));
 if (strpos($rawDesc, '<c') !== false) {
 	$tags = substr_count($rawDesc, '<c');
 	if ($tags > substr_count($rawDesc, '</c>')) {
@@ -28,7 +26,7 @@ if (strpos($rawDesc, '<c') !== false) {
 		$levelDesc = ExploitPatch::url_base64_encode($rawDesc);
 	}
 }
-$query = $db->prepare("UPDATE levels SET levelDesc=:levelDesc WHERE levelID=:levelID AND extID=:extID");
+$query = $db->prepare("UPDATE levels SET levelDesc = :levelDesc WHERE levelID = :levelID AND extID = :extID");
 $query->execute([':levelID' => $levelID, ':extID' => $id, ':levelDesc' => $levelDesc]);
 $gs->logAction($id, 21, $levelID, $levelDesc);
 echo 1;

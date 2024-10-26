@@ -370,7 +370,7 @@ class mainLib {
 		if(strpos($dl, ':') !== false){
 			$dl = urlencode($dl);
 		}
-		return "1~|~".$song["ID"]."~|~2~|~".ExploitPatch::rutoen(str_replace("#", "", $song["name"]))."~|~3~|~".$song["authorID"]."~|~4~|~".ExploitPatch::rutoen($song["authorName"])."~|~5~|~".$song["size"]."~|~6~|~~|~10~|~".$dl."~|~7~|~~|~8~|~1";
+		return "1~|~".$song["ID"]."~|~2~|~".ExploitPatch::translit(str_replace("#", "", $song["name"]))."~|~3~|~".$song["authorID"]."~|~4~|~".ExploitPatch::translit($song["authorName"])."~|~5~|~".$song["size"]."~|~6~|~~|~10~|~".$dl."~|~7~|~~|~8~|~1";
 	}
 	public function getSongInfo($id, $column = "*") {
 	    if(!is_numeric($id)) return;
@@ -1348,10 +1348,10 @@ class mainLib {
 			$link = $servers[$song['server']].'/music/'.$song['ID'].'.ogg?token='.$token.'&expires='.$expires;
 			return ['server' => $song['server'], 'ID' => $id, 'name' => $song['name'], 'authorID' => $song['authorID'], 'authorName' => $author['name'], 'size' => round($song['size'] / 1024 / 1024, 2), 'download' => $link];
 		} else {
+			$type = 'sfx/s';
 			$SFX = $library['IDs'][$id];
 			$token = $this->randomString(11);
 			$expires = time() + 3600;
-			$type = $type == 'sfx' ? 'sfx/s' : 'music/';
 			$link = $servers[$SFX['server']] != null ? $servers[$SFX['server']].'/'.$type.$SFX['ID'].'.ogg?token='.$token.'&expires='.$expires : $this->getSFXInfo($SFX['ID'], 'download');
 			return ['server' => $SFX['server'], 'ID' => $id, 'name' => $song['name'], 'download' => $link];
 		}
