@@ -45,4 +45,6 @@ GD icons — https://github.com/oatmealine/gd-icon-renderer-web — (any page wi
 
 Cloudflare IPs List — https://www.cloudflare.com/ips — (incl/lib/mainLib.php & incl/lib/ipCheck.php)
 
+Translit — https://github.com/ashtokalo/php-translit — (config/translit)
+
 Most of the stuff in generateHash.php has been figured out by pavlukivan and Italian APK Downloader, so credits to them
