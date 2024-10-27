@@ -10,6 +10,7 @@ require_once "../../config/misc.php";
 require_once "../lib/automod.php";
 if(Automod::isLevelsDisabled(1)) exit(($_POST['gameVersion'] > 20 ? 'temp_0_Commenting is currently disabled!' : '-1'));
 $userName = !empty($_POST['userName']) ? ExploitPatch::charclean($_POST['userName']) : "";
+$comment = !empty($_POST['comment']) ? $_POST['comment'] : "";
 $gameVersion = !empty($_POST['gameVersion']) ? ExploitPatch::number($_POST['gameVersion']) : 0;
 $commentLength = ($gameVersion >= 20) ? mb_strlen(ExploitPatch::url_base64_decode($comment)) : mb_strlen($comment);
 if($enableCommentLengthLimiter && $commentLength > $maxCommentLength) exit("temp_0_You cannot post comments above $maxCommentLength characters! (Your's ".$commentLength.")");
