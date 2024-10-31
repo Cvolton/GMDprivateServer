@@ -1249,7 +1249,7 @@ class mainLib {
 			$c = 0;
 			foreach($songs AS &$customSongs) {
 				$c++;
-				$authorName = ExploitPatch::escapedat(ExploitPatch::rutoen(trim($customSongs['authorName'])));
+				$authorName = ExploitPatch::escapedat(ExploitPatch::translit(trim($customSongs['authorName'])));
 				if(!isset($folderID[$authorName])) {
 					$folderID[$authorName] = $c;
 					$library['authors'][$serverIDs[null]. 0 .$folderID[$authorName]] = $gdpsLibrary['authors'][$serverIDs[null]. 0 .$folderID[$authorName]] = [
@@ -1269,7 +1269,7 @@ class mainLib {
 				$customSongs['name'] = trim($customSongs['name']);
 				$library['songs'][$customSongs['ID']] = $gdpsLibrary['songs'][$customSongs['ID']] = [
 					'ID' => ($customSongs['ID']),
-					'name' => !empty($customSongs['name']) ? ExploitPatch::escapedat(ExploitPatch::rutoen($customSongs['name'])) : 'Unnamed',
+					'name' => !empty($customSongs['name']) ? ExploitPatch::escapedat(ExploitPatch::translit($customSongs['name'])) : 'Unnamed',
 					'authorID' => ($serverIDs[null]. 0 .$folderID[$authorName]),
 					'size' => ($customSongs['size'] * 1024 * 1024),
 					'seconds' => $customSongs['duration'],
