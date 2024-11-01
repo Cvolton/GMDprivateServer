@@ -2,7 +2,7 @@
 /*
 	Welcome to webhooks translation file!
 	You're currently at Indonesian (Bahasa Indonesia) language
-	Credits: IHNGEYMING
+	Credits: IHNGEYMING & YeahhColix
 	
 	If you see array instead of simple string, that means you can add as many variations of translation as you want and they will be picked randomly
 */
@@ -99,14 +99,14 @@ $webhookLang['eventTitleDM'] = 'Level Anda adalah level acara!';
 $webhookLang['eventDesc'] = 'Level ini adalah level acara sekarang!';
 $webhookLang['eventDescDM'] = 'Level Anda digunakan dalam acara! %1$s';
 
-$webhookLang['logsRegisterTitle'] = 'New account!';
-$webhookLang['logsRegisterDesc'] = 'Someone registered new account!';
+$webhookLang['logsRegisterTitle'] = 'Akun baru!';
+$webhookLang['logsRegisterDesc'] = 'Seseorang mendaftar akun baru!';
 $webhookLang['logsUsernameField'] = 'Player\'s username';
 $webhookLang['logsPlayerIDField'] = 'Player\'s ID';
-$webhookLang['logsRegisterTimeField'] = 'Register date';
-$webhookLang['logsIsActivatedField'] = 'Is activated?';
-$webhookLang['logsRegisterYes'] = 'Yes';
-$webhookLang['logsRegisterNo'] = 'No';
+$webhookLang['logsRegisterTimeField'] = 'Tanggal daftar';
+$webhookLang['logsIsActivatedField'] = 'Sudah diaktifkan?';
+$webhookLang['logsRegisterYes'] = 'Iya';
+$webhookLang['logsRegisterNo'] = 'Tidak';
 
 $webhookLang['logsLevelDeletedTitle'] = 'Level was deleted!';
 $webhookLang['logsLevelDeletedDesc'] = 'Someone deleted level!';
@@ -138,27 +138,27 @@ $webhookLang['logsLevelChangeUpdateLockedField'] = 'Updating lock status was cha
 $webhookLang['logsLevelChangeCommentLockedField'] = 'Commenting lock status was changed';
 $webhookLang['logsLevelChangeWhoField'] = 'Who changed level?';
 
-$webhookLang['songTitle'] = 'Song';
-$webhookLang['levelIsPublic'] = 'Level is public';
-$webhookLang['levelOnlyForFriends'] = 'Level is only for friends';
-$webhookLang['levelIsUnlisted'] = 'Level is unlisted';
-$webhookLang['unlistedTitle'] = 'Level privacy';
+$webhookLang['songTitle'] = 'Lagu';
+$webhookLang['levelIsPublic'] = 'Level adalah publik';
+$webhookLang['levelOnlyForFriends'] = 'Level hanya untuk teman';
+$webhookLang['levelIsUnlisted'] = 'Level tidak terdaftar';
+$webhookLang['unlistedTitle'] = 'Privasi level';
 
-$webhookLang['logsAccountChangeWhoField'] = 'Who changed account?';
-$webhookLang['logsAccountChangeUsernameField'] = 'Username was changed';
-$webhookLang['logsAccountChangeUsernameValue'] = 'Username before:'.PHP_EOL.'`%1$s`'.PHP_EOL.'Username after:'.PHP_EOL.'`%2$s`';
-$webhookLang['mS0'] = 'Direct messages are opened';
-$webhookLang['mS1'] = 'Direct messages are opened only for friends';
+$webhookLang['logsAccountChangeWhoField'] = 'Siapa ganti akun?';
+$webhookLang['logsAccountChangeUsernameField'] = 'Nama telah dirubah';
+$webhookLang['logsAccountChangeUsernameValue'] = 'Nama sebelumnya:'.PHP_EOL.'`%1$s`'.PHP_EOL.'Nama sesudah:'.PHP_EOL.'`%2$s`';
+$webhookLang['mS0'] = 'Pesan langsung dibuka';
+$webhookLang['mS1'] = 'Pesan langsung dibuka hanya untuk teman';
 $webhookLang['mS2'] = 'Direct messages are closed';
-$webhookLang['logsAccountChangeMSField'] = 'Direct messages privacy was changed';
-$webhookLang['logsAccountChangeMSValue'] = 'Direct messages privacy before:'.PHP_EOL.'`%1$s`'.PHP_EOL.'Direct messages privacy after:'.PHP_EOL.'`%2$s`';
-$webhookLang['frS0'] = 'Friend requests are opened';
-$webhookLang['frS1'] = 'Friend requests are closed';
-$webhookLang['logsAccountChangeFRSField'] = 'Friend requests privacy was changed';
-$webhookLang['logsAccountChangeFRSValue'] = 'Friend request privacy before:'.PHP_EOL.'`%1$s`'.PHP_EOL.'Friend request privacy after:'.PHP_EOL.'`%2$s`';
-$webhookLang['cS0'] = 'Comments history is opened';
-$webhookLang['cS1'] = 'Comments history is opened only for friends';
-$webhookLang['cS2'] = 'Comments history is closed';
+$webhookLang['logsAccountChangeMSField'] = 'Privasi pesan langsung telah diganti';
+$webhookLang['logsAccountChangeMSValue'] = 'Privasi pesan langsung sebelum:'.PHP_EOL.'`%1$s`'.PHP_EOL.'Privasi pesan langsung sesudah:'.PHP_EOL.'`%2$s`';
+$webhookLang['frS0'] = 'Permintaan pertemanan terbuka';
+$webhookLang['frS1'] = 'Permintaan pertemanan tertutup';
+$webhookLang['logsAccountChangeFRSField'] = 'Privasi permintaan pertemanan telah dirubah';
+$webhookLang['logsAccountChangeFRSValue'] = 'Privasi permintaan pertemanan sebelum:'.PHP_EOL.'`%1$s`'.PHP_EOL.'Privasi permintaan pertemanan sesudah:'.PHP_EOL.'`%2$s`';
+$webhookLang['cS0'] = 'Histori komentar terbuka';
+$webhookLang['cS1'] = 'Histori komentar terbuka hanya untuk teman';
+$webhookLang['cS2'] = 'History komentar tertutup';
 $webhookLang['logsAccountChangeCSField'] = 'Comments history privacy was changed';
 $webhookLang['logsAccountChangeCSValue'] = 'Comments history privacy before:'.PHP_EOL.'`%1$s`'.PHP_EOL.'Comments history privacy after:'.PHP_EOL.'`%2$s`';
 $webhookLang['logsAccountChangeYTField'] = 'YouTube channel link was changed';
@@ -168,12 +168,12 @@ $webhookLang['logsAccountChangeTWField'] = 'X account link was changed';
 $webhookLang['logsAccountChangeTWValue'] = 'X account link before:'.PHP_EOL.'`%1$s`'.PHP_EOL.'X account link after:'.PHP_EOL.'`%2$s`';
 $webhookLang['logsAccountChangeNoTW'] = 'No X account link';
 $webhookLang['logsAccountChangeTTVField'] = 'Twitch channel link was changed';
-$webhookLang['logsAccountChangeTTVValue'] = 'Twitch channel link before:'.PHP_EOL.'`%1$s`'.PHP_EOL.'Twitch channel link after:'.PHP_EOL.'`%2$s`';
+$webhookLang['logsAccountChangeTTVValue'] = 'Twitch channel link before:'.PHP_EOL.'`%1$s`'.PHP_EOL.'Twitch channel link after:'.PHP_EOL.'`%2$s`';
 $webhookLang['logsAccountChangeNoTTV'] = 'No Twitch channel link';
 $webhookLang['logsAccountChangeActiveField'] = 'Account activity status was changed';
 $webhookLang['logsAccountChangeActiveValue'] = 'Was account activated before?'.PHP_EOL.'**%1$s**'.PHP_EOL.'Is account activated after?'.PHP_EOL.'**%2$s**';
 $webhookLang['logsAccountChangePasswordField'] = 'Password was changed';
-$webhookLang['logsAccountChangePasswordValue'] = '||... What did you want to see here?||';
+$webhookLang['logsAccountChangePasswordValue'] = '||... Apa yang kamu ingin untuk lihat disini?||';
 $webhookLang['logsWhatWasChangedField'] = 'What was changed?';
 $webhookLang['logsAccountChangedTitle'] = 'Account was changed!';
 $webhookLang['logsAccountChangedDesc'] = 'Someone changed account!';
