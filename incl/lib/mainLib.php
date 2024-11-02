@@ -1068,7 +1068,7 @@ class mainLib {
 						switch($i) {
 							case 0: // File/Folder
 								if(empty(trim($bits[1])) || empty($bits[0]) || !is_numeric($bits[0])) break;
-								if(!isset($idsConverter['originalIDs'][$server][$bits[0]])) {
+								if(empty($idsConverter['originalIDs'][$server][$bits[0]])) {
 									$idsConverter['count']++;
 									while(in_array($idsConverter['count'], $skipSFXIDs)) $idsConverter['count']++;
 									$idsConverter['IDs'][$idsConverter['count']] = ['server' => $server, 'ID' => $bits[0], 'name' => $bits[1], 'type' => $bits[2]];
@@ -1079,7 +1079,7 @@ class mainLib {
 									if(!isset($idsConverter['IDs'][$bits[0]]['name'])) $idsConverter['IDs'][$bits[0]] = ['server' => $server, 'ID' => $bits[0], 'name' => $bits[1], 'type' => $bits[2]];
 								}
 								if($bits[3] != 1) {
-									if(!isset($idsConverter['originalIDs'][$server][$bits[3]])) {
+									if(empty($idsConverter['originalIDs'][$server][$bits[3]])) {
 										$idsConverter['count']++;
 										while(in_array($idsConverter['count'], $skipSFXIDs)) $idsConverter['count']++;
 										$idsConverter['IDs'][$idsConverter['count']] = ['server' => $server, 'ID' => $bits[3], 'name' => $bits[1], 'type' => 1];
@@ -1122,40 +1122,20 @@ class mainLib {
 					$music = explode(';', $data);
 					foreach($music AS &$songString) {
 						$song = explode(',', $songString);
+						$originalID = $song[0];
 						if(empty($song[0]) || !is_numeric($song[0])) continue;
-						if(!isset($idsConverter['originalIDs'][$server][$song[0]])) {
+						if(empty($idsConverter['originalIDs'][$server][$song[0]])) {
 							$idsConverter['count']++;
-							$idsConverter['IDs'][$idsConverter['count']] = ['server' => $server, 'ID' => $song[0], 'name' => $song[1], 'type' => $x];
-							if($x == 1) {
-								$idsConverter['IDs'][$idsConverter['count']]['size'] = $song[3];
-								if(!isset($idsConverter['originalIDs'][$server][$song[2]])) {
-									$idsConverter['count']++;
-									$idsConverter['IDs'][$idsConverter['count']] = ['server' => $server, 'ID' => $song[2], 'type' => 0];
-									$idsConverter['originalIDs'][$server][$song[2]] = $idsConverter['count'];
-									$song[2] = $idsConverter['count'];
-								} else $song[2] = $idsConverter['originalIDs'][$server][$song[2]];
-								$idsConverter['IDs'][$idsConverter['count']]['authorID'] = $song[2];
-							}
+							$idsConverter['IDs'][$idsConverter['count']] = ['server' => $server, 'ID' => $song[0], 'type' => $x];
 							$idsConverter['originalIDs'][$server][$song[0]] = $idsConverter['count'];
 							$song[0] = $idsConverter['count'];
-						} else {
-							$song[0] = $idsConverter['originalIDs'][$server][$song[0]];
-							if($x == 1) {
-								$idsConverter['IDs'][$idsConverter['count']]['size'] = $song[3];
-								if(!isset($idsConverter['originalIDs'][$server][$song[2]])) {
-									$idsConverter['count']++;
-									$idsConverter['IDs'][$idsConverter['count']] = ['server' => $server, 'ID' => $song[2], 'type' => 0];
-									$idsConverter['originalIDs'][$server][$song[2]] = $idsConverter['count'];
-									$song[2] = $idsConverter['count'];
-								} else $song[2] = $idsConverter['originalIDs'][$server][$song[2]];
-								$idsConverter['IDs'][$idsConverter['count']]['authorID'] = $song[2];
-							} elseif(!isset($idsConverter['IDs'][$song[0]]['name'])) $idsConverter['IDs'][$song[0]] = ['server' => $idsConverter['IDs'][$song[0]][0], 'ID' => $idsConverter['IDs'][$song[0]][1], 'name' => $song[1], 'type' => $x];
-						}
+						} else $song[0] = $idsConverter['originalIDs'][$server][$song[0]];
 						switch($x) {
 							case 0:
 								$idsConverter['IDs'][$song[0]] = $library['authors'][$song[0]] = [
 									'server' => $server,
 									'type' => $x,
+									'originalID' => $originalID,
 									'authorID' => $song[0],
 									'name' => ExploitPatch::escapedat($song[1]),
 									'link' => ExploitPatch::escapedat($song[2]),
@@ -1163,11 +1143,17 @@ class mainLib {
 								];
 								break;
 							case 1:
+								if(empty($idsConverter['originalIDs'][$server][$song[2]])) {
+									$idsConverter['count']++;
+									$idsConverter['IDs'][$idsConverter['count']] = ['server' => $server, 'ID' => $song[2], 'type' => $x];
+									$idsConverter['originalIDs'][$server][$song[2]] = $idsConverter['count'];
+									$song[2] = $idsConverter['count'];
+								} else $song[2] = $idsConverter['originalIDs'][$server][$song[2]];
 								$tags = explode('.', $song[5]);
 								$newTags = [];
 								foreach($tags AS &$tag) {
 									if(empty($tag)) continue;
-									if(!isset($idsConverter['originalIDs'][$server][$tag])) {
+									if(empty($idsConverter['originalIDs'][$server][$tag])) {
 										$idsConverter['count']++;
 										$idsConverter['IDs'][$idsConverter['count']] = ['server' => $server, 'ID' => $tag, 'type' => 2];
 										$idsConverter['originalIDs'][$server][$tag] = $idsConverter['count'];
@@ -1177,14 +1163,13 @@ class mainLib {
 								}
 								$newTags[] = $server;
 								$tags = '.'.implode('.', $newTags).'.';
-								if($tags == '..') $tags = '.';
 								$newArtists = [];
 								$artists = explode('.', $song[7]);
 								foreach($artists AS &$artist) {
 									if(empty($artist)) continue;
-									if(!isset($idsConverter['originalIDs'][$server][$artist])) {
+									if(empty($idsConverter['originalIDs'][$server][$artist])) {
 										$idsConverter['count']++;
-										$idsConverter['IDs'][$idsConverter['count']] = ['server' => $server, 'ID' => $artist, 'type' => 2];
+										$idsConverter['IDs'][$idsConverter['count']] = ['server' => $server, 'ID' => $artist, 'type' => 0];
 										$idsConverter['originalIDs'][$server][$artist] = $idsConverter['count'];
 										$artist = $idsConverter['count'];
 									} else $artist = $idsConverter['originalIDs'][$server][$artist];
@@ -1194,6 +1179,7 @@ class mainLib {
 								$idsConverter['IDs'][$song[0]] = $library['songs'][$song[0]] = [
 									'server' => $server,
 									'type' => $x,
+									'originalID' => $originalID,
 									'ID' => $song[0],
 									'name' => ExploitPatch::escapedat($song[1]),
 									'authorID' => $song[2],
@@ -1211,6 +1197,7 @@ class mainLib {
 								$idsConverter['IDs'][$song[0]] = $library['tags'][$song[0]] = [
 									'server' => $server,
 									'type' => $x,
+									'originalID' => $originalID,
 									'ID' => $song[0],
 									'name' => ExploitPatch::escapedat($song[1])
 								];
@@ -1271,23 +1258,25 @@ class mainLib {
 			$songs->execute();
 			$songs = $songs->fetchAll();
 			$folderID = $accIDs = $gdpsLibrary = [];
-			$c = 0;
+			$c = 100;
 			foreach($songs AS &$customSongs) {
 				$c++;
-				$authorName = ExploitPatch::escapedat(ExploitPatch::translit(trim($customSongs['authorName'])));
-				if(!isset($folderID[$authorName])) {
+				$authorName = ExploitPatch::rucharclean(ExploitPatch::escapedat(ExploitPatch::translit(trim($customSongs['authorName']))));
+				if(empty($authorName)) $authorName = 'Reupload';
+				if(empty($folderID[$authorName])) {
 					$folderID[$authorName] = $c;
 					$library['authors'][$serverIDs[null]. 0 .$folderID[$authorName]] = $gdpsLibrary['authors'][$serverIDs[null]. 0 .$folderID[$authorName]] = [
-						'authorID' => ($serverIDs[null]. 0 .$folderID[$authorName]),
+						'authorID' => (int)($serverIDs[null]. 0 .$folderID[$authorName]),
 						'name' => $authorName,
 						'link' => ' ',
 						'yt' => ' '
 					];
 				}
-				if(!isset($accIDs[$customSongs['reuploadID']])) {
-					$accIDs[$customSongs['reuploadID']] = true;
-					$library['tags'][$serverIDs[null]. 0 .$customSongs['reuploadID']] = $gdpsLibrary['tags'][$serverIDs[null]. 0 .$customSongs['reuploadID']] = [
-						'ID' => ($serverIDs[null]. 0 .$customSongs['reuploadID']),
+				if(empty($accIDs[$customSongs['reuploadID']])) {
+					$c++;
+					$accIDs[$customSongs['reuploadID']] = $c;
+					$library['tags'][$serverIDs[null]. 0 .$accIDs[$customSongs['reuploadID']]] = $gdpsLibrary['tags'][$serverIDs[null]. 0 .$accIDs[$customSongs['reuploadID']]] = [
+						'ID' => (int)($serverIDs[null]. 0 .$accIDs[$customSongs['reuploadID']]),
 						'name' => ExploitPatch::escapedat($customSongs['userName']),
 					];
 				}
@@ -1295,13 +1284,13 @@ class mainLib {
 				$library['songs'][$customSongs['ID']] = $gdpsLibrary['songs'][$customSongs['ID']] = [
 					'ID' => ($customSongs['ID']),
 					'name' => !empty($customSongs['name']) ? ExploitPatch::escapedat(ExploitPatch::translit($customSongs['name'])) : 'Unnamed',
-					'authorID' => ($serverIDs[null]. 0 .$folderID[$authorName]),
+					'authorID' => (int)($serverIDs[null]. 0 .$folderID[$authorName]),
 					'size' => ($customSongs['size'] * 1024 * 1024),
 					'seconds' => $customSongs['duration'],
-					'tags' => '.'.$serverIDs[null].'.'.$serverIDs[null]. 0 .$customSongs['reuploadID'].'.',
+					'tags' => '.'.$serverIDs[null].'.'.$serverIDs[null]. 0 .$accIDs[$customSongs['reuploadID']].'.',
 					'ncs' => 0,
 					'artists' => '',
-					'externalLink' => $customSongs['download'],
+					'externalLink' => urlencode($customSongs['download']),
 					'new' => ($customSongs['reuploadTime'] > time() - 604800 ? 1 : 0),
 					'priorityOrder' => 0
 				];
@@ -1309,16 +1298,19 @@ class mainLib {
 			foreach($library['authors'] AS &$authorList) {
 				unset($authorList['server']);
 				unset($authorList['type']);
+				unset($authorList['originalID']);
 				$authorsEncrypted[] = implode(',', $authorList);
 			}
 			foreach($library['songs'] AS &$songsList) {
 				unset($songsList['server']);
 				unset($songsList['type']);
+				unset($songsList['originalID']);
 				$songsEncrypted[] = implode(',', $songsList);
 			}
 			foreach($library['tags'] AS &$tagsList) {
 				unset($tagsList['server']);
 				unset($tagsList['type']);
+				unset($tagsList['originalID']);
 				$tagsEncrypted[] = implode(',', $tagsList);
 			}
 			$encrypted = $version."|".implode(';', $authorsEncrypted).";|" .implode(';', $songsEncrypted).";|" .implode(';', $tagsEncrypted).';';
@@ -1326,16 +1318,19 @@ class mainLib {
 			foreach($gdpsLibrary['authors'] AS &$authorList) {
 				unset($authorList['server']);
 				unset($authorList['type']);
+				unset($authorList['originalID']);
 				$authorsEncrypted[] = implode(',', $authorList);
 			}
 			foreach($gdpsLibrary['songs'] AS &$songsList) {
 				unset($songsList['server']);
 				unset($songsList['type']);
+				unset($songsList['originalID']);
 				$songsEncrypted[] = implode(',', $songsList);
 			}
 			foreach($gdpsLibrary['tags'] AS &$tagsList) {
 				unset($tagsList['server']);
 				unset($tagsList['type']);
+				unset($tagsList['originalID']);
 				$tagsEncrypted[] = implode(',', $tagsList);
 			}
 			$gdpsEncrypted = $version."|".implode(';', $authorsEncrypted).";|" .implode(';', $songsEncrypted).";|" .implode(';', $tagsEncrypted).';';
@@ -1388,20 +1383,19 @@ class mainLib {
 			$serverIDs[$customLib[2]] = $customLib[0];
 		}
 		$library = json_decode(file_get_contents(__DIR__.'/../../'.$type.'/ids.json'), true);
-		if(!isset($library['IDs'][$id]) || $library['IDs'][$id]['type'] != 1) return false;
+		if(!isset($library['IDs'][$id]) || ($type == 'music' && $library['IDs'][$id]['type'] != 1)) return false;
 		if($type == 'music') {
 			$song = $library['IDs'][$id];
 			$author = $library['IDs'][$song['authorID']];
 			$token = $this->randomString(11);
 			$expires = time() + 3600;
-			$link = $servers[$song['server']].'/music/'.$song['ID'].'.ogg?token='.$token.'&expires='.$expires;
+			$link = $servers[$song['server']].'/music/'.$song['originalID'].'.ogg?token='.$token.'&expires='.$expires;
 			return ['server' => $song['server'], 'ID' => $id, 'name' => $song['name'], 'authorID' => $song['authorID'], 'authorName' => $author['name'], 'size' => round($song['size'] / 1024 / 1024, 2), 'download' => $link, 'seconds' => $song['seconds'], 'tags' => $song['tags'], 'ncs' => $song['ncs'], 'artists' => $song['artists'], 'externalLink' => $song['externalLink'], 'new' => $song['new'], 'priorityOrder' => $song['priorityOrder']];
 		} else {
-			$type = 'sfx/s';
 			$SFX = $library['IDs'][$id];
 			$token = $this->randomString(11);
 			$expires = time() + 3600;
-			$link = $servers[$SFX['server']] != null ? $servers[$SFX['server']].'/'.$type.$SFX['ID'].'.ogg?token='.$token.'&expires='.$expires : $this->getSFXInfo($SFX['ID'], 'download');
+			$link = $servers[$SFX['server']] != null ? $servers[$SFX['server']].'/sfx/s'.$SFX['ID'].'.ogg?token='.$token.'&expires='.$expires : $this->getSFXInfo($SFX['ID'], 'download');
 			return ['server' => $SFX['server'], 'ID' => $id, 'name' => $song['name'], 'download' => $link];
 		}
 	}
