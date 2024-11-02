@@ -74,6 +74,7 @@ if(!empty($_POST["levelid"])) {
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($ch, CURLOPT_POSTFIELDS, $post1);
 		curl_setopt($ch, CURLOPT_PROTOCOLS, CURLPROTO_HTTP | CURLPROTO_HTTPS);
+		curl_setopt($ch, CURLOPT_USERAGENT, "");
 		$result = curl_exec($ch);
 		curl_close($ch);
 		if($result == "" OR $result == "-1" OR $result == "No no no") {

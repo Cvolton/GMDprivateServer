@@ -69,7 +69,16 @@ class ipCheck {
 		$allProxies = '';
 		if($checkTime > $lastUpdate) {
 			foreach($proxies AS $link) {
-				$IPs = file_get_contents($link);
+				$ch = curl_init($link);
+				if($proxytype > 0) {
+					curl_setopt($ch, CURLOPT_PROXY, $host);
+					if($proxytype == 2) curl_setopt($ch, CURLOPT_PROXYTYPE, CURLPROXY_SOCKS5);
+					if(!empty($auth)) curl_setopt($ch, CURLOPT_PROXYUSERPWD, $auth); 
+				}
+				curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+				curl_setopt($ch, CURLOPT_PROTOCOLS, CURLPROTO_HTTP | CURLPROTO_HTTPS);
+				curl_setopt($ch, CURLOPT_USERAGENT, "");
+				$IPs = curl_exec($ch);
 				$proxy = preg_split('/\r\n|\r|\n/', $IPs);
 				foreach($proxy AS $ip) $allProxies .= explode(':', $ip)[0].PHP_EOL;
 			}
@@ -84,6 +93,7 @@ class ipCheck {
 	}
 	public function checkVPN() {
 		require __DIR__."/../../config/security.php";
+		require __DIR__."/../../config/proxy.php";
 		if(!isset($blockCommonVPNs)) global $blockCommonVPNs;
 		if(!isset($vpns)) global $vpns;
 		if(!$blockCommonVPNs) return;
@@ -93,7 +103,16 @@ class ipCheck {
 		$allVPNs = '';
 		if($checkTime > $lastUpdate) {
 			foreach($vpns AS $link) {
-				$IPs = file_get_contents($link);
+				$ch = curl_init($link);
+				if($proxytype > 0) {
+					curl_setopt($ch, CURLOPT_PROXY, $host);
+					if($proxytype == 2) curl_setopt($ch, CURLOPT_PROXYTYPE, CURLPROXY_SOCKS5);
+					if(!empty($auth)) curl_setopt($ch, CURLOPT_PROXYUSERPWD, $auth); 
+				}
+				curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+				curl_setopt($ch, CURLOPT_PROTOCOLS, CURLPROTO_HTTP | CURLPROTO_HTTPS);
+				curl_setopt($ch, CURLOPT_USERAGENT, "");
+				$IPs = curl_exec($ch);
 				$allVPNs .= $IPs.PHP_EOL;
 			}
 			file_put_contents(__DIR__ .'/../../config/vpns.txt', $allVPNs);
