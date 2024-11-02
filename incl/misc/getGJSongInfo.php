@@ -96,6 +96,20 @@ if($query3->rowCount() == 0 && !$librarySong) {
 	if($result4["isDisabled"] == 1) exit("-2");
 	$dl = $result4["download"];
 	if(strpos($dl, ':') !== false) $dl = urlencode($dl);
-	echo "1~|~".$result4["ID"]."~|~2~|~".ExploitPatch::translit($result4["name"])."~|~3~|~".$result4["authorID"]."~|~4~|~".ExploitPatch::translit($result4["authorName"])."~|~5~|~".$result4["size"]."~|~6~|~~|~10~|~".$dl."~|~7~|~~|~8~|~0";
+	echo "1~|~".$result4["ID"]."~|~2~|~".ExploitPatch::translit($result4["name"])."~|~3~|~".$result4["authorID"]."~|~4~|~".ExploitPatch::translit($result4["authorName"])."~|~5~|~".$result4["size"]."~|~6~|~~|~7~|~~|~8~|~0~|~10~|~".$dl."";
+	if($librarySong) {
+		$artistsNames = [];
+		$artistsArray = explode('.', $result4['artists']);
+		if(count($artistsArray) > 0) {
+			foreach($artistsArray AS &$artistID) {
+				$artistData = $gs->getLibrarySongAuthorInfo($artistID);
+				if(!$artistData) continue;
+				$artistsNames[] = $artistID;
+				$artistsNames[] = $artistData['name'];
+			}
+		}
+		$artistsNames = implode(',', $artistsNames);
+		echo '~|~9~|~'.$result4['priorityOrder'].'~|~11~|~'.$result4['ncs'].'~|~12~|~'.$result4['artists'].'~|~13~|~'.($result4['new'] ? 1 : 0).'~|~14~|~'.$result4['new'].'~|~15~|~'.$artistsNames;
+	}
 }
 ?>

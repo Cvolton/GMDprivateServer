@@ -364,13 +364,32 @@ class mainLib {
 	public function getSongString($song){
 		require __DIR__ . "/connection.php";
 		require_once __DIR__ . "/exploitPatch.php";
-		if(!isset($song['ID'])) $song = $this->getLibrarySongInfo($song['songID']);
+		$librarySong = false;
+		$extraSongString = '';
+		if(!isset($song['ID'])) {
+			$librarySong = true;
+			$song = $this->getLibrarySongInfo($song['songID']);
+		}
 		if(!$song || $song['ID'] == 0 || empty($song['ID']) || $song["isDisabled"] == 1) return false;
 		$dl = $song["download"];
 		if(strpos($dl, ':') !== false){
 			$dl = urlencode($dl);
 		}
-		return "1~|~".$song["ID"]."~|~2~|~".ExploitPatch::translit(str_replace("#", "", $song["name"]))."~|~3~|~".$song["authorID"]."~|~4~|~".ExploitPatch::translit($song["authorName"])."~|~5~|~".$song["size"]."~|~6~|~~|~10~|~".$dl."~|~7~|~~|~8~|~1";
+		if($librarySong) {
+			$artistsNames = [];
+			$artistsArray = explode('.', $song['artists']);
+			if(count($artistsArray) > 0) {
+				foreach($artistsArray AS &$artistID) {
+					$artistData = $gs->getLibrarySongAuthorInfo($artistID);
+					if(!$artistData) continue;
+					$artistsNames[] = $artistID;
+					$artistsNames[] = $artistData['name'];
+				}
+			}
+			$artistsNames = implode(',', $artistsNames);
+			$extraSongString = '~|~9~|~'.$song['priorityOrder'].'~|~11~|~'.$song['ncs'].'~|~12~|~'.$song['artists'].'~|~13~|~'.($song['new'] ? 1 : 0).'~|~14~|~'.$song['new'].'~|~15~|~'.$artistsNames;
+		}
+		return "1~|~".$song["ID"]."~|~2~|~".ExploitPatch::translit(str_replace("#", "", $song["name"]))."~|~3~|~".$song["authorID"]."~|~4~|~".ExploitPatch::translit($song["authorName"])."~|~5~|~".$song["size"]."~|~6~|~~|~10~|~".$dl."~|~7~|~~|~8~|~1".$extraSongString;
 	}
 	public function getSongInfo($id, $column = "*") {
 	    if(!is_numeric($id)) return;
@@ -1134,7 +1153,9 @@ class mainLib {
 						}
 						switch($x) {
 							case 0:
-								$library['authors'][$song[0]] = [
+								$idsConverter['IDs'][$song[0]] = $library['authors'][$song[0]] = [
+									'server' => $server,
+									'type' => $x,
 									'authorID' => $song[0],
 									'name' => ExploitPatch::escapedat($song[1]),
 									'link' => ExploitPatch::escapedat($song[2]),
@@ -1170,7 +1191,9 @@ class mainLib {
 									$newArtists[] = $artist;
 								}
 								$artists = implode('.', $newArtists);
-								$library['songs'][$song[0]] = [
+								$idsConverter['IDs'][$song[0]] = $library['songs'][$song[0]] = [
+									'server' => $server,
+									'type' => $x,
 									'ID' => $song[0],
 									'name' => ExploitPatch::escapedat($song[1]),
 									'authorID' => $song[2],
@@ -1185,7 +1208,9 @@ class mainLib {
 								];
 								break;
 							case 2:
-								$library['tags'][$song[0]] = [
+								$idsConverter['IDs'][$song[0]] = $library['tags'][$song[0]] = [
+									'server' => $server,
+									'type' => $x,
 									'ID' => $song[0],
 									'name' => ExploitPatch::escapedat($song[1])
 								];
@@ -1281,14 +1306,38 @@ class mainLib {
 					'priorityOrder' => 0
 				];
 			}
-			foreach($library['authors'] AS &$authorList) $authorsEncrypted[] = implode(',', $authorList);
-			foreach($library['songs'] AS &$songsList) $songsEncrypted[] = implode(',', $songsList);
-			foreach($library['tags'] AS &$tagsList) $tagsEncrypted[] = implode(',', $tagsList);
+			foreach($library['authors'] AS &$authorList) {
+				unset($authorList['server']);
+				unset($authorList['type']);
+				$authorsEncrypted[] = implode(',', $authorList);
+			}
+			foreach($library['songs'] AS &$songsList) {
+				unset($songsList['server']);
+				unset($songsList['type']);
+				$songsEncrypted[] = implode(',', $songsList);
+			}
+			foreach($library['tags'] AS &$tagsList) {
+				unset($tagsList['server']);
+				unset($tagsList['type']);
+				$tagsEncrypted[] = implode(',', $tagsList);
+			}
 			$encrypted = $version."|".implode(';', $authorsEncrypted).";|" .implode(';', $songsEncrypted).";|" .implode(';', $tagsEncrypted).';';
 			$authorsEncrypted = $songsEncrypted = $tagsEncrypted = [];
-			foreach($gdpsLibrary['authors'] AS &$authorList) $authorsEncrypted[] = implode(',', $authorList);
-			foreach($gdpsLibrary['songs'] AS &$songsList) $songsEncrypted[] = implode(',', $songsList);
-			foreach($gdpsLibrary['tags'] AS &$tagsList) $tagsEncrypted[] = implode(',', $tagsList);
+			foreach($gdpsLibrary['authors'] AS &$authorList) {
+				unset($authorList['server']);
+				unset($authorList['type']);
+				$authorsEncrypted[] = implode(',', $authorList);
+			}
+			foreach($gdpsLibrary['songs'] AS &$songsList) {
+				unset($songsList['server']);
+				unset($songsList['type']);
+				$songsEncrypted[] = implode(',', $songsList);
+			}
+			foreach($gdpsLibrary['tags'] AS &$tagsList) {
+				unset($tagsList['server']);
+				unset($tagsList['type']);
+				$tagsEncrypted[] = implode(',', $tagsList);
+			}
 			$gdpsEncrypted = $version."|".implode(';', $authorsEncrypted).";|" .implode(';', $songsEncrypted).";|" .implode(';', $tagsEncrypted).';';
 		}
 		file_put_contents(__DIR__.'/../../'.$types[$type].'/ids.json', json_encode($idsConverter, JSON_PRETTY_PRINT | JSON_INVALID_UTF8_IGNORE));
@@ -1339,14 +1388,14 @@ class mainLib {
 			$serverIDs[$customLib[2]] = $customLib[0];
 		}
 		$library = json_decode(file_get_contents(__DIR__.'/../../'.$type.'/ids.json'), true);
-		if(!isset($library['IDs'][$id])) return false;
+		if(!isset($library['IDs'][$id]) || $library['IDs'][$id]['type'] != 1) return false;
 		if($type == 'music') {
 			$song = $library['IDs'][$id];
 			$author = $library['IDs'][$song['authorID']];
 			$token = $this->randomString(11);
 			$expires = time() + 3600;
 			$link = $servers[$song['server']].'/music/'.$song['ID'].'.ogg?token='.$token.'&expires='.$expires;
-			return ['server' => $song['server'], 'ID' => $id, 'name' => $song['name'], 'authorID' => $song['authorID'], 'authorName' => $author['name'], 'size' => round($song['size'] / 1024 / 1024, 2), 'download' => $link];
+			return ['server' => $song['server'], 'ID' => $id, 'name' => $song['name'], 'authorID' => $song['authorID'], 'authorName' => $author['name'], 'size' => round($song['size'] / 1024 / 1024, 2), 'download' => $link, 'seconds' => $song['seconds'], 'tags' => $song['tags'], 'ncs' => $song['ncs'], 'artists' => $song['artists'], 'externalLink' => $song['externalLink'], 'new' => $song['new'], 'priorityOrder' => $song['priorityOrder']];
 		} else {
 			$type = 'sfx/s';
 			$SFX = $library['IDs'][$id];
@@ -1355,6 +1404,13 @@ class mainLib {
 			$link = $servers[$SFX['server']] != null ? $servers[$SFX['server']].'/'.$type.$SFX['ID'].'.ogg?token='.$token.'&expires='.$expires : $this->getSFXInfo($SFX['ID'], 'download');
 			return ['server' => $SFX['server'], 'ID' => $id, 'name' => $song['name'], 'download' => $link];
 		}
+	}
+	public function getLibrarySongAuthorInfo($id) {
+		require __DIR__."/../../config/dashboard.php";
+		if(!file_exists(__DIR__.'/../../music/ids.json')) return false;
+		$library = json_decode(file_get_contents(__DIR__.'/../../music/ids.json'), true);
+		if(!isset($library['IDs'][$id])) return false;
+		return $library['IDs'][$id];
 	}
 	public function sendRateWebhook($modAccID, $levelID) {
 		require __DIR__."/connection.php";
@@ -1928,12 +1984,12 @@ class mainLib {
 		return false;
 	}
 	public function sendLogsRegisterWebhook($accountID) {
-		include __DIR__."/connection.php";
-		if(!class_exists('ExploitPatch')) include __DIR__."/exploitPatch.php";
-		include __DIR__."/../../config/dashboard.php";
-		include __DIR__."/../../config/discord.php";
+		require __DIR__."/connection.php";
+		if(!class_exists('ExploitPatch')) require __DIR__."/exploitPatch.php";
+		require __DIR__."/../../config/dashboard.php";
+		require __DIR__."/../../config/discord.php";
 		if(!$webhooksEnabled OR !is_numeric($accountID) OR !in_array("register", $webhooksToEnable)) return false;
-		include_once __DIR__."/../../config/webhooks/DiscordWebhook.php";
+		require_once __DIR__."/../../config/webhooks/DiscordWebhook.php";
 		$webhookLangArray = $this->webhookStartLanguage($webhookLanguage);
 		$dw = new DiscordWebhook($logsRegisterWebhook);
 		$account = $db->prepare('SELECT * FROM accounts WHERE accountID = :accountID');
@@ -1960,12 +2016,12 @@ class mainLib {
 		->send();
 	}
 	public function sendLogsLevelChangeWebhook($levelID, $whoChangedID, $levelData = []) {
-		include __DIR__."/connection.php";
-		if(!class_exists('ExploitPatch')) include __DIR__."/exploitPatch.php";
-		include __DIR__."/../../config/dashboard.php";
-		include __DIR__."/../../config/discord.php";
+		require __DIR__."/connection.php";
+		if(!class_exists('ExploitPatch')) require __DIR__."/exploitPatch.php";
+		require __DIR__."/../../config/dashboard.php";
+		require __DIR__."/../../config/discord.php";
 		if(!$webhooksEnabled OR !is_numeric($levelID) OR !in_array("levels", $webhooksToEnable)) return false;
-		include_once __DIR__."/../../config/webhooks/DiscordWebhook.php";
+		require_once __DIR__."/../../config/webhooks/DiscordWebhook.php";
 		$webhookLangArray = $this->webhookStartLanguage($webhookLanguage);
 		$dw = new DiscordWebhook($logsLevelChangeWebhook);
 		$level = $db->prepare('SELECT * FROM levels WHERE levelID = :levelID');
@@ -2064,12 +2120,12 @@ class mainLib {
 		->send(); 
 	}
 	public function sendLogsAccountChangeWebhook($accountID, $whoChangedID, $accountData) {
-		include __DIR__."/connection.php";
-		if(!class_exists('ExploitPatch')) include __DIR__."/exploitPatch.php";
-		include __DIR__."/../../config/dashboard.php";
-		include __DIR__."/../../config/discord.php";
+		require __DIR__."/connection.php";
+		if(!class_exists('ExploitPatch')) require __DIR__."/exploitPatch.php";
+		require __DIR__."/../../config/dashboard.php";
+		require __DIR__."/../../config/discord.php";
 		if(!$webhooksEnabled OR !is_numeric($accountID) OR empty($accountData) OR !in_array("account", $webhooksToEnable)) return false;
-		include_once __DIR__."/../../config/webhooks/DiscordWebhook.php";
+		require_once __DIR__."/../../config/webhooks/DiscordWebhook.php";
 		$webhookLangArray = $this->webhookStartLanguage($webhookLanguage);
 		$dw = new DiscordWebhook($logsAccountChangeWebhook);
 		$newAccountData = $db->prepare('SELECT * FROM accounts WHERE accountID = :accountID');
@@ -2126,12 +2182,12 @@ class mainLib {
 		->send();
 	}
 	public function sendLogsListChangeWebhook($listID, $whoChangedID, $listData = []) {
-		include __DIR__."/connection.php";
-		if(!class_exists('ExploitPatch')) include __DIR__."/exploitPatch.php";
-		include __DIR__."/../../config/dashboard.php";
-		include __DIR__."/../../config/discord.php";
+		require __DIR__."/connection.php";
+		if(!class_exists('ExploitPatch')) require __DIR__."/exploitPatch.php";
+		require __DIR__."/../../config/dashboard.php";
+		require __DIR__."/../../config/discord.php";
 		if(!$webhooksEnabled OR !is_numeric($listID) OR !in_array("lists", $webhooksToEnable)) return false;
-		include_once __DIR__."/../../config/webhooks/DiscordWebhook.php";
+		require_once __DIR__."/../../config/webhooks/DiscordWebhook.php";
 		$webhookLangArray = $this->webhookStartLanguage($webhookLanguage);
 		$dw = new DiscordWebhook($logsListChangeWebhook);
 		$newListData = $db->prepare('SELECT * FROM lists WHERE listID = :listID');
@@ -2233,12 +2289,12 @@ class mainLib {
 		->send();
 	}
 	public function sendLogsModChangeWebhook($modID, $whoChangedID, $assignID, $modData = []) {
-		include __DIR__."/connection.php";
-		if(!class_exists('ExploitPatch')) include __DIR__."/exploitPatch.php";
-		include __DIR__."/../../config/dashboard.php";
-		include __DIR__."/../../config/discord.php";
+		require __DIR__."/connection.php";
+		if(!class_exists('ExploitPatch')) require __DIR__."/exploitPatch.php";
+		require __DIR__."/../../config/dashboard.php";
+		require __DIR__."/../../config/discord.php";
 		if(!$webhooksEnabled OR !is_numeric($modID) OR !is_numeric($assignID) OR !in_array("mods", $webhooksToEnable)) return false;
-		include_once __DIR__."/../../config/webhooks/DiscordWebhook.php";
+		require_once __DIR__."/../../config/webhooks/DiscordWebhook.php";
 		$webhookLangArray = $this->webhookStartLanguage($webhookLanguage);
 		$dw = new DiscordWebhook($logsModChangeWebhook);
 		$newAssignData = $db->prepare('SELECT * FROM roleassign WHERE assignID = :assignID');
@@ -2304,12 +2360,12 @@ class mainLib {
 		->send();
 	}
 	public function sendLogsGauntletChangeWebhook($gauntletID, $whoChangedID, $gauntletData = []) {
-		include __DIR__."/connection.php";
-		if(!class_exists('ExploitPatch')) include __DIR__."/exploitPatch.php";
-		include __DIR__."/../../config/dashboard.php";
-		include __DIR__."/../../config/discord.php";
+		require __DIR__."/connection.php";
+		if(!class_exists('ExploitPatch')) require __DIR__."/exploitPatch.php";
+		require __DIR__."/../../config/dashboard.php";
+		require __DIR__."/../../config/discord.php";
 		if(!$webhooksEnabled OR !is_numeric($gauntletID) OR !in_array("gauntlets", $webhooksToEnable)) return false;
-		include_once __DIR__."/../../config/webhooks/DiscordWebhook.php";
+		require_once __DIR__."/../../config/webhooks/DiscordWebhook.php";
 		$webhookLangArray = $this->webhookStartLanguage($webhookLanguage);
 		$dw = new DiscordWebhook($logsGauntletChangeWebhook);
 		$newGauntletData = $db->prepare('SELECT * FROM gauntlets WHERE ID = :gauntletID');
@@ -2462,12 +2518,12 @@ class mainLib {
 		->send();
 	}
 	public function sendLogsMapPackChangeWebhook($packID, $whoChangedID, $packData = []) {
-		include __DIR__."/connection.php";
-		if(!class_exists('ExploitPatch')) include __DIR__."/exploitPatch.php";
-		include __DIR__."/../../config/dashboard.php";
-		include __DIR__."/../../config/discord.php";
+		require __DIR__."/connection.php";
+		if(!class_exists('ExploitPatch')) require __DIR__."/exploitPatch.php";
+		require __DIR__."/../../config/dashboard.php";
+		require __DIR__."/../../config/discord.php";
 		if(!$webhooksEnabled OR !is_numeric($packID) OR !in_array("mappacks", $webhooksToEnable)) return false;
-		include_once __DIR__."/../../config/webhooks/DiscordWebhook.php";
+		require_once __DIR__."/../../config/webhooks/DiscordWebhook.php";
 		$webhookLangArray = $this->webhookStartLanguage($webhookLanguage);
 		$dw = new DiscordWebhook($logsMapPackChangeWebhook);
 		$newPackData = $db->prepare('SELECT * FROM mappacks WHERE ID = :packID');
@@ -2571,12 +2627,12 @@ class mainLib {
 		return $db->lastInsertId();
 	}
 	public function sendLevelsWarningWebhook($levelsYesterday, $levelsToday) {
-		include __DIR__."/connection.php";
-		if(!class_exists('ExploitPatch')) include __DIR__."/exploitPatch.php";
-		include __DIR__."/../../config/dashboard.php";
-		include __DIR__."/../../config/discord.php";
+		require __DIR__."/connection.php";
+		if(!class_exists('ExploitPatch')) require __DIR__."/exploitPatch.php";
+		require __DIR__."/../../config/dashboard.php";
+		require __DIR__."/../../config/discord.php";
 		if(!$webhooksEnabled OR !is_numeric($levelsYesterday) OR !is_numeric($levelsToday) OR !in_array("warnings", $webhooksToEnable)) return false;
-		include_once __DIR__."/../../config/webhooks/DiscordWebhook.php";
+		require_once __DIR__."/../../config/webhooks/DiscordWebhook.php";
 		$webhookLangArray = $this->webhookStartLanguage($webhookLanguage);
 		$dw = new DiscordWebhook($warningsWebhook);
 		$setTitle = $this->webhookLanguage('levelsWarningTitle', $webhookLangArray);
@@ -2602,12 +2658,12 @@ class mainLib {
 		->send();
 	}
 	public function sendAccountsWarningWebhook($accountsYesterday, $accountsToday) {
-		include __DIR__."/connection.php";
-		if(!class_exists('ExploitPatch')) include __DIR__."/exploitPatch.php";
-		include __DIR__."/../../config/dashboard.php";
-		include __DIR__."/../../config/discord.php";
+		require __DIR__."/connection.php";
+		if(!class_exists('ExploitPatch')) require __DIR__."/exploitPatch.php";
+		require __DIR__."/../../config/dashboard.php";
+		require __DIR__."/../../config/discord.php";
 		if(!$webhooksEnabled OR !is_numeric($accountsYesterday) OR !is_numeric($accountsToday) OR !in_array("warnings", $webhooksToEnable)) return false;
-		include_once __DIR__."/../../config/webhooks/DiscordWebhook.php";
+		require_once __DIR__."/../../config/webhooks/DiscordWebhook.php";
 		$webhookLangArray = $this->webhookStartLanguage($webhookLanguage);
 		$dw = new DiscordWebhook($warningsWebhook);
 		$setTitle = $this->webhookLanguage('accountsWarningTitle', $webhookLangArray);
@@ -2633,12 +2689,12 @@ class mainLib {
 		->send();
 	}
 	public function sendCommentsSpammingWarningWebhook($similarCommentsCount, $similarCommentsAuthors) {
-		include __DIR__."/connection.php";
-		if(!class_exists('ExploitPatch')) include __DIR__."/exploitPatch.php";
-		include __DIR__."/../../config/dashboard.php";
-		include __DIR__."/../../config/discord.php";
+		require __DIR__."/connection.php";
+		if(!class_exists('ExploitPatch')) require __DIR__."/exploitPatch.php";
+		require __DIR__."/../../config/dashboard.php";
+		require __DIR__."/../../config/discord.php";
 		if(!$webhooksEnabled OR !is_numeric($similarCommentsCount) OR !is_array($similarCommentsAuthors) OR !in_array("warnings", $webhooksToEnable)) return false;
-		include_once __DIR__."/../../config/webhooks/DiscordWebhook.php";
+		require_once __DIR__."/../../config/webhooks/DiscordWebhook.php";
 		$webhookLangArray = $this->webhookStartLanguage($webhookLanguage);
 		$dw = new DiscordWebhook($warningsWebhook);
 		$setTitle = $this->webhookLanguage('commentsSpammingWarningTitle', $webhookLangArray);
@@ -2669,12 +2725,12 @@ class mainLib {
 		->send();
 	}
 	public function sendCommentsSpammerWarningWebhook($similarCommentsCount, $commentSpammer) {
-		include __DIR__."/connection.php";
-		if(!class_exists('ExploitPatch')) include __DIR__."/exploitPatch.php";
-		include __DIR__."/../../config/dashboard.php";
-		include __DIR__."/../../config/discord.php";
+		require __DIR__."/connection.php";
+		if(!class_exists('ExploitPatch')) require __DIR__."/exploitPatch.php";
+		require __DIR__."/../../config/dashboard.php";
+		require __DIR__."/../../config/discord.php";
 		if(!$webhooksEnabled OR !is_numeric($similarCommentsCount) OR !is_numeric($commentSpammer) OR !in_array("warnings", $webhooksToEnable)) return false;
-		include_once __DIR__."/../../config/webhooks/DiscordWebhook.php";
+		require_once __DIR__."/../../config/webhooks/DiscordWebhook.php";
 		$webhookLangArray = $this->webhookStartLanguage($webhookLanguage);
 		$dw = new DiscordWebhook($warningsWebhook);
 		$setTitle = $this->webhookLanguage('commentsSpammerWarningTitle', $webhookLangArray);
@@ -2701,12 +2757,12 @@ class mainLib {
 		->send();
 	}
 	public function sendAccountPostsSpammingWarningWebhook($similarCommentsCount, $similarCommentsAuthors) {
-		include __DIR__."/connection.php";
-		if(!class_exists('ExploitPatch')) include __DIR__."/exploitPatch.php";
-		include __DIR__."/../../config/dashboard.php";
-		include __DIR__."/../../config/discord.php";
+		require __DIR__."/connection.php";
+		if(!class_exists('ExploitPatch')) require __DIR__."/exploitPatch.php";
+		require __DIR__."/../../config/dashboard.php";
+		require __DIR__."/../../config/discord.php";
 		if(!$webhooksEnabled OR !is_numeric($similarCommentsCount) OR !is_array($similarCommentsAuthors) OR !in_array("warnings", $webhooksToEnable)) return false;
-		include_once __DIR__."/../../config/webhooks/DiscordWebhook.php";
+		require_once __DIR__."/../../config/webhooks/DiscordWebhook.php";
 		$webhookLangArray = $this->webhookStartLanguage($webhookLanguage);
 		$dw = new DiscordWebhook($warningsWebhook);
 		$setTitle = $this->webhookLanguage('accountPostsSpammingWarningTitle', $webhookLangArray);
@@ -2737,12 +2793,12 @@ class mainLib {
 		->send();
 	}
 	public function sendAccountPostsSpammerWarningWebhook($similarCommentsCount, $commentSpammer) {
-		include __DIR__."/connection.php";
-		if(!class_exists('ExploitPatch')) include __DIR__."/exploitPatch.php";
-		include __DIR__."/../../config/dashboard.php";
-		include __DIR__."/../../config/discord.php";
+		require __DIR__."/connection.php";
+		if(!class_exists('ExploitPatch')) require __DIR__."/exploitPatch.php";
+		require __DIR__."/../../config/dashboard.php";
+		require __DIR__."/../../config/discord.php";
 		if(!$webhooksEnabled OR !is_numeric($similarCommentsCount) OR !is_numeric($commentSpammer) OR !in_array("warnings", $webhooksToEnable)) return false;
-		include_once __DIR__."/../../config/webhooks/DiscordWebhook.php";
+		require_once __DIR__."/../../config/webhooks/DiscordWebhook.php";
 		$webhookLangArray = $this->webhookStartLanguage($webhookLanguage);
 		$dw = new DiscordWebhook($warningsWebhook);
 		$setTitle = $this->webhookLanguage('accountPostsSpammerWarningTitle', $webhookLangArray);
@@ -2769,12 +2825,12 @@ class mainLib {
 		->send();
 	}
 	public function sendRepliesSpammingWarningWebhook($similarCommentsCount, $similarCommentsAuthors) {
-		include __DIR__."/connection.php";
-		if(!class_exists('ExploitPatch')) include __DIR__."/exploitPatch.php";
-		include __DIR__."/../../config/dashboard.php";
-		include __DIR__."/../../config/discord.php";
+		require __DIR__."/connection.php";
+		if(!class_exists('ExploitPatch')) require __DIR__."/exploitPatch.php";
+		require __DIR__."/../../config/dashboard.php";
+		require __DIR__."/../../config/discord.php";
 		if(!$webhooksEnabled OR !is_numeric($similarCommentsCount) OR !is_array($similarCommentsAuthors) OR !in_array("warnings", $webhooksToEnable)) return false;
-		include_once __DIR__."/../../config/webhooks/DiscordWebhook.php";
+		require_once __DIR__."/../../config/webhooks/DiscordWebhook.php";
 		$webhookLangArray = $this->webhookStartLanguage($webhookLanguage);
 		$dw = new DiscordWebhook($warningsWebhook);
 		$setTitle = $this->webhookLanguage('repliesSpammingWarningTitle', $webhookLangArray);
@@ -2805,12 +2861,12 @@ class mainLib {
 		->send();
 	}
 	public function sendRepliesSpammerWarningWebhook($similarCommentsCount, $commentAuthorID) {
-		include __DIR__."/connection.php";
-		if(!class_exists('ExploitPatch')) include __DIR__."/exploitPatch.php";
-		include __DIR__."/../../config/dashboard.php";
-		include __DIR__."/../../config/discord.php";
+		require __DIR__."/connection.php";
+		if(!class_exists('ExploitPatch')) require __DIR__."/exploitPatch.php";
+		require __DIR__."/../../config/dashboard.php";
+		require __DIR__."/../../config/discord.php";
 		if(!$webhooksEnabled OR !is_numeric($similarCommentsCount) OR !is_numeric($commentAuthorID) OR !in_array("warnings", $webhooksToEnable)) return false;
-		include_once __DIR__."/../../config/webhooks/DiscordWebhook.php";
+		require_once __DIR__."/../../config/webhooks/DiscordWebhook.php";
 		$webhookLangArray = $this->webhookStartLanguage($webhookLanguage);
 		$dw = new DiscordWebhook($warningsWebhook);
 		$setTitle = $this->webhookLanguage('repliesSpammerWarningTitle', $webhookLangArray);
