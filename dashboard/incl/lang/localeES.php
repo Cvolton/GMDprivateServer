@@ -478,6 +478,8 @@ $string['cantPostAccountCommentsAboveChars'] = 'You cannot post account comments
 $string['commentingIsDisabled'] = 'Commenting is currently disabled!';
 $string['noWarnings'] = 'No warnings';
 
+$string['downloadLevelAsGMD'] = 'Save as .gmd';
+
 // REUPLOAD
 $string["reuploadBTN"] = "Subir";
 $string["errorGeneric"] = "¡Ha ocurrido un error!";

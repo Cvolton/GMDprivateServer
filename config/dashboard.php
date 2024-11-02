@@ -59,4 +59,20 @@ $convertSFXAPI[] = "https://lamb.gcs.icu";
 $convertSFXAPI[] = "https://omori.gcs.icu"; // You're welcome
 $convertSFXAPI[] = "https://im.gcs.icu";
 $convertSFXAPI[] = "https://hat.gcs.icu";
+
+/*
+	Level reupload tool
+	
+	These confing will allow you to customize level reupload tool
+	
+	$requireAccountForReuploading — if user must enter their account credentials to reupload level
+		True — require logging in
+		False — don't require to login
+	$disallowReuploadingNotUserLevels — if user should be allowed to reupload only their levels
+		True — allow reuploading only their levels
+		False — allow reuploading any levels
+*/
+
+$requireAccountForReuploading = false;
+$disallowReuploadingNotUserLevels = false;
 ?>

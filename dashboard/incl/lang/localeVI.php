@@ -461,6 +461,8 @@ $string['cantPostAccountCommentsAboveChars'] = 'You cannot post account comments
 $string['commentingIsDisabled'] = 'Commenting is currently disabled!';
 $string['noWarnings'] = 'No warnings';
 
+$string['downloadLevelAsGMD'] = 'Save as .gmd';
+
 /*
 	ĐĂNG LẠI
 */

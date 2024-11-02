@@ -3,11 +3,13 @@ session_start();
 require "../incl/dashboardLib.php";
 require "../".$dbPath."incl/lib/Captcha.php";
 require "../".$dbPath."incl/lib/automod.php";
-include "../".$dbPath."incl/lib/connection.php";
-include "../".$dbPath."incl/lib/exploitPatch.php";
+require "../".$dbPath."incl/lib/connection.php";
+require_once "../".$dbPath."incl/lib/exploitPatch.php";
 require "../".$dbPath."incl/lib/XORCipher.php";
+require "../".$dbPath."incl/lib/generatePass.php";
 require "../".$dbPath."config/reuploadAcc.php";
 require "../".$dbPath."config/proxy.php";
+require "../".$dbPath."config/dashboard.php";
 require_once "../".$dbPath."incl/lib/mainLib.php";
 $dl = new dashboardLib();
 global $lrEnabled;
@@ -51,8 +53,56 @@ if(!empty($_POST["levelid"])) {
 		<button type="button" onclick="a(\'levels/levelReupload.php\', true, false, \'GET\')" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 		</form>
 	</div>', 'reupload'));
-	$post = ['gameVersion' => '22', 'binaryVersion' => '37', 'gdw' => '0', 'levelID' => $levelID, 'secret' => 'Wmfd2893gb7', 'inc' => '0', 'extras' => '0'];
-	$ch = curl_init($url);
+	$post = ['gameVersion' => '22', 'binaryVersion' => '42', 'gdw' => '0', 'levelID' => $levelID, 'secret' => 'Wmfd2893gb7', 'inc' => '0', 'extras' => '0'];
+	if($requireAccountForReuploading) {
+		$usertarg = ExploitPatch::charclean($_POST["usertarg"]);
+		$passtarg = GeneratePass::GJP2fromPassword($_POST["passtarg"]);
+		$udid = "S" . mt_rand(111111111,999999999) . mt_rand(111111111,999999999) . mt_rand(111111111,999999999) . mt_rand(111111111,999999999) . mt_rand(1,9); //getting accountid
+		$sid = mt_rand(111111111,999999999) . mt_rand(11111111,99999999);
+		//echo $udid;
+		$post1 = ['userName' => $usertarg, 'udid' => $udid, 'gjp2' => $passtarg, 'sID' => $sid, 'secret' => 'Wmfv3899gc9'];
+		$ch = curl_init($url . "/accounts/loginGJAccount.php");
+		if($proxytype == 1) {
+			curl_setopt($ch, CURLOPT_PROXY, $host);
+		} elseif($proxytype == 2) {
+			curl_setopt($ch, CURLOPT_PROXY, $host);
+			curl_setopt($ch, CURLOPT_PROXYTYPE, CURLPROXY_SOCKS5);
+		}
+		if(!empty($auth)) { 
+			curl_setopt($ch, CURLOPT_PROXYUSERPWD, $auth); 
+		}
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $post1);
+		curl_setopt($ch, CURLOPT_PROTOCOLS, CURLPROTO_HTTP | CURLPROTO_HTTPS);
+		$result = curl_exec($ch);
+		curl_close($ch);
+		if($result == "" OR $result == "-1" OR $result == "No no no") {
+			$errorArray = ["" => $dl->getLocalizedString("errorConnection"), '-1' => $dl->getLocalizedString("wrongNickOrPass"), 'No no no' => $dl->getLocalizedString("robtopLol")];
+			$dl->printSong('<div class="form">
+				<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
+				<form class="form__inner" method="post" action="">
+				<p>'.$errorArray[$result].'</p>
+				<button type="button" onclick="a(\'levels/levelReupload.php\', true, false, \'GET\')" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
+				</form>
+			</div>', 'reupload');
+		}
+		$resultArray = explode(",",$result);
+		$targetAccountID = $resultArray[0];
+		$targetUserID = $resultArray[1];
+		if(!$targetAccountID) {
+			die($dl->printSong('<div class="form">
+				<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
+				<form class="form__inner" method="post" action="">
+				<p>'.$dl->getLocalizedString("errorConnection").'</p>
+				<button type="button" onclick="a(\'levels/levelReupload.php\', true, false, \'GET\')" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
+				</form>
+			</div>', 'reupload'));
+		}
+		$post['accountID'] = $targetAccountID;
+		$post['gjp2'] = $passtarg;
+		$post['uuid'] = $targetUserID;
+	}
+	$ch = curl_init($url.'/downloadGJLevel22.php');
 	// "StackOverflow is a lifesaver" - masckmaster 2023
 	if($proxytype == 1) curl_setopt($ch, CURLOPT_PROXY, $host);
 	elseif($proxytype == 2) {
@@ -85,7 +135,6 @@ if(!empty($_POST["levelid"])) {
 			else$arname = $value;
 			$x++;
 		}
-		//echo $result;
 		if($levelarray["a4"] == "") {
 			$dl->printSong('<div class="form">
 				<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
@@ -95,6 +144,17 @@ if(!empty($_POST["levelid"])) {
 				</form>
 			</div>', 'reupload');
 		}
+		$levelUserID = chkarray($levelarray["a6"]);
+		if($targetUserID != $levelUserID && ($requireAccountForReuploading && $disallowReuploadingNotUserLevels)) {
+			die($dl->printSong('<div class="form">
+				<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
+				<form class="form__inner" method="post" action="">
+				<p>'.$dl->getLocalizedString("notYourLevel").'</p>
+				<button type="button" onclick="a(\'levels/levelReupload.php\', true, false, \'GET\')" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
+				</form>
+			</div>', 'reupload'));
+		}
+		//echo $result;
 		$uploadDate = time();
 		//old levelString
 		$levelString = chkarray($levelarray["a4"]);
@@ -136,7 +196,6 @@ if(!empty($_POST["levelid"])) {
 		$starDemon = 0;
 		$starAuto = 0;
 		$starStars = 0;
-		$targetUserID = chkarray($levelarray["a6"]);
 		//linkacc
 		if($automaticID) {
 			$reupUID = $gs->getUserID($_SESSION["accountID"]);
@@ -160,12 +219,6 @@ if(!empty($_POST["levelid"])) {
 			<h1>'.$dl->getLocalizedString("levelReupload").'</h1>
 			<form class="form__inner" method="post" action="">
 			<p>'.$dl->getLocalizedString("levelReuploaded").' '.$levelID.'</p>
-			'.
-			($debug == 1 ? '<details style="color:white">
-			<summary>Debug</summary>
-			'.$result.'
-			</details>' : '')
-			.'
 			<button type="button" onclick="a(\'levels/levelReupload.php\', true, false, \'GET\')" class="btn-song">'.$dl->getLocalizedString("oneMoreLevel?").'</button>
 			</form>
 		</div>', 'reupload');
@@ -176,12 +229,14 @@ if(!empty($_POST["levelid"])) {
     <form class="form__inner" method="post" action="">
 		<p>'.$dl->getLocalizedString("levelReuploadDesc").'</p>
         <div class="field"><input type="text" name="levelid" id="p1" placeholder="'.$dl->getLocalizedString("levelID").'"></div>
-		<details class="details">
-			<summary style="width: 100%;">'.$dl->getLocalizedString("advanced").'</summary>
-			<div class="field" style="display: inline-flex;width:100%;justify-content: space-between;">
-            	<input type="text" name="server" id="p2" value="https://www.boomlings.com/database/downloadGJLevel22.php" placeholder="'.$dl->getLocalizedString("server").'" style="width: 100%;">
-			</div>
-		</details>'.Captcha::displayCaptcha(true).'
+		'.($requireAccountForReuploading ? '
+			<div class="field"><input type="text" name="usertarg" id="p2" placeholder="'.$dl->getLocalizedString("usernameTarget").'"></div>
+			<div class="field"><input type="password" name="passtarg" id="p3" placeholder="'.$dl->getLocalizedString("passwordTarget").'"></div>
+		' : '').'
+		<div class="field" style="display: inline-flex;width:100%;justify-content: space-between;">
+           	<input type="text" name="server" id="p2" value="https://www.boomlings.com/database/" placeholder="'.$dl->getLocalizedString("server").'" style="width: 100%;">
+		</div>
+		'.Captcha::displayCaptcha(true).'
         <button type="button" onclick="a(\'levels/levelReupload.php\', true, true, \'POST\')" class="btn-song btn-block" id="submit" disabled>'.$dl->getLocalizedString("reuploadBTN").'</button>
     </form>
 </div>

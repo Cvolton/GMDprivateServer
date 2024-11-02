@@ -478,6 +478,8 @@ $string['cantPostAccountCommentsAboveChars'] = 'Вы не можете публ�
 $string['commentingIsDisabled'] = 'Комментирование на данный момент отключено!';
 $string['noWarnings'] = 'Предупреждений нет';
 
+$string['downloadLevelAsGMD'] = 'Сохранить как .gmd';
+
 /*
 	REUPLOAD
 */

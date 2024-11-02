@@ -914,6 +914,29 @@ class dashboardLib {
 		};
 		return text.replace(/[&<>""]/g, function(m) { return map[m]; });
 	}
+	function downloadLevel(levelID) {
+		levelIcon = document.getElementById("levelDownloadIcon" + levelID);
+		levelIcon.classList = "fa-solid fa-spinner fa-spin";
+		fetch("api/getGMD.php", {
+			method: "POST",
+			body: "levelID=" + levelID,
+			headers: {
+				"Content-Type": "application/x-www-form-urlencoded"
+			}
+		}).then(async function(r) {
+			result = await r.json();
+			if(result.success) {
+				delete fakeA;
+				fakeA = document.createElement("a");
+				fakeA.href = "data:text/xml;base64," + result.GMD;
+				fakeA.download = result.levelName + ".gmd";
+				fakeA.click();
+			}
+			levelIcon.classList = "fa-solid fa-download";
+		}).catch(e => {
+			levelIcon.classList = "fa-solid fa-download";
+		})
+	}
 	window.addEventListener("popstate", function(e) { 
 		a(e.target.location.href, true, true, "GET", false, "", true);
 	}, false);
@@ -1043,6 +1066,10 @@ class dashboardLib {
 			<i class="fa-solid fa-ellipsis-vertical"></i>
 		</a>
 		<div onclick="event.stopPropagation()" class="dropdown-menu dropdown-menu-left" aria-labelledby="navbarDropdownMenuLink">
+			<button type="button" class="dropdown-item" onclick="downloadLevel('.$action['levelID'].')">
+				<div class="icon"><i id="levelDownloadIcon'.$action['levelID'].'" class="fa-solid fa-download"></i></div>
+				'.$this->getLocalizedString("downloadLevelAsGMD").'
+			</button>
 			<button type="button" class="dropdown-item" onclick="a(\'stats/levelComments.php?levelID='.$action['levelID'].'\', true, true, \'GET\')">
 				<div class="icon"><i class="fa-solid fa-comments"></i></div>
 				'.$this->getLocalizedString("levelComments").'

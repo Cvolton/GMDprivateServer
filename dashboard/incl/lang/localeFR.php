@@ -432,7 +432,7 @@ $string['possibleCommentsSpamming'] = 'Potentiel spam de commentaires';
 $string['disableComments'] = 'Désactiver la publication de commentaires';
 $string['similarCommentsCount'] = 'Nombre de commentaires similaires';
 $string['similarityValueOfAllComments'] = 'Similarité entre tous les commentaires';
-$string['possibleCommentsSpammer'] = 'Potentiels spammers de commentaires';
+$string['possibleCommentsSpammer'] = 'Potentiel spammer de commentaires';
 $string['banCommenting'] = 'Interdire la publication de commentaires';
 $string['spammerUsername'] = 'Nom d\'utilisateur du spammer';
 $string['possibleAccountPostsSpamming'] = 'Potentiel spam de posts';
@@ -479,6 +479,8 @@ $string['youAreBannedFromCommenting'] = 'Vous êtes interdit de publier de nouve
 $string['cantPostAccountCommentsAboveChars'] = 'Vous ne pouvez pas publier de posts de plus de %1$s charactères !';
 $string['commentingIsDisabled'] = 'La publication de commentaires est actuellement désactivée !';
 $string['noWarnings'] = 'No warnings';
+
+$string['downloadLevelAsGMD'] = 'Save as .gmd';
 
 /*
 	REUPLOAD
