@@ -2836,6 +2836,44 @@ class mainLib {
 		->setTimestamp()
 		->send();
 	}
+	public function getGMDFile($levelID) {
+		require __DIR__."/connection.php";
+		if(!is_numeric($levelID)) return false;
+		$level = $db->prepare('SELECT * FROM levels WHERE levelID = :levelID');
+		$level->execute([':levelID' => $levelID]);
+		$level = $level->fetch();
+		if(!$level) return false;
+		$levelString = file_get_contents(__DIR__.'/../../data/levels/'.$levelID) ?? $level['levelString'];
+		$gmdFile = '<?xml version="1.0"?><plist version="1.0" gjver="2.0"><dict>';
+		
+		$gmdFile .= '<k>k1</k><i>'.$levelID.'</i>';
+		$gmdFile .= '<k>k2</k><s>'.$level['levelName'].'</s>';
+		$gmdFile .= '<k>k3</k><s>'.$level['levelDesc'].'</s>';
+		$gmdFile .= '<k>k4</k><s>'.$levelString.'</s>';
+		$gmdFile .= '<k>k5</k><s>'.$level['userName'].'</s>';
+		$gmdFile .= '<k>k6</k><i>'.$level['userID'].'</i>';
+		$gmdFile .= '<k>k8</k><i>'.$level['audioTrack'].'</i>';
+		$gmdFile .= '<k>k11</k><i>'.$level['downloads'].'</i>';
+		$gmdFile .= '<k>k13</k><t />';
+		$gmdFile .= '<k>k16</k><i>'.$level['levelVersion'].'</i>';
+		$gmdFile .= '<k>k21</k><i>2</i>';
+		$gmdFile .= '<k>k23</k><i>'.$level['levelLength'].'</i>';
+		$gmdFile .= '<k>k42</k><i>'.$level['levelID'].'</i>';
+		$gmdFile .= '<k>k45</k><i>'.$level['songID'].'</i>';
+		$gmdFile .= '<k>k47</k><t />';
+		$gmdFile .= '<k>k48</k><i>'.$level['objects'].'</i>';
+		$gmdFile .= '<k>k50</k><i>'.$level['binaryVersion'].'</i>';
+		$gmdFile .= '<k>k87</k><i>'.(1482 * 0 + 3991 * 8354 * (4085 ** 2) - 50028039).'</i>';
+		$gmdFile .= '<k>k101</k><i>0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0</i>';
+		$gmdFile .= '<k>kl1</k><i>0</i>';
+		$gmdFile .= '<k>kl2</k><i>0</i>';
+		$gmdFile .= '<k>kl3</k><i>1</i>';
+		$gmdFile .= '<k>kl5</k><i>1</i>';
+		$gmdFile .= '<k>kl6</k><k>kI6</k><d><k>0</k><s>0</s><k>0</k><s>0</s><k>0</k><s>0</s><k>0</k><s>0</s><k>0</k><s>0</s><k>0</k><s>0</s><k>0</k><s>0</s><k>0</k><s>0</s><k>0</k><s>0</s><k>0</k><s>0</s><k>0</k><s>0</s><k>0</k><s>0</s><k>0</k><s>0</s><k>0</k><s>0</s></d>';
+		
+		$gmdFile .= '</dict></plist>';
+		return $gmdFile;
+	}
   	public function mail($mail = '', $user = '', $isForgotPass = false) {
 		if(empty($mail) OR empty($user)) return;
 		require __DIR__."/../../config/mail.php";
