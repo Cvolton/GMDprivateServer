@@ -39,11 +39,11 @@ class mainLib {
 			"Embers by Dex Arson",
 			"Round 1 by Dex Arson",
 			"Monster Dance Off by F-777",
- 		    "Press Start by MDK",
-   		    "Nock Em by Bossfight",
-  		    "Power Trip by Boom Kitty"];
-		if($id < 0 || $id >= count($songs))
-			return "Unknown by DJVI";
+ 		        "Press Start by MDK",
+   		        "Nock Em by Bossfight",
+  		        "Power Trip by Boom Kitty"];
+	        if ($id === -1) return "Practice: Stay Inside Me by OcularNebula";
+                if ($id < 0 || $id >= count($songs)) return "Unknown by DJVI";
 		return $songs[$id];
 	}
 	public function getDifficulty($diff, $auto, $demon, $demonDiff = 1) {
