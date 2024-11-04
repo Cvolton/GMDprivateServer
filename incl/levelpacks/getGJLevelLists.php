@@ -115,6 +115,8 @@ switch($type){
 		$params[] = "lists.accountID IN ($whereor)";
 		break;
 	case 7: // MAGIC
+	       	$order = "likes";
+		break;
 	case 27: // SENT
 		$params[] = "suggest.suggestLevelId < 0";
 		$order = "suggest.timestamp";
