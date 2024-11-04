@@ -380,7 +380,7 @@ class mainLib {
 			$artistsArray = explode('.', $song['artists']);
 			if(count($artistsArray) > 0) {
 				foreach($artistsArray AS &$artistID) {
-					$artistData = $gs->getLibrarySongAuthorInfo($artistID);
+					$artistData = $this->getLibrarySongAuthorInfo($artistID);
 					if(!$artistData) continue;
 					$artistsNames[] = $artistID;
 					$artistsNames[] = $artistData['name'];
