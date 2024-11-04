@@ -12,6 +12,7 @@ $query->execute([':current' => $current, ':type' => $type]);
 if($query->rowCount() == 0) exit("-1");
 $dailyID = $query->fetchColumn();
 if($type == 1) $dailyID += 100001;
+elseif($type == 2) $dailyID += 200001;
 //Time left
 $timeleft = $midnight - $current;
 //output

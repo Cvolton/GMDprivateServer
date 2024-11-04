@@ -48,8 +48,7 @@ if(!is_numeric($levelID)){
 			$result = $query->fetch();
 			$levelID = $result["levelID"];
 			$feaID = $result["feaID"];
-			//The feaID range for event levels on real GD is currently unknown, as there haven't been any yet. As such, offsetting this is to be implemented in the future
-			//$feaID = $feaID + 100001;
+			$feaID = $feaID + 200001;
 			$daily = 1;
 			break;
 		default:
