@@ -10,11 +10,17 @@ require "../".$dbPath."incl/lib/exploitPatch.php";
 $dl->title($dl->getLocalizedString("suggestLevels"));
 $dl->printFooter('../');
 $modcheck = $gs->checkPermission($_SESSION["accountID"], "dashboardModTools");
-if($modcheck) {
-if(isset($_GET["page"]) AND is_numeric($_GET["page"]) AND $_GET["page"] > 0){
+if(!$modcheck) die($dl->printSong('<div class="form">
+    <h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
+    <form class="form__inner" method="post" action=".">
+		<p>'.$dl->getLocalizedString("noPermission").'</p>
+	        <button type="button" onclick="a(\'\', true, false, \'GET\')" class="btn-primary">'.$dl->getLocalizedString("Kish!").'</button>
+    </form>
+</div>', 'mod'));
+if(isset($_GET["page"]) AND is_numeric($_GET["page"]) AND $_GET["page"] > 0) {
 	$page = ($_GET["page"] - 1) * 10;
 	$actualpage = $_GET["page"];
-}else{
+} else {
 	$page = 0;
 	$actualpage = 1;
 }
@@ -35,7 +41,7 @@ if(empty($result)) {
 </div>', 'mod');
 	die();
 } 
-foreach($result as &$action){
+foreach($result as &$action) {
 	$suggestid = $action["suggestLevelId"];
 	$suggestby =  $gs->getAccountName($action["suggestBy"]);
 	$stars = $action["suggestStars"];
@@ -48,7 +54,7 @@ foreach($result as &$action){
 	$level->execute([':id' => $action["suggestLevelId"]]);
 	$level = $level->fetch();
 	if(!empty($level)) $levels = $dl->generateLevelsCard($level, $modcheck);
-	 else $levels = '<div class=" form-control new-form-control dmbox list" style="margin: 0px"><div class="messenger"><p>'.$dl->getLocalizedString("deletedLevel").'</p></div></div>';
+	 else $levels = '<div class="form-control new-form-control dmbox list" style="margin: 0px"><div class="messenger"><p>'.$dl->getLocalizedString("deletedLevel").'</p></div></div>';
 	$suggested .= '<div style="width: 100%;display: flex;flex-wrap: wrap;justify-content: center;">
 			<div class="profile">
 			<div>
@@ -80,11 +86,4 @@ $packcount = $query->fetchColumn();
 $pagecount = ceil($packcount / 10);
 $bottomrow = $dl->generateBottomRow($pagecount, $actualpage);
 $dl->printPage($pagel.$bottomrow, true, "mod");
-} else $dl->printSong('<div class="form">
-    <h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
-    <form class="form__inner" method="post" action=".">
-		<p>'.$dl->getLocalizedString("noPermission").'</p>
-	        <button type="button" onclick="a(\'\', true, false, \'GET\')" class="btn-primary">'.$dl->getLocalizedString("Kish!").'</button>
-    </form>
-</div>', 'mod');
 ?>

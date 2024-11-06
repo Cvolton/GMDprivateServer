@@ -162,6 +162,7 @@ $unlistedLevelsForAdmins = false;
 
 /*
 	Show rated levels in sent tab
+	
 	This setting will show rated levels in sent tab
 	
 	True - Show rated levels in sent tab
@@ -169,4 +170,16 @@ $unlistedLevelsForAdmins = false;
 */
 
 $ratedLevelsInSent = false;
+
+/*
+	Show moderators list in-game
+	
+	This setting replaces global leaderboard with moderators list
+	https://github.com/MegaSa1nt/GMDprivateServer/issues/181
+	
+	True - Replace global leaderboard with moderators list
+	False - Keep global leaderboard
+*/
+
+$moderatorsListInGlobal = false;
 ?>

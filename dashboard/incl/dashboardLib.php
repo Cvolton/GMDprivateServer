@@ -118,7 +118,7 @@ class dashboardLib {
         global $iosLauncher;
 		global $thirdParty;
       	global $dbPath;
-      	global $dashboardIcon;
+		global $dashboardIcon;
 		require_once __DIR__."/../".$dbPath."incl/lib/Captcha.php";
 		require __DIR__."/../".$dbPath."config/security.php";
 		require __DIR__."/../".$dbPath."config/mail.php";
@@ -243,7 +243,7 @@ class dashboardLib {
 </script>
 						</div>
 					</li>';
-			if($gs->checkPermission($_SESSION["accountID"], "dashboardModTools")){
+			if($gs->checkPermission($_SESSION["accountID"], "dashboardModTools")) {
 				echo '<li class="nav-item dropdown '.$modActive.'">
 						<a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 							<i class="fa-solid fa-wrench" aria-hidden="true"></i> '.$this->getLocalizedString("modTools").'
@@ -251,13 +251,17 @@ class dashboardLib {
 						<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
 							<a type="button" href="account/banPerson.php" onclick="a(\'account/banPerson.php\')"class="dropdown-item"><div class="icon"><i class="fa-solid fa-gavel"></i></div>'.$this->getLocalizedString("leaderboardBan").'</a>
 							<a type="button" href="stats/banList.php" onclick="a(\'stats/banList.php\')"class="dropdown-item"><i class="fa-solid fa-gavel" style="position: absolute;font-size: 10px;margin: 0px 5px 5px -7px;" aria-hidden="false"></i><div class="icon"><i class="fa-solid fa-list"></i></div>'.$this->getLocalizedString("banList").'</a>';
-							if($gs->checkPermission($_SESSION["accountID"], "dashboardLevelPackCreate")) echo '<a type="button" href="levels/packCreate.php" onclick="a(\'levels/packCreate.php\')"class="dropdown-item"><i class="fa-solid fa-plus" style="position: absolute;font-size: 10px;margin: 0px 5px 5px -7px;" aria-hidden="false"></i><div class="icon"><i class="fa-regular fa-folder-open" style="margin-left: 2px;" aria-hidden="false"></i></div>'.$this->getLocalizedString("packManage").'</a>';
-							if($gs->checkPermission($_SESSION["accountID"], "dashboardGauntletCreate")) echo '<a type="button" href="levels/gauntletCreate.php" onclick="a(\'levels/gauntletCreate.php\')"class="dropdown-item"><i class="fa-solid fa-plus" style="position: absolute;font-size: 10px;margin: 0px 5px 5px -7px;" aria-hidden="false"></i><div class="icon"><i class="fa-solid fa-globe" aria-hidden="false"></i></div>'.$this->getLocalizedString("gauntletManage").'</a>';
 							echo '<a type="button" href="stats/unlistedMod.php" onclick="a(\'stats/unlistedMod.php\')"class="dropdown-item"><i class="fa-solid fa-eye-slash" style="position: absolute;font-size: 10px;margin: 0px 5px 5px -7px;" aria-hidden="false"></i><div class="icon"><i class="fa-solid fa-list-ul" aria-hidden="false"></i></div>'.$this->getLocalizedString("unlistedMod").'</a>
 							<a type="button" href="stats/suggestList.php" onclick="a(\'stats/suggestList.php\')"class="dropdown-item"><i class="fa-solid fa-user" style="position: absolute;font-size: 10px;margin: 0px 5px 5px -7px;" aria-hidden="false"></i><div class="icon"><i class="fa-solid fa-list" aria-hidden="false"></i></div>'.$this->getLocalizedString("suggestLevels").'</a>
 							<a type="button" href="stats/listsTableMod.php" onclick="a(\'stats/listsTableMod.php\')"class="dropdown-item"><div class="icon"><i class="fa-solid fa-list-ul" aria-hidden="false"></i></div>'.$this->getLocalizedString("listTableMod").'</a>';
-							if($gs->checkPermission($_SESSION["accountID"], "toolQuestsCreate")) echo '<a type="button" href="stats/addQuests.php" onclick="a(\'stats/addQuests.php\')"class="dropdown-item"><i class="fa-solid fa-plus" style="position: absolute;font-size: 10px;margin: 0px 5px 5px -7px;" aria-hidden="false"></i><div class="icon"><i class="fa-solid fa-list-ol" aria-hidden="false"></i></div>'.$this->getLocalizedString("addQuest").'</a>';
 							echo '<a type="button" href="stats/reportMod.php" onclick="a(\'stats/reportMod.php\')"class="dropdown-item"><div class="icon"><i class="fa-solid fa-exclamation" aria-hidden="false"></i></div>'.$this->getLocalizedString("reportMod").'</a>';
+							if($gs->checkPermission($_SESSION["accountID"], "dashboardLevelPackCreate")) echo '<a type="button" href="levels/packCreate.php" onclick="a(\'levels/packCreate.php\')"class="dropdown-item"><i class="fa-solid fa-plus" style="position: absolute;font-size: 10px;margin: 0px 5px 5px -7px;" aria-hidden="false"></i><div class="icon"><i class="fa-regular fa-folder-open" style="margin-left: 2px;" aria-hidden="false"></i></div>'.$this->getLocalizedString("packManage").'</a>';
+							if($gs->checkPermission($_SESSION["accountID"], "dashboardGauntletCreate")) echo '<a type="button" href="levels/gauntletCreate.php" onclick="a(\'levels/gauntletCreate.php\')"class="dropdown-item"><i class="fa-solid fa-plus" style="position: absolute;font-size: 10px;margin: 0px 5px 5px -7px;" aria-hidden="false"></i><div class="icon"><i class="fa-solid fa-globe" aria-hidden="false"></i></div>'.$this->getLocalizedString("gauntletManage").'</a>';
+							if($gs->checkPermission($_SESSION["accountID"], "dashboardManageSongs")) {
+								echo '<a type="button" href="stats/disabledSongsList.php" onclick="a(\'stats/disabledSongsList.php\')"class="dropdown-item"><i class="fa-solid fa-xmark" style="position: absolute;font-size: 10px;margin: 0px 5px 5px -7px;" aria-hidden="false"></i><div class="icon"><i class="fa-solid fa-music" aria-hidden="false"></i></div>'.$this->getLocalizedString("disabledSongs").'</a>';
+								echo '<a type="button" href="stats/disabledSFXsList.php" onclick="a(\'stats/disabledSFXsList.php\')"class="dropdown-item"><i class="fa-solid fa-xmark" style="position: absolute;font-size: 10px;margin: 0px 5px 5px -7px;" aria-hidden="false"></i><div class="icon"><i class="fa-solid fa-drum" aria-hidden="false"></i></div>'.$this->getLocalizedString("disabledSFXs").'</a>';
+							}
+							if($gs->checkPermission($_SESSION["accountID"], "toolQuestsCreate")) echo '<a type="button" href="stats/addQuests.php" onclick="a(\'stats/addQuests.php\')"class="dropdown-item"><i class="fa-solid fa-plus" style="position: absolute;font-size: 10px;margin: 0px 5px 5px -7px;" aria-hidden="false"></i><div class="icon"><i class="fa-solid fa-list-ol" aria-hidden="false"></i></div>'.$this->getLocalizedString("addQuest").'</a>';
 							if($gs->checkPermission($_SESSION["accountID"], "dashboardAddMod")) echo '<a type="button" href="account/addMod.php" onclick="a(\'account/addMod.php\')"class="dropdown-item"><i class="fa-solid fa-plus" style="position: absolute;font-size: 10px;margin: 0px 5px 5px -7px;" aria-hidden="false"></i><div class="icon"><i class="fa-solid fa-id-badge" aria-hidden="false"></i></div>'.$this->getLocalizedString("addMod").'</a>';
 							if($gs->checkPermission($_SESSION["accountID"], "commandSharecpAll")) echo '<a type="button" href="levels/shareCP.php" onclick="a(\'levels/shareCP.php\')"class="dropdown-item"><div class="icon"><i class="fa-solid fa-share" aria-hidden="false"></i></div>'.$this->getLocalizedString("shareCPTitle").'</a>';
 							if($gs->checkPermission($_SESSION["accountID"], "dashboardForceChangePassNick")) echo '<a type="button" href="account/forceChange.php" onclick="a(\'account/forceChange.php\')"class="dropdown-item"><div class="icon"><i class="fa-solid fa-pen-to-square" aria-hidden="false"></i></i></div>'.$this->getLocalizedString("changePassOrNick").'   </a>';
@@ -284,13 +288,10 @@ class dashboardLib {
 				<ul class="nav navbar-nav ml-auto">';
 					if($msgEnabled == 1 AND isset($_SESSION["accountID"]) AND $_SESSION["accountID"] != 0) { 
                         $new = '';
-						$msg = $db->prepare("SELECT isNew FROM messages WHERE toAccountID=:acc AND isNew=0");
-                        $msg->execute([':acc' => $_SESSION["accountID"]]);
-                        $msg = $msg->fetchAll();
-                        if(count($msg) != 0) {
-							$_SESSION["msgNew"] = 1;
-                            $new = '<i class="fa-solid fa-circle" id="notify" aria-hidden="true" style="font-size: 10px;margin-left: -5;margin-right: 3px;color: #e35151;"></i></div>';
-						} else $new = '';
+						$newMessagesCount = $db->prepare("SELECT * FROM messages WHERE toAccountID = :acc AND isNew = 0 GROUP BY accID");
+                        $newMessagesCount->execute([':acc' => $_SESSION["accountID"]]);
+                        $newMessagesCount = count($newMessagesCount->fetchAll());
+                        if($newMessagesCount > 0) $new = '<span class="new-messages-notify smaller">'.$newMessagesCount.'</span>';
 						echo '<li class="nav-item dropdown">
 						<div style="display:flex"><a type="button" href="messenger" style="background: none;border: none;" onclick="a(\'messenger\')"class="nav-link '.$msgActive.'" id="navbarDropdownMenuLink">
 						<i class="fa-solid fa-comments" aria-hidden="true"></i> '.$this->getLocalizedString("messenger").'</a>'.$new;
@@ -306,7 +307,7 @@ class dashboardLib {
 							<a class="dropdown-item dontblock" href="lang/switchLang.php?lang=TR" title="Translated by EMREOYUN"><div class="icon flag"><img class="imgflag" src="incl/flags/tr.png?2"></div>Türkçe</a>
                             <a class="dropdown-item dontblock" href="lang/switchLang.php?lang=UA" title="Translated by Jamichi"><div class="icon flag"><img class="imgflag" src="incl/flags/ua.png?2"></div>Українська</a>
                             <a class="dropdown-item dontblock" href="lang/switchLang.php?lang=FR" title="Translated by masckmaster2007 and M336"><div class="icon flag"><img class="imgflag" src="incl/flags/fr.png?2"></div>Français</a>
-							<a class="dropdown-item dontblock" href="lang/switchLang.php?lang=ES" title="Translated by Nejik"><div class="icon flag"><img class="imgflag" src="incl/flags/es.png?2"></div>Español</a>
+                            <a class="dropdown-item dontblock" href="lang/switchLang.php?lang=ES" title="Translated by Nejik"><div class="icon flag"><img class="imgflag" src="incl/flags/es.png?2"></div>Español</a>
 							<a class="dropdown-item dontblock" href="lang/switchLang.php?lang=PT" title="Translated by OmgRod"><div class="icon flag"><img class="imgflag" src="incl/flags/pt.png?2"></div>Português</a>
 							<a class="dropdown-item dontblock" href="lang/switchLang.php?lang=CZ" title="Translated by Matto58"><div class="icon flag"><img class="imgflag" src="incl/flags/cz.png?2"></div>Čeština</a>
 							<a class="dropdown-item dontblock" href="lang/switchLang.php?lang=IT" title="Translated by Fenix668"><div class="icon flag"><img class="imgflag" src="incl/flags/it.png?2"></div>Italiano</a>
@@ -937,6 +938,93 @@ class dashboardLib {
 			levelIcon.classList = "fa-solid fa-download";
 		})
 	}
+	function renameSong(id, isSFX) {
+		nfd = new FormData(document.getElementsByName("songrename" + id)[0]);
+		ren = new XMLHttpRequest();
+		ren.open("POST", "stats/renameSong.php", true);
+		ren.onload = function () {
+			r = JSON.parse(ren.response);
+			if(r.success) {
+				if(isSFX) document.getElementById("songname"+id).innerHTML = nfd.get("name");
+				else document.getElementById("songname"+id).innerHTML = nfd.get("author") + " — " + nfd.get("name");
+			}
+		}
+		ren.send(nfd);
+	}
+	function likeSong(id) {
+		likebtn = document.getElementById("like" + id);
+		if(likebtn.value == 1) {
+			document.getElementById("likeicon" + id).classList.add("fa-regular");
+			document.getElementById("likeicon" + id).classList.remove("fa-solid");
+			likebtn.value = 0;
+			likebtn.title = "'.$this->getLocalizedString("likeSong").'";
+		} else {
+			document.getElementById("likeicon" + id).classList.remove("fa-regular");
+			document.getElementById("likeicon" + id).classList.add("fa-solid");
+			likebtn.value = 1;
+			likebtn.title = "'.$this->getLocalizedString("dislikeSong").'";
+		}
+		fav = new XMLHttpRequest();
+		fav.open("GET", "stats/favourite.php?id=" + id, true);
+		fav.onload = function () {
+			if(fav.response == "-1") {
+				if(likebtn.value == 1) {
+					document.getElementById("likeicon" + id).classList.add("fa-regular");
+					document.getElementById("likeicon" + id).classList.remove("fa-solid");
+					likebtn.value = 0;
+					likebtn.title = "'.$this->getLocalizedString("likeSong").'";
+				} else {
+					document.getElementById("likeicon" + id).classList.remove("fa-regular");
+					document.getElementById("likeicon" + id).classList.add("fa-solid");
+					likebtn.value = 1;
+					likebtn.title = "'.$this->getLocalizedString("dislikeSong").'";
+				}
+			}
+		}
+		fav.send();
+	}
+	function deleteSong(id, isSFX) {
+		del = new XMLHttpRequest();
+		if(isSFX) addSFX = "&sfx";
+		else addSFX = "";
+		del.open("GET", "stats/deleteSong.php?ID=" + id + addSFX, true);
+		del.onload = function () {
+			dl = JSON.parse(del.response);
+			if(dl.success) document.getElementById("songCard" + id).remove()
+		}
+		del.send();
+	}
+	function disableSong(id, isSFX) {
+		del = new XMLHttpRequest();
+		if(isSFX) addSFX = "&sfx";
+		else addSFX = "";
+		del.open("GET", "stats/deleteSong.php?ID=" + id + "&disable" + addSFX, true);
+		del.onload = function () {
+			dl = JSON.parse(del.response);
+			if(dl.success) {
+				disableIconDiv = document.getElementById("songDisableIcon" + id);
+				disableButtonDiv = document.getElementById("songDisableButton" + id);
+				disableTextDiv = document.getElementById("songDisableText" + id);
+				isDisabled = disableButtonDiv.innerHTML == "'.$this->getLocalizedString('enable').'";
+				if(isDisabled) {
+					if(disableIconDiv != null && disableTextDiv != null) {
+						disableIconDiv.classList.remove("fa-xmark");
+						disableIconDiv.classList.add("fa-check");
+						disableTextDiv.innerHTML = "'.$this->getLocalizedString('songIsAvailable').'";
+					}
+					disableButtonDiv.innerHTML = "'.$this->getLocalizedString('disable').'";
+				} else {
+					if(disableIconDiv != null && disableTextDiv != null) {
+						disableIconDiv.classList.remove("fa-check");
+						disableIconDiv.classList.add("fa-xmark");
+						disableTextDiv.innerHTML = "'.$this->getLocalizedString('songIsDisabled').'";
+					}
+					disableButtonDiv.innerHTML = "'.$this->getLocalizedString('enable').'";
+				}
+			}
+		}
+		del.send();
+	}
 	window.addEventListener("popstate", function(e) { 
 		a(e.target.location.href, true, true, "GET", false, "", true);
 	}, false);
@@ -958,7 +1046,6 @@ class dashboardLib {
 			else setcookie("lang", "EN", 2147483647, "/");
 		}
 		if(!isset($_SESSION["accountID"])) $_SESSION["accountID"] = 0;
-        if(!isset($_SESSION["msgNew"])) $_SESSION["msgNew"] = 0;
 	}
 	public function hex2RGB($hexStr, $returnAsString = false, $seperator = ',') {
 		$hexStr = preg_replace("/[^0-9A-Fa-f]/", '', $hexStr);
@@ -1023,16 +1110,16 @@ class dashboardLib {
 		if($action["songID"] > 0) {
 			$songlol = $gs->getSongInfo($action["songID"]);
 			$songArtists = $gs->getLibrarySongInfo($action["songID"])["artists"];
-                $artistIDs = preg_split('/\./', $songArtists);
-                $artistIDs = array_filter($artistIDs);
-                $artistIDsString = implode(', ', $artistIDs);
-                $authorNames = [];
-                foreach ($artistIDs as $id) {
-                    $authorInfo = $gs->getLibrarySongAuthorInfo($id);
-                    $authorNames[] = $authorInfo["name"];
-                }
-                $artistNames = implode(', ', $authorNames);
-                        $btn = '<button type="button" name="btnsng" id="btn'.$action["songID"].'" title="'.($artistNames ? $songlol["authorName"].', '.$artistNames : $songlol["authorName"]).' — '.$songlol["name"].'" style="display: contents;color: white;margin: 0;" download="'.str_replace('http://', 'https://', $songlol["download"]).'" onclick="btnsong(\''.$action["songID"].'\');"><div class="icon songbtnpic"><i id="icon'.$action["songID"].'" name="iconlol" class="fa-solid fa-play" aria-hidden="false"></i></div></button>';
+            $artistIDs = preg_split('/\./', $songArtists);
+            $artistIDs = array_filter($artistIDs);
+            $artistIDsString = implode(', ', $artistIDs);
+            $authorNames = [$songlol["authorName"]];
+            foreach($artistIDs as $id) {
+                $authorInfo = $gs->getLibrarySongAuthorInfo($id);
+                $authorNames[] = $authorInfo["name"];
+            }
+            $artistNames = implode(', ', $authorNames);
+            $btn = '<button type="button" name="btnsng" id="btn'.$action["songID"].'" title="'.($artistNames ? $artistNames : $songlol["authorName"]).' — '.$songlol["name"].'" style="display: contents;color: white;margin: 0;" download="'.str_replace('http://', 'https://', $songlol["download"]).'" onclick="btnsong(\''.$action["songID"].'\');"><div class="icon songbtnpic"><i id="icon'.$action["songID"].'" name="iconlol" class="fa-solid fa-play" aria-hidden="false"></i></div></button>';
 			$songid = '<div class="profilepic songpic">'.$btn.'<div class="songfullname"><div class="songauthor">'.($artistNames ? $songlol["authorName"].', '.$artistNames : $songlol["authorName"]).'</div><div class="songname">'.$songlol["name"].'</div></div></div>';
 		} else $songid = '<p class="profilepic"><i class="fa-solid fa-music"></i> '.strstr($gs->getAudioTrack($action["audioTrack"]), ' by ', true).'</p>';
 		$username =  '<form style="margin:0" method="post" action="./profile/"><button type="button" onclick="a(\'profile/'.$action["userName"].'\', true, true, \'POST\')" style="margin:0" class="accbtn" name="accountID">'.$action["userName"].'</button></form>';
@@ -1243,13 +1330,124 @@ class dashboardLib {
 					$check->execute([':levelID' => $element]);
 					$check = $check->fetchColumn();
 					if($check) {
-						$body = str_replace('#'.$element, '<span class="messenger-link" onclick="a(\'stats/levelsList.php?search='.$check.'\', true, true, \'GET\')">#'.$check.'</span>', $body);
+						$body = str_replace('#'.$element, '<span class="messenger-link" onclick="a(\'stats/levelsList.php?search='.$check.'\', true, true, \'GET\')">#'.htmlspecialchars($check).'</span>', $body);
 						$levelsFound[$element] = true;
 					}
 					break;					
 			}
 		}
 		return $body;
+	}
+	public function generateSongCard($song, $extraLabels = '', $includeAuthor = true) {
+		global $dbPath;
+		require __DIR__."/../".$dbPath."incl/lib/connection.php";
+		require_once __DIR__."/../".$dbPath."incl/lib/mainLib.php";
+		$gs = new mainLib();
+		$fontsize = 27;
+		$modCheck = $gs->checkPermission($_SESSION["accountID"], "dashboardManageSongs");
+		$check = $modCheck ?: ($_SESSION['accountID'] != 0 && $_SESSION['accountID'] == $song['reuploadID']);
+		$songsid = $song["ID"];
+		$songIDlol = '<button id="copy'.$song["ID"].'" class="accbtn songidyeah" onclick="copysong('.$song["ID"].')">'.$song["ID"].'</button>';
+		$time = $this->convertToDate($song["reuploadTime"], true);
+		$who = '<button type="button" onclick="a(\'profile/'.$gs->getAccountName($song['reuploadID']).'\', true, true, \'POST\')" style="margin:0;font-size:20px" class="accbtn songacc" name="accountID" value="'.$song["reuploadID"].'">'.$gs->getAccountName($song['reuploadID']).'</button>';
+		$author = htmlspecialchars(ExploitPatch::rucharclean($song["authorName"]));
+		$name = htmlspecialchars(ExploitPatch::rucharclean($song["name"]));
+		$size = $song["size"];
+		$download = str_replace('http://', 'https://', $song["download"]);
+		if($_SESSION["accountID"] != 0) {
+			$favourites = $db->prepare("SELECT * FROM favsongs WHERE songID = :id AND accountID = :aid");
+			$favourites->execute([':id' => $songsid, ':aid' => $_SESSION["accountID"]]);
+			$favourites = $favourites->fetch();
+			if(!empty($favourites)) $favs = '<button title="'.$this->getLocalizedString("dislikeSong").'" id="like'.$songsid.'" value="1" style="display:contents;cursor:pointer" onclick="likeSong('.$songsid.')"><i id="likeicon'.$songsid.'" class="fa-solid fa-heart" style="font-size: 25px;color:#ff5c5c"></i></button>'; 
+			else $favs = '<button title="'.$this->getLocalizedString("likeSong").'" id="like'.$songsid.'" onclick="likeSong('.$songsid.')" value="0" style="display:contents;cursor:pointer"><i id="likeicon'.$songsid.'" class="fa-regular fa-heart" style="font-size: 25px;color:#ff5c5c"></i></button>';
+		}
+		if($song["reuploadID"] == 0) {
+			$time = "<div style='color:gray'>Newgrounds</div>";
+			$who = "<a style='color:#a7a7ff;font-size: 20px;' class='songacc' target='_blank' href='https://".$author.".newgrounds.com/audio';>".$author."</a>";
+			$btn = '<button type="button" title="'.$songsid.'.mp3" style="display: contents;color: #ffb1ab;margin: 0;"><div class="icon" style="font-size:13px; height:25px;width:25px;background:#373A3F;margin-left: 5px;"><i class="fa-solid fa-xmark" aria-hidden="false"></i></div></button>';
+		} else $btn = '<button type="button" name="btnsng" id="btn'.$songsid.'" title="'.$author.' - '.$name.'" style="display: contents;color: white;margin: 0;" download="'.$download.'" onclick="btnsong(\''.$songsid.'\');"><div class="icon" style="font-size:13px; height:25px;width:25px;background:#373A3F;margin-left: 5px;"><i id="icon'.$songsid.'" name="iconlol" class="fa-solid fa-play" aria-hidden="false"></i></div></button>';
+		$isDisabled = $song['isDisabled'] != 0;
+		if($check) $manage = '<a style="margin-left:5px;width:max-content;color:white;padding:8px;font-size:13px" class="btn-rendel" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa-solid fa-pencil"></i></a><div onclick="event.stopPropagation()" class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink"  style="padding: 17px 17px 0px;top: 0px;left: 0px;position: absolute;transform: translate3d(971px, 200px, 0px);will-change: transform;">
+				 <form class="form__inner" method="post" name="songrename'.$songsid.'" style="grid-gap: 10px;">
+					<div class="field" style="display:none"><input type="hidden" name="ID" value="'.$songsid.'"></div>
+					<div class="field" style="display:none"><input type="hidden" name="page" value="'.$actualpage.'"></div>
+					<div class="field"><input type="text" name="author" id="p1" value="'.$author.'" placeholder="'.$author.'"></div>
+					<div class="field"><input type="text" name="name" id="p2" value="'.$name.'" placeholder="'.$name.'"></div>
+					<button type="button" class="btn-song" id="submit" onclick="renameSong('.$songsid.')">'.$this->getLocalizedString("change").'</button>
+					'.($modCheck ? 
+						($isDisabled ? '<button id="songDisableButton'.$song['ID'].'" style="width: 85%" type="button" class="btn-song" onclick="disableSong('.$sfxsid.', true)">'.$this->getLocalizedString("enable").'</button>'
+						: '<button id="songDisableButton'.$song['ID'].'" style="width: 85%" type="button" class="btn-song" onclick="disableSong('.$sfxsid.', true)">'.$this->getLocalizedString("disable").'</button>')
+					: '').'
+					<button style="width: 70%" type="button" class="btn-song btn-size" onclick="deleteSong('.$songsid.')">'.$this->getLocalizedString("delete").'</button>
+				</form>
+			</div>';
+		if(mb_strlen($author) + mb_strlen($name) > 30) $fontsize = 17;
+		elseif(mb_strlen($author) + mb_strlen($name) > 20) $fontsize = 20;
+		$songSize = '<p class="profilepic"><i class="fa-solid fa-weight-hanging"></i> '.$song["size"].' MB</p>';
+		if($includeAuthor) $who = '<p class="profilepic" style="display: inline-flex;justify-content: center;grid-gap: 7px;"><i class="fa-solid fa-user-plus"></i> '.$who.'</p>';
+		else {
+			$isDisabledText = !$isDisabled ? $this->getLocalizedString('songIsAvailable') : $this->getLocalizedString('songIsDisabled');
+			$isDisabledIcon = !$isDisabled ? 'check' : 'xmark';
+			$who = '<p class="profilepic" style="display: inline-flex;justify-content: center;grid-gap: 7px;"><i id="songDisableIcon'.$song['ID'].'" class="fa-solid fa-'.$isDisabledIcon.'"></i> <span id="songDisableText'.$song['ID'].'">'.$isDisabledText.'</span></p>';
+		}
+		$stats = $songSize.$who.$extraLabels;
+		return '<div id="songCard'.$song['ID'].'" style="width: 100%;display: flex;flex-wrap: wrap;justify-content: center;">
+				<div class="profile"><div style="display: flex;width: 100%;justify-content: space-between;margin-bottom: 7px;align-items: center;"><div style="display: flex;width: 100%; justify-content: space-between;align-items: center;">
+					<h2 style="margin: 0px;font-size: '.$fontsize.'px;margin-left:5px;display: flex;align-items: center;" class="profilenick"><text id="songname'.$songsid.'">'.$author.' — '.$name.'</text>'.$btn.'</h2>'.$favs.$manage.'
+				</div></div>
+				<div class="form-control song-info" style="display: flex;width: 100%;height: max-content;align-items: center;">'.$stats.'</div>
+				<div style="display: flex;justify-content: space-between;margin-top: 10px;"><h3 id="comments" class="songidyeah" style="margin: 0px;width: max-content;align-items: center;">'.$this->getLocalizedString("songIDw").': <b>'.$songIDlol.'</b></h3><h3 id="comments" class="songidyeah"  style="justify-content: flex-end;grid-gap: 0.5vh;margin: 0px;width: max-content;">'.$this->getLocalizedString("date").': <b>'.$time.'</b></h3></div>
+			</div></div>';
+	}
+	public function generateSFXCard($sfx, $extraLabels = '', $includeAuthor = true) {
+		global $dbPath;
+		require __DIR__."/../".$dbPath."incl/lib/connection.php";
+		require_once __DIR__."/../".$dbPath."incl/lib/mainLib.php";
+		$gs = new mainLib();
+		$fontsize = 27;
+		$modCheck = $gs->checkPermission($_SESSION["accountID"], "dashboardManageSongs");
+		$check = $modCheck ?: ($_SESSION['accountID'] != 0 && $_SESSION['accountID'] == $song['reuploadID']);
+		$sfxsid = $sfx["ID"];
+		$songIDlol = '<button id="copy'.$sfx["ID"].'" class="accbtn songidyeah" onclick="copysong('.$sfx["ID"].')">'.$sfx["ID"].'</button>';
+		$time = $this->convertToDate($sfx["reuploadTime"], true);
+		$who = '<button type="button" onclick="a(\'profile/'.$gs->getAccountName($sfx['reuploadID']).'\', true, true, \'POST\')" style="margin:0;font-size:20px" class="accbtn songacc" name="accountID" value="'.$sfx["reuploadID"].'">'.$gs->getAccountName($sfx['reuploadID']).'</button>';
+		$author = htmlspecialchars($sfx["authorName"]);
+		$name = htmlspecialchars($sfx["name"]);
+		$size = round($sfx["size"] / 1024 / 1024, 2);
+		$download = str_replace('http://', 'https://', $sfx["download"]);
+		$btn = '<button type="button" name="btnsng" id="btn'.$sfxsid.'" title="'.$author.' — '.$name.'" style="display: contents;color: white;margin: 0;" download="'.$download.'" onclick="btnsong(\''.$sfxsid.'\');"><div class="icon" style="font-size:13px; height:25px;width:25px;background:#373A3F;margin-left: 5px;"><i id="icon'.$sfxsid.'" name="iconlol" class="fa-solid fa-play" aria-hidden="false"></i></div></button>';
+		$isDisabled = $sfx['isDisabled'] != 0;
+		if($check) $manage = '<a style="margin-left:5px;width:max-content;color:white;padding:8px;font-size:13px" class="btn-rendel" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa-solid fa-pencil"></i></a><div onclick="event.stopPropagation()" class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink"  style="padding: 17px 17px 0px;top: 0px;left: 0px;position: absolute;transform: translate3d(971px, 200px, 0px);will-change: transform;">
+				 <form class="form__inner" method="post" name="songrename'.$sfxsid.'" style="grid-gap: 10px;">
+					<div class="field" style="display:none"><input type="hidden" name="ID" value="'.$sfxsid.'"></div>
+					<div class="field" style="display:none"><input type="hidden" name="page" value="'.$actualpage.'"></div>
+					<div class="field"><input type="text" name="name" id="p2" value="'.$name.'" placeholder="'.$name.'"></div>
+					<input type="hidden" name="sfx" value="1"></input>
+					<button type="button" class="btn-song" id="submit" onclick="renameSong('.$sfxsid.', true)">'.$this->getLocalizedString("change").'</button>
+					'.($modCheck ? 
+						($isDisabled ? '<button id="songDisableButton'.$sfx['ID'].'" style="width: 85%" type="button" class="btn-song" onclick="disableSong('.$sfxsid.', true)">'.$this->getLocalizedString("enable").'</button>'
+						: '<button id="songDisableButton'.$sfx['ID'].'" style="width: 85%" type="button" class="btn-song" onclick="disableSong('.$sfxsid.', true)">'.$this->getLocalizedString("disable").'</button>')
+					: '').'
+					<button style="width: 70%" type="button" class="btn-song btn-size" onclick="deleteSong('.$sfxsid.', true)">'.$this->getLocalizedString("delete").'</button>
+				</form>
+			</div>';
+		if(mb_strlen($name) > 30) $fontsize = 17;
+		elseif(mb_strlen($name) > 20) $fontsize = 20;
+		$songSize = '<p class="profilepic"><i class="fa-solid fa-weight-hanging"></i> '.$size.' MB</p>';
+		if($includeAuthor) $who = '<p class="profilepic" style="display: inline-flex;justify-content: center;grid-gap: 7px;"><i class="fa-solid fa-user-plus"></i> '.$who.'</p>';
+		else {
+			$isDisabledText = !$isDisabled ? $this->getLocalizedString('songIsAvailable') : $this->getLocalizedString('songIsDisabled');
+			$isDisabledIcon = !$isDisabled ? 'check' : 'xmark';
+			$who = '<p class="profilepic" style="display: inline-flex;justify-content: center;grid-gap: 7px;"><i id="songDisableIcon'.$sfx['ID'].'" class="fa-solid fa-'.$isDisabledIcon.'"></i> <span id="songDisableText'.$sfx['ID'].'">'.$isDisabledText.'</span></p>';
+		}
+		$stats = $songSize.$who.$extraLabels;
+		return '<div id="songCard'.$sfx['ID'].'" style="width: 100%;display: flex;flex-wrap: wrap;justify-content: center;">
+			<div class="profile"><div style="display: flex;width: 100%;justify-content: space-between;margin-bottom: 7px;align-items: center;"><div style="display: flex;width: 100%; justify-content: space-between;align-items: center;">
+				<h2 style="margin: 0px;font-size: '.$fontsize.'px;margin-left:5px;display: flex;align-items: center;" class="profilenick"><text id="songname'.$sfxsid.'">'.$name.'</text>'.$btn.'</h2>'.$favs.$manage.'
+			</div></div>
+			<div class="form-control song-info" style="display: flex;width: 100%;height: max-content;align-items: center;">'.$stats.'</div>
+			<div style="display: flex;justify-content: space-between;margin-top: 10px;"><h3 id="comments" class="songidyeah" style="margin: 0px;width: max-content;align-items: center;">'.$this->getLocalizedString("sfxID").': <b>'.$songIDlol.'</b></h3><h3 id="comments" class="songidyeah"  style="justify-content: flex-end;grid-gap: 0.5vh;margin: 0px;width: max-content;">'.$this->getLocalizedString("date").': <b>'.$time.'</b></h3></div>
+		</div></div>';
 	}
 	public function generateBottomRow($pagecount, $actualpage) {
 		$pageminus = $actualpage - 1;

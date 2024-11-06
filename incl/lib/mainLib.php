@@ -862,7 +862,7 @@ class mainLib {
 			}
 			$freeID = false;
 			while(!$freeID) {
-				$db_fid = rand(99, 9999999);
+				$db_fid = rand(99, 7999999);
 				$checkID = $db->prepare('SELECT count(*) FROM songs WHERE ID = :id'); // If randomized ID picks existing song ID
 				$checkID->execute([':id' => $db_fid]);
 				if($checkID->fetchColumn() == 0) $freeID = true;

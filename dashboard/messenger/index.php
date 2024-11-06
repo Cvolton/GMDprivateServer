@@ -119,19 +119,22 @@ if($_POST['receiver'] != 0 && ExploitPatch::number($_POST['receiver']) != $_SESS
         else $div = 'notyou';
 		$subject = htmlspecialchars(ExploitPatch::url_base64_decode($messages["subject"]));
 		$body = $dl->parseMessage(htmlspecialchars($xor->plaintext(ExploitPatch::url_base64_decode($messages["body"]), 14251)));
+		$receiverMessagesButton = '';
+		if($div == 'notyou') $receiverMessagesButton = '<button class="btn-circle" onclick="replyToMessage('.$messages['messageID'].')"><i class="fa-solid fa-reply"></i></button>';
 		$chatMessages .= '<div class="message '.$div.'">
 			<div class="messenger'.$div.'">
-				<h2 class="subject'.$div.'">'.$subject.'</h2>
+				<h2 id="messageSubject'.$messages['messageID'].'" class="subject'.$div.'">'.$subject.'</h2>
 				<h3 class="message'.$div.'">'.$body.'</h3>
 				<h3 id="comments" style="justify-content:flex-end">'.$dl->convertToDate($messages["timestamp"], true).'</h3>
 			</div>
+			'.$receiverMessagesButton.'
 		</div>';
 	}
 	if(empty($chatMessages)) $chatMessages = '<div class="empty-section">
 		<i class="fa-solid fa-comment"></i>
 		<p>'.$dl->getLocalizedString('noMsgs').'</p>
 	</div>';
-	$readAllMessages = $db->prepare("UPDATE messages SET isNew=1 WHERE accID = :receiver AND toAccountID = :accountID");
+	$readAllMessages = $db->prepare("UPDATE messages SET isNew = 1 WHERE accID = :receiver AND toAccountID = :accountID AND isNew = 0");
 	$readAllMessages->execute([':receiver' => $receiver, ':accountID' => $_SESSION['accountID']]);
 	$chatBox = '<div class="messenger-username">
         <button type="button" onclick="a(\'profile/'.$receiverUsername.'\', true, true, \'GET\')" class="goback" name="accountID" value="'.$receiver.'"><i class="fa-regular fa-user" aria-hidden="true"></i></button>
@@ -166,6 +169,12 @@ if($_POST['receiver'] != 0 && ExploitPatch::number($_POST['receiver']) != $_SESS
 				btn.classList.add("btn-primary");
 			}
 		});
+		function replyToMessage(messageID) {
+			messageSubject = document.getElementById("messageSubject" + messageID).innerHTML;
+			if(!messageSubject.startsWith("Re:")) messageSubject = "Re: " + messageSubject;
+			document.getElementById("chatSubject").value = messageSubject;
+			document.getElementById("chatBody").focus();
+		}
 		'.(!empty($alertScript) ? 'alert("'.$alertScript.'");' : '').'';
 }
 $query = $db->prepare("SELECT * FROM messages, (SELECT max(messageID) messageIDs, (CASE WHEN accID = :accountID THEN toAccountID ELSE accID END) receiverID FROM messages WHERE accID = :accountID OR toAccountID = :accountID GROUP BY receiverID ORDER BY timestamp DESC) messageIDs WHERE messageID = messageIDs ORDER BY timestamp DESC");
@@ -206,7 +215,13 @@ foreach($result AS &$chat) {
 	$newMessage = $db->prepare("SELECT min(isNew) newMessage, count(*) messageCount FROM messages WHERE accID = :receiver AND toAccountID = :accountID");
     $newMessage->execute([':receiver' => $receiver, ':accountID' => $_SESSION['accountID']]);	
     $newMessage = $newMessage->fetch();
-	$newMessages = $newMessage['newMessage'] == 0 && $newMessage['messageCount'] > 0 ? '<i class="fa fa-circle" aria-hidden="true" style="font-size: 10px;margin-left:5px;color: #e35151;"></i>' : '';
+	$newMessages = '';
+	if($newMessage['newMessage'] == 0 && $newMessage['messageCount'] > 0) {
+		$newMessagesCount = $db->prepare('SELECT count(*) FROM messages WHERE accID = :receiver AND toAccountID = :accountID AND isNew = 0');
+		$newMessagesCount->execute([':receiver' => $receiver, ':accountID' => $_SESSION['accountID']]);	
+		$newMessagesCount = $newMessagesCount->fetchColumn();
+		$newMessages = '<span class="new-messages-notify">'.$newMessagesCount.'</span>';
+	}
 	$allChats .= '<button type="submit" onclick="a(\'messenger/'.$username.'\', true, true, \'POST\', false, \'messengerReceiver'.$receiver.'\')" class="btn-primary itembtn'.(isset($_POST['receiver']) && $_POST['receiver'] == $receiver ? ' chat-opened" id="chat-opened-all"' : '"').'>
 		<h2 class="subjectnotyou accounts-badge-icon-div">'.$avatarImg.$username.$badgeImg.$newMessages.'</h2>
 		<h2 class="messagenotyou chat" style="font-size: 15px;color: #c0c0c0;">'.$body.'</h2>
@@ -273,7 +288,6 @@ $dl->printSong('<div class="form-control itemsbox chatdiv" style="width: 75%;">
 	'.$pageScript.'
 	allChatsEmpty = '.($allChatsEmpty ? 'true' : 'false').';
 	friendsChatsEmpty = '.($friendsChatsEmpty ? 'true' : 'false').';
-	console.log(window.currentMessengerTab);
 	if(typeof window.currentMessengerTab == "undefined") window.currentMessengerTab = "chats";
 	else if(window.currentMessengerTab == "friends") {
 		window.currentMessengerTab = "chats";

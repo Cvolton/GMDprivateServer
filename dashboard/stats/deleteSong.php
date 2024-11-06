@@ -2,24 +2,36 @@
 session_start();
 require "../incl/dashboardLib.php";
 require "../".$dbPath."incl/lib/connection.php";
-require "../".$dbPath."incl/lib/connection.php";
-require "../".$dbPath."incl/lib/exploitPatch.php";
+require_once "../".$dbPath."incl/lib/mainLib.php";
+require_once "../".$dbPath."incl/lib/exploitPatch.php";
+$gs = new mainLib();
 $accID = $_SESSION["accountID"];
 $songid = ExploitPatch::remove($_GET["ID"]);
 $type = 'songs';
-if(isset($_GET['sfx'])) $type = 'sfxs';
-if($accID == 0) die(json_encode(['success' => false, 'error' => 0]));
+$format = 'mp3';
+if(isset($_GET['sfx'])) {
+	$type = 'sfxs';
+	$format = 'ogg';
+}
+if($accID == 0) die(json_encode(['success' => false, 'error' => '0']));
 else {
-	if($songid == 0) die(json_encode(['success' => false, 'error' => -1]));
-	$query = $db->prepare("SELECT count(*) FROM ".$type." WHERE reuploadID = :id AND ID = :sid");
-	$query->execute([':id' => $accID, ':sid' => $songid]);
-	$rowCount = $query->fetchColumn();
-	if($rowCount == 0) die(json_encode(['success' => false, 'error' => -2]));
+	if($songid == 0) die(json_encode(['success' => false, 'error' => '-1']));
+	$query = $db->prepare("SELECT reuploadID, isDisabled FROM ".$type." WHERE ID = :sid");
+	$query->execute([':sid' => $songid]);
+	$song = $query->fetch();
+	if(!$song) die(json_encode(['success' => false, 'error' => '-2']));
 	else {
-		$query = $db->prepare("DELETE FROM ".$type." WHERE reuploadID = :id AND ID = :sid");
-		$query->execute([':id' => $accID, ':sid' => $songid]);
-		if($type == 'songs') if(file_exists("../songs/".$songid.".mp3")) unlink("../songs/".$songid.".mp3");
-		else if(file_exists("../sfxs/".$songid.".ogg")) unlink("../sfxs/".$songid.".ogg");
+		$check = $gs->checkPermission($accID, "dashboardManageSongs") ?: $accID == $song['reuploadID'];
+		if(!$check) die(json_encode(['success' => false, 'error' => '-3']));
+		if(!isset($_GET['disable'])) {
+			$query = $db->prepare("DELETE FROM ".$type." WHERE ID = :sid");
+			$query->execute([':sid' => $songid]);
+			if(file_exists("../".$type."/".$songid.".".$format)) unlink("../".$type."/".$songid.".".$format);
+			if(file_exists("../".$type."/".$songid."_temp.".$format)) unlink("../".$type."/".$songid."_temp.".$format);
+		} else {
+			$query = $db->prepare("UPDATE ".$type." SET isDisabled = :isDisabled WHERE ID = :sid");
+			$query->execute([':sid' => $songid, ':isDisabled' => ($song['isDisabled'] == 0 ? 1 : 0)]);
+		}
 		die(json_encode(['success' => true]));
 	}
 }

@@ -479,6 +479,11 @@ $string['noWarnings'] = 'No warnings';
 
 $string['downloadLevelAsGMD'] = 'Save as .gmd';
 
+$string['songIsAvailable'] = 'Available';
+$string['songIsDisabled'] = 'Not available';
+$string['disabledSongs'] = 'Disabled songs';
+$string['disabledSFXs'] = 'Disabled SFXs';
+
 /*
 	REUPLOAD
 */

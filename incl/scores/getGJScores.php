@@ -20,8 +20,8 @@ if(!empty($_POST["accountID"])) {
 	if(is_numeric($accountID)) exit("-1");
 }
 
-$type = ExploitPatch::remove($_POST["type"]);
-if($type == "top" OR $type == "creators" OR $type == "relative"){
+$type = ExploitPatch::charclean($_POST["type"]);
+if($type == "top" OR $type == "creators" OR $type == "relative") {
 	if($type == "top") {
 		$bans = $gs->getAllBansOfBanType(0);
 		$extIDs = $userIDs = $bannedIPs = [];
@@ -77,75 +77,80 @@ if($type == "top" OR $type == "creators" OR $type == "relative"){
 		$query->execute();
 	}
 	if($type == "relative") {
-		$bans = $gs->getAllBansOfBanType(0);
-		$extIDs = $userIDs = $bannedIPs = [];
-		foreach($bans AS &$ban) {
-			switch($ban['personType']) {
-				case 0:
-					$extIDs[] = $ban['person'];
-					break;
-				case 1:
-					$userIDs[] = $ban['person'];
-					break;
-				case 2:
-					$bannedIPs[] = $gs->IPForBan($ban['person'], true);
-					break;
+		if(!$moderatorsListInGlobal) {
+			$bans = $gs->getAllBansOfBanType(0);
+			$extIDs = $userIDs = $bannedIPs = [];
+			foreach($bans AS &$ban) {
+				switch($ban['personType']) {
+					case 0:
+						$extIDs[] = $ban['person'];
+						break;
+					case 1:
+						$userIDs[] = $ban['person'];
+						break;
+					case 2:
+						$bannedIPs[] = $gs->IPForBan($ban['person'], true);
+						break;
+				}
 			}
-		}
-		$extIDsString = "'".implode("','", $extIDs)."'";
-		$userIDsString = "'".implode("','", $userIDs)."'";
-		$bannedIPsString = implode("|", $bannedIPs);
-		$queryArray = [];
-		if($extIDsString != '') $queryArray[] = "extID NOT IN (".$extIDsString.")";
-		if($userIDsString != '') $queryArray[] = "userID NOT IN (".$userIDsString.")";
-		if(!empty($bannedIPsString)) $queryArray[] = "IP NOT REGEXP '".$bannedIPsString."'";
-		$queryText = !empty($queryArray) ? 'AND ('.implode(' AND ', $queryArray).')' : '';
-		$query = "SELECT * FROM users WHERE extID = :accountID";
-		$query = $db->prepare($query);
-		$query->execute([':accountID' => $accountID]);
-		$result = $query->fetchAll();
-		$user = $result[0];
-		$stars = $user["stars"];
-		if($_POST["count"]) $count = ExploitPatch::remove($_POST["count"]);
-		else $count = 50;
-		$count = floor($count / 2);
-		$query = $db->prepare("SELECT	A.* FROM	(
-			(
-				SELECT	*	FROM users
-				WHERE stars <= :stars
-				".$queryText."
-				ORDER BY stars + moons DESC
-				LIMIT $count
-			)
-			UNION
-			(
-				SELECT * FROM users
-				WHERE stars >= :stars
-				".$queryText."
-				ORDER BY stars + moons ASC
-				LIMIT $count
-			)
-		) as A
-		ORDER BY A.stars DESC");
+			$extIDsString = "'".implode("','", $extIDs)."'";
+			$userIDsString = "'".implode("','", $userIDs)."'";
+			$bannedIPsString = implode("|", $bannedIPs);
+			$queryArray = [];
+			if($extIDsString != '') $queryArray[] = "extID NOT IN (".$extIDsString.")";
+			if($userIDsString != '') $queryArray[] = "userID NOT IN (".$userIDsString.")";
+			if(!empty($bannedIPsString)) $queryArray[] = "IP NOT REGEXP '".$bannedIPsString."'";
+			$queryText = !empty($queryArray) ? 'AND ('.implode(' AND ', $queryArray).')' : '';
+			$query = "SELECT * FROM users WHERE extID = :accountID";
+			$query = $db->prepare($query);
+			$query->execute([':accountID' => $accountID]);
+			$user = $query->fetch();
+			$stars = $user["stars"];
+			$count = $_POST["count"] ? ExploitPatch::number($_POST["count"]) : 50;
+			$count = floor($count / 2);
+			$query = $db->prepare("SELECT A.* FROM (
+				(
+					SELECT * FROM users
+					WHERE stars <= :stars
+					".$queryText."
+					ORDER BY stars + moons DESC
+					LIMIT $count
+				)
+				UNION
+				(
+					SELECT * FROM users
+					WHERE stars >= :stars
+					".$queryText."
+					ORDER BY stars + moons ASC
+					LIMIT $count
+				)
+			) as A
+			ORDER BY A.stars DESC");
 		$query->execute([':stars' => $stars]);
+		} else {
+			$query = $db->prepare("SELECT * FROM users INNER JOIN roleassign ON users.extID = roleassign.accountID ORDER BY users.userName ASC");
+			$query ->execute();
+		}
 	}
 	$result = $query->fetchAll();
 	if($type == "relative") {
-		$user = $result[0];
-		$extid = $user["extID"];
-		$e = "SET @rownum := 0;";
-		$query = $db->prepare($e);
-		$query->execute();
-		$queryText = trim($queryText) != 'AND' ? 'WHERE '.substr($queryText, 4) : '';
-		$f = "SELECT rank, stars FROM (
-							SELECT @rownum := @rownum + 1 AS rank, stars, extID
-							FROM users ".$queryText." ORDER BY stars + moons DESC
-							) as result WHERE extID=:extid";
-		$query = $db->prepare($f);
-		$query->execute([':extid' => $extid]);
-		$leaderboard = $query->fetchAll();
-		$leaderboard = $leaderboard[0];
-		$xi = $leaderboard["rank"] - 1;
+		if(!$moderatorsListInGlobal) {
+			$user = $result[0];
+			$extid = $user["extID"];
+			$e = "SET @rownum := 0;";
+			$query = $db->prepare($e);
+			$query->execute();
+			$queryText = trim($queryText) != 'AND' ? 'WHERE '.substr($queryText, 4) : '';
+			$f = "SELECT rank, stars FROM (
+								SELECT @rownum := @rownum + 1 AS rank, stars, extID
+								FROM users ".$queryText." ORDER BY stars + moons DESC
+								) as result WHERE extID = :extid";
+			$query = $db->prepare($f);
+			$query->execute([':extid' => $extid]);
+			$leaderboard = $query->fetchAll();
+			$leaderboard = $leaderboard[0];
+			$xi = $leaderboard["rank"] - 1;
+		} else $lbstring = '1:---Moderators---:2:0:13:0:17:0:6:0:9:0:10:0:11:0:51:0:14:0:15:0:16:0:3:0:8:0:4:0:7:0:46:0:52:0|';
 	}
 	foreach($result as &$user) {
 		$xi++;
@@ -155,17 +160,14 @@ if($type == "top" OR $type == "creators" OR $type == "relative"){
 		else $lbstring .= "1:".$user["userName"].":2:".$user["userID"].":13:".$user["coins"].":17:".$user["userCoins"].":6:".$xi.":9:".$user["icon"].":10:".$user["color1"].":11:".$user["color2"].":51:".$user["color3"].":14:".$user["iconType"].":15:".$user["special"].":16:".$extid.":3:".$user["stars"].":8:".round($user["creatorPoints"],0,PHP_ROUND_HALF_DOWN).":4:".$user["demons"].":7:".$extid.":46:".$user["diamonds"].":52:".$user["moons"]."|";
 	}
 }
-if($type == "friends"){
+if($type == "friends") {
 	$query = "SELECT * FROM friendships WHERE person1 = :accountID OR person2 = :accountID";
 	$query = $db->prepare($query);
 	$query->execute([':accountID' => $accountID]);
 	$result = $query->fetchAll();
 	$people = "";
-	foreach ($result as &$friendship) {
-		$person = $friendship["person1"];
-		if($friendship["person1"] == $accountID){
-			$person = $friendship["person2"];
-		}
+	foreach($result as &$friendship) {
+		$person = $friendship["person2"] == $accountID ? $friendship["person1"] : $friendship["person2"];
 		$people .= ",".$person;
 	}
 	$query = "SELECT * FROM users WHERE extID IN (:accountID $people ) ORDER BY stars DESC";
@@ -180,9 +182,6 @@ if($type == "friends"){
 		else $lbstring .= "1:".$user["userName"].":2:".$user["userID"].":13:".$user["coins"].":17:".$user["userCoins"].":6:".$xi.":9:".$user["icon"].":10:".$user["color1"].":11:".$user["color2"].":51:".$user["color3"].":14:".$user["iconType"].":15:".$user["special"].":16:".$extid.":3:".$user["stars"].":8:".round($user["creatorPoints"],0,PHP_ROUND_HALF_DOWN).":4:".$user["demons"].":7:".$extid.":46:".$user["diamonds"].":52:".$user["moons"]."|";
 	}
 }
-if($lbstring == ""){
-	exit("-1");
-}
-$lbstring = substr($lbstring, 0, -1);
-echo $lbstring;
+if($lbstring == "") exit("-1");
+echo substr($lbstring, 0, -1);
 ?>

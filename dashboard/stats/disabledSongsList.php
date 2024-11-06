@@ -6,26 +6,34 @@ require_once "../".$dbPath."incl/lib/mainLib.php";
 require_once "../".$dbPath."incl/lib/exploitPatch.php";
 $gs = new mainLib();
 $dl = new dashboardLib();
-$dl->title($dl->getLocalizedString("manageSFX"));
+$dl->title($dl->getLocalizedString("disabledSongs"));
 $dl->printFooter('../');
-if(isset($_SESSION["accountID"]) AND $_SESSION["accountID"] != 0){
-if(isset($_GET["page"]) AND is_numeric($_GET["page"]) AND $_GET["page"] > 0){
+if(!$gs->checkPermission($_SESSION["accountID"], "dashboardManageSongs")) $dl->printSong('<div class="form">
+    <h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
+    <form class="form__inner" method="post" action=".">
+		<p>'.$dl->getLocalizedString("noPermission").'</p>
+	        <button type="button" onclick="a(\'\', true, false, \'GET\')" class="btn-primary">'.$dl->getLocalizedString("Kish!").'</button>
+    </form>
+</div>', 'mod');
+if(isset($_GET["page"]) AND is_numeric($_GET["page"]) AND $_GET["page"] > 0) {
 	$page = ($_GET["page"] - 1) * 10;
 	$actualpage = $_GET["page"];
-}else{
+} else {
 	$page = 0;
 	$actualpage = 1;
 }
 $pagelol = explode("/", $_SERVER["REQUEST_URI"]);
 $pagelol = $pagelol[count($pagelol)-2]."/".$pagelol[count($pagelol)-1];
 $pagelol = explode("?", $pagelol)[0];
-$accountID = $_SESSION["accountID"];
 if(!isset($_GET["search"])) $_GET["search"] = "";
-$srcbtn = "";
+if(!isset($_GET["type"])) $_GET["type"] = "";
+if(!isset($_GET["ng"])) $_GET["ng"] = "";
+$srcbtn = $favs = $meta = "";
+$ngw = $_GET["ng"] == 1 ? '' : 'AND reuploadID > 0';
 if(!empty(trim(ExploitPatch::rucharclean($_GET["search"])))) {
 	$q = is_numeric(trim(ExploitPatch::rucharclean($_GET["search"]))) ? "ID LIKE '%".trim(ExploitPatch::rucharclean($_GET["search"]))."%'" : "(name LIKE '%".trim(ExploitPatch::rucharclean($_GET["search"]))."%' OR authorName LIKE '%".trim(ExploitPatch::rucharclean($_GET["search"]))."%')";
 	$srcbtn = '<button type="button" onclick="a(\''.$pagelol.'\', true, true, \'GET\')"  href="'.$_SERVER["SCRIPT_NAME"].'" style="width: 0%;display: flex;margin-left: 5px;align-items: center;justify-content: center;color: indianred; text-decoration:none" class="btn-primary" title="'.$dl->getLocalizedString("searchCancel").'"><i class="fa-solid fa-xmark"></i></button>';
-	$query = $db->prepare("SELECT * FROM sfxs WHERE reuploadID = $accountID AND $q ORDER BY reuploadTime DESC LIMIT 10 OFFSET $page");
+	$query = $db->prepare("SELECT * FROM songs WHERE isDisabled != 0 AND $q $ngw ORDER BY reuploadTime DESC LIMIT 10 OFFSET $page");
 	$query->execute();
 	$result = $query->fetchAll();
 	if(empty($result)) {
@@ -33,17 +41,17 @@ if(!empty(trim(ExploitPatch::rucharclean($_GET["search"])))) {
 		<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 		<form class="form__inner" method="post" action="'.$_SERVER["SCRIPT_NAME"].'">
 			<p>'.$dl->getLocalizedString("emptySearch").'</p>
-			<button type="button" onclick="a(\'stats/manageSFX.php\', true, false, \'GET\')" class="btn-primary">'.$dl->getLocalizedString("tryAgainBTN").'</button>
+			<button type="button" onclick="a(\'stats/songList.php\', true, false, \'GET\')" class="btn-primary">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 		</form>
-	</div>', "account");
+	</div>');
 		die();
 	} 
 } else {
-	$query = $db->prepare("SELECT * FROM sfxs WHERE reuploadID = $accountID ORDER BY reuploadTime DESC LIMIT 10 OFFSET $page");
+	$query = $db->prepare("SELECT * FROM songs WHERE isDisabled != 0 $ngw ORDER BY reuploadTime DESC LIMIT 10 OFFSET $page");
 	$query->execute();
 	$result = $query->fetchAll();
 }
-$x = $page + 1;
+$x = 0;
 if(empty($result)) {
 	$dl->printSong('<div class="form">
     <h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
@@ -51,12 +59,12 @@ if(empty($result)) {
 		<p>'.$dl->getLocalizedString("emptyPage").'</p>
         <button type="button" onclick="a(\'\', true, false, \'GET\')" class="btn-primary">'.$dl->getLocalizedString("dashboard").'</button>
     </form>
-</div>', 'account');
+</div>', 'browse');
 	die();
 } 
-foreach($result as &$action) $songs .= $dl->generateSFXCard($action, '', false);
+foreach($result as &$action) $songs .= $dl->generateSongCard($action);
 $pagel = '<div class="form new-form">
-<h1 style="margin-bottom:5px">'.$dl->getLocalizedString("manageSFX").'</h1>
+<h1 style="margin-bottom:5px">'.$dl->getLocalizedString("disabledSongs").'</h1>
 <div class="form-control new-form-control songs">
 		'.$songs.'
 	</div></div><form name="searchform" class="form__inner">
@@ -66,20 +74,11 @@ $pagel = '<div class="form new-form">
 		'.$srcbtn.'
 	</div>
 </form>';
-if(!empty(trim(ExploitPatch::rucharclean($_GET["search"])))) $query = $db->prepare("SELECT count(*) FROM sfxs WHERE reuploadID=:id AND $q");
-else $query = $db->prepare("SELECT count(*) FROM sfxs WHERE reuploadID=:id");
-$query->execute([':id' => $accountID]);
+if(!empty(trim($_GET["search"]))) $query = $db->prepare("SELECT count(*) FROM songs WHERE isDisabled != 0 AND $q $ngw");
+else $query = $db->prepare("SELECT count(*) FROM songs WHERE isDisabled != 0 $ngw");
+$query->execute();
 $packcount = $query->fetchColumn();
 $pagecount = ceil($packcount / 10);
 $bottomrow = $dl->generateBottomRow($pagecount, $actualpage);
-$dl->printPage($pagel . $bottomrow, true, "account");
-} else {
-	$dl->printSong('<div class="form">
-    <h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
-    <form class="form__inner" method="post" action="./login/login.php">
-	<p>'.$dl->getLocalizedString("noLogin?").'</p>
-	        <button type="button" onclick="a(\'login/login.php\', true, false, \'GET\')" class="btn-primary">'.$dl->getLocalizedString("LoginBtn").'</button>
-    </form>
-</div>', 'account');
-}
+$dl->printPage($pagel . $bottomrow, true, "browse");
 ?>

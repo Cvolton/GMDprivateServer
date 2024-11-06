@@ -2503,3 +2503,13 @@ body:has(.audio) {
     margin-left: -5px;
     color: gray;
 }
+
+.song-info {
+	flex-wrap: wrap !important;
+	justify-content: space-evenly !important;
+	border-radius: 20px;
+}
+
+.song-info .profilepic {
+	width: max-content;
+}

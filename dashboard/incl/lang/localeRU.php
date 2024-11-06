@@ -480,6 +480,11 @@ $string['noWarnings'] = 'Предупреждений нет';
 
 $string['downloadLevelAsGMD'] = 'Сохранить как .gmd';
 
+$string['songIsAvailable'] = 'Доступна';
+$string['songIsDisabled'] = 'Недоступна';
+$string['disabledSongs'] = 'Недоступные песни';
+$string['disabledSFXs'] = 'Недоступные звуковые эффекты';
+
 /*
 	REUPLOAD
 */
