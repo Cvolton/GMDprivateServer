@@ -4,9 +4,6 @@ include __DIR__."/../../".$dbPath."config/dashboard.php";
 
 $string["homeNavbar"] = "Trang Chủ";
 $string["welcome"] = "Chào mừng đến với ".$gdps.'!';
-$string["didntInstall"] = "<div style='color:#47a0ff'><b>Cảnh báo!</b> Bạn chưa cài đặt đầy đủ trang chủ! Bấm vào văn bản để làm nó ngay.</div>";
-$string["levelsWeek"] = "Những cấp độ được tải lên trong mỗi tuần";
-$string["levels3Months"] = "Những cấp độ được tải lên trong mỗi 3 tháng";
 $string["footer"] = $gdps.", ".date('Y', time());
 $string["tipsAfterInstalling"] = "Chào mừng đến với Bảng Điều Khiển! Chúng tôi cung cấp cho bạn một số gợi ý sau khi cài đặt:<br>
 1. Có vẻ như các quyền mới đã xuất hiện trong SQL trong bảng 'roles'! Bạn nên kiểm tra nó...<br>
@@ -231,9 +228,6 @@ $string["shareCP"] = "Chia sẻ";
 $string["alreadyShared"] = "Cấp độ này đã chia sẻ Điểm Sáng Tạo cho người chơi này!";
 $string["shareToAuthor"] = "Bạn đã cố gắng chia sẻ Điểm Sáng Tạo cho tác giả cấp độ!";
 $string["userIsBanned"] = "Người chơi này đã bị cấm!";
-$string["shareCPSuccess"] = "Bạn đã chia sẻ thành công Điểm Sáng Tạo của cấp độ";
-$string["shareCPSuccess2"] = "cho người chơi";
-$string["updateCron"] = "Có thể bạn nên cập nhật Điểm Sáng Tạo.";
 $string["shareCPOneMore"] = "Chia sẻ thêm một lần nữa?";
 $string['shareCPSuccessNew'] = 'Bạn đã chia sẻ thành công Điểm Sáng Tạo của cấp độ <b>%1$s</b> cho người chơi <b>%2$s</b>!';
 
@@ -256,51 +250,12 @@ $string["search"] = "Tìm kiếm...";
 $string["searchCancel"] = "Hủy tìm kiếm";
 $string["emptySearch"] = "Không tìm thấy gì!";
 
-$string["demonlist"] = 'Danh sách Demon';
-$string["demonlistRecord"] = 'Kỷ lục của <b>%s</b>';
-$string["alreadyApproved"] = 'Đã được chấp thuận!';
-$string["alreadyDenied"] = 'Đã bị từ chối!';
-$string["approveSuccess"] = 'Bạn đã chấp thuận thành công kỷ lục của <b>%s</b>!';
-$string["denySuccess"] = 'Bạn đã từ chối thành công kỷ lục của <b>%s</b>!';
-$string["recordParameters"] = '<b>%s</b> đã đánh bại <b>%s</b> trong <b>%d</b> lần thử';
 $string["approve"] = 'Chấp thuận';
 $string["deny"] = 'Từ chối';
-$string["submitRecord"] = 'Gửi kỷ lục';
-$string["submitRecordForLevel"] = 'Gửi kỷ lục cho <b>%s</b>';
-$string["alreadySubmitted"] = 'Bạn đã gửi một kỷ lục cho <b>%s</b>!';
-$string["submitSuccess"] = 'Bạn đã gửi thành công một kỷ lục cho <b>%s</b>!';
-$string["submitRecordDesc"] = 'Chỉ gửi kỷ lục nếu bạn đã đánh bại cấp độ!';
-$string["atts"] = 'Lần thử';
-$string["ytlink"] = 'ID video YouTube (dQw4w9WgXcQ)';
 $string["submit"] = 'Gửi';
-$string["addDemonTitle"] = 'Thêm demon';
-$string["addDemon"] = 'Thêm demon vào danh sách demon';
-$string["addedDemon"] = 'Bạn đã thêm <b>%s</b> vào vị trí <b>%d</b>!';
-$string["addDemonDesc"] = 'Ở đây bạn có thể thêm một demon vào danh sách demon!';
 $string["place"] = 'Vị trí';
-$string["giveablePoints"] = 'Điểm có thể cho';
 $string["add"] = 'Thêm';
-$string["recordApproved"] = 'Kỷ lục đã được chấp thuận!';
-$string["recordDenied"] = 'Kỷ lục đã bị từ chối!';
-$string["recordSubmitted"] = 'Kỷ lục đã được gửi!';
-$string["nooneBeat"] = 'không ai đã đánh bại'; //let it be lowercase
-$string["oneBeat"] = '1 người chơi đã đánh bại'; 
-$string["lower5Beat"] = '%d người chơi đã đánh bại'; // russian syntax, sorry
-$string["above5Beat"] = '%d người chơi đã đánh bại'; 
 $string["demonlistLevel"] = '%s <text class="dltext">bởi <button type="button" onclick="a(\'profile/%3$s\', true, true)" style="font-size:25px" class="accbtn" name="accountID" value="%d">%s</button></text>';
-$string["noDemons"] = 'Có vẻ như danh sách demon của bạn không có demon nào...';
-$string["addSomeDemons"] = 'Thêm một số demon để làm đầy danh sách demon!';
-$string["askForDemons"] = 'Yêu cầu quản trị viên máy chủ thêm một số demon!';
-$string["recordList"] = 'Danh sách kỷ lục';
-$string["status"] = 'Trạng thái';
-$string["checkRecord"] = 'Kiểm tra kỷ lục';
-$string["record"] = 'Kỷ lục';
-$string["recordDeleted"] = 'Kỷ lục đã bị xóa!';
-$string["changeDemon"] = 'Thay đổi demon';
-$string["demonDeleted"] = 'Demon đã bị xóa!';
-$string["changedDemon"] = 'Bạn đã thay thế <b>%s</b> vào vị trí <b>%d</b>!';
-$string["changeDemonDesc"] = 'Ở đây bạn có thể thay đổi một demon!<br>
-Nếu bạn muốn xóa demon, đặt vị trí là 0.';
 
 $string["didntActivatedEmail"] = 'Bạn chưa kích hoạt tài khoản của mình qua email!';
 $string["checkMail"] = 'Bạn nên kiểm tra email của mình...';
@@ -486,7 +441,6 @@ $string["songAddButton"] = "Chọn nhạc";
 $string["songAddAnotherBTN"] = "Thêm một bản nhạc nữa?";
 $string["songAdded"] = "Nhạc đã được thêm!";
 $string["deletedSong"] = "Bạn đã xóa nhạc thành công!";
-$string["renamedSong"] = "Bạn đã đổi tên nhạc thành";
 $string["songID"] = "ID Nhạc: ";
 $string["songIDw"] = "ID Nhạc";
 $string["songAuthor"] = "Tác giả";
@@ -570,7 +524,7 @@ $string["rate"] = "Đánh giá";
 $string["stats"] = "Thống kê";
 $string["suggestFeatured"] = "Đề xuất nổi bật?";
 $string["whoAdded"] = "Ai đã thêm?";
-//modActionsList
+
 $string["banDesc"] = "Ở đây bạn có thể cấm (hoặc bỏ cấm) một người chơi khỏi bảng xếp hạng!";
 $string["playerTop"] = 'Top người chơi';
 $string["creatorTop"] = 'Top người tạo';
@@ -579,29 +533,13 @@ $string["successfullyBanned"] = 'Người chơi <b>%1$s</b> với ID tài khoả
 $string["successfullyUnbanned"] = 'Người chơi <b>%1$s</b> với ID tài khoản <b>%2$s</b> đã được bỏ cấm thành công!';
 $string["commentBan"] = 'Bình luận';
 
-$string["admin"] = "Quản trị viên";
-$string["elder"] = "Người kiểm duyệt cấp cao";
-$string["moder"] = "Người kiểm duyệt";
 $string["player"] = "Người chơi";
 
 $string["starsLevel2"] = "sao";
 $string["starsLevel1"] = "sao";
 $string["starsLevel0"] = "sao";
-$string["coins2"] = "xu";
 $string["coins1"] = "xu";
 $string["coins0"] = "xu";
-$string["time0"] = "lần";
-$string["time1"] = "lần";
-$string["times"] = "lần";
-$string["action0"] = "hành động";
-$string["action1"] = "hành động";
-$string["action2"] = "hành động";
-$string["lvl0"] = "cấp độ";
-$string["lvl1"] = "cấp độ";
-$string["lvl2"] = "cấp độ";
-$string["player0"] = "người chơi";
-$string["player1"] = "người chơi";
-$string["player2"] = "người chơi";
 $string["unban"] = "Bỏ cấm";
 $string["isBan"] = "Cấm";
 
@@ -672,5 +610,3 @@ $string["noLogin?"] = "Bạn chưa đăng nhập vào tài khoản của mình!"
 $string["LoginBtn"] = "Đăng nhập vào tài khoản";
 $string["dashboard"] = "Bảng điều khiển";
 $string["userID"] = 'ID Người dùng';
-//errors
-$string["errorNoAccWithPerm"] = "Lỗi: Không tìm thấy tài khoản nào có quyền '%s'";

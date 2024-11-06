@@ -6,9 +6,6 @@ include __DIR__."/../../".$dbPath."config/dashboard.php";
 
 $string["homeNavbar"] = "Casa";
 $string["welcome"] = "Benvenuto a ".$gdps.'!';
-$string["didntInstall"] = "<div style='color:#47a0ff'><b>Attenzione!</b> Non hai installato completamente la dashboard! Fare clic sul testo per farlo.</div>";
-$string["levelsWeek"] = "Livelli caricati in una settimana";
-$string["levels3Months"] = "Livelli caricati in 3 mesi";
 $string["footer"] = $gdps.", ".date('Y', time());
 $string["tipsAfterInstalling"] = "Benvenuto su Dashboard! Ti diamo alcuni suggerimenti dopo l'installazione:<br>
 1. Sembra che siano apparsi nuovi permessi in SQL nella tabella 'ruoli'! Si dovrebbe controllare...<br>
@@ -233,9 +230,6 @@ $string["shareCP"] = "Condividi";
 $string["alreadyShared"] = "Questo livello ha già condiviso CP con questo giocatore!";
 $string["shareToAuthor"] = "Hai provato a condividere CP con l'autore del livello!";
 $string["userIsBanned"] = "Questo giocatore è bannato!";
-$string["shareCPSuccess"] = "Hai condiviso con successo i punti Creatore del livello";
-$string["shareCPSuccess2"] = "a giocatore";
-$string["updateCron"] = "Forse dovresti aggiornare i Punti Creatore.";
 $string["shareCPOneMore"] = "Un'altra condivisione?";
 $string['shareCPSuccessNew'] = 'Hai condiviso con successo i punti creatore del livello <b>%1$s</b> con il giocatore <b>%2$s</b>!';
 
@@ -260,51 +254,12 @@ $string["search"] = "Ricerca...";
 $string["searchCancel"] = "Annulla la ricerca";
 $string["emptySearch"] = "Non abbiamo trovato nulla!";
 
-$string["demonlist"] = 'Lista dei demon';
-$string["demonlistRecord"] = 'Il record di <b>%s</b>';
-$string["alreadyApproved"] = 'Già approvato!';
-$string["alreadyDenied"] = 'Già rifiutato!';
-$string["approveSuccess"] = 'Hai approvato con successo il record di <b>%s</b>!';
-$string["denySuccess"] = 'Hai rifiutato con successo il record di <b>%s</b>!';
-$string["recordParameters"] = '<b>%s</b> ha battuto <b>%s</b> in <b>%d</b> tentativi';
 $string["approve"] = 'Approva';
 $string["deny"] = 'Rifiuta';
-$string["submitRecord"] = 'Invia record';
-$string["submitRecordForLevel"] = 'Invia record per <b>%s</b>';
-$string["alreadySubmitted"] = 'Hai già inviato un record per <b>%s</b>!';
-$string["submitSuccess"] = 'Hai inviato con successo un record per <b>%s</b>!';
-$string["submitRecordDesc"] = 'Invia i record solo se hai superato il livello!';
-$string["atts"] = 'Tentativi';
-$string["ytlink"] = 'ID video di YouTube (dQw4w9WgXcQ)';
 $string["submit"] = 'Invia';
-$string["addDemonTitle"] = 'Aggiungi demon';
-$string["addDemon"] = 'Aggiungi demon alla lista dei demon';
-$string["addedDemon"] = 'Sei stato aggiunto <b>%s</b> al posto <b>%d</b>!';
-$string["addDemonDesc"] = 'Qui puoi aggiungere un demon alla lista dei demon!';
 $string["place"] = 'Posto';
-$string["giveablePoints"] = 'Punti cedibili';
 $string["add"] = 'Aggiungi';
-$string["recordApproved"] = 'Registrazione approvata!';
-$string["recordDenied"] = 'Registrazione negata!';
-$string["recordSubmitted"] = 'Registrazione inviata!';
-$string["nooneBeat"] = 'nessuno ha battuto'; //let it be lowercase
-$string["oneBeat"] = '1 giocatore ha battuto'; 
-$string["lower5Beat"] = '%d giocatori hanno battuto'; // russian syntax, sorry
-$string["above5Beat"] = '%d giocatori hanno battuto'; 
 $string["demonlistLevel"] = '%s <text class="dltext">di <button type="button" onclick="a(\'profile/%3$s\', true, true)" style="font-size:25px" class="accbtn" name="accountID" value="%d">%s</button>%4$s</text>';
-$string["noDemons"] = 'Sembra che la tua lista dei demon non abbia demon...';
-$string["addSomeDemons"] = 'Aggiungi alcuni demon per riempire la lista dei demon!';
-$string["askForDemons"] = 'Chiedi all\'amministratore del server di aggiungerne alcuni!';
-$string["recordList"] = 'Elenco dei record';
-$string["status"] = 'Statistiche';
-$string["checkRecord"] = 'Controlla il registro';
-$string["record"] = 'Record';
-$string["recordDeleted"] = 'La registrazione è stata cancellata!';
-$string["changeDemon"] = 'Cambia demon';
-$string["demonDeleted"] = 'Il demon è stato eliminato!';
-$string["changedDemon"] = 'Hai sostituito <b>%s</b> con <b>%d</b> luogo!';
-$string["changeDemonDesc"] = 'Qui puoi cambiare un demon!<br>
-Se vuoi eliminare il demon, imposta place su 0.';
 
 $string["didntActivatedEmail"] = 'Non hai attivato il tuo account tramite email!';
 $string["checkMail"] = 'Dovresti controllare la tua email...';
@@ -505,7 +460,6 @@ $string["songAddButton"] = "Scegli il brano";
 $string["songAddAnotherBTN"] = "Un altro brano?";
 $string["songAdded"] = "Brano aggiunto";
 $string["deletedSong"] = "Hai eliminato il brano con successo";
-$string["renamedSong"] = "Hai rinominato correttamente il brano in";
 $string["songID"] = "ID del brano: ";
 $string["songIDw"] = "ID del brano";
 $string["songAuthor"] = "Autore";
@@ -590,7 +544,7 @@ $string["stats"] = "Stelle";
 $string["suggestFeatured"] = "In primo piano?";
 $string["whoAdded"] = "Chi ha aggiunto?";
 $string["moons"] = "Lune";
-//modActionsList
+
 $string["banDesc"] = "Qui puoi bannare un giocatore!";
 $string["playerTop"] = 'Classifica dei giocatori';
 $string["creatorTop"] = 'Classifica dei creatori';
@@ -599,29 +553,13 @@ $string["successfullyBanned"] = 'Il giocatore <b>%1$s</b> con ID account <b>%2$s
 $string["successfullyUnbanned"] = 'Il giocatore <b>%1$s</b> con ID account <b>%2$s</b> è stato sbloccato con successo!';
 $string["commentBan"] = 'Commentando';
 
-$string["admin"] = "Amministratore";
-$string["elder"] = "Moderatore anziano";
-$string["moder"] = "Moderatore";
 $string["player"] = "Giocatore";
 
 $string["starsLevel2"] = "stelle";
 $string["starsLevel1"] = "stelle";
 $string["starsLevel0"] = "stella";
-$string["coins2"] = "monete";
 $string["coins1"] = "monete";
 $string["coins0"] = "moneta";
-$string["time0"] = "volta";
-$string["time1"] = "volte";
-$string["times"] = "volte";
-$string["action0"] = "azione";
-$string["action1"] = "azioni";
-$string["action2"] = "azioni";
-$string["lvl0"] = "livello";
-$string["lvl1"] = "livelli";
-$string["lvl2"] = "livelli";
-$string["player0"] = "giocatore";
-$string["player1"] = "giocatori";
-$string["player2"] = "giocatori";
 $string["unban"] = "Sbanna";
 $string["isBan"] = "Banna";
 
@@ -696,5 +634,3 @@ $string["noLogin?"] = "Non hai effettuato l'accesso al tuo account!";
 $string["LoginBtn"] = "Accedi all'account";
 $string["dashboard"] = "Ritorna al pannello";
 $string["userID"] = 'ID utente';
-//errors
-$string["errorNoAccWithPerm"] = "Errore: non è stato trovato alcun account con l'autorizzazione '%s'";

@@ -4,9 +4,6 @@ include __DIR__."/../../".$dbPath."config/dashboard.php";
 
 $string["homeNavbar"] = "Beranda";
 $string["welcome"] = "Selamat Datang di ".$gdps.'!';
-$string["didntInstall"] = "<div style='color:#47a0ff'><b>Peringatan!</b> Anda belum memasang dasbor sepenuhnya! Klik pada teks untuk melakukan ini.</div>";
-$string["levelsWeek"] = "Level diunggah dalam seminggu";
-$string["levels3Months"] = "Level diunggah dalam 3 bulan";
 $string["footer"] = $gdps.", ".date('Y', time());
 $string["tipsAfterInstalling"] = "Selamat datang di Dasbor! Kami memberi Anda beberapa petunjuk setelah instalasi:<br>
 1. Tampaknya izin baru telah muncul di SQL di tabel 'roles'! Anda harus memeriksanya...<br>
@@ -231,9 +228,6 @@ $string["shareCP"] = "Membagikan";
 $string["alreadyShared"] = "Level ini sudah membagikan CP kepada pemain ini!";
 $string["shareToAuthor"] = "Anda mencoba membagikan CP ke penulis level!";
 $string["userIsBanned"] = "Pemain ini dilarang!";
-$string["shareCPSuccess"] = "Anda berhasil membagikan level Poin Kreator";
-$string["shareCPSuccess2"] = "untuk pemain";
-$string["updateCron"] = "Mungkin Anda harus memperbarui Poin Pembuat Konten.";
 $string["shareCPOneMore"] = "Satu bagian lagi?";
 $string['shareCPSuccessNew'] = 'Anda berhasil membagikan level Poin Kreator <b>%1$s</b> untuk pemain <b>%2$s</b>!';
 
@@ -258,50 +252,12 @@ $string["search"] = "Mencari...";
 $string["searchCancel"] = "Batalkan pencarian";
 $string["emptySearch"] = "Tidak ada yang ditemukan!";
 
-$string["demonlist"] = 'Daftar Demon';
-$string["demonlistRecord"] = 'catatan <b>%s</b>';
-$string["alreadyApproved"] = 'Sudah disetujui!';
-$string["alreadyDenied"] = 'Sudah ditolak!';
-$string["approveSuccess"] = 'Anda telah berhasil menyetujui catatan <b>%s</b>!';
-$string["denySuccess"] = 'Anda berhasil menolak rekor <b>%s</b>!';
-$string["recordParameters"] = '<b>%s</b> telah mengalahkan <b>%s</b> dalam <b>%d</b> percobaan';
 $string["approve"] = 'Menyetujui';
 $string["deny"] = 'Membantah';
-$string["submitRecord"] = 'Kirim catatan';
-$string["submitRecordForLevel"] = 'Kirimkan data untuk <b>%s</b>';
-$string["alreadySubmitted"] = 'Anda telah mengirimkan rekor untuk <b>%s</b>!';
-$string["submitSuccess"] = 'Anda telah berhasil mengirimkan rekor untuk <b>%s</b>!';
-$string["submitRecordDesc"] = 'Kirimkan rekor hanya jika Anda berhasil menyelesaikan levelnya!';
-$string["atts"] = 'Percobaan';
-$string["ytlink"] = 'ID video YouTube (dQw4w9WgXcQ)';
 $string["submit"] = 'Kirim';
-$string["addDemonTitle"] = 'Tambahkan Demon';
-$string["addDemon"] = 'Tambahkan demon ke daftar demon';
-$string["addedDemon"] = 'Anda telah ditambahkan <b>%s</b> ke tempat <b>%d</b>!';
-$string["addDemonDesc"] = 'Disini Anda dapat menambahkan demon ke daftar demon!';
 $string["place"] = 'Tempat';
-$string["giveablePoints"] = 'Poin yang bisa diberikan';
 $string["add"] = 'Menambahkan';
-$string["recordApproved"] = 'Rekor disetujui!';
-$string["recordDenied"] = 'Rekor ditolak!';
-$string["recordSubmitted"] = 'Rekor dikirimkan!';
-$string["nooneBeat"] = 'tidak ada yang mengalahkan'; //biarkan huruf kecil
-$string["oneBeat"] = '1 pemain telah dikalahkan'; 
-$string["lower5Beat"] = '%d pemain telah dikalahkan'; // sintaksis Rusia, maaf
-$string["above5Beat"] = '%d pemain telah dikalahkan'; 
 $string["demonlistLevel"] = '%s <text class="dltext">oleh <button type="button" onclick="a(\'profile/%3$s\', true, true)" style="font-size:25px" class="accbtn" name="accountID" value="%d">%s</button>%4$s</text>';
-$string["noDemons"] = 'Tampaknya daftar demon- Anda tidak memiliki demon apa pun...';
-$string["addSomeDemons"] = 'Tambahkan beberapa demon untuk mengisi daftar demon!';
-$string["askForDemons"] = 'Minta administrator server untuk menambahkan beberapa!';
-$string["recordList"] = 'Daftar catatan';
-$string["status"] = 'Status';
-$string["checkRecord"] = 'Periksa catatan';
-$string["record"] = 'Catatan';
-$string["recordDeleted"] = 'Catatan telah dihapus!';
-$string["changeDemon"] = 'Ubah demon';
-$string["demonDeleted"] = 'Demon telah dihapus!';
-$string["changedDemon"] = 'Anda mengganti <b>%s</b> ke posisi <b>%d</b>!';
-$string["changeDemonDesc"] = 'Di sini Anda dapat mengubah demon!<br> Jika Anda ingin menghapus demon, setel tempat ke 0.';
 
 $string["didntActivatedEmail"] = 'Anda tidak mengaktifkan akun Anda melalui email!';
 $string["checkMail"] = 'Anda harus memeriksa email Anda...';
@@ -502,7 +458,6 @@ $string["songAddButton"] = "Pilih lagu";
 $string["songAddAnotherBTN"] = "Lagu lain?";
 $string["songAdded"] = "Lagu ditambahkan";
 $string["deletedSong"] = "Anda berhasil menghapus lagu";
-$string["renamedSong"] = "Anda berhasil mengganti nama lagu menjadi";
 $string["songID"] = "ID Lagu: ";
 $string["songIDw"] = "ID Lagu";
 $string["songAuthor"] = "Pengarang";
@@ -587,7 +542,7 @@ $string["stats"] = "Statistik";
 $string["suggestFeatured"] = "Unggulan?";
 $string["whoAdded"] = "Siapa yang menambahkan?";
 $string["moons"] = "Bulan";
-//modActionsList
+
 $string["banDesc"] = "Disini Anda dapat melarang pemain!";
 $string["playerTop"] = 'Pemain terbaik';
 $string["creatorTop"] = 'Pembuat konten teratas';
@@ -596,29 +551,13 @@ $string["successfullyBanned"] = 'Pemain <b>%1$s</b> dengan ID akun <b>%2$s</b> b
 $string["successfullyUnbanned"] = 'Pemain <b>%1$s</b> dengan ID akun <b>%2$s</b> berhasil dibatalkan pemblokirannya!';
 $string["commentBan"] = 'Mengomentari';
 
-$string["admin"] = "Administrator";
-$string["elder"] = "Elder Moderator";
-$string["moder"] = "Moderator";
 $string["player"] = "Pemain";
 
 $string["starsLevel2"] = "bintang";
 $string["starsLevel1"] = "bintang";
 $string["starsLevel0"] = "bintang";
-$string["coins2"] = "koin";
 $string["coins1"] = "koin";
 $string["coins0"] = "koin";
-$string["time0"] = "waktu";
-$string["time1"] = "waktu";
-$string["times"] = "waktu";
-$string["action0"] = "tindakan";
-$string["action1"] = "tindakan";
-$string["action2"] = "tindakan";
-$string["lvl0"] = "level";
-$string["lvl1"] = "level";
-$string["lvl2"] = "level";
-$string["player0"] = "pemain";
-$string["player1"] = "pemain";
-$string["player2"] = "pemain";
 $string["unban"] = "Batalkan pelarangan";
 $string["isBan"] = "Melarang";
 
@@ -693,5 +632,3 @@ $string["noLogin?"] = "Anda belum masuk ke akun Anda!";
 $string["LoginBtn"] = "Masuk ke akun";
 $string["dashboard"] = "Dasbor";
 $string["userID"] = 'ID Pengguna';
-//errors
-$string["errorNoAccWithPerm"] = "Kesalahan: Tidak ditemukan akun dengan izin '%s'";

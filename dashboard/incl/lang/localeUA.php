@@ -4,9 +4,6 @@ include __DIR__."/../../".$dbPath."config/dashboard.php";
 
 $string["homeNavbar"] = "Дім";
 $string["welcome"] = "Ласкаво просимо до ".$gdps.'!';
-$string["didntInstall"] = "<div style='color:#47a0ff'><b>Увага!</b> Ви не до кінця встановили панель серверу! Нажміть на текст, щоб це зробити.</div>";
-$string["levelsWeek"] = "Викладено рівнів за тиждень";
-$string["levels3Months"] = "Викладено рівнів за 3 місяці";
 $string["footer"] = $gdps.", ".date('Y', time());
 $string["tipsAfterInstalling"] = "Ласкаво просимо до панелі серверу! Ми даємо вам декілька підсказок після встановлення:<br>
 1. Здається, в SQL у таблиці 'roles' з'явились нові права! Вам слід це перевірити...<br>
@@ -232,9 +229,6 @@ $string["shareCP"] = "Поділитися";
 $string["alreadyShared"] = "Цей рівень вже ділився Креатор Поїнтами з цим користувачем!";
 $string["shareToAuthor"] = "Ви намагаєтесь поділитися Креатор Поїнтами з автором цього рівня!";
 $string["userIsBanned"] = "Цей користувач заблокований!";
-$string["shareCPSuccess"] = "Ви успішно поділились Креатор Поїнтами рівня";
-$string["shareCPSuccess2"] = "з користувачем";
-$string["updateCron"] = "Можливо, вам слід обновити Креатор Поїнти.";
 $string["shareCPOneMore"] = "Ще поділитися?";
 $string['shareCPSuccessNew'] = 'Ви успішно поділились Креатор Поїнтами рівня <b>%1$s</b> з користувачем <b>%2$s</b>!';
 
@@ -259,51 +253,12 @@ $string["search"] = "Пошук...";
 $string["searchCancel"] = "Відмінити пошук";
 $string["emptySearch"] = "Нічого не знайдено!";
 
-$string["demonlist"] = 'Топ демонів';
-$string["demonlistRecord"] = 'Рекорд <b>%s</b>';
-$string["alreadyApproved"] = 'Вже прийнятий!';
-$string["alreadyDenied"] = 'Вже відхилений!';
-$string["approveSuccess"] = 'Ви успішно прийняли рекорд <b>%s</b>!';
-$string["denySuccess"] = 'Ви успішно відхилили рекорд <b>%s</b>!';
-$string["recordParameters"] = '<b>%s</b> пройшов <b>%s</b> за <b>%d</b> спроб';
 $string["approve"] = 'Прийняти';
 $string["deny"] = 'Відхилити';
-$string["submitRecord"] = 'Опубліковати рекорд';
-$string["submitRecordForLevel"] = 'Опубліковати рекорд для <b>%s</b>';
-$string["alreadySubmitted"] = 'Ви вже публікували рекорд для <b>%s</b>!';
-$string["submitSuccess"] = 'Ви успішно опублікували рекорд для <b>%s</b>!';
-$string["submitRecordDesc"] = 'Публікуйте свої рекорди тільки якщо ви пройшли рівень!';
-$string["atts"] = 'Спроби';
-$string["ytlink"] = 'ID відео на YouTube (dQw4w9WgXcQ)';
 $string["submit"] = 'Опубліковати';
-$string["addDemonTitle"] = 'Додати демон';
-$string["addDemon"] = 'Додати демон в топ демонів';
-$string["addedDemon"] = 'Ви додали <b>%s</b> на <b>%d</b> місце!';
-$string["addDemonDesc"] = 'Тут ви можете добавити демон в демонліст!';
 $string["place"] = 'Місце';
-$string["giveablePoints"] = 'Видаваємі очки';
 $string["add"] = 'Додати';
-$string["recordApproved"] = 'Рекорд підтверджений!';
-$string["recordDenied"] = 'Рекорд відхилений!';
-$string["recordSubmitted"] = 'Рекорд опублікований!';
-$string["nooneBeat"] = 'ніхто не пройшов'; //let it be lowercase
-$string["oneBeat"] = 'пройшов 1 ігрок'; 
-$string["lower5Beat"] = 'пройшло %d ігрока'; 
-$string["above5Beat"] = 'пройшло %d ігроків'; 
 $string["demonlistLevel"] = '%s <text class="dltext">від <button type="button" onclick="a(\'profile/%3$s\', true, true)" style="font-size:25px" class="accbtn" name="accountID" value="%d">%s</button>%4$s</text>';
-$string["noDemons"] = 'Здається, у вашому топі демонів немає ні одного демону...';
-$string["addSomeDemons"] = 'Додайте декілька демонів, щоб заповнити топ!';
-$string["askForDemons"] = 'Попросіть адміністратора серверу додати декілька!';
-$string["recordList"] = 'Список рекордів';
-$string["status"] = 'Статус';
-$string["checkRecord"] = 'Провірити рекорд';
-$string["record"] = 'Рекорд';
-$string["recordDeleted"] = 'Рекорд був видалений!';
-$string["changeDemon"] = 'Змінити демон';
-$string["demonDeleted"] = 'Демон був видалений!';
-$string["changedDemon"] = 'Ви переставили <b>%s</b> на <b>%d</b> місце!';
-$string["changeDemonDesc"] = 'Тут ви можете змінити демон в демонлисті!<br>
-Якщо ви хочете видалити демон, вкажіть 0 місце.';
 
 $string["didntActivatedEmail"] = 'Ви не підтвердили вашу почту!';
 $string["checkMail"] = 'Вам слід провірити ваш поштовий ящик...';
@@ -507,7 +462,6 @@ $string["songID"] = "ID вашої пісні: ";
 $string["songIDw"] = "ID пісні";
 $string["songAuthor"] = "Автор";
 $string["deletedSong"] = "Ви успішно видалили пісню";
-$string["renamedSong"] = "Ви успішно перейменували пісню в";
 $string["size"] = "Розмір";
 $string["delete"] = "Видалити";
 $string["change"] = "Змінити";
@@ -558,8 +512,6 @@ $string["reportMod"] = "Репорти";
 $string["username"] = "Нікнейм";
 $string["accountID"] = "ID акаунта";
 $string["registerDate"] = "Дата реєстрації";
-$string["levelAuthor"] = "Автор рівня";
-$string["isAdmin"] = "Роль на сервері";
 $string["isAdminYes"] = "Так";
 $string["isAdminNo"] = "Ні";
 $string["userCoins"] = "Користувацькі монети";
@@ -589,7 +541,7 @@ $string["stats"] = "Статистика";
 $string["suggestFeatured"] = "Featured?";
 $string["whoAdded"] = "Хто додав?";
 $string["moons"] = "Луны";
-//modActionsList
+
 $string["banDesc"] = "Тут ви можете заблокувати користувача!";
 $string["playerTop"] = 'Топ гравців';
 $string["creatorTop"] = 'Топ строітелів';
@@ -598,29 +550,13 @@ $string["successfullyBanned"] = 'Игрок <b>%1$s</b> с ID аккаунта <
 $string["successfullyUnbanned"] = 'Игрок <b>%1$s</b> с ID аккаунта <b>%2$s</b> был успешно разбанен!';
 $string["commentBan"] = 'Комментирование';
 
-$string["admin"] = "Адміністратор";
-$string["elder"] = "Старший модератор";
-$string["moder"] = "Модератор";
 $string["player"] = "Ігрок";
 
 $string["starsLevel2"] = "зірок";
 $string["starsLevel1"] = "зірки";
 $string["starsLevel0"] = "зірка";
-$string["coins2"] = "монет";
 $string["coins1"] = "монети";
 $string["coins0"] = "монета";
-$string["time0"] = "раз";
-$string["time1"] = "раза";
-$string["times"] = "раз";
-$string["action0"] = "дія";
-$string["action1"] = "дії";
-$string["action2"] = "дій";
-$string["lvl0"] = "рівень";
-$string["lvl1"] = "рівня";
-$string["lvl2"] = "рівней";
-$string["player0"] = "гравець"; 
-$string["player1"] = "гравця"; 
-$string["player2"] = "гравців";
 $string["unban"] = "Розблокування";
 $string["isBan"] = "Блокування";
 
@@ -695,5 +631,3 @@ $string["noLogin?"] = "Ви не ввійшли в акаунт!";
 $string["LoginBtn"] = "Ввійти в акаунт";
 $string["dashboard"] = "Панель серверу";
 $string["userID"] = 'ID гравця';
-//errors
-$string["errorNoAccWithPerm"] = "Помилка: акаунтів з правом '%s' не було знайдено";

@@ -4,9 +4,6 @@ include __DIR__."/../../".$dbPath."config/dashboard.php";
 
 $string["homeNavbar"] = "Domov";
 $string["welcome"] = "Vítejte v ".$gdps.'!';
-$string["didntInstall"] = "<div style='color:#47a0ff'><b>Varování!</b> Nenainstalovali jste plně dashboard! Stiskněte tento text pro instalaci.</div>";
-$string["levelsWeek"] = "Úrovně nahrané za poslední týden";
-$string["levels3Months"] = "Úrovně nahrané za poslední 3 měsíce";
 $string["footer"] = $gdps.", ".date('Y', time());
 $string["tipsAfterInstalling"] = "Vítejte v Dashboard! Dáváme vám pár poinstalačních rad:<br>
 1. Vypadá to, že se nová oprávnění objevila v SQL v 'roles' tabulce! Měli byste se podívat...<br>
@@ -230,10 +227,7 @@ $string["shareCPDesc"] = "Zde můžete sdílet Creator Pointy!";
 $string["shareCP"] = "Sdílet";
 $string["alreadyShared"] = "Tato úroveň již měla Creator Pointy sdíleny tomuto hráči!";
 $string["shareToAuthor"] = "Nemůžete sdílet Creator Pointy s autorem úrovně!";
-$string["userIsBanned"] = "Tento uživatel je zabanován!";
-$string["shareCPSuccess"] = "Úspěšně jste sdílely Creator Pointy úrovně";
-$string["shareCPSuccess2"] = "hráči";
-$string["updateCron"] = "Možná byste měli aktualizovat Creator Pointy skrz Cron.";
+$string["userIsBanned"] = "Tento uživatel je zabanován!";	
 $string["shareCPOneMore"] = "Ještě jednou?";
 $string['shareCPSuccessNew'] = 'Úspěšně jste sdílely Creator Pointy úrovně <b>%1$s</b> hráči <b>%2$s</b>!';
 
@@ -258,51 +252,12 @@ $string["search"] = "Hledat...";
 $string["searchCancel"] = "Zrušit hledání";
 $string["emptySearch"] = "Nic nenalezeno!";
 
-$string["demonlist"] = 'Demonlist';
-$string["demonlistRecord"] = 'Rekord hráče <b>%s</b>';
-$string["alreadyApproved"] = 'Již přijat!';
-$string["alreadyDenied"] = 'Již odmítnut!';
-$string["approveSuccess"] = 'Úspěšně jste přijali rekord hráče <b>%s</b>!';
-$string["denySuccess"] = 'Úspěšně jste odmítli rekord hráče <b>%s</b>!';
-$string["recordParameters"] = '<b>%s</b> porazil/a <b>%s</b> v <b>%d</b> pokusech';
 $string["approve"] = 'Přijmout';
 $string["deny"] = 'Odmítnout';
-$string["submitRecord"] = 'Vložit rekord';
-$string["submitRecordForLevel"] = 'Vložit rekord pro <b>%s</b>';
-$string["alreadySubmitted"] = 'Již jste vložili rekord pro <b>%s</b>!';
-$string["submitSuccess"] = 'Úspěšně jste vložili rekord pro <b>%s</b>!';
-$string["submitRecordDesc"] = 'Vlkádejte rekordy jenom když jste úroveň porazili!';
-$string["atts"] = 'Pokusy';
-$string["ytlink"] = 'ID YouTube videa (dQw4w9WgXcQ)';
 $string["submit"] = 'Vložit';
-$string["addDemonTitle"] = 'Přidat démona';
-$string["addDemon"] = 'Přidat démona do demonlistu';
-$string["addedDemon"] = 'Přidali jste <b>%s</b> na <b>%d.</b> místo!';
-$string["addDemonDesc"] = 'Zde můžete přidat démona do demonlistu!';
 $string["place"] = 'Položit';
-$string["giveablePoints"] = 'Datelné body';
 $string["add"] = 'Přidat';
-$string["recordApproved"] = 'Rekord přijat!';
-$string["recordDenied"] = 'Rekord odmítnut!';
-$string["recordSubmitted"] = 'Rekord vložen!';
-$string["nooneBeat"] = 'nikdo neporazil'; //let it be lowercase
-$string["oneBeat"] = '1 hráč porazil'; 
-$string["lower5Beat"] = '%d hráči porazili'; // russian syntax, sorry
-$string["above5Beat"] = '%d hráčů porazilo'; 
 $string["demonlistLevel"] = '%s <text class="dltext">od <button type="button" onclick="a(\'profile/%3$s\', true, true)" style="font-size:25px" class="accbtn" name="accountID" value="%d">%s</button>%4$s</text>';
-$string["noDemons"] = 'Vypadá to, že váš demonlist nemá žádné démony...';
-$string["addSomeDemons"] = 'Přidejte démony pro vyplnění demonlistu!';
-$string["askForDemons"] = 'Zeptejte se administrátora serveru pro přidání některých!';
-$string["recordList"] = 'Seznam rekordů';
-$string["status"] = 'Stav';
-$string["checkRecord"] = 'Zkontrolovat rekord';
-$string["record"] = 'Rekord';
-$string["recordDeleted"] = 'Rekord byl smazán!';
-$string["changeDemon"] = 'Změnit démona';
-$string["demonDeleted"] = 'Démon byl smazán!';
-$string["changedDemon"] = 'Přesunuli jste <b>%s</b> na <b>%d.</b> místo!';
-$string["changeDemonDesc"] = 'Zde můžete přesunout démony!<br>
-Jestli chcete démona smazat, nastavte místo na 0.';
 
 $string["didntActivatedEmail"] = 'Nemáte aktivovaný účet!';
 $string["checkMail"] = 'Zkontrolujte si e-mail...';
@@ -503,7 +458,6 @@ $string["songAddButton"] = "Vybrat skladbu";
 $string["songAddAnotherBTN"] = "Ještě jedna?";
 $string["songAdded"] = "Skladba přidána";
 $string["deletedSong"] = "Úspěšně jste smazali skladbu";
-$string["renamedSong"] = "Úspěšně jste přejmenovali skladbu na";
 $string["songID"] = "ID skladby: ";
 $string["songIDw"] = "ID skladby";
 $string["songAuthor"] = "Autor";
@@ -557,8 +511,6 @@ $string["reportMod"] = "Nahlášení";
 $string["username"] = "Uživatelské jméno";
 $string["accountID"] = "ID účtu";
 $string["registerDate"] = "Datum registrace";
-$string["levelAuthor"] = "Autor úrovně";
-$string["isAdmin"] = "Role na serveru";
 $string["isAdminYes"] = "Ano";
 $string["isAdminNo"] = "Ne";
 $string["userCoins"] = "Bronzové mince";
@@ -588,7 +540,7 @@ $string["stats"] = "Statistiky";
 $string["suggestFeatured"] = "Speciálně ohodnoceno?";
 $string["whoAdded"] = "Kdo přidal?";
 $string["moons"] = "Měsíce";
-//modActionsList
+
 $string["banDesc"] = "Zde můžete zabanovat hráče!";
 $string["playerTop"] = 'Žebříčky hráčů';
 $string["creatorTop"] = 'Žebříčky tvůrců';
@@ -597,29 +549,13 @@ $string["successfullyBanned"] = 'Hráč <b>%1$s</b> s ID účtu <b>%2$s</b> byl 
 $string["successfullyUnbanned"] = 'Hráč <b>%1$s</b> s ID účtu <b>%2$s</b> byl úspěšně odbanován!';
 $string["commentBan"] = 'Komentování';
 
-$string["admin"] = "Administrátor";
-$string["elder"] = "Elder moderátor";
-$string["moder"] = "Moderátor";
 $string["player"] = "Hráč";
 
 $string["starsLevel2"] = "hvězd";
 $string["starsLevel1"] = "hvězdy";
 $string["starsLevel0"] = "hvězda";
-$string["coins2"] = "mincí";
 $string["coins1"] = "mince";
 $string["coins0"] = "mince";
-$string["time0"] = "krát";
-$string["time1"] = "krát";
-$string["times"] = "krát";
-$string["action0"] = "čin";
-$string["action1"] = "činy";
-$string["action2"] = "činů";
-$string["lvl0"] = "úroveň";
-$string["lvl1"] = "úrovně";
-$string["lvl2"] = "úrovní";
-$string["player0"] = "hráč";
-$string["player1"] = "hráči";
-$string["player2"] = "hráčů";
 $string["unban"] = "Odbanován";
 $string["isBan"] = "Zabanován";
 
@@ -694,5 +630,3 @@ $string["noLogin?"] = "Nejste přihlášeni k účtu!";
 $string["LoginBtn"] = "Přihlásit se";
 $string["dashboard"] = "Dashboard";
 $string["userID"] = 'ID uživatele';
-//errors
-$string["errorNoAccWithPerm"] = "Chyba: Žádný účet s oprávněním '%s' nebyl nalezen";

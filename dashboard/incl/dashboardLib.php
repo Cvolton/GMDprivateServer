@@ -1120,7 +1120,7 @@ class dashboardLib {
             }
             $artistNames = implode(', ', $authorNames);
             $btn = '<button type="button" name="btnsng" id="btn'.$action["songID"].'" title="'.($artistNames ? $artistNames : $songlol["authorName"]).' — '.$songlol["name"].'" style="display: contents;color: white;margin: 0;" download="'.str_replace('http://', 'https://', $songlol["download"]).'" onclick="btnsong(\''.$action["songID"].'\');"><div class="icon songbtnpic"><i id="icon'.$action["songID"].'" name="iconlol" class="fa-solid fa-play" aria-hidden="false"></i></div></button>';
-			$songid = '<div class="profilepic songpic">'.$btn.'<div class="songfullname"><div class="songauthor">'.($artistNames ? $songlol["authorName"].', '.$artistNames : $songlol["authorName"]).'</div><div class="songname">'.$songlol["name"].'</div></div></div>';
+			$songid = '<div class="profilepic songpic">'.$btn.'<div class="songfullname"><div class="songauthor">'.($artistNames ? $artistNames : $songlol["authorName"]).'</div><div class="songname">'.$songlol["name"].'</div></div></div>';
 		} else $songid = '<p class="profilepic"><i class="fa-solid fa-music"></i> '.strstr($gs->getAudioTrack($action["audioTrack"]), ' by ', true).'</p>';
 		$username =  '<form style="margin:0" method="post" action="./profile/"><button type="button" onclick="a(\'profile/'.$action["userName"].'\', true, true, \'POST\')" style="margin:0" class="accbtn" name="accountID">'.$action["userName"].'</button></form>';
 		$time = $this->convertToDate($action["uploadDate"], true);

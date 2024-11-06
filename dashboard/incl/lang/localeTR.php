@@ -4,9 +4,6 @@ include __DIR__."/../../".$dbPath."config/dashboard.php";
 
 $string["homeNavbar"] = "Ana Sayfa";
 $string["welcome"] = $gdps." sunucusuna hoş geldiniz!";
-$string["didntInstall"] = "<div style='color:#47a0ff'><b>Uyarı!</b> Dashboard'ı tam olarak kurmamışsınız! Buraya basarak tam kurulumu yapın.</div>";
-$string["levelsWeek"] = "Bir hafta içinde yüklenen bölümler";
-$string["levels3Months"] = "3 ayda yüklenen bölümler";
 $string["footer"] = $gdps.", ".date('Y', time());
 $string["tipsAfterInstalling"] = "Kontrol paneline hoş geldin! Kurulumdan sonra bir kaç tavsiye:<br>
 1. SQL içerisinde 'roles' tablosunda yeni izinler belirmiş gibi gözüküyor! Bunlara baksan çok iyi olur...<br>
@@ -231,9 +228,6 @@ $string["shareCP"] = "Ekle";
 $string["alreadyShared"] = "Bu bölüm zaten kullanıcıya puan eklemiş!";
 $string["shareToAuthor"] = "Bölüm sahibine CP paylaşmaya çalıştın!";
 $string["userIsBanned"] = "Kullanıcının yasağı var!";
-$string["shareCPSuccess"] = "Başarıyla bu bölüm için CP paylaşıldı. ";
-$string["shareCPSuccess2"] = "Paylaşılan kullanıcı:";
-$string["updateCron"] = "Belki de CP güncellemen lazım.";
 $string["shareCPOneMore"] = "Başka ekle?";
 $string['shareCPSuccessNew'] = '<b>%1$s</b> adlı seviyeye ve <b>%2$s</b> adlı oyuncuya başarıyla Creator Point paylaştın!';
 
@@ -258,51 +252,12 @@ $string["search"] = "Ara...";
 $string["searchCancel"] = "Aramayı iptal et";
 $string["emptySearch"] = "Hiçbir şey bulunamadı!";
 
-$string["demonlist"] = 'Demon listesi';
-$string["demonlistRecord"] = '<b>%s</b> adlı oyuncunun rekoru';
-$string["alreadyApproved"] = 'Zaten onaylı!';
-$string["alreadyDenied"] = 'Zaten red edilmiş!';
-$string["approveSuccess"] = 'Başarıyla <b>%s</b>\ adlı oyuncunun rekorunu onayladın!';
-$string["denySuccess"] = 'Başarıyla <b>%s</b>\ adlı oyuncunun rekorunu reddettin!';
-$string["recordParameters"] = '<b>%s</b> <b>%s</b> adlı oyuncuyu <b>%d</b> denemede yendi';
 $string["approve"] = 'Onayla';
 $string["deny"] = 'Reddet';
-$string["submitRecord"] = 'Rekoru gönder';
-$string["submitRecordForLevel"] = '<b>%s</b> için rekor gönder';
-$string["alreadySubmitted"] = 'Zaten <b>%s</b> için rekor gönderdin!';
-$string["submitSuccess"] = '<b>%s</b> için rekor gönderildi!';
-$string["submitRecordDesc"] = 'Rekorları sadece bölümü geçtiyseniz gönderin!';
-$string["atts"] = 'Deneme';
-$string["ytlink"] = 'YouTube video kodu (dQw4w9WgXcQ)';
 $string["submit"] = 'Gönder';
-$string["addDemonTitle"] = 'Demon ekle';
-$string["addDemon"] = 'Demon listesine demon ekle';
-$string["addedDemon"] = '<b>%s</b> bölümünü <b>%d</b> sıraya ekledin!';
-$string["addDemonDesc"] = 'Burada demon seviyesi bir bölümü demon listesine ekleyebilirsin!';
 $string["place"] = 'Sıra';
-$string["giveablePoints"] = 'Verilebilir puan';
 $string["add"] = 'Ekle';
-$string["recordApproved"] = 'Rekor onaylandı!';
-$string["recordDenied"] = 'Rekor reddedildi!';
-$string["recordSubmitted"] = 'Rekor gönderildi!';
-$string["nooneBeat"] = 'kimse geçemedi'; //let it be lowercase
-$string["oneBeat"] = '1 oyuncu geçti'; 
-$string["lower5Beat"] = '%d oyuncu geçti'; // russian syntax, sorry
-$string["above5Beat"] = '%d oyuncu geçti'; 
 $string["demonlistLevel"] = '%s<text class="dltext"><button type="button" onclick="a(\'profile/%3$s\', true, true)" style="margin-left: 5px; font-size: 25px" class="accbtn" name="accountID" value="%d">%s %4$s</button> tarafından</text>';
-$string["noDemons"] = 'Görünüşe göre demon listesi demon seviyesi bölüm içermiyor...';
-$string["addSomeDemons"] = 'Listeyi doldurmak için demon seviyesi bölüm ekle!';
-$string["askForDemons"] = 'Bir yöneticiden bu listeye eklemesini iste!';
-$string["recordList"] = 'Rekor listesi';
-$string["status"] = 'Durum';
-$string["checkRecord"] = 'Rekoru kontrol et';
-$string["record"] = 'Rekor';
-$string["recordDeleted"] = 'Rekor silindi!';
-$string["changeDemon"] = 'Demon değiştir';
-$string["demonDeleted"] = 'Demon silindi!';
-$string["changedDemon"] = '<b>%s</b> adlı demonun yerini <b>%d</b> adlı demon ile değiştirdin!';
-$string["changeDemonDesc"] = 'Burada demon değiştirebilirsin!<br>
-Demon değiştirmek istersen yer değişkenini 0 ayarla.';
 
 $string["didntActivatedEmail"] = 'Hesabını e-posta üzerinden aktive etmedin!';
 $string["checkMail"] = 'E-postanı kontrol etmelisin...';
@@ -503,7 +458,6 @@ $string["songAddButton"] = "Şarkı seç";
 $string["songAddAnotherBTN"] = "Başka ekle?";
 $string["songAdded"] = "Song eklendi!";
 $string["deletedSong"] = "Şarkıyı başarıyla sildin";
-$string["renamedSong"] = "Şarkıyı başarıyla yeniden adlandırdın:";
 $string["songID"] = "Şarkı ID: ";
 $string["songIDw"] = "Şarkı ID";
 $string["songAuthor"] = "Sahip";
@@ -557,8 +511,6 @@ $string["reportMod"] = "Raporlar";
 $string["username"] = "Kullanıcı adı";
 $string["accountID"] = "Hesap ID";
 $string["registerDate"] = "Kayıt tarihi";
-$string["levelAuthor"] = "Bölüm sahibi";
-$string["isAdmin"] = "Sunucu rolü";
 $string["isAdminYes"] = "Evet";
 $string["isAdminNo"] = "Hayır";
 $string["userCoins"] = "Kullanıcı coinleri";
@@ -597,29 +549,13 @@ $string["successfullyBanned"] = '<b>%1$s</b> adlı oyuncu <b>%2$s</b> ID ile ba�
 $string["successfullyUnbanned"] = '<b>%1$s</b> adlı oyuncu <b>%2$s</b> ID ile başarıyla yasaklanmadan kurtarıldı!';
 $string["commentBan"] = 'Yorum';
 
-$string["admin"] = "Yönetici";
-$string["elder"] = "Büyük moderatör";
-$string["moder"] = "Moderatör";
 $string["player"] = "Oyuncu";
 
 $string["starsLevel2"] = "yıldız";
 $string["starsLevel1"] = "yıldız";
 $string["starsLevel0"] = "yıldız";
-$string["coins2"] = "coin";
 $string["coins1"] = "coin";
 $string["coins0"] = "coin";
-$string["time0"] = "süre";
-$string["time1"] = "süre";
-$string["times"] = "süre";
-$string["action0"] = "aksiyon";
-$string["action1"] = "aksiyon";
-$string["action2"] = "aksiyon";
-$string["lvl0"] = "bölüm";
-$string["lvl1"] = "bölüm";
-$string["lvl2"] = "bölüm";
-$string["player0"] = "oyuncu";
-$string["player1"] = "oyuncu";
-$string["player2"] = "oyuncu";
 $string["unban"] = "Yasak kaldırma";
 $string["isBan"] = "Yasaklama";
 
@@ -694,5 +630,3 @@ $string["noLogin?"] = "Hesabına giriş yapmadın!";
 $string["LoginBtn"] = "Hesaba giriş yap";
 $string["dashboard"] = "Dashboard";
 $string["userID"] = 'Kullanıcı ID';
-//errors
-$string["errorNoAccWithPerm"] = "HATA: '%s' izni hiçbir hesapta bulunamadı.";
