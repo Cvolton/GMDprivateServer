@@ -42,12 +42,12 @@ foreach($bans AS &$ban) {
 			break;
 	}
 }
-$extIDsString = "'".implode("','", $extIDs)."'";
-$userIDsString = "'".implode("','", $userIDs)."'";
+$extIDsString = implode("','", $extIDs);
+$userIDsString = implode("','", $userIDs);
 $bannedIPsString = implode("|", $bannedIPs);
 $queryArray = [];
-if($extIDsString != '') $queryArray[] = "extID NOT IN (".$extIDsString.")";
-if($userIDsString != '') $queryArray[] = "userID NOT IN (".$userIDsString.")";
+if(!empty($extIDsString)) $queryArray[] = "extID NOT IN ('".$extIDsString."')";
+if(!empty($userIDsString)) $queryArray[] = "userID NOT IN ('".$userIDsString."')";
 if(!empty($bannedIPsString)) $queryArray[] = "IP NOT REGEXP '".$bannedIPsString."'";
 $queryText = !empty($queryArray) ? '('.implode(' AND ', $queryArray).') AND' : '';
 $f = "SELECT count(*) FROM users WHERE ".$queryText." stars > :stars";

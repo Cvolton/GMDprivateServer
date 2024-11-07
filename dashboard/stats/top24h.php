@@ -31,15 +31,15 @@ foreach($bans AS &$ban) {
 			break;
 	}
 }
-$extIDsString = "'".implode("','", $extIDs)."'";
-$userIDsString = "'".implode("','", $userIDs)."'";
+$extIDsString = implode("','", $extIDs);
+$userIDsString = implode("','", $userIDs);
 $bannedIPsString = implode("|", $bannedIPs);
 $queryArray = [];
-if($extIDsString != '') $queryArray[] = "users.extID NOT IN (".$extIDsString.")";
-if($userIDsString != '') $queryArray[] = "users.userID NOT IN (".$userIDsString.")";
-if(!empty($bannedIPsString)) $queryArray[] = "users.IP NOT REGEXP '".$bannedIPsString."'";
+if(!empty($extIDsString)) $queryArray[] = "extID NOT IN ('".$extIDsString."')";
+if(!empty($userIDsString)) $queryArray[] = "userID NOT IN ('".$userIDsString."')";
+if(!empty($bannedIPsString)) $queryArray[] = "IP NOT REGEXP '".$bannedIPsString."'";
 $queryText = !empty($queryArray) ? '('.implode(' AND ', $queryArray).') AND' : '';
-$query = $db->prepare("SELECT users.extID, SUM(actions.value) AS stars, users.userName FROM actions INNER JOIN users ON actions.account = users.userID WHERE type = '9' AND timestamp > :time AND ".$queryText." actions.value > 0 GROUP BY (stars) DESC ORDER BY stars DESC LIMIT 10 OFFSET $page");
+$query = $db->prepare("SELECT users.extID, SUM(actions.value) AS stars, users.userName FROM actions INNER JOIN users ON actions.account = users.extID WHERE type = '9' AND timestamp > :time AND ".$queryText." actions.value > 0 GROUP BY (stars) DESC ORDER BY stars DESC LIMIT 10 OFFSET $page");
 $query->execute([':time' => $time]);
 $result = $query->fetchAll();
 $x = $page + 1;

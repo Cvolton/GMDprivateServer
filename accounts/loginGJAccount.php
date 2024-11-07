@@ -15,7 +15,6 @@ if(!empty($_POST["password"])) $pass = GeneratePass::isValidUsrname($userName, $
 elseif(!empty($_POST["gjp2"])) $pass = GeneratePass::isGJP2ValidUsrname($userName, $_POST["gjp2"]);
 if($pass == 1) {
 	$userID = $gs->getUserID($accountID, $userName);
-	echo $accountID.",".$userID;
 	if(!is_numeric($udid)) {
 		$query2 = $db->prepare("SELECT userID FROM users WHERE extID = :udid");
 		$query2->execute([':udid' => $udid]);
@@ -23,6 +22,7 @@ if($pass == 1) {
 		$query2 = $db->prepare("UPDATE levels SET userID = :userID, extID = :extID WHERE userID = :usrid2");
 		$query2->execute([':userID' => $userID, ':extID' => $accountID, ':usrid2' => $usrid2]);	
 	}
+	exit($accountID.",".$userID);
 } elseif($pass == '-1') exit('-12');
 exit('-1');
 ?>

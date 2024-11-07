@@ -6,7 +6,7 @@ require_once "../lib/exploitPatch.php";
 require_once "../lib/mainLib.php";
 $gs = new mainLib();
 $commentID = ExploitPatch::remove($_POST["commentID"]);
-$accountID = GJPCheck::getAccountIDOrDie();
+$accountID = $gs->getIDFromPost();
 
 $userID = $gs->getUserID($accountID);
 $getCommentData = $db->prepare('SELECT * FROM comments WHERE commentID = :commentID');

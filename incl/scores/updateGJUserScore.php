@@ -7,7 +7,6 @@ require_once "../lib/mainLib.php";
 require_once "../lib/automod.php";
 require_once "../../config/security.php";
 $gs = new mainLib();
-
 if(empty($_POST["accountID"]) && !$unregisteredSubmissions) exit("0");
 
 if(!isset($_POST["userName"]) OR !isset($_POST["secret"]) OR !isset($_POST["stars"])
@@ -62,7 +61,7 @@ $hostname = $gs->getIP();
 
 if(Automod::isAccountsDisabled(2)) exit((string)$userID);
 
-$query = $db->prepare("SELECT stars,coins,demons,userCoins,diamonds,moons FROM users WHERE userID=:userID LIMIT 1"); //getting differences
+$query = $db->prepare("SELECT stars, coins, demons, userCoins, diamonds, moons FROM users WHERE userID = :userID LIMIT 1"); //getting differences
 $query->execute([':userID' => $userID]);
 $old = $query->fetch();
 
@@ -110,5 +109,6 @@ $ucdiff = $userCoins - $old["userCoins"];
 $diadiff = $diamonds - $old["diamonds"];
 $moondiff = $moons - $old["moons"];
 $gs->logAction($id, 9, $starsdiff, $coindiff, $demondiff, $ucdiff, $diadiff, $moondiff);
+if($gameVersion < 20 && !is_numeric($id) && $starsdiff + $coindiff + $demondiff + $ucdiff + $diadiff + $moondiff != 0) exit('-9');
 echo $userID;
 ?>

@@ -5,11 +5,11 @@ require_once "../lib/exploitPatch.php";
 require_once "../lib/mainLib.php";
 $gs = new mainLib();
 
-if(!isset($_POST['itemID']))
+if(!isset($_POST['itemID']) && !isset($_POST['levelID']))
 	exit(-1);
 
 $type = isset($_POST['type']) ? $_POST['type'] : 1;
-$itemID = ExploitPatch::remove($_POST['itemID']);
+$itemID = ExploitPatch::numbercolon($_POST['itemID']) ?: ExploitPatch::number($_POST['levelID']);
 $isLike = isset($_POST['like']) ? $_POST['like'] : 1;
 $ip = $gs->getIP();
 
