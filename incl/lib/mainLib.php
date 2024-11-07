@@ -1254,14 +1254,14 @@ class mainLib {
 			$creditsEncrypted[] = implode(',', [$gdps, $_SERVER['SERVER_NAME']]);
 			$gdpsEncrypted = $version.";".implode(';', $filesEncrypted)."|" .implode(';', $creditsEncrypted).';';
 		} else {
-			$songs = $db->prepare("SELECT songs.*, accounts.userName FROM songs JOIN accounts ON accounts.accountID = songs.reuploadID");
+			$songs = $db->prepare("SELECT songs.*, accounts.userName FROM songs JOIN accounts ON accounts.accountID = songs.reuploadID WHERE isDisabled = 0");
 			$songs->execute();
 			$songs = $songs->fetchAll();
 			$folderID = $accIDs = $gdpsLibrary = [];
 			$c = 100;
 			foreach($songs AS &$customSongs) {
 				$c++;
-				$authorName = ExploitPatch::rucharclean(ExploitPatch::escapedat(ExploitPatch::translit(trim($customSongs['authorName']))));
+				$authorName = trim(ExploitPatch::rucharclean(ExploitPatch::escapedat(ExploitPatch::translit($customSongs['authorName'])), 40));
 				if(empty($authorName)) $authorName = 'Reupload';
 				if(empty($folderID[$authorName])) {
 					$folderID[$authorName] = $c;
@@ -1277,13 +1277,13 @@ class mainLib {
 					$accIDs[$customSongs['reuploadID']] = $c;
 					$library['tags'][$serverIDs[null]. 0 .$accIDs[$customSongs['reuploadID']]] = $gdpsLibrary['tags'][$serverIDs[null]. 0 .$accIDs[$customSongs['reuploadID']]] = [
 						'ID' => (int)($serverIDs[null]. 0 .$accIDs[$customSongs['reuploadID']]),
-						'name' => ExploitPatch::escapedat($customSongs['userName']),
+						'name' => ExploitPatch::rucharclean(ExploitPatch::escapedat($customSongs['userName']), 30),
 					];
 				}
-				$customSongs['name'] = trim($customSongs['name']);
+				$customSongs['name'] = trim(ExploitPatch::rucharclean(ExploitPatch::escapedat(ExploitPatch::translit($customSongs['name'])), 40));
 				$library['songs'][$customSongs['ID']] = $gdpsLibrary['songs'][$customSongs['ID']] = [
 					'ID' => ($customSongs['ID']),
-					'name' => !empty($customSongs['name']) ? ExploitPatch::escapedat(ExploitPatch::translit($customSongs['name'])) : 'Unnamed',
+					'name' => !empty($customSongs['name']) ? $customSongs['name'] : 'Unnamed',
 					'authorID' => (int)($serverIDs[null]. 0 .$folderID[$authorName]),
 					'size' => ($customSongs['size'] * 1024 * 1024),
 					'seconds' => $customSongs['duration'],
