@@ -2,42 +2,19 @@
 session_start();
 require "../incl/dashboardLib.php";
 require "../".$dbPath."incl/lib/connection.php";
-$dl = new dashboardLib();
 require_once "../".$dbPath."incl/lib/mainLib.php";
+require_once "../".$dbPath."incl/lib/exploitPatch.php";
 $gs = new mainLib();
-require "../".$dbPath."incl/lib/connection.php";
-require "../".$dbPath."incl/lib/exploitPatch.php";
-$stars = ExploitPatch::number($_POST["rateStars"]) ?? 0;
-if($stars > 10 OR $stars < 0) {
- 	header('Location: ../stats/levelsList.php');
-	die();
-}
-$lvlid = ExploitPatch::number($_POST["level"]);
-$featured = ExploitPatch::number($_POST["featured"]);
-if(!isset($stars) OR empty($lvlid)) {
- 	header('Location: ../stats/levelsList.php');
-	die();
-}
-if($stars != 10) $demon = 0; else $demon = 1;
-if($stars != 1) $auto = 0; else $auto = 1;
+$dl = new dashboardLib();
+$levelID = ExploitPatch::number($_POST["level"]);
+$stars = ExploitPatch::number($_POST["rateStars"]) ?: 0;
+$featured = ExploitPatch::number($_POST["featured"]) ?: 0;
+if(empty($levelID) || $stars > 10 || $stars < 0) header('Location: '.$_SERVER['HTTP_REFERER']);
 $difficulty = $gs->getDiffFromStars($stars);
-$difficulty = $difficulty["diff"];
-if($gs->checkPermission($_SESSION["accountID"], "actionRateStars")){
-  		if ($featured > 1) {
-			$epic = $featured - 1;
-			$featured = 0;
-			$query = $db->prepare("UPDATE levels SET starEpic = :epic WHERE levelID = :levelID");
-			$query->execute([':levelID' => $lvlid, ':epic' => $epic]);
-			$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('4', :value, :levelID, :timestamp, :id)");
-			$query->execute([':value' => $epic, ':timestamp' => time(), ':id' => $_SESSION["accountID"], ':levelID' => $lvlid]);
-		} else $gs->featureLevel($_SESSION["accountID"], $lvlid, $featured);
-  		$gs->verifyCoinsLevel($_SESSION["accountID"], $lvlid, 1);
-  		$gs->rateLevel($_SESSION["accountID"], $lvlid, $stars, $difficulty, $auto, $demon);
-  		header('Location: ../stats/levelsList.php');
-} elseif($gs->checkPermission($_SESSION["accountID"], "actionSuggestRating")) {
-        $gs->suggestLevel($_SESSION["accountID"], $lvlid, $difficulty, $stars, $featured, $auto, $demon);
-        header('Location: ../stats/levelsList.php');
-} else {
-	die(-1);
-}
+if($gs->checkPermission($_SESSION["accountID"], "actionRateStars")) {
+  	$gs->featureLevel($_SESSION["accountID"], $levelID, $featured);
+  	$gs->verifyCoinsLevel($_SESSION["accountID"], $levelID, 1);
+  	$gs->rateLevel($_SESSION["accountID"], $levelID, $stars, $difficulty["diff"], $difficulty["auto"], $difficulty["demon"]);
+} elseif($gs->checkPermission($_SESSION["accountID"], "actionSuggestRating")) $gs->suggestLevel($_SESSION["accountID"], $levelID, $difficulty["diff"], $stars, $featured, $difficulty["auto"], $difficulty["demon"]);
+header('Location: '.$_SERVER['HTTP_REFERER']);
 ?>

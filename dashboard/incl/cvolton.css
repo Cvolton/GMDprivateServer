@@ -334,7 +334,6 @@ input, select {
 
 .messengeryou {
 	padding: 10px;
-    margin-top: 10px;
     width: 53%;
 	justify-self: right;
     border-radius: 20px;
@@ -370,7 +369,6 @@ input, select {
 
 .messengernotyou {
 	padding: 10px;
-    margin-top: 10px;
     width: 53%;
 	justify-self: left;
     border-radius: 20px;
@@ -1377,17 +1375,18 @@ label {
 }
 
 .message {
+	display: flex;
 	width: 100%;
+	grid-gap: 5px;
 }
 
 .message.you {
-	display: flex;
     justify-content: flex-end;
 }
 
 .message.notyou {
-	display: flex;
     justify-content: flex-start;
+	align-items: flex-end;
 }
 
 .clanname {
@@ -2512,4 +2511,54 @@ body:has(.audio) {
 
 .song-info .profilepic {
 	width: max-content;
+}
+
+.new-messages-notify {
+	background: #e35151;
+    border-radius: 500px;
+    padding: 2px;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    word-wrap: break-word;
+	font-size: 13px;
+	font-weight: 400;
+	color: white;
+}
+
+.new-messages-notify.smaller {
+	width: 17px;
+    height: 17px;
+}
+
+.btn-circle {
+    width: max-content;
+    height: max-content;
+    color: white;
+    padding: 8px;
+    font-size: 13px;
+	background-color: #373A3F;
+    font-weight: 700;
+    font-size: 15px;
+    border: none;
+    border-radius: 500px;
+    transition: 0.3s;
+    cursor: pointer;
+}
+
+.btn-circle:hover,
+.btn-circle:active,
+.btn-circle:focus {
+    background-color: #47494e;
+	text-decoration: none;
+}
+
+.active-profile-pic {
+	background: #c0c0c0;
+    color: #141414;
+    padding: 2px 6px;
+    border-radius: 15px;
+    width: max-content;
 }

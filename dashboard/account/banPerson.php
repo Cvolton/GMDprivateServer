@@ -82,8 +82,8 @@ $dl->printSong('<div class="form">
     </form>
 </div>
 <script>
-document.getElementById("personType").value = "'.ExploitPatch::number($_GET['personType']).'";
-document.getElementById("banType").value = "'.ExploitPatch::number($_GET['banType']).'";
+document.getElementById("personType").value = "'.(ExploitPatch::number($_GET['personType']) ?: 0).'";
+document.getElementById("banType").value = "'.(ExploitPatch::number($_GET['banType']) ?: 0).'";
 $(document).on("keyup keypress change keydown",function() {
    const personField = document.getElementById("personField");
    const btn = document.getElementById("banSubmit");
