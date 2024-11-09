@@ -1778,8 +1778,17 @@ class mainLib {
 		$level->execute([':levelID' => $levelID]);
 		$level = $level->fetch();
 		if(!$level) return false;
-		$daily = $db->prepare('SELECT * FROM dailyfeatures WHERE levelID = :levelID AND type = :type');
-		$daily->execute([':levelID' => $levelID, ':type' => $type]);
+		switch($type) {
+			case 0:
+			case 1:
+				$daily = $db->prepare('SELECT * FROM dailyfeatures WHERE levelID = :levelID AND type = :type');
+				$daily->execute([':levelID' => $levelID, ':type' => $type]);
+				break;
+			case 2:
+				$daily = $db->prepare('SELECT * FROM events WHERE levelID = :levelID');
+				$daily->execute([':levelID' => $levelID]);
+				break;
+		}
 		$daily = $daily->fetch();
 		if(!$daily) return false;
 		$creatorAccID = $level['extID'];
@@ -1820,7 +1829,7 @@ class mainLib {
 			case 2:
 				$setColor = $eventColor;
 				$setTitle = $this->webhookLanguage('eventTitle', $webhookLangArray);
-				$dmTitle = $this->webhookLanguage('eventDM', $webhookLangArray);
+				$dmTitle = $this->webhookLanguage('eventTitleDM', $webhookLangArray);
 				$setDescription = $this->webhookLanguage('eventDesc', $webhookLangArray);
 				$dmDescription = sprintf($this->webhookLanguage('eventDescDM', $webhookLangArray), $tadaEmoji);
 				$setNotificationText = $eventNotificationText;
