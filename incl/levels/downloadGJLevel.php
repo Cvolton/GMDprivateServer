@@ -17,7 +17,7 @@ $ip = $gs->getIP();
 $binaryVersion = !empty($_POST["binaryVersion"]) ? ExploitPatch::number($_POST["binaryVersion"]) : 0;
 $feaID = 0;
 switch($levelID) {
-	case -1: //Daily level
+	case -1: // Daily level
 		$query = $db->prepare("SELECT feaID, levelID FROM dailyfeatures WHERE timestamp < :time AND type = 0 ORDER BY timestamp DESC LIMIT 1");
 		$query->execute([':time' => time()]);
 		$result = $query->fetch();
@@ -25,7 +25,7 @@ switch($levelID) {
 		$feaID = $result["feaID"];
 		$daily = 1;
 		break;
-	case -2: //Weekly level
+	case -2: // Weekly level
 		$query = $db->prepare("SELECT feaID, levelID FROM dailyfeatures WHERE timestamp < :time AND type = 1 ORDER BY timestamp DESC LIMIT 1");
 		$query->execute([':time' => time()]);
 		$result = $query->fetch();
@@ -33,8 +33,8 @@ switch($levelID) {
 		$feaID = $result["feaID"] + 100001;
 		$daily = 1;
 		break;
-	case -3: //Event level
-		$query = $db->prepare("SELECT feaID, levelID FROM dailyfeatures WHERE timestamp < :time AND type = 2 ORDER BY timestamp DESC LIMIT 1");
+	case -3: // Event level
+		$query = $db->prepare("SELECT feaID, levelID FROM events WHERE timestamp < :time AND duration >= :time ORDER BY timestamp DESC LIMIT 1");
 		$query->execute([':time' => time()]);
 		$result = $query->fetch();
 		$levelID = $result["levelID"];
@@ -43,6 +43,7 @@ switch($levelID) {
 		break;
 	default:
 		$daily = 0;
+		break;
 }
 if($daily == 1) $query = $db->prepare("SELECT levels.*, users.userName, users.extID FROM levels LEFT JOIN users ON levels.userID = users.userID WHERE levelID = :levelID");
 else $query = $db->prepare("SELECT * FROM levels WHERE levelID = :levelID");

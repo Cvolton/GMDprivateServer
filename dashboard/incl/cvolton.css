@@ -117,6 +117,8 @@
 	.attribute-button {width: 100% !important;}
 	.profilelikes {font-size: 20px !important; height: max-content;}
 	.twice-form {max-height: 100vh !important; height: 100vh !important;}
+	.cards-form {height: 90% !important;}
+	.cards-overflow {height: max-content !important;}
 }
 
 * {
@@ -2561,4 +2563,9 @@ body:has(.audio) {
     padding: 2px 6px;
     border-radius: 15px;
     width: max-content;
+}
+
+.cards-form {
+	margin: 0px;
+	width: 150%;
 }

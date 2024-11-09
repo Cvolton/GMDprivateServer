@@ -114,6 +114,30 @@ if(!$installed) {
 			 `resolved` int(11) NOT NULL DEFAULT 0,
 			 PRIMARY KEY (`ID`)
 			) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci");
+		$check = $db->query("SHOW TABLES LIKE 'events'");
+			$exist = $check->fetchAll();
+			if(empty($exist)) $db->query("CREATE TABLE `events` (
+			`feaID` int(11) NOT NULL AUTO_INCREMENT,
+			 `levelID` int(11) NOT NULL,
+			 `timestamp` int(11) NOT NULL,
+			 `duration` int(11) NOT NULL,
+			 `type` int(11) NOT NULL DEFAULT 0,
+			 `reward` int(11) NOT NULL DEFAULT 0,
+			 `webhookSent` int(11) NOT NULL DEFAULT 0,
+			 PRIMARY KEY (`feaID`)
+			) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
+		$check = $db->query("SHOW TABLES LIKE 'vaultcodes'");
+			$exist = $check->fetchAll();
+			if(empty($exist)) $db->query("CREATE TABLE `vaultcodes` (
+			 `rewardID` int(11) NOT NULL AUTO_INCREMENT,
+			 `code` varchar(255) NOT NULL DEFAULT '',
+			 `type` int(11) NOT NULL DEFAULT 0,
+			 `reward` int(11) NOT NULL DEFAULT 0,
+			 `duration` int(11) NOT NULL DEFAULT 0,
+			 `uses` int(11) NOT NULL DEFAULT -1,
+			 `timestamp` int(11) NOT NULL DEFAULT 0,
+			 PRIMARY KEY (`rewardID`)
+			) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci");
 		$check = $db->query("SHOW COLUMNS FROM `roles` LIKE 'dashboardLevelPackCreate'");
       		$exist = $check->fetchAll();
       		if(empty($exist)) $db->query("ALTER TABLE roles ADD dashboardLevelPackCreate INT NOT NULL DEFAULT '0' AFTER dashboardModTools");
@@ -257,7 +281,12 @@ if(!$installed) {
 		$db->query("ALTER TABLE `actions` CHANGE `value4` `value4` VARCHAR(255) NOT NULL DEFAULT ''");
 		$db->query("ALTER TABLE `actions` CHANGE `value5` `value5` VARCHAR(255) NOT NULL DEFAULT ''");
 		$db->query("ALTER TABLE `actions` CHANGE `value6` `value6` VARCHAR(255) NOT NULL DEFAULT ''");
-		
+		$check = $db->query("SHOW COLUMNS FROM `roles` LIKE 'dashboardVaultCodesManage'");
+			$exist = $check->fetchAll();
+			if(empty($exist)) $db->query("ALTER TABLE `roles` ADD `dashboardVaultCodesManage` INT NOT NULL DEFAULT '0' AFTER `dashboardManageAutomod`");
+		$check = $db->query("SHOW COLUMNS FROM `roles` LIKE 'commandEvent'");
+			$exist = $check->fetchAll();
+			if(empty($exist)) $db->query("ALTER TABLE `roles` ADD `commandEvent` INT NOT NULL DEFAULT '0' AFTER `commandWeekly`;");
 	$lines = file($dbPath.'config/dashboard.php');
 	$first_line = $lines[2];
 	$lines = array_slice($lines, 1 + 2);

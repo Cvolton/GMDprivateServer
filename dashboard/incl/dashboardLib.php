@@ -266,6 +266,7 @@ class dashboardLib {
 							if($gs->checkPermission($_SESSION["accountID"], "commandSharecpAll")) echo '<a type="button" href="levels/shareCP.php" onclick="a(\'levels/shareCP.php\')"class="dropdown-item"><div class="icon"><i class="fa-solid fa-share" aria-hidden="false"></i></div>'.$this->getLocalizedString("shareCPTitle").'</a>';
 							if($gs->checkPermission($_SESSION["accountID"], "dashboardForceChangePassNick")) echo '<a type="button" href="account/forceChange.php" onclick="a(\'account/forceChange.php\')"class="dropdown-item"><div class="icon"><i class="fa-solid fa-pen-to-square" aria-hidden="false"></i></i></div>'.$this->getLocalizedString("changePassOrNick").'   </a>';
 							if($gs->checkPermission($_SESSION["accountID"], "dashboardManageAutomod")) echo '<a type="button" href="automod" onclick="a(\'automod\')"class="dropdown-item"><div class="icon"><i class="fa-solid fa-robot" aria-hidden="false"></i></i></div>'.$this->getLocalizedString("automodTitle").'   </a>';
+							if($gs->checkPermission($_SESSION["accountID"], "dashboardVaultCodesManage")) echo '<a type="button" href="levels/vaultCodes.php" onclick="a(\'levels/vaultCodes.php\')"class="dropdown-item"><div class="icon"><i class="fa-solid fa-award" aria-hidden="false"></i></i></div>'.$this->getLocalizedString("vaultCodesTitle").'   </a>';
 							echo '</div>
 					</li>';
 			}
