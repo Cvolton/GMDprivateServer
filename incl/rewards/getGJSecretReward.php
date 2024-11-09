@@ -10,7 +10,7 @@ require_once "../lib/exploitPatch.php";
 $gs = new mainLib();
 $gh = new generateHash();
 
-$extID = $gs->getIDFromPost();
+$extID = $gs->getIDFromPost() ?: 0;
 $rewardKey = ExploitPatch::charclean($_POST["rewardKey"]);
 $chk = XORCipher::cipher(ExploitPatch::url_base64_decode(substr(ExploitPatch::charclean($_POST["chk"]), 5)), 59182);
 
@@ -24,7 +24,7 @@ if($vaultCode['uses'] != '-1') {
 	$reduceUses->execute([':rewardID' => $vaultCode['rewardID']]);
 }
 
-$gs->logAction($accountID, 38, $vaultCode['rewardID'], $vaultCode['type'], $vaultCode['reward'], $rewardKey);
+$gs->logAction($extID, 38, $vaultCode['rewardID'], $vaultCode['type'], $vaultCode['reward'], $rewardKey);
 $string = ExploitPatch::url_base64_encode(XORCipher::cipher('Sa1nt:'.$chk.':'.$vaultCode['rewardID'].':1:'.$vaultCode['type'].','.$vaultCode['reward'], 59182));
 $hash = $gh->genSolo4($string);
 echo 'Sa1nt'.$string.'|'.$hash;
