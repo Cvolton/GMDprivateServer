@@ -437,22 +437,22 @@ $string['noWarnings'] = 'Pas d\'avertissements';
 
 $string['downloadLevelAsGMD'] = 'Enregistrer en .gmd';
 
-$string['songIsAvailable'] = 'Available';
-$string['songIsDisabled'] = 'Not available';
-$string['disabledSongs'] = 'Disabled songs';
-$string['disabledSFXs'] = 'Disabled SFXs';
+$string['songIsAvailable'] = 'Disponible';
+$string['songIsDisabled'] = 'Non-disponible';
+$string['disabledSongs'] = 'Musiques désactivées';
+$string['disabledSFXs'] = 'SFXs désactivés';
 
-$string['vaultCodesTitle'] = 'Add vault code';
-$string['vaultCodeExists'] = 'Code with this name already exists!';
-$string['reward'] = 'Reward';
-$string['vaultCodePickOption'] = 'Choose reward type';
-$string['vaultCodesCreate'] = 'Create code';
-$string['createNewVaultCode'] = 'Create new code!';
-$string['vaultCodesDesc'] = 'Here you can create new code!';
-$string['vaultCodesEditTitle'] = 'Change vault code';
-$string['vaultCodesEditDesc'] = 'Here you can change already existing code!';
-$string['vaultCodeName'] = 'Code';
-$string['vaultCodeUses'] = 'Number of uses (0 for infinite uses)';
+$string['vaultCodesTitle'] = 'Ajouter un code secret';
+$string['vaultCodeExists'] = 'Un code secret avec ce nom existe déjà !';
+$string['reward'] = 'Récompense';
+$string['vaultCodePickOption'] = 'Séléctionner le type de récompense';
+$string['vaultCodesCreate'] = 'Créer un code secret';
+$string['createNewVaultCode'] = 'Créer un nouveau code secret !';
+$string['vaultCodesDesc'] = 'Ici, vous pouvez créer un nouveau code secret !';
+$string['vaultCodesEditTitle'] = 'Changer le code secret';
+$string['vaultCodesEditDesc'] = 'Ici, vous pouvez changer un code secret existant !';
+$string['vaultCodeName'] = 'Code secret';
+$string['vaultCodeUses'] = 'Nombre d\'utilisations maximum (0 pour une utilisation infinie)';
 
 /*
 	REUPLOAD
