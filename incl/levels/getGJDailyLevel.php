@@ -39,7 +39,7 @@ $stringToAdd = '';
 if($isEvent) {
 	$string = ExploitPatch::url_base64_encode(XORCipher::cipher('Sa1nt:1:'.$dailyID.':2:'.$check['type'].','.$check['reward'], 59182));
 	$hash = $gh->genSolo4($string);
-	$stringToAdd = '|'.$string.'|'.$hash;
+	$stringToAdd = '|Sa1nt'.$string.'|'.$hash;
 }
 echo $dailyID ."|". $timeleft.$stringToAdd;
 ?>
