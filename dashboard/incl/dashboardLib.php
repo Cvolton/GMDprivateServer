@@ -803,6 +803,11 @@ class dashboardLib {
 					}' : '').'
 					if(pg.response.getElementById("htmlpage") != null) {
 						document.getElementById("loadingloool").style.opacity = "0";
+						checkError = pg.response.getElementById("dashboard-error-text");
+						if(checkError != null) {
+							createToast(checkError.innerHTML);
+							return;
+						}
 						title = pg.response.querySelectorAll("title")[0];
 						scripts = pg.response.querySelectorAll("body script");
 						scripts = scripts[scripts.length-1];
@@ -1025,6 +1030,18 @@ class dashboardLib {
 			}
 		}
 		del.send();
+	}
+	function createToast(text) {
+		errorDivs = document.querySelector("#error-divs");
+		toast = document.createElement("div");
+		toast.classList.add("notify");
+		toast.innerHTML = text;
+		errorDivs.append(toast);
+		setTimeout(function () {toast.classList.add("notify-show");}, 100);
+		setTimeout(function () {
+			toast.classList.remove("notify-show");
+			setTimeout(function () {toast.remove()}, 300);
+		}, 3000);
 	}
 	window.addEventListener("popstate", function(e) { 
 		a(e.target.location.href, true, true, "GET", false, "", true);

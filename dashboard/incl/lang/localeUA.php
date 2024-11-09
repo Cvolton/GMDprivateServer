@@ -1,6 +1,6 @@
 <?php
 global $dbPath;
-include __DIR__."/../../".$dbPath."config/dashboard.php";
+require __DIR__."/../../".$dbPath."config/dashboard.php";
 
 $string["homeNavbar"] = "Дім";
 $string["welcome"] = "Ласкаво просимо до ".$gdps.'!';
@@ -441,6 +441,18 @@ $string['songIsDisabled'] = 'Недоступна';
 $string['disabledSongs'] = 'Недоступные песни';
 $string['disabledSFXs'] = 'Недоступные звуковые эффекты';
 
+$string['vaultCodesTitle'] = 'Добавить код для хранилища';
+$string['vaultCodeExists'] = 'Код с данным названием существует!';
+$string['reward'] = 'Награда';
+$string['vaultCodePickOption'] = 'Выберите тип награды';
+$string['vaultCodesCreate'] = 'Создать код';
+$string['createNewVaultCode'] = 'Создайте новый код!';
+$string['vaultCodesDesc'] = 'Здесь вы можете создать новый код!';
+$string['vaultCodesEditTitle'] = 'Изменить код для хранилища';
+$string['vaultCodesEditDesc'] = 'Здесь вы можете изменить существующий код!';
+$string['vaultCodeName'] = 'Код';
+$string['vaultCodeUses'] = 'Кол-во использований (0 для бесконечного использования)';
+
 /*
 	REUPLOAD
 */
@@ -623,6 +635,9 @@ $string["modAction38"] = "Закрыл(а)/открыл(а) комментиро
 $string["modAction39"] = "Закрыл(а)/открыл(а) комментирование списка уровней";
 $string["modAction40"] = "Убрал(а) предложенный уровень";
 $string["modAction41"] = "Отправил(а) на оценку уровень";
+$string["modAction42"] = "Создал(а) код для хранилища";
+$string["modAction43"] = "Изменил(а) код для хранилища";
+$string["modAction44"] = "Указал(а) уровень, как уровень мероприятия";
 $string["everyActions"] = "Будь-які дії";
 $string["everyMod"] = "Всі модератори";
 $string["Kish!"] = "Киш!";

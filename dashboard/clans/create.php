@@ -6,7 +6,7 @@ global $clansEnabled;
 if(!$clansEnabled) exit($dl->printSong('<div class="form">
 			<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 			<form class="form__inner" method="post" action=".">
-			<p>'.$dl->getLocalizedString("pageDisabled").'</p>
+			<p id="dashboard-error-text">'.$dl->getLocalizedString("pageDisabled").'</p>
 			<button type="button" onclick="a(\'\', true, false, \'GET\')" class="btn-song">'.$dl->getLocalizedString("dashboard").'</button>
 			</form>
 		</div>', 'browse'));
@@ -21,7 +21,7 @@ $dl->title($dl->getLocalizedString("createClan"));
 if($isPlayerInClan) die($dl->printSong('<div class="form">
     <h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
     <form class="form__inner" method="post" action=".">
-		<p>'.$dl->getLocalizedString("alreadyInClan").'</p>
+		<p id="dashboard-error-text">'.$dl->getLocalizedString("alreadyInClan").'</p>
 	        <button type="button" onclick="a(\'\', true, false, \'GET\')" class="btn-primary">'.$dl->getLocalizedString("dashboard").'</button>
     </form>
 </div>', 'browse'));
@@ -38,7 +38,7 @@ if(isset($_POST["name"]) AND isset($_POST["desc"]) AND isset($_POST["color"])) {
 						if(in_array(strtolower($name), $bannedClanNamesList)) exit($dl->printSong('<div class="form">
 							<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 							<form class="form__inner" method="post" action="">
-							<p>'.$dl->getLocalizedString("badClanName").'</p>
+							<p id="dashboard-error-text">'.$dl->getLocalizedString("badClanName").'</p>
 							<button type="submit" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 							</form>
 						</div>'));
@@ -48,7 +48,7 @@ if(isset($_POST["name"]) AND isset($_POST["desc"]) AND isset($_POST["color"])) {
 							if(!empty($bannedClanName) && mb_strpos(strtolower($name), $bannedClanName) !== false) exit($dl->printSong('<div class="form">
 							<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 							<form class="form__inner" method="post" action="">
-							<p>'.$dl->getLocalizedString("badClanName").'</p>
+							<p id="dashboard-error-text">'.$dl->getLocalizedString("badClanName").'</p>
 							<button type="submit" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 							</form>
 						</div>'));
@@ -62,7 +62,7 @@ if(isset($_POST["name"]) AND isset($_POST["desc"]) AND isset($_POST["color"])) {
 						if(in_array(strtolower($tag), $bannedClanTagsList)) exit($dl->printSong('<div class="form">
 							<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 							<form class="form__inner" method="post" action="">
-							<p>'.$dl->getLocalizedString("badClanTag").'</p>
+							<p id="dashboard-error-text">'.$dl->getLocalizedString("badClanTag").'</p>
 							<button type="submit" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 							</form>
 						</div>'));
@@ -72,7 +72,7 @@ if(isset($_POST["name"]) AND isset($_POST["desc"]) AND isset($_POST["color"])) {
 							if(!empty($bannedClanTag) && mb_strpos(strtolower($tag), $bannedClanTag) !== false) exit($dl->printSong('<div class="form">
 							<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 							<form class="form__inner" method="post" action="">
-							<p>'.$dl->getLocalizedString("badClanTag").'</p>
+							<p id="dashboard-error-text">'.$dl->getLocalizedString("badClanTag").'</p>
 							<button type="submit" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 							</form>
 						</div>'));
@@ -81,13 +81,23 @@ if(isset($_POST["name"]) AND isset($_POST["desc"]) AND isset($_POST["color"])) {
 			}
 			$name = base64_encode($name);
 			$tag = base64_encode($tag);
+			$check = $db->prepare('SELECT count(*) FROM clans WHERE clan LIKE :c');
+			$check->execute([':c' => $name]);
+			$check = $check->fetchColumn();
+			if($check > 0) exit($dl->printSong('<div class="form">
+				<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
+				<form class="form__inner" method="post" action=".">
+					<p id="dashboard-error-text">'.$dl->getLocalizedString("takenClanName").'</p>
+						<button type="button" onclick="a(\'clans/create.php\', true, false, \'GET\')" class="btn-primary">'.$dl->getLocalizedString("tryAgainBTN").'</button>
+				</form>
+			</div>', 'browse'));
 			$check = $db->prepare('SELECT count(*) FROM clans WHERE tag LIKE :t');
 			$check->execute([':t' => $tag]);
 			$check = $check->fetchColumn();
 			if($check > 0) exit($dl->printSong('<div class="form">
 				<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 				<form class="form__inner" method="post" action=".">
-					<p>'.$dl->getLocalizedString("takenClanTag").'</p>
+					<p id="dashboard-error-text">'.$dl->getLocalizedString("takenClanTag").'</p>
 						<button type="button" onclick="a(\'clans/create.php\', true, false, \'GET\')" class="btn-primary">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 				</form>
 			</div>', 'browse'));
@@ -108,7 +118,7 @@ if(isset($_POST["name"]) AND isset($_POST["desc"]) AND isset($_POST["color"])) {
    <form class="form__inner" method="post" action="">
   <p>'.$dl->getLocalizedString("createClanDesc").'</p>
 	<div class="field"><input type="text" name="name" id="p1" placeholder="'.$dl->getLocalizedString("clanName").'"></div>
-	<div class="field"><input type="text" name="tag" placeholder="'.$dl->getLocalizedString("clanTag").'"></div>
+	<div class="field"><input type="text" name="tag" id="p2" placeholder="'.$dl->getLocalizedString("clanTag").'"></div>
 	<div class="field"><input type="text" name="desc" placeholder="'.$dl->getLocalizedString("clanDesc").'"></div>
 	<div class="field color123"><input type="color" id="color" name="color" placeholder="'.$dl->getLocalizedString("clanColor").'"></div>
   <button type="button" id="submit" onclick="a(\'clans/create.php\', true, false, \'POST\')" class="btn-primary btn-block" disabled>'.$dl->getLocalizedString("create").'</button>
@@ -117,8 +127,9 @@ if(isset($_POST["name"]) AND isset($_POST["desc"]) AND isset($_POST["color"])) {
 <script>
 $(document).on("keyup keypress change keydown",function(){
 	const p1 = document.getElementById("p1");
+	const p2 = document.getElementById("p2");
 	const btn = document.getElementById("submit");
-	if(!p1.value.trim().length) {
+	if(!p1.value.trim().length || !p2.value.trim().length) {
 		btn.disabled = true;
 		btn.classList.add("btn-block");
 		btn.classList.remove("btn-song");

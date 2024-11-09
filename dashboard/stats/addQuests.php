@@ -18,7 +18,7 @@ if(!empty($_POST["type"]) AND !empty($_POST["amount"]) AND !empty($_POST["reward
 		$dl->printSong('<div class="form">
 			<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 			<form class="form__inner" method="post" action="">
-			<p>'.$dl->getLocalizedString("invalidCaptcha").'</p>
+			<p id="dashboard-error-text">'.$dl->getLocalizedString("invalidCaptcha").'</p>
 			<button type="button" onclick="a(\'stats/addQuests.php\', true, false, \'GET\')" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 			</form>
 		</div>', 'mod');
@@ -33,7 +33,7 @@ if(!empty($_POST["type"]) AND !empty($_POST["amount"]) AND !empty($_POST["reward
 			$dl->printSong('<div class="form">
 				<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 				<form class="form__inner" method="post" action="">
-				<p>'.$dl->getLocalizedString("invalidPost").'</p>
+				<p id="dashboard-error-text">'.$dl->getLocalizedString("invalidPost").'</p>
 				<button type="button" onclick="a(\'stats/addQuests.php\', true, false, \'GET\')" class="btn-primary">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 				</form>
 			</div>', 'mod');

@@ -1,6 +1,6 @@
 <?php
 global $dbPath;
-include __DIR__."/../../".$dbPath."config/dashboard.php";
+require __DIR__."/../../".$dbPath."config/dashboard.php";
 
 $string["homeNavbar"] = "Beranda";
 $string["welcome"] = "Selamat Datang di ".$gdps.'!';
@@ -440,6 +440,18 @@ $string['songIsDisabled'] = 'Not available';
 $string['disabledSongs'] = 'Disabled songs';
 $string['disabledSFXs'] = 'Disabled SFXs';
 
+$string['vaultCodesTitle'] = 'Add vault code';
+$string['vaultCodeExists'] = 'Code with this name already exists!';
+$string['reward'] = 'Reward';
+$string['vaultCodePickOption'] = 'Choose reward type';
+$string['vaultCodesCreate'] = 'Create code';
+$string['createNewVaultCode'] = 'Create new code!';
+$string['vaultCodesDesc'] = 'Here you can create new code!';
+$string['vaultCodesEditTitle'] = 'Change vault code';
+$string['vaultCodesEditDesc'] = 'Here you can change already existing code!';
+$string['vaultCodeName'] = 'Code';
+$string['vaultCodeUses'] = 'Number of uses (0 for infinite uses)';
+
 /*
 	REUPLOAD
 */
@@ -624,6 +636,9 @@ $string["modAction38"] = "Komentar level terkunci/tidak terkunci";
 $string["modAction39"] = "Komentar daftar terkunci/tidak terkunci";
 $string["modAction40"] = "Menghapus level terkirim";
 $string["modAction41"] = "Tingkat yang disarankan";
+$string["modAction42"] = "Created vault code";
+$string["modAction43"] = "Changed vault code";
+$string["modAction44"] = "Set level as event level";
 $string["everyActions"] = "Tindakan apa pun";
 $string["everyMod"] = "Semua moderator";
 $string["Kish!"] = "Pergilah!";

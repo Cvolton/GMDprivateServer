@@ -26,7 +26,7 @@ if(empty($result)) {
 	$dl->printSong('<div class="form">
     <h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
     <form class="form__inner" method="post" action=".">
-		<p>'.$dl->getLocalizedString("emptyPage").'</p>
+		<p id="dashboard-error-text">'.$dl->getLocalizedString("emptyPage").'</p>
         <button type="button" onclick="a(\'\', true, false, \'GET\')" class="btn-primary">'.$dl->getLocalizedString("dashboard").'</button>
     </form>
 </div>', 'stats');

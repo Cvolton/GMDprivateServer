@@ -18,7 +18,7 @@ if(!empty($_POST["packName"])) {
 			$dl->printSong('<div class="form">
 				<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 				<form class="form__inner" method="post" action="">
-				<p>'.$dl->getLocalizedString("invalidCaptcha").'</p>
+				<p id="dashboard-error-text">'.$dl->getLocalizedString("invalidCaptcha").'</p>
 				<button type="button" onclick="a(\'levels/packCreate.php\', true, false, \'GET\')" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 				</form>
 			</div>', 'mod');
@@ -27,12 +27,12 @@ if(!empty($_POST["packName"])) {
 	$accountID = $_SESSION["accountID"];
 	if($_POST['level_1'] == $_POST['level_3'] OR $_POST['level_3'] == $_POST['level_2'] OR $_POST['level_1'] == $_POST['level_2']) {
 		$dl->printSong('<div class="form">
-    <h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
-    <form class="form__inner" method="post" action="">
-		<p>'.$dl->getLocalizedString("sameLevels").'</p>
+			<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
+			<form class="form__inner" method="post" action="">
+			<p id="dashboard-error-text">'.$dl->getLocalizedString("sameLevels").'</p>
 	        <button type="button" onclick="a(\'levels/packCreate.php\', true, false, \'GET\')" class="btn-primary">'.$dl->getLocalizedString("tryAgainBTN").'</button>
-    </form>
-</div>', 'mod');
+			</form>
+		</div>', 'mod');
 		die();
 	}
 	$name = ExploitPatch::rucharclean($_POST["packName"]);
@@ -43,7 +43,7 @@ if(!empty($_POST["packName"])) {
 	$dl->printSong('<div class="form">
 			<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 			<form class="form__inner" method="post" action="">
-			<p>'.$dl->getLocalizedString("invalidPost").'</p>
+			<p id="dashboard-error-text">'.$dl->getLocalizedString("invalidPost").'</p>
 	        <button type="button" onclick="a(\'levels/packCreate.php\', true, false, \'GET\')" class="btn-primary">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 			</form>
 			</div>', 'mod');

@@ -11,7 +11,7 @@ require "../".$dbPath."incl/lib/exploitPatch.php";
 if(!isset($_SESSION["accountID"]) || $_SESSION["accountID"] == 0) exit($dl->printSong('<div class="form">
     <h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 	<form class="form__inner" method="post" action="./login/login.php">
-	<p>'.$dl->getLocalizedString("noLogin?").'</p>
+	<p id="dashboard-error-text">'.$dl->getLocalizedString("noLogin?").'</p>
 	        <button type="button" onclick="a(\'login/login.php\', true, false, \'GET\')" class="btn-primary">'.$dl->getLocalizedString("LoginBtn").'</button>
     </form>
 </div>', 'account'));
@@ -38,7 +38,7 @@ if(empty($result)) {
 	$dl->printSong('<div class="form">
     <h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
     <form class="form__inner" method="post" action=".">
-		<p>'.$dl->getLocalizedString("emptyPage").'</p>
+		<p id="dashboard-error-text">'.$dl->getLocalizedString("emptyPage").'</p>
         <button type="button" onclick="a(\'\', true, false, \'GET\')" class="btn-primary">'.$dl->getLocalizedString("dashboard").'</button>
     </form>
 </div>', 'account');

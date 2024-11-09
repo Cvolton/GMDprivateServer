@@ -13,7 +13,7 @@ $modcheck = $gs->checkPermission($_SESSION["accountID"], "dashboardModTools");
 if(!$modcheck) exit($dl->printSong('<div class="form">
     <h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
     <form class="form__inner" method="post" action=".">
-		<p>'.$dl->getLocalizedString("noPermission").'</p>
+		<p id="dashboard-error-text">'.$dl->getLocalizedString("noPermission").'</p>
 	        <button type="button" onclick="a(\'\', true, false, \'GET\')" class="btn-primary">'.$dl->getLocalizedString("Kish!").'</button>
     </form>
 </div>', 'mod'));
@@ -40,7 +40,7 @@ if(!empty(trim(ExploitPatch::remove($_GET["search"])))) {
 		$dl->printSong('<div class="form">
 		<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 		<form class="form__inner" method="post" action="'.$_SERVER["SCRIPT_NAME"].'">
-			<p>'.$dl->getLocalizedString("emptySearch").'</p>
+			<p id="dashboard-error-text">'.$dl->getLocalizedString("emptySearch").'</p>
 			<button type="button" onclick="a(\'stats/levelsList.php\', true, false, \'GET\')" class="btn-primary">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 		</form>
 	</div>');
@@ -54,7 +54,7 @@ if(!empty(trim(ExploitPatch::remove($_GET["search"])))) {
 		$dl->printSong('<div class="form">
 		<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 		<form class="form__inner" method="post" action=".">
-			<p>'.$dl->getLocalizedString("emptyPage").'</p>
+			<p id="dashboard-error-text">'.$dl->getLocalizedString("emptyPage").'</p>
 			<button type="button" onclick="a(\'\', true, false, \'GET\')" class="btn-primary">'.$dl->getLocalizedString("dashboard").'</button>
 		</form>
 	</div>', 'browse');

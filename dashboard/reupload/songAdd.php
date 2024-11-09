@@ -13,7 +13,7 @@ if(strpos($songEnabled, '2') === false) {
 	exit($dl->printSong('<div class="form">
 		<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 		<form class="form__inner" method="post" action="">
-		<p>'.$dl->getLocalizedString("pageDisabled").'</p>
+		<p id="dashboard-error-text">'.$dl->getLocalizedString("pageDisabled").'</p>
 		<button type="button" onclick="a(\'reupload/songAdd.php\', true, true, \'GET\')" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 		</form>
 	</div>', 'reupload'));
@@ -24,7 +24,7 @@ if(isset($_SESSION["accountID"]) AND $_SESSION["accountID"] != 0) {
 			exit($dl->printSong('<div class="form">
 				<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 				<form class="form__inner" method="post" action="">
-				<p>'.$dl->getLocalizedString("invalidCaptcha").'</p>
+				<p id="dashboard-error-text">'.$dl->getLocalizedString("invalidCaptcha").'</p>
 				<button type="button" onclick="a(\'reupload/songAdd.php\', true, true, \'GET\')"class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 				</form>
 			</div>', 'reupload'));
@@ -39,7 +39,7 @@ if(isset($_SESSION["accountID"]) AND $_SESSION["accountID"] != 0) {
 				exit($dl->printSong('<div class="form">
 				<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 				<form class="form__inner" method="post" action="">
-					<p>'.$dl->getLocalizedString("songAddError-3").' '.$existed.'</p>
+					<p id="dashboard-error-text">'.$dl->getLocalizedString("songAddError-3").' '.$existed.'</p>
 					<button type="button" onclick="a(\'reupload/songAdd.php\', true, true, \'GET\')"class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 				</form>
 				</div>', 'reupload'));
@@ -47,7 +47,7 @@ if(isset($_SESSION["accountID"]) AND $_SESSION["accountID"] != 0) {
 			$dl->printSong('<div class="form">
 			<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 			<form class="form__inner" method="post" action="">
-				<p>'.$dl->getLocalizedString("songAddError$songID").'</p>
+				<p id="dashboard-error-text">'.$dl->getLocalizedString("songAddError$songID").'</p>
 				<button type="button" onclick="a(\'reupload/songAdd.php\', true, true, \'GET\')"class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 			</form>
 			</div>', 'reupload');
@@ -98,7 +98,7 @@ if(isset($_SESSION["accountID"]) AND $_SESSION["accountID"] != 0) {
 	$dl->printSong('<div class="form">
     <h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 	<form class="form__inner" method="post" action="./login/login.php">
-	<p>'.$dl->getLocalizedString("noLogin?").'</p>
+	<p id="dashboard-error-text">'.$dl->getLocalizedString("noLogin?").'</p>
 	        <button type="button" onclick="a(\'login/login.php\')" class="btn-song">'.$dl->getLocalizedString("LoginBtn").'</button>
     </form>
 </div>', 'reupload');

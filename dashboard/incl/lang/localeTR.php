@@ -1,6 +1,6 @@
 <?php
 global $dbPath;
-include __DIR__."/../../".$dbPath."config/dashboard.php";
+require __DIR__."/../../".$dbPath."config/dashboard.php";
 
 $string["homeNavbar"] = "Ana Sayfa";
 $string["welcome"] = $gdps." sunucusuna hoş geldiniz!";
@@ -440,6 +440,18 @@ $string['songIsDisabled'] = 'Not available';
 $string['disabledSongs'] = 'Disabled songs';
 $string['disabledSFXs'] = 'Disabled SFXs';
 
+$string['vaultCodesTitle'] = 'Add vault code';
+$string['vaultCodeExists'] = 'Code with this name already exists!';
+$string['reward'] = 'Reward';
+$string['vaultCodePickOption'] = 'Choose reward type';
+$string['vaultCodesCreate'] = 'Create code';
+$string['createNewVaultCode'] = 'Create new code!';
+$string['vaultCodesDesc'] = 'Here you can create new code!';
+$string['vaultCodesEditTitle'] = 'Change vault code';
+$string['vaultCodesEditDesc'] = 'Here you can change already existing code!';
+$string['vaultCodeName'] = 'Code';
+$string['vaultCodeUses'] = 'Number of uses (0 for infinite uses)';
+
 /*
 	REUPLOAD
 */
@@ -622,6 +634,9 @@ $string["modAction38"] = "Locked/unlocked level commenting";
 $string["modAction39"] = "Locked/unlocked list commenting";
 $string["modAction40"] = "Removed sent level";
 $string["modAction41"] = "Suggested level";
+$string["modAction42"] = "Created vault code";
+$string["modAction43"] = "Changed vault code";
+$string["modAction44"] = "Set level as event level";
 $string["everyActions"] = "Tüm eylemler";
 $string["everyMod"] = "Tüm moderatörler";
 $string["Kish!"] = "Uzak dur!";

@@ -14,7 +14,7 @@ if(!$gs->checkPermission($_SESSION["accountID"], "dashboardManageAutomod")) {
 	exit($dl->printSong('<div class="form">
 		<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 		<form class="form__inner" method="post" action=".">
-			<p>'.$dl->getLocalizedString("noPermission").'</p>
+			<p id="dashboard-error-text">'.$dl->getLocalizedString("noPermission").'</p>
 			<button type="button" onclick="a(\'\', true, false, \'GET\')" class="btn-primary">'.$dl->getLocalizedString("Kish!").'</button>
 		</form>
 	</div>', 'mod'));

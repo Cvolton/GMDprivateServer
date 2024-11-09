@@ -20,7 +20,7 @@ if(!isset($_SESSION["accountID"]) OR $_SESSION["accountID"] == 0) {
 	$dl->printSong('<div class="form">
 		<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 		<form class="form__inner" method="post" action="./login/login.php">
-		<p>'.$dl->getLocalizedString("noLogin?").'</p>
+		<p id="dashboard-error-text">'.$dl->getLocalizedString("noLogin?").'</p>
 		<button type="button" onclick="a(\'login/login.php\', true, false, \'GET\')" class="btn-song">'.$dl->getLocalizedString("LoginBtn").'</button>
 		</form>
 	</div>', 'reupload');
@@ -30,7 +30,7 @@ $checkBan = $gs->getPersonBan($_SESSION['accountID'], $gs->getUserID($_SESSION['
 if($checkBan) exit($dl->printSong('<div class="form">
 <h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 	<form class="form__inner" method="post" action="">
-	<p>'.sprintf($dl->getLocalizedString("youAreBanned"), htmlspecialchars(base64_decode($checkBan['reason'])), date("d.m.Y G:i", $checkBan['expires'])).'</p>
+	<p id="dashboard-error-text">'.sprintf($dl->getLocalizedString("youAreBanned"), htmlspecialchars(base64_decode($checkBan['reason'])), date("d.m.Y G:i", $checkBan['expires'])).'</p>
 	<button type="button" onclick="a(\'\', true, false, \'GET\')" class="btn-song">'.$dl->getLocalizedString("dashboard").'</button>
 	</form>
 </div>', 'reupload'));
@@ -39,7 +39,7 @@ if(!empty($_POST["usertarg"]) AND !empty($_POST["passtarg"]) AND !empty($_POST["
 		$dl->printSong('<div class="form">
 			<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 			<form class="form__inner" method="post" action="">
-			<p>'.$dl->getLocalizedString("invalidCaptcha").'</p>
+			<p id="dashboard-error-text">'.$dl->getLocalizedString("invalidCaptcha").'</p>
 			<button type="button" onclick="a(\'levels/levelToGD.php\', true, false, \'GET\')" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 			</form>
 		</div>', 'reupload');
@@ -53,7 +53,7 @@ if(!empty($_POST["usertarg"]) AND !empty($_POST["passtarg"]) AND !empty($_POST["
 	if(mb_substr($server, 0, 4) != 'http') exit($dl->printSong('<div class="form">
 		<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 		<form class="form__inner" method="post" action="">
-		<p>'.$dl->getLocalizedString("invalidPost").'</p>
+		<p id="dashboard-error-text">'.$dl->getLocalizedString("invalidPost").'</p>
 		<button type="button" onclick="a(\'levels/levelReupload.php\', true, false, \'GET\')" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 		</form>
 	</div>', 'reupload'));
@@ -64,7 +64,7 @@ if(!empty($_POST["usertarg"]) AND !empty($_POST["passtarg"]) AND !empty($_POST["
 			$dl->printSong('<div class="form">
 				<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 				<form class="form__inner" method="post" action="">
-				<p>'.$dl->getLocalizedString("levelNotFound").'</p>
+				<p id="dashboard-error-text">'.$dl->getLocalizedString("levelNotFound").'</p>
 				<button type="button" onclick="a(\'levels/levelToGD.php\', true, false, \'GET\')" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 				</form>
 			</div>', 'reupload');
@@ -77,7 +77,7 @@ if(!empty($_POST["usertarg"]) AND !empty($_POST["passtarg"]) AND !empty($_POST["
 			$dl->printSong('<div class="form">
 				<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 				<form class="form__inner" method="post" action="">
-				<p>'.$dl->getLocalizedString("notYourLevel").'</p>
+				<p id="dashboard-error-text">'.$dl->getLocalizedString("notYourLevel").'</p>
 				<button type="button" onclick="a(\'levels/levelToGD.php\', true, false, \'GET\')" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 				</form>
 			</div>', 'reupload');
@@ -108,7 +108,7 @@ if(!empty($_POST["usertarg"]) AND !empty($_POST["passtarg"]) AND !empty($_POST["
 		$dl->printSong('<div class="form">
 			<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 			<form class="form__inner" method="post" action="">
-			<p>'.$errorArray[$result].'</p>
+			<p id="dashboard-error-text">'.$errorArray[$result].'</p>
 			<button type="button" onclick="a(\'levels/levelReupload.php\', true, false, \'GET\')" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 			</form>
 		</div>', 'reupload');
@@ -117,7 +117,7 @@ if(!empty($_POST["usertarg"]) AND !empty($_POST["passtarg"]) AND !empty($_POST["
 			$dl->printSong('<div class="form">
 				<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 				<form class="form__inner" method="post" action="">
-				<p>'.$dl->getLocalizedString("invalidPost").'</p>
+				<p id="dashboard-error-text">'.$dl->getLocalizedString("invalidPost").'</p>
 				<button type="button" onclick="a(\'levels/levelToGD.php\', true, false, \'GET\')" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 				</form>
 			</div>', 'reupload');
@@ -183,7 +183,7 @@ if(!empty($_POST["usertarg"]) AND !empty($_POST["passtarg"]) AND !empty($_POST["
 		$dl->printSong('<div class="form">
 			<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 			<form class="form__inner" method="post" action="">
-			<p>'.$errorArray[$result].'</p>
+			<p id="dashboard-error-text">'.$errorArray[$result].'</p>
 			<button type="button" onclick="a(\'levels/levelReupload.php\', true, false, \'GET\')" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 			</form>
 		</div>', 'reupload');
@@ -233,7 +233,7 @@ $(document).on("keyup keypress change keydown",function(){
 		$dl->printSong('<div class="form">
 			<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 			<form class="form__inner" method="post" action=".">
-			<p>'.$dl->getLocalizedString("pageDisabled").'</p>
+			<p id="dashboard-error-text">'.$dl->getLocalizedString("pageDisabled").'</p>
 			<button type="button" onclick="a(\'\', true, false, \'GET\')" class="btn-song">'.$dl->getLocalizedString("dashboard").'</button>
 			</form>
 		</div>', 'reupload');

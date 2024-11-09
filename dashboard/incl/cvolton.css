@@ -305,14 +305,20 @@ input, select {
 }
 
 .notify {
-	width: 100%;
-	background: rgba(244,141,138, 0.2);
-	border: 2px solid #e76161;
-	border-radius: 20px;
-	margin: 0px 0px 20px 0px;
-	padding-top: 20px;
-	padding-bottom: 20px;
-	text-align: center;
+	background: rgb(73 41 40 / 67%);
+    border: 1px solid #ff7f7f;
+    border-radius: 20px;
+    padding: 5px 10px;
+    text-align: center;
+    height: max-content;
+    pointer-events: none;
+    color: white;
+    font-weight: 700;
+    max-width: 90vw;
+    width: max-content;
+    backdrop-filter: blur(5px);
+	opacity: 0;
+	transition: 0.3s;
 }
 
 .notifyblue {
@@ -2568,4 +2574,17 @@ body:has(.audio) {
 .cards-form {
 	margin: 0px;
 	width: 150%;
+}
+
+.error-divs {
+	display: flex;
+    position: fixed;
+    bottom: 50px;
+    right: 10px;
+    flex-direction: column;
+    grid-gap: 10px;
+}
+
+.notify-show {
+	opacity: 1;
 }

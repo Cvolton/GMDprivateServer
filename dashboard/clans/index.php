@@ -6,7 +6,7 @@ global $clansEnabled;
 if(!$clansEnabled) exit($dl->printSong('<div class="form">
 			<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 			<form class="form__inner" method="post" action=".">
-			<p>'.$dl->getLocalizedString("pageDisabled").'</p>
+			<p id="dashboard-error-text">'.$dl->getLocalizedString("pageDisabled").'</p>
 			<button type="button" onclick="a(\'\', true, false, \'GET\')" class="btn-song">'.$dl->getLocalizedString("dashboard").'</button>
 			</form>
 		</div>', 'browse'));

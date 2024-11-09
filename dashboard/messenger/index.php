@@ -52,7 +52,7 @@ if($msgEnabled == 0) {
 	exit($dl->printSong('<div class="form">
 		<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 		<form class="form__inner" method="post" action=".">
-		<p>'.$dl->getLocalizedString("pageDisabled").'</p>
+		<p id="dashboard-error-text">'.$dl->getLocalizedString("pageDisabled").'</p>
 		<button type="button" onclick="a(\'\', true, true, \'GET\')" class="btn-song">'.$dl->getLocalizedString("dashboard").'</button>
 		</form>
 	</div>', 'msg'));
@@ -62,7 +62,7 @@ if(!isset($_SESSION["accountID"]) OR $_SESSION["accountID"] == 0) {
 	exit($dl->printSong('<div class="form">
 		<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 		<form class="form__inner" method="post" action="./login/login.php">
-		<p>'.$dl->getLocalizedString("noLogin?").'</p>
+		<p id="dashboard-error-text">'.$dl->getLocalizedString("noLogin?").'</p>
 		<button type="button" onclick="a(\'login/login.php\', true, true, \'GET\')" class="btn-primary">'.$dl->getLocalizedString("LoginBtn").'</button>
 		</form>
 	</div>', 'msg'));
@@ -75,7 +75,7 @@ if($_POST['receiver'] != 0 && ExploitPatch::number($_POST['receiver']) != $_SESS
 		if($checkBan) exit($dl->printSong('<div class="form">
 			<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 			<form class="form__inner" action="" method="post">
-			<p>'.sprintf($dl->getLocalizedString("youAreBanned"), htmlspecialchars(base64_decode($checkBan['reason'])), date("d.m.Y G:i", $checkBan['expires'])).'</p>
+			<p id="dashboard-error-text">'.sprintf($dl->getLocalizedString("youAreBanned"), htmlspecialchars(base64_decode($checkBan['reason'])), date("d.m.Y G:i", $checkBan['expires'])).'</p>
 			<button type="button" onclick="a(\'\', true, false, \'GET\')" class="btn btn-primary">'.$dl->getLocalizedString("dashboard").'</button>
 			</form>
 		</div>'));

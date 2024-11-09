@@ -5,7 +5,7 @@ $dl = new dashboardLib();
 require_once "../".$dbPath."incl/lib/mainLib.php";
 require "../".$dbPath."incl/lib/exploitPatch.php";
 $gs = new mainLib();
-require "../".$dbPath."incl/lib/connection.php";
+include "../".$dbPath."incl/lib/connection.php";
 $dl->title($dl->getLocalizedString("modActionsList"));
 if(isset($_GET["page"]) AND is_numeric($_GET["page"]) AND $_GET["page"] > 0){
 	$page = ($_GET["page"] - 1) * 10;
@@ -40,7 +40,7 @@ if(empty($result)) {
 	$dl->printSong('<div class="form">
     <h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
     <form class="form__inner" method="post" action=".">
-		<p>'.$dl->getLocalizedString("emptyPage").'</p>
+		<p id="dashboard-error-text">'.$dl->getLocalizedString("emptyPage").'</p>
         <button type="button" onclick="a(\'\', true, false, \'GET\')" class="btn-primary">'.$dl->getLocalizedString("dashboard").'</button>
     </form>
 </div>', 'stats');
@@ -215,6 +215,19 @@ foreach($result as &$action){
 			$value = $value3;
 			$value3 = $gs->getLevelName($value3);
 			break;
+		case 42:
+		case 43:
+			$rewardTypes = ['Nothing', 'Fire Shard', 'Ice Shard', 'Poison Shard', 'Shadow Shard', 'Lava Shard', 'Demon Key', 'Orbs', 'Diamond', 'Nothing', 'Earth Shard', 'Blood Shard', 'Metal Shard', 'Light Shard', 'Soul Shard', 'Gold Key'];
+			$value = $rewardTypes[$value2].', '.$value3;
+			$value2 = $value5;
+			$value3 = $dl->convertToDate($value4, true);
+			break;
+		case 44:
+			$rewardTypes = ['Nothing', 'Fire Shard', 'Ice Shard', 'Poison Shard', 'Shadow Shard', 'Lava Shard', 'Demon Key', 'Orbs', 'Diamond', 'Nothing', 'Earth Shard', 'Blood Shard', 'Metal Shard', 'Light Shard', 'Soul Shard', 'Gold Key'];
+			$value = $dl->convertToDate($value, true);
+			$value2 = $rewardTypes[$value2].', '.$value4;
+			$value3 = $gs->getLevelName($value3);
+			break;
 	}
 	if(mb_strlen($action["value"]) > 18) $value = "<details><summary class='modactionsspoiler'>".$dl->getLocalizedString("spoiler")."</summary>$value</details>";
   	if(mb_strlen($action["value2"]) > 18) $value2 = "<details><summary class='modactionsspoiler'>".$dl->getLocalizedString("spoiler")."</summary>$value2</details>";
@@ -309,8 +322,11 @@ $pagel = '<div class="form new-form">
 			<option value="37">'.$dl->getLocalizedString("modAction37").' (37)</option>
 			<option value="38">'.$dl->getLocalizedString("modAction38").' (38)</option>
 			<option value="39">'.$dl->getLocalizedString("modAction39").' (39)</option>
-   			<option value="40">'.$dl->getLocalizedString("modAction40").' (40)</option>
-         		<option value="41">'.$dl->getLocalizedString("modAction41").' (41)</option>
+			<option value="40">'.$dl->getLocalizedString("modAction40").' (40)</option>
+         	<option value="41">'.$dl->getLocalizedString("modAction41").' (41)</option>
+         	<option value="42">'.$dl->getLocalizedString("modAction42").' (42)</option>
+         	<option value="43">'.$dl->getLocalizedString("modAction43").' (43)</option>
+         	<option value="44">'.$dl->getLocalizedString("modAction44").' (44)</option>
 		</select>
 		<select id="sel2" style="border-radius: 0;margin:0;width:35%" name="who" value="'.$_GET["who"].'" placeholder="'.$dl->getLocalizedString("search").'">
 			<option value="0">'.$dl->getLocalizedString("everyMod").'</option>

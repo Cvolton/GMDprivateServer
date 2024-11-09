@@ -2,7 +2,7 @@
 // Translation by @GenericPlayR / masckmaster2007 and @M336G / M336
 
 global $dbPath;
-include __DIR__."/../../".$dbPath."config/dashboard.php";
+require __DIR__."/../../".$dbPath."config/dashboard.php";
 
 $string["homeNavbar"] = "Accueil";
 $string["welcome"] = "Bienvenue sur ".$gdps.'!';
@@ -442,6 +442,18 @@ $string['songIsDisabled'] = 'Not available';
 $string['disabledSongs'] = 'Disabled songs';
 $string['disabledSFXs'] = 'Disabled SFXs';
 
+$string['vaultCodesTitle'] = 'Add vault code';
+$string['vaultCodeExists'] = 'Code with this name already exists!';
+$string['reward'] = 'Reward';
+$string['vaultCodePickOption'] = 'Choose reward type';
+$string['vaultCodesCreate'] = 'Create code';
+$string['createNewVaultCode'] = 'Create new code!';
+$string['vaultCodesDesc'] = 'Here you can create new code!';
+$string['vaultCodesEditTitle'] = 'Change vault code';
+$string['vaultCodesEditDesc'] = 'Here you can change already existing code!';
+$string['vaultCodeName'] = 'Code';
+$string['vaultCodeUses'] = 'Number of uses (0 for infinite uses)';
+
 /*
 	REUPLOAD
 */
@@ -624,6 +636,9 @@ $string["modAction38"] = "A (dé)vérouiller les commentaires d'un niveau";
 $string["modAction39"] = "A (dé)vérouiller les commentaires d'une liste";
 $string["modAction40"] = "A enlevé un niveau de la liste des niveaux suggérés";
 $string["modAction41"] = "A suggéré un niveau";
+$string["modAction42"] = "Created vault code";
+$string["modAction43"] = "Changed vault code";
+$string["modAction44"] = "Set level as event level";
 $string["everyActions"] = "Toutes les actions";
 $string["everyMod"] = "Tous les modérateurs";
 $string["Kish!"] = "Partez d'ici !";

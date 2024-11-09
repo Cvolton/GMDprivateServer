@@ -13,7 +13,7 @@ $allVaultCodes = $vaultCodeName = $vaultCodeType = $vaultCodeReward = $vaultCode
 if(!$gs->checkPermission($_SESSION["accountID"], "dashboardVaultCodesManage")) exit($dl->printSong('<div class="form">
     <h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
     <form class="form__inner" method="post" action=".">
-	<p>'.$dl->getLocalizedString("noPermission").'</p>
+	<p id="dashboard-error-text">'.$dl->getLocalizedString("noPermission").'</p>
 	<button type="button" onclick="a(\'\', true, false, \'GET\')" class="btn-primary">'.$dl->getLocalizedString("Kish!").'</button>
     </form>
 </div>', 'mod'));
@@ -21,7 +21,7 @@ if(isset($_POST['vaultCodeName']) && isset($_POST['vaultCodeType']) && isset($_P
 	if(!Captcha::validateCaptcha()) exit($dl->printSong('<div class="form">
 		<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 		<form class="form__inner" method="post" action="">
-		<p>'.$dl->getLocalizedString("invalidCaptcha").'</p>
+		<p id="dashboard-error-text">'.$dl->getLocalizedString("invalidCaptcha").'</p>
 		<button type="button" onclick="a(\'levels/vaultCodes.php\', true, false, \'GET\')" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 		</form>
 	</div>', 'mod'));
@@ -37,7 +37,7 @@ if(isset($_POST['vaultCodeName']) && isset($_POST['vaultCodeType']) && isset($_P
 		if($checkName) exit($dl->printSong('<div class="form">
 			<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 			<form class="form__inner" method="post" action="">
-			<p>'.$dl->getLocalizedString("vaultCodeExists").'</p>
+			<p id="dashboard-error-text">'.$dl->getLocalizedString("vaultCodeExists").'</p>
 			<button type="button" onclick="a(\'levels/vaultCodes.php\', true, false, \'GET\')" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 			</form>
 		</div>', 'mod'));
@@ -46,6 +46,7 @@ if(isset($_POST['vaultCodeName']) && isset($_POST['vaultCodeType']) && isset($_P
 		$rewardID = $db->lastInsertId();
 		$query = $db->prepare("INSERT INTO modactions (type, value, value2, value3, value4, value5, value6, timestamp, account) VALUES ('42', :value, :value2, :value3, :value4, :value5, :value6, :timestamp, :accountID)");
 		$query->execute([':value' => $vaultCodeName, ':value2' => $vaultCodeType, ':value3' => $vaultCodeReward, ':value4' => $vaultCodeDuration, ':value5' => $vaultCodeUses, ':value6' => $rewardID, ':timestamp' => time(), ':accountID' => $_SESSION['accountID']]);
+		$rewardID = $vaultCodeName = $vaultCodeType = $vaultCodeReward = $vaultCodeUses = $vaultCodeDuration = '';
 	} else {
 		$rewardID = ExploitPatch::number($_POST['rewardID']);
 		$checkName = $db->prepare('SELECT count(*) FROM vaultcodes WHERE code LIKE :code AND rewardID != :rewardID');
@@ -54,7 +55,7 @@ if(isset($_POST['vaultCodeName']) && isset($_POST['vaultCodeType']) && isset($_P
 		if($checkName) exit($dl->printSong('<div class="form">
 			<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 			<form class="form__inner" method="post" action="">
-			<p>'.$dl->getLocalizedString("vaultCodeExists").'</p>
+			<p id="dashboard-error-text">'.$dl->getLocalizedString("vaultCodeExists").'</p>
 			<button type="button" onclick="a(\'levels/vaultCodes.php\', true, false, \'GET\')" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 			</form>
 		</div>', 'mod'));
@@ -77,7 +78,7 @@ if(!empty($_POST['rewardID'])) {
 		$vaultCodeDuration = !empty($getVaultCode['duration']) ? date('Y-m-d\TH:i:s', $getVaultCode['duration']) : '';
 	}
 }
-$rewardTypes = ['Nothing', 'Fire Shard', 'Ice Shard', 'Poison Shard', 'Shadow Shard', 'Lava Shard', 'Demon Key', 'Orbs', 'Diamond', 'Nothing', 'Earth Shard', 'Blood Shard', 'Metal Shard', 'Light Shard', 'Sould Shard', 'Gold Key'];
+$rewardTypes = ['Nothing', 'Fire Shard', 'Ice Shard', 'Poison Shard', 'Shadow Shard', 'Lava Shard', 'Demon Key', 'Orbs', 'Diamond', 'Nothing', 'Earth Shard', 'Blood Shard', 'Metal Shard', 'Light Shard', 'Soul Shard', 'Gold Key'];
 $vaultCodes = $db->prepare("SELECT * FROM vaultcodes ORDER BY rewardID ASC");
 $vaultCodes->execute();
 $vaultCodes = $vaultCodes->fetchAll();
@@ -117,7 +118,7 @@ $dl->printSong('<div class="form-control itemsbox chatdiv">
 				<select name="vaultCodeType" value="'.$vaultCodeType.'" id="vaultCodeType" style="margin: 0px;">
 					'.$rewardTypesOptions.'
 				</select>
-				<input id="vaultCodeReward" value="'.$vaultCodeReward.'" name="vaultCodeReward" type="number" placeholder="'.$dl->getLocalizedString('vaultCodeReward').'">
+				<input id="vaultCodeReward" value="'.$vaultCodeReward.'" name="vaultCodeReward" type="number" placeholder="'.$dl->getLocalizedString('reward').'">
 			</div>
 			<div class="field" style="grid-gap: 5px;">
 				<input id="vaultCodeUses" value="'.$vaultCodeUses.'" name="vaultCodeUses" type="number" placeholder="'.$dl->getLocalizedString('vaultCodeUses').'">

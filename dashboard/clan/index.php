@@ -6,7 +6,7 @@ global $clansEnabled;
 if(!$clansEnabled) exit($dl->printSong('<div class="form">
 			<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 			<form class="form__inner" method="post" action=".">
-			<p>'.$dl->getLocalizedString("pageDisabled").'</p>
+			<p id="dashboard-error-text">'.$dl->getLocalizedString("pageDisabled").'</p>
 			<button type="button" onclick="a(\'\', true, false, \'GET\')" class="btn-song">'.$dl->getLocalizedString("dashboard").'</button>
 			</form>
 		</div>', 'profile'));
@@ -32,7 +32,7 @@ if(!$clanid OR !$clan) {
 	exit($dl->printSong('<div class="form">
        <h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
       <form class="form__inner" method="post" action="">
-      <p>'.$dl->getLocalizedString("noClan").'</p>
+      <p id="dashboard-error-text">'.$dl->getLocalizedString("noClan").'</p>
       <button type="button" onclick="a(\'\', true, true, \'GET\')" class="btn-primary">'.$dl->getLocalizedString("dashboard").'</button>
      </form>
     </div>', 'profile'));
@@ -52,7 +52,7 @@ if(!empty($clan)) {
                     if(empty($mbrs)) exit($dl->printSong('<div class="form">
                 	   <h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
                	 	   <form class="form__inner" method="post" action="">
-              		  <p>'.$dl->getLocalizedString("notInYourClan").'</p>
+              		  <p id="dashboard-error-text">'.$dl->getLocalizedString("notInYourClan").'</p>
               		  <button type="button" onclick="a(\'clan/'.$clan["clan"].'/settings\', true, true, \'GET\')" class="btn-primary">'.$dl->getLocalizedString("settings").'</button>
       				 </form>
     			</div>', 'profile'));
@@ -263,7 +263,7 @@ if(!empty($clan)) {
 							if(in_array(strtolower($name), $bannedClanNamesList)) exit($dl->printSong('<div class="form">
 								<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 								<form class="form__inner" method="post" action="">
-								<p>'.$dl->getLocalizedString("badClanName").'</p>
+								<p id="dashboard-error-text">'.$dl->getLocalizedString("badClanName").'</p>
 								<button type="submit" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 								</form>
 							</div>'));
@@ -273,7 +273,7 @@ if(!empty($clan)) {
 								if(!empty($bannedClanName) && mb_strpos(strtolower($name), $bannedClanName) !== false) exit($dl->printSong('<div class="form">
 								<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 								<form class="form__inner" method="post" action="">
-								<p>'.$dl->getLocalizedString("badClanName").'</p>
+								<p id="dashboard-error-text">'.$dl->getLocalizedString("badClanName").'</p>
 								<button type="submit" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 								</form>
 							</div>'));
@@ -287,7 +287,7 @@ if(!empty($clan)) {
 							if(in_array(strtolower($tag), $bannedClanTagsList)) exit($dl->printSong('<div class="form">
 								<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 								<form class="form__inner" method="post" action="">
-								<p>'.$dl->getLocalizedString("badClanTag").'</p>
+								<p id="dashboard-error-text">'.$dl->getLocalizedString("badClanTag").'</p>
 								<button type="submit" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 								</form>
 							</div>'));
@@ -297,7 +297,7 @@ if(!empty($clan)) {
 								if(!empty($bannedClanTag) && mb_strpos(strtolower($tag), $bannedClanTag) !== false) exit($dl->printSong('<div class="form">
 								<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 								<form class="form__inner" method="post" action="">
-								<p>'.$dl->getLocalizedString("badClanTag").'</p>
+								<p id="dashboard-error-text">'.$dl->getLocalizedString("badClanTag").'</p>
 								<button type="submit" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 								</form>
 							</div>'));
@@ -312,7 +312,7 @@ if(!empty($clan)) {
 				if($check > 0) exit($dl->printSong('<div class="form">
 					<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 					<form class="form__inner" method="post" action=".">
-						<p>'.$dl->getLocalizedString("takenClanName").'</p>
+						<p id="dashboard-error-text">'.$dl->getLocalizedString("takenClanName").'</p>
 							<button type="button" onclick="a(\'clan/'.$clan['clan'].'/settings\', true, true, \'GET\')" class="btn-primary">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 					</form>
 				</div>', 'browse'));
@@ -322,7 +322,7 @@ if(!empty($clan)) {
 				if($check > 0) exit($dl->printSong('<div class="form">
 					<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 					<form class="form__inner" method="post" action=".">
-						<p>'.$dl->getLocalizedString("takenClanTag").'</p>
+						<p id="dashboard-error-text">'.$dl->getLocalizedString("takenClanTag").'</p>
 							<button type="button" onclick="a(\'clan/'.$clan['clan'].'/settings\', true, true, \'GET\')" class="btn-primary">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 					</form>
 				</div>', 'browse'));

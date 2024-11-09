@@ -12,7 +12,7 @@ $dl->printFooter('../');
 if(!$gs->checkPermission($_SESSION["accountID"], "dashboardModTools")) {
 	die($dl->printSong('<div class="form">
 		<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
-		<p id="bruh">'.$dl->getLocalizedString("noPermission").'</p>
+		<p id="dashboard-error-text">'.$dl->getLocalizedString("noPermission").'</p>
 		<form class="form__inner" method="post" action=".">
 		<button type="button" onclick="a(\'\', true, false, \'GET\')" class="btn-primary">'.$dl->getLocalizedString("Kish!").'</button>
 		</form>
@@ -23,7 +23,7 @@ if(isset($_POST["person"]) && isset($_POST["personType"]) && isset($_POST["banTy
 			die($dl->printSong('<div class="form">
 				<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 				<form class="form__inner" method="post" action="">
-				<p>'.$dl->getLocalizedString("invalidCaptcha").'</p>
+				<p id="dashboard-error-text">'.$dl->getLocalizedString("invalidCaptcha").'</p>
 				<button type="button" onclick="a(\'account/banPerson.php\', true, false, \'GET\')" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 				</form>
 			</div>', 'mod'));
@@ -37,14 +37,14 @@ if(isset($_POST["person"]) && isset($_POST["personType"]) && isset($_POST["banTy
 		if($check) die($dl->printSong('<div class="form">
 			<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 			<form class="form__inner" method="post" action="">
-			<p>'.$dl->getLocalizedString("userIsBanned").'</p>
+			<p id="dashboard-error-text">'.$dl->getLocalizedString("userIsBanned").'</p>
 			<button type="button" onclick="a(\'account/banPerson.php\', true, false, \'GET\')" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 			</form>
 		</div>', 'mod'));
 		if(time() >= $expires) die($dl->printSong('<div class="form">
 			<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 			<form class="form__inner" method="post" action="">
-			<p>'.$dl->getLocalizedString("noBanInPast").'</p>
+			<p id="dashboard-error-text">'.$dl->getLocalizedString("noBanInPast").'</p>
 			<button type="button" onclick="a(\'account/banPerson.php\', true, false, \'GET\')" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 			</form>
 		</div>', 'mod'));

@@ -18,7 +18,7 @@ if($gs->checkPermission($_SESSION["accountID"], "dashboardGauntletCreate")) {
 				$dl->printSong('<div class="form">
 					<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 					<form class="form__inner" method="post" action="">
-					<p>'.$dl->getLocalizedString("invalidCaptcha").'</p>
+					<p id="dashboard-error-text">'.$dl->getLocalizedString("invalidCaptcha").'</p>
 					<button type="button" onclick="a(\'levels/gauntletCreate.php\', true, false, \'GET\')" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 					</form>
 				</div>', 'mod');
@@ -28,19 +28,19 @@ if($gs->checkPermission($_SESSION["accountID"], "dashboardGauntletCreate")) {
 		$gauntletLevels = [ExploitPatch::number($_POST['level_1']), ExploitPatch::number($_POST['level_2']), ExploitPatch::number($_POST['level_3']), ExploitPatch::number($_POST['level_4']), ExploitPatch::number($_POST['level_5'])];
 		if(array_unique($gauntletLevels) != $gauntletLevels) {
 			$dl->printSong('<div class="form">
-		<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
-		<form class="form__inner" method="post" action="">
-			<p>'.$dl->getLocalizedString("sameLevels").'</p>
+				<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
+				<form class="form__inner" method="post" action="">
+				<p id="dashboard-error-text">'.$dl->getLocalizedString("sameLevels").'</p>
 				<button type="button" onclick="a(\'levels/gauntletCreate.php\', true, false, \'GET\')" class="btn-primary">'.$dl->getLocalizedString("tryAgainBTN").'</button>
-		</form>
-	</div>', 'mod');
+				</form>
+			</div>', 'mod');
 			die();
 		}
 		if($_POST['level_1'] == "l1" OR $_POST['level_2'] == "l2" OR $_POST['level_3'] == "l3" OR $_POST['level_4'] == "l4" OR $_POST['level_5'] == "l5") { // idk if its need for now, but ill keep it here
 		$dl->printSong('<div class="form">
 				<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 				<form class="form__inner" method="post" action="">
-				<p>'.$dl->getLocalizedString("chooseLevels").'</p>
+				<p id="dashboard-error-text">'.$dl->getLocalizedString("chooseLevels").'</p>
 				<button type="button" onclick="a(\'levels/gauntletCreate.php\', true, false, \'GET\')" class="btn-primary">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 				</form>
 				</div>', 'mod');
@@ -50,7 +50,7 @@ if($gs->checkPermission($_SESSION["accountID"], "dashboardGauntletCreate")) {
 		$dl->printSong('<div class="form">
 				<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 				<form class="form__inner" method="post" action="">
-				<p>'.$dl->getLocalizedString("invalidPost").'</p>
+				<p id="dashboard-error-text">'.$dl->getLocalizedString("invalidPost").'</p>
 				<button type="button" onclick="a(\'levels/gauntletCreate.php\', true, false, \'GET\')" class="btn-primary">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 				</form>
 				</div>', 'mod');

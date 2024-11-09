@@ -14,7 +14,7 @@ $acc = $_SESSION["accountID"];
 if(!$gs->checkPermission($acc, 'dashboardForceChangePassNick')) {
 	$dl->printSong('<div class="form">
     <h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
-	<p id="bruh">'.$dl->getLocalizedString("noPermission").'</p>
+	<p id="dashboard-error-text">'.$dl->getLocalizedString("noPermission").'</p>
     <form class="form__inner" method="post" action=".">
 	<button type="button" onclick="a(\'\')" class="btn-primary">'.$dl->getLocalizedString("Kish!").'</button>
     </form>
@@ -34,7 +34,7 @@ if(!empty($_POST["userID"]) AND !empty($_POST[$type])) {
 		$dl->printSong('<div class="form">
 			<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 			<form class="form__inner" method="post" action="">
-			<p>'.$dl->getLocalizedString("invalidCaptcha").'</p>
+			<p id="dashboard-error-text">'.$dl->getLocalizedString("invalidCaptcha").'</p>
 			<button type="button" onclick="a(\'account/forceChange.php\', true, true, \'GET\')" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 			</form>
 		</div>', 'mod');
@@ -52,7 +52,7 @@ if(!empty($_POST["userID"]) AND !empty($_POST[$type])) {
 			$dl->printSong('<div class="form">
 				<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 				<form class="form__inner" method="post" action="">
-				<p>'.$dl->getLocalizedString("alreadyUsedNick").'</p>
+				<p id="dashboard-error-text">'.$dl->getLocalizedString("alreadyUsedNick").'</p>
 				<button type="button" onclick="a(\'account/forceChange.php\', true, true, \'GET\')" class="btn-primary">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 				</form>
 				</div>', 'mod');

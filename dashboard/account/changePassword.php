@@ -21,7 +21,7 @@ if($_POST["oldpassword"] != "" AND $_POST["newpassword"] != "" AND $_POST["newpa
 		$dl->printSong('<div class="form">
 			<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 			<form class="form__inner" method="post" action="">
-			<p>'.$dl->getLocalizedString("invalidCaptcha").'</p>
+			<p id="dashboard-error-text">'.$dl->getLocalizedString("invalidCaptcha").'</p>
 			<button type="button" onclick="a(\'account/changePassword.php\', true, true, \'GET\')"  class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 			</form>
 		</div>', 'account');
@@ -37,7 +37,7 @@ if($_POST["oldpassword"] != "" AND $_POST["newpassword"] != "" AND $_POST["newpa
 		$dl->printSong('<div class="form">
 		<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 		<form class="form__inner" method="post" action="">
-		<p>'.$dl->getLocalizedString("samePass").'</p>
+		<p id="dashboard-error-text">'.$dl->getLocalizedString("samePass").'</p>
         <button type="button" onclick="a(\'account/changePassword.php\', true, true, \'GET\')" class="btn-primary">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 		</form>
 		</div>', 'account');
@@ -84,7 +84,7 @@ if($pass == 1) {
 	$dl->printSong('<div class="form">
     <h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
     <form class="form__inner" method="post" action="">
-		<p>'.$dl->getLocalizedString("wrongPass").'</p>
+		<p id="dashboard-error-text">'.$dl->getLocalizedString("wrongPass").'</p>
         <button type="button" onclick="a(\'account/changePassword.php\', true, true, \'GET\')" class="btn-primary">'.$dl->getLocalizedString("tryAgainBTN").'</button>
     </form>
 </div>', 'account');
@@ -132,7 +132,7 @@ $(document).on("keyup keypress change keydown",function(){
 	$dl->printSong('<div class="form">
     <h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 	<form class="form__inner" method="post" action="./login/login.php">
-	<p>'.$dl->getLocalizedString("noLogin?").'</p>
+	<p id="dashboard-error-text">'.$dl->getLocalizedString("noLogin?").'</p>
 	        <button type="button" onclick="a(\'login/login.php\')"class="btn-song">'.$dl->getLocalizedString("LoginBtn").'</button>
     </form>
 </div>', 'account');

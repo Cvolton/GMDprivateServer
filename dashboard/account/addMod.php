@@ -6,7 +6,6 @@ require "../".$dbPath."incl/lib/connection.php";
 $dl = new dashboardLib();
 require_once "../".$dbPath."incl/lib/mainLib.php";
 $gs = new mainLib();
-require "../".$dbPath."incl/lib/connection.php";
 require "../".$dbPath."incl/lib/exploitPatch.php";
 $ep = new exploitPatch();
 $dl->title($dl->getLocalizedString("addMod"));
@@ -19,7 +18,7 @@ if(!empty($_POST["user"])) {
 		$dl->printSong('<div class="form">
 			<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 			<form class="form__inner" method="post" action="">
-			<p>'.$dl->getLocalizedString("invalidCaptcha").'</p>
+			<p id="dashboard-error-text">'.$dl->getLocalizedString("invalidCaptcha").'</p>
 			<button type="button" onclick="a(\'account/addMod.php\', true, false, \'GET\')" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 			</form>
 		</div>', 'mod');
@@ -32,7 +31,7 @@ if(!empty($_POST["user"])) {
 		$dl->printSong('<div class="form">
 			<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 			<form class="form__inner" method="post" action="">
-			<p>'.$dl->getLocalizedString("invalidPost").'</p>
+			<p id="dashboard-error-text">'.$dl->getLocalizedString("invalidPost").'</p>
 			<button type="button" onclick="a(\'account/addMod.php\', true, false, \'GET\')" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 			</form>
 		</div>', 'mod');
@@ -46,7 +45,7 @@ if(!empty($_POST["user"])) {
 		$dl->printSong('<div class="form">
 			<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 			<form class="form__inner" method="post" action="">
-			<p>'.$dl->getLocalizedString("nothingFound").'</p>
+			<p id="dashboard-error-text">'.$dl->getLocalizedString("nothingFound").'</p>
 			<button type="button" onclick="a(\'account/addMod.php\', true, false, \'GET\')" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 			</form>
 		</div>', 'mod');
@@ -61,7 +60,7 @@ if(!empty($_POST["user"])) {
 	if($res >= $priority && !$admin) die($dl->printSong('<div class="form">
 			<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 			<form class="form__inner" method="post" action="">
-			<p>'.$dl->getLocalizedString("modAboveYourRole").'</p>
+			<p id="dashboard-error-text">'.$dl->getLocalizedString("modAboveYourRole").'</p>
 			<button type="button" onclick="a(\'account/addMod.php\', true, false, \'GET\')" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 			</form>
 		</div>', 'mod'));
@@ -69,7 +68,7 @@ if(!empty($_POST["user"])) {
 		$dl->printSong('<div class="form">
 			<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 			<form class="form__inner" method="post" action="">
-			<p>'.$dl->getLocalizedString("modYourself").'</p>
+			<p id="dashboard-error-text">'.$dl->getLocalizedString("modYourself").'</p>
 			<button type="button" onclick="a(\'account/addMod.php\', true, false, \'GET\')" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 			</form>
 		</div>', 'mod');
@@ -82,7 +81,7 @@ if(!empty($_POST["user"])) {
 		$dl->printSong('<div class="form">
 			<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 			<form class="form__inner" method="post" action="">
-			<p>'.$dl->getLocalizedString("alreadyMod").'</p>
+			<p id="dashboard-error-text">'.$dl->getLocalizedString("alreadyMod").'</p>
 			<button type="button" onclick="a(\'account/addMod.php\', true, false, \'GET\')" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 			</form>
 		</div>', 'mod');
@@ -103,7 +102,7 @@ if(!empty($_POST["user"])) {
 		</div>', 'mod');
 	} else { // I just realized this code will never run LOL
 		$query = $db->prepare("DELETE FROM roleassign WHERE accountID = :accID");
-		$query->execute([':accID' => $mod]);
+		$query->execute([':accID' => $accountID]);
 		$mod2 = $gs->getAccountName($mod);
 		$query = $db->prepare("INSERT INTO modactions  (type, value, timestamp, account, value2, value3) VALUES ('20', :value, :timestamp, :account, :value2, :value3)");
 		$query->execute([':value' => $mod2, ':timestamp' => time(), ':account' => $accountID, ':value2' => $mod, ':value3' => -1]);

@@ -17,7 +17,7 @@ if(!empty($_POST["username"]) AND !empty($_POST["level"])) {
 			$dl->printSong('<div class="form">
 				<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 				<form class="form__inner" method="post" action="">
-				<p>'.$dl->getLocalizedString("invalidCaptcha").'</p>
+				<p id="dashboard-error-text">'.$dl->getLocalizedString("invalidCaptcha").'</p>
 				<button type="button" onclick="a(\'levels/shareCP.php\', true, false, \'GET\')" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 				</form>
 			</div>', 'mod');
@@ -32,7 +32,7 @@ if(!empty($_POST["username"]) AND !empty($_POST["level"])) {
 		$dl->printSong('<div class="form">
 			<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 			<form class="form__inner" method="post" action="">
-			<p>'.$dl->getLocalizedString("alreadyShared").'</p>
+			<p id="dashboard-error-text">'.$dl->getLocalizedString("alreadyShared").'</p>
 			<button type="button" onclick="a(\'levels/shareCP.php\', true, false, \'GET\')" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 			</form>
 			</div>', 'mod');
@@ -45,7 +45,7 @@ if(!empty($_POST["username"]) AND !empty($_POST["level"])) {
 		$dl->printSong('<div class="form">
 			<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 			<form class="form__inner" method="post" action="">
-			<p>'.$dl->getLocalizedString("shareToAuthor").'</p>
+			<p id="dashboard-error-text">'.$dl->getLocalizedString("shareToAuthor").'</p>
 			<button type="button" onclick="a(\'levels/shareCP.php\', true, false, \'GET\')" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 			</form>
 			</div>', 'mod');
@@ -59,7 +59,7 @@ if(!empty($_POST["username"]) AND !empty($_POST["level"])) {
 		$dl->printSong('<div class="form">
 			<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 			<form class="form__inner" method="post" action="">
-			<p>'.$dl->getLocalizedString("userIsBanned").'</p>
+			<p id="dashboard-error-text">'.$dl->getLocalizedString("userIsBanned").'</p>
 			<button type="button" onclick="a(\'levels/shareCP.php\', true, false, \'GET\')" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 			</form>
 			</div>', 'mod');
@@ -101,7 +101,7 @@ if(!empty($_POST["username"]) AND !empty($_POST["level"])) {
 	$dl->printSong('<div class="form">
     <h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
     <form class="form__inner" method="post" action=".">
-		<p>'.$dl->getLocalizedString("noPermission").'</p>
+		<p id="dashboard-error-text">'.$dl->getLocalizedString("noPermission").'</p>
 	        <button type="button" onclick="a(\'\', true, false, \'GET\')" class="btn-primary">'.$dl->getLocalizedString("Kish!").'</button>
     </form>
 </div>', 'mod');

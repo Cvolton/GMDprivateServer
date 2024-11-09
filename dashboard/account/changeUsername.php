@@ -18,7 +18,7 @@ if($_POST["oldnickname"] != "" AND $_POST["newnickname"] != "" AND $_POST["passw
 		$dl->printSong('<div class="form">
 			<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 			<form class="form__inner" method="post" action="">
-			<p>'.$dl->getLocalizedString("invalidCaptcha").'</p>
+			<p id="dashboard-error-text">'.$dl->getLocalizedString("invalidCaptcha").'</p>
 			<button type="button" onclick="a(\'account/changeUsername.php\', true, true, \'GET\')"class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 			</form>
 		</div>', 'account');
@@ -35,7 +35,7 @@ if($_POST["oldnickname"] != "" AND $_POST["newnickname"] != "" AND $_POST["passw
 		$dl->printSong('<div class="form">
 		<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 		<form class="form__inner" method="post" action="">
-		<p>'.$dl->getLocalizedString("wrongNick").'</p>
+		<p id="dashboard-error-text">'.$dl->getLocalizedString("wrongNick").'</p>
         <button type="button" onclick="a(\'account/changeUsername.php\', true, true, \'GET\')"class="btn-primary">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 		</form>
 		</div>', 'account');
@@ -44,7 +44,7 @@ if($_POST["oldnickname"] != "" AND $_POST["newnickname"] != "" AND $_POST["passw
 		$dl->printSong('<div class="form">
 		<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 		<form class="form__inner" method="post" action="">
-		<p>'.$dl->getLocalizedString("sameNick").'</p>
+		<p id="dashboard-error-text">'.$dl->getLocalizedString("sameNick").'</p>
         <button type="button" onclick="a(\'account/changeUsername.php\', true, true, \'GET\')"class="btn-primary">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 		</form>
 		</div>', 'account');
@@ -61,7 +61,7 @@ if($pass == 1) {
 			$dl->printSong('<div class="form">
 				<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 				<form class="form__inner" method="post" action="">
-				<p>'.$dl->getLocalizedString("alreadyUsedNick").'</p>
+				<p id="dashboard-error-text">'.$dl->getLocalizedString("alreadyUsedNick").'</p>
 				<button type="button" onclick="a(\'account/changeUsername.php\', true, true, \'GET\')"class="btn-primary">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 				</form>
 				</div>', 'account');
@@ -88,7 +88,7 @@ if($pass == 1) {
 	$dl->printSong('<div class="form">
 		<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 		<form class="form__inner" method="post" action="">
-		<p>'.$dl->getLocalizedString("wrongPass").'</p>
+		<p id="dashboard-error-text">'.$dl->getLocalizedString("wrongPass").'</p>
         <button type="button" onclick="a(\'account/changeUsername.php\', true, true, \'GET\')" class="btn-primary">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 		</form>
 		</div>', 'account');
@@ -126,7 +126,7 @@ if($pass == 1) {
 	$dl->printSong('<div class="form">
 		<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 		<form class="form__inner" method="post" action="./login/login.php">
-		<p>'.$dl->getLocalizedString("noLogin?").'</p>
+		<p id="dashboard-error-text">'.$dl->getLocalizedString("noLogin?").'</p>
 	    <button type="button" onclick="a(\'login/login.php\')" class="btn-song">'.$dl->getLocalizedString("LoginBtn").'</button>
 		</form>
 		</div>', 'account');

@@ -3,7 +3,7 @@ session_start();
 require "../incl/dashboardLib.php";
 require "../".$dbPath."incl/lib/exploitPatch.php";
 require_once "../".$dbPath."incl/lib/mainLib.php";
-include_once "../".$dbPath."incl/lib/automod.php";
+require_once "../".$dbPath."incl/lib/automod.php";
 require_once "../".$dbPath."config/misc.php";
 
 function generate_timezone_list()
@@ -57,12 +57,12 @@ $clan = $none = "";
 if((!isset($_SESSION["accountID"]) OR $_SESSION["accountID"] == 0) AND (empty($_POST["accountID"]) AND empty($_GET["id"]))) {
   	$dl->title($dl->getLocalizedString("profile"));
 	$dl->printSong('<div class="form">
-    <h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
-    <form class="form__inner" method="post" action="./login/login.php">
-	<p>'.$dl->getLocalizedString("noLogin?").'</p>
+			<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
+			<form class="form__inner" method="post" action="./login/login.php">
+			<p id="dashboard-error-text">'.$dl->getLocalizedString("noLogin?").'</p>
 	        <button type="submit" class="btn-primary">'.$dl->getLocalizedString("LoginBtn").'</button>
-    </form>
-</div>', 'profile');
+			</form>
+		</div>', 'profile');
   	die();
 }
 if(!empty($_POST["accountID"])) {
@@ -112,7 +112,7 @@ if($accid != $_SESSION["accountID"] && is_numeric($accid)) {
     if(!empty($block)) exit($dl->printSong('<div class="form">
 		<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
         <form class="form__inner" method="post" action="">
-        <p>'.$dl->getLocalizedString("youBlocked").'</p>
+        <p id="dashboard-error-text">'.$dl->getLocalizedString("youBlocked").'</p>
         <button type="button" onclick="a(\'\', true, true, \'GET\')" class="btn-primary" name="accountID" value="'.$accid.'">'.$dl->getLocalizedString("dashboard").'</button>
   		</form>
 	</div>'));
@@ -121,7 +121,7 @@ if(!empty($_POST["msg"])) {
 	if(Automod::isAccountsDisabled(1)) die($dl->printSong('<div class="form">
 	<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
        	<form class="form__inner" method="post" action="">
-       	<p>'.$dl->getLocalizedString("postingIsDisabled").'</p>
+       	<p id="dashboard-error-text">'.$dl->getLocalizedString("postingIsDisabled").'</p>
        	<button type="button" onclick="a(\'profile/'.$accname.'\', true, true, \'GET\')" class="btn-primary" name="accountID" value="'.$accid.'">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 		</form>
 	</div>', 'profile'));
@@ -129,7 +129,7 @@ if(!empty($_POST["msg"])) {
 	if($checkBan) exit($dl->printSong('<div class="form">
 		<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 		<form class="form__inner" action="" method="post">
-		<p>'.sprintf($dl->getLocalizedString("youAreBanned"), htmlspecialchars(base64_decode($checkBan['reason'])), date("d.m.Y G:i", $checkBan['expires'])).'</p>
+		<p id="dashboard-error-text">'.sprintf($dl->getLocalizedString("youAreBanned"), htmlspecialchars(base64_decode($checkBan['reason'])), date("d.m.Y G:i", $checkBan['expires'])).'</p>
 		<button type="button" onclick="a(\'\', true, false, \'GET\')" class="btn btn-primary">'.$dl->getLocalizedString("dashboard").'</button>
 		</form>
 	</div>'));
@@ -140,7 +140,7 @@ if(!empty($_POST["msg"])) {
     if($res["timestamp"] > $time) die($dl->printSong('<div class="form">
 	<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
        	<form class="form__inner" method="post" action="">
-       	<p>'.$dl->getLocalizedString("tooFast").'</p>
+       	<p id="dashboard-error-text">'.$dl->getLocalizedString("tooFast").'</p>
        	<button type="button" onclick="a(\'profile/'.$accname.'\', true, true, \'GET\')" class="btn-primary" name="accountID" value="'.$accid.'">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 		</form>
 	</div>', 'profile'));
@@ -339,6 +339,7 @@ $kit = '<div class="icon-kit-div">
 </div><div class="icon-kit-div">
 	<img src="https://gdicon.oat.zone/icon.png?type=jetpack&value='.($res['accJetpack'] ? $res['accJetpack'] : 1).'&color1='.$res['color1'].'&color2='.$res['color2'].($res['accGlow'] && $res['accGlow'] != 0 ? '&glow='.$res['accGlow'].'&color3='.$res['color3'] : '').'" class="icon-kit-icon icon-jetpack" style="opacity: 0; animation-delay: 450ms;">
 </div>';
+
 $dl->printSong('<div class="form profileform">
     	<div style="height: 100%;width: 100%;"><div style="display: flex;align-items: center;justify-content: center;">
         	'.$back.'
