@@ -30,7 +30,7 @@ switch($levelID) {
 		$query->execute([':time' => time()]);
 		$result = $query->fetch();
 		$levelID = $result["levelID"];
-		$feaID = $result["feaID"] + 100001;
+		$feaID = $result["feaID"] + 100000;
 		$daily = 1;
 		break;
 	case -3: // Event level
@@ -38,7 +38,7 @@ switch($levelID) {
 		$query->execute([':time' => time()]);
 		$result = $query->fetch();
 		$levelID = $result["levelID"];
-		$feaID = $result["feaID"] + 200001;
+		$feaID = $result["feaID"] + 200000;
 		$daily = 1;
 		break;
 	default:

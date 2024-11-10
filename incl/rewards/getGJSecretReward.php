@@ -1,9 +1,7 @@
 <?php
 chdir(dirname(__FILE__));
 require "../lib/connection.php";
-require "../../config/dailyChests.php";
 require_once "../lib/XORCipher.php";
-require_once "../lib/GJPCheck.php";
 require_once "../lib/mainLib.php";
 require_once "../lib/generateHash.php";
 require_once "../lib/exploitPatch.php";
@@ -18,7 +16,7 @@ $vaultCode = $db->prepare('SELECT * FROM vaultcodes WHERE code = :code');
 $vaultCode->execute([':code' => base64_encode($rewardKey)]);
 $vaultCode = $vaultCode->fetch();
 
-if(!$vaultCode || $vaultCode['uses'] == 0 || $vaultCode['duration'] > time()) exit('-1');
+if(!$vaultCode || $vaultCode['uses'] == 0 || ($vaultCode['duration'] != 0 && $vaultCode['duration'] <= time())) exit('-1');
 if($vaultCode['uses'] != '-1') {
 	$reduceUses = $db->prepare('UPDATE vaultcodes SET uses = uses - 1 WHERE rewardID = :rewardID');
 	$reduceUses->execute([':rewardID' => $vaultCode['rewardID']]);
