@@ -81,6 +81,8 @@ $maxGameVersion = 0;
 
 /* 
     Same thing, but for binary versions, also note:
+    2.207 = 44
+    2.206 = 42
     2.205 = 41
     2.204 = 40
     2.203 = 39
