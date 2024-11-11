@@ -725,6 +725,7 @@ class dashboardLib {
 				});
 			</script>
 		</div>
+		<div class="error-divs" id="error-divs"></div>
 <script>
 	if(document.querySelector("[alt=\'www.000webhost.com\']") != null) document.querySelector("[alt=\'www.000webhost.com\']").parentElement.parentElement.style = "z-index: 0;position: fixed;bottom: 0px;"
 	cptch = document.querySelector("#verycoolcaptcha");
