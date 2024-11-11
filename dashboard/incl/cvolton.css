@@ -111,7 +111,7 @@
 	.itemsbox {flex-direction: column !important; margin-left: 2.5vw !important; width: 95vw !important; margin-bottom: 50px !important; margin-top: 15px !important; flex-wrap: nowrap !important;}
 	.manage-button-div {align-items: flex-start !important; flex-direction: column !important;}
 	.friends-button-div {min-width: 100% !important; width: 100% !important;}
-	#htmlpage > div {margin-bottom: 50px !important;}
+	#htmlpage > div {margin-bottom: 50px !important; margin-top: 20px !important;}
 	.automod-form {max-height: 140vh !important; height: 140vh !important;}
 	.automod-boxes, .attribute-divs {flex-direction: column !important;}
 	.attribute-button {width: 100% !important;}

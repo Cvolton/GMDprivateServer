@@ -181,15 +181,20 @@ class mainLib {
 		}
 	}
 	public function getGameVersion($version) {
-		if($version > 17){
-			return $version / 10;
-		}elseif($version == 11){
-			return "1.8";
-		}elseif($version == 10){
-			return "1.7";
-		}else{
-			$version--;
-			return "1.$version";
+		switch(true) {
+			case $version > 17:
+				return $version / 10;
+				break;
+			case $version == 11:
+				return "1.8";
+				break;
+			case $version == 10:
+				return "1.0";
+				break;
+			default:
+				$version--;
+				return "1.$version";
+				break;
 		}
 	}
 	public function getDemonDiff($dmn) {
@@ -2932,6 +2937,31 @@ class mainLib {
 		
 		$gmdFile .= '</dict></plist>';
 		return $gmdFile;
+	}
+	public function getDownloadLinkWithCobalt($link) {
+		require __DIR__."/../../config/dashboard.php";
+		if(!$useCobalt) return false;
+		$cobalt = $cobaltAPI[rand(0, count($cobaltAPI) - 1)];
+		$data = array(
+			"url" => $link,
+			"audioFormat" => "mp3",
+			"downloadMode" => "audio"
+		);
+		$postdata = json_encode($data);
+		$ch = curl_init($cobalt); 
+		curl_setopt($ch, CURLOPT_POST, 1);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $postdata);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); 
+		curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json', 'Accept: application/json']);
+		$result = json_decode(curl_exec($ch));
+		curl_close($ch);
+		$url = $result->url;
+		if(!$url) return false;
+		$ch = curl_init($url);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_PROTOCOLS, CURLPROTO_HTTP | CURLPROTO_HTTPS);
+		curl_setopt($ch, CURLOPT_USERAGENT, "");
+		return curl_exec($ch);
 	}
   	public function mail($mail = '', $user = '', $isForgotPass = false) {
 		if(empty($mail) OR empty($user)) return;

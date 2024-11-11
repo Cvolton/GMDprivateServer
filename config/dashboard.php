@@ -77,4 +77,23 @@ $convertSFXAPI[] = "https://hat.gcs.icu";
 
 $requireAccountForReuploading = false;
 $disallowReuploadingNotUserLevels = false;
+
+/*
+	Cobalt API
+	
+	Use Cobalt API to be able to reupload songs with YouTube links and etc.
+	Requires file upload to be enabled!
+	
+	$useCobalt — Should server use Cobalt to reupload songs by links
+		True — use Cobalt
+		False — don't use Cobalt
+
+	$cobaltAPI[] — links to Cobalt's APIs
+		Server will randomly pick one of Cobalt APIs when reuploading song
+		
+	Turnstile-protected APIs are currently not supported, sorry
+*/
+
+$useCobalt = true;
+$cobaltAPI[] = 'https://cobalt.gcs.icu';
 ?>
