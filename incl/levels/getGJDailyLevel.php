@@ -24,6 +24,7 @@ switch($type) {
 		$isEvent = true;
 		$query = $db->prepare("SELECT * FROM events WHERE timestamp < :current AND duration >= :current ORDER BY duration ASC LIMIT 1");
 		$query->execute([':current' => $current]);
+		break;
 }
 
 $daily = $query->fetch();
@@ -37,7 +38,8 @@ if(!$daily['webhookSent']) {
 }
 $stringToAdd = '';
 if($isEvent) {
-	$string = ExploitPatch::url_base64_encode(XORCipher::cipher('Sa1nt:1:'.$dailyID.':2:'.$check['type'].','.$check['reward'], 59182));
+	$chk = XORCipher::cipher(ExploitPatch::url_base64_decode(substr(ExploitPatch::charclean($_POST["chk"]), 5)), 59182);
+	$string = ExploitPatch::url_base64_encode(XORCipher::cipher('Sa1nt:'.$chk.':'.$dailyID.':1:'.$daily['type'].','.$daily['reward'], 59182));
 	$hash = $gh->genSolo4($string);
 	$stringToAdd = '|Sa1nt'.$string.'|'.$hash;
 }

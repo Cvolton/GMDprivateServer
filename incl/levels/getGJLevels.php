@@ -50,7 +50,7 @@ if(isset($_POST["song"]) && $_POST["song"] > 0) {
 if(isset($_POST["twoPlayer"]) && $_POST["twoPlayer"] == 1) $params[] = "twoPlayer = 1";
 if(isset($_POST["star"]) && $_POST["star"] == 1) $params[] = "NOT starStars = 0";
 if(isset($_POST["noStar"]) && $_POST["noStar"] == 1) $params[] = "starStars = 0";
-if(isset($_POST["gauntlet"])) {
+if(isset($_POST["gauntlet"]) && $_POST["gauntlet"] != 0) {
 	$ordergauntlet = true;
 	$order = "starStars";
 	$gauntlet = ExploitPatch::number($_POST["gauntlet"]);
@@ -181,9 +181,9 @@ switch($type){
 		$order = "dailyfeatures.feaID";
 		break;
 	case 23: // Event safe
-		$morejoins = "INNER JOIN dailyfeatures ON levels.levelID = dailyfeatures.levelID";
-		$params[] = "dailyfeatures.type = 2 AND timestamp < ".time();
-		$order = "dailyfeatures.feaID";
+		$morejoins = "INNER JOIN events ON levels.levelID = events.levelID";
+		$params[] = "timestamp < ".time();
+		$order = "events.feaID";
 		break;
 	case 25: // List levels
 		$listLevels = $gs->getListLevels($str);
