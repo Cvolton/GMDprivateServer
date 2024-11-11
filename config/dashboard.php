@@ -61,6 +61,7 @@ $convertSFXAPI[] = "https://lamb.gcs.icu";
 $convertSFXAPI[] = "https://omori.gcs.icu"; // You're welcome
 $convertSFXAPI[] = "https://im.gcs.icu";
 $convertSFXAPI[] = "https://hat.gcs.icu";
+$convertSFXAPI[] = "https://converter.m336.dev";
 
 /*
 	Level reupload tool
