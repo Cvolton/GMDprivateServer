@@ -454,6 +454,8 @@ $string['vaultCodesEditDesc'] = 'Ici, vous pouvez changer un code secret existan
 $string['vaultCodeName'] = 'Code secret';
 $string['vaultCodeUses'] = 'Nombre d\'utilisations maximum (0 pour une utilisation infinie)';
 
+$string['alsoBanIP'] = 'Also ban IP';
+
 /*
 	REUPLOAD
 */

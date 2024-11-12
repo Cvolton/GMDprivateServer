@@ -28,12 +28,42 @@ if(isset($_POST["person"]) && isset($_POST["personType"]) && isset($_POST["banTy
 				</form>
 			</div>', 'mod'));
 		}
-		$person = ExploitPatch::rucharclean($_POST["person"]);
+		$person = trim(ExploitPatch::rucharclean($_POST["person"]));
 		$personType = ExploitPatch::number($_POST["personType"]);
-		$reason = ExploitPatch::rucharclean($_POST["reason"]);
+		$reason = trim(ExploitPatch::rucharclean($_POST["reason"]));
 		$banType = ExploitPatch::number($_POST["banType"]);
-		$expires = (new DateTime($_POST['expires']))->getTimestamp();
+		$expires = !empty($_POST['expires']) ? (new DateTime($_POST['expires']))->getTimestamp() : 2147483647;
+		$alsoBanIP = $_POST["alsoBanIP"] == 'on' && $personType != 2;
 		$check = $gs->getBan($person, $personType, $banType);
+		$triedToBanYourself = $getIP = false;
+		switch($personType) {
+			case 0:
+				if($_SESSION['accountID'] == $person) $triedToBanYourself = true;
+				elseif($alsoBanIP) {
+					$getIP = $db->prepare('SELECT IP FROM users WHERE extID = :person');
+					$getIP->execute([':person' => $person]);
+					$getIP = $getIP->fetchColumn();
+				}
+				break;
+			case 1:
+				if($gs->getUserID($_SESSION['accountID'], $gs->getAccountName($_SESSION['accountID'])) == $person) $triedToBanYourself = true;
+				elseif($alsoBanIP) {
+					$getIP = $db->prepare('SELECT IP FROM users WHERE userID = :person');
+					$getIP->execute([':person' => $person]);
+					$getIP = $getIP->fetchColumn();
+				}
+				break;
+			case 2:
+				if($gs->IPForBan($gs->getIP()) == $gs->IPForBan($person)) $triedToBanYourself = true;
+				break;
+		}
+		if($triedToBanYourself) die($dl->printSong('<div class="form">
+			<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
+			<form class="form__inner" method="post" action="">
+			<p id="dashboard-error-text">'.$dl->getLocalizedString("banYourself").'</p>
+			<button type="button" onclick="a(\'account/banPerson.php\', true, false, \'GET\')" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
+			</form>
+		</div>', 'mod'));
 		if($check) die($dl->printSong('<div class="form">
 			<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 			<form class="form__inner" method="post" action="">
@@ -49,6 +79,7 @@ if(isset($_POST["person"]) && isset($_POST["personType"]) && isset($_POST["banTy
 			</form>
 		</div>', 'mod'));
 		$gs->banPerson($_SESSION['accountID'], $person, $reason, $banType, $personType, $expires);
+		if($getIP) $gs->banPerson($_SESSION['accountID'], $getIP, $reason, $banType, 2, $expires);
 		$banTypes = ['playerTop', 'creatorTop', 'levelUploading', 'commentBan', 'account'];
 		$dl->printSong('<div class="form">
 			<h1>'.$dl->getLocalizedString("banUserPlace").'</h1>
@@ -77,26 +108,37 @@ $dl->printSong('<div class="form">
 			<option value="4">'.$dl->getLocalizedString('account').'</option>
 		</select><input type="datetime-local" name="expires" min="'.substr(explode('+', (new DateTime())->format('c'))[0], 0, -3).'" placeholder="'.$dl->getLocalizedString("expires").'"></div>
         <div class="field"><input type="text" name="reason" placeholder="'.$dl->getLocalizedString("banReason").'"></div>
+		<div class="checkbox" id="alsoBanIP" style="display: flex; width: 100%;">
+			<input name="alsoBanIP" type="checkbox">
+			<h3>'.$dl->getLocalizedString('alsoBanIP').'</h3>
+		</div>
 		'.Captcha::displayCaptcha(true).'
         <button type="button" onclick="a(\'account/banPerson.php\', true, true, \'POST\')" class="btn-primary btn-block" id="banSubmit" disabled>'.$dl->getLocalizedString("ban").'</button>
     </form>
 </div>
 <script>
-document.getElementById("personType").value = "'.(ExploitPatch::number($_GET['personType']) ?: 0).'";
-document.getElementById("banType").value = "'.(ExploitPatch::number($_GET['banType']) ?: 0).'";
-$(document).on("keyup keypress change keydown",function() {
-   const personField = document.getElementById("personField");
-   const btn = document.getElementById("banSubmit");
-   if(!personField.value.trim().length) {
-        btn.disabled = true;
-        btn.classList.add("btn-block");
-        btn.classList.remove("btn-primary");
+personTypes = ["'.$dl->getLocalizedString('accountID').'", "'.$dl->getLocalizedString('userID').'", "'.$dl->getLocalizedString('IP').'"];
+const personField = document.getElementById("personField");
+$(document).on("keyup keypress change keydown", function() {
+	personType = document.getElementById("personType").value;
+	personField.setAttribute("placeholder", personTypes[personType]);
+	document.getElementById("alsoBanIP").style.display = personType != 2 ? "flex" : "none";
+	const btn = document.getElementById("banSubmit");
+	if(!personField.value.trim().length) {
+		btn.disabled = true;
+		btn.classList.add("btn-block");
+		btn.classList.remove("btn-primary");
 	} else {
 		btn.removeAttribute("disabled");
-        btn.classList.remove("btn-block");
-        btn.classList.add("btn-primary");
+		btn.classList.remove("btn-block");
+		btn.classList.add("btn-primary");
 	}
 });
+document.getElementById("personType").value = "'.(ExploitPatch::number($_GET['personType']) ?: 0).'";
+document.getElementById("banType").value = "'.(ExploitPatch::number($_GET['banType']) ?: 0).'";
+var personType = document.getElementById("personType").value;
+personField.setAttribute("placeholder", personTypes[personType]);
+document.getElementById("alsoBanIP").style.display = personType != 2 ? "flex" : "none";
 </script>', 'mod');
 }
 ?>

@@ -69,10 +69,17 @@ foreach($result as &$action) {
 	$stats = $dl->createProfileStats($action['stars'], $action['moons'], $action['diamonds'], $action['coins'], $action['userCoins'], $action['demons'], $action['creatorPoints'], 0, false).$ac.$lr;
 	$registerDate = $dl->convertToDate($action["registerDate"], true);
 	$members .= '<div style="width: 100%;display: flex;flex-wrap: wrap;justify-content: center;">
-			<div class="profile"><div style="display: flex;width: 100%;justify-content: space-between;margin-bottom: 7px;align-items: center;"><button style="display:contents;cursor:pointer" type="button" onclick="a(\'profile/'.$action["userName"].'\', true, true, \'GET\')"><div class="acclistdiv">
-				<h2 style="color:rgb('.$gs->getAccountCommentColor($action["accountID"]).');" class="profilenick acclistnick"><div class="accounts-badge-icon-div">'.$avatarImg.' '.$action["userName"].' '.$badgeImg.'</div> '.$clan.'</h2><h2 class="accresultrole">'.$resultRole.'</h2>
-			</div></button></div>
-			<div class="form-control" style="display: flex;width: 100%;height: max-content;align-items: center;">'.$stats.'</div>
+			<div class="profile"><div style="display: flex;width: 100%;justify-content: space-between;margin-bottom: 7px;align-items: center;">
+				<button style="display:contents;cursor:pointer" type="button" onclick="a(\'profile/'.$action["userName"].'\', true, true, \'GET\')">
+					<div class="acclistdiv">
+						<h2 style="color:rgb('.$gs->getAccountCommentColor($action["accountID"]).');" class="profilenick acclistnick">
+							<div class="accounts-badge-icon-div">'.$avatarImg.' '.$action["userName"].' '.$badgeImg.'</div> '.$clan.'
+						</h2>
+						<h2 class="accresultrole">'.$resultRole.'</h2>
+					</div>
+				</button>
+			</div>
+			<div class="form-control song-info" style="display: flex;width: 100%;height: max-content;align-items: center;">'.$stats.'</div>
 			<div class="acccomments"><h3 class="comments" style="margin: 0px;width: max-content;">'.$dl->getLocalizedString("accountID").': <b>'.$accountID.'</b></h3><h3 class="comments" style="justify-content: flex-end;grid-gap: 0.5vh;margin: 0px;width: max-content;">'.$dl->getLocalizedString("registerDate").': <b>'.$registerDate.'</b></h3></div>
 		</div></div>';
 	$x++;

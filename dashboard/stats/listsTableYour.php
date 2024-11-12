@@ -1,13 +1,13 @@
 <?php
 session_start();
 require "../incl/dashboardLib.php";
-$dl = new dashboardLib();
-require_once "../".$dbPath."incl/lib/mainLib.php";
-$gs = new mainLib();
-$dl->title($dl->getLocalizedString("listTableYour"));
-$dl->printFooter('../');
 require "../".$dbPath."incl/lib/connection.php";
-require "../".$dbPath."incl/lib/exploitPatch.php";
+require_once "../".$dbPath."incl/lib/exploitPatch.php";
+require_once "../".$dbPath."incl/lib/mainLib.php";
+$dl = new dashboardLib();
+$gs = new mainLib();
+$dl->printFooter('../');
+$dl->title($dl->getLocalizedString("listTableYour"));
 if(!isset($_SESSION["accountID"]) || $_SESSION["accountID"] == 0) exit($dl->printSong('<div class="form">
     <h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 	<form class="form__inner" method="post" action="./login/login.php">
@@ -83,7 +83,7 @@ foreach($result as &$pack){
 				<h1>'.sprintf($dl->getLocalizedString("demonlistLevel"), htmlspecialchars($pack["listName"]), 0, htmlspecialchars($gs->getAccountName($pack['accountID'])), $avatarImg).'</h1>
 				<p>'.$listDesc.'</p>
 			</div>
-			<div class="form-control longfc">
+			<div class="form-control longfc song-info">
         		'.$packall.'
 			</div>
 			<div class="form-control new-form-control packlevels">

@@ -3,17 +3,15 @@ session_start();
 require "../incl/dashboardLib.php";
 require "../".$dbPath."incl/lib/connection.php";
 require_once "../".$dbPath."incl/lib/exploitPatch.php";
-error_reporting(0);
-$dl = new dashboardLib();
 require_once "../".$dbPath."incl/lib/mainLib.php";
 $gs = new mainLib();
-require "../".$dbPath."incl/lib/connection.php";
+$dl = new dashboardLib();
 $dl->title($dl->getLocalizedString("accounts"));
 $dl->printFooter('../');
-if(isset($_GET["page"]) AND is_numeric($_GET["page"]) AND $_GET["page"] > 0){
+if(isset($_GET["page"]) AND is_numeric($_GET["page"]) AND $_GET["page"] > 0) {
 	$page = ($_GET["page"] - 1) * 10;
 	$actualpage = $_GET["page"];
-}else{
+} else {
 	$page = 0;
 	$actualpage = 1;
 }
@@ -55,7 +53,7 @@ if(!isset($_GET["search"]) OR empty(trim(ExploitPatch::remove($_GET["search"])))
 	} 
 }
 $x = $page + 1;
-foreach($result as &$action) {
+foreach($result as &$action){
 	$clan = $own = '';
 	$accUserID = $action["userID"];
 	$accountID = $action["accountID"].' <text style="font-weight: 100;">|</text> '.$accUserID;
@@ -99,11 +97,22 @@ foreach($result as &$action) {
 	$registerDate = date("d.m.Y", $action["registerDate"]);
 	if($action['userName'] == "Undefined") $action['userName'] = $gs->getAccountName($action["accountID"]);
 	$members .= '<div style="width: 100%;display: flex;flex-wrap: wrap;justify-content: center;">
-			<div class="profile"><div style="display: flex;width: 100%;justify-content: space-between;margin-bottom: 7px;align-items: center;"><button style="display:contents;cursor:pointer" type="button" onclick="a(\'profile/'.$action["userName"].'\', true, true, \'GET\')"><div class="acclistdiv">
-				<h2 style="color:rgb('.$gs->getAccountCommentColor($action["accountID"]).');" class="profilenick acclistnick"><div class="accounts-badge-icon-div">'.$avatarImg.' '.$action["userName"].' '.$badgeImg.'</div> '.$clan.'</h2><h2 class="accresultrole">'.$resultRole.'</h2>
-			</div></button></div>
-			<div class="form-control" style="display: flex;width: 100%;height: max-content;align-items: center;">'.$stats.'</div>
-			<div class="acccomments"><h3 class="comments" style="margin: 0px;width: max-content;">'.$dl->getLocalizedString("accountID").': <b>'.$accountID.'</b></h3><h3 class="comments" style="justify-content: flex-end;grid-gap: 0.5vh;margin: 0px;width: max-content;">'.$dl->getLocalizedString("registerDate").': <b>'.$registerDate.'</b></h3></div>
+			<div class="profile">
+				<div style="display: flex;width: 100%;justify-content: space-between;margin-bottom: 7px;align-items: center;">
+					<button style="display:contents;cursor:pointer" type="button" onclick="a(\'profile/'.$action["userName"].'\', true, true, \'GET\')">
+						<div class="acclistdiv">
+							<h2 style="color:rgb('.$gs->getAccountCommentColor($action["accountID"]).');" class="profilenick acclistnick">
+								<div class="accounts-badge-icon-div">'.$avatarImg.' '.$action["userName"].' '.$badgeImg.'</div> '.$clan.'
+							</h2>
+							<h2 class="accresultrole">'.$resultRole.'</h2>
+						</div>
+					</button>
+				</div>
+			<div class="form-control song-info" style="display: flex;width: 100%;height: max-content;align-items: center;">'.$stats.'</div>
+			<div class="acccomments">
+				<h3 class="comments" style="margin: 0px;width: max-content;">'.$dl->getLocalizedString("accountID").': <b>'.$accountID.'</b></h3>
+				<h3 class="comments" style="justify-content: flex-end;grid-gap: 0.5vh;margin: 0px;width: max-content;">'.$dl->getLocalizedString("registerDate").': <b>'.$registerDate.'</b></h3>
+			</div>
 		</div></div>';
 	$x++;
 }

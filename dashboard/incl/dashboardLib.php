@@ -1314,10 +1314,16 @@ class dashboardLib {
 			$avatarImg = '<img src="https://gdicon.oat.zone/icon.png?type=' . $iconTypeMap[$iconType]['type'] . '&value=' . $iconValue . '&color1=' . $userData['color1'] . '&color2=' . $userData['color2'] . ($userData['accGlow'] != 0 ? '&glow=' . $userData['accGlow'] . '&color3=' . $userData['color3'] : '') . '" alt="Avatar" style="width: 30px; height: 30px; vertical-align: middle; object-fit: contain;">';
 		}
 		return '<div style="width: 100%;display: flex;flex-wrap: wrap;justify-content: center;">
-				<div class="profile"><div style="display: flex;width: 100%;justify-content: space-between;margin-bottom: 7px;align-items: center;"><button style="display:contents;cursor:pointer" type="button" onclick="a(\'profile/'.$action["userName"].'\', true, true, \'GET\')"><div class="acclistdiv">
-					<h2 style="color:rgb('.$gs->getAccountCommentColor($userid).'); align-items: baseline;" class="profilenick acclistnick"><div class="accounts-badge-icon-div">'.$place.$action["userName"].$avatarImg.'</div></h2>
-				</div></button>'.$deleteLeaderboard.'</div>
-				<div class="form-control" style="display: flex;width: 100%;height: max-content;align-items: center;">'.$stats.'</div>
+				<div class="profile"><div style="display: flex;width: 100%;justify-content: space-between;margin-bottom: 7px;align-items: center;">
+					<button style="display:contents;cursor:pointer" type="button" onclick="a(\'profile/'.$action["userName"].'\', true, true, \'GET\')">
+						<div class="acclistdiv">
+							<h2 style="color:rgb('.$gs->getAccountCommentColor($userid).'); align-items: baseline;" class="profilenick acclistnick">
+								<div class="accounts-badge-icon-div">'.$place.$action["userName"].$avatarImg.'</div>
+							</h2>
+						</div>
+					</button>'.$deleteLeaderboard.'
+				</div>
+				<div class="form-control song-info" style="display: flex;width: 100%;height: max-content;align-items: center;">'.$stats.'</div>
 				<div class="acccomments"><h3 class="comments" style="margin: 0px;width: max-content;">'.$this->getLocalizedString("accountID").': <b>'.$extIDvalue.'</b></h3><h3 class="comments" style="margin: 0px;width: max-content;">'.$this->getLocalizedString("date").': <b>'.$this->convertToDate($leaderboard['uploadDate'], true).'</b></h3></div>
 		</div></div>';
 	}

@@ -1,14 +1,14 @@
 <?php
 session_start();
 require "../incl/dashboardLib.php";
-$dl = new dashboardLib();
-require_once "../".$dbPath."incl/lib/mainLib.php";
-$gs = new mainLib();
-$dl->title($dl->getLocalizedString("listTable"));
-$dl->printFooter('../');
 require "../".$dbPath."incl/lib/connection.php";
-require "../".$dbPath."incl/lib/exploitPatch.php";
-if(isset($_GET["page"]) AND is_numeric($_GET["page"]) AND $_GET["page"] > 0){
+require_once "../".$dbPath."incl/lib/exploitPatch.php";
+require_once "../".$dbPath."incl/lib/mainLib.php";
+$dl = new dashboardLib();
+$gs = new mainLib();
+$dl->printFooter('../');
+$dl->title($dl->getLocalizedString("listTable"));
+if(isset($_GET["page"]) AND is_numeric($_GET["page"]) AND $_GET["page"] > 0) {
 	$page = ($_GET["page"] - 1) * 10;
 	$actualpage = $_GET["page"];
 } else {
@@ -76,7 +76,7 @@ foreach($result as &$pack){
 				<h1>'.sprintf($dl->getLocalizedString("demonlistLevel"), htmlspecialchars($pack["listName"]), 0, htmlspecialchars($gs->getAccountName($pack['accountID'])), $avatarImg).'</h1>
 				<p>'.$listDesc.'</p>
 			</div>
-			<div class="form-control longfc">
+			<div class="form-control longfc song-info">
         		'.$packall.'
 			</div>
 			<div class="form-control new-form-control packlevels">

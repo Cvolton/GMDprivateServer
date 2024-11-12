@@ -63,7 +63,7 @@ foreach($result as &$pack){
 			<div class="packname">
 				<h1 style="color:rgb('.$pack["rgbcolors"].')">'.$pack["name"].'</h1>
 			</div>
-			<div class="form-control longfc">
+			<div class="form-control longfc song-info">
         		'.$packall.'
 			</div>
 			<div class="form-control new-form-control packlevels">

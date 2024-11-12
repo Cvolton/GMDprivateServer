@@ -435,6 +435,8 @@ $string['vaultCodesEditDesc'] = 'Here you can change already existing code!';
 $string['vaultCodeName'] = 'Code';
 $string['vaultCodeUses'] = 'Number of uses (0 for infinite uses)';
 
+$string['alsoBanIP'] = 'Also ban IP';
+
 /*
 	ĐĂNG LẠI
 */
