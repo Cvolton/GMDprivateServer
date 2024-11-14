@@ -2963,6 +2963,41 @@ class mainLib {
 		curl_setopt($ch, CURLOPT_USERAGENT, "");
 		return curl_exec($ch);
 	}
+	public function getRewardTypes() {
+		return [
+			0 => '',
+			1 => 'Fire Shard',
+			2 => 'Ice Shard',
+			3 => 'Poison Shard',
+			4 => 'Shadow Shard',
+			5 => 'Lava Shard',
+			6 => 'Demon Key',
+			7 => 'Orbs',
+			8 => 'Diamond',
+			9 => '',
+			10 => 'Earth Shard',
+			11 => 'Blood Shard',
+			12 => 'Metal Shard',
+			13 => 'Light Shard',
+			14 => 'Soul Shard',
+			15 => 'Gold Key',
+			1001 => 'Cube',
+			1002 => 'Color 1',
+			1003 => 'Color 2',
+			1004 => 'Ship',
+			1005 => 'Ball',
+			1006 => 'UFO',
+			1007 => 'Wave',
+			1008 => 'Robot',
+			1009 => 'Spider',
+			1010 => 'Trail',
+			1011 => 'Death Effect',
+			1012 => 'Items',
+			1013 => 'Swing',
+			1014 => 'Jetpack',
+			1015 => 'Ship fire',
+		];
+	}
   	public function mail($mail = '', $user = '', $isForgotPass = false) {
 		if(empty($mail) OR empty($user)) return;
 		require __DIR__."/../../config/mail.php";
