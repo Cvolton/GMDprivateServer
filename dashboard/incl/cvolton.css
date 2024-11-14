@@ -319,6 +319,7 @@ input, select {
     backdrop-filter: blur(5px);
 	opacity: 0;
 	transition: 0.3s;
+	z-index: 10;
 }
 
 .notifyblue {
@@ -403,7 +404,8 @@ input, select {
 .msgbox::-webkit-scrollbar-thumb,
 .form::-webkit-scrollbar-thumb,
 .clandesc::-webkit-scrollbar-thumb,
-.audioDiv .queueDiv::-webkit-scrollbar-thumb {
+.audioDiv .queueDiv::-webkit-scrollbar-thumb,
+.rewards-div::-webkit-scrollbar-thumb {
    background-color: #373A3F;
    border-radius: 100px;
   	border: 4px solid #181a1b;
@@ -2587,4 +2589,47 @@ body:has(.audio) {
 
 .notify-show {
 	opacity: 1;
+}
+
+.rewards-div {
+	display: flex;
+    flex-direction: column;
+    grid-gap: 10px;
+    justify-content: flex-start !important;
+    overflow-y: scroll;
+    position: absolute;
+	padding: 15px 0px 15px 15px;
+    margin: 20px;
+    width: 96% !important;
+    background: #181a1bdb;
+    height: calc(100% - 20px);
+    top: -10px;
+    border-radius: 20px;
+    backdrop-filter: blur(3px);
+	pointer-events: none;
+    opacity: 0;
+    transition: 0.3s;
+}
+
+.rewards-div.show {
+	pointer-events: initial;
+    opacity: 1;
+}
+
+.rewards-div h1 {
+	margin: 0px;
+}
+
+.h1-with-close {
+	display: flex;
+	justify-content: space-between;
+    position: relative;
+}
+
+.only-icon-button {
+	background: none;
+    border: none;
+    font-size: 25px;
+	cursor: pointer;
+	border-radius: 1000px;
 }
