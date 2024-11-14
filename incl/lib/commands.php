@@ -408,17 +408,18 @@ class Commands {
 			case '!event':
 				if(!$gs->checkPermission($accountID, "commandEvent")) return false;
 				$duration = time() + ((int)ExploitPatch::number($commentarray[1]) * 60);
-				$rewardType = ExploitPatch::number($commentarray[2]);
-				$reward = ExploitPatch::number($commentarray[3]);
-				if($duration <= time() || !$rewardType || !$reward || $rewardType > 15 || $rewardType < 0 || $reward < 0) return 'Usage: !event *event duration in minutes* *reward type* *reward amount*';
+				unset($commentarray[0]);
+				unset($commentarray[1]);
+				$rewards = implode(",", $commentarray);
+				if($duration <= time() || !$rewards) return 'Usage: !event *event duration in minutes* *reward type* *reward amount* *reward type* *reward amount* and so on...';
 				$check = $db->prepare('SELECT count(*) FROM events WHERE timestamp < :time AND duration >= :time');
 				$check->execute([':time' => $duration]);
 				$check = $check->fetchColumn();
 				if($check) return 'There is already an event level! Try increasing duration ;)';
-				$query = $db->prepare("INSERT INTO events (levelID, timestamp, duration, type, reward) VALUES (:levelID, :timestamp, :duration, :type, :reward)");
-				$query->execute([':levelID' => $levelID, ':timestamp' => time(), ':duration' => $duration, ':type' => $rewardType, ':reward' => $reward]);
-				$query = $db->prepare("INSERT INTO modactions (type, value, value2, value3, value4, timestamp, account) VALUES ('44', :value, :value2, :levelID, :value4, :timestamp, :id)");
-				$query->execute([':value' => $duration, ':value2' => $rewardType, ':value4' => $reward, ':timestamp' => $uploadDate, ':id' => $accountID, ':levelID' => $levelID]);
+				$query = $db->prepare("INSERT INTO events (levelID, timestamp, duration, rewards) VALUES (:levelID, :timestamp, :duration, :rewards)");
+				$query->execute([':levelID' => $levelID, ':timestamp' => time(), ':duration' => $duration, ':rewards' => $rewards]);
+				$query = $db->prepare("INSERT INTO modactions (type, value, value2, value3, timestamp, account) VALUES ('44', :value, :value2, :levelID, :timestamp, :id)");
+				$query->execute([':value' => $duration, ':value2' => $rewards, ':timestamp' => $uploadDate, ':id' => $accountID, ':levelID' => $levelID]);
 				return 'You successfully made '.$gs->getLevelName($levelID).' event level!';
 		}
 		return false;

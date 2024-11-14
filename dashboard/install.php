@@ -296,6 +296,6 @@ if(!$installed) {
   	fwrite($file, "\$installed = true; // Like i said, it changed!\r");
 	fwrite($file, implode('', $lines));
   	fclose($file);
-  	header('Location: .?installed=1');
+  	header('Location: .?installed');
 } else header('Location: .');
 ?>

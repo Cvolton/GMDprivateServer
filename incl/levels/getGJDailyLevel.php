@@ -39,7 +39,8 @@ if(!$daily['webhookSent']) {
 $stringToAdd = '';
 if($isEvent) {
 	$chk = XORCipher::cipher(ExploitPatch::url_base64_decode(substr(ExploitPatch::charclean($_POST["chk"]), 5)), 59182);
-	$string = ExploitPatch::url_base64_encode(XORCipher::cipher('Sa1nt:'.$chk.':'.$dailyID.':1:'.$daily['type'].','.$daily['reward'], 59182));
+	$string = ExploitPatch::url_base64_encode(XORCipher::cipher('Sa1nt:'.$chk.':'.($daily['feaID'] + 19).':3:'.$daily['rewards'], 59182));
+	$timeleft = 10;
 	$hash = $gh->genSolo4($string);
 	$stringToAdd = '|Sa1nt'.$string.'|'.$hash;
 }

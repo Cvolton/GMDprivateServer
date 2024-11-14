@@ -7,7 +7,7 @@ require $dbPath."incl/lib/mainLib.php";
 $gs = new mainLib();
 require $dbPath."config/dashboard.php";
 if(!$installed) header('Location: install.php');
-if(isset($_GET["installed"])) $install = '<div style="margin-top:20px;margin-bottom:0px;width:80%" class="notify"><p>'.$dl->getLocalizedString("tipsAfterInstalling").'</p></div>'; 
+if(isset($_GET["installed"])) $install = '<div style="margin-top:20px;margin-bottom:0px;width:80%" class="notify notify-show"><p>'.$dl->getLocalizedString("tipsAfterInstalling").'</p></div>'; 
 $dl->printFooter();
 $downloadlinks = '';
 $name = $gs->getAccountName($_SESSION["accountID"]);
