@@ -121,8 +121,7 @@ if(!$installed) {
 			 `levelID` int(11) NOT NULL,
 			 `timestamp` int(11) NOT NULL,
 			 `duration` int(11) NOT NULL,
-			 `type` int(11) NOT NULL DEFAULT 0,
-			 `reward` int(11) NOT NULL DEFAULT 0,
+			 `rewards` varchar(2048) NOT NULL DEFAULT '',
 			 `webhookSent` int(11) NOT NULL DEFAULT 0,
 			 PRIMARY KEY (`feaID`)
 			) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
@@ -131,8 +130,7 @@ if(!$installed) {
 			if(empty($exist)) $db->query("CREATE TABLE `vaultcodes` (
 			 `rewardID` int(11) NOT NULL AUTO_INCREMENT,
 			 `code` varchar(255) NOT NULL DEFAULT '',
-			 `type` int(11) NOT NULL DEFAULT 0,
-			 `reward` int(11) NOT NULL DEFAULT 0,
+			 `rewards` varchar(2048) NOT NULL DEFAULT '',
 			 `duration` int(11) NOT NULL DEFAULT 0,
 			 `uses` int(11) NOT NULL DEFAULT -1,
 			 `timestamp` int(11) NOT NULL DEFAULT 0,
@@ -286,7 +284,31 @@ if(!$installed) {
 			if(empty($exist)) $db->query("ALTER TABLE `roles` ADD `dashboardVaultCodesManage` INT NOT NULL DEFAULT '0' AFTER `dashboardManageAutomod`");
 		$check = $db->query("SHOW COLUMNS FROM `roles` LIKE 'commandEvent'");
 			$exist = $check->fetchAll();
-			if(empty($exist)) $db->query("ALTER TABLE `roles` ADD `commandEvent` INT NOT NULL DEFAULT '0' AFTER `commandWeekly`;");
+			if(empty($exist)) $db->query("ALTER TABLE `roles` ADD `commandEvent` INT NOT NULL DEFAULT '0' AFTER `commandWeekly`");
+		$check = $db->query("SHOW COLUMNS FROM `events` LIKE 'reward'");
+			$exist = $check->fetchAll();
+			if(!empty($exist)) {
+				$check = $db->query("SHOW COLUMNS FROM `events` LIKE 'rewards'");
+					$exist = $check->fetchAll();
+					if(empty($exist)) $db->query("ALTER TABLE `events` ADD `rewards` varchar(2048) NOT NULL DEFAULT '0' AFTER `duration`");
+				$db->query("UPDATE events SET rewards = CONCAT(type,  \",\", reward)");
+				$check = $db->query("SHOW COLUMNS FROM `events` LIKE 'type'");
+					$exist = $check->fetchAll();
+					if(!empty($exist)) $db->query("ALTER TABLE `events` DROP `type`");
+				$db->query("ALTER TABLE `events` DROP `reward`");
+			}
+		$check = $db->query("SHOW COLUMNS FROM `vaultcodes` LIKE 'reward'");
+			$exist = $check->fetchAll();
+			if(!empty($exist)) {
+				$check = $db->query("SHOW COLUMNS FROM `vaultcodes` LIKE 'rewards'");
+					$exist = $check->fetchAll();
+					if(empty($exist)) $db->query("ALTER TABLE `vaultcodes` ADD `rewards` varchar(2048) NOT NULL DEFAULT '0' AFTER `duration`");
+				$db->query("UPDATE vaultcodes SET rewards = CONCAT(type,  \",\", reward)");
+				$check = $db->query("SHOW COLUMNS FROM `vaultcodes` LIKE 'type'");
+					$exist = $check->fetchAll();
+					if(!empty($exist)) $db->query("ALTER TABLE `vaultcodes` DROP `type`");
+				$db->query("ALTER TABLE `vaultcodes` DROP `reward`");
+			}
 	$lines = file($dbPath.'config/dashboard.php');
 	$first_line = $lines[2];
 	$lines = array_slice($lines, 1 + 2);
