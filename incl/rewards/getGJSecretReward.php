@@ -22,7 +22,7 @@ if($vaultCode['uses'] != '-1') {
 	$reduceUses->execute([':rewardID' => $vaultCode['rewardID']]);
 }
 
-$gs->logAction($extID, 38, $vaultCode['rewardID'], $vaultCode['type'], $vaultCode['reward'], $rewardKey);
+$gs->logAction($extID, 38, $vaultCode['rewardID'], $vaultCode['rewards'], $rewardKey);
 $string = ExploitPatch::url_base64_encode(XORCipher::cipher('Sa1nt:'.$chk.':'.$vaultCode['rewardID'].':1:'.$vaultCode['rewards'], 59182));
 $hash = $gh->genSolo4($string);
 echo 'Sa1nt'.$string.'|'.$hash;
