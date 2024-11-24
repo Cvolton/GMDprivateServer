@@ -17,7 +17,7 @@ $vaultCode->execute([':code' => base64_encode($rewardKey)]);
 $vaultCode = $vaultCode->fetch();
 
 if(!$vaultCode || $vaultCode['uses'] == 0 || ($vaultCode['duration'] != 0 && $vaultCode['duration'] <= time())) exit('-1');
-if($vaultCode['uses'] != '-1') {
+if($vaultCode['uses'] > 0) {
 	$reduceUses = $db->prepare('UPDATE vaultcodes SET uses = uses - 1 WHERE rewardID = :rewardID');
 	$reduceUses->execute([':rewardID' => $vaultCode['rewardID']]);
 }
