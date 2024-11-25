@@ -1400,8 +1400,8 @@ class dashboardLib {
 					<div class="field"><input type="text" name="name" id="p2" value="'.$name.'" placeholder="'.$name.'"></div>
 					<button type="button" class="btn-song" id="submit" onclick="renameSong('.$songsid.')">'.$this->getLocalizedString("change").'</button>
 					'.($modCheck ? 
-						($isDisabled ? '<button id="songDisableButton'.$song['ID'].'" style="width: 85%" type="button" class="btn-song" onclick="disableSong('.$sfxsid.', true)">'.$this->getLocalizedString("enable").'</button>'
-						: '<button id="songDisableButton'.$song['ID'].'" style="width: 85%" type="button" class="btn-song" onclick="disableSong('.$sfxsid.', true)">'.$this->getLocalizedString("disable").'</button>')
+						($isDisabled ? '<button id="songDisableButton'.$song['ID'].'" style="width: 85%" type="button" class="btn-song" onclick="disableSong('.$songsid.', false)">'.$this->getLocalizedString("enable").'</button>'
+						: '<button id="songDisableButton'.$song['ID'].'" style="width: 85%" type="button" class="btn-song" onclick="disableSong('.$songsid.', false)">'.$this->getLocalizedString("disable").'</button>')
 					: '').'
 					<button style="width: 70%" type="button" class="btn-song btn-size" onclick="deleteSong('.$songsid.')">'.$this->getLocalizedString("delete").'</button>
 				</form>
