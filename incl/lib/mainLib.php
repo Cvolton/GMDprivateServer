@@ -1249,6 +1249,7 @@ class mainLib {
 					'milliseconds' => (int)($customSFX['milliseconds'] / 10)
 				];
 			}
+			$filesEncrypted = $creditsEncrypted = [];
 			foreach($library['folders'] AS $id => &$folder) $filesEncrypted[] = implode(',', [$id, $folder['name'], 1, $folder['parent'], 0, 0]);
 			foreach($library['files'] AS $id => &$file) $filesEncrypted[] = implode(',', [$id, $file['name'], 0, $file['parent'], $file['bytes'], $file['milliseconds']]);
 			foreach($library['credits'] AS &$credit) $creditsEncrypted[] = implode(',', [$credit['name'], $credit['website']]);
@@ -1300,6 +1301,7 @@ class mainLib {
 					'priorityOrder' => 0
 				];
 			}
+			$authorsEncrypted = $songsEncrypted = $tagsEncrypted = [];
 			foreach($library['authors'] AS &$authorList) {
 				unset($authorList['server']);
 				unset($authorList['type']);

@@ -67,9 +67,9 @@ $visiblecount = $query->rowCount();
 foreach($result as &$comment1) {
 	if(!empty($comment1["commentID"])) {
       	$uploadDate = $gs->makeTime($comment1["timestamp"]);
-		$comment1['comment'] = ExploitPatch::gd_escape(ExploitPatch::translit(ExploitPatch::url_base64_decode($comment1["comment"])));
+		$comment1['comment'] = ExploitPatch::translit(ExploitPatch::url_base64_decode($comment1["comment"]));
 		if($enableCommentLengthLimiter) $commentText = mb_substr($comment1['comment'], 0, $maxCommentLength);
-		$commentText = ($gameVersion < 20) ? $comment1["comment"] : ExploitPatch::url_base64_encode($comment1["comment"]);
+		$commentText = ($gameVersion < 20) ? ExploitPatch::gd_escape($comment1["comment"]) : ExploitPatch::url_base64_encode($comment1["comment"]);
 		if($displayLevelID) $commentstring .= "1~".$comment1["levelID"]."~";
 		if($commentAutoLike && array_key_exists($comment1["commentID"], $specialCommentLikes)) $likes = $comment1["likes"] * $specialCommentLikes[$comment1["commentID"]]; // Multiply by the specified value
         else  $likes = $comment1["likes"]; // Normal like value
