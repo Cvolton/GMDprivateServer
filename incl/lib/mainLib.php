@@ -2,7 +2,8 @@
 require_once __DIR__ . "/ip_in_range.php";
 class mainLib {
 	public function getAudioTrack($id) {
-		$songs = ["Stereo Madness by ForeverBound",
+		$songs = [
+			"Stereo Madness by ForeverBound",
 			"Back on Track by DJVI",
 			"Polargeist by Step",
 			"Dry Out by DJVI",
@@ -39,11 +40,12 @@ class mainLib {
 			"Embers by Dex Arson",
 			"Round 1 by Dex Arson",
 			"Monster Dance Off by F-777",
- 		        "Press Start by MDK",
-   		        "Nock Em by Bossfight",
-  		        "Power Trip by Boom Kitty"];
-	        if ($id === -1) return "Practice: Stay Inside Me by OcularNebula";
-                if ($id < 0 || $id >= count($songs)) return "Unknown by DJVI";
+			"Press Start by MDK",
+			"Nock Em by Bossfight",
+			"Power Trip by Boom Kitty"
+		];
+		if($id === -1) return "Practice: Stay Inside Me by OcularNebula";
+		if($id < 0 || $id >= count($songs)) return "Unknown by DJVI";
 		return $songs[$id];
 	}
 	public function getDifficulty($diff, $auto, $demon, $demonDiff = 1) {
@@ -289,7 +291,7 @@ class mainLib {
 		require __DIR__ . "/../../config/security.php";
 		require_once __DIR__ . "/exploitPatch.php";
 		require_once __DIR__ . "/GJPCheck.php";
-		if(!empty($_POST["udid"]) AND $unregisteredSubmissions) {
+		if(!empty($_POST["udid"]) && $unregisteredSubmissions) {
 			$id = ExploitPatch::remove($_POST["udid"]);
 			if(is_numeric($id)) exit("-1");
 		} elseif(!empty($_POST["accountID"]) AND $_POST["accountID"] !="0") $id = GJPCheck::getAccountIDOrDie();
@@ -1292,6 +1294,7 @@ class mainLib {
 					'name' => !empty($customSongs['name']) ? $customSongs['name'] : 'Unnamed',
 					'authorID' => (int)($serverIDs[null]. 0 .$folderID[$authorName]),
 					'size' => ($customSongs['size'] * 1024 * 1024),
+					'size' => $customSongs['size'] * 1024 * 1024,
 					'seconds' => $customSongs['duration'],
 					'tags' => '.'.$serverIDs[null].'.'.$serverIDs[null]. 0 .$accIDs[$customSongs['reuploadID']].'.',
 					'ncs' => 0,
@@ -2653,7 +2656,9 @@ class mainLib {
 		$lTchar = $levelsToday[strlen($levelsToday)-1] ?? $levelsToday;
 		if($lTchar == 1) $action = 0; elseif($lTchar < 5 AND $lTchar != 0 AND !($levelsToday > 9 AND $levelsToday < 20)) $action = 1; else $action = 2;
 		$levelsTodayField = [$this->webhookLanguage('levelsTodayField', $webhookLangArray), sprintf($this->webhookLanguage('logsListChangeRewardCount'.$action, $webhookLangArray), $levelsToday), true];
-		$levelsCompareField = [$this->webhookLanguage('levelsCompareField', $webhookLangArray), sprintf($this->webhookLanguage('levelsCompareValue', $webhookLangArray), (ceil($accountsToday / $accountsYesterday * 10)) / 10), true];
+		if($levelsYesterday != 0) $levelsPercent = ceil($levelsToday / $levelsYesterday * 10) / 10;
+		else $levelsPercent = '∞';
+		$levelsCompareField = [$this->webhookLanguage('levelsCompareField', $webhookLangArray), sprintf($this->webhookLanguage('levelsCompareValue', $webhookLangArray), $levelsPercent), true];
 		$setFooter = sprintf($this->webhookLanguage('footer', $webhookLangArray), $gdps);
 		$dw->newMessage()
 		->setContent($warningsNotificationText)
@@ -2684,7 +2689,9 @@ class mainLib {
 		$lTchar = $accountsToday[strlen($accountsToday)-1] ?? $accountsToday;
 		if($lTchar == 1) $action = 0; elseif($lTchar < 5 AND $lTchar != 0 AND !($accountsToday > 9 AND $accountsToday < 20)) $action = 1; else $action = 2;
 		$accountsTodayField = [$this->webhookLanguage('accountsTodayField', $webhookLangArray), sprintf($this->webhookLanguage('accountsCountValue'.$action, $webhookLangArray), $accountsToday), true];
-		$accountsCompareField = [$this->webhookLanguage('levelsCompareField', $webhookLangArray), sprintf($this->webhookLanguage('levelsCompareValue', $webhookLangArray), (ceil($accountsToday / $accountsYesterday * 10)) / 10), true];
+		if($accountsYesterday != 0) $accountsPercent = ceil($accountsToday / $accountsYesterday * 10) / 10;
+		else $accountsPercent = '∞';
+		$accountsCompareField = [$this->webhookLanguage('levelsCompareField', $webhookLangArray), sprintf($this->webhookLanguage('levelsCompareValue', $webhookLangArray), $accountsPercent), true];
 		$setFooter = sprintf($this->webhookLanguage('footer', $webhookLangArray), $gdps);
 		$dw->newMessage()
 		->setContent($warningsNotificationText)
@@ -2929,7 +2936,7 @@ class mainLib {
 		$gmdFile .= '<k>k47</k><t />';
 		$gmdFile .= '<k>k48</k><i>'.$level['objects'].'</i>';
 		$gmdFile .= '<k>k50</k><i>'.$level['binaryVersion'].'</i>';
-		$gmdFile .= '<k>k87</k><i>'.(1482 * 0 + 3991 * 8354 * (4085 ** 2) - 50028039).'</i>';
+		$gmdFile .= '<k>k87</k><i>556365614873111</i>';
 		$gmdFile .= '<k>k101</k><i>0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0</i>';
 		$gmdFile .= '<k>kl1</k><i>0</i>';
 		$gmdFile .= '<k>kl2</k><i>0</i>';
