@@ -1293,7 +1293,6 @@ class mainLib {
 					'ID' => ($customSongs['ID']),
 					'name' => !empty($customSongs['name']) ? $customSongs['name'] : 'Unnamed',
 					'authorID' => (int)($serverIDs[null]. 0 .$folderID[$authorName]),
-					'size' => ($customSongs['size'] * 1024 * 1024),
 					'size' => $customSongs['size'] * 1024 * 1024,
 					'seconds' => $customSongs['duration'],
 					'tags' => '.'.$serverIDs[null].'.'.$serverIDs[null]. 0 .$accIDs[$customSongs['reuploadID']].'.',
