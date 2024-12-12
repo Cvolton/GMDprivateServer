@@ -246,7 +246,7 @@ $string["levelToGDDesc"] = "Resube tu nivel a un servidor externo";
 $string["usernameTarget"] = "Nombre de usuario del servidor destino";
 $string["passwordTarget"] = "Contraseña del servidor destino";
 $string["notYourLevel"] = "¡Este no es tu nivel!";
-$string["reuploadFailed"] = "Error al resubir el nivel";
+$string["reuploadFailed"] = "Hubo un error al resubir el nivel";
 // searching status
 $string["search"] = "Buscar";
 $string["searchCancel"] = "Cancelar búsqueda";
@@ -376,7 +376,7 @@ $string['resendMailHint'] = '¿No recibiste el mensaje de correo?';
 $string['resendMailDesc'] = '¡Aquí puedes enviar nuevamente un mensaje de correo electrónico si no lo recibiste!';
 $string['resendMailButton'] = 'Enviar mensaje';
 
-$string['automodTitle'] = 'Bot de moderación';
+$string['automodTitle'] = 'Auto-moderación';
 $string['possibleLevelsSpamming'] = 'Posible spam de niveles';
 $string['disableLevelsUploading'] = 'Deshabilitar subida de niveles';
 $string['possibleAccountsSpamming'] = 'Posible spam de cuentas';
