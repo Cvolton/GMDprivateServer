@@ -2,7 +2,8 @@
 /*
 	Welcome to webhooks translation file!
 	You're currently at Spanish (Español) language
-	Credits: @Neejik / Nejik.✦
+	Credits: @Neejik / Nejik.
+                 @is.maxi / Maxi.
 	
 	If you see array instead of simple string, that means you can add as many variations of translation as you want and they will be picked randomly
 */
