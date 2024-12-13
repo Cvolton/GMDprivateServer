@@ -7,7 +7,7 @@ $string["welcome"] = "¡Bienvenido al panel de ".$gdps.'!';
 $string["footer"] = $gdps.", ".date('Y', time());
 $string["tipsAfterInstalling"] = "¡Bienvenido al panel! Aquí tienes unos consejos tras la instalación:<br>
 1. Parece que aparecieron nuevos permisos 'SQL' en la tabla 'roles'. Ve a comprobarlo...<br>
-2. Coloca un archivo 'icon.png' en la carpeta 'dashboard' para que aparezca el logo de tu GDPS en la esquina superior izquierda.<br>
+2. Coloca un archivo llamado 'icon.png' en la carpeta 'dashboard' para que aparezca el logo de tu GDPS en la esquina superior izquierda.<br>
 3. Configura el panel en 'config/dashboard.php'";
 $string["wwygdt"] = "¿Qué vas a hacer hoy?";
 $string["game"] = "Juego";
@@ -407,18 +407,18 @@ $string['enabled'] = 'Habilitado';
 $string['disabled'] = 'Deshabilitado';
 $string['yesterday'] = 'Ayer';
 $string['today'] = 'Hoy';
-$string['uploading'] = 'Subiendo';
-$string['commenting'] = 'Comentando';
-$string['leaderboardSubmits'] = 'Subir Leaderboards';
+$string['uploading'] = 'Subir';
+$string['commenting'] = 'Comentar';
+$string['leaderboardSubmits'] = 'Subida de récords';
 $string['manageLevels'] = 'Administrar niveles';
 $string['disableLevelsUploading'] = 'Deshabilitar subida de niveles';
-$string['disableLevelsCommenting'] = 'Deshabilitar comentarios de niveles';
-$string['disableLevelsLeaderboardSubmits'] = 'Deshabilitar Leaderboards de niveles';
+$string['disableLevelsCommenting'] = 'Deshabilitar comentarios';
+$string['disableLevelsLeaderboardSubmits'] = 'Deshabilitar leaderboards de niveles';
 $string['disable'] = 'Deshabilitar';
 $string['enable'] = 'Habilitar';
 $string['registering'] = 'Registrarse';
 $string['accountPosting'] = 'Subir publicaciones de cuentas';
-$string['updatingProfileStats'] = 'Actualizando estadísticas del perfil';
+$string['updatingProfileStats'] = 'Actualización de estadísticas';
 $string['messaging'] = 'Mensajería';
 $string['manageAccounts'] = 'Administrar cuentas';
 $string['disableAccountsRegistering'] = 'Deshabilitar la creación de cuentas';
