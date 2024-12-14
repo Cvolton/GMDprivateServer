@@ -63,9 +63,7 @@ foreach($result as &$action) {
 	$wholiked = $db->prepare("SELECT count(*) FROM favsongs WHERE songID = :id");
 	$wholiked->execute([':id' => $songsid]);
 	$wholiked = $wholiked->fetchColumn();
-	$whoused = $db->prepare("SELECT count(*) FROM levels WHERE songID = :id");
-	$whoused->execute([':id' => $songsid]);
-	$whoused = $whoused->fetchColumn();
+	$whoused = $action['levelsCount'];
 	$wholiked = '<p class="profilepic" style="display: inline-flex;justify-content: center;grid-gap: 7px;"><i class="fa-solid fa-heart"></i> '.$wholiked.'</p>';
 	$whoused = '<p class="profilepic" style="display: inline-flex;justify-content: center;grid-gap: 7px;"><i class="fa-solid fa-gamepad"></i> '.$whoused.'</p>';
 	$songs .= $dl->generateSongCard($action, $wholiked.$whoused, false);

@@ -54,7 +54,10 @@ if(empty($result)) {
 </div>', 'account');
 	die();
 } 
-foreach($result as &$action) $songs .= $dl->generateSFXCard($action, '', false);
+foreach($result as &$action) {
+	$whoused = '<p class="profilepic" style="display: inline-flex;justify-content: center;grid-gap: 7px;"><i class="fa-solid fa-gamepad"></i> '.$action['levelsCount'].'</p>';
+	$songs .= $dl->generateSFXCard($action, $whoused, false);
+}
 $pagel = '<div class="form new-form">
 <h1 style="margin-bottom:5px">'.$dl->getLocalizedString("manageSFX").'</h1>
 <div class="form-control new-form-control songs">
