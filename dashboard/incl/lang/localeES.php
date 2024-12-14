@@ -432,7 +432,7 @@ $string['youAreBannedFromCommenting'] = '¡Estás baneado de los comentarios!';
 $string['cantPostAccountCommentsAboveChars'] = '¡No puedes subir comentarios con más de %1$s letras!';
 $string['commentingIsDisabled'] = '¡Los comentarios están deshabilitados actualmente!';
 $string['noWarnings'] = '¡Sin advertencias!';
-$string['messagingIsDisabled'] = 'Direct messages are currently disabled!';
+$string['messagingIsDisabled'] = '¡Los mensajes directos están deshabilitados actualmente!';
 
 $string['downloadLevelAsGMD'] = 'Guardar como .gmd';
 
