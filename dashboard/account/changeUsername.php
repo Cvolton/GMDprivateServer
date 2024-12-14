@@ -1,28 +1,34 @@
 <?php
 session_start();
 require "../incl/dashboardLib.php";
-require "../".$dbPath."incl/lib/Captcha.php";
 require "../".$dbPath."incl/lib/connection.php";
-require_once "../".$dbPath."config/security.php";
-require "../".$dbPath."incl/lib/generatePass.php";
+require "../".$dbPath."config/security.php";
+require "../".$dbPath."config/misc.php";
+require_once "../".$dbPath."incl/lib/Captcha.php";
+require_once "../".$dbPath."incl/lib/generatePass.php";
 require_once "../".$dbPath."incl/lib/exploitPatch.php";
 require_once "../".$dbPath."incl/lib/mainLib.php";
+require_once "../".$dbPath."incl/lib/cron.php";
 $gs = new mainLib();
 $dl = new dashboardLib();
-$ep = new exploitPatch();
 $dl->title($dl->getLocalizedString("changeNickTitle"));
 $dl->printFooter('../');
-if(isset($_SESSION["accountID"]) AND $_SESSION["accountID"] != 0){
+if(!isset($_SESSION["accountID"]) || $_SESSION["accountID"] == 0) exit($dl->printSong('<div class="form">
+	<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
+	<form class="form__inner" method="post" action="./login/login.php">
+	<p id="dashboard-error-text">'.$dl->getLocalizedString("noLogin?").'</p>
+    <button type="button" onclick="a(\'login/login.php\')" class="btn-song">'.$dl->getLocalizedString("LoginBtn").'</button>
+	</form>
+</div>', 'account')); 
 if($_POST["oldnickname"] != "" AND $_POST["newnickname"] != "" AND $_POST["password"] != "") {
 	if(!Captcha::validateCaptcha()) {
-		$dl->printSong('<div class="form">
+		exit($dl->printSong('<div class="form">
 			<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 			<form class="form__inner" method="post" action="">
 			<p id="dashboard-error-text">'.$dl->getLocalizedString("invalidCaptcha").'</p>
 			<button type="button" onclick="a(\'account/changeUsername.php\', true, true, \'GET\')"class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 			</form>
-		</div>', 'account');
-		die();
+		</div>', 'account'));
 	}
 	$userName = $gs->getAccountName($_SESSION["accountID"]);
 	$accID = $_SESSION["accountID"];
@@ -31,68 +37,63 @@ if($_POST["oldnickname"] != "" AND $_POST["newnickname"] != "" AND $_POST["passw
 	$getAccountData = $getAccountData->fetch();
 	$oldnick = ExploitPatch::charclean($_POST["oldnickname"]);
 	$newnick = str_replace(' ', '', ExploitPatch::charclean($_POST["newnickname"]));
-	if($oldnick != $userName){
-		$dl->printSong('<div class="form">
-		<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
-		<form class="form__inner" method="post" action="">
-		<p id="dashboard-error-text">'.$dl->getLocalizedString("wrongNick").'</p>
-        <button type="button" onclick="a(\'account/changeUsername.php\', true, true, \'GET\')"class="btn-primary">'.$dl->getLocalizedString("tryAgainBTN").'</button>
-		</form>
-		</div>', 'account');
-		die();
-	} elseif($userName == $newnick OR $oldnick == $newnick){
-		$dl->printSong('<div class="form">
-		<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
-		<form class="form__inner" method="post" action="">
-		<p id="dashboard-error-text">'.$dl->getLocalizedString("sameNick").'</p>
-        <button type="button" onclick="a(\'account/changeUsername.php\', true, true, \'GET\')"class="btn-primary">'.$dl->getLocalizedString("tryAgainBTN").'</button>
-		</form>
-		</div>', 'account');
-		die();
+	if($oldnick != $userName) {
+		exit($dl->printSong('<div class="form">
+			<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
+			<form class="form__inner" method="post" action="">
+			<p id="dashboard-error-text">'.$dl->getLocalizedString("wrongNick").'</p>
+			<button type="button" onclick="a(\'account/changeUsername.php\', true, true, \'GET\')"class="btn-primary">'.$dl->getLocalizedString("tryAgainBTN").'</button>
+			</form>
+		</div>', 'account'));
+	}
+	if($userName == $newnick || $oldnick == $newnick) {
+		exit($dl->printSong('<div class="form">
+			<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
+			<form class="form__inner" method="post" action="">
+			<p id="dashboard-error-text">'.$dl->getLocalizedString("sameNick").'</p>
+			<button type="button" onclick="a(\'account/changeUsername.php\', true, true, \'GET\')"class="btn-primary">'.$dl->getLocalizedString("tryAgainBTN").'</button>
+			</form>
+		</div>', 'account'));
 	}
 	$pass = $_POST["password"];
 	$pass = GeneratePass::isValidUsrname($userName, $pass);
 	$salt = "";
-if($pass == 1) {
-	$query = $db->prepare("SELECT count(*) FROM accounts WHERE userName LIKE :userName");
-	$query->execute([':userName' => $newnick]);
-	$count = $query->fetchColumn();
-	if($count > 0){
-			$dl->printSong('<div class="form">
+	if($pass == 1) {
+		$query = $db->prepare("SELECT count(*) FROM accounts WHERE userName LIKE :userName");
+		$query->execute([':userName' => $newnick]);
+		$count = $query->fetchColumn();
+		if($count > 0) {
+			exit($dl->printSong('<div class="form">
 				<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 				<form class="form__inner" method="post" action="">
 				<p id="dashboard-error-text">'.$dl->getLocalizedString("alreadyUsedNick").'</p>
 				<button type="button" onclick="a(\'account/changeUsername.php\', true, true, \'GET\')"class="btn-primary">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 				</form>
-				</div>', 'account');
-				die();
+			</div>', 'account'));
+		}
+		$auth = $gs->randomString(8);
+		$query = $db->prepare("UPDATE accounts SET userName = :userName, salt = :salt, auth = :auth WHERE accountID = :accountid");	
+		$query->execute([':userName' => $newnick, ':salt' => $salt, ':accountid' => $accID, ':auth' => $auth]);
+		$gs->sendLogsAccountChangeWebhook($accID, $accID, $getAccountData);
+		if($automaticCron) Cron::fixUsernames($accID, false);
+		$_SESSION["accountID"] = 0;
+		setcookie('auth', 'no', 2147483647, '/');
+		$dl->printSong('<div class="form">
+			<h1>'.$dl->getLocalizedString("changeNickTitle").'</h1>
+			<form class="form__inner" method="post" action=".">
+			<p>'.$dl->getLocalizedString("changedNick").'</p>
+			<button type="button" onclick="a(\'account/changeUsername.php\', true, true, \'GET\')"class="btn-primary">'.$dl->getLocalizedString("dashboard").'</button>
+			</form>
+		</div>', 'account');
+	} else {
+		$dl->printSong('<div class="form">
+			<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
+			<form class="form__inner" method="post" action="">
+			<p id="dashboard-error-text">'.$dl->getLocalizedString("wrongPass").'</p>
+			<button type="button" onclick="a(\'account/changeUsername.php\', true, true, \'GET\')" class="btn-primary">'.$dl->getLocalizedString("tryAgainBTN").'</button>
+			</form>
+		</div>', 'account');
 	}
-	$auth = $gs->randomString(8);
-	$query = $db->prepare("UPDATE accounts SET userName=:userName, salt=:salt, auth=:auth WHERE accountID=:accountid");	
-	$query->execute([':userName' => $newnick, ':salt' => $salt, ':accountid' => $accID, ':auth' => $auth]);
-	$query = $db->prepare("UPDATE levels SET userName=:newnick WHERE userName=:oldnick");
-	$query->execute([':newnick' => $newnick, ':oldnick' => $oldnick]); // IMPORTANT: each level's username will change along with the account username
-	$query = $db->prepare("UPDATE users SET userName=:userName WHERE extID=:accountid");
-	$query->execute([':userName' => $newnick,':accountid' => $accID]);
-	$gs->sendLogsAccountChangeWebhook($accID, $accID, $getAccountData);
-	$_SESSION["accountID"] = 0;
-	setcookie('auth', 'no', 2147483647, '/');
-	$dl->printSong('<div class="form">
-		<h1>'.$dl->getLocalizedString("changeNickTitle").'</h1>
-		<form class="form__inner" method="post" action=".">
-		<p>'.$dl->getLocalizedString("changedNick").'</p>
-        <button type="button" onclick="a(\'account/changeUsername.php\', true, true, \'GET\')"class="btn-primary">'.$dl->getLocalizedString("dashboard").'</button>
-		</form>
-		</div>', 'account');
-} else {
-	$dl->printSong('<div class="form">
-		<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
-		<form class="form__inner" method="post" action="">
-		<p id="dashboard-error-text">'.$dl->getLocalizedString("wrongPass").'</p>
-        <button type="button" onclick="a(\'account/changeUsername.php\', true, true, \'GET\')" class="btn-primary">'.$dl->getLocalizedString("tryAgainBTN").'</button>
-		</form>
-		</div>', 'account');
-}
 } else {
 	$dl->printSong('<div class="form">
 		<h1>'.$dl->getLocalizedString("changeNickTitle").'</h1>
@@ -122,13 +123,5 @@ if($pass == 1) {
 			}
 		});
     </script>', 'account');
-}} else {
-	$dl->printSong('<div class="form">
-		<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
-		<form class="form__inner" method="post" action="./login/login.php">
-		<p id="dashboard-error-text">'.$dl->getLocalizedString("noLogin?").'</p>
-	    <button type="button" onclick="a(\'login/login.php\')" class="btn-song">'.$dl->getLocalizedString("LoginBtn").'</button>
-		</form>
-		</div>', 'account');
 }
 ?>

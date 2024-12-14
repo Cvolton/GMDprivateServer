@@ -1,9 +1,11 @@
 <?php
 chdir(dirname(__FILE__));
 require "../lib/connection.php";
+require "../../config/misc.php";
 require_once "../lib/GJPCheck.php";
 require_once "../lib/exploitPatch.php";
 require_once "../lib/mainLib.php";
+require_once "../lib/cron.php";
 $gs = new mainLib();
 
 $levelID = ExploitPatch::remove($_POST["levelID"]);
@@ -26,4 +28,9 @@ if(file_exists("../../data/levels/$levelID")) rename("../../data/levels/$levelID
 echo "1";
 $gs->logAction($accountID, 8, $getLevelData['levelName'], $getLevelData['levelDesc'], $getLevelData['extID'], $levelID, $getLevelData['starStars'], $getLevelData['starDifficulty']);
 $gs->sendLogsLevelChangeWebhook($levelID, $accountID, $getLevelData);
+if($automaticCron) {
+	Cron::autoban($accountID, false);
+	Cron::updateCreatorPoints($accountID, false);
+	Cron::updateSongsUsage($accountID, false);
+}
 ?>

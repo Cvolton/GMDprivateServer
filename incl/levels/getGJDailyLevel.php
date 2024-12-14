@@ -1,10 +1,12 @@
 <?php
 chdir(dirname(__FILE__));
 require "../lib/connection.php";
+require "../../config/misc.php";
 require_once "../lib/mainLib.php";
 require_once "../lib/exploitPatch.php";
 require_once "../lib/XORCipher.php";
 require_once "../lib/generateHash.php";
+require_once "../lib/cron.php";
 $gs = new mainLib();
 $gh = new generateHash();
 $type = !empty($_POST["type"]) ? $_POST["type"] : (!empty($_POST["weekly"]) ? $_POST["weekly"] : 0);
@@ -35,6 +37,7 @@ if(!$daily['webhookSent']) {
 	$gs->sendDailyWebhook($daily['levelID'], $type);
 	$sent = $db->prepare('UPDATE '.$dailyTable.' SET webhookSent = 1 WHERE feaID = :feaID');
 	$sent->execute([':feaID' => $daily['feaID']]);
+	if($automaticCron) Cron::updateCreatorPoints($accountID, false);
 }
 $stringToAdd = '';
 if($isEvent) {

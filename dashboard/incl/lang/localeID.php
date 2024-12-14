@@ -432,6 +432,7 @@ $string['youAreBannedFromCommenting'] = 'Kamu dilarang berkomentar!';
 $string['cantPostAccountCommentsAboveChars'] = 'Kamu tidak bisa memposting komentar akun di atas %1$s huruf!';
 $string['commentingIsDisabled'] = 'Berkomentar sedang dinonaktifkan!';
 $string['noWarnings'] = 'Tidak ada peringatan';
+$string['messagingIsDisabled'] = 'Direct messages are currently disabled!';
 
 $string['downloadLevelAsGMD'] = 'Simpan sebagai .gmd';
 

@@ -398,23 +398,22 @@ class mainLib {
 		}
 		return "1~|~".$song["ID"]."~|~2~|~".ExploitPatch::translit(str_replace("#", "", $song["name"]))."~|~3~|~".$song["authorID"]."~|~4~|~".ExploitPatch::translit($song["authorName"])."~|~5~|~".$song["size"]."~|~6~|~~|~10~|~".$dl."~|~7~|~~|~8~|~1".$extraSongString;
 	}
-	public function getSongInfo($id, $column = "*") {
+	public function getSongInfo($id, $column = "*", $library = false) {
 	    if(!is_numeric($id)) return;
 	    require __DIR__ . "/connection.php";
 	    $sinfo = $db->prepare("SELECT $column FROM songs WHERE ID = :id");
 	    $sinfo->execute([':id' => $id]);
 	    $sinfo = $sinfo->fetch();
 	    if(empty($sinfo)) {
-			$sinfo = $this->getLibrarySongInfo($id, 'music');
+			$sinfo = $this->getLibrarySongInfo($id, 'music', $library);
 			if(!$sinfo) return false;
 			else {
 				if($column != "*")  return $sinfo[$column];
-				else return array("ID" => $sinfo["ID"], "name" => $sinfo["name"], "authorName" => $sinfo["authorName"], "size" => $sinfo["size"], "duration" => $sinfo["duration"], "download" => $sinfo["download"], "reuploadTime" => $sinfo["reuploadTime"], "reuploadID" => $sinfo["reuploadID"]);
+				else return array("isLocalSong" => false, "ID" => $sinfo["ID"], "name" => $sinfo["name"], "authorName" => $sinfo["authorName"], "size" => $sinfo["size"], "duration" => $sinfo["duration"], "download" => $sinfo["download"], "reuploadTime" => $sinfo["reuploadTime"], "reuploadID" => $sinfo["reuploadID"]);
 			}
-		}
-	    else {
+		} else {
 	        if($column != "*")  return $sinfo[$column];
-	        else return array("ID" => $sinfo["ID"], "name" => $sinfo["name"], "authorName" => $sinfo["authorName"], "size" => $sinfo["size"], "duration" => $sinfo["duration"], "download" => $sinfo["download"], "reuploadTime" => $sinfo["reuploadTime"], "reuploadID" => $sinfo["reuploadID"]);
+	        else return array("isLocalSong" => true, "ID" => $sinfo["ID"], "name" => $sinfo["name"], "authorName" => $sinfo["authorName"], "size" => $sinfo["size"], "duration" => $sinfo["duration"], "download" => $sinfo["download"], "reuploadTime" => $sinfo["reuploadTime"], "reuploadID" => $sinfo["reuploadID"]);
 	    }
 	}
 	public function getSFXInfo($id, $column = "*") {
@@ -808,6 +807,8 @@ class mainLib {
 	public function rateLevel($accountID, $levelID, $stars, $difficulty, $auto, $demon) {
 		if(!is_numeric($accountID)) return false;
 		require __DIR__ . "/connection.php";
+		require __DIR__ . "/../../config/misc.php";
+		require_once __DIR__ . "/cron.php";
 		$diffName = $this->getDiffFromStars($stars)["name"];
 		$query = "UPDATE levels SET starDemon=:demon, starAuto=:auto, starDifficulty=:diff, starStars=:stars, rateDate=:now WHERE levelID=:levelID";
 		$query = $db->prepare($query);	
@@ -815,6 +816,7 @@ class mainLib {
 		$query = $db->prepare("INSERT INTO modactions (type, value, value2, value3, timestamp, account) VALUES ('1', :value, :value2, :levelID, :timestamp, :id)");
 		$query->execute([':value' => $diffName, ':timestamp' => time(), ':id' => $accountID, ':value2' => $stars, ':levelID' => $levelID]);
 		$this->sendRateWebhook($accountID, $levelID);
+		if($automaticCron) Cron::updateCreatorPoints($accountID, false);
 	}
 	public function featureLevel($accountID, $levelID, $state) {
 		if(!is_numeric($accountID)) return false;
@@ -1223,10 +1225,12 @@ class mainLib {
 			$server = $serverIDs[null];
 			foreach($sfxs AS &$customSFX) {
 				if(!isset($folderID[$customSFX['reuploadID']])) {
-					$idsConverter['count']++;
-					$idsConverter['IDs'][$idsConverter['count']] = ['server' => $server, 'ID' => $customSFX['ID'], 'name' => $customSFX['userName'].'\'s SFXs', 'type' => 1];
-					$idsConverter['originalIDs'][$server][$customSFX['reuploadID']] = $idsConverter['count'];
-					$newID = $idsConverter['count'];
+					if(empty($idsConverter['originalIDs'][$server][$customSFX['reuploadID']])) {
+						$idsConverter['count']++;
+						$idsConverter['IDs'][$idsConverter['count']] = ['server' => $server, 'ID' => $customSFX['ID'], 'name' => $customSFX['userName'].'\'s SFXs', 'type' => 1];
+						$idsConverter['originalIDs'][$server][$customSFX['reuploadID']] = $idsConverter['count'];
+						$newID = $idsConverter['count'];
+					} else $newID = $idsConverter['originalIDs'][$server][$customSFX['reuploadID']];
 					$library['folders'][$newID] = [
 						'name' => ExploitPatch::escapedat($customSFX['userName']).'\'s SFXs',
 						'type' => 1,
@@ -1239,10 +1243,12 @@ class mainLib {
 					];
 					$folderID[$customSFX['reuploadID']] = true;
 				}
-				$idsConverter['count']++;
-				$idsConverter['IDs'][$idsConverter['count']] = ['server' => $server, 'ID' => $customSFX['ID'], 'name' => $customSFX['name'], 'type' => 0];
-				$idsConverter['originalIDs'][$server][$customSFX['ID']] = $idsConverter['count'];
-				$customSFX['ID'] = $idsConverter['count'];
+				if(empty($idsConverter['originalIDs'][$server][$customSFX['ID'] + 8000000])) {
+					$idsConverter['count']++;
+					$idsConverter['IDs'][$idsConverter['count']] = ['server' => $server, 'ID' => $customSFX['ID'], 'name' => $customSFX['name'], 'type' => 0];
+					$idsConverter['originalIDs'][$server][$customSFX['ID'] + 8000000] = $idsConverter['count'];
+					$customSFX['ID'] = $idsConverter['count'];
+				} else $customSFX['ID'] = $idsConverter['originalIDs'][$server][$customSFX['ID'] + 8000000];
 				$library['files'][$customSFX['ID']] = $gdpsLibrary['files'][$customSFX['ID']] = [
 					'name' => ExploitPatch::escapedat($customSFX['name']),
 					'type' => 0,
@@ -1382,7 +1388,7 @@ class mainLib {
 		$result = isset($response['success']) ? $response['success'] : false;
 		return $result;
 	}
-	public function getLibrarySongInfo($id, $type = 'music') {
+	public function getLibrarySongInfo($id, $type = 'music', $extraLibrary = false) {
 		require __DIR__."/../../config/dashboard.php";
 		if(!file_exists(__DIR__.'/../../'.$type.'/ids.json')) return false;
 		$servers = $serverIDs = $serverNames = [];
@@ -1391,7 +1397,7 @@ class mainLib {
 			$serverNames[$customLib[0]] = $customLib[1];
 			$serverIDs[$customLib[2]] = $customLib[0];
 		}
-		$library = json_decode(file_get_contents(__DIR__.'/../../'.$type.'/ids.json'), true);
+		$library = $extraLibrary ? $extraLibrary : json_decode(file_get_contents(__DIR__.'/../../'.$type.'/ids.json'), true);
 		if(!isset($library['IDs'][$id]) || ($type == 'music' && $library['IDs'][$id]['type'] != 1)) return false;
 		if($type == 'music') {
 			$song = $library['IDs'][$id];
@@ -1405,7 +1411,7 @@ class mainLib {
 			$token = $this->randomString(11);
 			$expires = time() + 3600;
 			$link = $servers[$SFX['server']] != null ? $servers[$SFX['server']].'/sfx/s'.$SFX['ID'].'.ogg?token='.$token.'&expires='.$expires : $this->getSFXInfo($SFX['ID'], 'download');
-			return ['server' => $SFX['server'], 'ID' => $id, 'name' => $song['name'], 'download' => $link];
+			return ['isLocalSFX' => $servers[$SFX['server']] == null, 'server' => $SFX['server'], 'ID' => $id, 'name' => $song['name'], 'download' => $link, 'originalID' => $SFX['ID']];
 		}
 	}
 	public function getLibrarySongAuthorInfo($id) {
@@ -2086,7 +2092,7 @@ class mainLib {
 			$levelField = [$this->webhookLanguage('levelTitle', $webhookLangArray), sprintf($this->webhookLanguage('levelDesc', $webhookLangArray), '**'.$level['levelName'].'**', $creatorFormattedUsername), true];
 			$IDField = [$this->webhookLanguage('levelIDTitle', $webhookLangArray), $level['levelID'], true];
 			if($level['starStars'] == 1) $action = 0; elseif(($level['starStars'] < 5 AND $level['starStars'] != 0) AND !($level['starStars'] > 9 AND $level['starStars'] < 20)) $action = 1; else $action = 2;
-			$difficultyField = [$this->webhookLanguage('difficultyTitle', $webhookLangArray), sprintf($this->webhookLanguage('difficultyDesc'.$action, $webhookLangArray), $difficulty, $level['starStars']), true];
+			$difficultyField = [$this->webhookLanguage('difficultyTitle', $webhookLangArray), sprintf($this->webhookLanguage('difficultyDesc' . ($level['levelLength'] == 5 ? 'Moon' : '') . $action, $webhookLangArray), $difficulty, $level['starStars']), true];
 			$statsField = [$this->webhookLanguage('statsTitle', $webhookLangArray), $stats, true];
 			if($level['requestedStars'] == 1) $action = 0; elseif(($level['requestedStars'] < 5 AND $level['requestedStars'] != 0) AND !($level['requestedStars'] > 9 AND $level['requestedStars'] < 20)) $action = 1; else $action = 2;
 			$requestedField = $level['requestedStars'] > 0 ? [$this->webhookLanguage('requestedTitle', $webhookLangArray), sprintf($this->webhookLanguage('requestedDesc'.$action, $webhookLangArray), $level['requestedStars']), true] : [];

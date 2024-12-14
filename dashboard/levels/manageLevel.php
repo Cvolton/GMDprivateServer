@@ -1,13 +1,14 @@
 <?php
 session_start();
 require "../incl/dashboardLib.php";
-require "../".$dbPath."incl/lib/Captcha.php";
 require "../".$dbPath."incl/lib/connection.php";
-$dl = new dashboardLib();
+require "../".$dbPath."config/misc.php";
 require_once "../".$dbPath."incl/lib/mainLib.php";
+require_once "../".$dbPath."incl/lib/exploitPatch.php";
+require_once "../".$dbPath."incl/lib/Captcha.php";
+require_once "../".$dbPath."incl/lib/cron.php";
+$dl = new dashboardLib();
 $gs = new mainLib();
-require "../".$dbPath."incl/lib/connection.php";
-require "../".$dbPath."incl/lib/exploitPatch.php";
 $dl->title($dl->getLocalizedString("manageLevel"));
 $dl->printFooter('../');
 $manageLevelCheck = $gs->checkPermission($_SESSION["accountID"], "dashboardManageLevels");
@@ -37,6 +38,11 @@ if(isset($_GET['deleteLevel'])) {
 		$query->execute([':levelID' => $levelID]);
 		$query = $db->prepare("INSERT INTO modactions (type, value, value2, value3, timestamp, account) VALUES ('6', :value, :value2, :levelID, :timestamp, :id)");
 		$query->execute([':value' => "1", ":value2" => $level['levelName'], ':timestamp' => time(), ':id' => $_SESSION['accountID'], ':levelID' => $levelID]);
+		if($automaticCron) {
+			Cron::autoban($_SESSION['accountID'], false);
+			Cron::updateCreatorPoints($_SESSION['accountID'], false);
+			Cron::updateSongsUsage($_SESSION['accountID'], false);
+		}
 		$dl->printSong('<div class="form">
 			<h1>'.$dl->getLocalizedString("manageLevel").'</h1>
 			<form class="form__inner" method="post" action="">
@@ -121,7 +127,7 @@ if(!empty($_POST["levelName"]) && !empty($_POST["levelAuthor"])) {
 	}
 	if($starFeatured != $level['starFeatured']) {
 		$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('2', :value, :levelID, :timestamp, :id)");
-		$query->execute([':value' => 1, ':timestamp' => time(), ':id' => $_SESSION['accountID'], ':levelID' => $levelID]);	
+		$query->execute([':value' => 1, ':timestamp' => time(), ':id' => $_SESSION['accountID'], ':levelID' => $levelID]);
 	}
 	if($starEpic != $level['starEpic']) {
 		$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('4', :value, :levelID, :timestamp, :id)");
@@ -154,6 +160,11 @@ if(!empty($_POST["levelName"]) && !empty($_POST["levelAuthor"])) {
 	$updateLevel = $db->prepare("UPDATE levels SET levelName = :levelName, extID = :extID, userID = :userID, levelDesc = :levelDesc, starStars = :stars, starFeatured = :starFeatured, starEpic = :starEpic, songID = :songID, password = :password, starCoins = :starCoins, unlisted = :unlisted, unlisted2 = :unlisted, updateLocked = :updateLocked, commentLocked = :commentLocked WHERE levelID = :levelID");
 	$updateLevel->execute([':levelName' => $newLevelName, ':extID' => $newLevelAuthor, ':userID' => $gs->getUserID($newLevelAuthor), ':levelDesc' => $newLevelDesc, ':stars' => $newStars, ':starFeatured' => $starFeatured, ':starEpic' => $starEpic, ':songID' => $newSongID, ':password' => $newPassword, ':starCoins' => $newVerifyCoins, ':unlisted' => $newUnlisted, ':updateLocked' => $newLockUpdating, ':commentLocked' => $newLockCommenting, ':levelID' => $levelID]);
 	if($newStars != $level['starStars']) $gs->sendRateWebhook($_SESSION['accountID'], $levelID);
+	if($automaticCron) {
+		Cron::autoban($_SESSION['accountID'], false);
+		Cron::updateCreatorPoints($_SESSION['accountID'], false);
+		Cron::updateSongsUsage($_SESSION['accountID'], false);
+	}
 	$gs->sendLogsLevelChangeWebhook($levelID, $_SESSION['accountID'], $level);
 	$dl->printSong('<div class="form">
 		<h1>'.$dl->getLocalizedString("manageLevel").'</h1>

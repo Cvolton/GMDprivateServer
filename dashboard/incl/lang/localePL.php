@@ -431,6 +431,7 @@ $string['youAreBannedFromCommenting'] = 'You are banned from commenting!';
 $string['cantPostAccountCommentsAboveChars'] = 'You cannot post account comments above %1$s characters!';
 $string['commentingIsDisabled'] = 'Commenting is currently disabled!';
 $string['noWarnings'] = 'No warnings';
+$string['messagingIsDisabled'] = 'Direct messages are currently disabled!';
 
 $string['downloadLevelAsGMD'] = 'Save as .gmd';
 

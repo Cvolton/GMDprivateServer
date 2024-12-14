@@ -210,37 +210,6 @@ class dashboardLib {
 								if($lrEnabled == 1) echo '<a type="button" href="levels/levelReupload.php" onclick="a(\'levels/levelReupload.php\')"class="dropdown-item"><i class="fa-solid fa-arrow-down" style="position: absolute;font-size: 10px;margin: 0px 5px 5px -7px;" aria-hidden="false"></i><div class="icon"><i class="fa-solid fa-cloud" aria-hidden="false"></i></div>'.$this->getLocalizedString("levelReupload").'</a>
                                 <a type="button" href="levels/levelToGD.php" onclick="a(\'levels/levelToGD.php\')"class="dropdown-item"><i class="fa-solid fa-arrow-up" style="position: absolute;font-size: 10px;margin: 0px 5px 5px -7px;" aria-hidden="false"></i><div class="icon"><i class="fa-solid fa-cloud" aria-hidden="false"></i></div>'.$this->getLocalizedString("levelToGD").'</a>';
           				echo '<button type="button" class="dropdown-item" id="crbtn" onclick="cron(), event.stopPropagation();"><div class="icon"><i id="iconcron" class="fa-solid fa-bars-progress"></i></div>'.$this->getLocalizedString('tryCron').'</button>
-                        <script>
-								function cron() {
-									cr = new XMLHttpRequest();
-                                    cr.open("GET", "'.$dbPath.'tools/cron/cron.php", true);
-                                    var ic = document.getElementById("iconcron");
-                                    var on = document.getElementById("crbtn");
-                                    ic.classList.remove("fa-bars-progress");
-                                    ic.classList.add("fa-spinner");
-                                    ic.classList.add("fa-spin");
-                                    cr.onload = function (){
-										if(cr.response == "1") {
-                                        	on.innerHTML = \'<div class="icon"><i id="iconcron" class="fa-solid fa-check"></i></div>'.$this->getLocalizedString('cronSuccess').'\';
-                                   			ic.classList.remove("fa-spinner");
-                                   			ic.classList.remove("fa-spin");
-                                            ic.classList.add("fa-bars-progress");
-                                            on.classList.add("dropdown-success");
-                                            on.classList.remove("dropdown-error");
-                                            on.disabled = true;
-										}
-										else {
-                                        	on.innerHTML = \'<div class="icon"><i id="iconcron" class="fa-solid fa-xmark"></i></div>'.$this->getLocalizedString('cronError').'\';
-                                   			ic.classList.remove("fa-spinner");
-                                   			ic.classList.remove("fa-spin");
-                                            ic.classList.add("fa-bars-progress");
-                                            on.classList.remove("dropdown-success");
-                                            on.classList.add("dropdown-error");
-										}
-                                    }
-                                    cr.send();
-                            	}
-</script>
 						</div>
 					</li>';
 			if($gs->checkPermission($_SESSION["accountID"], "dashboardModTools")) {
@@ -1043,6 +1012,31 @@ class dashboardLib {
 			toast.classList.remove("notify-show");
 			setTimeout(function () {toast.remove()}, 300);
 		}, 3000);
+	}
+	function cron() {
+		var iconCron = document.getElementById("iconcron");
+		var cronButton = document.getElementById("crbtn");
+		iconCron.classList.remove("fa-bars-progress");
+		iconCron.classList.add("fa-spinner");
+		iconCron.classList.add("fa-spin");
+		fetch("api/runCron.php").then(r => r.json()).then(response => {
+			if(response.success) {
+				cronButton.innerHTML = \'<div class="icon"><i id="iconcron" class="fa-solid fa-check"></i></div>'.$this->getLocalizedString('cronSuccess').'\';
+				iconCron.classList.remove("fa-spinner");
+				iconCron.classList.remove("fa-spin");
+				iconCron.classList.add("fa-bars-progress");
+				cronButton.classList.add("dropdown-success");
+				cronButton.classList.remove("dropdown-error");
+				cronButton.disabled = true;
+			} else {
+				cronButton.innerHTML = \'<div class="icon"><i id="iconcron" class="fa-solid fa-xmark"></i></div>'.$this->getLocalizedString('cronError').'\';
+				iconCron.classList.remove("fa-spinner");
+				iconCron.classList.remove("fa-spin");
+				iconCron.classList.add("fa-bars-progress");
+				cronButton.classList.remove("dropdown-success");
+				cronButton.classList.add("dropdown-error");
+			}
+		});
 	}
 	window.addEventListener("popstate", function(e) { 
 		a(e.target.location.href, true, true, "GET", false, "", true);

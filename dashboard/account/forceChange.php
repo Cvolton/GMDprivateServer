@@ -1,26 +1,25 @@
 <?php
 session_start();
 require "../incl/dashboardLib.php";
-require "../".$dbPath."incl/lib/Captcha.php";
 require "../".$dbPath."incl/lib/connection.php";
-require_once "../".$dbPath."config/security.php";
-require "../".$dbPath."incl/lib/generatePass.php";
+require "../".$dbPath."config/security.php";
+require "../".$dbPath."config/misc.php";
+require_once "../".$dbPath."incl/lib/Captcha.php";
+require_once "../".$dbPath."incl/lib/generatePass.php";
 require_once "../".$dbPath."incl/lib/exploitPatch.php";
 require_once "../".$dbPath."incl/lib/mainLib.php";
+require_once "../".$dbPath."incl/lib/cron.php";
 $gs = new mainLib();
 $dl = new dashboardLib();
 $dl->printFooter('../');
 $acc = $_SESSION["accountID"];
-if(!$gs->checkPermission($acc, 'dashboardForceChangePassNick')) {
-	$dl->printSong('<div class="form">
-    <h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
+if(!$gs->checkPermission($acc, 'dashboardForceChangePassNick')) exit($dl->printSong('<div class="form">
+	<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 	<p id="dashboard-error-text">'.$dl->getLocalizedString("noPermission").'</p>
-    <form class="form__inner" method="post" action=".">
+	<form class="form__inner" method="post" action=".">
 	<button type="button" onclick="a(\'\')" class="btn-primary">'.$dl->getLocalizedString("Kish!").'</button>
-    </form>
-	</div>', 'mod');
-	die();
-}
+	</form>
+</div>', 'mod'));
 if($_POST["type"] == 0) {
 	$type = 'Password'; 
 	$inputtype = '<input type="hidden" name="type" value="0">';
@@ -31,14 +30,13 @@ if($_POST["type"] == 0) {
 $dl->title($dl->getLocalizedString("force".$type));
 if(!empty($_POST["userID"]) AND !empty($_POST[$type])) {
   	if(!Captcha::validateCaptcha()) {
-		$dl->printSong('<div class="form">
+		exit($dl->printSong('<div class="form">
 			<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 			<form class="form__inner" method="post" action="">
 			<p id="dashboard-error-text">'.$dl->getLocalizedString("invalidCaptcha").'</p>
 			<button type="button" onclick="a(\'account/forceChange.php\', true, true, \'GET\')" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 			</form>
-		</div>', 'mod');
-		die();
+		</div>', 'mod'));
 	}
   if(!empty($_POST["Nick"])) {
     $newnick = str_replace(' ', '', ExploitPatch::charclean($_POST["Nick"]));
@@ -49,35 +47,33 @@ if(!empty($_POST["userID"]) AND !empty($_POST[$type])) {
 	$query->execute([':userName' => $newnick]);
 	$count = $query->fetchColumn();
 	if($count > 0) {
-			$dl->printSong('<div class="form">
-				<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
-				<form class="form__inner" method="post" action="">
-				<p id="dashboard-error-text">'.$dl->getLocalizedString("alreadyUsedNick").'</p>
-				<button type="button" onclick="a(\'account/forceChange.php\', true, true, \'GET\')" class="btn-primary">'.$dl->getLocalizedString("tryAgainBTN").'</button>
-				</form>
-				</div>', 'mod');
-				die();
+		exit($dl->printSong('<div class="form">
+			<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
+			<form class="form__inner" method="post" action="">
+			<p id="dashboard-error-text">'.$dl->getLocalizedString("alreadyUsedNick").'</p>
+			<button type="button" onclick="a(\'account/forceChange.php\', true, true, \'GET\')" class="btn-primary">'.$dl->getLocalizedString("tryAgainBTN").'</button>
+			</form>
+		</div>', 'mod'));
 	}
 	$getAccountData = $db->prepare("SELECT * FROM accounts WHERE accountID = :accountID");
 	$getAccountData->execute([':accountID' => $accID]);
 	$getAccountData = $getAccountData->fetch();
-	$query = $db->prepare("UPDATE accounts SET userName=:userName, salt=:salt WHERE accountID=:accountid");	
-	$query->execute([':userName' => $newnick, ':salt' => $salt, ':accountid' => $accID]);
-	$query = $db->prepare("UPDATE users SET userName=:userName WHERE extID=:accountid");
-	$query->execute([':userName' => $newnick,':accountid' => $accID]);
-	$gs->sendLogsAccountChangeWebhook($accID, $acc, $getAccountData);
     $auth = $gs->randomString(8);
-    $query = $db->prepare("UPDATE accounts SET auth = :auth WHERE accountID = :id");
-    $query->execute([':auth' => $auth, ':id' => $accID]);
+	$query = $db->prepare("UPDATE accounts SET userName = :userName, salt = :salt, auth = :auth WHERE accountID = :accountid");	
+	$query->execute([':userName' => $newnick, ':salt' => $salt, ':accountid' => $accID, ':auth' => $auth]);
+	$gs->sendLogsAccountChangeWebhook($accID, $acc, $getAccountData);
+	$discord = $gs->hasDiscord($accID);
+	if($discord) $gs->changeDiscordUsername($discord, $newnick);
+	if($automaticCron) Cron::fixUsernames($_SESSION['accountID'], false);
     $query = $db->prepare("INSERT INTO modactions (type, value, value2, timestamp, account) VALUES ('26',:userID, :type, :timestamp,:account)");
 	$query->execute([':userID' => $accID, ':timestamp' => time(), ':type' => $type, ':account' => $acc]);
-	$dl->printSong('<div class="form">
+	exit($dl->printSong('<div class="form">
 		<h1>'.$dl->getLocalizedString("changeNickTitle").'</h1>
 		<form class="form__inner" method="post" action="">
 		<p>'.sprintf($dl->getLocalizedString("forceChangedNick"), $newnick).'</p>
         <button type="button" onclick="a(\'account/forceChange.php\', true, true, \'GET\')" class="btn-primary">'.$dl->getLocalizedString("dashboard").'</button>
 		</form>
-		</div>', 'mod');
+	</div>', 'mod'));
   } elseif($type == 'Password') {
 	$newpass = $_POST["Password"]; 
   	if(is_numeric($_POST["userID"])) {

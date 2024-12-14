@@ -2,14 +2,14 @@
 session_start();
 require "../incl/dashboardLib.php";
 require "../".$dbPath."incl/lib/connection.php";
-$dl = new dashboardLib();
+require "../".$dbPath."config/dashboard.php";
+require_once "../incl/XOR.php";
 require_once "../".$dbPath."incl/lib/mainLib.php";
 require_once "../".$dbPath."incl/lib/automod.php";
+require_once "../".$dbPath."incl/lib/exploitPatch.php";
+$dl = new dashboardLib();
 $gs = new mainLib();
-require "../".$dbPath."incl/lib/exploitPatch.php";
-require "../incl/XOR.php";
 $xor = new XORCipher();
-global $msgEnabled;
 $dl->printFooter('../');
 if(!isset($_POST["receiver"])) {
 	$getID = str_replace('%20', ' ', explode("/", $_GET["id"])[count(explode("/", $_GET["id"]))-1]);
@@ -57,7 +57,7 @@ if($msgEnabled == 0) {
 		</form>
 	</div>', 'msg'));
 }
-if(!isset($_SESSION["accountID"]) OR $_SESSION["accountID"] == 0) {
+if(!isset($_SESSION["accountID"]) || $_SESSION["accountID"] == 0) {
 	$dl->title($dl->getLocalizedString("messenger"));
 	exit($dl->printSong('<div class="form">
 		<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
@@ -82,7 +82,7 @@ if($_POST['receiver'] != 0 && ExploitPatch::number($_POST['receiver']) != $_SESS
 		$subject = ExploitPatch::url_base64_encode(trim(ExploitPatch::rucharclean($_POST["subject"])));
 		$body = ExploitPatch::rucharclean($_POST["body"]);
 		if(Automod::isAccountsDisabled(3)) {
-			$alertScript = 'Messaging is disabled!';
+			$alertScript = $dl->getLocalizedString('messagingIsDisabled');
 			$subject = $body = "";
 		}
 		if(is_numeric(mb_substr($body, -3)) && !is_numeric(mb_substr($body, -4))) $body .= ' ';
@@ -111,31 +111,45 @@ if($_POST['receiver'] != 0 && ExploitPatch::number($_POST['receiver']) != $_SESS
 			$query->execute([':userID' => $gs->getUserID($_SESSION['accountID']), ':userName' => $gs->getAccountName($_SESSION['accountID']), ':body' => $body, ':subject' => $subject, ':accountID' => $_SESSION['accountID'], ':receiver' => $receiver, 'time' => time()]);
 		}
 	}
+	if($_POST['deleteMessage']) {
+		$deleteMessageID = ExploitPatch::number($_POST['deleteMessage']);
+		$messageCheck = $db->prepare("SELECT count(*) FROM messages WHERE toAccountID = :receiver AND accID = :accountID AND messageID = :messageID");
+		$messageCheck->execute([':receiver' => $receiver, ':accountID' => $_SESSION['accountID'], ':messageID' => $deleteMessageID]);
+		$messageCheck = $messageCheck->fetchColumn();
+		if($messageCheck) {
+			$deleteMessage = $db->prepare("DELETE FROM messages WHERE messageID = :messageID");
+			$deleteMessage->execute([':messageID' => $deleteMessageID]);
+		}
+	}
 	$query = $db->prepare("SELECT * FROM messages WHERE (accID = :accountID AND toAccountID = :receiver) OR (accID = :receiver AND toAccountID = :accountID) ORDER BY timestamp ASC");
 	$query->execute([':accountID' => $_SESSION['accountID'], ':receiver' => $receiver]);
 	$result = $query->fetchAll();
 	foreach($result AS &$messages) {
-		if($messages["accID"] == $_SESSION['accountID']) $div = 'you';
-        else $div = 'notyou';
+        $div = $messages["accID"] == $_SESSION['accountID'] ? 'you' : 'notyou';
 		$subject = htmlspecialchars(ExploitPatch::url_base64_decode($messages["subject"]));
 		$body = $dl->parseMessage(htmlspecialchars($xor->plaintext(ExploitPatch::url_base64_decode($messages["body"]), 14251)));
-		$receiverMessagesButton = '';
-		if($div == 'notyou') $receiverMessagesButton = '<button class="btn-circle" onclick="replyToMessage('.$messages['messageID'].')"><i class="fa-solid fa-reply"></i></button>';
+		$replyToMessageButton = $deleteMessageButton = $wasReadIcon = '';
+		if($div == 'notyou') $replyToMessageButton = '<button class="btn-circle" onclick="replyToMessage('.$messages['messageID'].')"><i class="fa-solid fa-reply"></i></button>';
+		else {
+			$deleteMessageButton = '<button class="btn-circle" onclick="deleteMessage('.$messages['messageID'].')"><i class="fa-solid fa-trash"></i></button>';
+			$wasReadIcon = ' <text>•</text> <i class="fa-solid fa-check'.($messages['readTime'] ? '-double" title="'.$dl->convertToDate($messages['readTime'], true) : '').'"></i>';
+		}
 		$chatMessages .= '<div class="message '.$div.'">
+			'.$deleteMessageButton.'
 			<div class="messenger'.$div.'">
 				<h2 id="messageSubject'.$messages['messageID'].'" class="subject'.$div.'">'.$subject.'</h2>
 				<h3 class="message'.$div.'">'.$body.'</h3>
-				<h3 id="comments" style="justify-content:flex-end">'.$dl->convertToDate($messages["timestamp"], true).'</h3>
+				<h3 class="comments" style="justify-content:flex-end">'.$dl->convertToDate($messages["timestamp"], true).$wasReadIcon.'</h3>
 			</div>
-			'.$receiverMessagesButton.'
+			'.$replyToMessageButton.'
 		</div>';
 	}
 	if(empty($chatMessages)) $chatMessages = '<div class="empty-section">
 		<i class="fa-solid fa-comment"></i>
 		<p>'.$dl->getLocalizedString('noMsgs').'</p>
 	</div>';
-	$readAllMessages = $db->prepare("UPDATE messages SET isNew = 1 WHERE accID = :receiver AND toAccountID = :accountID AND isNew = 0");
-	$readAllMessages->execute([':receiver' => $receiver, ':accountID' => $_SESSION['accountID']]);
+	$readAllMessages = $db->prepare("UPDATE messages SET isNew = 1, readTime = :readTime WHERE accID = :receiver AND toAccountID = :accountID AND readTime = 0");
+	$readAllMessages->execute([':receiver' => $receiver, ':accountID' => $_SESSION['accountID'], ':readTime' => time()]);
 	$chatBox = '<div class="messenger-username">
         <button type="button" onclick="a(\'profile/'.$receiverUsername.'\', true, true, \'GET\')" class="goback" name="accountID" value="'.$receiver.'"><i class="fa-regular fa-user" aria-hidden="true"></i></button>
         <h1>'.$receiverUsername.'</h1>
@@ -146,6 +160,7 @@ if($_POST['receiver'] != 0 && ExploitPatch::number($_POST['receiver']) != $_SESS
 		<div class="field"><input type="text" name="subject" id="chatSubject" placeholder="'.$dl->getLocalizedString("subject").'"></input></div>
 		<div class="field"><input type="text" name="body" id="chatBody" placeholder="'.$dl->getLocalizedString("msg").'"></input></div>
 		<input type="hidden" name="receiver" value="'.$receiver.'"></input>
+		<input type="hidden" id="deleteMessage" name="deleteMessage" value="0"></input>
 	<button type="button" onclick="a(\'messenger/'.$receiverUsername.'\', true, true, \'POST\')"; class="btn-primary btn-block" id="chatSubmit" disabled>'.$dl->getLocalizedString("send").'</button></form>';
 	$dl->title($dl->getLocalizedString("messenger").", ".$receiverUsername);
 	$pageScript .= PHP_EOL.'var element = document.getElementById("chatMessages");
@@ -174,6 +189,10 @@ if($_POST['receiver'] != 0 && ExploitPatch::number($_POST['receiver']) != $_SESS
 			if(!messageSubject.startsWith("Re:")) messageSubject = "Re: " + messageSubject;
 			document.getElementById("chatSubject").value = messageSubject;
 			document.getElementById("chatBody").focus();
+		}
+		function deleteMessage(messageID) {
+			document.getElementById("deleteMessage").value = messageID;
+			a("messenger/'.$receiverUsername.'", true, true, "POST");
 		}
 		'.(!empty($alertScript) ? 'alert("'.$alertScript.'");' : '').'';
 }

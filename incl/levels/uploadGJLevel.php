@@ -2,10 +2,12 @@
 //error_reporting(0);
 chdir(dirname(__FILE__));
 require "../lib/connection.php";
+require "../../config/misc.php";
 require_once "../lib/GJPCheck.php";
 require_once "../lib/exploitPatch.php";
 require_once "../lib/automod.php";
 require_once "../lib/mainLib.php";
+require_once "../lib/cron.php";
 $gs = new mainLib();
 if(Automod::isLevelsDisabled(0)) exit('-1');
 //here im getting all the data
@@ -81,7 +83,6 @@ if($levelString != "" AND $levelName != "") {
 	if($level['updateLocked']) exit("-1");
 	$lvls = $querye->rowCount();
 	if($lvls == 1) {
-		require "../../config/misc.php";
 		$query = $db->prepare("SELECT * FROM levels WHERE levelID = :levelID");
 		$query->execute([":levelID"=> $levelID]);
 		$getLevelData = $query->fetch();
@@ -94,6 +95,7 @@ if($levelString != "" AND $levelName != "") {
 		$gs->logAction($id, 23, $levelName, $levelDesc, $levelID);
 		$gs->sendLogsLevelChangeWebhook($levelID, $id, $getLevelData);
 		Automod::checkLevelsCount();
+		if($automaticCron) Cron::updateSongsUsage($id, false);
 	} else {
 		$query->execute([':levelName' => $levelName, ':gameVersion' => $gameVersion, ':binaryVersion' => $binaryVersion, ':userName' => $userName, ':levelDesc' => $levelDesc, ':levelVersion' => $levelVersion, ':levelLength' => $levelLength, ':audioTrack' => $audioTrack, ':auto' => $auto, ':password' => $password, ':original' => $original, ':twoPlayer' => $twoPlayer, ':songID' => $songID, ':objects' => $objects, ':coins' => $coins, ':requestedStars' => $requestedStars, ':extraString' => $extraString, ':levelString' => "", ':levelInfo' => $levelInfo, ':secret' => $secret, ':uploadDate' => $uploadDate, ':userID' => $userID, ':id' => $id, ':unlisted' => $unlisted, ':hostname' => $hostname, ':ldm' => $ldm, ':wt' => $wt, ':wt2' => $wt2, ':unlisted2' => $unlisted2, ':settingsString' => $settingsString, ':songIDs' => $songIDs, ':sfxIDs' => $sfxIDs, ':ts' => $ts]);
 		$levelID = $db->lastInsertId();
@@ -102,6 +104,7 @@ if($levelString != "" AND $levelName != "") {
 		$gs->logAction($id, 22, $levelName, $levelDesc, $levelID);
 		$gs->sendLogsLevelChangeWebhook($levelID, $id);
 		Automod::checkLevelsCount();
+		if($automaticCron) Cron::updateSongsUsage($id, false);
 	}
 } else {
 	exit('-1');

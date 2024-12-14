@@ -309,6 +309,9 @@ if(!$installed) {
 					if(!empty($exist)) $db->query("ALTER TABLE `vaultcodes` DROP `type`");
 				$db->query("ALTER TABLE `vaultcodes` DROP `reward`");
 			}
+		$check = $db->query("SHOW COLUMNS FROM `messages` LIKE 'readTime'");
+			$exist = $check->fetchAll();
+			if(empty($exist)) $db->query("ALTER TABLE `messages` ADD `readTime` INT NOT NULL DEFAULT '0' AFTER `isNew`");
 	$lines = file($dbPath.'config/dashboard.php');
 	$first_line = $lines[2];
 	$lines = array_slice($lines, 1 + 2);

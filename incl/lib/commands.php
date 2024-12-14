@@ -1,7 +1,7 @@
 <?php
 class Commands {
-	public static function ownCommand($command, $accountID, $targetExtID){
-		require_once "../lib/mainLib.php";
+	public static function ownCommand($command, $accountID, $targetExtID) {
+		require_once __DIR__."/mainLib.php";
 		$gs = new mainLib();
 		$commandInPerms = ucfirst(strtolower($command));
 		if($gs->checkPermission($accountID, "command".$commandInPerms."All") OR ($targetExtID == $accountID AND $gs->checkPermission($accountID, "command".$commandInPerms."Own"))) return true;
@@ -10,9 +10,11 @@ class Commands {
 	public static function doCommands($accountID, $comment, $levelID) {
 		if(!is_numeric($accountID) || !is_numeric($levelID) || substr($comment, 0, 1) != '!') return false;
 		if($levelID < 0) return self::doListCommands($accountID, $comment, $levelID);
-		require dirname(__FILE__)."/../lib/connection.php";
-		require_once "../lib/exploitPatch.php";
-		require_once "../lib/mainLib.php";
+		require __DIR__."/connection.php";
+		require __DIR__."/../../config/misc.php";
+		require_once __DIR__."/exploitPatch.php";
+		require_once __DIR__."/mainLib.php";
+		require_once __DIR__."/cron.php";
 		$gs = new mainLib();
 		$commentarray = explode(' ', $comment);
 		$uploadDate = time();
@@ -74,6 +76,7 @@ class Commands {
 				}
 				$gs->sendRateWebhook($accountID, $levelID);
 				$gs->sendLogsLevelChangeWebhook($levelID, $accountID, $getLevelData);
+				if($automaticCron) Cron::updateCreatorPoints($accountID, false);
 				return 'You successfully rated '.$gs->getLevelName($levelID).' as '.$diffic.', '.$starStars.' star'.($starStars == 1 ? '' : 's').'!';
 				break;
 			case '!unr':
@@ -86,6 +89,7 @@ class Commands {
 				$levelDiff = $gs->getLevelDiff($levelID);
 				$gs->sendRateWebhook($accountID, $levelID);
 				$gs->sendLogsLevelChangeWebhook($levelID, $accountID, $getLevelData);
+				if($automaticCron) Cron::updateCreatorPoints($accountID, false);
 				return 'You successfully unrated '.$gs->getLevelName($levelID).'!';
 				break;
 			case '!f':
@@ -148,6 +152,7 @@ class Commands {
 				$query->execute([':levelID' => $levelID, ':starFeatured' => $starFeatured]);
 				$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('".($column == 'starEpic' ? 4 : 2)."', :value, :levelID, :timestamp, :id)");
 				$query->execute([':value' => ($column == 'starEpic' ? $starArray[$commentarray[0]] - 1 : $starArray[$commentarray[0]]), ':timestamp' => $uploadDate, ':id' => $accountID, ':levelID' => $levelID]);
+				if($automaticCron) Cron::updateCreatorPoints($accountID, false);
 				return $returnText;
 				break;
 			case '!vc':
@@ -209,7 +214,7 @@ class Commands {
 				$query->execute([':levelID' => $levelID]);
 				$query = $db->prepare("INSERT INTO modactions (type, value, value2, value3, timestamp, account) VALUES ('6', :value, :value2, :levelID, :timestamp, :id)");
 				$query->execute([':value' => "1", ":value2" => $levelName, ':timestamp' => $uploadDate, ':id' => $accountID, ':levelID' => $levelID]);
-				if(file_exists(dirname(__FILE__)."../../data/levels/$levelID")) rename(dirname(__FILE__)."../../data/levels/$levelID", dirname(__FILE__)."../../data/levels/deleted/$levelID");
+				if(file_exists(__DIR__."../../data/levels/$levelID")) rename(__DIR__."../../data/levels/$levelID", __DIR__."../../data/levels/deleted/$levelID");
 				$gs->sendLogsLevelChangeWebhook($levelID, $accountID, $getLevelData);
 				return 'You successfully deleted '.$levelName.'!';
 				break;
@@ -263,6 +268,7 @@ class Commands {
 				$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('7', :value, :levelID, :timestamp, :id)");
 				$query->execute([':value' => $targetUserName, ':timestamp' => $uploadDate, ':id' => $accountID, ':levelID' => $levelID]);
 				$gs->sendLogsLevelChangeWebhook($levelID, $accountID, $getLevelData);
+				if($automaticCron) Cron::updateCreatorPoints($accountID, false);
 				return 'You successfully set '.$gs->getAccountName($targetAcc).' as creator of '.$gs->getLevelName($levelID).'!';
 				break;
 			case '!lockUpdating':
@@ -325,6 +331,7 @@ class Commands {
 						$query = $db->prepare("INSERT INTO modactions (type, value, timestamp, account, value3) VALUES ('16', :value, :timestamp, :id, :levelID)");
 						$query->execute([':value' => $song, ':timestamp' => $uploadDate, ':id' => $accountID, ':levelID' => $levelID]);
 						$gs->sendLogsLevelChangeWebhook($levelID, $accountID, $getLevelData);
+						if($automaticCron) Cron::updateSongsUsage($accountID, false);
 						return 'You successfully changed song of level '.$gs->getLevelName($levelID).' to '.$songInfo['authorName'].' - '.$songInfo['name'].' ('.$songInfo['ID'].')!';
 					}
 				}
@@ -371,6 +378,7 @@ class Commands {
 					$query->execute([':levelID' => $levelID]);
 					$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('11', :value, :levelID, :timestamp, :id)");
 					$query->execute([':value' => ExploitPatch::charclean($commentarray[1]), ':timestamp' => $uploadDate, ':id' => $accountID, ':levelID' => $levelID]);
+					if($automaticCron) Cron::updateCreatorPoints($accountID, false);
 					return 'You successfully shared Creator Points of level '.$gs->getLevelName($levelID).' with '.ExploitPatch::charclean($commentarray[1]).'!';
 				}
 				break;
@@ -420,6 +428,7 @@ class Commands {
 				$query->execute([':levelID' => $levelID, ':timestamp' => time(), ':duration' => $duration, ':rewards' => $rewards]);
 				$query = $db->prepare("INSERT INTO modactions (type, value, value2, value3, timestamp, account) VALUES ('44', :value, :value2, :levelID, :timestamp, :id)");
 				$query->execute([':value' => $duration, ':value2' => $rewards, ':timestamp' => $uploadDate, ':id' => $accountID, ':levelID' => $levelID]);
+				if($automaticCron) Cron::updateCreatorPoints($accountID, false);
 				return 'You successfully made '.$gs->getLevelName($levelID).' event level!';
 		}
 		return false;
@@ -427,9 +436,9 @@ class Commands {
 	public static function doListCommands($accountID, $command, $listID) {
 		if(substr($command,0,1) != '!') return false;
 		$listID = $listID * -1;
-		require dirname(__FILE__)."/../lib/connection.php";
-		require_once "../lib/exploitPatch.php";
-		require_once "../lib/mainLib.php";
+		require __DIR__."/connection.php";
+		require_once __DIR__."/exploitPatch.php";
+		require_once __DIR__."/mainLib.php";
 		$gs = new mainLib();
 		$carray = explode(' ', $command);
 		$getList = $db->prepare('SELECT * FROM lists WHERE listID = :listID');

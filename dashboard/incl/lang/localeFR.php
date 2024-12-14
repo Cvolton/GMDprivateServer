@@ -434,6 +434,7 @@ $string['youAreBannedFromCommenting'] = 'Vous êtes interdit de publier de nouve
 $string['cantPostAccountCommentsAboveChars'] = 'Vous ne pouvez pas publier de posts de plus de %1$s charactères !';
 $string['commentingIsDisabled'] = 'La publication de commentaires est actuellement désactivée !';
 $string['noWarnings'] = 'Pas d\'avertissements';
+$string['messagingIsDisabled'] = 'Direct messages are currently disabled!';
 
 $string['downloadLevelAsGMD'] = 'Enregistrer en .gmd';
 

@@ -439,6 +439,7 @@ $string['youAreBannedFromCommenting'] = 'Bạn đã bị cấm bình luận!';
 $string['cantPostAccountCommentsAboveChars'] = 'Bạn không thể đăng bình luận có độ dài trên %1$s ký tự!';
 $string['commentingIsDisabled'] = 'Hiện tại, chức năng bình luận đã bị tắt!';
 $string['noWarnings'] = 'Không có cảnh báo';
+$string['messagingIsDisabled'] = 'Direct messages are currently disabled!';
 
 $string['downloadLevelAsGMD'] = 'Lưu dưới dạng .gmd';
 $string['songIsAvailable'] = 'Có sẵn';

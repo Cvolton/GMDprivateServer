@@ -1038,6 +1038,7 @@ hr {
 	justify-content: space-between;
 	text-align: right;
 	align-items: baseline;
+	grid-gap: 3px;
 }
 
 .tooactive {
@@ -2632,4 +2633,8 @@ body:has(.audio) {
     font-size: 25px;
 	cursor: pointer;
 	border-radius: 1000px;
+}
+
+.comments i {
+	color: #c0c0c0;
 }

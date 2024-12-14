@@ -184,4 +184,15 @@ $ratedLevelsInSent = false;
 */
 
 $moderatorsListInGlobal = false;
+
+/*
+	Run Cron automatically
+	
+	This setting will enable automatic Cron
+	
+	True — Cron should run automatically
+	False — Cron should run manually in dashboard
+*/
+
+$automaticCron = false;
 ?>

@@ -12,7 +12,7 @@ require_once "../".$dbPath."incl/lib/mainLib.php";
 require "../".$dbPath."config/misc.php";
 $gs = new mainLib();
 $levelID = ExploitPatch::number($_POST['levelID']);
-$accountID = GJPCheck::getAccountIDOrDie(true) ?? $_SESSION['accountID'];
+$accountID = GJPCheck::getAccountIDOrDie(true) ?: $_SESSION['accountID'];
 if(!$levelID) exit(json_encode(['success' => false, 'error' => 0, 'message' => 'Invalid level ID.']));
 $level = $db->prepare('SELECT * FROM levels WHERE levelID = :levelID');
 $level->execute([':levelID' => $levelID]);

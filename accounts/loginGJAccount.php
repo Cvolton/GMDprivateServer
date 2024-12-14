@@ -14,6 +14,7 @@ $pass = 0;
 if(!empty($_POST["password"])) $pass = GeneratePass::isValidUsrname($userName, $_POST["password"]);
 elseif(!empty($_POST["gjp2"])) $pass = GeneratePass::isGJP2ValidUsrname($userName, $_POST["gjp2"]);
 if($pass == 1) {
+	$gs->logAction($accountID, 2);
 	$userID = $gs->getUserID($accountID, $userName);
 	if(!is_numeric($udid)) {
 		$query2 = $db->prepare("SELECT userID FROM users WHERE extID = :udid");

@@ -30,12 +30,16 @@ if(isset($_POST["userName"]) AND isset($_POST["password"])){
 		  $auth["auth"] = $auth;
     }
 	$color = $gs->getAccountCommentColor($accountID);
+	$gs->logAction($accountID, 2);
 	exit(json_encode(["success" => true, "user" => $userName, "accountID" => $accountID, "auth" => $auth["auth"], "color" => $color]));
 } elseif(isset($_GET["auth"])) {
 	$auth = ExploitPatch::charclean($_GET["auth"]);
 	if(empty($auth)) exit(json_encode(['success' => false, 'error' => '-3']));
 	$check = GeneratePass::isValidToken($auth);
 	if(!is_array($check)) exit(json_encode(['success' => false, 'error' => $check]));
-	else exit(json_encode(['success' => true, 'accountID' => $check['accountID'], 'userID' => $check['userID'], 'user' => $check["userName"], 'color' => $check['color']]));
+	else {
+		$gs->logAction($check['accountID'], 2);
+		exit(json_encode(['success' => true, 'accountID' => $check['accountID'], 'userID' => $check['userID'], 'user' => $check["userName"], 'color' => $check['color']]));
+	}
 } else exit(json_encode(['success' => false, 'error' => '0']));
 ?>

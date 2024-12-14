@@ -4,12 +4,12 @@ require "../incl/dashboardLib.php";
 require "../".$dbPath."incl/lib/connection.php";
 require "../".$dbPath."config/security.php";
 require "../".$dbPath."config/mail.php";
-$dl = new dashboardLib();
-require "../".$dbPath."incl/lib/generatePass.php";
-require "../".$dbPath."incl/lib/exploitPatch.php";
+require_once "../".$dbPath."incl/lib/generatePass.php";
+require_once "../".$dbPath."incl/lib/exploitPatch.php";
 require_once "../".$dbPath."incl/lib/mainLib.php";
+require_once "../".$dbPath."incl/lib/Captcha.php";
+$dl = new dashboardLib();
 $gs = new mainLib();
-require "../".$dbPath."incl/lib/Captcha.php";
 if(isset($_SESSION["accountID"]) && $_SESSION["accountID"] != 0) header('Location: ../');
 if(isset($_POST["resendMailUserName"]) && isset($_POST["resendMailEmail"]) && $mailEnabled) {
 	$dl->title($dl->getLocalizedString("resendMailTitle"));
@@ -86,6 +86,7 @@ if(isset($_POST["userName"]) && isset($_POST["password"])) {
 	}
 	$accountID = $gs->getAccountIDFromName($userName);
   	$_SESSION["accountID"] = $accountID;
+	$gs->logAction($accountID, 2);
   	$query = $db->prepare("SELECT auth FROM accounts WHERE accountID = :id");
   	$query->execute([':id' => $accountID]);
   	$auth = $query->fetch();
