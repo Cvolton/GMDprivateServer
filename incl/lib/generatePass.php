@@ -105,7 +105,7 @@ class GeneratePass {
 				return -1;
 			}
 			self::assignModIPs($accid, $gs->getIP());
-			if($userInfo['isActive']) {
+			if($result['isActive']) {
 				self::updateLastPlayed($accid);
 				return 1;
 			}
