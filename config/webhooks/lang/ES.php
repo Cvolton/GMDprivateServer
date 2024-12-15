@@ -7,15 +7,14 @@
 	
 	If you see array instead of simple string, that means you can add as many variations of translation as you want and they will be picked randomly
 */
-<?php
-$webhookLang['rateSuccessTitle'] = ['Un nivel ha sido calificado', '¡Nuevo nivel calificado!', 'Alguien le dio calificación a un nivel']; // Este es un array
-$webhookLang['rateSuccessTitleDM'] = ['¡Tu nivel ha sido calificado!', '¡Alguien le dio calificación a tu nivel!'];
-$webhookLang['rateSuccessDesc'] = '%1$s le dio calificación a un nivel'; // Y este es un string
-$webhookLang['rateSuccessDescDM'] = '¡%1$s le dio calificación a tu nivel! %2$s';
-$webhookLang['rateFailTitle'] = ['Un nivel ha sido descalificado', 'Alguien le quitó la calificación a un nivel'];
-$webhookLang['rateFailTitleDM'] = ['Tu nivel ha sido descalificado...', 'Alguien le quitó la calificación a tu nivel...'];
-$webhookLang['rateFailDesc'] = '%1$s le quitó la calificación a un nivel';
-$webhookLang['rateFailDescDM'] = '%1$s le quitó la calificación a tu nivel %2$s...';
+$webhookLang['rateSuccessTitle'] = ['Un nivel ha sido rateado', '¡Nuevo nivel rateado!', 'Alguien le dió rate a un nivel']; // Este es un array
+$webhookLang['rateSuccessTitleDM'] = ['¡Tu nivel ha sido rateado!', '¡Alguien le dió rate a tu nivel!'];
+$webhookLang['rateSuccessDesc'] = '%1$s le dió rate a un nivel'; // Y este es un string
+$webhookLang['rateSuccessDescDM'] = '¡%1$s le dió rate a tu nivel! %2$s';
+$webhookLang['rateFailTitle'] = ['Un nivel ha sido desrateado', 'Alguien le quitó el rate a un nivel'];
+$webhookLang['rateFailTitleDM'] = ['Tu nivel ha sido desrateado...', 'Alguien le quitó el rate a tu nivel...'];
+$webhookLang['rateFailDesc'] = '%1$s le quitó el rate a un nivel';
+$webhookLang['rateFailDescDM'] = '%1$s le quitó el rate a tu nivel %2$s...';
 
 $webhookLang['levelTitle'] = 'Nivel';
 $webhookLang['levelDesc'] = '%1$s por %2$s'; // Nombre por Creador
