@@ -27,7 +27,7 @@ $webhookLang['difficultyDescMoon0'] = '%1$s, %2$s luna'; // Auto, 1 luna (Plataf
 $webhookLang['difficultyDescMoon1'] = '%1$s, %2$s lunas'; // Fácil, 2 lunas (Plataforma)
 $webhookLang['difficultyDescMoon2'] = '%1$s, %2$s lunas'; // Difícil, 5 lunas (Plataforma)
 $webhookLang['statsTitle'] = 'Estadísticas';
-$webhookLang['requestedTitle'] = 'Calificación solicitada';
+$webhookLang['requestedTitle'] = 'Rate solicitado';
 $webhookLang['requestedDesc0'] = '%1$s estrella'; // 1 estrella
 $webhookLang['requestedDesc1'] = '%1$s estrellas'; // 2 estrellas
 $webhookLang['requestedDesc2'] = '%1$s estrellas'; // 5 estrellas
@@ -38,8 +38,8 @@ $webhookLang['descTitle'] = 'Descripción';
 $webhookLang['descDesc'] = '*Sin descripción*';
 $webhookLang['footer'] = '¡Gracias por jugar, %1$s!';
 
-$webhookLang['suggestTitle'] = ['Echa un vistazo a este nivel', 'Un nivel ha sido enviado para calificación', 'Alguien envió un nivel para calificación'];
-$webhookLang['suggestDesc'] = '%1$s envió un nivel para calificación';
+$webhookLang['suggestTitle'] = ['Echa un vistazo a este nivel', 'Un nivel ha sido enviado para rate', 'Alguien envió un nivel para rate'];
+$webhookLang['suggestDesc'] = '%1$s envió un nivel para rate';
 $webhookLang['footerSuggest'] = '¡Gracias por moderar, %1$s!';
 
 $webhookLang['accountLinkTitle'] = ['Sincronización de cuenta', 'Alguien quiere sincronizar una cuenta'];
