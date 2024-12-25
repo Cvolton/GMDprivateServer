@@ -1,16 +1,17 @@
 <?php
 session_start();
 require "../incl/dashboardLib.php";
-$dl = new dashboardLib();
+require "../".$dbPath."incl/lib/connection.php";
+require "../".$dbPath."config/dashboard.php";
 require_once "../".$dbPath."incl/lib/mainLib.php";
-require "../".$dbPath."incl/lib/exploitPatch.php";
+require_once "../".$dbPath."incl/lib/exploitPatch.php";
 $gs = new mainLib();
-include "../".$dbPath."incl/lib/connection.php";
+$dl = new dashboardLib();
 $dl->title($dl->getLocalizedString("modActionsList"));
-if(isset($_GET["page"]) AND is_numeric($_GET["page"]) AND $_GET["page"] > 0){
+if(isset($_GET["page"]) AND is_numeric($_GET["page"]) AND $_GET["page"] > 0) {
 	$page = ($_GET["page"] - 1) * 10;
 	$actualpage = $_GET["page"];
-}else{
+} else {
 	$page = 0;
 	$actualpage = 1;
 }
@@ -232,9 +233,9 @@ foreach($result as &$action){
 	if(mb_strlen($action["value"]) > 18) $value = "<details><summary class='modactionsspoiler'>".$dl->getLocalizedString("spoiler")."</summary>$value</details>";
   	if(mb_strlen($action["value2"]) > 18) $value2 = "<details><summary class='modactionsspoiler'>".$dl->getLocalizedString("spoiler")."</summary>$value2</details>";
 	$time = $dl->convertToDate($action["timestamp"], true);
-	$v1 = '<div class="mavdiv"><div class="profilepic"><i class="fa-solid fa-1" style="background: #29282c; padding: 5px 11.5px; border-radius: 500px;"></i> '.$value.'</div></div>';
-	$v2 = '<div class="mavdiv"><div class="profilepic"><i class="fa-solid fa-2" style="background: #29282c; padding: 5px 9.5px; border-radius: 500px;"></i> '.$value2.'</div></div>';
-	$v3 = '<div class="mavdiv"><div class="profilepic"><i class="fa-solid fa-3" style="background: #29282c; padding: 5px 6.5px; border-radius: 500px;"></i> '.$value3.'</div></div>';
+	$v1 = '<div class="profilepic"><i class="fa-solid fa-1" style="background: #29282c; padding: 5px 11.5px; border-radius: 500px;"></i> '.$value.'</div>';
+	$v2 = '<div class="profilepic"><i class="fa-solid fa-2" style="background: #29282c; padding: 5px 9.5px; border-radius: 500px;"></i> '.$value2.'</div>';
+	$v3 = '<div class="profilepic"><i class="fa-solid fa-3" style="background: #29282c; padding: 5px 6.5px; border-radius: 500px;"></i> '.$value3.'</div>';
 	$stats = $v1.$v2.$v3;
 	// Avatar management
     $queryUserDetails = $db->prepare("SELECT u.iconType, u.accIcon, u.accShip, u.accBall, u.accBird, u.accDart, u.accRobot, u.accSpider, u.accSwing, u.accJetpack, u.color1, u.color2, u.color3, u.accGlow FROM users u JOIN modactions m ON u.extID = m.account WHERE m.account = :accountID");
@@ -243,7 +244,7 @@ foreach($result as &$action){
         $iconType = ($userDetails['iconType'] > 8) ? 0 : $userDetails['iconType'];
         $iconTypeMap = [0 => ['type' => 'cube', 'value' => $userDetails['accIcon']], 1 => ['type' => 'ship', 'value' => $userDetails['accShip']], 2 => ['type' => 'ball', 'value' => $userDetails['accBall']], 3 => ['type' => 'ufo', 'value' => $userDetails['accBird']], 4 => ['type' => 'wave', 'value' => $userDetails['accDart']], 5 => ['type' => 'robot', 'value' => $userDetails['accRobot']], 6 => ['type' => 'spider', 'value' => $userDetails['accSpider']], 7 => ['type' => 'swing', 'value' => $userDetails['accSwing']], 8 => ['type' => 'jetpack', 'value' => $userDetails['accJetpack']]];
         $iconValue = (isset($iconTypeMap[$iconType]) && $iconTypeMap[$iconType]['value'] > 0) ? $iconTypeMap[$iconType]['value'] : 1;
-        $avatarImg = '<img src="https://gdicon.oat.zone/icon.png?type=' . $iconTypeMap[$iconType]['type'] . '&value=' . $iconValue . '&color1=' . $userDetails['color1'] . '&color2=' . $userDetails['color2'] . ($userDetails['accGlow'] != 0 ? '&glow=' . $userDetails['accGlow'] . '&color3=' . $userDetails['color3'] : '') . '" alt="avatar" style="width: 31px; margin-right: 5px; object-fit: contain;">';
+        $avatarImg = '<img src="'.$iconsRendererServer.'/icon.png?type=' . $iconTypeMap[$iconType]['type'] . '&value=' . $iconValue . '&color1=' . $userDetails['color1'] . '&color2=' . $userDetails['color2'] . ($userDetails['accGlow'] != 0 ? '&glow=' . $userDetails['accGlow'] . '&color3=' . $userDetails['color3'] : '') . '" alt="avatar" style="width: 31px; margin-right: 5px; object-fit: contain;">';
     }
     $members .= '<div style="width: 100%; display: flex; flex-wrap: wrap; justify-content: center;">
         <div class="profile" style="width: 100%;">
@@ -258,7 +259,7 @@ foreach($result as &$action){
                     </div>
                 </div>
             </div>
-            <div class="form-control" style="display: flex; width: 100%; height: max-content; align-items: center;">'.$stats.'</div>
+            <div class="form-control song-info longfc">'.$stats.'</div>
             <div class="acccomments">
                 <h3 class="comments" style="margin: 0; width: max-content;">'.$dl->getLocalizedString("ID").':&nbsp;<b>'.$action["ID"].'</b></h3>
                 <h3 class="comments" style="justify-content: flex-end; grid-gap: 0.5vh; margin: 0; width: max-content;">'.$dl->getLocalizedString("date").': <b>'.$time.'</b></h3>

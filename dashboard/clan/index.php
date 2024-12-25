@@ -1,20 +1,20 @@
 <?php
 session_start();
 require "../incl/dashboardLib.php";
-$dl = new dashboardLib();
-global $clansEnabled;
-if(!$clansEnabled) exit($dl->printSong('<div class="form">
-			<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
-			<form class="form__inner" method="post" action=".">
-			<p id="dashboard-error-text">'.$dl->getLocalizedString("pageDisabled").'</p>
-			<button type="button" onclick="a(\'\', true, false, \'GET\')" class="btn-song">'.$dl->getLocalizedString("dashboard").'</button>
-			</form>
-		</div>', 'profile'));
-require "../".$dbPath."incl/lib/exploitPatch.php";
-require_once "../".$dbPath."incl/lib/mainLib.php";
-$gs = new mainLib();
 require "../".$dbPath."incl/lib/connection.php";
 require "../".$dbPath."config/security.php";
+require "../".$dbPath."config/dashboard.php";
+require_once "../".$dbPath."incl/lib/mainLib.php";
+require_once "../".$dbPath."incl/lib/exploitPatch.php";
+$gs = new mainLib();
+$dl = new dashboardLib();
+if(!$clansEnabled) exit($dl->printSong('<div class="form">
+	<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
+	<form class="form__inner" method="post" action=".">
+	<p id="dashboard-error-text">'.$dl->getLocalizedString("pageDisabled").'</p>
+	<button type="button" onclick="a(\'\', true, false, \'GET\')" class="btn-song">'.$dl->getLocalizedString("dashboard").'</button>
+	</form>
+</div>', 'profile'));
 $getID = explode("/", $_GET["id"])[count(explode("/", $_GET["id"]))-1];
 if($getID == "settings") {
     $getID = explode("/", $_GET["id"])[count(explode("/", $_GET["id"]))-2];
@@ -128,7 +128,8 @@ if(!empty($clan)) {
 							if(isset($_POST["yes"])) {
 								$join = $db->prepare("UPDATE users SET clan = :cid, joinedAt = :time WHERE extID = :id");
 								$join->execute([':cid' => $clan["ID"], ':id' => ExploitPatch::number($_POST["accountID"]), ':time' => time()]);
-							}
+								$gs->sendNotify($clan["clanOwner"], ExploitPatch::number($_POST["accountID"]), ['action' => 6, 'value1' => true, 'value2' => $clan["ID"], 'value3' => time()]);
+							} else $gs->sendNotify($clan["clanOwner"], ExploitPatch::number($_POST["accountID"]), ['action' => 6, 'value1' => false, 'value2' => $clan["ID"], 'value3' => time()]);
 					}
 				}
 				$reqs = $db->prepare("SELECT * FROM clanrequests WHERE clanID = :id ORDER BY timestamp DESC");
@@ -339,6 +340,7 @@ if(!empty($clan)) {
     if(isset($_POST["leave"]) AND $_POST["leave"] == 1 AND $isPlayerInClan == $clan["ID"] AND $clan["clanOwner"] != $_SESSION["accountID"]) {
         $leave = $db->prepare("UPDATE users SET clan = 0, joinedAt = :time WHERE extID = :id");
         $leave->execute([':time' => time(), ':id' => $_SESSION["accountID"]]);
+		$gs->sendNotify($_SESSION["accountID"], $clan['clanOwner'], ['action' => 4, 'value1' => false, 'value2' => $clan["ID"], 'value3' => time()]);
         $isPlayerInClan = false;
     }
     elseif(isset($_POST["join"]) AND !$isPlayerInClan AND $_SESSION["accountID"] != 0) {
@@ -350,6 +352,7 @@ if(!empty($clan)) {
                 if(empty($join)) {
                     $join = $db->prepare("INSERT INTO clanrequests (accountID, clanID, timestamp) VALUES (:acc, :cid, :time)");
                     $join->execute([':acc' => $_SESSION["accountID"], ':cid' => $clan["ID"], ':time' => time()]);
+					$gs->sendNotify($_SESSION["accountID"], $clan['clanOwner'], ['action' => 3, 'value1' => true, 'value2' => $clan["ID"], 'value3' => time()]);
                 }
             } else {
                 $join = $db->prepare("DELETE FROM clanrequests WHERE accountID = :acc AND clanID = :cid");
@@ -359,6 +362,7 @@ if(!empty($clan)) {
             $join = $db->prepare("UPDATE users SET clan = :cid, joinedAt = :j WHERE extID = :id");
             $join->execute([':id' => $_SESSION["accountID"], ':cid' => $clan["ID"], ':j' => time()]);
             $isPlayerInClan = $clan["ID"];
+			$gs->sendNotify($_SESSION["accountID"], $clan['clanOwner'], ['action' => 4, 'value1' => true, 'value2' => $clan["ID"], 'value3' => time()]);
         }
     }
 	if(isset($_POST["kick"]) AND is_numeric($_POST["accountID"]) AND $clan["clanOwner"] == $_SESSION["accountID"]) {
@@ -368,6 +372,7 @@ if(!empty($clan)) {
 		if($kick["clan"] == $clan["ID"] AND $clan["clanOwner"] != ExploitPatch::number($_POST["accountID"])) {
 			$kick = $db->prepare("UPDATE users SET clan = 0, joinedAt = :j WHERE extID = :id");
             $kick->execute([':id' => ExploitPatch::number($_POST["accountID"]), ':j' => time()]);
+			$gs->sendNotify($clan["clanOwner"], ExploitPatch::number($_POST["accountID"]), ['action' => 5, 'value1' => true, 'value2' => $clan["ID"], 'value3' => time()]);
 		}
 	}
     if($clan["isClosed"] == 1) $closed = ' <i style="font-size:15px;color:#36393e" class="fa-solid fa-lock"></i>';
@@ -403,14 +408,14 @@ if(!empty($clan)) {
 					$badgeImg = '<img src="https://raw.githubusercontent.com/Fenix668/GMDprivateServer/master/dashboard/modBadge_0' . $modBadgeLevel . '_001.png" alt="badge" style="width: 34px; height: 34px; margin-left: -3px; margin-top: -3px; vertical-align: middle;">';
 				}
 			}	
-			$avatarImg = '<img src="https://gdicon.oat.zone/icon.png?type=' . $iconTypeMap[$iconType]['type'] . '&value=' . $iconValue . '&color1=' . $mbr['color1'] . '&color2=' . $mbr['color2'] . ($mbr['accGlow'] != 0 ? '&glow=' . $mbr['accGlow'] . '&color3=' . $mbr['color3'] : '') . '" alt="Avatar" style="width: 30px; height: 30px; vertical-align: middle; object-fit: contain;">';
+			$avatarImg = '<img src="'.$iconsRendererServer.'/icon.png?type=' . $iconTypeMap[$iconType]['type'] . '&value=' . $iconValue . '&color1=' . $mbr['color1'] . '&color2=' . $mbr['color2'] . ($mbr['accGlow'] != 0 ? '&glow=' . $mbr['accGlow'] . '&color3=' . $mbr['color3'] : '') . '" alt="Avatar" style="width: 30px; height: 30px; vertical-align: middle; object-fit: contain;">';
 			$members .= '<div style="width: 100%;display: flex;flex-wrap: wrap;justify-content: center;">
 				<div class="profile"><div class="clanmemberndiv"><button style="display:contents;cursor:pointer" type="button" onclick="a(\'profile/'.$mbr["userName"].'\', true, true, \'GET\')"><h2 style="color:rgb('.$gs->getAccountCommentColor($mbr["extID"]).')" class="profilenick clanmembernick"><div class="accounts-badge-icon-div">'.$avatarImg.$mbr["userName"].$badgeImg.'</div></h2></button>'.$kick.'</div>
 				<div class="form-control" style="display: flex;width: 100%;height: max-content;align-items: center;">'.$stats.'</div>
 				<h3 id="comments" style="justify-content: flex-end;grid-gap: 0.5vh;">'.sprintf($dl->getLocalizedString("joinedAt"), $dl->convertToDate($mbr["joinedAt"], true)).'</h3>
 			</div></div>';
 		} else {
-			$avatarImg = '<img src="https://gdicon.oat.zone/icon.png?type=' . $iconTypeMap[$iconType]['type'] . '&value=' . $iconValue . '&color1=' . $mbr['color1'] . '&color2=' . $mbr['color2'] . ($mbr['accGlow'] != 0 ? '&glow=' . $mbr['accGlow'] . '&color3=' . $mbr['color3'] : '') . '" alt="Avatar" style="width: 40px; height: 40px; vertical-align: middle; object-fit: contain;">';
+			$avatarImg = '<img src="'.$iconsRendererServer.'/icon.png?type=' . $iconTypeMap[$iconType]['type'] . '&value=' . $iconValue . '&color1=' . $mbr['color1'] . '&color2=' . $mbr['color2'] . ($mbr['accGlow'] != 0 ? '&glow=' . $mbr['accGlow'] . '&color3=' . $mbr['color3'] : '') . '" alt="Avatar" style="width: 40px; height: 40px; vertical-align: middle; object-fit: contain;">';
 			$owner = '<div style="width: 100%;display: flex;flex-wrap: wrap;justify-content: center;">
 				<div class="profile"><div style="display:flex"><button style="display:contents;cursor:pointer" type="button" onclick="a(\'profile/'.$mbr['userName'].'\', true, true, \'GET\')"><h1 style="margin: 0; margin-bottom: 10px; color: rgb('.$gs->getAccountCommentColor($mbr["extID"]).'); justify-content: center; grid-gap: 10px;" class="profilenick clanownernick accounts-badge-icon-div">'.$avatarImg.$mbr["userName"].'<i style="color:#ffff91" class="fa-solid fa-crown"></i></h1></button></div>
 				<div class="form-control" style="display: flex;width: 100%;height: max-content;align-items: center;">'.$stats.'</div>

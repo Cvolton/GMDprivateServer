@@ -47,4 +47,6 @@ Cloudflare IPs List — https://www.cloudflare.com/ips — (incl/lib/mainLib.php
 
 Translit — https://github.com/ashtokalo/php-translit — (config/translit)
 
+Snow — https://embed.im/snow — (dashboard)
+
 Most of the stuff in generateHash.php has been figured out by pavlukivan and Italian APK Downloader, so credits to them

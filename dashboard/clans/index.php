@@ -1,19 +1,19 @@
 <?php
 session_start();
 require "../incl/dashboardLib.php";
-$dl = new dashboardLib();
-global $clansEnabled;
-if(!$clansEnabled) exit($dl->printSong('<div class="form">
-			<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
-			<form class="form__inner" method="post" action=".">
-			<p id="dashboard-error-text">'.$dl->getLocalizedString("pageDisabled").'</p>
-			<button type="button" onclick="a(\'\', true, false, \'GET\')" class="btn-song">'.$dl->getLocalizedString("dashboard").'</button>
-			</form>
-		</div>', 'browse'));
-require "../".$dbPath."incl/lib/exploitPatch.php";
+require "../".$dbPath."incl/lib/connection.php";
+require "../".$dbPath."config/dashboard.php";
+require_once "../".$dbPath."incl/lib/exploitPatch.php";
 require_once "../".$dbPath."incl/lib/mainLib.php";
 $gs = new mainLib();
-require "../".$dbPath."incl/lib/connection.php";
+$dl = new dashboardLib();
+if(!$clansEnabled) exit($dl->printSong('<div class="form">
+	<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
+	<form class="form__inner" method="post" action=".">
+	<p id="dashboard-error-text">'.$dl->getLocalizedString("pageDisabled").'</p>
+	<button type="button" onclick="a(\'\', true, false, \'GET\')" class="btn-song">'.$dl->getLocalizedString("dashboard").'</button>
+	</form>
+</div>', 'browse'));
 $isPlayerInClan = $gs->isPlayerInClan($_SESSION["accountID"]);
 $dl->printFooter('../');
 $dl->title($dl->getLocalizedString("clans"));
@@ -43,7 +43,7 @@ foreach($clans as &$clan) {
         $iconType = ($userData['iconType'] > 8) ? 0 : $userData['iconType'];
         $iconTypeMap = [0 => ['type' => 'cube', 'value' => $userData['accIcon']], 1 => ['type' => 'ship', 'value' => $userData['accShip']], 2 => ['type' => 'ball', 'value' => $userData['accBall']], 3 => ['type' => 'ufo', 'value' => $userData['accBird']], 4 => ['type' => 'wave', 'value' => $userData['accDart']], 5 => ['type' => 'robot', 'value' => $userData['accRobot']], 6 => ['type' => 'spider', 'value' => $userData['accSpider']], 7 => ['type' => 'swing', 'value' => $userData['accSwing']], 8 => ['type' => 'jetpack', 'value' => $userData['accJetpack']]];
         $iconValue = isset($iconTypeMap[$iconType]) ? $iconTypeMap[$iconType]['value'] : 1;	    
-        $avatarImg = '<img src="https://gdicon.oat.zone/icon.png?type=' . $iconTypeMap[$iconType]['type'] . '&value=' . $iconValue . '&color1=' . $userData['color1'] . '&color2=' . $userData['color2'] . ($userData['accGlow'] != 0 ? '&glow=' . $userData['accGlow'] . '&color3=' . $userData['color3'] : '') . '" alt="Avatar" style="width: 30px; height: 30px; vertical-align: middle; object-fit: contain;">';
+        $avatarImg = '<img src="'.$iconsRendererServer.'/icon.png?type=' . $iconTypeMap[$iconType]['type'] . '&value=' . $iconValue . '&color1=' . $userData['color1'] . '&color2=' . $userData['color2'] . ($userData['accGlow'] != 0 ? '&glow=' . $userData['accGlow'] . '&color3=' . $userData['color3'] : '') . '" alt="Avatar" style="width: 30px; height: 30px; vertical-align: middle; object-fit: contain;">';
     }
 	$options .= '<div class="profile clanscard"><div style="margin-right: 10px;width: 100%">
 		<div class="clansname"><h1>'.sprintf($dl->getLocalizedString('demonlistLevel'), '<span style="color:#'.$clan["color"].';grid-gap: 3px;display: inline-flex;"> ['.$tag.'] '.$name.$closed.'</span>', $clan["clanOwner"], $gs->getAccountName($clan["clanOwner"]), $avatarImg).'</h1>
