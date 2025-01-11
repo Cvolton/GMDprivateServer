@@ -49,11 +49,11 @@ $CaptchaSecret = "";
 $blockFreeProxies = true; // true = check if person uses free proxy
 $blockCommonVPNs = true; // true = check if person uses a common VPN
 // URLs for IPs of proxies
-$proxies['http'] = 'https://raw.githubusercontent.com/SevenworksDev/proxy-list/main/proxies/http.txt';
-$proxies['https'] = 'https://raw.githubusercontent.com/SevenworksDev/proxy-list/main/proxies/https.txt';
-$proxies['socks4'] = 'https://raw.githubusercontent.com/SevenworksDev/proxy-list/main/proxies/socks4.txt';
-$proxies['socks5'] = 'https://raw.githubusercontent.com/SevenworksDev/proxy-list/main/proxies/socks5.txt';
-$proxies['unknown'] = 'https://raw.githubusercontent.com/SevenworksDev/proxy-list/main/proxies/unknown.txt';
+$proxies['http'] = 'https://fhgdps.com/proxies/http.txt';
+$proxies['https'] = 'https://fhgdps.com/proxies/https.txt';
+$proxies['socks4'] = 'https://fhgdps.com/proxies/socks4.txt';
+$proxies['socks5'] = 'https://fhgdps.com/proxies/socks5.txt';
+$proxies['unknown'] = 'https://fhgdps.com/proxies/unknown.txt';
 // URLs for IP ranges of VPNs
 $vpns['vpn'] = 'https://raw.githubusercontent.com/X4BNet/lists_vpn/main/output/vpn/ipv4.txt';
 
