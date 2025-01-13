@@ -212,7 +212,7 @@ foreach($result AS &$chat) {
 	if(strlen($body) > 50) $body = mb_substr($body, 0, 50).'...';
 	$playersLastMessage[$receiver] = $body;
 	// Avatar management
-	$queryAvatar = $db->prepare("SELECT * FROM users WHERE extID = :accountID");
+	$queryAvatar = $db->prepare("SELECT iconType, accIcon, accShip, accBall, accBird, accDart, accRobot, accSpider, accSwing, accJetpack, color1, color2, color3, accGlow FROM users WHERE extID = :accountID");
     $queryAvatar->execute([':accountID' => $receiver]);	
     if($action = $queryAvatar->fetch()) {
 		$iconType = ($action['iconType'] > 8) ? 0 : $action['iconType'];
@@ -260,7 +260,7 @@ foreach($friends AS &$friend) {
 	$username = $friend['userName'];
 	$body = isset($playersLastMessage[$receiver]) ? $playersLastMessage[$receiver] : $dl->getLocalizedString('noMsgs');
 	// Avatar management
-	$queryAvatar = $db->prepare("SELECT * FROM users WHERE extID = :accountID");
+	$queryAvatar = $db->prepare("SELECT iconType, accIcon, accShip, accBall, accBird, accDart, accRobot, accSpider, accSwing, accJetpack, color1, color2, color3, accGlow FROM users WHERE extID = :accountID");
     $queryAvatar->execute([':accountID' => $receiver]);	
     if($action = $queryAvatar->fetch()) {
 		$iconType = ($action['iconType'] > 8) ? 0 : $action['iconType'];

@@ -47,7 +47,7 @@ if(empty($result)) {
 </div>', 'stats');
 	die();
 } 
-foreach($result as &$action){
+foreach($result as &$action) {
 	$account = $gs->getAccountName($action["account"]);
 	$value = htmlspecialchars($action["value"]);
 	$value2 = htmlspecialchars($action["value2"]);
@@ -238,7 +238,7 @@ foreach($result as &$action){
 	$v3 = '<div class="profilepic"><i class="fa-solid fa-3" style="background: #29282c; padding: 5px 6.5px; border-radius: 500px;"></i> '.$value3.'</div>';
 	$stats = $v1.$v2.$v3;
 	// Avatar management
-    $queryUserDetails = $db->prepare("SELECT u.iconType, u.accIcon, u.accShip, u.accBall, u.accBird, u.accDart, u.accRobot, u.accSpider, u.accSwing, u.accJetpack, u.color1, u.color2, u.color3, u.accGlow FROM users u JOIN modactions m ON u.extID = m.account WHERE m.account = :accountID");
+    $queryUserDetails = $db->prepare("SELECT iconType, accIcon, accShip, accBall, accBird, accDart, accRobot, accSpider, accSwing, accJetpack, color1, color2, color3, accGlow FROM users WHERE extID = :accountID");
     $queryUserDetails->execute([':accountID' => $action['account']]);
     if($userDetails = $queryUserDetails->fetch(PDO::FETCH_ASSOC)) {
         $iconType = ($userDetails['iconType'] > 8) ? 0 : $userDetails['iconType'];
