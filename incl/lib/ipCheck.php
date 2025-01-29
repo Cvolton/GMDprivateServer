@@ -55,7 +55,7 @@ class ipCheck {
 		if(isset($_SERVER['HTTP_X_FORWARDED_FOR']) && $this->ipv4inrange($_SERVER['REMOTE_ADDR'], '127.0.0.0/8')) //LOCALHOST REVERSE PROXY SUPPORT (7m.pl)
 			return $_SERVER['HTTP_X_FORWARDED_FOR'];
 		if(isset($_SERVER['HTTP_X_FORWARDED_FOR']) && $_SERVER['REMOTE_ADDR'] == "10.0.1.10") // 141412 PROXY SUPPORT FUCK YOU HESTIA
-            return $_SERVER['HTTP_X_FORWARDED_FOR'];
+			return explode(",", $_SERVER['HTTP_X_FORWARDED_FOR'])[0]; // fuck my life
 		return $_SERVER['REMOTE_ADDR'];
 	}
 	public function checkProxy() {
