@@ -377,29 +377,26 @@ $string['resendMailDesc'] = 'Tại đây bạn có thể gửi lại email nếu
 $string['resendMailButton'] = 'Gửi tin nhắn';
 
 $string['automodTitle'] = 'Automod';
-$string['possibleLevelsSpamming'] = 'Có thể spam level';
+$string['possibleLevelsSpamming'] = 'Có thể là spam level';
 $string['disableLevelsUploading'] = 'Tắt chức năng tải lên level';
-$string['possibleAccountsSpamming'] = 'Có thể spam tài khoản';
+$string['possibleAccountsSpamming'] = 'Có thể là các tài khoản spam';
 $string['disableAccountsRegistering'] = 'Tắt chức năng đăng ký tài khoản';
-$string['possibleCommentsSpamming'] = 'Có thể spam bình luận';
+$string['possibleCommentsSpamming'] = 'Có thể là các bình luận spam';
 $string['disableComments'] = 'Tắt chức năng bình luận';
 $string['similarCommentsCount'] = 'Số lượng bình luận tương tự';
-$string['similarityValueOfAllComments'] = 'Giá trị tương tự trong số tất cả các bình luận';
-$string['possibleCommentsSpammer'] = 'Có thể spam bình luận';
-
+$string['similarityValueOfAllComments'] = 'Nội dung tương tự trong số tất cả các bình luận';
+$string['possibleCommentsSpammer'] = 'Có thể là người spam bình luận';
 $string['banCommenting'] = 'Cấm bình luận';
 $string['spammerUsername'] = 'Tên người dùng của người gửi thư rác';
 $string['possibleAccountPostsSpamming'] = 'Có thể tài khoản đang gửi thư rác';
 $string['disablePosting'] = 'Tắt chức năng đăng bài';
 $string['similarPostsCount'] = 'Số lượng bài đăng tương tự';
-$string['similarityValueOfAllPosts'] = 'Giá trị tương tự trong số tất cả các bài đăng';
+$string['similarityValueOfAllPosts'] = 'Nội dung tương tự trong số tất cả các bài đăng';
 $string['possibleAccountPostsSpammer'] = 'Có thể tài khoản đang gửi thư rác';
 $string['possibleRepliesSpamming'] = 'Có thể trả lời thư rác';
-$string['possibleRepliesSpammer'] = 'Có thể trả lời thư rác';
-$string['possibleRepliesSpammer'] = 'Có thể trả lời thư rác';
+$string['possibleRepliesSpammer'] = 'Có thể là người spam trở lời';
 $string['similarRepliesCount'] = 'Số lượng trả lời tương tự';
-
-$string['similarityValueOfAllReplies'] = 'Giá trị tương tự trong tất cả các phản hồi';
+$string['similarityValueOfAllReplies'] = 'Nội dung tương tự trong tất cả các phản hồi';
 $string['unknownWarning'] = 'Cảnh báo không xác định';
 $string['before'] = 'Trước';
 $string['after'] = 'Sau';
@@ -428,18 +425,20 @@ $string['disableAccountsRegistering'] = 'Tắt chức năng đăng ký tài kho�
 $string['disableAccountPosting'] = 'Tắt chức năng đăng bài viết cho tài khoản';
 $string['disableUpdatingProfileStats'] = 'Tắt chức năng cập nhật số liệu thống kê cho hồ sơ';
 $string['disableMessaging'] = 'Tắt chức năng nhắn tin';
+
 $string['cantPostCommentsAboveChars'] = 'Bạn không thể đăng bình luận có độ dài trên %1$s ký tự!';
 $string['replyingIsDisabled'] = 'Hiện tại, chức năng trả lời bình luận đã bị tắt!';
 $string['youAreBannedFromCommenting'] = 'Bạn đã bị cấm bình luận!';
 $string['cantPostAccountCommentsAboveChars'] = 'Bạn không thể đăng bình luận có độ dài trên %1$s ký tự!';
 $string['commentingIsDisabled'] = 'Hiện tại, chức năng bình luận đã bị tắt!';
 $string['noWarnings'] = 'Không có cảnh báo';
-$string['messagingIsDisabled'] = 'Direct messages are currently disabled!';
+$string['messagingIsDisabled'] = 'Tin nhắn trực tiếp đang bị vô hiệu hóa!';
 
 $string['downloadLevelAsGMD'] = 'Lưu dưới dạng .gmd';
+
 $string['songIsAvailable'] = 'Có sẵn';
 $string['songIsDisabled'] = 'Không có sẵn';
-$string['disabledSongs'] = 'nhạc bị vô hiệu hóa';
+$string['disabledSongs'] = 'Nhạc bị vô hiệu hóa';
 $string['disabledSFXs'] = 'SFX bị vô hiệu hóa';
 
 $string['vaultCodesTitle'] = 'Thêm mã vault';
@@ -455,6 +454,7 @@ $string['vaultCodeName'] = 'Mã';
 $string['vaultCodeUses'] = 'Số lần sử dụng (0 cho số lần sử dụng vô hạn)';
 $string['editRewards'] = 'Thay đổi phần thưởng';
 $string['rewards'] = 'Phần thưởng';
+
 $string['alsoBanIP'] = 'Cũng cấm IP';
 
 /*
