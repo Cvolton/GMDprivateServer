@@ -455,7 +455,7 @@ $string['vaultCodeUses'] = 'Số lần sử dụng (0 cho số lần sử dụng
 $string['editRewards'] = 'Thay đổi phần thưởng';
 $string['rewards'] = 'Phần thưởng';
 
-$string['alsoBanIP'] = 'Cũng cấm IP';
+$string['alsoBanIP'] = 'Cũng là cấm IP';
 
 /*
 TẢI LẠI
@@ -472,23 +472,23 @@ $string["songAddUrlFieldPlaceholder"] = "URL nhạc";
 $string["songAddNameFieldPlaceholder"] = "Tên";
 $string["songAddAuthorFieldPlaceholder"] = "Tác giả";
 $string["songAddButton"] = "Chọn nhạc";
-$string["songAddAnotherBTN"] = "Một nhạc khác?";
+$string["songAddAnotherBTN"] = "Tải lên một bài khác?";
 $string["songAdded"] = "Đã thêm nhạc!";
 $string["deletedSong"] = "Bạn đã xóa nhạc thành công";
 $string["songID"] = "ID nhạc: ";
 $string["songIDw"] = "ID nhạc";
 $string["songAuthor"] = "Tác giả";
-$string["size"] = "Kích thước";
+$string["size"] = "Dung lượng";
 $string["detele"] = "Xóa";
 $string["change"] = "Thay đổi";
-$string["chooseFile"] = "Chọn một nhạc";
-$string['yourNewSong'] = "Nghe thử nhạc mới của bạn!";
+$string["chooseFile"] = "Chọn một bài nhạc";
+$string['yourNewSong'] = "Hãy nghe thử bài nhạc mới của bạn!";
 ///lỗi
 $string["songAddError-2"] = "URL không hợp lệ";
-$string["songAddError-3"] = "nhạc này đã được tải lên lại với ID:";
-$string["songAddError-4"] = "Không thể tải lại nhạc này lên";
-$string["songAddError-5"] = "Kích thước nhạc lớn hơn $songSize megabyte";
-$string["songAddError-6"] = "Đã xảy ra lỗi khi tải nhạc lên! :с";
+$string["songAddError-3"] = "Nhạc này đã được tải lên lại với ID:";
+$string["songAddError-4"] = "Không thể tải lại bài nhạc này lên";
+$string["songAddError-5"] = "Dung lượng nhạc lớn hơn $songSize megabyte";
+$string["songAddError-6"] = "Đã xảy ra lỗi khi tải bài nhạc lên! :с";
 $string["songAddError-7"] = "Bạn chỉ có thể tải lên âm thanh!";
 
 $string[400] = "Yêu cầu không hợp lệ!";
@@ -498,7 +498,9 @@ $string["403!"] = "Bạn không có quyền truy cập vào trang này!";
 $string[404] = "Không tìm thấy trang!";
 $string["404!"] = "Bạn có chắc là mình đã nhập địa chỉ chính xác không?";
 $string[500] = "Lỗi máy chủ nội bộ!";
-$string["500!"] = "Người viết mã đã mắc lỗi trong mã";
+$string["500!"] = "Người viết mã đã mắc lỗi trong mã,</br>
+hãy báo cáo về vấn đề này tại đây:</br>
+https://github.com/Cvolton/GMDprivateServer/pull/883";
 $string[502] = "Máy chủ ngừng hoạt động!";
 $string["502!"] = "Máy chủ đang bị quá tải.</br>
 Hãy quay lại sau trong vòng vài giờ!";
@@ -516,7 +518,7 @@ $string["stars"] = "Sao";
 $string["coins"] = "Xu";
 $string["accounts"] = "Tài khoản";
 $string["levels"] = "Levels";
-$string["songs"] = "nhạc";
+$string["songs"] = "Nhạc";
 $string["author"] = "Người tạo";
 $string["name"] = "Tên";
 $string["date"] = "Ngày";
@@ -530,7 +532,7 @@ $string["isAdminYes"] = "Có";
 $string["isAdminNo"] = "Không";
 $string["userCoins"] = "Xu của người dùng";
 $string["time"] = "Thời gian";
-$string["deletedLevel"] = "level đã xóa";
+$string["deletedLevel"] = "Level đã xóa";
 $string["mod"] = "Người điều hành";
 $string["count"] = "Số lượng hành động";
 $string["ratedLevels"] = "Level đã đánh giá";
@@ -575,7 +577,7 @@ $string["unban"] = "Bỏ cấm";
 $string["isBan"] = "Cấm";
 
 $string["noCoins"] = "Không có xu";
-$string["noReason"] = "Không có lý do";
+$string["noReason"] = "Không có lý do nào";
 $string["noActions"] = "Không có hành động nào";
 $string["noRates"] = "Không có đánh giá";
 
@@ -615,7 +617,7 @@ $string["modAction16"] = "Thay đổi ID nhạc";
 $string["modAction17"] = "Tạo một Map Pack";
 $string["modAction18"] = "Tạo một Gauntlet";
 $string["modAction19"] = "Thay đổi nhạc";
-$string["modAction20"] = "Cấp quyền Người kiểm duyệt cho người chơi";
+$string["modAction20"] = "Cấp quyền người điều hành cho người chơi";
 $string["modAction21"] = "Thay đổi Map Pack";
 $string["modAction22"] = "Thay đổi Gauntlet";
 $string["modAction23"] = "Thay đổi nhiệm vụ";
@@ -623,6 +625,8 @@ $string["modAction24"] = "Phân công lại một người chơi";
 $string["modAction25"] = "Tạo một nhiệm vụ";
 $string["modAction26"] = "Thay đổi tên người dùng/mật khẩu của người chơi";
 $string["modAction27"] = "Thay đổi SFX";
+$string["modAction28"] = "Người đã bị cấm";
+$string["modAction29"] = "Khóa/Bỏ khóa cập nhật level";
 $string["modAction30"] = "Đánh giá danh sách";
 $string["modAction31"] = "Gửi danh sách";
 $string["modAction32"] = "Bỏ/đặt nổi bật danh sách";
@@ -631,6 +635,8 @@ $string["modAction34"] = "Xóa danh sách";
 $string["modAction35"] = "Thay đổi người tạo danh sách";
 $string["modAction36"] = "Thay đổi tên danh sách";
 $string["modAction37"] = "Thay đổi mô tả danh sách";
+$string["modAction38"] = "Khóa/Bỏ khóa level comment";
+$string["modAction39"] = "Khóa/Bỏ khóa danh sách comment";
 $string["modAction40"] = "Đã xóa level đã gửi";
 $string["modAction41"] = "Level được đề xuất";
 $string["modAction42"] = "Đã tạo mã vault";
