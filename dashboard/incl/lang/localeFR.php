@@ -454,10 +454,10 @@ $string['vaultCodesEditTitle'] = 'Changer le code secret';
 $string['vaultCodesEditDesc'] = 'Ici, vous pouvez changer un code secret existant !';
 $string['vaultCodeName'] = 'Code secret';
 $string['vaultCodeUses'] = 'Nombre d\'utilisations maximum (0 pour une utilisation infinie)';
-$string['editRewards'] = 'Change rewards';
-$string['rewards'] = 'Rewards';
+$string['editRewards'] = 'Modifier les récompenses';
+$string['rewards'] = 'Récompenses';
 
-$string['alsoBanIP'] = 'Also ban IP';
+$string['alsoBanIP'] = 'Bannir l\'IP';
 
 /*
 	REUPLOAD
