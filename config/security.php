@@ -11,3 +11,4 @@ $preactivateAccounts = true; //false = acounts need to be activated at tools/acc
 $enableCaptcha = false;
 $hCaptchaKey = "";
 $hCaptchaSecret = "";
+$maxUncompressedLevelSize = 100 * 1024 * 1024; // Levels are scanned on upload. Use this to set an upper limit on levels size (bytes)
