@@ -13,6 +13,8 @@ $lvlstring = ""; $userstring = ""; $songsstring = ""; $lvlsmultistring = []; $ep
 $orderenabled = true; $ordergauntlet = false; $isIDSearch = false;
 $params = array("unlisted = 0");
 $morejoins = "";
+$sug = "";
+$sugg = "";
 
 if(!empty($_POST["gameVersion"])){
 	$gameVersion = ExploitPatch::number($_POST["gameVersion"]);
