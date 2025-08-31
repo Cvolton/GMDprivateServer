@@ -13,6 +13,8 @@ $lvlstring = ""; $userstring = ""; $songsstring = ""; $lvlsmultistring = []; $ep
 $orderenabled = true; $ordergauntlet = false; $isIDSearch = false;
 $params = array("unlisted = 0");
 $morejoins = "";
+$sug = "";
+$sugg = "";
 
 if(!empty($_POST["gameVersion"])){
 	$gameVersion = ExploitPatch::number($_POST["gameVersion"]);
@@ -90,12 +92,12 @@ if(!empty($_POST["gauntlet"])){
 	$params[] = "levelID IN ($str)";
 	$type = -1;
 }
-if(!empty($_POST["len"])){
+if(isset($_POST["len"])) {
 	$len = ExploitPatch::numbercolon($_POST["len"]);
 }else{
 	$len = "-";
 }
-if($len != "-" AND !empty($len)){
+if($len != "-"){
 	$params[] = "levelLength IN ($len)";
 }
 if(!empty($_POST["featured"])) $epicParams[] = "starFeatured = 1";
