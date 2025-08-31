@@ -13,6 +13,7 @@ $itemID = ExploitPatch::remove($_POST['itemID']);
 $isLike = isset($_POST['like']) ? $_POST['like'] : 1;
 if (isset($_POST['levelID'])){
 	$itemID = ExploitPatch::remove($_POST['levelID']);
+	$type = 1;
 	$isLike = 1;
 }
 $ip = $gs->getIP();
