@@ -5,12 +5,17 @@ require_once "../lib/exploitPatch.php";
 require_once "../lib/mainLib.php";
 $gs = new mainLib();
 
-if(!isset($_POST['itemID']))
+if(!isset($_POST['itemID']) AND !isset($_POST['levelID']))
 	exit(-1);
 
 $type = isset($_POST['type']) ? $_POST['type'] : 1;
 $itemID = ExploitPatch::remove($_POST['itemID']);
 $isLike = isset($_POST['like']) ? $_POST['like'] : 1;
+if (isset($_POST['levelID'])){
+	$itemID = ExploitPatch::remove($_POST['levelID']);
+	$type = 1;
+	$isLike = 1;
+}
 $ip = $gs->getIP();
 
 $query = $db->prepare("SELECT count(*) FROM actions_likes WHERE itemID=:itemID AND type=:type AND ip=INET6_ATON(:ip)");
