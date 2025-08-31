@@ -1,3 +1,3 @@
 <?php
-include "incl/misc/likeGJLevel.php";
+include "incl/misc/likeGJItem.php";
 ?>
