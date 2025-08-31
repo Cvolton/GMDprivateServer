@@ -161,6 +161,9 @@ if(isset($_POST["page"]) AND is_numeric($_POST["page"])){
 }else{
 	$offset = 0;
 }
+
+$maxLevels = 10;
+
 switch($type){
 	case 0:
 	case 15: //most liked, changed to 15 in GDW for whatever reason
@@ -239,6 +242,11 @@ switch($type){
 		$listLevels = $gs->getListLevels($str);
 		$params = array("levelID IN (".$listLevels.")");
 		break;
+	case 26: // LOCAL LIST LEVELS
+		$maxLevels = 100;
+		$order = false;
+		$params[] = "levelID IN ($str)";
+		break;
 	case 27: // SENT LEVELS
 		$sug = ", suggest.suggestLevelId, suggest.timestamp";
         	$sugg = "LEFT JOIN suggest ON levels.levelID = suggest.suggestLevelId";
@@ -259,7 +267,7 @@ if($order){
 		$query .= "ORDER BY $order DESC";
 	}
 }
-$query .= " LIMIT 10 OFFSET $offset";
+$query .= " LIMIT $maxLevels OFFSET $offset";
 //echo $query;
 $countquery = "SELECT count(*) $querybase";
 //echo $query;
@@ -298,7 +306,7 @@ echo $lvlstring."#".$userstring;
 if($gameVersion > 18){
 	echo "#".$songsstring;
 }
-echo "#".$totallvlcount.":".$offset.":10";
+echo "#".$totallvlcount.":".$offset.":".$maxLevels;
 echo "#";
 echo GenerateHash::genMulti($lvlsmultistring);
 ?>
