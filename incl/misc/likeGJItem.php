@@ -5,7 +5,7 @@ require_once "../lib/exploitPatch.php";
 require_once "../lib/mainLib.php";
 $gs = new mainLib();
 
-if(!isset($_POST['itemID']) OR !isset($_POST['levelID']))
+if(!isset($_POST['itemID']) AND !isset($_POST['levelID']))
 	exit(-1);
 
 $type = isset($_POST['type']) ? $_POST['type'] : 1;
