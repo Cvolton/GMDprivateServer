@@ -235,29 +235,12 @@ if(!empty($_POST["levelName"]) && !empty($_POST["levelAuthor"])) {
 		</div>
 	</div>
     '.Captcha::displayCaptcha(true).'
-	<button type="button" onclick="a(\'levels/manageLevel.php?levelID='.$levelID.'\', true, false, \'POST\')" class="btn-primary btn-block" id="levelChange" disabled>' . $dl->getLocalizedString("change") . '</button>
+	<button type="button" onclick="a(\'levels/manageLevel.php?levelID='.$levelID.'\', true, false, \'POST\')" class="btn-primary" id="levelChange">' . $dl->getLocalizedString("change") . '</button>
 	<button style="width: 80%" type="button" onclick="a(\'levels/manageLevel.php?levelID='.$levelID.'&deleteLevel\', true, true, \'GET\')" class="btn-primary btn-size">' . $dl->getLocalizedString("delete") . '</button>
     </form>
     </div></div>
     <script>
 		document.getElementById("stars").value = '.$level["starStars"].';
-		$(document).on("keyup keypress change keydown", function() {lolFunction()});
-		function lolFunction() {
-		   const levelName = document.getElementById("p1");
-		   const levelAuthor = document.getElementById("p2");
-		   const btn = document.getElementById("levelChange");
-		   if(!levelName.value.trim().length || !levelAuthor.value.trim().length) {
-				btn.disabled = true;
-				btn.classList.add("btn-block");
-				btn.classList.remove("btn-song");
-			} else {
-				btn.removeAttribute("disabled");
-				btn.classList.remove("btn-block");
-				btn.classList.remove("btn-size");
-				btn.classList.add("btn-song");
-			}
-		}
-		lolFunction();
 	</script>', 'browse');
 }
 ?>

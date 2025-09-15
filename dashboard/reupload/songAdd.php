@@ -103,25 +103,9 @@ if(isset($_SESSION["accountID"]) AND $_SESSION["accountID"] != 0) {
 			<div class="field"><input type="text" name="url" id="p1" placeholder="'.$dl->getLocalizedString("songAddUrlFieldPlaceholder").'"></div>
 			<div class="field"><input type="text" name="author" placeholder="'.$dl->getLocalizedString("songAddAuthorFieldPlaceholder").'"></div>
 			<div class="field"><input type="text" name="name" placeholder="'.$dl->getLocalizedString("songAddNameFieldPlaceholder").'"></div>
-			'.Captcha::displayCaptcha(true).'<button type="button" onclick="a(\'reupload/songAdd.php\', true, true, \'POST\')" class="btn-song btn-block" id="submit" disabled>'.$dl->getLocalizedString("reuploadBTN").'</button>
+			'.Captcha::displayCaptcha(true).'<button type="button" onclick="a(\'reupload/songAdd.php\', true, true, \'POST\')" class="btn-song" id="submit">'.$dl->getLocalizedString("reuploadBTN").'</button>
 		</form>
-	</div>
-	<script>
-	$(document).on("keyup keypress change keydown",function(){
-	   const p1 = document.getElementById("p1");
-	   const btn = document.getElementById("submit");
-	   if(!p1.value.trim().length) {
-					btn.disabled = true;
-					btn.classList.add("btn-block");
-					btn.classList.remove("btn-song");
-		} else {
-					btn.removeAttribute("disabled");
-					btn.classList.remove("btn-block");
-					btn.classList.remove("btn-size");
-					btn.classList.add("btn-song");
-		}
-	});
-	</script>', 'reupload');
+	</div>', 'reupload');
 	}
 } else {
 	$dl->printSong('<div class="form">

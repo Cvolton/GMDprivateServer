@@ -132,7 +132,7 @@ if($gs->checkPermission($_SESSION["accountID"], "dashboardGauntletCreate")) {
 			</select>
 		</div>
 			'.Captcha::displayCaptcha(true).'
-			<button type="button" onclick="a(\'levels/gauntletCreate.php\', true, false, \'POST\')" class="btn-primary btn-block" id="submit" disabled>' . $dl->getLocalizedString("gauntletCreate") . '</button>
+			<button type="button" onclick="a(\'levels/gauntletCreate.php\', true, false, \'POST\')" class="btn-primary id="submit">' . $dl->getLocalizedString("gauntletCreate") . '</button>
 		</form>
 		</div></div>
 		<script>
@@ -243,24 +243,6 @@ if($gs->checkPermission($_SESSION["accountID"], "dashboardGauntletCreate")) {
 		}
 		chg.send();
 	}
-	$(document).on("keyup keypress change keydown",function(){
-	   const p1 = document.getElementById("l1");
-	   const p2 = document.getElementById("l2");
-	   const p3 = document.getElementById("l3");
-	   const p4 = document.getElementById("l4");
-	   const p5 = document.getElementById("l5");
-	   const btn = document.getElementById("submit");
-	   if(!p1.value.trim().length || !p2.value.trim().length || !p3.value.trim().length || !p4.value.trim().length || !p5.value.trim().length) {
-					btn.disabled = true;
-					btn.classList.add("btn-block");
-					btn.classList.remove("btn-song");
-		} else {
-					btn.removeAttribute("disabled");
-					btn.classList.remove("btn-block");
-					btn.classList.remove("btn-size");
-					btn.classList.add("btn-song");
-		}
-	});
 	</script>', 'mod');
 	}
 } else

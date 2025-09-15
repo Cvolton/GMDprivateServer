@@ -103,25 +103,8 @@ if($_POST["oldnickname"] != "" AND $_POST["newnickname"] != "" AND $_POST["passw
         <div class="field"><input type="text" name="newnickname" id="p2" placeholder="'.$dl->getLocalizedString("newNick").'"></div>
 		<div class="field"><input type="password" name="password" id="p3" placeholder="'.$dl->getLocalizedString("password").'"></div>
 		'.Captcha::displayCaptcha(true).'
-		<button type="button" onclick="a(\'account/changeUsername.php\', true, true, \'POST\')" style="margin-top:5px" type="submit" id="submit" class="btn-song btn-block" disabled>'.$dl->getLocalizedString("changeUsername").'</button>
+		<button type="button" onclick="a(\'account/changeUsername.php\', true, true, \'POST\')" style="margin-top:5px" type="submit" id="submit" class="btn-song">'.$dl->getLocalizedString("changeUsername").'</button>
 		</form>
-		</div><script>
-		$(document).on("keyup keypress change keydown",function(){
-		   const p1 = document.getElementById("p1");
-		   const p2 = document.getElementById("p2");
-		   const p3 = document.getElementById("p3");
-		   const btn = document.getElementById("submit");
-		   if(!p1.value.trim().length || !p2.value.trim().length || !p3.value.trim().length) {
-						btn.disabled = true;
-						btn.classList.add("btn-block");
-						btn.classList.remove("btn-song");
-			} else {
-						btn.removeAttribute("disabled");
-						btn.classList.remove("btn-block");
-						btn.classList.remove("btn-size");
-						btn.classList.add("btn-song");
-			}
-		});
-    </script>', 'account');
+		</div>', 'account');
 }
 ?>

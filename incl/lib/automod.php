@@ -408,7 +408,7 @@ class Automod {
 		$str2 — string 2 (String)
 		Return value:
 			Number — similarity of strings
-		https://gcs.icu/WTFIcons/checking_speed.png
+		https://gcs.skin/WTFIcons/checking_speed.png
 	*/
 	public static function similarity($str1, $str2) {
 		$check1 = self::check_comments_similarity($str1, $str2);

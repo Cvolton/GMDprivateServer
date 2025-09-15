@@ -287,23 +287,8 @@ if($accid == $_SESSION["accountID"]) {
 	if(empty($comments)) $comments = '<p class="profile" style="font-size:25px;color:#c0c0c0">'.$dl->getLocalizedString("writeSomething").'</p>';
 	$send = '<div class="field" style="margin-top:10px">
 		<form method="post" action=""><input type="text" name="msg" id="p1" placeholder="'.$dl->getLocalizedString("msg").'"></input>
-		<button type="button" onclick="a(\'profile/'.$accname.'\', true, true, \'POST\')" style="margin-top: 10px;" class="btn-primary btn-block" id="submit" disabled>'.$dl->getLocalizedString("send").'</button></form>
-	</div><script>
-	$(document).on("keyup keypress change keydown",function(){
-	   const p1 = document.getElementById("p1");
-	   const btn = document.getElementById("submit");
-	   if(!p1.value.trim().length) {
-			btn.disabled = true;
-			btn.classList.add("btn-block");
-			btn.classList.remove("btn-primary");
-		} else {
-			btn.removeAttribute("disabled");
-			btn.classList.remove("btn-block");
-			btn.classList.remove("btn-size");
-			btn.classList.add("btn-primary");
-		}
-	});
-	</script>';
+		<button type="button" onclick="a(\'profile/'.$accname.'\', true, true, \'POST\')" style="margin-top: 10px;" class="btn-primary" id="submit">'.$dl->getLocalizedString("send").'</button></form>
+	</div>';
 	$msgtopl = '<form method="post" name="settingsform"><input type="hidden" name="settings" value="1"><button type="button" onclick="a(\'profile/'.$accname.'/settings\', true, true, \'POST\', false, \'settingsform\')" title="'.$dl->getLocalizedString("settings").'" class="msgupd" name="settings" value="1"><i class="fa-solid fa-user-gear" aria-hidden="true"></i></button></form>';
 } else {
 	$privacySettings = $db->prepare("SELECT mS FROM accounts WHERE accountID = :receiver");

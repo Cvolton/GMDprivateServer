@@ -359,30 +359,13 @@ class dashboardLib {
 											<input type="password" class="form-control login-input" id="passwordField" name="password" placeholder="'.$this->getLocalizedString("password").'">
 										</div>
 										'.(!$preactivateAccounts ? ($mailEnabled ? '<button type="button" onclick="a(\'login/forgotPassword.php\')" class="forgotPassword">'.$this->getLocalizedString("forgotPasswordTitle").'</button>' : '<button type="button" onclick="a(\'login/activate.php\')" class="forgotPassword">'.$this->getLocalizedString("activateAccount").'</button>') : '').'
-										<div style="display: flex;flex-wrap: wrap;justify-content: center"><button type="submit" class="btn-primary btn-block" id="submit" disabled>'.$this->getLocalizedString("login").'</button>
+										<div style="display: flex;flex-wrap: wrap;justify-content: center"><button type="submit" class="btn-primary" id="submit">'.$this->getLocalizedString("login").'</button>
 										</form>
 										<form action="login/register.php" style="width: 80%;margin-top: 10px;margin-bottom: -5px">
 											<button type="button" onclick="a(\'login/register.php\')" class="btn btn-primary">'.$this->getLocalizedString("register").'</button>
 										</div>
 									</form>
-						</div><script>
-							$(document).on("keyup keypress change keydown", function() {
-								const usernameField1 = document.getElementById("usernameField");
-								const passwordField2 = document.getElementById("passwordField");
-								const loginBtn = document.getElementById("submit");
-								if(loginBtn == null) return;
-								if((usernameField1 !== null && passwordField2 !== null) && (!usernameField1.value.trim().length || !passwordField2.value.trim().length)) {
-									loginBtn.disabled = true;
-									loginBtn.classList.add("btn-block");
-									loginBtn.classList.remove("btn-primary");
-								} else {
-									loginBtn.removeAttribute("disabled");
-									loginBtn.classList.remove("btn-block");
-									loginBtn.classList.remove("btn-size");
-									loginBtn.classList.add("btn-primary");
-								}
-							});
-							</script>';
+						</div>';
 		}	
 		echo '</ul>
 			</div>
@@ -803,7 +786,20 @@ class dashboardLib {
 						if(document.getElementById("pagescript") !== null) document.getElementById("pagescript").remove();
 						document.body.appendChild(scrp);
 						isSubdirectory = document.getElementById("isSubdirectory").value == "true" ? true : false;
-						if(!isback) history.pushState(null, null, page + sendget);
+						if(!isback) {
+							if(page == "") {
+								var basePath = "../";
+								
+								if(page.endsWith("settings")) basePath = "../../../";
+								else if(isSubdirectory) basePath = "../../";
+								
+								const baseURL = new URL(basePath, window.location.href);
+								
+								page = baseURL.pathname;
+							}
+							
+							history.pushState(null, null, page + sendget);
+						}
 						if(typeof document.querySelector("base") != "object") {
 							base = document.createElement("base");
 							if(page.endsWith("settings")) base.href = "../../";

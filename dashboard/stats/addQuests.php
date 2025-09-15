@@ -108,7 +108,7 @@ if(!empty($_POST["type"]) AND !empty($_POST["amount"]) AND !empty($_POST["reward
 		</div>
 		', 'mod');
 		Captcha::displayCaptcha();
-        echo '<button type="button" onclick="a(\'stats/addQuests.php\', true, false, \'POST\')" class="btn-song btn-block" id="submit" disabled>'.$dl->getLocalizedString("questCreate").'</button>
+        echo '<button type="button" onclick="a(\'stats/addQuests.php\', true, false, \'POST\')" class="btn-song" id="submit">'.$dl->getLocalizedString("questCreate").'</button>
     </form>
 </div></div>
 <script>
@@ -186,22 +186,6 @@ function change(id) {
     }
     chg.send();
 }
-$(document).on("keyup keypress change keydown",function(){
-   const p1 = document.getElementById("p1");
-   const p2 = document.getElementById("p2");
-   const p3 = document.getElementById("p3");
-   const btn = document.getElementById("submit");
-   if(!p1.value.trim().length || !p2.value.trim().length || !p3.value.trim().length) {
-                btn.disabled = true;
-                btn.classList.add("btn-block");
-                btn.classList.remove("btn-song");
-	} else {
-		        btn.removeAttribute("disabled");
-                btn.classList.remove("btn-block");
-                btn.classList.remove("btn-size");
-                btn.classList.add("btn-song");
-	}
-});
 </script>';
 }
 } else {

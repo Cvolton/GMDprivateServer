@@ -121,24 +121,7 @@ if(isset($_POST["name"]) AND isset($_POST["desc"]) AND isset($_POST["color"])) {
 	<div class="field"><input type="text" name="tag" id="p2" placeholder="'.$dl->getLocalizedString("clanTag").'"></div>
 	<div class="field"><input type="text" name="desc" placeholder="'.$dl->getLocalizedString("clanDesc").'"></div>
 	<div class="field color123"><input type="color" id="color" name="color" placeholder="'.$dl->getLocalizedString("clanColor").'"></div>
-  <button type="button" id="submit" onclick="a(\'clans/create.php\', true, false, \'POST\')" class="btn-primary btn-block" disabled>'.$dl->getLocalizedString("create").'</button>
+  <button type="button" id="submit" onclick="a(\'clans/create.php\', true, false, \'POST\')" class="btn-primary">'.$dl->getLocalizedString("create").'</button>
  </form>
-</div>
-<script>
-$(document).on("keyup keypress change keydown",function(){
-	const p1 = document.getElementById("p1");
-	const p2 = document.getElementById("p2");
-	const btn = document.getElementById("submit");
-	if(!p1.value.trim().length || !p2.value.trim().length) {
-		btn.disabled = true;
-		btn.classList.add("btn-block");
-		btn.classList.remove("btn-song");
-	} else {
-		btn.removeAttribute("disabled");
-		btn.classList.remove("btn-block");
-		btn.classList.remove("btn-size");
-		btn.classList.add("btn-song");
-	}
-})
-</script>', 'browse');
+</div>', 'browse');
 ?>

@@ -238,26 +238,9 @@ if(!empty($_POST["levelid"])) {
            	<input type="text" name="server" id="p2" value="https://www.boomlings.com/database/" placeholder="'.$dl->getLocalizedString("server").'" style="width: 100%;">
 		</div>
 		'.Captcha::displayCaptcha(true).'
-        <button type="button" onclick="a(\'levels/levelReupload.php\', true, true, \'POST\')" class="btn-song btn-block" id="submit" disabled>'.$dl->getLocalizedString("reuploadBTN").'</button>
+        <button type="button" onclick="a(\'levels/levelReupload.php\', true, true, \'POST\')" class="btn-song" id="submit">'.$dl->getLocalizedString("reuploadBTN").'</button>
     </form>
-</div>
-<script>
-$(document).on("keyup keypress change keydown",function(){
-   const p1 = document.getElementById("p1");
-   const p2 = document.getElementById("p2");
-   const btn = document.getElementById("submit");
-   if(!p1.value.trim().length || !p2.value.trim().length) {
-                btn.disabled = true;
-                btn.classList.add("btn-block");
-                btn.classList.remove("btn-song");
-	} else {
-		        btn.removeAttribute("disabled");
-                btn.classList.remove("btn-block");
-                btn.classList.remove("btn-size");
-                btn.classList.add("btn-song");
-	}
-});
-</script>', 'reupload');
+</div>', 'reupload');
 }
 } else {
 	$dl->printSong('<div class="form">

@@ -100,34 +100,9 @@ if($pass == 1) {
         <text class="samepass" id="sp">'.$dl->getLocalizedString("passDontMatch").'</text>
 		<div class="field"><input type="password" name="newpassconfirm" id="p3" placeholder="'.$dl->getLocalizedString("confirmNew").'"></div>
 		'.Captcha::displayCaptcha(true).'
-        <button type="button" onclick="a(\'account/changePassword.php\', true, true, \'POST\')" style="margin-top:5px" type="submit" id="submit" class="btn-song btn-block" disabled>'.$dl->getLocalizedString("changePassword").'</button>
+        <button type="button" onclick="a(\'account/changePassword.php\', true, true, \'POST\')" style="margin-top:5px" type="submit" id="submit" class="btn-song">'.$dl->getLocalizedString("changePassword").'</button>
     </form>
-</div><script>
-$(document).on("keyup keypress change keydown",function(){
-   const p1 = document.getElementById("p1");
-   const p2 = document.getElementById("p2");
-   const p3 = document.getElementById("p3");
-   const btn = document.getElementById("submit");
-   const sp = document.getElementById("sp");
-   if(!p1.value.trim().length || !p2.value.trim().length || !p3.value.trim().length) {
-                btn.disabled = true;
-                btn.classList.add("btn-block");
-                btn.classList.remove("btn-song");
-	} else if(p2.value != p3.value) {
-    			sp.classList.add("no");
-                btn.disabled = true;
-                btn.classList.add("btn-block");
-                btn.classList.remove("btn-song");
-                btn.classList.add("btn-size");
-	} else {
-    			sp.classList.remove("no");
-		        btn.removeAttribute("disabled");
-                btn.classList.remove("btn-block");
-                btn.classList.remove("btn-size");
-                btn.classList.add("btn-song");
-	}
-});
-</script>', 'account');
+</div>', 'account');
 }} else {
 	$dl->printSong('<div class="form">
     <h1>'.$dl->getLocalizedString("errorGeneric").'</h1>

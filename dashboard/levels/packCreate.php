@@ -133,7 +133,7 @@ if(!empty($_POST["packName"])) {
 		<input id="p2" name="level_1" type="number" placeholder="'.$dl->getLocalizedString("levelid").'">
 		<input id="p3" style="margin:0px 3px" name="level_2" type="number" placeholder="'.$dl->getLocalizedString("levelid").'">
 		<input id="p4" name="level_3" type="number" placeholder="'.$dl->getLocalizedString("levelid").'">
-    </div>'.Captcha::displayCaptcha(true).'<button type="button" onclick="a(\'levels/packCreate.php\', true, false, \'POST\')" class="btn-primary btn-block" id="submit" disabled>' . $dl->getLocalizedString("packCreate") . '</button>
+    </div>'.Captcha::displayCaptcha(true).'<button type="button" onclick="a(\'levels/packCreate.php\', true, false, \'POST\')" class="btn-primary" id="submit">' . $dl->getLocalizedString("packCreate") . '</button>
     </form>
     </div></div>
     <script>
@@ -222,24 +222,7 @@ function change(id) {
     }
     chg.send();
 }
-
-$(document).on("keyup keypress change keydown",function(){
-   const p1 = document.getElementById("p1");
-   const p2 = document.getElementById("p2");
-   const p3 = document.getElementById("p3");
-   const p4 = document.getElementById("p4");
-   const btn = document.getElementById("submit");
-   if(!p1.value.trim().length || !p2.value.trim().length || !p3.value.trim().length || !p4.value.trim().length) {
-                btn.disabled = true;
-                btn.classList.add("btn-block");
-                btn.classList.remove("btn-song");
-	} else {
-		        btn.removeAttribute("disabled");
-                btn.classList.remove("btn-block");
-                btn.classList.remove("btn-size");
-                btn.classList.add("btn-song");
-	}
-})</script>', 'mod');
+</script>', 'mod');
 }
 } else
 	$dl->printSong('<div class="form">

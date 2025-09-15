@@ -168,7 +168,7 @@ if(!empty($_POST["user"])) {
 	</select>
 	</div>
 	'.Captcha::displayCaptcha(true).'
-        <button type="button" onclick="a(\'account/addMod.php\', true, true, \'POST\')" id="submit" class="btn-primary btn-block" disabled>' . $dl->getLocalizedString("addMod") . '</button>
+        <button type="button" onclick="a(\'account/addMod.php\', true, true, \'POST\')" id="submit" class="btn-primary">' . $dl->getLocalizedString("addMod") . '</button>
     </form>
     </div></div><script>
 allRoles = {'.$rls.'}
@@ -185,7 +185,6 @@ function mod(id) {
               name = mp[2];
 			  user = mp[3];
               document.getElementById("p1").value = name;
-			  document.getElementById("p1").disabled = true;
 			  document.querySelector("#roles").value = role;
               document.getElementsByTagName("h1")[0].innerHTML = "'.$dl->getLocalizedString("reassignMod").'";
               document.getElementsByTagName("p")[0].innerHTML = "'.$dl->getLocalizedString("reassign").' <b>" + user + "</b>.";
@@ -196,7 +195,6 @@ function mod(id) {
           map.send();
       } else {
       		  document.getElementById("p1").value = "";
-			  document.getElementById("p1").removeAttribute("disabled");
 			  document.querySelector("#roles").value = 3;
               document.getElementsByTagName("h1")[0].innerHTML = "'.$dl->getLocalizedString("addMod").'";
               document.getElementsByTagName("p")[0].innerHTML = "'.$dl->getLocalizedString("addModDesc").'";
@@ -230,20 +228,6 @@ function change(id) {
     }
     chg.send();
 }
-$(document).on("keyup keypress change keydown",function(){
-   const p1 = document.getElementById("p1");
-   const btn = document.getElementById("submit");
-   if(!p1.value.trim().length) {
-                btn.disabled = true;
-                btn.classList.add("btn-block");
-                btn.classList.remove("btn-primary");
-	} else {
-		        btn.removeAttribute("disabled");
-                btn.classList.remove("btn-block");
-                btn.classList.remove("btn-size");
-                btn.classList.add("btn-primary");
-	}
-});
 </script>', 'mod');
 }
 } else

@@ -172,51 +172,9 @@ if(!empty($_POST["username"]) AND !empty($_POST["email"]) AND !empty($_POST["rep
 			<text class="samepass" id="registerText2">'.$dl->getLocalizedString("emailDontMatch").'</text>
 			<div class="field"><input type="email" name="repeatemail" id="registerInput5" placeholder="'.$dl->getLocalizedString("repeatemail").'"></div>
 			'.Captcha::displayCaptcha(true).'
-			<button type="submit" class="btn-song btn-block" id="submitRegister" disabled>'.$dl->getLocalizedString("register").'</button>
+			<button type="submit" class="btn-song" id="submitRegister">'.$dl->getLocalizedString("register").'</button>
 		</form>
-	</div>
-	<script>
-		$(document).on("keyup keypress change keydown",function(){
-		   const registerInput1 = document.getElementById("registerInput1");
-		   const registerInput2 = document.getElementById("registerInput2");
-		   const registerInput3 = document.getElementById("registerInput3");
-		   const registerInput4 = document.getElementById("registerInput4");
-		   const registerInput5 = document.getElementById("registerInput5");
-		   const btn = document.getElementById("submitRegister");
-		   const registerText1 = document.getElementById("registerText1");
-		   const registerText2 = document.getElementById("registerText2");
-		   if(!registerInput1.value.trim().length ||
-		   !registerInput2.value.trim().length ||
-		   !registerInput3.value.trim().length ||
-		   !registerInput4.value.trim().length ||
-		   !registerInput5.value.trim().length) {
-						btn.disabled = true;
-						btn.classList.add("btn-block");
-						btn.classList.remove("btn-song");
-			} else {
-						btn.removeAttribute("disabled");
-						btn.classList.remove("btn-block");
-						btn.classList.remove("btn-size");
-						btn.classList.add("btn-song");
-						registerText1.classList.remove("no");
-						registerText2.classList.remove("no");
-			}
-			if(registerInput2.value != registerInput3.value) {
-						registerText1.classList.add("no");
-						btn.disabled = true;
-						btn.classList.add("btn-block");
-						btn.classList.remove("btn-song");
-						btn.classList.add("btn-size");
-			} else registerText1.classList.remove("no");
-			if(registerInput4.value != registerInput5.value) {
-						registerText2.classList.add("no");
-						btn.disabled = true;
-						btn.classList.add("btn-block");
-						btn.classList.remove("btn-song");
-						btn.classList.add("btn-size");
-			} else registerText2.classList.remove("no");
-		});
-	</script>');
+	</div>');
 }
 } else {
 	$dl->printSong('<div class="form">

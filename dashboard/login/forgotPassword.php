@@ -102,36 +102,10 @@ if(!empty($_GET['code'])) {
 				<text class="samepass" id="forgotChangeText1">'.$dl->getLocalizedString("passDontMatch").'</text>
 				<div class="field"><input type="password" id="forgotChangeInput2" name="repeatpassword" placeholder="'.$dl->getLocalizedString("repeatpassword").'"></div>
 				'.Captcha::displayCaptcha(true).'
-				<button type="button" onclick="a(\'login/forgotPassword.php\', true, false, \'POST\')" class="btn-song btn-block" id="submitForgotChange" disabled>'.$dl->getLocalizedString("change").'</button>
+				<button type="button" onclick="a(\'login/forgotPassword.php\', true, false, \'POST\')" class="btn-song" id="submitForgotChange">'.$dl->getLocalizedString("change").'</button>
 				<input type="hidden" name="code" value="'.$code.'"></input>
 			</form>
-		</div>
-		<script>
-			$(document).on("keyup keypress change keydown",function(){
-			   const forgotChangeInput1 = document.getElementById("forgotChangeInput1");
-			   const forgotChangeInput2 = document.getElementById("forgotChangeInput2");
-			   const btn = document.getElementById("submitForgotChange");
-			   const forgotChangeText1 = document.getElementById("forgotChangeText1");
-			   if(!forgotChangeInput1.value.trim().length || !forgotChangeInput2.value.trim().length) {
-							btn.disabled = true;
-							btn.classList.add("btn-block");
-							btn.classList.remove("btn-song");
-				} else {
-							btn.removeAttribute("disabled");
-							btn.classList.remove("btn-block");
-							btn.classList.remove("btn-size");
-							btn.classList.add("btn-song");
-							forgotChangeText1.classList.remove("no");
-				}
-				if(forgotChangeInput1.value != forgotChangeInput2.value) {
-							forgotChangeText1.classList.add("no");
-							btn.disabled = true;
-							btn.classList.add("btn-block");
-							btn.classList.remove("btn-song");
-							btn.classList.add("btn-size");
-				} else forgotChangeText1.classList.remove("no");
-			});
-		</script>'));
+		</div>'));
 	}
 }
 if(!empty($_POST['username']) && !empty($_POST['email'])) {
@@ -170,25 +144,8 @@ if(!empty($_POST['username']) && !empty($_POST['email'])) {
 			<div class="field"><input type="text" id="forgotInput1" name="username" placeholder="'.$dl->getLocalizedString("username").'"></div>
 			<div class="field"><input type="email" name="email" id="forgotInput2" placeholder="'.$dl->getLocalizedString("email").'"></div>
 			'.Captcha::displayCaptcha(true).'
-			<button type="button" onclick="a(\'login/forgotPassword.php\', true, false, \'POST\')" class="btn-song btn-block" id="submitForgot" disabled>'.$dl->getLocalizedString("forgotPasswordButton").'</button>
+			<button type="button" onclick="a(\'login/forgotPassword.php\', true, false, \'POST\')" class="btn-song" id="submitForgot">'.$dl->getLocalizedString("forgotPasswordButton").'</button>
 		</form>
-	</div>
-	<script>
-		$(document).on("keyup keypress change keydown", function() {
-		   const forgotInput1 = document.getElementById("forgotInput1");
-		   const forgotInput2 = document.getElementById("forgotInput2");
-		   const btn = document.getElementById("submitForgot");
-		   if(!forgotInput1.value.trim().length || !forgotInput2.value.trim().length) {
-				btn.disabled = true;
-				btn.classList.add("btn-block");
-				btn.classList.remove("btn-song");
-			} else {
-				btn.removeAttribute("disabled");
-				btn.classList.remove("btn-block");
-				btn.classList.remove("btn-size");
-				btn.classList.add("btn-song");
-			}
-		});
-	</script>');
+	</div>');
 }
 ?>

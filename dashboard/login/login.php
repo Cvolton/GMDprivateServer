@@ -113,25 +113,8 @@ if(isset($_POST["userName"]) && isset($_POST["password"])) {
 				<input type="email" class="form-control" id="resendMailEmail" name="resendMailEmail" placeholder="'.$dl->getLocalizedString("email").'">
 			</div>
 			'.Captcha::displayCaptcha(true).'
-			<button type="submit" class="btn-primary btn-block" id="resendMailSubmit" disabled>'.$dl->getLocalizedString("resendMailButton").'</button>
+			<button type="submit" class="btn-primary" id="resendMailSubmit">'.$dl->getLocalizedString("resendMailButton").'</button>
 		</form>
-		<script>
-		$(document).on("keyup keypress change keydown", function() {
-		   const resendMailUserName = document.getElementById("resendMailUserName");
-		   const resendMailEmail = document.getElementById("resendMailEmail");
-		   const btn = document.getElementById("resendMailSubmit");
-		   if(!resendMailUserName.value.trim().length || !resendMailEmail.value.trim().length) {
-				btn.disabled = true;
-				btn.classList.add("btn-block");
-				btn.classList.remove("btn-primary");
-			} else {
-				btn.removeAttribute("disabled");
-				btn.classList.remove("btn-block");
-				btn.classList.remove("btn-size");
-				btn.classList.add("btn-primary");
-			}
-		});
-		</script>
 	</div>'));
 	}
 	$dl->title($dl->getLocalizedString("loginBox"));
@@ -145,25 +128,8 @@ if(isset($_POST["userName"]) && isset($_POST["password"])) {
 			<div class="field">
 				<input type="password" class="form-control" id="loginPagePassword" name="password" placeholder="'.$dl->getLocalizedString("enterPassword").'">
 			</div>'.(!$preactivateAccounts ? ($mailEnabled ? '<button style="margin: -15px 0px;" type="button" onclick="a(\'login/forgotPassword.php\')" class="forgotPassword">'.$dl->getLocalizedString("forgotPasswordTitle").'</button>' : '<button style="margin: -15px 0px;" type="button" onclick="a(\'login/activate.php\')" class="forgotPassword">'.$dl->getLocalizedString("activateAccount").'</button>') : '').'
-			<button type="submit" class="btn-primary btn-block" id="loginPageSubmit" disabled>'.$dl->getLocalizedString("login").'</button>
+			<button type="submit" class="btn-primary" id="loginPageSubmit">'.$dl->getLocalizedString("login").'</button>
 		</form>
-		<script>
-		$(document).on("keyup keypress change keydown", function() {
-		   const loginPageUserName = document.getElementById("loginPageUserName");
-		   const loginPagePassword = document.getElementById("loginPagePassword");
-		   const btn = document.getElementById("loginPageSubmit");
-		   if(!loginPageUserName.value.trim().length || !loginPagePassword.value.trim().length) {
-				btn.disabled = true;
-				btn.classList.add("btn-block");
-				btn.classList.remove("btn-primary");
-			} else {
-				btn.removeAttribute("disabled");
-				btn.classList.remove("btn-block");
-				btn.classList.remove("btn-size");
-				btn.classList.add("btn-primary");
-			}
-		});
-		</script>
 	</div>');
 }
 ?>

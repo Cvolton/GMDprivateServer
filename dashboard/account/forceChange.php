@@ -119,24 +119,8 @@ if(!empty($_POST["userID"]) AND !empty($_POST[$type])) {
         <div class="field"><input type="text" name="userID" id="p1" placeholder="'.$dl->getLocalizedString("banUserID").'"></div>
         <div class="field"><input type="'.$type.'" name="'.$type.'" id="p2" placeholder="'.$dl->getLocalizedString("new".$type).'"></div>
 		'.Captcha::displayCaptcha(true).'
-        <button type="button" onclick="a(\'account/forceChange.php\', true, true, \'POST\')" class="btn-primary btn-block" id="submit" name="type" value="'.$_POST["type"].'" disabled>'.$dl->getLocalizedString("change").'</button>
-    </form><script>
-$(document).on("keyup keypress change keydown",function(){
-   const p1 = document.getElementById("p1");
-   const p2 = document.getElementById("p2");
-   const btn = document.getElementById("submit");
-   if(!p1.value.trim().length || !p2.value.trim().length) {
-                btn.disabled = true;
-                btn.classList.add("btn-block");
-                btn.classList.remove("btn-primary");
-	} else {
-		        btn.removeAttribute("disabled");
-                btn.classList.remove("btn-block");
-                btn.classList.remove("btn-size");
-                btn.classList.add("btn-primary");
-	}
-});
-</script>
+        <button type="button" onclick="a(\'account/forceChange.php\', true, true, \'POST\')" class="btn-primary" id="submit" name="type" value="'.$_POST["type"].'">'.$dl->getLocalizedString("change").'</button>
+    </form>
 </div>', 'mod');
 }
 ?>

@@ -106,25 +106,8 @@ if(!empty($_POST["userName"]) && !empty($_POST["password"])){
 		');
 		Captcha::displayCaptcha();
         echo '
-		<button type="submit" class="btn-primary btn-block" id="submit11" disabled>'.$dl->getLocalizedString("activate").'</button>
-	</form></div>
-    <script>
-$(document).on("keyup keypress change keydown",function(){
-   const p1 = document.getElementById("p1");
-   const p2 = document.getElementById("p2");
-   const btn = document.getElementById("submit11");
-   if(!p1.value.trim().length || !p2.value.trim().length) {
-                btn.disabled = true;
-                btn.classList.add("btn-block");
-                btn.classList.remove("btn-primary");
-	} else {
-		        btn.removeAttribute("disabled");
-                btn.classList.remove("btn-block");
-                btn.classList.remove("btn-size");
-                btn.classList.add("btn-primary");
-	}
-});
-</script>';
+		<button type="submit" class="btn-primary" id="submit11">'.$dl->getLocalizedString("activate").'</button>
+	</form></div>';
 }
 } else {
 	$dl->printSong('<div class="form">

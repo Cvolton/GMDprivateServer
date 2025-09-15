@@ -113,27 +113,13 @@ $dl->printSong('<div class="form">
 			<h3>'.$dl->getLocalizedString('alsoBanIP').'</h3>
 		</div>
 		'.Captcha::displayCaptcha(true).'
-        <button type="button" onclick="a(\'account/banPerson.php\', true, true, \'POST\')" class="btn-primary btn-block" id="banSubmit" disabled>'.$dl->getLocalizedString("ban").'</button>
+        <button type="button" onclick="a(\'account/banPerson.php\', true, true, \'POST\')" class="btn-primary" id="banSubmit">'.$dl->getLocalizedString("ban").'</button>
     </form>
 </div>
 <script>
 personTypes = ["'.$dl->getLocalizedString('accountID').'", "'.$dl->getLocalizedString('userID').'", "'.$dl->getLocalizedString('IP').'"];
 const personField = document.getElementById("personField");
-$(document).on("keyup keypress change keydown", function() {
-	personType = document.getElementById("personType").value;
-	personField.setAttribute("placeholder", personTypes[personType]);
-	document.getElementById("alsoBanIP").style.display = personType != 2 ? "flex" : "none";
-	const btn = document.getElementById("banSubmit");
-	if(!personField.value.trim().length) {
-		btn.disabled = true;
-		btn.classList.add("btn-block");
-		btn.classList.remove("btn-primary");
-	} else {
-		btn.removeAttribute("disabled");
-		btn.classList.remove("btn-block");
-		btn.classList.add("btn-primary");
-	}
-});
+
 document.getElementById("personType").value = "'.(ExploitPatch::number($_GET['personType']) ?: 0).'";
 document.getElementById("banType").value = "'.(ExploitPatch::number($_GET['banType']) ?: 0).'";
 var personType = document.getElementById("personType").value;

@@ -132,7 +132,7 @@ $dl->printSong('<div class="form-control itemsbox chatdiv">
 			</div>
 			<input type="hidden" name="vaultCodeRewards" id="vaultCodeRewards"></input>
 			'.Captcha::displayCaptcha(true).'
-			<button type="button" onclick="submitReward()" class="btn-primary btn-block" id="vaultCodesSubmit" disabled>'.$dl->getLocalizedString("vaultCodesCreate").'</button>
+			<button type="button" onclick="submitReward()" class="btn-primary" id="vaultCodesSubmit">'.$dl->getLocalizedString("vaultCodesCreate").'</button>
 		</form>
 		<form id="vaultCodesCustomForm" name="vaultCodesCustomForm">
 			<input id="rewardID" name="rewardID" type="hidden">
@@ -196,19 +196,5 @@ function recreateRewards(rewards) {
 	}
 }
 '.(!empty($vaultCodeRewards) ? 'recreateRewards("'.$vaultCodeRewards.'");' : '').'
-$(document).on("keyup keypress change keydown",function() {
-   const vaultCodeName = document.getElementById("vaultCodeName");
-   const vaultCodesSubmit = document.getElementById("vaultCodesSubmit");
-   if(!vaultCodeName.value.trim().length) {
-		vaultCodesSubmit.disabled = true;
-		vaultCodesSubmit.classList.add("btn-block");
-		vaultCodesSubmit.classList.remove("btn-song");
-	} else {
-		vaultCodesSubmit.removeAttribute("disabled");
-		vaultCodesSubmit.classList.remove("btn-block");
-		vaultCodesSubmit.classList.remove("btn-size");
-		vaultCodesSubmit.classList.add("btn-song");
-	}
-});
 </script>', 'mod');
 ?>

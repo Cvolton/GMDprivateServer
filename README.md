@@ -1,3 +1,6 @@
+## This version of core is deprecated
+### [Repository with new GDPS core](https://github.com/MegaSa1nt/GMDprivateServer/tree/new)
+
 # GMDprivateServer
 ## Geometry Dash Private Server
 Basically a Geometry Dash Server Emulator
