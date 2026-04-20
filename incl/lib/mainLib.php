@@ -710,11 +710,11 @@ class mainLib {
 		if (filter_var($song, FILTER_VALIDATE_URL) == TRUE && substr($song, 0, 4) == "http") {
 			$song = str_replace(["?dl=0","?dl=1"],"",$song);
 			$song = trim($song);
-			$query = $db->prepare("SELECT count(*) FROM songs WHERE download = :download");
+			$query = $db->prepare("SELECT id FROM songs WHERE download = :download");
 			$query->execute([':download' => $song]);	
-			$count = $query->fetchColumn();
-			if($count != 0){
-				return "-3";
+			$id = $query->fetchColumn();
+			if($id != false){
+				return $id;
 			}
 			$name = ExploitPatch::remove(urldecode(str_replace([".mp3",".webm",".mp4",".wav"], "", basename($song))));
 			$author = "Reupload";
