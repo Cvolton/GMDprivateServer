@@ -18,7 +18,7 @@ if(!empty($_POST["userName"]) && !empty($_POST["password"])){
 	elseif ($pass == 1) {
 		echo "Account is already activated.";
 	}else{
-		echo "Invalid password or nonexistant account. <a href='activateAccount.php'>Try again</a>";
+		echo "Invalid password or nonexistent account. <a href='activateAccount.php'>Try again</a>";
 	}
 }else{
 	echo '<form method="post">
