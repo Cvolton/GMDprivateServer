@@ -102,8 +102,8 @@ if($len != "-"){
 }
 if(!empty($_POST["featured"])) $epicParams[] = "starFeatured = 1";
 if(!empty($_POST["epic"])) $epicParams[] = "starEpic = 1";
-if(!empty($_POST["mythic"])) $epicParams[] = "starEpic = 2";
-if(!empty($_POST["legendary"])) $epicParams[] = "starEpic = 3";
+if(!empty($_POST["mythic"])) $epicParams[] = "starEpic = 3";
+if(!empty($_POST["legendary"])) $epicParams[] = "starEpic = 2";
 $epicFilter = implode(" OR ", $epicParams);
 if(!empty($epicFilter)) $params[] = $epicFilter;
 
