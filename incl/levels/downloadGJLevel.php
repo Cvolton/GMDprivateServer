@@ -73,7 +73,8 @@ if($result) {
 	$uploadDate = $gs->makeTime($result["uploadDate"]);
 	$updateDate = $gs->makeTime($result["updateDate"]);
 	$pass = $result["password"];
-	$desc = ExploitPatch::translit(ExploitPatch::rucharclean(ExploitPatch::url_base64_decode($result["levelDesc"])));
+	$desc = ExploitPatch::rucharclean(ExploitPatch::url_base64_decode($result["levelDesc"]));
+	if($_POST['binaryVersion'] < 51) $desc = ExploitPatch::translit($desc);
 	if($gs->checkModIPPermission("actionFreeCopy") == 1) $pass = "1";
 	$xorPass = $pass;
 	$levelstring = file_exists("../../data/levels/$levelID") ? file_get_contents("../../data/levels/$levelID") : $result["levelString"];

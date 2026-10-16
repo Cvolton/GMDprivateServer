@@ -59,7 +59,7 @@ $isBanned = $gs->getPersonBan($user['extID'], $user['userID'], 0, $user['IP']);
 if($isBanned) $rank = 0;
 //var_dump($leaderboard);
 	//accinfo
-		$query = "SELECT youtubeurl, twitter, twitch, frS, mS, cS, instagram, tiktok, discord, custom FROM accounts WHERE accountID = :extID";
+		$query = "SELECT youtubeurl, twitter, twitch, frS, mS, cS, gF, gO, instagram, tiktok, discord, custom FROM accounts WHERE accountID = :extID";
 		$query = $db->prepare($query);
 		$query->execute([':extID' => $extid]);
 		$accinfo = $query->fetch();
@@ -91,6 +91,17 @@ if($me == $extid) {
 			$query = $db->prepare($query);
 			$query->execute([':me' => $me]);
 			$friends = $query->fetchColumn();
+		// follows
+			$followersCount = $followingCount = 0;
+			$follows = $db->prepare("SELECT * FROM follows WHERE person1 = :accountID OR person2 = :accountID");
+			$follows->execute([":accountID" => $me]);
+			$follows = $follows->fetchAll();
+			foreach($follows AS &$follow) {
+				if($follow["person1"] == $me) $followingCount++;
+				else $followersCount++;
+			}
+		// notifications
+			$newNotifications = 0; // will make later
 	/* sending the data */
 		//38,39,40 are notification counters
 		//18 = enabled (0) or disabled (1) messaging
@@ -137,5 +148,5 @@ if($me == $extid) {
 }
 $user["userName"] = $gs->makeClanUsername($user);
 $user['extID'] = is_numeric($user['extID']) ? $user['extID'] : 0;
-echo "1:".$user["userName"].":2:".$user["userID"].":13:".$user["coins"].":17:".$user["userCoins"].":10:".$user["color1"].":11:".$user["color2"].":51:".$user["color3"].":3:".$user["stars"].":46:".$user["diamonds"].":52:".$user["moons"].":4:".$user["demons"].":8:".$creatorpoints.":18:".$msgstate.":19:".$reqsstate.":50:".$commentstate.":20:".$accinfo["youtubeurl"].":21:".$user["accIcon"].":22:".$user["accShip"].":23:".$user["accBall"].":24:".$user["accBird"].":25:".$user["accDart"].":26:".$user["accRobot"].":28:".$user["accGlow"].":43:".$user["accSpider"].":48:".$user["accExplosion"].":53:".$user["accSwing"].":54:".$user["accJetpack"].":30:".$rank.":16:".$user["extID"].":31:".$friendstate.":44:".$accinfo["twitter"].":45:".$accinfo["twitch"].":59:".$accinfo["instagram"].":60:".$accinfo["tiktok"].":58:".$accinfo["discord"].":61:".$accinfo["custom"].":49:".$badge.":55:".$user["dinfo"].":56:".$user["sinfo"].":57:".$user["pinfo"].$appendix.":29:1";
+echo "1:".$user["userName"].":2:".$user["userID"].":13:".$user["coins"].":17:".$user["userCoins"].":10:".$user["color1"].":11:".$user["color2"].":51:".$user["color3"].":3:".$user["stars"].":46:".$user["diamonds"].":52:".$user["moons"].":4:".$user["demons"].":8:".$creatorpoints.":18:".$msgstate.":19:".$reqsstate.":50:".$commentstate.":62:".$accinfo["gF"].":63:".$accinfo["gO"].":67:".$followersCount.":65:".$newNotifications.":66:0:68:".$followingCount.":70:1:20:".$accinfo["youtubeurl"].":21:".$user["accIcon"].":22:".$user["accShip"].":23:".$user["accBall"].":24:".$user["accBird"].":25:".$user["accDart"].":26:".$user["accRobot"].":28:".$user["accGlow"].":43:".$user["accSpider"].":48:".$user["accExplosion"].":53:".$user["accSwing"].":54:".$user["accJetpack"].":30:".$rank.":16:".$user["extID"].":31:".$friendstate.":44:".$accinfo["twitter"].":45:".$accinfo["twitch"].":59:".$accinfo["instagram"].":60:".$accinfo["tiktok"].":58:".$accinfo["discord"].":61:".$accinfo["custom"].":49:".$badge.":55:".$user["dinfo"].":56:".$user["sinfo"].":57:".$user["pinfo"].$appendix.":29:1";
 ?>

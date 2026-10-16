@@ -36,7 +36,14 @@ $command = Commands::doCommands($id, $decodecomment, $levelID);
 if($command) ($_POST['gameVersion'] > 20 ? exit("temp_0_".$command) : exit('-1'));
 if($percent < 0 || $percent > 100) exit("temp_0_Invalid percentage!");
 $checkCommentBan = $gs->getPersonBan($id, $userID, 3);
-if($checkCommentBan) ($_POST['gameVersion'] > 20 ? exit("temp_".($checkCommentBan['expires'] - time())."_".ExploitPatch::translit(ExploitPatch::url_base64_decode($checkCommentBan['reason']))) : exit('-10'));
+if($checkCommentBan) {
+	if($_POST['gameVersion'] < 21) exit('-10');
+	
+	$returnText = ExploitPatch::gd_escape(ExploitPatch::url_base64_decode($checkCommentBan['reason']));
+	if($_POST['binaryVersion'] < 51) $returnText = ExploitPatch::translit($returnText);
+	
+	exit("temp_".($checkCommentBan['expires'] - time())."_".$returnText);
+}
 if($checkLevelExist->fetch()['commentLocked']) exit("temp_0_Comments on this ".(strpos($levelID, '-') === 0 ? 'list' : 'level')." are locked!");
 if($id != "" AND $comment != "") {
 	$query = $db->prepare("INSERT INTO comments (userName, comment, levelID, userID, timeStamp, percent) VALUES (:userName, :comment, :levelID, :userID, :uploadDate, :percent)");

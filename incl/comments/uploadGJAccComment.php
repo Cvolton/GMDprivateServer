@@ -21,7 +21,14 @@ if($accountID != "" AND $comment != "") {
 	$decodecomment = ExploitPatch::url_base64_decode($comment);
 	if(Commands::doProfileCommands($accountID, $decodecomment)) exit("-1");
 	$checkCommentBan = $gs->getPersonBan($accountID, $userID, 3);
-	if($checkCommentBan) ($_POST['gameVersion'] > 20 ? exit("temp_".($checkCommentBan['expires'] - time())."_".ExploitPatch::translit(ExploitPatch::url_base64_decode($checkCommentBan['reason']))) : exit('-10'));
+	if($checkCommentBan) {
+		if($_POST['gameVersion'] < 21) exit('-10');
+		
+		$returnText = ExploitPatch::gd_escape(ExploitPatch::url_base64_decode($checkCommentBan['reason']));
+		if($_POST['binaryVersion'] < 51) $returnText = ExploitPatch::translit($returnText);
+		
+		exit("temp_".($checkCommentBan['expires'] - time())."_".$returnText);
+	}
 	$query = $db->prepare("INSERT INTO acccomments (userName, comment, userID, timeStamp) VALUES (:userName, :comment, :userID, :uploadDate)");
 	$query->execute([':userName' => $userName, ':comment' => $comment, ':userID' => $userID, ':uploadDate' => $uploadDate]);
 	Automod::checkAccountPostsSpamming($userID);

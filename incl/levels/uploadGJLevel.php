@@ -19,7 +19,7 @@ $levelID = ExploitPatch::number($_POST["levelID"]);
 $levelName = ExploitPatch::charclean($_POST["levelName"]);
 //TODO: move description fixing code to a function
 $levelDesc = ExploitPatch::remove($_POST["levelDesc"]);
-$rawDesc = $gameVersion < 20 ? ExploitPatch::translit($levelDesc) : ExploitPatch::translit(ExploitPatch::url_base64_decode($levelDesc));
+$rawDesc = $gameVersion < 20 ? $levelDesc : ExploitPatch::url_base64_decode($levelDesc);
 if(strpos($rawDesc, '<c') !== false) {
 	$tags = substr_count($rawDesc, '<c');
 	if($tags > substr_count($rawDesc, '</c>')) {

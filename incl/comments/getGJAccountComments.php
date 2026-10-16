@@ -28,10 +28,12 @@ foreach($result as &$comment1) {
 		$reply->execute([':id' => $comment1["commentID"]]);
 		$reply = $reply->fetchColumn();
 		if($reply > 0) {
-			$rep = $reply > 1 ? 'replies)' : 'reply)';
-			$comment1["comment"] = ExploitPatch::url_base64_encode(ExploitPatch::url_base64_decode($comment1["comment"]).' ('.$reply.' '.$rep);
+			$rep = $reply > 1 ? 'replies' : 'reply';
+			$uploadDate = $reply.' '.$rep.", ".$uploadDate;
 		}
-		$comment1['comment'] = ExploitPatch::url_base64_encode(trim(ExploitPatch::translit(ExploitPatch::url_base64_decode($comment1['comment']))));
+		$commentText = trim(ExploitPatch::url_base64_decode($comment1['comment']));
+		if($_POST['binaryVersion'] < 51) $commentText = ExploitPatch::translit($commentText);
+		$comment1['comment'] = ExploitPatch::url_base64_encode($commentText);
 		if($enableCommentLengthLimiter) $comment1['comment'] = ExploitPatch::url_base64_encode(substr(ExploitPatch::url_base64_decode($comment1['comment']), 0, $maxAccountCommentLength));
 		$commentstring .= "2~".$comment1["comment"]."~3~".$comment1["userID"]."~4~".$likes."~5~0~7~".$comment1["isSpam"]."~9~".$uploadDate."~6~".$comment1["commentID"]."|";
 	}

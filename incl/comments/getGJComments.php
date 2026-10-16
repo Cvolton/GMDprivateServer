@@ -67,7 +67,8 @@ $visiblecount = $query->rowCount();
 foreach($result as &$comment1) {
 	if(!empty($comment1["commentID"])) {
       	$uploadDate = $gs->makeTime($comment1["timestamp"]);
-		$comment1['comment'] = ExploitPatch::translit(ExploitPatch::url_base64_decode($comment1["comment"]));
+		$comment1['comment'] = trim(ExploitPatch::url_base64_decode($comment1["comment"]));
+		if($_POST['binaryVersion'] < 51) $comment1['comment'] = ExploitPatch::translit($comment1['comment']);
 		if($enableCommentLengthLimiter) $commentText = mb_substr($comment1['comment'], 0, $maxCommentLength);
 		$commentText = ($gameVersion < 20) ? ExploitPatch::gd_escape($comment1["comment"]) : ExploitPatch::url_base64_encode($comment1["comment"]);
 		if($displayLevelID) $commentstring .= "1~".$comment1["levelID"]."~";

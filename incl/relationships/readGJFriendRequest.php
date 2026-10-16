@@ -8,6 +8,7 @@ if(empty($_POST["requestID"])) exit("-1");
 $accountID = GJPCheck::getAccountIDOrDie();
 $requestID = ExploitPatch::number($_POST["requestID"]);
 
-$query = $db->prepare("UPDATE friendreqs SET isNew='0' WHERE ID = :requestID AND toAccountID = :targetAcc");
+$query = $db->prepare("UPDATE friendreqs SET isNew='0' WHERE ID = :requestID AND toAccountID = :targetAcc AND isNew != 2");
 $query->execute([':requestID' => $requestID, ':targetAcc' => $accountID]);
-echo "1";
+
+exit("1");

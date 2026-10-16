@@ -44,3 +44,9 @@ Temporary Items
 incl/lib/debug.php
 dashboard/incl/lang/dev/append.php
 dashboard/incl/lang/dev/append.txt
+/data
+/music/*.txt
+/music/*.dat
+/sfx/*.txt
+/sfx/*.dat
+test.php

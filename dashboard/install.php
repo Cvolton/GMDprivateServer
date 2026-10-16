@@ -136,6 +136,24 @@ if(!$installed) {
 			 `timestamp` int(11) NOT NULL DEFAULT 0,
 			 PRIMARY KEY (`rewardID`)
 			) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci");
+		$check = $db->query("SHOW TABLES LIKE 'follows'");
+			$exist = $check->fetchAll();
+			if(empty($exist)) $db->query("CREATE TABLE `follows` (
+			 `ID` int(11) NOT NULL AUTO_INCREMENT,
+			 `person1` int(11) NOT NULL DEFAULT 0,
+			 `person2` int(11) NOT NULL DEFAULT 0,
+			 `timestamp` int(11) NOT NULL DEFAULT 0,
+			 PRIMARY KEY (`ID`)
+			) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci");
+		$check = $db->query("SHOW TABLES LIKE 'mutes'");
+			$exist = $check->fetchAll();
+			if(empty($exist)) $db->query("CREATE TABLE `mutes` (
+			 `ID` int(11) NOT NULL AUTO_INCREMENT,
+			 `person1` int(11) NOT NULL DEFAULT 0,
+			 `person2` int(11) NOT NULL DEFAULT 0,
+			 `timestamp` int(11) NOT NULL DEFAULT 0,
+			 PRIMARY KEY (`ID`)
+			) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci");
 		$check = $db->query("SHOW COLUMNS FROM `roles` LIKE 'dashboardLevelPackCreate'");
       		$exist = $check->fetchAll();
       		if(empty($exist)) $db->query("ALTER TABLE roles ADD dashboardLevelPackCreate INT NOT NULL DEFAULT '0' AFTER dashboardModTools");
@@ -324,6 +342,12 @@ if(!$installed) {
 		$check = $db->query("SHOW COLUMNS FROM `accounts` LIKE 'custom'");
 			$exist = $check->fetchAll();
 			if(empty($exist)) $db->query("ALTER TABLE `accounts` ADD `custom` varchar(255) NOT NULL DEFAULT '' AFTER `discord`");
+		$check = $db->query("SHOW COLUMNS FROM `accounts` LIKE 'gF'");
+			$exist = $check->fetchAll();
+			if(empty($exist)) $db->query("ALTER TABLE `accounts` ADD `gF` int(1) NOT NULL DEFAULT 0 AFTER `cS`");
+		$check = $db->query("SHOW COLUMNS FROM `accounts` LIKE 'gO'");
+			$exist = $check->fetchAll();
+			if(empty($exist)) $db->query("ALTER TABLE `accounts` ADD `gO` int(1) NOT NULL DEFAULT 0 AFTER `gF`");
 	$lines = file($dbPath.'config/dashboard.php');
 	$first_line = $lines[2];
 	$lines = array_slice($lines, 1 + 2);

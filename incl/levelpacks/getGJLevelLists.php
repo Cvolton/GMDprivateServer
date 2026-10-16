@@ -148,7 +148,7 @@ foreach($result as &$list) {
 	if(!$list['uploadDateUnix']) $list['uploadDateUnix'] = 0;
 	if(!$list['updateDateUnix']) $list['updateDateUnix'] = 0;
 	$list['listName'] = ExploitPatch::translit($list['listName']);
-	$list['listDesc'] = ExploitPatch::translit($list['listDesc']);
+	if($_POST['binaryVersion'] < 51) $list['listDesc'] = ExploitPatch::url_base64_encode(ExploitPatch::translit(ExploitPatch::url_base64_decode($list['listDesc'])));
 	$list['likes'] = $list['likes']; // - $list['dislikes'];
 	$list['userName'] = $gs->makeClanUsername($list);
 	$lvlstring .= "1:{$list['listID']}:2:{$list['listName']}:3:{$list['listDesc']}:5:{$list['listVersion']}:49:{$list['accountID']}:50:{$list['userName']}:10:{$list['downloads']}:7:{$list['starDifficulty']}:14:{$list['likes']}:19:{$list['starFeatured']}:51:{$list['listlevels']}:55:{$list['starStars']}:56:{$list['countForReward']}:28:{$list['uploadDateUnix']}:29:{$list['updateDateUnix']}"."|";

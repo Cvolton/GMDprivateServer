@@ -13,11 +13,24 @@ $type = ExploitPatch::remove($_POST["type"]);
 $people = "";
 $peoplestring = "";
 $new = array();
-if($type == 0){
-	$query = "SELECT person1,isNew1,person2,isNew2 FROM friendships WHERE person1 = :accountID OR person2 = :accountID";
-}else if($type==1){
-	$query = "SELECT person1,person2 FROM blocks WHERE person1 = :accountID";
+
+switch($type) {
+	case 0: // Friends
+		$query = "SELECT person1, isNew1, person2, isNew2 FROM friendships WHERE person1 = :accountID OR person2 = :accountID";
+		break;
+	case 1: // Blocked
+		$query = "SELECT person1, person2 FROM blocks WHERE person1 = :accountID";
+		break;
+	case 3: // Follows
+		$query = "SELECT person1, person2 FROM follows WHERE person1 = :accountID";
+		break;
+	case 4: // Mutes
+		$query = "SELECT person1, person2 FROM mutes WHERE person1 = :accountID";
+		break;
+	default:
+		exit("-2");
 }
+
 $query = $db->prepare($query);
 $query->execute([':accountID' => $accountID]);
 $result = $query->fetchAll();
