@@ -68,6 +68,15 @@ $hostname = $gs->getIP();
 $userID = $gs->getUserID($id, $userName);
 $checkBan = $gs->getPersonBan($id, $userID, 2);
 if($checkBan) exit("-1");
+
+$songIDsArray = array_values(array_filter(array_map("intval", [$songID] + explode(",", $songIDs)))) ?: [0];
+$sfxIDsArray = array_values(array_filter(array_map("intval", explode(",", $sfxIDs)))) ?: [0];
+if (count($songIDsArray) > 101 || count($sfxIDsArray) > 1001) exit("-1"); // robtop
+if ($songIDsArray || $sfxIDsArray) {
+	$totalSize = $gs->getTotalAudioFilesize($songIDsArray, $sfxIDsArray);
+	if ($totalSize > $maxAudioFilesize * 1_048_576) exit("-1");
+}
+
 $uploadDate = time();
 $query = $db->prepare("SELECT count(*) FROM levels WHERE uploadDate > :time AND (userID = :userID OR hostname = :ip)");
 $query->execute([':time' => $uploadDate - 15, ':userID' => $userID, ':ip' => $hostname]);

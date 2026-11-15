@@ -985,6 +985,18 @@ class mainLib {
 		}
 		return $user['userName'];
 	}
+	public function getTotalAudioFilesize($songIDs, $sfxIDs) {
+		require __DIR__ . "/connection.php";
+		
+		$query = $db->prepare("SELECT
+			(SELECT COALESCE(SUM(size), 0) FROM songs WHERE ID IN (" . implode(",", array_fill(0, count($songIDs), "?")) . ")) AS songs,
+			(SELECT COALESCE(SUM(size), 0) FROM sfxs WHERE ID IN (" . implode(",", array_fill(0, count($sfxIDs), "?")) . ")) AS sfxs
+		");
+		$query->execute(array_merge($songIDs, $sfxIDs));
+		$sizes = $query->fetch(PDO::FETCH_ASSOC);
+		
+		return (int)($sizes["songs"] * 1_048_576) + $sizes["sfxs"];
+	}
 	public function updateLibraries($token, $expires, $mainServerTime, $type = 0) {
 		require __DIR__ . "/../../config/dashboard.php";
 		$servers = [];

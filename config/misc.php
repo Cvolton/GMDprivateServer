@@ -195,4 +195,14 @@ $moderatorsListInGlobal = false;
 */
 
 $automaticCron = false;
+
+/*
+	Limit the maximum audio file size per level
+	
+	This setting will limit the maximum file size that audio can take in one level
+	
+	100 - Limit the maximum file size to 100 MiB (current default on RobTop's servers)
+*/
+
+$maxAudioFilesize = 100;
 ?>
