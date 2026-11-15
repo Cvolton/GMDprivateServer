@@ -78,6 +78,12 @@ if($isSelf) {
 	$newFriendsCount = $newFriendsCount->fetchColumn();
 	
 	$friendState = "0:38:".$newMessagesCount.":39:".$newFriendRequestsCount.":40:".$newFriendsCount;
+
+	$followingCount = $db->prepare("SELECT count(*) FROM follows WHERE person1 = :accountID");
+	$followingCount->execute([":accountID" => $accountID]);
+	$followingCount = $followingCount->fetchColumn();
+
+	$isFollowing = 0;
 } else {
 	$isFriends = $gs->isFriends($accountID, $targetAccountID);
 	if($isFriends) $friendState = 1;
@@ -94,6 +100,12 @@ if($isSelf) {
 	}
 }
 
+if (!$isSelf && $accountID) {
+	$isFollowing = $db->prepare("SELECT 1 FROM follows WHERE person1 = :accountID AND person2 = :targetAccountID LIMIT 1");
+	$isFollowing->execute([":accountID" => $accountID, ":targetAccountID" => $targetAccountID]);
+	$isFollowing = (int)(bool)$isFollowing->fetchColumn();
+}
+
 $person["accountUsername"] = $gs->makeClanUsername($person);
-echo "1:".$person["accountUsername"].":2:".$person["userID"].":13:".$person["coins"].":17:".$person["userCoins"].":10:".$person["color1"].":11:".$person["color2"].":51:".$person["color3"].":3:".$person["stars"].":46:".$person["diamonds"].":52:".$person["moons"].":4:".$person["demons"].":8:".$creatorPoints.":18:".$person["mS"].":19:".$person["frS"].":50:".$person["cS"].":62:".$person["gF"].":63:".$person["gO"].":67:".$person["followersCount"].":65:".$newNotifications.":66:0:68:".$followingCount.":70:1:20:".$person["youtubeurl"].":21:".$person["accIcon"].":22:".$person["accShip"].":23:".$person["accBall"].":24:".$person["accBird"].":25:".$person["accDart"].":26:".$person["accRobot"].":28:".$person["accGlow"].":43:".$person["accSpider"].":48:".$person["accExplosion"].":53:".$person["accSwing"].":54:".$person["accJetpack"].":30:".$rank.":16:".$person["extID"].":31:".$friendState.":44:".$person["twitter"].":45:".$person["twitch"].":59:".$person["instagram"].":60:".$person["tiktok"].":58:".$person["discord"].":61:".$person["custom"].":49:".$modBadge.":55:".$person["dinfo"].":56:".$person["sinfo"].":57:".$person["pinfo"].":29:1";
+echo "1:".$person["accountUsername"].":2:".$person["userID"].":13:".$person["coins"].":17:".$person["userCoins"].":10:".$person["color1"].":11:".$person["color2"].":51:".$person["color3"].":3:".$person["stars"].":46:".$person["diamonds"].":52:".$person["moons"].":4:".$person["demons"].":8:".$creatorPoints.":18:".$person["mS"].":19:".$person["frS"].":50:".$person["cS"].":62:".$person["gF"].":63:".$person["gO"].":67:".$person["followersCount"].":65:".$newNotifications.":66:0:68:".$followingCount.":69:".$isFollowing.":70:1:20:".$person["youtubeurl"].":21:".$person["accIcon"].":22:".$person["accShip"].":23:".$person["accBall"].":24:".$person["accBird"].":25:".$person["accDart"].":26:".$person["accRobot"].":28:".$person["accGlow"].":43:".$person["accSpider"].":48:".$person["accExplosion"].":53:".$person["accSwing"].":54:".$person["accJetpack"].":30:".$rank.":16:".$person["extID"].":31:".$friendState.":44:".$person["twitter"].":45:".$person["twitch"].":59:".$person["instagram"].":60:".$person["tiktok"].":58:".$person["discord"].":61:".$person["custom"].":49:".$modBadge.":55:".$person["dinfo"].":56:".$person["sinfo"].":57:".$person["pinfo"].":29:1";
 ?>
