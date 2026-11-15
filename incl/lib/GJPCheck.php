@@ -49,7 +49,10 @@ class GJPCheck {
 		
 		if(empty($_POST['accountID'])) exit("-1");
 
-		$accountID = ExploitPatch::remove($_POST["accountID"]);
+		// accountID is always numeric; restrict it to digits so a value like
+		// "5 OR 1=1" cannot both pass the (integer-cast) auth check and be
+		// returned for interpolation into non-prepared queries (SQL injection).
+		$accountID = ExploitPatch::number($_POST["accountID"]);
 
 		if(!empty($_POST['gjp'])) self::validateGJPOrDie($_POST['gjp'], $accountID);
 		elseif(!empty($_POST['gjp2'])) self::validateGJP2OrDie($_POST['gjp2'], $accountID);
